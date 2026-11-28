@@ -1,0 +1,109 @@
+{
+  "candidate_manifest_sha256": "9b03efa1522ae5a38b9962ca7a7cbd114a61eee80bc1ab9c6e0fe334a5862d3e",
+  "delivered_archive": {
+    "bytes": 754138787,
+    "file": "CyberSand-Material-Audition-Windows.zip",
+    "sha256": "cb4c67025fb1de64b3f647d70873421cf9be601372fccd2a915791222d94bb96"
+  },
+  "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "isolated_authoring_checks": {
+    "test_material_lab_ui": 226,
+    "test_material_lab_world": 204
+  },
+  "launcher": {
+    "checks": 1,
+    "configuration_revision": 0,
+    "display": "Windows",
+    "extent": [
+      2048,
+      2048
+    ],
+    "failures": 0,
+    "frame": {
+      "file": "shipped-launcher-native.png",
+      "height": 578,
+      "sha256": "23987ac6f9cacdd60c17494604e4137c6e8d78797213b1fbeaa3d50ab65a4578",
+      "width": 1028
+    },
+    "godot": "4.7-stable (official)",
+    "host_scene": "res://main.tscn",
+    "native_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+    "native_tick": 0,
+    "native_world_generation": 2,
+    "nonce": "77dfaa1291cab06a493d3f0b72df51a2",
+    "profile": {
+      "materials": [],
+      "profile_id": "default",
+      "reactions": [],
+      "schema_version": 1
+    },
+    "schema": "cybersand.material-audition.launcher",
+    "schema_version": 1,
+    "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+    "status": "passed",
+    "workbench_visible": true,
+    "world_id": "3"
+  },
+  "launcher_process": {
+    "command": [
+      "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Open Workbench.cmd",
+      "--quit-after",
+      "1800",
+      "--max-fps",
+      "30",
+      "--log-file",
+      "D:\\a\\cybersand\\cybersand\\evidence\\relocated-package\\shipped-launcher-engine.log"
+    ],
+    "elapsed_seconds": 58.297000000000025,
+    "exit_code": 0,
+    "log_sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59",
+    "process_id": 2884,
+    "status": "passed",
+    "timeout_seconds": 300
+  },
+  "local_delivery_transfer_status": "Original754138787-byte ZIP exceeds connector536870912-byte artifact download cap. Exact-byte distribution handoff in progress; CI Windows smoke and publisher verified original ZIP. No local whole-archive verification claimed in this review.",
+  "local_delivery_zip_bytes_verified": false,
+  "native_bytes": 5870592,
+  "native_execution_sha256": "84683be15e75fe3217d360820e223a59ac87f52d3a2f3c1e83512602158af605",
+  "native_probe_assertions": 34081851,
+  "native_probe_sha256": "230354e476779216f7d3e790b86dee3f7aec1e11e2e354e98f304fa2410e4f1b",
+  "native_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+  "original_process_receipts_logs_and_frames_verified": true,
+  "package_execution_sha256": "38f60c1f3072966b035fc46c67dc1f1974fa144cda53cb8c1872ddcba3568359",
+  "package_manifest_sha256": "93a3cd71302d7c7202ca8f93d13bb7fae609b461794773c641b6d5b958f09e7c",
+  "platform": "Windows-2022Server-10.0.20348-SP0",
+  "relocated_cases": {
+    "test_material_audition": 4002,
+    "test_material_audition_authored_scenes": 111,
+    "test_material_audition_layout": 23,
+    "test_material_audition_profile": 45,
+    "test_material_audition_ui_contract": 127,
+    "test_material_lab_catalogue": 1348,
+    "test_material_lab_diagnostics": 193,
+    "test_material_lab_experiment": 141,
+    "test_material_lab_ui": 24
+  },
+  "relocated_checks_total": 6014,
+  "relocated_execution_sha256": "1a246e9a55344d601f7c2a31e358df65c24dbedf46f82d59131000c28423126f",
+  "run_id": 45465121123,
+  "schema": "cybersand.material-audition.independent-windows-execution-review",
+  "schema_version": 1,
+  "scope": "All nine Godot cases include one graphical current-scene run; retained fixtures may be headless. Separate actual shipped CMD invocation and non-headless Workbench/native readiness were observed. This is automated evaluator qualification, not physical owner acceptance.",
+  "source_cases": {
+    "test_material_audition": 4002,
+    "test_material_audition_authored_scenes": 111,
+    "test_material_audition_layout": 23,
+    "test_material_audition_profile": 45,
+    "test_material_audition_ui_contract": 127,
+    "test_material_lab_catalogue": 1348,
+    "test_material_lab_diagnostics": 193,
+    "test_material_lab_experiment": 141,
+    "test_material_lab_ui": 24
+  },
+  "source_checks_total": 6014,
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_execution_sha256": "6f8fed26aed72ae450fd612437f48ff0a6ba18a06c977b812da5a72312171e8d",
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+  "status": "original-process-evidence-passed"
+}

@@ -1,0 +1,150 @@
+{
+  "added_historical_identities": 20,
+  "all236_original_artifact_fields_preserved": true,
+  "all_existing_evaluator_identity_fields_unchanged_except_corrected_source_entry_classification": true,
+  "all_existing_independent_review_fields_preserved": true,
+  "all_terminal_sections_unchanged": [
+    "disposition",
+    "repository",
+    "identities",
+    "lineage",
+    "historical_campaigns",
+    "q6",
+    "q7",
+    "scientific_integrity",
+    "material_corrections",
+    "runtime",
+    "publication",
+    "ordinary_admission",
+    "source_and_science_boundaries"
+  ],
+  "changed_paths": [
+    [
+      "add",
+      "/closure_review_supplement"
+    ],
+    [
+      "add",
+      "/evaluator/delivered_guide_path"
+    ],
+    [
+      "add",
+      "/evaluator/delivered_guide_qualified_source"
+    ],
+    [
+      "remove",
+      "/evaluator/exact_original_Git_source_entries"
+    ],
+    [
+      "add",
+      "/evaluator/materialized_Rapier_LFS_paths"
+    ],
+    [
+      "add",
+      "/evaluator/renamed_retained_provenance"
+    ],
+    [
+      "add",
+      "/evaluator/renamed_retained_provenance_paths"
+    ],
+    [
+      "add",
+      "/evaluator/root_repository_README_in_payload"
+    ],
+    [
+      "add",
+      "/evaluator/same_path_exact_Git_blobs"
+    ],
+    [
+      "add",
+      "/evaluator/source_derived_paths"
+    ],
+    [
+      "add",
+      "/independent_review/closure_cross_reviews"
+    ],
+    [
+      "add",
+      "/independent_review/historical73_attribution_resolution"
+    ],
+    [
+      "add",
+      "/owner_acceptance/delivery_routes"
+    ],
+    [
+      "change",
+      "/owner_acceptance/workflow"
+    ],
+    [
+      "add",
+      "/owner_delivery"
+    ],
+    [
+      "add",
+      "/record_correction"
+    ],
+    [
+      "add",
+      "/recovery/Q1_Q4_outstanding_whole_archive_proof_among_those_seven"
+    ],
+    [
+      "add",
+      "/recovery/Q1_Q4_partial_recovery_count_scope"
+    ],
+    [
+      "add",
+      "/recovery/Q1_Q4_those_seven_with_closure_whole_archive_proof"
+    ],
+    [
+      "add",
+      "/recovery/current_union_review"
+    ],
+    [
+      "add",
+      "/recovery/deduplicated_count_scope"
+    ],
+    [
+      "add",
+      "/recovery/final_github_artifact_records"
+    ],
+    [
+      "add",
+      "/recovery/final_unique_original_archive_records"
+    ],
+    [
+      "add",
+      "/recovery/github_archives_with_completed_whole_archive_verification"
+    ],
+    [
+      "add",
+      "/recovery/github_archives_without_completed_whole_archive_verification"
+    ],
+    [
+      "add",
+      "/recovery/historical_closure_supplement"
+    ],
+    [
+      "add",
+      "/recovery/manifest_bytes"
+    ],
+    [
+      "change",
+      "/recovery/manifest_sha256"
+    ],
+    [
+      "add",
+      "/recovery/separate_scientific_original_archives"
+    ]
+  ],
+  "findings": [],
+  "json_baseline_sha256": "4426b4eade793f96620e69d45af77970293aaddd42d002cbdc80acb47a27d23d",
+  "json_corrected_sha256": "5e1b1ee28be0bb9e709918bae463e032282178c85b68d2346cfc4734fbbbf845",
+  "markdown_current_sha256": "1dfa778587567629a502080a9e88175102ccee7ebb957c6fa4eff0147d51eac0",
+  "native_source_runtime_evaluator_payload_or_remote_mutation": false,
+  "pending": "Recompute final recovery proofs/totals after8 surviving Q6 receipts and41 bounded original ZIP recoveries are joined; then verify final evidence index and snapshot hashes.",
+  "prior_exact_reviews_copied_byte_for_byte": 14,
+  "result": "PASS_SCOPE_REVIEW_AWAIT_FINAL_RECOVERY_COUNTS",
+  "reviewer": "Closure Specialist A independent packet correction non-count review",
+  "schema": 1,
+  "utc": "2026-11-24T20:07:15.943235+00:00"
+}

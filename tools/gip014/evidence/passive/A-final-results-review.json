@@ -1,0 +1,78 @@
+{
+  "schema": "cybersand-goblin-A-final-RESULTS-review-v1",
+  "status": "clear_no_concrete_mismatch",
+  "reviewed_decision_blob": "a04a003bcfc663b766fa40aba7e7855bc0e293c5",
+  "reviewed_index_blob": "01bc81474ef7f8182b52a0fd95e0ddb714aea4a4",
+  "qualified_source": "6f359ce2b24291ee219810773c641d53802fd31d",
+  "qualified_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+  "actual_readout_packet": "2cc2e185e1654bb2701224e5fdb459457c653eab",
+  "primary_report_sha256": "c32ab2dcbd84f969a8dff36c9e0b31122a0e7664e70516d7fc0334d9046306dd",
+  "memory_report_sha256": "6d60a463843c99ba3eb1cb30596ed7d0085f5314de77f1fb4e4df9dfdc565ccb",
+  "checks": [
+    {
+      "id": "6f_exact_source_scope",
+      "pass": true
+    },
+    {
+      "id": "cohort_accounting_exact",
+      "pass": true
+    },
+    {
+      "id": "nine_coverage_unions_exact",
+      "pass": true
+    },
+    {
+      "id": "memory_pair_differences_exact",
+      "pass": true
+    },
+    {
+      "id": "memory_source_costs_exact",
+      "pass": true
+    },
+    {
+      "id": "primary_process_costs_exact",
+      "pass": true
+    },
+    {
+      "id": "all_eight_episode_fields",
+      "pass": true
+    },
+    {
+      "id": "full_report_identities_exact",
+      "pass": true
+    },
+    {
+      "id": "no_false_long_completion",
+      "pass": true
+    },
+    {
+      "id": "state_v2_not_pooled",
+      "pass": true
+    },
+    {
+      "id": "5ee_separate_core_counts_preserved",
+      "pass": true
+    },
+    {
+      "id": "5ee_separate_memory_preserved",
+      "pass": true
+    },
+    {
+      "id": "decision_explicit_scope_limits",
+      "pass": true
+    }
+  ],
+  "reviewed_claims": [
+    "All8 long episode identities, attempted/admitted/completed/refused/partial counts, terminal labels and process costs match the frozen source-specific reports.",
+    "All9 deduplicated observed union counts agree; State-v2 and 5ee State-v1 remain separate.",
+    "Memory7 counts, exact pair differences, selected seeds, native prefix evidence and training-inclusive resource numbers match.",
+    "Original6f qualification failure and zero512/1024 completions remain explicit.",
+    "No exact independent active-clock subtraction is claimed from the transported fields.",
+    "Earlier5ee142/139 results and its separate memory/cost report identities remain intact.",
+    "Document tables' rounded MiB displays agree with their original byte measurements.",
+    "The reader pass is presented as passive data review, not a promotion of failed gameplay outcomes."
+  ],
+  "scope": "Read-only comparison of exact RESULTS prose/index with pre-registered frozen output; no game, tests, new metric or acceptance changes.",
+  "no_new_gameplay_actions": true,
+  "no_new_statistical_inference": true
+}

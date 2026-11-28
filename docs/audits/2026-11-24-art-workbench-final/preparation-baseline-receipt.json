@@ -1,0 +1,495 @@
+{
+  "schema": "art-finisher-specialist-c-handoff-v1",
+  "generated_utc": "2026-11-24T16:28:22.114404+00:00",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "donor_integration": "c2dee26f01946b87156dec72fa4c4916eb537b6f",
+  "owner_primary_correction": "LM Studio was not running. Absent-listener Send followed by ordinary Art X is the primary protocol;no HTTP404 can reproduce it.",
+  "qualification_boundary": "Executed Linux exactGodot4.7 headless with routedInputEventMouseButton into actual embeddedWindow/Button hit testing and real native Workbench. Not physical Windows/NVIDIA mouse acceptance.",
+  "godot_binary": {
+    "path": "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+    "size": 144186224,
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "godot_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+  "native_runtimes": [
+    {
+      "provenance": "godot/addons/cybersand_native/runtime-provenance.json",
+      "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "expected_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "verified_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "size": 5820416,
+      "match": true
+    },
+    {
+      "provenance": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "expected_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "verified_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "size": 5253776,
+      "match": true
+    },
+    {
+      "provenance": "godot/addons/godot-rapier2d/runtime-provenance.windows.json",
+      "artifact": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "source_commit": null,
+      "build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+      "expected_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "verified_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "size": 9987072,
+      "match": true
+    },
+    {
+      "provenance": "godot/addons/godot-rapier2d/runtime-provenance.linux.json",
+      "artifact": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "source_commit": null,
+      "build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+      "expected_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "verified_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "size": 117275416,
+      "match": true
+    }
+  ],
+  "pending_gates": [
+    "A near-limit sanitizer/usage/request-parameter dispatch fix and independent review",
+    "Final clean integrated Linux matrix including shorthandIPv6,malformedvisibleusage,prefix-decoy near-limit body",
+    "Final scaled native UI suite",
+    "Root-owned Linux displayed/CUA checks with separate evidence tier",
+    "Focused exact-head Linux/Windows Actions with displayedGodot/installedZIPlauncher/module paths",
+    "Owner physical Windows/NVIDIA no-listener Send/X reproduction and ordinary usability acceptance"
+  ],
+  "safety_scope": {
+    "private_provider_profiles_read": false,
+    "external_model_requests": false,
+    "paid_inference": false,
+    "native_rebuild": false,
+    "fixtures": "Only127.0.0.1/localhost/IPv6loopback;specific synthetic key/model whitelist;fresh profiles per invocation"
+  },
+  "harness_commits": [
+    "c0fa9dee",
+    "355b173c036e275f21598d33d822456478fd0171",
+    "246e3b79ac6181c0ef69c35c6658947bb6730345",
+    "dbdebf829885ddd1c47b78e62cbdc62f0403391a",
+    "68baadd25c5263272ac5c1f0b508a72d405a09d1",
+    "f809f566e2ac6dd4bc9ca034865e77bb970c5969",
+    "078dc7cdc4a07df4830ab5ffe1a91e0ecbf5813d",
+    "b71ce8bddf2be2adfee64f5ecf9bb77e6390c9c7"
+  ],
+  "records": [
+    {
+      "id": "matrix-donor-01",
+      "directory": "/workspace/scratch/ce2e9b492bcb/qualification-evidence/matrix-donor-01",
+      "status": "aborted_harness_input_error",
+      "interpretation": "Initial input routing prototype failed Send/X hit tests; interrupted. It is not a product responsiveness result.",
+      "source": {
+        "head": "c2dee26f01946b87156dec72fa4c4916eb537b6f",
+        "tree": "00434cb9ecf6d3beb1fa4bcbcd41095153d226cc",
+        "changed_paths": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+        ],
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "observed_godot_command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/ce2e9b492bcb/art-qualification/godot",
+        "--script",
+        "res://tests/run_art_workbench_final.gd"
+      ],
+      "artifact_hashes": {
+        "provenance.json": "056692d10e86ab5074ff43d3d76c5829cbb37b9d05004930535586869c774c50",
+        "godot.log": "e59743c416c90b0b39a7d87efaf2c26791fa1bcefbacd699bafd00da959de25b"
+      }
+    },
+    {
+      "id": "no-server-donor-02",
+      "directory": "/workspace/scratch/ce2e9b492bcb/qualification-evidence/no-server-donor-02",
+      "status": "passed_with_engine_or_fixture_log_noise",
+      "interpretation": "195 assertions/10 arms passed; original no-listener multi-second freeze not reproduced. Early empty-EOF audit parser emitted noise; later harness corrected it. New harness was independently hashed before its first commit.",
+      "result": {
+        "checks": 195,
+        "failures": [],
+        "display": "headless",
+        "godot": "4.7-stable (official)",
+        "input_path": "InputEventMouseButton through embedded Window/Button hit testing; no physical mouse acceptance",
+        "native_activity_cases": 10,
+        "manual_during_transport_cases": null,
+        "baseline_frames": null,
+        "shutdown": null,
+        "unavailable": [],
+        "case_count": 10
+      },
+      "execution": {
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 12.536606278000363
+      },
+      "absent_listener_metrics": {
+        "cases": 10,
+        "max_frame_usec": 60114,
+        "send_usec_range": [
+          6180,
+          14324
+        ],
+        "close_usec_range": [
+          435,
+          4623
+        ]
+      },
+      "source": {
+        "head": "c2dee26f01946b87156dec72fa4c4916eb537b6f",
+        "tree": "00434cb9ecf6d3beb1fa4bcbcd41095153d226cc",
+        "changed_paths": [],
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "observed_godot_command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/ce2e9b492bcb/art-qualification/godot",
+        "--script",
+        "res://tests/run_art_workbench_final.gd"
+      ],
+      "artifact_hashes": {
+        "provenance.json": "2418bee5a77090ba0d4e6ee426279ddf6dd3e8ca623a49c360a4f2c7c7b00f99",
+        "report.json": "bddcaa8646219ff4d5dece05bf5ab11f8b4c572f141616ccce691690ac08918c",
+        "godot.log": "e785479432866c60b439a76de5cd96d6e4608bcc9e568fbf79a9fc55dd01548e",
+        "execution.json": "fc302444057460069b1a3a77eb86281c2957faeb4e93a92cbd40f3a7fcaa512a"
+      }
+    },
+    {
+      "id": "shutdown-donor-03",
+      "directory": "/workspace/scratch/ce2e9b492bcb/qualification-evidence/shutdown-donor-03",
+      "status": "preserved_negative_watchdog",
+      "interpretation": "Actual Workbench accepted POST with no HTTP headers; host.queue_free never returned before30s outer watchdog. Before A transport repair; distinct from original no-listener Hide.",
+      "execution": {
+        "exit_code": null,
+        "timed_out": true,
+        "elapsed_seconds": 30.05965974799983
+      },
+      "source": {
+        "head": "3151f3022b572bcfb29a37ee258df20cf9c0a755",
+        "tree": "eb76b0a3ffab18fd24013ad9f2cb5ad6dd65ce99",
+        "changed_paths": [],
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "observed_godot_command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/ce2e9b492bcb/art-qualification/godot",
+        "--script",
+        "res://tests/run_art_workbench_final.gd"
+      ],
+      "artifact_hashes": {
+        "provenance.json": "2b672647ea9114af1e04bb4af3410174090662d9753c62e4b8e32b99f753f88f",
+        "godot.log": "4781d59ae418c9d0776ad37711d99dead58506050da3e4e36e4f2c64b610eebf",
+        "execution.json": "1cfd67db97cb41e6d9a09b5eabb7a0deab519dba7792f1dbd3730662a8118f56"
+      }
+    },
+    {
+      "id": "matrix-integrated-04",
+      "directory": "/workspace/scratch/ce2e9b492bcb/qualification-evidence/matrix-integrated-04",
+      "status": "preserved_negative_ipv6_start",
+      "interpretation": "597 checks/30 arms;2 failures exclusively shorthand IPv6 start rejection in official4.7 HTTPClient minimum-host-length check. Remaining native/lifecycle arms passed; no-header teardown143.941ms in raw log.",
+      "result": {
+        "checks": 597,
+        "failures": [
+          "absent-ipv6-hidden Send button hit-test starts one request",
+          "absent-ipv6-hidden absent listener is transport failure without HTTP response"
+        ],
+        "display": "headless",
+        "godot": "4.7-stable (official)",
+        "input_path": "InputEventMouseButton through embedded Window/Button hit testing; no physical mouse acceptance",
+        "native_activity_cases": 28,
+        "manual_during_transport_cases": null,
+        "baseline_frames": null,
+        "shutdown": null,
+        "unavailable": [],
+        "case_count": 30
+      },
+      "execution": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_seconds": 29.723824026999864
+      },
+      "absent_listener_metrics": {
+        "cases": 10,
+        "max_frame_usec": 15860,
+        "send_usec_range": [
+          3146,
+          9007
+        ],
+        "close_usec_range": [
+          334,
+          2259
+        ]
+      },
+      "source": {
+        "head": "1318e0aa14dc6996e6c91cc9a1a0ddb8d6a611b4",
+        "tree": "76265b063f909c269b5ca4cb1f22069c7a06c046",
+        "changed_paths": [],
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "observed_godot_command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/ce2e9b492bcb/art-qualification/godot",
+        "--script",
+        "res://tests/run_art_workbench_final.gd"
+      ],
+      "artifact_hashes": {
+        "provenance.json": "52092bfa04c54ce3a2dfc1ee805de3628083fe42c2dc8c9f98a8026eb5d9ad43",
+        "report.json": "284cc9ea4335233bc7354747de54bb42a8c1dc020b048e4c25c721f78940c23c",
+        "godot.log": "1bcfebfcadc3328b46caf24719d7664dfd2433625c91b67fad7591d1282f45d2",
+        "execution.json": "b827834dd60395e77de5452ee3c0e3c0b852c68f425934835ed97f61b0246ad7"
+      }
+    },
+    {
+      "id": "no-server-expanded-05",
+      "directory": "/workspace/scratch/ce2e9b492bcb/qualification-evidence/no-server-expanded-05",
+      "status": "passed_harness_working_delta",
+      "interpretation": "193 checks/10 arms passed with expanded IPv6. Tracked harness-only delta is explicitly in provenance; shorthand later repaired in dispatch without changing saved endpoint.",
+      "result": {
+        "checks": 193,
+        "failures": [],
+        "display": "headless",
+        "godot": "4.7-stable (official)",
+        "input_path": "InputEventMouseButton through embedded Window/Button hit testing; no physical mouse acceptance",
+        "native_activity_cases": 10,
+        "manual_during_transport_cases": null,
+        "baseline_frames": null,
+        "shutdown": null,
+        "unavailable": [],
+        "case_count": 10
+      },
+      "execution": {
+        "exit_code": 0,
+        "timed_out": false,
+        "elapsed_seconds": 12.86319649699999
+      },
+      "absent_listener_metrics": {
+        "cases": 10,
+        "max_frame_usec": 154985,
+        "send_usec_range": [
+          3336,
+          10948
+        ],
+        "close_usec_range": [
+          401,
+          4585
+        ]
+      },
+      "source": {
+        "head": "1318e0aa14dc6996e6c91cc9a1a0ddb8d6a611b4",
+        "tree": "76265b063f909c269b5ca4cb1f22069c7a06c046",
+        "changed_paths": [
+          "godot/tests/run_art_workbench_final.gd",
+          "tools/ci/run_art_workbench_final.py"
+        ],
+        "diff_sha256": "aeced372ccaa3089002a703d07523d660a77815a560a4850082107e850e5ab4d"
+      },
+      "observed_godot_command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/ce2e9b492bcb/art-qualification/godot",
+        "--script",
+        "res://tests/run_art_workbench_final.gd"
+      ],
+      "artifact_hashes": {
+        "provenance.json": "f95df7ee19874c2321c54e4d7e4644f2b5b6cca28626e9fa8f49c55d03ddece0",
+        "report.json": "5023d1f38eb5ff4b4434ed795a42c3dd0aab8718447ea05d9ed7da813628e0e4",
+        "godot.log": "d8a6212bea1bd6e6dcdf851e95d398e6eebc68129b60848c8b25253f20ec90fb",
+        "execution.json": "f29b706604187b2427bb2725073d4b82356ac3ae8d6ccc4259499c3c19e96936"
+      }
+    },
+    {
+      "id": "matrix-root-38abfde5-06",
+      "directory": "/workspace/scratch/ce2e9b492bcb/qualification-evidence/matrix-root-38abfde5-06",
+      "status": "preserved_negative_near_limit_stall",
+      "interpretation": "616 checks/31 arms;only near-limit response frame gap failed.2.488132s frame;2.476178s callback,1.815756s sanitizer. Full redacted response hashes all match;615 other checks passed. This run is clean committed source38abfde5.",
+      "result": {
+        "checks": 616,
+        "failures": [
+          "near-limit-complete-valid-response no multi-second frame gap in this environment"
+        ],
+        "display": "headless",
+        "godot": "4.7-stable (official)",
+        "input_path": "InputEventMouseButton through embedded Window/Button hit testing; no physical mouse acceptance",
+        "native_activity_cases": 29,
+        "manual_during_transport_cases": 26,
+        "baseline_frames": {
+          "frames": 51,
+          "max_usec": 15300,
+          "p95_usec": 12681
+        },
+        "shutdown": {
+          "old_audit_sha256": "dc1e8660cca5317b2b043fe36840f11c179990e1bc1c300d0a64a22f5811a1b7",
+          "shutdown_usec": 104949
+        },
+        "unavailable": [],
+        "case_count": 31
+      },
+      "execution": {
+        "exit_code": 1,
+        "timed_out": false,
+        "elapsed_seconds": 38.4533476229999
+      },
+      "absent_listener_metrics": {
+        "cases": 10,
+        "max_frame_usec": 25411,
+        "send_usec_range": [
+          2416,
+          11874
+        ],
+        "close_usec_range": [
+          359,
+          755
+        ]
+      },
+      "source": {
+        "head": "38abfde567215bacf44f929b498ff2d33425987b",
+        "tree": "47ecd34f5b3c5fe190c01ecf17efa51aa05a3132",
+        "changed_paths": [],
+        "diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "observed_godot_command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--audio-driver",
+        "Dummy",
+        "--headless",
+        "--path",
+        "/workspace/scratch/ce2e9b492bcb/cybersand/godot",
+        "--script",
+        "res://tests/run_art_workbench_final.gd"
+      ],
+      "artifact_hashes": {
+        "provenance.json": "ff80f22956aaba2f045243aca4292bc2bb99a4221532e65e25c12bb21c08f8a0",
+        "report.json": "c67ca53ec6054d7bbd96ee6e8c0a967d86ece753cdf29f918bf840b53e753d52",
+        "audit-verification.json": "982326a257a27cf1d2a7fdd7613bc867b1de345805a27301d9f06b58ffdaced3",
+        "godot.log": "4a66c8b228d0782e474c49785e95297f2d4193339bb9aac467328bebd23267aa",
+        "execution.json": "faab392b9c1a22271a137737eb93ce3ceecc8cb6204ad2a0169bab75b8bebe09"
+      }
+    }
+  ],
+  "reviews": [
+    {
+      "id": "C-UI-01",
+      "scope": "ca13cb58 provider dialog binding, COW draft, revision guard, async list",
+      "status": "resolved_clear"
+    },
+    {
+      "id": "C-UI-02",
+      "scope": "test_art_session_log.gd dialog simulation",
+      "status": "resolved_257c074a"
+    },
+    {
+      "id": "C-SEC-01",
+      "scope": "HTTP200 error/refusal envelope projection",
+      "status": "resolved_12237b27"
+    },
+    {
+      "id": "C-SEC-02",
+      "scope": "failure excerpt boundary",
+      "status": "resolved_and_independently_verified"
+    },
+    {
+      "id": "C-RESP-01",
+      "scope": "threaded transport no-header teardown",
+      "status": "resolved_be1b384_and_predecessor"
+    },
+    {
+      "id": "C-RESP-02",
+      "scope": "near-limit full response sanitize/callback",
+      "status": "open_A_fix_in_progress"
+    },
+    {
+      "id": "C-SEC-03",
+      "scope": "provider usage to visible status",
+      "status": "open_A_fix_in_progress"
+    },
+    {
+      "id": "C-UI-03",
+      "scope": "e2913c4d and4a1dcd56 scaled dialogs and auxiliary sizing",
+      "status": "review_clear_runtime_final_pending"
+    },
+    {
+      "id": "C-PKG-01",
+      "scope": "transitive imported package dependencies",
+      "status": "resolved_53b5978a"
+    },
+    {
+      "id": "C-PKG-02",
+      "scope": "installed timeout evidence and owned cleanup",
+      "status": "resolved_53b5978a"
+    },
+    {
+      "id": "C-EVAL-01",
+      "scope": "manual phase/short tap diagnostic observer",
+      "status": "resolved_20972c6c_and_18_input_checks"
+    }
+  ],
+  "details": "specialist-c-handoff.json and specialist-c-handoff.md contain review reasoning, per-stage critical metrics and reproducible runner templates.",
+  "evaluator_input_regression": {
+    "schema": "art-evaluator-shortcut-regression-v1",
+    "evaluator_source_commit": "20972c6c05851993789923602ab91623c581c922",
+    "evaluator_script_sha256": "d16b46c39c7acdd5a57f12b2c6ea4fa30d43c4137141bdd965c4774941a7e4d2",
+    "driver_commit": "078dc7cdc4a07df4830ab5ffe1a91e0ecbf5813d",
+    "driver_sha256": "cddb0148217e8dccb31b34ea924cca84906ee8a55fb18733842a6819aac98c5c",
+    "checks": 18,
+    "failures": [],
+    "engine_version": "4.7.stable.official.5b4e0cb0f",
+    "display": "headless",
+    "native": "accepted-main unchanged Linux payload",
+    "input": "same-frame Input.parse_input_event press/release; actual Window.window_input observer receipt",
+    "routes": [
+      "root Workbench",
+      "Art window",
+      "Key child dialog",
+      "Conversation child dialog"
+    ],
+    "model_requests": 0,
+    "session_audit_created": false,
+    "teardown_completed": true,
+    "qualification_limit": "Godot input regression, not physical keyboard acceptance",
+    "command": [
+      "timeout",
+      "120",
+      "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/ce2e9b492bcb/cybersand/godot",
+      "--script",
+      "/workspace/scratch/ce2e9b492bcb/art-qualification/godot/tests/test_art_owner_evaluator.gd"
+    ]
+  },
+  "watchdog_cleanup_regression": {
+    "evidence": "watchdog-cleanup-01",
+    "expected_negative": true,
+    "watchdog_seconds": 1,
+    "elapsed_seconds": 1.0216903579994323,
+    "owned_process_exit": -9,
+    "cleanup_error": "",
+    "platform": "Linux",
+    "Windows_runtime_timeout_cleanup": "pending focused Actions failure coverage; source uses owned PID tree taskkill"
+  }
+}

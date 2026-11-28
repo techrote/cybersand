@@ -1,0 +1,269 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "urn:cybersand:swarm006:registration:v1",
+  "title": "SWARM-006 future unseen native holdout registration",
+  "description": "Schema only: this file selects no new cases or seeds. Runtime validation additionally binds exact clean source and tools, checks complete denominators and rejects repeated or incompatible policy modifiers. Publish registration SHA-256 after source freeze and before evaluation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": [
+    "schema",
+    "programme",
+    "classification",
+    "registration_id",
+    "candidate",
+    "limits",
+    "cases",
+    "policies",
+    "case_count",
+    "execution_count",
+    "controls",
+    "timeout_seconds"
+  ],
+  "properties": {
+    "schema": {
+      "const": 1
+    },
+    "programme": {
+      "const": "GENTEK-SWARM-006"
+    },
+    "classification": {
+      "const": "preregistered_unseen"
+    },
+    "registration_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 96
+    },
+    "candidate": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "git_sha",
+        "definition_sha256",
+        "harness_sha256",
+        "runner_sha256"
+      ],
+      "properties": {
+        "git_sha": {
+          "type": "string",
+          "pattern": "^[0-9a-f]{40}$"
+        },
+        "definition_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "harness_sha256": {
+          "$ref": "#/$defs/sha256"
+        },
+        "runner_sha256": {
+          "$ref": "#/$defs/sha256"
+        }
+      }
+    },
+    "limits": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "frame_work",
+        "mosaic_work",
+        "solver_work",
+        "shared_work",
+        "memory_bytes",
+        "max_reservations",
+        "max_rounds"
+      ],
+      "properties": {
+        "frame_work": {
+          "type": "integer",
+          "const": 2000000
+        },
+        "mosaic_work": {
+          "type": "integer",
+          "const": 2000000
+        },
+        "solver_work": {
+          "type": "integer",
+          "const": 4000000
+        },
+        "shared_work": {
+          "type": "integer",
+          "const": 2000000
+        },
+        "memory_bytes": {
+          "type": "integer",
+          "const": 16777216
+        },
+        "max_reservations": {
+          "type": "integer",
+          "const": 8
+        },
+        "max_rounds": {
+          "type": "integer",
+          "const": 4
+        }
+      }
+    },
+    "cases": {
+      "type": "array",
+      "minItems": 1,
+      "maxItems": 1024,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "fixture",
+          "profile",
+          "seed"
+        ],
+        "properties": {
+          "fixture": {
+            "enum": [
+              "concave_intrusion",
+              "foreign_solid",
+              "free",
+              "island",
+              "maximum_left_right_256x128",
+              "narrow_neck",
+              "owner_left_right_128x128",
+              "owner_left_right_192x112",
+              "protected_corridor",
+              "stepped_diagonal"
+            ]
+          },
+          "profile": {
+            "enum": [
+              "branching_irregular",
+              "damaged_derivative",
+              "dense_cohesive",
+              "industrial",
+              "industrial_gui",
+              "irregular_megastructure",
+              "sparse_regular",
+              "viaduct_like"
+            ]
+          },
+          "seed": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 18446744073709551615,
+            "not": {
+              "enum": [
+                605,
+                4099,
+                19457,
+                414855,
+                681376,
+                707861,
+                959922
+              ]
+            }
+          }
+        }
+      }
+    },
+    "policies": {
+      "type": "array",
+      "minItems": 2,
+      "maxItems": 64,
+      "uniqueItems": true,
+      "items": {
+        "type": "object",
+        "additionalProperties": false,
+        "required": [
+          "name",
+          "rounds",
+          "role"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "pattern": "^(off|terminal_only|receptor_only|both|recovery|recovery_without_005)(\\+(fixed|hard_only|frame_frozen|mosaic_frozen|no_offers|reverse|cancel|frame_budget|mosaic_budget|solver_budget|memory_budget))*$"
+          },
+          "rounds": {
+            "type": "integer",
+            "minimum": 0,
+            "maximum": 4
+          },
+          "role": {
+            "enum": [
+              "primary",
+              "secondary"
+            ]
+          }
+        }
+      },
+      "allOf": [
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "name",
+              "rounds",
+              "role"
+            ],
+            "properties": {
+              "name": {
+                "const": "both"
+              },
+              "rounds": {
+                "const": 2
+              },
+              "role": {
+                "const": "primary"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        },
+        {
+          "contains": {
+            "type": "object",
+            "required": [
+              "name",
+              "rounds",
+              "role"
+            ],
+            "properties": {
+              "name": {
+                "const": "recovery"
+              },
+              "rounds": {
+                "const": 2
+              },
+              "role": {
+                "const": "primary"
+              }
+            }
+          },
+          "minContains": 1,
+          "maxContains": 1
+        }
+      ]
+    },
+    "case_count": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 1024
+    },
+    "execution_count": {
+      "type": "integer",
+      "minimum": 2,
+      "maximum": 65536
+    },
+    "controls": {
+      "type": "boolean"
+    },
+    "timeout_seconds": {
+      "type": "integer",
+      "minimum": 1,
+      "maximum": 3600
+    }
+  },
+  "$defs": {
+    "sha256": {
+      "type": "string",
+      "pattern": "^[0-9a-f]{64}$"
+    }
+  }
+}

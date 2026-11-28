@@ -1,0 +1,93 @@
+{
+  "case": "AMBIENT-002 bounded spatial perception",
+  "checks": 2644,
+  "completed": [
+    "materials",
+    "peers",
+    "navigation",
+    "cost"
+  ],
+  "failures": [],
+  "godot": "4.7-stable (official)",
+  "measurements": [
+    {
+      "cache_bytes": 131072,
+      "logical_query_population": 1,
+      "mode": "legacy",
+      "queries": 100,
+      "query_usec": 35401,
+      "samples": 48900,
+      "scope": "copied-publication query cost; no instantiated actors in this microbenchmark",
+      "wall_usec": 39549
+    },
+    {
+      "cache_bytes": 131072,
+      "logical_query_population": 4,
+      "mode": "legacy",
+      "queries": 400,
+      "query_usec": 148245,
+      "samples": 196900,
+      "scope": "copied-publication query cost; no instantiated actors in this microbenchmark",
+      "wall_usec": 166624
+    },
+    {
+      "cache_bytes": 131072,
+      "logical_query_population": 8,
+      "mode": "legacy",
+      "queries": 800,
+      "query_usec": 301081,
+      "samples": 393800,
+      "scope": "copied-publication query cost; no instantiated actors in this microbenchmark",
+      "wall_usec": 334948
+    },
+    {
+      "cache_bytes": 131072,
+      "logical_query_population": 1,
+      "mode": "adaptive",
+      "queries": 100,
+      "query_usec": 109946,
+      "samples": 69700,
+      "scope": "copied-publication query cost; no instantiated actors in this microbenchmark",
+      "wall_usec": 116862
+    },
+    {
+      "cache_bytes": 131072,
+      "logical_query_population": 4,
+      "mode": "adaptive",
+      "queries": 400,
+      "query_usec": 436995,
+      "samples": 280100,
+      "scope": "copied-publication query cost; no instantiated actors in this microbenchmark",
+      "wall_usec": 465077
+    },
+    {
+      "cache_bytes": 131072,
+      "logical_query_population": 8,
+      "mode": "adaptive",
+      "queries": 800,
+      "query_usec": 883913,
+      "samples": 557400,
+      "scope": "copied-publication query cost; no instantiated actors in this microbenchmark",
+      "wall_usec": 941226
+    }
+  ],
+  "platform": "Linux",
+  "source_hashes": {
+    "fixture": "8b7880bd37a747cc0065c29de2cfe33e9b2a83250516db3ff1c76b1fe177361f",
+    "perception": "61f4e05fe4441d2c83c26429463254d963aa6d1f2447b4351ad587f8fa11ef0b",
+    "rig": "a91255907101ca211574897345324c51f684baccac865d765ad54609ec575ea0"
+  },
+  "source_revision": "9ca91db4-plus-types-weight",
+  "execution_disposition": "PASS with named local source delta; final integrated-source qualification remains separate",
+  "base_commit": "9ca91db44ab5d4a721122543eafdf5b1befb72c9",
+  "local_delta": [
+    "two fixture Dictionary type annotations",
+    "ignore zero-weight material/navigation sensing requests"
+  ],
+  "retained_at_utc": "2026-11-25T01:30:24.900229+00:00",
+  "raw_report_sha256": "e59bfbcc7301762a3951db35a5ebf4082b53ef62d5779b888d9ef703e08aa07c",
+  "console_sha256": "6ee7471a3e2187d7618720599e7defeaa027311af27f758598e454a9b28f3208",
+  "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "command": "Godot_v4.7-stable_linux.x86_64 --headless --path godot --script res://tests/test_ambient2_spatial.gd",
+  "watchdog_seconds": 120
+}

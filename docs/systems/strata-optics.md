@@ -2,17 +2,49 @@
 title: Strata optical presentation and persistence
 status: Current
 document-kind: contract
-scope: Draft Strata Theatre 003 decorative-plane shader, lens, controls, ownership, presets and compatibility; no physical owner acceptance
+scope: Owner-accepted optional Strata Theatre 003 optics, controls, ownership, presets, compatibility and integration boundaries
 canonical-for: [strata-optical-rendering, strata-optical-configuration, strata-optical-persistence]
-last-reviewed: 2026-11-26
+last-reviewed: 2026-11-28
 related-documents: [strata-workbench.md, strata-authoring.md, strata-environments.md, ../operations/strata-optical-composition.md, ../operations/strata-optics-evaluation.md]
 ---
 
-# Strata optical presentation — Draft/HOLD
+# Strata optical presentation
 
-**STRATA-THEATRE-003**, [Draft PR #785](https://github.com/techrote/cybersand/pull/785), extends the source-preserving Strata 002 branch. It adds an integrated **Strata Optics Lab**, eleven editable profiles and presentation-only depth cues. It does not enable Strata or optics by default. The previous application `934cc0c0eef70dad528155e9a92eebe25e2757eb`, archive `410ac8e5e613b1454928699dbc9a68cd035f0894` and evaluator remain separate immutable evidence.
+**STRATA-THEATRE-003**, [PR #785](https://github.com/techrote/cybersand/pull/785), extends the source-preserving Strata 002 lineage. It adds an integrated **Strata Optics Lab**, eleven editable profiles and presentation-only depth cues. It does not enable Strata or optics by default. The previous application `934cc0c0eef70dad528155e9a92eebe25e2757eb`, archive `410ac8e5e613b1454928699dbc9a68cd035f0894` and evaluator remain separate immutable evidence.
 
 This is a stylised optical compositor, not a physically calibrated lens or light transport simulation. Exact graphical, native and performance results are bound to the [dated research record](../audits/2026-11-25-strata-theatre-003/README.md). Source describes implemented behaviour; compiling a shader does not prove visual clarity or responsive physical progression.
+
+## Owner acceptance and integration policy — 28 November 2026
+
+The owner physically evaluated the frozen Windows evaluator on Windows 11 with
+an NVIDIA TITAN RTX and accepted its functionality, visual results and practical
+usability for optional use. The owner authorized integration of the complete
+Strata 002/003 lineage with accepted RAMCACHE and main. The
+[combined integration and delivery guide](../operations/ramcache-strata-integration.md)
+records the resulting source, qualification and package separately from that
+owner-tested predecessor.
+
+**Classic remains the default.** The owner specifically waived the historical
+90% native/Rapier progression-retention acceptance target for optional enhanced
+profiles. The measured ratios and `observed_*_target_met` flags remain unchanged;
+a waived failed target is not a benchmark pass. Historical p95/admission misses,
+readability limitations and original failures remain evidence. Correctness,
+source/runtime provenance, ordinary Classic behavior and new integration
+regressions remain qualification obligations. The waiver does not enable optics
+automatically or authorize unrelated performance changes.
+
+The owner's preferred artistic configuration is **Diorama**, with **Rear
+architecture → Optical depth = 1.3**. It is reproducible through the existing
+controls and named-preset mechanism; it is not installed as a global default.
+The focused ordinary-host install/fresh-reopen regression exercises that exact
+configuration, authored persistence, temporary inspection exclusion and separate
+application quality.
+
+RAMCACHE's persistent host intentionally refuses Strata admission before native
+decorative allocation. Its exact single-area authoring/continuation envelope does
+not contain the layered document. Leave the persistent profile through its
+normal durable Launcher action, then open ordinary Workbench for Strata. No
+parallel Play owner or unqualified combined save format is introduced.
 
 ## Ownership and rendering boundary
 
@@ -61,7 +93,7 @@ Low quality caps the support radius at one native cell (five surface reads), Bal
 
 When clarity is active, the presenter asks existing visible actor overlays for already-published visual bounds. `actor_presentation_bounds.gd` examines at most 64 physical render parts and merges at most eight actor rectangles; prototype bounds use the already-published ordinary state/rig arrays. Rotated and compound parts contribute conservative visual AABBs. This path never queries a native World, actor session or Rapier state.
 
-The shader receives eight fixed rectangles plus the existing sampled-player rectangle and locally subordinates rear content. It does not change physical opacity, collision or actor transforms. Empty/retired bounds clear the count. The ordinary Workbench currently admits at most eight actors and 64 parts, so these bounds cover its admitted actor population. The separate sampled-player rectangle belongs to the sampled-character presentation path; it is not a fallback for a selected Midge. Conservative rectangles can attenuate more background than the actual actor silhouette. A future actor-capacity increase or combined overlay population requires a new priority review, and local assistance cannot make a tiny actor readable at every overview scale. Explicit temporary Show physical Play covers even planes excluded from an authored profile; releasing it restores those participation settings unchanged.
+The shader receives eight fixed rectangles plus the existing sampled-player rectangle and locally subordinates rear content. It does not change physical opacity, collision or actor transforms. Empty/retired bounds clear the count. The ordinary Workbench retains default budgets of eight actors and 64 parts, while accepted Sandbox Capacity can explicitly admit larger populations. Optical local assistance retains its independently bounded scan of the first 64 published parts and at most eight actor rectangles; it does not promise local assistance for every actor in an enlarged population. The separate sampled-player rectangle belongs to the sampled-character presentation path; it is not a fallback for a selected Midge. Conservative rectangles can attenuate more background than the actual actor silhouette. Actual actor rendering, labels, collision and physics retain their existing capacity and authority. Expanded optical priority/coverage is deferred; local assistance cannot make a tiny actor readable at every overview scale. Explicit temporary Show physical Play covers even planes excluded from an authored profile; releasing it restores those participation settings unchanged.
 
 ## Configuration schema and control domains
 
@@ -113,9 +145,9 @@ The final renderer fixtures passed 109 assertions with zero failures on each act
 
 The original **45-second** scene admission target remains unchanged. Its five final Strata 002 extracted Windows misses remain recorded failures. Functional scene admission and an attractive frame do not convert a missed target into performance acceptance. Hosted software rendering does not establish physical NVIDIA GPU performance or owner playfeel.
 
-The frozen `fd0830ab` Linux campaign passed its functional/native and exact Classic predecessor controls, but every measured enabled profile failed the registered median native/Rapier rate and physical-p95 criteria. The ordinary balanced profiles retained approximately 75–82% of Classic's measured progression in that hosted challenge cohort. Both separately observed five-minute sessions retained native ownership and bounded node/resource counts; the Windows session still missed admission and had substantial draw/physical interval tails. The [dated independent performance review](../audits/2026-11-25-strata-theatre-003/c-performance-review-linux.md) and [sustained review](../audits/2026-11-25-strata-theatre-003/c-sustained-v2-review.md) own those exact source/platform observations. No allocation or native-isolation property implies a performance pass. The final Windows cohort also fails every measured enabled native/Rapier rate gate (approximately 76–84% of Classic); Architectural alone meets its p95 criterion. All nine initial Windows source-campaign admissions exceed 45 seconds. See the [complete Windows summary](../audits/2026-11-25-strata-theatre-003/profile-observations-windows.json). A separately observed exact-output optimisation improves both hosted cohorts, but is not adopted into the frozen application. Enabled-optics performance remains an engineering HOLD.
+The frozen `fd0830ab` Linux campaign passed its functional/native and exact Classic predecessor controls, but every measured enabled profile failed the registered median native/Rapier rate and physical-p95 criteria. The ordinary balanced profiles retained approximately 75–82% of Classic's measured progression in that hosted challenge cohort. Both separately observed five-minute sessions retained native ownership and bounded node/resource counts; the Windows session still missed admission and had substantial draw/physical interval tails. The [dated independent performance review](../audits/2026-11-25-strata-theatre-003/c-performance-review-linux.md) and [sustained review](../audits/2026-11-25-strata-theatre-003/c-sustained-v2-review.md) own those exact source/platform observations. No allocation or native-isolation property implies a performance pass. The final Windows cohort also fails every measured enabled native/Rapier rate gate (approximately 76–84% of Classic); Architectural alone meets its p95 criterion. All nine initial Windows source-campaign admissions exceed 45 seconds. See the [complete Windows summary](../audits/2026-11-25-strata-theatre-003/profile-observations-windows.json). A separately observed exact-output optimisation improves both hosted cohorts, but is not adopted into the frozen application. Those historical enabled-optics performance failures remain preserved under the narrow owner-acceptance policy above.
 
-The optical renderer shares existing published presentation textures with PUBPRES but imports none of that programme's unfinished engines or publication models. Native architecture authoring, conversational Art Workbench and documentation programmes retain their own authority. Draft/HOLD remains in force pending owner artistic and physical acceptance; this feature is not merged or enabled by default.
+The optical renderer shares existing published presentation textures with PUBPRES but imports none of that programme's unfinished engines or publication models. Native architecture authoring, conversational Art Workbench and documentation programmes retain their own authority. Owner artistic and physical acceptance now permits the bounded integration described above. The combined source and delivery require their own qualification; enhanced optics remains disabled by default.
 
 The ordinary host exposes pan and zoom; a rotated-camera control is not present and camera rotation has not been graphically qualified by this mission. Actor rotation is separately covered by published visual bounds. Local material-mask assistance samples current published occupancy, while moving Play materials may interpolate snapshots; motion review must watch this difference rather than inventing another publication authority.
 

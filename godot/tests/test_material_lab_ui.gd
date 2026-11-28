@@ -574,7 +574,7 @@ func run() -> void:
 		return
 	panel._python.text = "python" if OS.get_name() == "Windows" else "python3"
 	canonical_parity()
-	expect(panel._tabs.get_tab_count() == 5,"Inspect, Candidate, Reactions, Native test and Candidate test are mounted")
+	expect(panel._tabs.get_tab_count() == 6,"Existing inspection and isolated tabs plus Current scene are mounted")
 	if not panel.catalogue.native_available:
 		expect(false,"Matching rebuilt native inspector is required: " + str(panel.catalogue.error))
 		finish()

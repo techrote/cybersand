@@ -1,0 +1,27 @@
+{
+  "build_receipt_sha256": "b237e7076904f7fc118e81c7efb687478c3a594c5b616179ff0d88e578616035",
+  "completion": {
+    "assertions": 34081851,
+    "status": "PASS",
+    "suite": "material-audition-native"
+  },
+  "native_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+  "platform": "windows",
+  "platform_detail": "Windows-2022Server-10.0.20348-SP0",
+  "probe_sha256": "230354e476779216f7d3e790b86dee3f7aec1e11e2e354e98f304fa2410e4f1b",
+  "process": {
+    "command": [
+      "D:\\a\\cybersand\\cybersand\\build\\audition-windows\\test_material_audition.exe"
+    ],
+    "elapsed_seconds": 2.796999999999912,
+    "exit_code": 0,
+    "log_sha256": "a015ac7b3c79693898ad2847ffc3890beedc87c89b520389eb31b19473ebd72e",
+    "process_id": 1076,
+    "status": "passed",
+    "timeout_seconds": 1200
+  },
+  "schema": "cybersand.material-audition.windows-native-execution",
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+  "status": "passed"
+}

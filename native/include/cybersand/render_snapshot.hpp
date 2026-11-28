@@ -85,6 +85,7 @@ public:
     [[nodiscard]] std::size_t slot_count() const noexcept;
     [[nodiscard]] std::size_t patch_capacity_per_slot() const noexcept;
     [[nodiscard]] std::size_t byte_capacity_per_slot() const noexcept;
+    [[nodiscard]] std::size_t resident_storage_bytes() const noexcept;
     [[nodiscard]] std::uint64_t latest_serial() const noexcept;
     [[nodiscard]] std::size_t patch_high_water() const noexcept;
     [[nodiscard]] std::size_t byte_high_water() const noexcept;

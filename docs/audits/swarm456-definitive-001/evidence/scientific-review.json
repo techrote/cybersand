@@ -1,0 +1,1009 @@
+{
+  "FAIL138": {
+    "apply_changes": 0,
+    "changed_policy_counts": {
+      "both": 69,
+      "receptor_only": 69
+    },
+    "complete_original_history_inventory_sha256": "69dfca22b5249ab63a1c47936a6252d51330f86e4ea260e68f0b6e212bf46ca6",
+    "original_failed_report_sha256": "7404bb07d3552465c544d90d760f887bd7703d3937a9268a6f32355e4346df7f",
+    "original_failure_count": 138,
+    "original_failure_population_recovered_exactly": true,
+    "original_result": "FAIL",
+    "original_result_reclassified": false,
+    "raw_8cf_f9_reaudit_in_other_session": "Not claimed complete here; retain original report and exact ledger regardless of that re-audit status",
+    "retained_inventory_classifications": {
+      "accounting_only_unchanged_geometry_and_endpoint": 127,
+      "already_exhausted_changed_refusal_stage_and_accounting": 1,
+      "earlier_blocked_to_exhausted_refusal": 10
+    },
+    "unchanged_original_pairs": 1782
+  },
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "all_policies": {
+    "both@2": {
+      "A": 14,
+      "R": 3,
+      "charged_work": 587522286,
+      "closure_unknown": 25,
+      "denominator": 96,
+      "joints": 29,
+      "statuses": {
+        "blocked": 57,
+        "complete": 14,
+        "exhausted": 25
+      }
+    },
+    "off@2": {
+      "A": 10,
+      "R": 2,
+      "charged_work": 589414836,
+      "closure_unknown": 20,
+      "denominator": 96,
+      "joints": 22,
+      "statuses": {
+        "blocked": 66,
+        "complete": 10,
+        "exhausted": 20
+      }
+    },
+    "receptor_only@2": {
+      "A": 11,
+      "R": 3,
+      "charged_work": 586051260,
+      "closure_unknown": 26,
+      "denominator": 96,
+      "joints": 29,
+      "statuses": {
+        "blocked": 59,
+        "complete": 11,
+        "exhausted": 26
+      }
+    },
+    "recovery+cancel@2": {
+      "A": 0,
+      "R": 0,
+      "charged_work": 16023552,
+      "closure_unknown": 96,
+      "denominator": 96,
+      "joints": 0,
+      "statuses": {
+        "cancelled": 96
+      }
+    },
+    "recovery+fixed@2": {
+      "A": 77,
+      "R": 77,
+      "charged_work": 542257873,
+      "closure_unknown": 19,
+      "denominator": 96,
+      "joints": 339,
+      "statuses": {
+        "complete": 77,
+        "exhausted": 19
+      }
+    },
+    "recovery+frame_budget@2": {
+      "A": 0,
+      "R": 0,
+      "charged_work": 16023552,
+      "closure_unknown": 96,
+      "denominator": 96,
+      "joints": 0,
+      "statuses": {
+        "exhausted": 96
+      }
+    },
+    "recovery+frame_frozen@2": {
+      "A": 82,
+      "R": 77,
+      "charged_work": 552299607,
+      "closure_unknown": 10,
+      "denominator": 96,
+      "joints": 352,
+      "statuses": {
+        "blocked": 4,
+        "complete": 82,
+        "exhausted": 10
+      }
+    },
+    "recovery+hard_only@2": {
+      "A": 88,
+      "R": 26,
+      "charged_work": 478865211,
+      "closure_unknown": 6,
+      "denominator": 96,
+      "joints": 61,
+      "statuses": {
+        "blocked": 2,
+        "complete": 88,
+        "exhausted": 6
+      }
+    },
+    "recovery+memory_budget@2": {
+      "A": 0,
+      "R": 0,
+      "charged_work": 0,
+      "closure_unknown": 96,
+      "denominator": 96,
+      "joints": 0,
+      "statuses": {
+        "exhausted": 96
+      }
+    },
+    "recovery+mosaic_budget@2": {
+      "A": 0,
+      "R": 0,
+      "charged_work": 78049405,
+      "closure_unknown": 96,
+      "denominator": 96,
+      "joints": 0,
+      "statuses": {
+        "exhausted": 96
+      }
+    },
+    "recovery+mosaic_frozen@2": {
+      "A": 62,
+      "R": 0,
+      "charged_work": 471297561,
+      "closure_unknown": 6,
+      "denominator": 96,
+      "joints": 0,
+      "statuses": {
+        "blocked": 28,
+        "complete": 62,
+        "exhausted": 6
+      }
+    },
+    "recovery+no_offers@2": {
+      "A": 62,
+      "R": 0,
+      "charged_work": 446644401,
+      "closure_unknown": 0,
+      "denominator": 96,
+      "joints": 0,
+      "statuses": {
+        "blocked": 34,
+        "complete": 62
+      }
+    },
+    "recovery+reverse@2": {
+      "A": 82,
+      "R": 81,
+      "charged_work": 566677700,
+      "closure_unknown": 12,
+      "denominator": 96,
+      "joints": 442,
+      "statuses": {
+        "blocked": 2,
+        "complete": 82,
+        "exhausted": 12
+      }
+    },
+    "recovery+solver_budget@2": {
+      "A": 0,
+      "R": 0,
+      "charged_work": 101998371,
+      "closure_unknown": 96,
+      "denominator": 96,
+      "joints": 0,
+      "statuses": {
+        "exhausted": 96
+      }
+    },
+    "recovery@0": {
+      "A": 62,
+      "R": 0,
+      "charged_work": 361822555,
+      "closure_unknown": 0,
+      "denominator": 96,
+      "joints": 0,
+      "statuses": {
+        "blocked": 34,
+        "complete": 62
+      }
+    },
+    "recovery@1": {
+      "A": 92,
+      "R": 87,
+      "charged_work": 470987654,
+      "closure_unknown": 0,
+      "denominator": 96,
+      "joints": 357,
+      "statuses": {
+        "blocked": 4,
+        "complete": 92
+      }
+    },
+    "recovery@2": {
+      "A": 82,
+      "R": 81,
+      "charged_work": 566677700,
+      "closure_unknown": 12,
+      "denominator": 96,
+      "joints": 442,
+      "statuses": {
+        "blocked": 2,
+        "complete": 82,
+        "exhausted": 12
+      }
+    },
+    "recovery@3": {
+      "A": 6,
+      "R": 6,
+      "charged_work": 583407179,
+      "closure_unknown": 90,
+      "denominator": 96,
+      "joints": 78,
+      "statuses": {
+        "complete": 6,
+        "exhausted": 90
+      }
+    },
+    "recovery@4": {
+      "A": 0,
+      "R": 0,
+      "charged_work": 582700975,
+      "closure_unknown": 96,
+      "denominator": 96,
+      "joints": 0,
+      "statuses": {
+        "exhausted": 96
+      }
+    },
+    "terminal_only@2": {
+      "A": 13,
+      "R": 2,
+      "charged_work": 589703044,
+      "closure_unknown": 20,
+      "denominator": 96,
+      "joints": 23,
+      "statuses": {
+        "blocked": 63,
+        "complete": 13,
+        "exhausted": 20
+      }
+    }
+  },
+  "artifact_ids": {
+    "donor715_r3": {
+      "artifact_id": 14726599971,
+      "attempt": 1,
+      "bytes": 79930037,
+      "run_id": 44953582341,
+      "sha256": "4de8f1a18fb95d508a073945c4d2c28a47b7a00d1f7c3ea60fbc050e8503353b"
+    },
+    "historical_f9_recovered_archive": {
+      "bytes": 430066468,
+      "sha256": "7ed29e2b32eca8caadaaa0c9bf148a75e50b0913e2b3ed526606ccd63e755e76"
+    },
+    "q5_known_controls": {
+      "artifact_id": 14741752551,
+      "attempt": 1,
+      "bytes": 114134618,
+      "run_id": 44988900817,
+      "sha256": "2abd03c999b51910485f1b6a4b76b91cdb629fb84194bfd4e43ce23600f0dfa8"
+    },
+    "q6_science": {
+      "artifact_id": 14942382711,
+      "attempt": 1,
+      "bytes": 294266160,
+      "run_id": 45437617377,
+      "sha256": "56149c36c69052fc418e1e9f6e16cb74692bcf375fbeb7f3e411c7901f1bb3a6"
+    },
+    "q7_science": {
+      "artifact_id": 14946336139,
+      "attempt": 1,
+      "bytes": 293858682,
+      "run_id": 45445188802,
+      "sha256": "daa4d8f1c2760c39e40fe44fb9b2d479d45fcbd5462d0b96880e5132acfe28b3"
+    }
+  },
+  "authoritative_scientific_source": {
+    "archive_alias": "q7-recovery-evidence.zip",
+    "archive_bytes": 293858682,
+    "archive_sha256": "daa4d8f1c2760c39e40fe44fb9b2d479d45fcbd5462d0b96880e5132acfe28b3",
+    "build_context": {
+      "branch": "integration/swarm004-005-006-unified-20261122",
+      "repository": "techrote/cybersand",
+      "run_attempt": "1",
+      "run_id": "45445188802",
+      "workflow": ".github/workflows/swarm456-qualification.yml",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45445188802"
+    },
+    "compiled_source_inputs_verified": 100,
+    "definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+    "indexed_members": 9607,
+    "manifest_sha256": "3a20a7970f54fcd005387a91b00299ae0943d294144532198e5b3ebf4e0310dd",
+    "raw_archive_members": 9610,
+    "scientific_binary_sha256": "c6e589dac25db2f5cd661078c56e31d0b79bbbeb332974c43f8787bbd02e945e",
+    "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03"
+  },
+  "current_consolidated_both_control": {
+    "A": 14,
+    "R": 3,
+    "charged_work": 587522286,
+    "closure_unknown": 25,
+    "denominator": 96,
+    "joints": 29,
+    "statuses": {
+      "blocked": 57,
+      "complete": 14,
+      "exhausted": 25
+    }
+  },
+  "donor360": {
+    "baseline_distributions": {
+      "both": {
+        "blocked": 14,
+        "complete": 1,
+        "exhausted": 21
+      },
+      "both_fixed_territory": {
+        "blocked": 12,
+        "complete": 5,
+        "exhausted": 19
+      },
+      "both_frame_frozen": {
+        "blocked": 14,
+        "complete": 1,
+        "exhausted": 21
+      },
+      "both_hard_only": {
+        "blocked": 16,
+        "complete": 8,
+        "exhausted": 12
+      },
+      "both_mosaic_frozen": {
+        "blocked": 36
+      },
+      "both_round0": {
+        "blocked": 36
+      },
+      "both_round1": {
+        "blocked": 14,
+        "complete": 1,
+        "exhausted": 21
+      },
+      "compact_only": {
+        "blocked": 14,
+        "complete": 1,
+        "exhausted": 21
+      },
+      "off_off": {
+        "blocked": 14,
+        "complete": 1,
+        "exhausted": 21
+      },
+      "receptor_only": {
+        "blocked": 14,
+        "complete": 1,
+        "exhausted": 21
+      }
+    },
+    "baseline_normalized_exact": 360,
+    "baseline_raw_byte_equal": 0,
+    "candidate_q5": {
+      "archive_alias": "q5-linux-evidence.zip",
+      "archive_sha256": "2abd03c999b51910485f1b6a4b76b91cdb629fb84194bfd4e43ce23600f0dfa8",
+      "driver_sha256": "50136c27e43402290f89cd66d4e5c9f3ddb059f6047fa6b05fb1abf208367218",
+      "executable_sha256": "63d6ffc9d8b1bed5c500f7d8c285128aaaa10a4542d42d323c6f1c24609c2e6a",
+      "manifest_sha256": "8b7d8f35d5ac22d1a3256e5632e99e81d99110c4ba34170ad9ce5904af6a28f4",
+      "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+      "recorded_summary": {
+        "both": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "both_fixed_territory": {
+          "blocked": 12,
+          "complete": 5,
+          "exhausted": 19
+        },
+        "both_frame_frozen": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "both_hard_only": {
+          "blocked": 16,
+          "complete": 8,
+          "exhausted": 12
+        },
+        "both_mosaic_frozen": {
+          "blocked": 36
+        },
+        "both_round0": {
+          "blocked": 36
+        },
+        "both_round1": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "compact_only": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "off_off": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "receptor_only": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        }
+      },
+      "runner_sha256": "9ef1bcdbb3bdfad734453a8457acfd95eb5847a9e16a1a73d0acbd8cea1bc1be",
+      "source_commit": "d59a82241eaf7d7bf48551139e41c3da277a8eff",
+      "source_identity_sha256": "0e2d2e61a3fd92c2a705b47134ec61c49972761416f184d3af1dff546c2a75a1",
+      "source_tree": "aea0e81260d598b5617501068de5c5f6afbc68e4",
+      "unseen": false
+    },
+    "fresh_q7_exact_raw_matches": 360,
+    "fresh_q7_status": "PASS",
+    "frozen715_native_and_driver_inputs_equal_r3_execution": true,
+    "normalization": "Only native request/result definition suffix and result request_digest/digest; all material, graph, work, status, failure, composition and assembly hashes remain exact.",
+    "policies": 10,
+    "policy_denominator": 36,
+    "reference": {
+      "archive_alias": "14726599971.zip",
+      "archive_sha256": "4de8f1a18fb95d508a073945c4d2c28a47b7a00d1f7c3ea60fbc050e8503353b",
+      "driver_sha256": "50136c27e43402290f89cd66d4e5c9f3ddb059f6047fa6b05fb1abf208367218",
+      "executable_sha256": "35f0dc15d35b158e508edd45f4da6f1726f43892de93b86850c7992a2815f72c",
+      "manifest_sha256": "1ea616848f6a3796587fe9363459feca68dfa72fbae736c14e79ff047ceecc82",
+      "native_definition_sha256": "217bfa716e61198f5b3849f2ae14c30e85bc9f623fc1d05438c59df2296ce7f7",
+      "recorded_summary": {
+        "both": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "both_fixed_territory": {
+          "blocked": 12,
+          "complete": 5,
+          "exhausted": 19
+        },
+        "both_frame_frozen": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "both_hard_only": {
+          "blocked": 16,
+          "complete": 8,
+          "exhausted": 12
+        },
+        "both_mosaic_frozen": {
+          "blocked": 36
+        },
+        "both_round0": {
+          "blocked": 36
+        },
+        "both_round1": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "compact_only": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "off_off": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        },
+        "receptor_only": {
+          "blocked": 14,
+          "complete": 1,
+          "exhausted": 21
+        }
+      },
+      "runner_sha256": "9ef1bcdbb3bdfad734453a8457acfd95eb5847a9e16a1a73d0acbd8cea1bc1be",
+      "source_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+      "source_identity_sha256": "e780a392ca399fe6704b1eb83764797afeaee37d71fc4d55c3d3b3e2d45b2ca2",
+      "source_tree": "a3312e00b971cf6859922b2b70eb8ed5da0f66b7",
+      "unseen": false
+    }
+  },
+  "frozen_helpers": {
+    "full_history_identity_normalizer": "8818a1f197851d6bfaf9f08f160a3830cf55b0a9a684718bd58245af4949d69e",
+    "known360_driver": "50136c27e43402290f89cd66d4e5c9f3ddb059f6047fa6b05fb1abf208367218",
+    "known360_runner_normalizer": "9ef1bcdbb3bdfad734453a8457acfd95eb5847a9e16a1a73d0acbd8cea1bc1be",
+    "revealed_replay_orchestrator": "6c3b3b60bba797fec11c843692c6fbac7760331e3c2ab4b7b7d344da4876d107",
+    "scientific_analysis": "f6e70b126e669901b48da8f877f5090ec06c6bef977c5cc95c5276d3fa255cdf",
+    "scientific_harness": "54c176d9da9b47266075a1567afe9c54af7cd09239bbe348de904f01e058ae69",
+    "scientific_runner": "ea4c2161dc80a46a3a3faee6d158b5f23096090a40eac51b184f4b0aabb98868"
+  },
+  "frozen_population": {
+    "cases": 96,
+    "child_timeout_seconds": 90,
+    "classification": "revealed_corpus_successor_regression",
+    "fresh_executions": 1920,
+    "historical_reference_executions": 480,
+    "known_donor_controls": 360,
+    "limits": {
+      "frame_work": 2000000,
+      "max_reservations": 8,
+      "max_rounds": 4,
+      "memory_bytes": 16777216,
+      "mosaic_work": 2000000,
+      "shared_work": 2000000,
+      "solver_work": 4000000
+    },
+    "ordered_seed_reconstruction": "96/96 exact; counter96; no duplicate or excluded seeds",
+    "original_registration_commit": "b5c7f4188ae5e28baf253bb50920ff4c1d74aa1d",
+    "per_policy_denominator": 96,
+    "policies": 20,
+    "reference_executions_rerun_by_this_review": 0,
+    "registration_files_sha256": {
+      "analysis-plan.json": "35a654559f28e96fed4ba60da0567d042cdb47050a82165c7100072acda71850",
+      "draw_cases.py": "bee877ab0ecd57d9e5741412c34c4d4cc3818024ef5ecc6ffe8cc2ed92397a3a",
+      "entropy-receipt.json": "3e08e758b6ff05b603073fef0f5c3aafbca295eab5af424613838ec44dd1845b",
+      "exclusion-ledger.json": "b27fde9f11049ccfb633ac9b5422cae12873f89b03838193e703cd857131dabf",
+      "master.json": "2007a3b2fc22a76c050dcba55fd3f0520738170a46966abb74f843f5fa6fc1e8",
+      "registration-validation.json": "36411e6cf7886875f057ee72eb839c1aa372731a5d74c5359dae36a2ac0b4f4b",
+      "registration.json": "e2110f7fdbcc1ab5f507597f347c15ae68f7902ce29f1adbe21577571e49fc96"
+    },
+    "replicates_per_stratum": 3,
+    "required_original_parity_comparisons": [
+      "swarm004_off_vs_swarm005_off",
+      "swarm005_vs_swarm006_off",
+      "swarm005_vs_swarm006_terminal_only",
+      "swarm005_vs_swarm006_receptor_only",
+      "swarm005_vs_swarm006_both"
+    ],
+    "strata": 32,
+    "unseen_claim": false
+  },
+  "full_evidence": {
+    "donor360_baseline": {
+      "bytes": 648526,
+      "locator_scope": "Independent derived review identified by exact SHA-256 and byte size; original artifact/member sources are listed separately below.",
+      "record_filename": "donor715-q5-controls360.json",
+      "scope": "All360 original corrected715/Q5 raw pairs, including every work/status/failure field",
+      "sha256": "e38d51c0a7dccea38f0e0cb611ef91dc8b4fcd9f9eaea47969e822c1109c9836"
+    },
+    "f9_q6_complete_pairwise": {
+      "bytes": 5532379,
+      "locator_scope": "Independent derived review identified by exact SHA-256 and byte size; original artifact/member sources are listed separately below.",
+      "record_filename": "f9-q6-full1920-pairs.json",
+      "scope": "All1920 response/request/envelope pairs using exact original identity-only predicate",
+      "sha256": "baeb2c8abba57e22e62cfc673d56f65a7c1996d0a0d4c67a9a07dbcabefc6243"
+    },
+    "fresh_q7_donor360": {
+      "bytes": 227930,
+      "locator_scope": "Independent derived review identified by exact SHA-256 and byte size; original artifact/member sources are listed separately below.",
+      "record_filename": "q7-known360-exact-replay.json",
+      "scope": "All360 fresh Q7 raw bytes exactly equal individually audited Q5 donor pairs",
+      "sha256": "0ca3d2fbfff181989ceefd72ff939af91509d724ed60d91e4704a1c86c097bf7"
+    },
+    "frozen_population_fail138": {
+      "bytes": 12862,
+      "locator_scope": "Independent derived review identified by exact SHA-256 and byte size; original artifact/member sources are listed separately below.",
+      "record_filename": "frozen-population-fail138-review.json",
+      "scope": "Original seven holdout files, independent96seed reconstruction and exact original138failure population",
+      "sha256": "16b08c92205d398d201b19c5d0182a3fa802cf492654778bd6c5583f23267b79"
+    },
+    "independent_native_toolchain_review": {
+      "bytes": 12500,
+      "locator_scope": "Independent derived review identified by exact SHA-256 and byte size; original artifact/member sources are listed separately below.",
+      "record_filename": "q7-scientific-executable-custody-review.json",
+      "scope": "Specialist A independent compiler/source/build-receipt custody review",
+      "sha256": "0b17474a016583069e3089c89a4c3aaa7f072c5d100e95d7a4f42107ef22ea5b"
+    },
+    "q6_scientific_raw_review": {
+      "bytes": 9691385,
+      "locator_scope": "Independent derived review identified by exact SHA-256 and byte size; original artifact/member sources are listed separately below.",
+      "record_filename": "q6-revealed1920-review.json",
+      "scope": "Every original Q6 raw response/request/envelope and semantic predicate",
+      "sha256": "d3db6497a274d5e5c16c90e4cfca728ef0f76221e237031e2addf81cebceb075"
+    },
+    "q7_q6_f9_complete_chain": {
+      "bytes": 2384637,
+      "locator_scope": "Independent derived review identified by exact SHA-256 and byte size; original artifact/member sources are listed separately below.",
+      "record_filename": "q7-q6-f9-full1920-identity-chain.json",
+      "scope": "All5760 fresh Q7 fingerprints individually joined to direct original f9\u2192Q6 pair proofs",
+      "sha256": "acbb630f13669e17e1e9093a0c43f2a88b5e894df064813628a4724785d5659c"
+    },
+    "q7_scientific_raw_review": {
+      "bytes": 10338662,
+      "locator_scope": "Independent derived review identified by exact SHA-256 and byte size; original artifact/member sources are listed separately below.",
+      "record_filename": "q7-revealed1920-review.json",
+      "scope": "Every Q7 raw response/request/envelope, process/log, source and semantic predicate",
+      "sha256": "608df7d7e677aa1c0b17566193959d102e59cf9c3ea49b6eb564bbd5d5c50bf5"
+    }
+  },
+  "historical_reference_builds": {
+    "swarm004": {
+      "build": {
+        "binary_sha256": "6ffd2fa6a2cdb1c5b8584846cfece4a905fe4962e6b093b882b95aa83c1c15b6",
+        "build_receipt_sha256": "8cc53db96a232d768016f34d12affef1bf5c159724a5bd9e261295a10386e360",
+        "definition_sha256": "07901d11889c217ebe61e9ab3562046914a1e9e31865281fe8667b4124adbc71",
+        "harness_sha256": "54c176d9da9b47266075a1567afe9c54af7cd09239bbe348de904f01e058ae69",
+        "runner_sha256": "ea4c2161dc80a46a3a3faee6d158b5f23096090a40eac51b184f4b0aabb98868",
+        "source_commit": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+        "source_tree": "cb8988acb4f85a933eb526dda9c8315283d40d0d",
+        "variant": "swarm004"
+      },
+      "expected_executions": 96,
+      "policies": [
+        {
+          "name": "off",
+          "rounds": 2
+        }
+      ]
+    },
+    "swarm005": {
+      "build": {
+        "binary_sha256": "a656109b57de4449570029e9b603f99afb9032dc5e4c003f34c4c136c5c2d8f0",
+        "build_receipt_sha256": "99589239e529d021c57d41be1556d0a30b4463b66ec7f5467fe89160e9da3e82",
+        "definition_sha256": "4ef94e7b1b13506f50318791a2c9d3f632e3eccca3889c7d12b01e0e61759365",
+        "harness_sha256": "54c176d9da9b47266075a1567afe9c54af7cd09239bbe348de904f01e058ae69",
+        "runner_sha256": "ea4c2161dc80a46a3a3faee6d158b5f23096090a40eac51b184f4b0aabb98868",
+        "source_commit": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+        "source_tree": "592ce4ff0dcd6359b05224cc23f1665a4c402a3c",
+        "variant": "swarm005"
+      },
+      "expected_executions": 384,
+      "policies": [
+        {
+          "name": "off",
+          "rounds": 2
+        },
+        {
+          "name": "terminal_only",
+          "rounds": 2
+        },
+        {
+          "name": "receptor_only",
+          "rounds": 2
+        },
+        {
+          "name": "both",
+          "rounds": 2
+        }
+      ]
+    }
+  },
+  "matched_controls": {
+    "recovery+frame_frozen": {
+      "A_regressions": 2,
+      "A_rescues": 2,
+      "original_foreign_joined_in_rescues": 3,
+      "regression_ids": [
+        "foreign_solid--irregular_megastructure--s2015160385--recovery--r2",
+        "narrow_neck--irregular_megastructure--s1423580013--recovery--r2"
+      ],
+      "rescue_ids": [
+        "protected_corridor--industrial--s1281790250--recovery--r2",
+        "stepped_diagonal--viaduct_like--s1954006258--recovery--r2"
+      ]
+    },
+    "recovery+mosaic_frozen": {
+      "A_regressions": 2,
+      "A_rescues": 22,
+      "original_foreign_joined_in_rescues": 34,
+      "regression_ids": [
+        "foreign_solid--irregular_megastructure--s2015160385--recovery--r2",
+        "narrow_neck--irregular_megastructure--s1423580013--recovery--r2"
+      ],
+      "rescue_ids": [
+        "island--viaduct_like--s1739290799--recovery--r2",
+        "island--viaduct_like--s2102315902--recovery--r2",
+        "concave_intrusion--industrial--s1193465773--recovery--r2",
+        "concave_intrusion--industrial--s1210246191--recovery--r2",
+        "concave_intrusion--viaduct_like--s1336795556--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1254609464--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1906091073--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1244105313--recovery--r2",
+        "foreign_solid--irregular_megastructure--s1944155167--recovery--r2",
+        "protected_corridor--industrial--s1281790250--recovery--r2",
+        "protected_corridor--industrial--s1869986787--recovery--r2",
+        "protected_corridor--industrial--s1850950734--recovery--r2",
+        "protected_corridor--industrial_gui--s1914589100--recovery--r2",
+        "protected_corridor--industrial_gui--s2144401836--recovery--r2",
+        "protected_corridor--industrial_gui--s1729217120--recovery--r2",
+        "protected_corridor--viaduct_like--s1568355439--recovery--r2",
+        "protected_corridor--viaduct_like--s1954438259--recovery--r2",
+        "protected_corridor--viaduct_like--s1574643062--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1956733346--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1110445127--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1763626408--recovery--r2",
+        "stepped_diagonal--viaduct_like--s1954006258--recovery--r2"
+      ]
+    },
+    "recovery+no_offers": {
+      "A_regressions": 2,
+      "A_rescues": 22,
+      "original_foreign_joined_in_rescues": 34,
+      "regression_ids": [
+        "foreign_solid--irregular_megastructure--s2015160385--recovery--r2",
+        "narrow_neck--irregular_megastructure--s1423580013--recovery--r2"
+      ],
+      "rescue_ids": [
+        "island--viaduct_like--s1739290799--recovery--r2",
+        "island--viaduct_like--s2102315902--recovery--r2",
+        "concave_intrusion--industrial--s1193465773--recovery--r2",
+        "concave_intrusion--industrial--s1210246191--recovery--r2",
+        "concave_intrusion--viaduct_like--s1336795556--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1254609464--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1906091073--recovery--r2",
+        "concave_intrusion--irregular_megastructure--s1244105313--recovery--r2",
+        "foreign_solid--irregular_megastructure--s1944155167--recovery--r2",
+        "protected_corridor--industrial--s1281790250--recovery--r2",
+        "protected_corridor--industrial--s1869986787--recovery--r2",
+        "protected_corridor--industrial--s1850950734--recovery--r2",
+        "protected_corridor--industrial_gui--s1914589100--recovery--r2",
+        "protected_corridor--industrial_gui--s2144401836--recovery--r2",
+        "protected_corridor--industrial_gui--s1729217120--recovery--r2",
+        "protected_corridor--viaduct_like--s1568355439--recovery--r2",
+        "protected_corridor--viaduct_like--s1954438259--recovery--r2",
+        "protected_corridor--viaduct_like--s1574643062--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1956733346--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1110445127--recovery--r2",
+        "protected_corridor--irregular_megastructure--s1763626408--recovery--r2",
+        "stepped_diagonal--viaduct_like--s1954006258--recovery--r2"
+      ]
+    }
+  },
+  "original_swarm005_both_reference": {
+    "A": 14,
+    "R": 3,
+    "apply_joints": 6,
+    "closure_unknown": 20,
+    "denominator": 96,
+    "proof_joints": 37,
+    "raw_joints": 37,
+    "retained_original_archive_sha256": "b46925296a2cdcd9a3a61c41cd9364623b7c30ae9c557f9b53ca98006d843085",
+    "source": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+    "statuses": {
+      "blocked": 62,
+      "complete": 14,
+      "exhausted": 20
+    }
+  },
+  "overall_candidate_disposition": "Draft/HOLD; aggregate, publication, final evaluator and physical owner gates are separate",
+  "preserved_donors": {
+    "715": "919134a39d31461947c410c233d59d1965c48414",
+    "716": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+  },
+  "previous_summary_sha256": "6fe5eb406cd7743a8417ab09140b5d55946fb21153b1e432d98a9d185e00b4e7",
+  "programme": "GENTEK-SWARM-456-DEFINITIVE-001",
+  "public_evidence_locators": {
+    "donor715_r3": {
+      "artifact_id": 14726599971,
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/44953582341/artifacts/14726599971",
+      "attempt": 1,
+      "bytes": 79930037,
+      "manifest_member": "known-controls/manifest.json",
+      "raw_members": [
+        "known-controls/candidate/case-{000..359}.json.gz"
+      ],
+      "run_id": 44953582341,
+      "sha256": "4de8f1a18fb95d508a073945c4d2c28a47b7a00d1f7c3ea60fbc050e8503353b"
+    },
+    "historical_8cf_recovered_archive": {
+      "archive_alias": "CyberSand-SWARM006-8cf93e48-Science-Checkpoint.zip",
+      "availability_claim": "Recovered immutable archive identity only; no public download location is asserted.",
+      "bytes": 360013677,
+      "public_download_url": null,
+      "sha256": "89a7566a2f44cbfae5483946c60c635148629c35854198ee245e955643ab5e1e"
+    },
+    "historical_f9_recovered_archive": {
+      "archive_alias": "CyberSand-SWARM456-f9ddbf2-Historical-Science-Evidence.zip",
+      "availability_claim": "Recovered immutable archive identity only; no public download location is asserted.",
+      "bytes": 430066468,
+      "complete_original_history_member": "history/complete-comparison-8cf/complete-history-change-inventory.json",
+      "manifest_member": "f9/replay-1920/manifest.json",
+      "original_fail138_member": "history/archived-review-FAIL138/independent-replay-review.json",
+      "public_download_url": null,
+      "raw_member_prefix": "f9/replay-1920/",
+      "sha256": "7ed29e2b32eca8caadaaa0c9bf148a75e50b0913e2b3ed526606ccd63e755e76",
+      "source": "f9ddbf2bc9945eed6b94d39b01b261dee683ac05"
+    },
+    "q5_known_controls": {
+      "artifact_id": 14741752551,
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/44988900817/artifacts/14741752551",
+      "attempt": 1,
+      "bytes": 114134618,
+      "manifest_member": "known-controls/manifest.json",
+      "raw_members": [
+        "known-controls/candidate/case-{000..359}.json.gz"
+      ],
+      "run_id": 44988900817,
+      "sha256": "2abd03c999b51910485f1b6a4b76b91cdb629fb84194bfd4e43ce23600f0dfa8"
+    },
+    "q6_science": {
+      "artifact_id": 14942382711,
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45437617377/artifacts/14942382711",
+      "attempt": 1,
+      "bytes": 294266160,
+      "manifest_member": "recovery/manifest.json",
+      "raw_members": [
+        "recovery/{case-policy-id}/response-native.json.gz",
+        "recovery/{case-policy-id}/request.json.gz",
+        "recovery/{case-policy-id}/request-envelope.json.gz",
+        "recovery/{case-policy-id}.log"
+      ],
+      "run_id": 45437617377,
+      "sha256": "56149c36c69052fc418e1e9f6e16cb74692bcf375fbeb7f3e411c7901f1bb3a6"
+    },
+    "q7_known_controls": {
+      "artifact_id": 14948079228,
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14948079228",
+      "attempt": 1,
+      "bytes": 114030204,
+      "manifest_member": "known-controls/manifest.json",
+      "raw_members": [
+        "known-controls/candidate/case-{000..359}.json.gz"
+      ],
+      "run_id": 45445188802,
+      "sha256": "1346c51199bc8542cfb2145d8e413b696fb8e67e687573167e8375674037c852"
+    },
+    "q7_science": {
+      "artifact_id": 14946336139,
+      "artifact_url": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14946336139",
+      "attempt": 1,
+      "bytes": 293858682,
+      "manifest_member": "recovery/manifest.json",
+      "raw_members": [
+        "recovery/{case-policy-id}/response-native.json.gz",
+        "recovery/{case-policy-id}/request.json.gz",
+        "recovery/{case-policy-id}/request-envelope.json.gz",
+        "recovery/{case-policy-id}.log"
+      ],
+      "run_id": 45445188802,
+      "sha256": "daa4d8f1c2760c39e40fe44fb9b2d479d45fcbd5462d0b96880e5132acfe28b3"
+    }
+  },
+  "public_registration_sources": {
+    "analysis-plan.json": {
+      "repository_path": "docs/audits/swarm006-holdout-001/analysis-plan.json",
+      "sha256": "35a654559f28e96fed4ba60da0567d042cdb47050a82165c7100072acda71850",
+      "url": "https://github.com/techrote/cybersand/blob/b5c7f4188ae5e28baf253bb50920ff4c1d74aa1d/docs/audits/swarm006-holdout-001/analysis-plan.json"
+    },
+    "draw_cases.py": {
+      "repository_path": "docs/audits/swarm006-holdout-001/draw_cases.py",
+      "sha256": "bee877ab0ecd57d9e5741412c34c4d4cc3818024ef5ecc6ffe8cc2ed92397a3a",
+      "url": "https://github.com/techrote/cybersand/blob/b5c7f4188ae5e28baf253bb50920ff4c1d74aa1d/docs/audits/swarm006-holdout-001/draw_cases.py"
+    },
+    "entropy-receipt.json": {
+      "repository_path": "docs/audits/swarm006-holdout-001/entropy-receipt.json",
+      "sha256": "3e08e758b6ff05b603073fef0f5c3aafbca295eab5af424613838ec44dd1845b",
+      "url": "https://github.com/techrote/cybersand/blob/b5c7f4188ae5e28baf253bb50920ff4c1d74aa1d/docs/audits/swarm006-holdout-001/entropy-receipt.json"
+    },
+    "exclusion-ledger.json": {
+      "repository_path": "docs/audits/swarm006-holdout-001/exclusion-ledger.json",
+      "sha256": "b27fde9f11049ccfb633ac9b5422cae12873f89b03838193e703cd857131dabf",
+      "url": "https://github.com/techrote/cybersand/blob/b5c7f4188ae5e28baf253bb50920ff4c1d74aa1d/docs/audits/swarm006-holdout-001/exclusion-ledger.json"
+    },
+    "master.json": {
+      "repository_path": "docs/audits/swarm006-holdout-001/master.json",
+      "sha256": "2007a3b2fc22a76c050dcba55fd3f0520738170a46966abb74f843f5fa6fc1e8",
+      "url": "https://github.com/techrote/cybersand/blob/b5c7f4188ae5e28baf253bb50920ff4c1d74aa1d/docs/audits/swarm006-holdout-001/master.json"
+    },
+    "registration-validation.json": {
+      "repository_path": "docs/audits/swarm006-holdout-001/registration-validation.json",
+      "sha256": "36411e6cf7886875f057ee72eb839c1aa372731a5d74c5359dae36a2ac0b4f4b",
+      "url": "https://github.com/techrote/cybersand/blob/b5c7f4188ae5e28baf253bb50920ff4c1d74aa1d/docs/audits/swarm006-holdout-001/registration-validation.json"
+    },
+    "registration.json": {
+      "repository_path": "docs/audits/swarm006-holdout-001/registration.json",
+      "sha256": "e2110f7fdbcc1ab5f507597f347c15ae68f7902ce29f1adbe21577571e49fc96",
+      "url": "https://github.com/techrote/cybersand/blob/b5c7f4188ae5e28baf253bb50920ff4c1d74aa1d/docs/audits/swarm006-holdout-001/registration.json"
+    }
+  },
+  "publication_safe_derivation": {
+    "changes": [
+      "Omit one private storage identifier and rename that storage-specific artifact key.",
+      "Replace absolute local archive/report locators with exact archive/review hashes, safe filenames and original artifact/member descriptors.",
+      "Add pinned public GitHub artifact and frozen registration source locators."
+    ],
+    "kind": "Public derivative of the unchanged canonical independent scientific review",
+    "original_canonical_json_bytes": 31128,
+    "original_canonical_json_sha256": "a555fee9e9a58720dc71c3676f38f7995c1e9e2fcfa4e32cd69222be4ec43e74",
+    "original_canonical_markdown_sha256": "b78c9f9d66385355dfcfcc9665b3fad61e75f7577ebd70819dcd111bb2a40d94",
+    "original_evidence_or_canonical_review_modified": false,
+    "qualified_source_or_historical_outcomes_relabelled": false,
+    "scientific_reanalysis_or_new_execution": false,
+    "scientific_values_changed": false
+  },
+  "registered_endpoints": {
+    "A": "Successful reaped child; Complete; Apply true; evaluated zero unresolved obligations",
+    "R": "A plus at least one qualified foreign joint; local termination or prospective feasibility is not a joint"
+  },
+  "registered_primary": {
+    "A": 82,
+    "R": 81,
+    "apply_joints": 363,
+    "bilateral_R": 18,
+    "closure_unknown": 12,
+    "denominator": 96,
+    "proof_joints": 373,
+    "raw_joints": 442,
+    "statuses": {
+      "blocked": 2,
+      "complete": 82,
+      "exhausted": 12
+    }
+  },
+  "reviewer": "independent_assurance",
+  "schema": 1,
+  "scientific_checks": {
+    "compressed_and_raw_pairs_verified": 5760,
+    "fresh_raw_request_envelopes": 1920,
+    "fresh_raw_requests": 1920,
+    "fresh_raw_responses": 1920,
+    "full_request_envelope_equivalence_f9_q6_q7": 1920,
+    "full_request_equivalence_f9_q6_q7": 1920,
+    "full_response_equivalence_f9_q6_q7": 1920,
+    "normalization": "Only enumerated declared source, compiled definition and source-dependent result request/digest fields; strict existing empty-default request exception. Every material, graph, work, reason, state, obligation, policy, limit and history field survives.",
+    "normalization_changed": false,
+    "original_source_inputs_against_qualified_git_blobs": 100,
+    "scientific_solver_or_policy_changes": false
+  },
+  "scope_disposition": "SCIENTIFIC_PASS_DONOR360_PASS",
+  "scope_limits": [
+    "These source-matched scientific predicates and pairwise comparisons do not establish owner-map success or physical Windows11/NVIDIA acceptance.",
+    "The scientific driver SHA is receipt-bound: original driver/compiler executable bytes are not in the artifact. All100 inputs, exact build commands and compiler/log receipts are verified; product CLI/DLL bytes are not substituted.",
+    "Q1\u2013Q6 aggregate historical outcomes are not reclassified by a successful constituent science audit.",
+    "Every original negative, unknown closure and complete policy denominator is retained. No revealed seed is relabeled unseen.",
+    "Final native/Workbench/platform/package/publication/ordinary admission gates are recorded separately by the mission lead."
+  ],
+  "source_chain": {
+    "historical_f9": {
+      "archive_alias": "CyberSand-SWARM456-f9ddbf2-Historical-Science-Evidence.zip",
+      "archive_sha256": "7ed29e2b32eca8caadaaa0c9bf148a75e50b0913e2b3ed526606ccd63e755e76",
+      "definition": "74e24ee632902655e1f5cb230300f430251b545cbec700df3b90d77537eb8438",
+      "manifest_sha256": "9d1eaa950a825e9185e2f16001ceb3875e97f4fa477130a888de144a5672e2d7",
+      "prefix": "f9/replay-1920/",
+      "scientific_binary_sha256": "f56b3a73198ea03c96a36d05ccd92f1daa453967ea1c2a4c58462a90d23ddce7",
+      "source": "f9ddbf2bc9945eed6b94d39b01b261dee683ac05",
+      "source_tree": "e04c776dbedae7dc331d49c1ca7eb9f972fb5184"
+    },
+    "q6": {
+      "archive_alias": "q6-recovery-evidence.zip",
+      "archive_sha256": "56149c36c69052fc418e1e9f6e16cb74692bcf375fbeb7f3e411c7901f1bb3a6",
+      "definition": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+      "manifest_sha256": "3b816507a8d5bed506345648e92d7ea12f416086cb63ceb589d1d98267d3830a",
+      "prefix": "recovery/",
+      "scientific_binary_sha256": "c6e589dac25db2f5cd661078c56e31d0b79bbbeb332974c43f8787bbd02e945e",
+      "source": "b126523158e22d8993b4899710799f88dd0b98d0",
+      "source_tree": "6cb4dc90437668748d4ec899f52b6a4ce371937e"
+    },
+    "q7": {
+      "archive_alias": "q7-recovery-evidence.zip",
+      "archive_bytes": 293858682,
+      "archive_sha256": "daa4d8f1c2760c39e40fe44fb9b2d479d45fcbd5462d0b96880e5132acfe28b3",
+      "build_context": {
+        "branch": "integration/swarm004-005-006-unified-20261122",
+        "repository": "techrote/cybersand",
+        "run_attempt": "1",
+        "run_id": "45445188802",
+        "workflow": ".github/workflows/swarm456-qualification.yml",
+        "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45445188802"
+      },
+      "compiled_source_inputs_verified": 100,
+      "definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+      "indexed_members": 9607,
+      "manifest_sha256": "3a20a7970f54fcd005387a91b00299ae0943d294144532198e5b3ebf4e0310dd",
+      "raw_archive_members": 9610,
+      "scientific_binary_sha256": "c6e589dac25db2f5cd661078c56e31d0b79bbbeb332974c43f8787bbd02e945e",
+      "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+      "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03"
+    }
+  },
+  "source_freeze": {
+    "commit": "4c00aaf1232484275ee0ee6891d31315a465345a",
+    "tree": "a6a7600bc849b65fe7686953d1fdc5314f194bfe"
+  },
+  "updated_utc": "2026-11-24T17:49:08.026842+00:00"
+}

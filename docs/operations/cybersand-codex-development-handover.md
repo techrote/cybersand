@@ -4,11 +4,15 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-27
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## RAMCACHE-STRATA-INTEGRATION-001 — 2026-11-28
+
+The owner authorized full integration and delivery of #745 RAMCACHE and #785 Strata Theatre 003 with its intended 002 predecessor. Read the [integration guide](ramcache-strata-integration.md) for acceptance scope, safe mode boundaries and source/runtime/package custody. Preserve current main features, Classic defaults and all historical failures. The optional enhanced-optics 90% retention gate is explicitly waived; unrelated correctness/performance gates remain. Root alone performs final mainline merges. ObjectShard M4 and ongoing PUBPRES remain excluded.
 
 ## Strata Theatre 002 successor — 2026-11-24
 
@@ -32,19 +36,127 @@ extended. PUBPRES, AMBIENT and all other active programmes remain independently
 owned and unimported. Keep Draft/HOLD: no Ready, merge, default activation or
 physical Windows/NVIDIA acceptance is implied.
 
-## Workbench Art traffic lifetime — 2026-11-20
+## Persistent authored areas
 
-[Draft PR #681](https://github.com/techrote/cybersand/pull/681) completes the
-lazy conversation and immutable segment repair. Read the
-[provider contract](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage)
-for current lifetime, validation, Stop/export and capacity behavior; the
-[dated finisher record](../audits/2026-11-20-wb-art-traffic-lifetime.md) separates
-engineering measurements from exact-source final qualification in the PR ledger.
-All destructive and multi-gigabyte tests use isolated synthetic user data.
-Existing archives remain immutable, and missing history must retain its saved
-pointer with a visible refusal. Keep **Draft / HOLD**; do not mark Ready,
-merge or enable auto-merge. Hosted Windows evidence does not establish acceptance
-on the owner's physical Windows installation.
+[PR #745](https://github.com/techrote/cybersand/pull/745) combines the three-area Current/FreeMass continuation, resident World handoff, bounded catch-up and acknowledged durable publication. The [ownership contract](../systems/persistent-area-residency.md) and [evaluation guide](persistent-area-ramcache-evaluation.md) describe the actor-free domain, strict and deferred modes, and physical Windows evaluation.
+
+## Unified SWARM definitive delivery — 2026-11-24
+
+Continue from the [canonical decision packet](../audits/swarm456-definitive-001/final-decision-packet.md), its [machine-readable companion](../audits/swarm456-definitive-001/final-decision-packet.json), and the [unified runbook](swarm456-unified-mainline.md). The existing #729 remains Draft/HOLD with accepted #727 Art session logging at `00cdb02f` and both frozen donor histories preserved. The older mergedown entries below retain their dated scope.
+
+Q7 source `5e34e0dd` passed all mandatory native/scientific/actual-Godot/source-Windows/extracted-evaluator/aggregate gates after the independently reviewed native receipt and Save/Reopen witness repair. Q1–Q5 remain failed; Q4's native failure prefix and Q5's wrapper/engine identity mismatch are distinct. Q6 attempt1 failed and its separate old-source attempt2 success does not qualify the new Q7 contract.
+
+Dedicated runtime publication `5323b837` completed the authenticated eight-path branch-leased LFS transaction; actual fresh remote fetch/materialization passed independently. Complete Native and full Documentation pass at `e4a0a390`. Current PLAY identity passes at `5fd9985e`; final full GDExtension review passes at `5fd9985e` with 344 Linux/321 Windows cases and complete original coverage. Dated [budget-test](../audits/swarm456-definitive-001/ordinary-budget-test-correction.md) and [official-download](../audits/swarm456-definitive-001/ordinary-linux-download-correction.md) corrections preserve all compiled/product/scientific/published-runtime inputs. Original failed ordinary runs are retained, and fresh affected coverage is separately source-bound.
+
+The [owner guide](swarm456-owner-acceptance.md) opens one complete portable Windows evaluator. Keep private maps local and test a copy. Check saved composition evidence in a fresh process before later authoring edits, then separately Save/Reopen the edited map. Physical Windows 11/NVIDIA appearance, responsiveness, sound, usability and preference remain owner-dependent. No new SWARM research, default activation, automatic Ready promotion or merge belongs to this closure.
+
+## Unified SWARM-004/005/006 mergedown — 2026-11-22
+
+The owner authorized a [single consolidated integration](swarm456-unified-mainline.md) from accepted main `662df51c`, preserving reviewed #715 and #716 histories. This supersedes separate later-merge instructions in the 21 November entries below. Retain historical evidence and defaults. New source, actual Linux/Windows runtimes, full qualification, independent final-source review and physical NVIDIA acceptance remain required. Keep Draft/HOLD until all gates permit one manual merge. No Swarm brush implementation belongs to this mission.
+
+## SWARM-004/005 mainline reconciliation — 2026-11-21
+
+The [dedicated integration runbook](swarm45-mainline-integration.md) binds accepted main `0f0161af` to frozen donors #692/#693/#696/#697/#700. The donor graph is imported through #700, preserving main's current authoring, actor and Water behavior. Original 004/005 holdouts are complete and negative; previously unopened wording below retains its 20 November checkpoint scope. New-source native, graphical, package, provenance, independent review and physical-owner acceptance are separate admission gates. Keep Draft/HOLD until all pass. The concurrent SWARM-006 source and evidence remain untouched.
+
+## SWARM-006 integration successor — 2026-11-21
+
+The separate [integration finisher](swarm006-integration-finisher.md) repairs
+rejected native histories and the actual final-composition inspector on accepted
+main `0f0161af337d6d0cee8fa961a9667aff570a75b0`. Its new branch preserves all
+frozen donors and original 2,400-execution evidence, including negative results.
+Corrected-source replay is a revealed-corpus regression. The independently owned
+SWARM-004/005 accepted merge remains a precise later integration gate until its
+actual commit is published; do not substitute an unaccepted branch. Exact
+Windows source/pristine package, source custody and independent final reviews
+are recorded in the successor PR ledger. Retain Draft/HOLD and recovery OFF.
+
+## SWARM-006 native recovery — 2026-11-21
+
+Programme [#704](https://github.com/techrote/cybersand/issues/704) continues verified
+SWARM-005 on new native and Workbench branches, all Draft/HOLD. Read the
+[bounded recovery contract](../systems/gentek-negotiated-recovery.md) and
+[baseline custody audit](../audits/2026-11-21-swarm006-baseline-custody.md).
+Retain negative/exhausted development evidence and exact source identities; a
+preregistered corpus may be opened only after source and policy freeze.
+Do not import current main into this historical candidate or relabel old packages.
+
+## SWARM-004 reciprocal assembly — 2026-11-20
+
+**Experimental implementation / Draft / HOLD:** owner-authorized [programme #687](https://github.com/techrote/cybersand/issues/687)
+continues the verified SWARM-003 parent `cd0de74b83a66b5408668f81c82d854db45479ce`.
+Read the [reciprocal assembly contract](../systems/gentek-reciprocal-assembly.md)
+and its machine-readable native preregistration. The [native recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+verifies the surviving V1 implementation and known corpus instead of treating
+historical progress prose as engineering completion. The frozen native selection
+is `fixed_territory`, two rounds; matched controls distinguish causal exchange
+from mask-driven nominal changes. Native source qualification and unopened
+registered holdouts precede the dependent Workbench acceptance record. The
+Workbench lane was initially audited at accepted main
+`7b03aa437561ec63e31fd09531171360ab60eeb4` and explicitly reconciles accepted
+Water main `de58bf1997ca75825cf3b29e046dc1c1022c45bf`;
+#684/#685 remain separate.
+The owner authorized both implementation stages, not merge or Ready promotion.
+Development two-sided geometry witnesses do not establish full hard closure,
+Windows graphical acceptance or physical stability. No final closure ledger
+means unknown requirements, never a zero-required success. Keep frozen B/C/E8
+evidence, registered holdouts, failed cases and exact-source receipts intact.
+
+## Material audition — 2026-11-24
+
+[Draft PR #768](https://github.com/techrote/cybersand/pull/768) owns the
+[current-scene material profile contract](../systems/material-audition.md) and
+[consumer capability map](../systems/material-audition-consumers.md). It starts
+from accepted main `00cdb02f`; retain the independent PUBPRES/ObjectShard/Art/SWARM
+programmes and reconcile only the listed narrow seams. No canonical catalogue,
+identity allocation or production default is retuned. Keep Draft/HOLD.
+The [definitive decision packet](../audits/material-audition-live-20261124/decision-packet.md)
+binds source `5f73b0ae`, runtime-only child `206f14da`, original target-platform
+execution and the independently verified Windows ZIP. Its final integration
+snapshot and physical owner gates remain authoritative for this candidate.
+
+## Art storage mergedown — 2026-11-26
+
+The [registered storage integration](../audits/2026-11-25-mergedown-renaissance/art-storage-integration-registration.md)
+adapts only the reviewed ULTIMA Art export/event, preference and private-receipt
+repairs to the combined Art/Architecture candidate. Preserve the current settings
+no-op cache, lazy UI, asynchronous value preparation and owned Architecture
+dispatch. The protected ULTIMA programme and its separate CI acquisition helper
+are not imported. The
+[canonical storage boundary](../systems/workbench-art-providers.md#verified-closed-storage-in-the-mergedown-candidate)
+distinguishes closed-byte verification from power-loss or physical acceptance.
+
+## WORLD-STEER-BATCH-001 — 2026-11-21
+
+Continue `feat/world-steer-batch-001-20261121` as Draft/HOLD. The [canonical guide](world-steer-batch-lab.md) owns the M0–M2 controls, dependency/write-set map, native material isolation, exact-source qualification and Windows acceptance. Preserve the five concurrent missions and existing worker/provider ownership; the Batch Lab workflow is request-scoped to its own branch. Do not turn deterministic fixtures or hosted rendering into model-quality or physical desktop acceptance claims.
+
+## Collaborative Art successor — 2026-11-25
+
+#780 preserves #773's qualified ancestry and evaluator while adding owned
+discussion/proposal responses, bounded actual-native context, a creative brief,
+revision lineage, zero-write previews and fresh native stage approval/readback.
+Start with the [owner guide](art-workbench-collaborative-evaluation.md),
+[provider handoff](../systems/art-owned-proposal-transport.md),
+[native contract](../systems/art-native-context-proposals.md) and
+[mission ledger](../audits/2026-11-25-art-workbench-collaborative-002/README.md).
+The [environment recovery record](../audits/2026-11-25-art-workbench-collaborative-002/ENVIRONMENT-RECOVERY.md)
+distinguishes lost provisional outputs from durable source and fresh qualification.
+Architecture owns its StageSession and native composition; no combined evaluator
+is inferred from the provider probe. Remain Draft/HOLD. #773's actual non-Draft
+flag is recorded and left unchanged; the physical no-listener case stays pending.
+
+## Art Workbench finisher — 2026-11-24
+
+Accepted #727 supplies an empty conversation and one lazy root JSONL per new
+Workbench game session. Closing/hiding Art preserves the current in-memory
+conversation; old archives are never automatically restored. Historical #681
+linked restoration remains a diagnostic/reference path, not normal product flow.
+
+ART-WORKBENCH-FINAL-001 reconciles #763/#756/#765/#766 on accepted `00cdb02f`.
+Read the [evaluation guide](art-workbench-final-evaluation.md) and
+[provider contract](../systems/workbench-art-providers.md). The exact primary
+reproduction is Send to an absent LM Studio server followed by ordinary X/Hide;
+a mock HTTP404 does not reproduce it. The new candidate remains Draft/HOLD,
+without native rebuild, unrelated feature imports or merge authority.
 
 ## World Art finisher — 2026-11-20
 

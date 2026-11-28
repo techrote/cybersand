@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Execute the complete current headless suite on Windows with the retained DLL."""
+"""Execute the current Windows suite, including registered Architecture/Batch graphics."""
 
 from contextlib import contextmanager
 import argparse
@@ -32,7 +32,9 @@ INPUT_SCOPES = (
     "godot", "native/include", "native/src", "tools/ci/run_godot_regressions.py",
     "tools/material_catalogue", "materials/catalogue",
     "tools/ci/run_windows_godot_regressions.py", "tools/ci/godot_timeout_diagnostics.py",
-    "tools/ci/native_candidate_identity.py",
+    "tools/ci/run_art_local_close.py",
+    "tools/ci/_architecture_campaign_context.py",
+    "tools/ci/native_candidate_identity.py", "tools/ci/materialize_lfs.py", "tools/ci/lfs_runtime_artifact.py",
     "tools/ci/godot_process_monitor.py", "tools/ci/physical_progress_watchdog.py",
     "tools/ci/execution_policy.py", "tools/ci/execution_telemetry.py",
     "tools/ci/godot_scheduling.py", "tools/ci/godot_scheduling_profile.json",
@@ -206,8 +208,8 @@ def tested_inputs(root: Path) -> dict[str, str]:
 def plan_cases(report: dict, cases: list[runner.Case], *, shard_count: int, shard_index: int) -> list[runner.Case]:
     if shard_count < 1 or not 0 <= shard_index < shard_count:
         raise ValueError("Windows shard index/count must describe one valid shard")
-    selected = [case for case in cases if not case.requires_display]
-    excluded = [case for case in cases if case.requires_display]
+    selected = [case for case in cases if runner.architecture_context.windows_applicable(case)]
+    excluded = [case for case in cases if not runner.architecture_context.windows_applicable(case)]
     if not selected or any(count != 1 for count in Counter(case.name for case in cases).values()):
         raise RuntimeError("Windows discovery must contain unique, applicable cases")
     shards, weights = runner.build_shard_plan(selected, shard_count)
@@ -215,7 +217,7 @@ def plan_cases(report: dict, cases: list[runner.Case], *, shard_count: int, shar
     if not assigned:
         raise RuntimeError("Windows shard must have at least one applicable case")
     report.update({
-        "scope": "Actual Windows headless tests, profiles and scene startup; Linux shards own rendered pixel cases",
+        "scope": "Actual Windows headless tests, profiles, scene startup and registered Architecture/Batch graphical cases; Linux owns other rendered pixel cases",
         "all_discovered_case_count": len(cases), "applicable_case_count": len(selected),
         "out_of_scope_graphical_cases": [case.name for case in excluded],
         "applicable_cases": [case.name for case in selected],
@@ -234,9 +236,11 @@ def execute_cases(godot: str, output: Path, report: dict, cases: list[runner.Cas
     budget = budget or runner.scheduling.ExecutionBudget()
     assigned = plan_cases(report, cases, shard_count=shard_count, shard_index=shard_index)
     report["execution_budget"] = budget.metadata()
+    contexts = runner.architecture_context.prepare_contexts(assigned, output)
 
     def run(case: runner.Case, role: str) -> bool:
-        record, failed = runner.run_case(godot, case, output, role)
+        record, failed = runner.run_case(godot, case, output, role,
+            **runner.context_case_kwargs(case, contexts, report["results"]))
         report["results"].append(record)
         report["log_sha256"][record["log"]] = runner.sha256(output / record["log"])
         report["executed_case_count"] = sum(item["role"] == "case" for item in report["results"])

@@ -1,0 +1,49 @@
+{
+  "format": "cybersand-m67-held-out-briefs-v1",
+  "author": "independent-specialist-C",
+  "registration_commit": "a42b3b7a5",
+  "scope": "Two briefs frozen before reveal to the retrieval implementer. No comparison outputs were consulted.",
+  "briefs": [
+    {
+      "id": "held-out-c-pressure-dock",
+      "cohort": "held_out",
+      "family": "vessel_dock",
+      "intent": "Compose an unequal pressure-dock threshold and maintenance gallery in strict side elevation. The west opening must remain tall and unobstructed down to its foundation. A shallow east gallery should reserve most of its interior for passage and concentrate its service pocket at one end. Keep the intervening vertical shaft entirely open.",
+      "slots": [
+        {"id": "west-threshold", "region": [16,40,48,80], "part_types": ["window_door"], "preferred_tags": ["door","tall-opening"], "target_extent": [48,80], "align": "top-left", "transforms": ["identity"], "connector_contract": "face-adjacent-grid-v2"},
+        {"id": "east-gallery", "region": [112,88,96,32], "part_types": ["service_gallery"], "preferred_tags": ["gallery","asymmetric"], "target_extent": [96,32], "align": "top-left", "transforms": ["identity"], "connector_contract": "face-adjacent-grid-v2"}
+      ],
+      "required_empty_regions": [[25,48,30,72],[122,91,68,25],[72,32,32,112]],
+      "anchors": [[16,120,48,4,58],[112,120,96,4,58],[12,124,204,4,58]],
+      "relations": [],
+      "expectations": {
+        "hard_constraints": ["Every proposed occupied cell remains in its supplied slot.","All three declared negative-space rectangles remain Empty.","Shared source-native foundation rectangles and the protected marker are preserved."],
+        "architectural_intent": "A tall entrance and a shallow service bay use different scales and unequal spacing. The shaft and threshold are geometric clearances; actor accessibility and gameplay are not presumed.",
+        "qualification": "No preferred arm or success prediction. A feasible catalogue assignment is frozen separately for constraint auditing."
+      }
+    },
+    {
+      "id": "held-out-c-service-bearing",
+      "cohort": "held_out",
+      "family": "civic_service_interface",
+      "intent": "Resolve two different connection scales in one asymmetric service elevation. A narrow monumental pier must stand on the complete 24-cell bearing face of a wider stepped footing. Beside it, a valve chamber must connect directly to a downward-turning service elbow across a complete four-cell port. Keep the middle shaft and the elbow's open inside corner clear.",
+      "slots": [
+        {"id": "footing", "region": [24,136,48,16], "part_types": ["column_support"], "preferred_tags": ["foundation","bearing"], "target_extent": [48,16], "align": "top-left", "transforms": ["identity"], "connection_types": ["bearing-24"], "connector_contract": "face-adjacent-grid-v2"},
+        {"id": "pier", "region": [36,72,24,64], "part_types": ["column_support"], "preferred_tags": ["pier","vertical"], "target_extent": [24,64], "align": "top-left", "transforms": ["identity"], "connection_types": ["bearing-24"], "connector_contract": "face-adjacent-grid-v2"},
+        {"id": "valve", "region": [132,80,48,40], "part_types": ["mechanical_housing"], "preferred_tags": ["valve","service"], "target_extent": [48,40], "align": "top-left", "transforms": ["identity"], "connection_types": ["pipe-4"], "connector_contract": "face-adjacent-grid-v2"},
+        {"id": "return", "region": [180,98,32,32], "part_types": ["pipework"], "preferred_tags": ["elbow","connector"], "target_extent": [32,32], "align": "top-left", "transforms": ["identity"], "connection_types": ["pipe-4"], "connector_contract": "face-adjacent-grid-v2"}
+      ],
+      "required_empty_regions": [[76,24,44,120],[180,102,28,28]],
+      "anchors": [[16,152,208,4,58],[128,98,4,54,58]],
+      "relations": [
+        {"kind": "face-contact", "a": "footing", "b": "pier", "role": "support", "compatibility": "bearing-24"},
+        {"kind": "face-contact", "a": "valve", "b": "return", "role": "pipe", "compatibility": "pipe-4"}
+      ],
+      "expectations": {
+        "hard_constraints": ["Both face-contact relations require exact opposing occupied inclusive spans with the stated role and compatibility tag.","The middle shaft and elbow inside corner remain Empty.","All writes stay in supplied slots and shared native anchors are preserved."],
+        "architectural_intent": "Separate structural bearing from service connectivity without treating either as a physical load or fluid-flow certificate. The four parts have different scales and functions.",
+        "qualification": "No preferred arm or success prediction. Refusal is legitimate when a tool cannot meet the registered contact or clearance contract."
+      }
+    }
+  ]
+}

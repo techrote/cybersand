@@ -4,11 +4,15 @@ document-kind: runbook
 canonical-for: [capacity-preparation-and-failure, safe-reconfiguration-requirements]
 status: Current
 scope: Existing construction/reservation and capacity outcomes; approved preparation discipline and unimplemented live resize
-last-reviewed: 2026-09-10
+last-reviewed: 2026-11-21
 related-documents: [../reference/configuration-reference.md, ../systems/world-storage-and-interest-region.md, ../architecture/data-ownership-and-lifetimes.md, profiling-observability-and-performance.md]
 ---
 
 # Configuration and capacity budgets
+
+## Experimental persistent-area budgets
+
+The opt-in [GEN-006 contract](../systems/persistent-authored-areas.md#game-time-catch-up-and-simulate-ahead) owns its fixed canvas, native slice/operation budgets, explicit debt and profile storage bounds. These are separate prototype refusal limits; ordinary World, material, response, liquid and body capacities are unchanged. Capture/storage/restore latency is additional to the native stepping budget and is measured in the [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md).
 
 The bounded [synchronous Water body constructor](../architecture/liquid-prepared-setup-and-receipts.md#synchronous-supported-body-water-feel)
 reuses one native pending World/token, one permanent three-body private graph,
@@ -26,6 +30,24 @@ This page owns preparation and failure semantics. Exact values belong to the
 [configuration reference](../reference/configuration-reference.md); identity and
 executed checks belong to the [checkpoint](source-checkpoint-and-recovery.md)
 and [evidence ledger](../reference/validation-evidence.md).
+
+## Opt-in ambient actor budgets
+
+The [AMBIENT-001 contract](../systems/ambient-actors.md) keeps accepted actor
+capacity at eight logical actors, eight prepared parts per actor and 64 response
+bodies. It does not import the larger unaccepted Actor Compose candidate.
+
+| Bound | Current candidate |
+|---|---|
+| Profile | At most 16 enabled or disabled module instances; stable unique IDs |
+| Material request | At most 8 distinct admitted native material IDs; radius 1–96 world cells |
+| Radius convention | Inclusive circular Euclidean distance to cell centers; clipped to canvas; sample spacing 4 cells |
+| Sample work | At most 2,401 bounding-grid positions per actor decision, shared across that actor's requested materials; unsampled cells remain unknown |
+| Shared byte cache | At most one 2048×2048 two-channel publication cache per session, 8 MiB; allocated only for enabled material-dependent ambient controllers |
+| Material freshness | Current native revision, or at most 12 native ticks old after the revision changes; owner/World/serial fences also apply |
+| Decision cadence | Existing 1–12 physics ticks; default 6, independent of UI refresh |
+| Ledge probes | Two owner-mediated rays per distinct enabled ledge parameter pair, at most 32 supplemental rays per decision; identical pairs share results |
+| Neighbours | Copied current actor positions within 96 cells, bounded by accepted population; no global search |
 
 ## What can be configured now?
 

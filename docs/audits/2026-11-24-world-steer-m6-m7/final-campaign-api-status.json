@@ -1,0 +1,328 @@
+{
+  "schema": "cybersand-source-bound-campaign-status-v1",
+  "observed_utc": "2026-11-25T01:56:00Z",
+  "repository": "techrote/cybersand",
+  "run_id": 45520561849,
+  "run_attempt": 1,
+  "source": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "status": "completed",
+  "conclusion": "success",
+  "started_utc": "2026-11-25T00:45:29Z",
+  "completed_utc": "2026-11-25T01:42:50Z",
+  "jobs": [
+    {
+      "id": 138891022515,
+      "name": "Bounded source and experiment guards",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-11-25T00:45:32Z",
+      "completed_utc": "2026-11-25T00:46:02Z",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Restore accepted companion documentation layout",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Validate dedicated campaign and experimental controls",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Post Restore accepted companion documentation layout",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 9,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 138891269227,
+      "name": "Linux source-built native and graphical qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-11-25T00:46:05Z",
+      "completed_utc": "2026-11-25T01:19:51Z",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Stage pinned dependencies",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Build pinned source-matched native runtime",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Existing native ownership, material baseline and paint regressions",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Execute Batch foundation, native architecture, full-World actors and graphical UI",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Preserve exact Linux runtime and all original outcomes",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 14,
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 15,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 138891269258,
+      "name": "Pinned source-matched Windows runtime",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-11-25T00:46:05Z",
+      "completed_utc": "2026-11-25T00:50:22Z",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Stage pinned Windows cross-toolchain",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Build source-bound Windows DLL",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Run actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 12,
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 13,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    },
+    {
+      "id": 138893152369,
+      "name": "Windows graphical execution and extracted owner evaluator",
+      "status": "completed",
+      "conclusion": "success",
+      "started_utc": "2026-11-25T00:50:24Z",
+      "completed_utc": "2026-11-25T01:42:50Z",
+      "steps": [
+        {
+          "number": 1,
+          "name": "Set up job",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 2,
+          "name": "Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 3,
+          "name": "Run actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 4,
+          "name": "Verify native custody and official Godot 4.7",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 5,
+          "name": "Execute actual Windows native, rendering, persistence and regressions",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 6,
+          "name": "Package standalone evaluator from the exact committed source",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 7,
+          "name": "Publish qualified Draft/HOLD owner evaluator",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 8,
+          "name": "Preserve all Windows outcomes including qualification failures",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 16,
+          "name": "Post Run actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683",
+          "status": "completed",
+          "conclusion": "success"
+        },
+        {
+          "number": 17,
+          "name": "Complete job",
+          "status": "completed",
+          "conclusion": "success"
+        }
+      ]
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14983835743,
+      "name": "batch-lab-windows-17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d-1",
+      "bytes": 48540546,
+      "digest": "sha256:6117b1cce68461c267b0df1f11c98d9efa4e557abac2acafa505fab1dd043ea0",
+      "expired": false,
+      "created_utc": "2026-11-25T01:42:46Z"
+    },
+    {
+      "id": 14983516321,
+      "name": "batch-lab-owner-windows-17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+      "bytes": 108606093,
+      "digest": "sha256:0280a9f596fad0f1e0b17b3cb567d6cef1649d56c7053e09ed3b13b4a22349c7",
+      "expired": false,
+      "created_utc": "2026-11-25T01:42:36Z"
+    },
+    {
+      "id": 14981408538,
+      "name": "batch-lab-linux-17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d-1",
+      "bytes": 26226147,
+      "digest": "sha256:2d2c94c44629d9a87a322d3834ad5dd327d91467aacfdb696dcf32b92b658146",
+      "expired": false,
+      "created_utc": "2026-11-25T01:19:49Z"
+    },
+    {
+      "id": 14980481166,
+      "name": "batch-lab-windows-build-17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d-1",
+      "bytes": 8230,
+      "digest": "sha256:b4375848209601366a66670d2f613f9e0c58b799eee51b7f03095eb4deec4c4a",
+      "expired": false,
+      "created_utc": "2026-11-25T00:50:20Z"
+    },
+    {
+      "id": 14978269731,
+      "name": "batch-lab-windows-runtime-45520561849",
+      "bytes": 2106710,
+      "digest": "sha256:ad2ca41bfb8111a17fe20e21d6dd133fa43a81da02957b1ac9de03e412d6d3ad",
+      "expired": false,
+      "created_utc": "2026-11-25T00:50:19Z"
+    }
+  ],
+  "source_refresh": {
+    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "continuation": {
+      "pr": 777,
+      "head": "ef7a6e1484f3fb7c12294449fc22b73d6f07e335",
+      "draft": true,
+      "merged": false
+    },
+    "foundation": {
+      "pr": 770,
+      "head": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "draft": true,
+      "merged": false
+    },
+    "batch": {
+      "pr": 720,
+      "head": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "draft": true,
+      "merged": false
+    },
+    "art": {
+      "pr": 773,
+      "head": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "draft": false,
+      "merged": false,
+      "classification": "Latest CI-only successor; qualified package fa22 and application981a retained; exclusive proposal route remains absent."
+    }
+  }
+}

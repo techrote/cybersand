@@ -1,0 +1,168 @@
+{
+  "schema": "ambient-external-watch-preflight/v1",
+  "observer_commit": "d2ac76092e14ff93154ed540dc2747cf4333647b",
+  "application_commit": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "application_tree": "a038e6df65d58529f4c496c01f26c65975654fa6",
+  "direct_committed_compile": {
+    "schema": "ambient-external-observer-compile/v1",
+    "status": "passed",
+    "application_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+    "application_tree": "a038e6df65d58529f4c496c01f26c65975654fa6",
+    "observer_commit": "d2ac76092e14ff93154ed540dc2747cf4333647b",
+    "observer_script_sha256": "aac731d1d44fcc46beca22ea6b0ee84e1acfe4c09ad51cc47bd52abb8c922379",
+    "project_inputs": 855,
+    "project_inputs_unchanged": true,
+    "engine": {
+      "binary": "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+      "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+    },
+    "runtime": {
+      "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "runtime_provenance": {
+        "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1"
+      },
+      "cybersand_runtime": {
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "size": 5253776
+      },
+      "rapier_runtime": {
+        "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "size": 117275416
+      }
+    },
+    "process": {
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/tmp/ambient-002/watch-application/godot",
+        "--script",
+        "/tmp/ambient-002/authoring/tools/ambient/watch_ambient_living.gd",
+        "--check-only"
+      ],
+      "timeout_seconds": 120,
+      "status": "passed",
+      "pid": 39,
+      "exit_code": 0,
+      "seconds": 0.719,
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+    },
+    "compile_only": true,
+    "graphical_observation": false,
+    "import_scope": "Reused already imported exact frozen project; separately retained repeated editor import exit -9, no passing repeat-import claim."
+  },
+  "receipt_unit_tests": {
+    "source_commit": "d2ac76092e14ff93154ed540dc2747cf4333647b",
+    "tests": 9,
+    "failures": 0,
+    "wall_seconds": 0.015,
+    "scope": "Strict synthetic receipt validation only, observed in terminal tool output; no physical or graphical execution."
+  },
+  "synthetic_media_converter": {
+    "status": "passed",
+    "original_receipt": "watch-media-fixture/conversion-fixture-receipt.json",
+    "scope": "Explicit synthetic image fixture only; ffmpeg MP4 and contact-sheet filters exited 0. No gameplay observation."
+  },
+  "negative_attempts": [
+    {
+      "path": "watch-compile-precommit/watch-campaign.json",
+      "status": "refused",
+      "reason": "Application HEAD had advanced beyond exact a725; strict custody check refused it before engine execution."
+    },
+    {
+      "path": "watch-compile-committed/watch-campaign.json",
+      "status": "failed",
+      "exit_code": -9,
+      "stage": "editor import",
+      "elapsed_import_seconds": 4.385,
+      "reason": "Process was killed under concurrent resource pressure. No script error was emitted; this is not a passed import."
+    }
+  ],
+  "earlier_precommit_compile": {
+    "path": "watch-compile-a725-precommit/watch-campaign.json",
+    "status": "passed",
+    "project_inputs": 855,
+    "input_custody": "passed",
+    "observer_delta_explicit": true,
+    "graphical_observation": false
+  },
+  "originals_archive": {
+    "path": "external-watch-d2ac7609-originals.zip",
+    "bytes": 222436,
+    "sha256": "f2dcd7efdd10f61123dd0a2fdda64cf5ecfb4a2dfd3dda8114a617313f1a23cc",
+    "members": [
+      {
+        "path": "watch-compile-precommit/watch-campaign.json",
+        "bytes": 343,
+        "sha256": "f5879464e18b5461df07dc45aa6d6dbbb905574727d42113a2f326fc71938bd5"
+      },
+      {
+        "path": "watch-compile-a725-precommit/compile/process.json",
+        "bytes": 457,
+        "sha256": "688534122e68169077021e4da0f48ec7abda6e7d35f6bbf7fa7307da849f719d"
+      },
+      {
+        "path": "watch-compile-a725-precommit/compile/process.log",
+        "bytes": 221,
+        "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+      },
+      {
+        "path": "watch-compile-a725-precommit/import/process.json",
+        "bytes": 381,
+        "sha256": "33d30d85b7ffa343b6bbb19990ab077bd64c724057bd838b34dcdf75b3b08705"
+      },
+      {
+        "path": "watch-compile-a725-precommit/import/process.log",
+        "bytes": 45799,
+        "sha256": "889d60e2057a2c846e5bbbaf65bdf7a05cfeddd23b318609068d7afe1b313434"
+      },
+      {
+        "path": "watch-compile-a725-precommit/watch-campaign.json",
+        "bytes": 252148,
+        "sha256": "7c0af864a69f7d77f9dbf3f2a2e7e47830c1adf4e3451610a2b3a086143005dc"
+      },
+      {
+        "path": "watch-compile-committed/import/process.json",
+        "bytes": 505,
+        "sha256": "27dbafd18910e4357299b4f8d7d923aa9caec40f26b04429dabe1200a646f68c"
+      },
+      {
+        "path": "watch-compile-committed/import/process.log",
+        "bytes": 221,
+        "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+      },
+      {
+        "path": "watch-compile-committed/watch-campaign.json",
+        "bytes": 251585,
+        "sha256": "d786f8e617ec75a4006f12c3143b8e1db54034d757288711dcbba65167eaf1e8"
+      },
+      {
+        "path": "watch-committed-direct/compile/process.json",
+        "bytes": 456,
+        "sha256": "1e279ff9af6cf77999c3d2a2daa8ec46db99bfd8da930fe51adb1808ff6ff3ce"
+      },
+      {
+        "path": "watch-committed-direct/compile/process.log",
+        "bytes": 221,
+        "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+      },
+      {
+        "path": "watch-committed-direct/receipt.json",
+        "bytes": 15039,
+        "sha256": "6334a14745630635f97e7d4a471b480efde2a1c9336cde0c4291098aeebaad9b"
+      },
+      {
+        "path": "watch-media-fixture/conversion-fixture-receipt.json",
+        "bytes": 3011,
+        "sha256": "f14387bb841894659963f7b1885c4c8436d8e922007506155a3749f32e202b8f"
+      }
+    ]
+  },
+  "actual_sustained_graphical_observation": "pending hosted execution",
+  "frozen_application_changed": false,
+  "owner_playfeel_accepted": false
+}

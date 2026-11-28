@@ -1,8 +1,25 @@
-name: Art session-only logging qualification
+name: Art Workbench collaborative qualification
 on:
   pull_request:
     paths:
+      - 'godot/scripts/art_*.gd'
+      - 'godot/scripts/simulation_worker.gd'
+      - 'godot/tests/test_art_collaborat*.gd'
+      - 'godot/tests/test_art_authoring_proposal.gd'
+      - 'godot/tests/test_art_owned_transport.gd'
+      - 'godot/tests/test_art_conversation_preparation.gd'
+      - 'godot/tests/test_art_conversation_apply_preparation.gd'
+      - 'godot/tests/test_art_creative_cohort.gd'
+      - 'godot/tests/run_art_collaborative.gd'
+      - 'godot/data/art_collaborative_briefs.json'
+      - 'tools/ci/run_art_collaborative_gates.py'
+      - 'tools/ci/run_art_collaborative.py'
+      - 'tools/package_art_collaborative.py'
+      - 'tools/ci/test_art_collaborative_packaging.py'
+      - 'docs/operations/art-workbench-collaborative-evaluation.md'
       - 'godot/scripts/art_batch_panel.gd'
+      - 'godot/scripts/art_conversation_editor.gd'
+      - 'godot/scripts/art_conversation_text_edit.gd'
       - 'godot/scripts/shared_workbench.gd'
       - 'godot/tests/test_art_session_log.gd'
       - 'godot/tests/test_art_manual_audit.gd'
@@ -10,10 +27,43 @@ on:
       - 'godot/tests/test_art_traffic_panel_safety.gd'
       - 'godot/tests/test_art_history_durability.gd'
       - 'godot/tests/test_art_panel_ui.gd'
+      - 'godot/tests/test_art_local_close.gd'
+      - 'tools/ci/run_art_local_close.py'
+      - 'docs/audits/2026-11-23-art-local-close/**'
+      - 'godot/tests/test_art_invalid_local_model_close.gd'
+      - 'godot/tests/test_art_model_roster.gd'
       - 'godot/tests/test_art_traffic_integrity.gd'
       - 'godot/tests/test_art_history_receipt_identity.gd'
       - 'godot/tests/test_art_batch_native.gd'
+      - 'godot/tests/test_art_batch_native_render.gd'
+      - 'godot/tests/test_art_undo.gd'
+      - 'godot/tests/test_art_stored_material.gd'
+      - 'godot/tests/test_art_deferred_manual.gd'
+      - 'godot/tests/test_art_provider.gd'
+      - 'godot/scripts/workbench_paint_editor_controller.gd'
+      - 'godot/tests/test_art_provider_failure_lifecycle.gd'
+      - 'godot/tests/run_art_workbench_final.gd'
+      - 'godot/tests/run_art_owner_evaluator.gd'
+      - 'godot/tests/test_art_owner_evaluator.gd'
+      - 'godot/tests/test_art_redaction_equivalence.gd'
+      - 'godot/tests/test_art_response_preparation.gd'
+      - 'godot/tests/test_art_request_preparation.gd'
+      - 'godot/tests/test_art_request_admission.gd'
+      - 'godot/tests/test_art_conversation_paging.gd'
+      - 'godot/tests/test_art_conversation_clipboard.gd'
+      - 'tools/ci/run_art_workbench_final.py'
+      - 'tools/package_art_workbench_final.py'
+      - 'tools/ci/test_art_evaluator_packaging.py'
+      - 'tools/ci/art_evaluator_qualification_scope.py'
+      - 'tools/ci/test_art_evaluator_qualification_scope.py'
+      - 'tools/package_explore001_candidate.py'
+      - 'tools/ci/check_repository.py'
+      - 'tools/ci/check_windows_package_modules.ps1'
+      - 'tools/ci/stage_windows_vc_runtime.ps1'
+      - 'docs/operations/art-workbench-final-evaluation.md'
       - 'godot/scripts/art_provider.gd'
+      - 'godot/scripts/art_redaction.gd'
+      - 'godot/scripts/art_response_preparation.gd'
       - 'godot/scripts/art_batch_executor.gd'
       - 'godot/tools/qualify_gentek80_main_integration.gd'
       - 'tools/ci/run_godot_regressions.py'
@@ -22,20 +72,85 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+  actions: read
 concurrency:
   group: art-session-${{ github.ref }}
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
-  linux:
-    name: Linux 4.7 native Workbench session logging
+  recovery-routing:
+    name: Identify separately registered mergedown campaign
     runs-on: ubuntu-24.04
-    timeout-minutes: 30
+    timeout-minutes: 10
+    outputs:
+      recovery: ${{ steps.route.outputs.recovery }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+      - name: Keep ordinary qualification for any application change
+        id: route
+        shell: bash
+        run: |
+          set -euo pipefail
+          if test -f tools/ci/mergedown_art_qualification.py; then
+            python3 tools/ci/mergedown_art_qualification.py route --request tools/fixtures/mergedown-art-windows-request.json --github-output "$GITHUB_OUTPUT"
+          else
+            echo 'recovery=false' >> "$GITHUB_OUTPUT"
+          fi
+          echo 'Routing is not a passing application qualification. A registered recovery must pass its separate source-bound Windows campaign.' >> "$GITHUB_STEP_SUMMARY"
+  qualification-scope:
+    needs: recovery-routing
+    if: needs.recovery-routing.outputs.recovery != 'true'
+    name: Verify application qualification source
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      reuse: ${{ steps.scope.outputs.reuse }}
+    steps:
+      - name: Checkout exact source and qualification ancestry
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          fetch-depth: 0
+      - name: Test application evidence boundaries
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          python3 tools/ci/test_art_evaluator_qualification_scope.py > evidence/application-qualification-tests.log 2>&1
+          python3 tools/ci/test_art_evaluator_packaging.py > evidence/evaluator-packaging-tests.log 2>&1
+          python3 tools/ci/test_art_collaborative_packaging.py > evidence/collaborative-packaging-tests.log 2>&1
+      - name: Prove reuse or require full application qualification
+        id: scope
+        shell: bash
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/art_evaluator_qualification_scope.py --output evidence/application-qualification-reuse.json
+      - name: Retain application qualification decision
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: art-workbench-qualification-scope-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/
+          if-no-files-found: error
+  linux:
+    needs: qualification-scope
+    if: needs.qualification-scope.outputs.reuse != 'true'
+    name: Linux 4.7 native and displayed collaborative Art
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
     steps:
       - name: Checkout exact source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Materialize source-matched native runtime
         shell: bash
         run: |
@@ -63,39 +178,113 @@ jobs:
         shell: bash
         run: |
           set -euo pipefail
-          for case in test_art_session_log test_art_manual_audit test_art_lazy_traffic test_art_traffic_panel_safety test_art_history_durability test_art_panel_ui test_art_traffic_integrity test_art_history_receipt_identity test_art_batch_native; do
+          python3 tools/ci/test_art_evaluator_packaging.py > evidence/evaluator-packaging-tests.log 2>&1
+          for case in test_art_session_log test_art_manual_audit test_art_lazy_traffic test_art_traffic_panel_safety test_art_history_durability test_art_panel_ui test_art_model_roster test_art_invalid_local_model_close test_art_traffic_integrity test_art_history_receipt_identity test_art_provider_failure_lifecycle test_art_redaction_equivalence test_art_response_preparation test_art_request_preparation test_art_request_admission test_art_conversation_paging test_art_conversation_clipboard test_art_owner_evaluator test_art_batch_native test_art_provider test_art_deferred_manual test_art_stored_material test_art_undo; do
             export XDG_DATA_HOME="$RUNNER_TEMP/session-$case"
             mkdir -p "$XDG_DATA_HOME"
             budget=240
             if [ "$case" = test_art_batch_native ]; then budget=600; fi
+            if [ "$case" = test_art_undo ]; then budget=$(python3 tools/ci/execution_policy.py seconds ordinary_case_seconds); fi
             echo "BEGIN $case timeout=${budget}s"
             timeout "$budget" "$GODOT" --headless --path godot -s "res://tests/$case.gd" 2>&1 | tee "evidence/$case.log"
             if grep -E 'SCRIPT ERROR:|Parse Error:' "evidence/$case.log"; then exit 1; fi
             echo "PASS $case"
           done
           grep -F 'ART_SESSION_RESULT ' evidence/test_art_session_log.log
+          grep -F 'ART_EVALUATOR_INPUT_RESULT ' evidence/test_art_owner_evaluator.log
           grep -F 'ART_STAGE1_RESULT ' evidence/test_art_batch_native.log
+          grep -F 'ART_STORED_RESULT ' evidence/test_art_stored_material.log
+          grep -F 'ART_UNDO_RESULT ' evidence/test_art_undo.log
+          python3 tools/ci/run_art_local_close.py --godot "$GODOT" --project godot --output evidence/art-close-fixture
+          for group in network preparation request-preparation lifecycle conversation-apply; do
+            python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output "evidence/art-final-headless-$group" --group "$group"
+          done
+          python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output evidence/art-final-process-exit --group preparation-exit
+          python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output evidence/art-final-request-exit --group request-preparation-exit
+      - name: Execute fresh collaborative native and owner-control gates
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/run_art_collaborative_gates.py --godot "$GODOT" --project godot --output evidence/art-collaborative-headless
+      - name: Exercise displayed Godot UI and native authoring
+        shell: bash
+        run: |
+          set -euo pipefail
+          if ! command -v xvfb-run >/dev/null; then sudo apt-get update && sudo apt-get install -y xvfb; fi
+          export LIBGL_ALWAYS_SOFTWARE=1
+          # Each displayed arm owns a fresh profile/process. Retain every
+          # independent result before failing this stage; packaging still needs
+          # the entire stage to pass, including all frame and complete-body checks.
+          display_failed=0
+          export XDG_DATA_HOME="$RUNNER_TEMP/art-display-panel"
+          mkdir -p "$XDG_DATA_HOME"
+          if ! CYBERSAND_TEST_ARTIFACT_DIR="$GITHUB_WORKSPACE/evidence/art-panel-displayed" xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_panel_ui.gd > evidence/art-panel-displayed.log 2>&1; then
+            cat evidence/art-panel-displayed.log
+            display_failed=1
+          fi
+          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-panel-displayed.log; then display_failed=1; fi
+          export XDG_DATA_HOME="$RUNNER_TEMP/art-display-evaluator"
+          mkdir -p "$XDG_DATA_HOME"
+          if ! xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_owner_evaluator.gd > evidence/art-evaluator-displayed.log 2>&1; then
+            cat evidence/art-evaluator-displayed.log
+            display_failed=1
+          fi
+          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-evaluator-displayed.log; then display_failed=1; fi
+          if ! grep -F 'ART_EVALUATOR_INPUT_RESULT ' evidence/art-evaluator-displayed.log; then display_failed=1; fi
+          export XDG_DATA_HOME="$RUNNER_TEMP/art-display-clipboard"
+          mkdir -p "$XDG_DATA_HOME"
+          if ! CYBERSAND_TEST_OWNED_CLIPBOARD=1 xvfb-run -a -s '-screen 0 1920x1080x24' timeout 240 "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_conversation_clipboard.gd > evidence/art-clipboard-displayed.log 2>&1; then
+            cat evidence/art-clipboard-displayed.log
+            display_failed=1
+          fi
+          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-clipboard-displayed.log; then display_failed=1; fi
+          if ! grep -F '"native_clipboard_differential":true' evidence/art-clipboard-displayed.log; then display_failed=1; fi
+          export XDG_DATA_HOME="$RUNNER_TEMP/art-display-native-batch"
+          mkdir -p "$XDG_DATA_HOME" evidence/art-native-displayed
+          native_display_budget=$(python3 tools/ci/execution_policy.py seconds graphical_case_seconds)
+          if ! CYBERSAND_TEST_ARTIFACT_DIR="$GITHUB_WORKSPACE/evidence/art-native-displayed" xvfb-run -a -s '-screen 0 1920x1080x24' timeout "$native_display_budget" "$GODOT" --path godot --audio-driver Dummy --rendering-method gl_compatibility -s res://tests/test_art_batch_native_render.gd > evidence/art-native-displayed/process.log 2>&1; then
+            cat evidence/art-native-displayed/process.log
+            display_failed=1
+          fi
+          if grep -E 'SCRIPT ERROR:|Parse Error:' evidence/art-native-displayed/process.log; then display_failed=1; fi
+          if ! grep -F 'ART_STAGE1_RESULT ' evidence/art-native-displayed/process.log; then display_failed=1; fi
+          for group in network preparation request-preparation lifecycle conversation-apply; do
+            if ! xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/ci/run_art_workbench_final.py --godot "$GODOT" --project godot --output "evidence/art-final-displayed-$group" --group "$group" --graphical; then
+              display_failed=1
+            fi
+          done
+          if ! xvfb-run -a -s '-screen 0 1920x1080x24' python3 tools/ci/run_art_collaborative_gates.py --godot "$GODOT" --project godot --output evidence/art-collaborative-displayed --graphical; then
+            display_failed=1
+          fi
+          if [ "$display_failed" -ne 0 ]; then exit 1; fi
       - name: Retain evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: art-session-linux-${{ github.sha }}
+          name: art-workbench-linux-${{ github.event.pull_request.head.sha || github.sha }}
           path: evidence/
           if-no-files-found: warn
   windows:
-    name: Windows 4.7 real Workbench session logging
+    needs: qualification-scope
+    name: Windows 4.7 collaborative Art and installed evaluator
     runs-on: windows-2022
-    timeout-minutes: 30
+    # Software ANGLE advances nonblocking 64 KiB reads with displayed frames.
+    # Allow all finite large-body groups and installed-launcher gates to finish;
+    # individual two-second frame/cancellation checks remain unchanged.
+    # Added finite native creative/direct pairs retain their 1800-second case
+    # allowance; existing two-second interaction gates are unchanged.
+    timeout-minutes: 120
     steps:
       - name: Checkout exact source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
         with:
           persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
       - name: Materialize source-matched native runtime
         shell: pwsh
         run: |
           git lfs install --local
-          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll,godot/tools/gentek_reciprocal.exe' --exclude=''
           if ($LASTEXITCODE -ne 0) { throw 'LFS materialization failed' }
       - name: Authenticate official Godot 4.7
         shell: pwsh
@@ -108,6 +297,7 @@ jobs:
           Expand-Archive -Path $zip -DestinationPath (Join-Path $env:RUNNER_TEMP 'godot-win47')
           'GODOT_EXE=' + (Join-Path $env:RUNNER_TEMP 'godot-win47/Godot_v4.7-stable_win64_console.exe') | Out-File -Append -FilePath $env:GITHUB_ENV
       - name: Import and execute fresh user-data Workbench tests
+        if: needs.qualification-scope.outputs.reuse != 'true'
         shell: pwsh
         run: |
           New-Item -ItemType Directory -Force evidence | Out-Null
@@ -117,7 +307,7 @@ jobs:
             $proc = Start-Process -FilePath $env:GODOT_EXE -ArgumentList $argv -PassThru -NoNewWindow -RedirectStandardOutput $stdout -RedirectStandardError $stderr
             try {
               if (-not $proc.WaitForExit($limit * 1000)) {
-                Stop-Process -Id $proc.Id -Force -ErrorAction SilentlyContinue
+                taskkill.exe /PID $proc.Id /T /F | Out-Null
                 throw "Godot timed out: $label after $limit seconds"
               }
               $proc.Refresh()
@@ -131,16 +321,174 @@ jobs:
           $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-session-import'
           New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
           Invoke-CheckedGodot 'import' @('--headless','--path','godot','--editor','--import') 180
-          foreach ($case in @('test_art_session_log','test_art_manual_audit','test_art_lazy_traffic','test_art_traffic_panel_safety','test_art_history_durability','test_art_panel_ui','test_art_traffic_integrity')) {
+          python tools/ci/test_art_evaluator_packaging.py *> evidence/evaluator-packaging-tests.log
+          if ($LASTEXITCODE -ne 0) { throw 'Evaluator package boundary regression failed' }
+          foreach ($case in @('test_art_session_log','test_art_manual_audit','test_art_lazy_traffic','test_art_traffic_panel_safety','test_art_history_durability','test_art_panel_ui','test_art_model_roster','test_art_invalid_local_model_close','test_art_traffic_integrity','test_art_history_receipt_identity','test_art_provider_failure_lifecycle','test_art_redaction_equivalence','test_art_response_preparation','test_art_request_preparation','test_art_request_admission','test_art_conversation_paging','test_art_conversation_clipboard','test_art_owner_evaluator','test_art_batch_native','test_art_provider','test_art_deferred_manual','test_art_stored_material','test_art_undo')) {
             $env:APPDATA = Join-Path $env:RUNNER_TEMP "art-session-$case"
             New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
-            Invoke-CheckedGodot $case @('--headless','--path','godot','-s',"res://tests/$case.gd") 240
+            $budget = 240
+            if ($case -eq 'test_art_batch_native') { $budget = 600 }
+            if ($case -eq 'test_art_undo') { $budget = [int](python tools/ci/execution_policy.py seconds ordinary_case_seconds) }
+            Invoke-CheckedGodot $case @('--headless','--path','godot','-s',"res://tests/$case.gd") $budget
           }
           if ((Get-Content evidence/test_art_session_log.stdout.log -Raw) -notmatch 'ART_SESSION_RESULT ') { throw 'Missing session test receipt' }
+          if ((Get-Content evidence/test_art_owner_evaluator.stdout.log -Raw) -notmatch 'ART_EVALUATOR_INPUT_RESULT ') { throw 'Missing evaluator input receipt' }
+          if ((Get-Content evidence/test_art_batch_native.stdout.log -Raw) -notmatch 'ART_STAGE1_RESULT ') { throw 'Missing direct native batch receipt' }
+          if ((Get-Content evidence/test_art_stored_material.stdout.log -Raw) -notmatch 'ART_STORED_RESULT ') { throw 'Missing stored native material receipt' }
+          if ((Get-Content evidence/test_art_undo.stdout.log -Raw) -notmatch 'ART_UNDO_RESULT ') { throw 'Missing native Undo receipt' }
+          python tools/ci/run_art_local_close.py --godot $env:GODOT_EXE --project godot --output evidence/art-close-fixture
+          if ($LASTEXITCODE -ne 0) { throw 'ART-LOCAL-CLOSE fixture failed' }
+          foreach ($group in @('network','preparation','request-preparation','lifecycle','conversation-apply')) {
+            python tools/ci/run_art_workbench_final.py --godot $env:GODOT_EXE --project godot --output "evidence/art-final-headless-$group" --group $group
+            if ($LASTEXITCODE -ne 0) { throw "Art Workbench headless group failed: $group" }
+          }
+          python tools/ci/run_art_workbench_final.py --godot $env:GODOT_EXE --project godot --output evidence/art-final-process-exit --group preparation-exit
+          if ($LASTEXITCODE -ne 0) { throw 'CPU-active process exit failed' }
+          python tools/ci/run_art_workbench_final.py --godot $env:GODOT_EXE --project godot --output evidence/art-final-request-exit --group request-preparation-exit
+          if ($LASTEXITCODE -ne 0) { throw 'Outgoing CPU-active process exit failed' }
+          # Collect independent displayed failures without admitting a package
+          # unless every arm passes. Each process/profile remains isolated.
+          $displayedFailures = [System.Collections.Generic.List[string]]::new()
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-panel'
+          $env:CYBERSAND_TEST_ARTIFACT_DIR = Join-Path $env:GITHUB_WORKSPACE 'evidence/art-panel-displayed'
+          New-Item -ItemType Directory -Force $env:APPDATA,$env:CYBERSAND_TEST_ARTIFACT_DIR | Out-Null
+          try {
+            Invoke-CheckedGodot 'art-panel-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_panel_ui.gd') 240
+          } catch {
+            $displayedFailures.Add('Art panel: ' + $_.Exception.Message)
+            Write-Warning $_.Exception.Message
+          } finally {
+            Remove-Item Env:CYBERSAND_TEST_ARTIFACT_DIR
+          }
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-evaluator'
+          New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
+          try {
+            Invoke-CheckedGodot 'art-evaluator-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_owner_evaluator.gd') 240
+            if ((Get-Content evidence/art-evaluator-displayed.stdout.log -Raw) -notmatch 'ART_EVALUATOR_INPUT_RESULT ') { throw 'Missing displayed evaluator input receipt' }
+          } catch {
+            $displayedFailures.Add('Evaluator input: ' + $_.Exception.Message)
+            Write-Warning $_.Exception.Message
+          }
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-clipboard'
+          New-Item -ItemType Directory -Force $env:APPDATA | Out-Null
+          $env:CYBERSAND_TEST_OWNED_CLIPBOARD = '1'
+          try {
+            Invoke-CheckedGodot 'art-clipboard-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_conversation_clipboard.gd') 240
+            if ((Get-Content evidence/art-clipboard-displayed.stdout.log -Raw) -notmatch '"native_clipboard_differential"\s*:\s*true') { throw 'Displayed native clipboard differential did not execute' }
+          } catch {
+            $displayedFailures.Add('Native clipboard: ' + $_.Exception.Message)
+            Write-Warning $_.Exception.Message
+          } finally {
+            Remove-Item Env:CYBERSAND_TEST_OWNED_CLIPBOARD
+          }
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'art-display-native-batch'
+          $env:CYBERSAND_TEST_ARTIFACT_DIR = Join-Path $env:GITHUB_WORKSPACE 'evidence/art-native-displayed'
+          New-Item -ItemType Directory -Force $env:APPDATA,$env:CYBERSAND_TEST_ARTIFACT_DIR | Out-Null
+          try {
+            $nativeDisplayBudget = [int](python tools/ci/execution_policy.py seconds graphical_case_seconds)
+            Invoke-CheckedGodot 'art-native-displayed' @('--path','godot','--audio-driver','Dummy','--rendering-method','gl_compatibility','--rendering-driver','opengl3_angle','-s','res://tests/test_art_batch_native_render.gd') $nativeDisplayBudget
+            if ((Get-Content evidence/art-native-displayed.stdout.log -Raw) -notmatch 'ART_STAGE1_RESULT ') { throw 'Missing displayed direct native batch receipt' }
+          } catch {
+            $displayedFailures.Add('Direct native batch: ' + $_.Exception.Message)
+            Write-Warning $_.Exception.Message
+          } finally {
+            Remove-Item Env:CYBERSAND_TEST_ARTIFACT_DIR
+          }
+          foreach ($group in @('network','preparation','request-preparation','lifecycle','conversation-apply')) {
+            python tools/ci/run_art_workbench_final.py --godot $env:GODOT_EXE --project godot --output "evidence/art-final-displayed-$group" --group $group --graphical
+            if ($LASTEXITCODE -ne 0) {
+              $displayedFailures.Add("Art Workbench group: $group")
+              Write-Warning "Displayed Art Workbench group failed: $group"
+            }
+          }
+          if ($displayedFailures.Count -gt 0) { throw ('Displayed qualification failures: ' + ($displayedFailures -join '; ')) }
+      - name: Execute fresh collaborative native and displayed owner-control gates
+        if: needs.qualification-scope.outputs.reuse != 'true'
+        shell: pwsh
+        run: |
+          python tools/ci/test_art_collaborative_packaging.py *> evidence/collaborative-packaging-tests.log
+          if ($LASTEXITCODE -ne 0) { throw 'Collaborative package boundary regression failed' }
+          $failures = [System.Collections.Generic.List[string]]::new()
+          python tools/ci/run_art_collaborative_gates.py --godot $env:GODOT_EXE --project godot --output evidence/art-collaborative-headless
+          if ($LASTEXITCODE -ne 0) { $failures.Add('headless collaborative gates') }
+          python tools/ci/run_art_collaborative_gates.py --godot $env:GODOT_EXE --project godot --output evidence/art-collaborative-displayed --graphical
+          if ($LASTEXITCODE -ne 0) { $failures.Add('displayed collaborative gates') }
+          if ($failures.Count -gt 0) { throw ('Collaborative qualification failed: ' + ($failures -join '; ')) }
+      - name: Download verified application qualification decision
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: art-workbench-qualification-scope-${{ github.event.pull_request.head.sha || github.sha }}
+          path: evidence/qualification-scope
+      - name: Checkout fresh committed packaging inputs
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          path: packaging-source
+          fetch-depth: 0
+      - name: Materialize and check fresh packaging inputs
+        shell: pwsh
+        working-directory: packaging-source
+        run: |
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll,godot/tools/gentek_reciprocal.exe' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Fresh packaging LFS materialization failed' }
+          $evidenceRoot = Join-Path $env:GITHUB_WORKSPACE 'evidence'
+          New-Item -ItemType Directory -Force $evidenceRoot | Out-Null
+          python tools/ci/test_art_evaluator_packaging.py *> (Join-Path $evidenceRoot 'fresh-evaluator-packaging-tests.log')
+          if ($LASTEXITCODE -ne 0) { throw 'Fresh evaluator package boundary regression failed' }
+          git status --porcelain=v1 --untracked-files=all -- godot tools examples/worldgen third_party > (Join-Path $evidenceRoot 'fresh-packaging-input-status.txt')
+          if ($LASTEXITCODE -ne 0) { throw 'Fresh packaging source status failed' }
+      - name: Package exact source with retained Windows runtime
+        shell: pwsh
+        working-directory: packaging-source
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'art-godot-notices'
+          New-Item -ItemType Directory -Force $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notices download failed' }
+          }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft VS redistribution licence download failed' }
+          $vcRuntime = Join-Path $env:RUNNER_TEMP 'art-vc-runtime'
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output $vcRuntime -License $runtimeLicense -DeveloperLicense $developerLicense
+          $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
+          $qualification = Join-Path $env:GITHUB_WORKSPACE 'evidence/qualification-scope/application-qualification-reuse.json'
+          $headless = Join-Path $env:GITHUB_WORKSPACE 'evidence/art-collaborative-headless/summary.json'
+          $displayed = Join-Path $env:GITHUB_WORKSPACE 'evidence/art-collaborative-displayed/summary.json'
+          python tools/package_art_collaborative.py build --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --qualification-source $qualification --headless-receipt $headless --displayed-receipt $displayed --output build/art-workbench-collaborative-002-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Art evaluator packaging refused' }
+          python tools/package_art_collaborative.py zip --output build/art-workbench-collaborative-002-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Art evaluator archive refused' }
+      - name: Exercise actual delivered launcher from an extracted installation
+        shell: pwsh
+        working-directory: packaging-source
+        run: |
+          $installationRoot = Join-Path $env:RUNNER_TEMP 'Art Evaluator Fresh Installation'
+          Expand-Archive -Path build/art-workbench-collaborative-002-windows.zip -DestinationPath $installationRoot
+          $package = Join-Path $installationRoot 'art-workbench-collaborative-002-windows'
+          $installedEvidence = Join-Path $env:GITHUB_WORKSPACE 'evidence/installed-evaluator'
+          python tools/package_art_collaborative.py smoke --output $package --evidence $installedEvidence
+          if ($LASTEXITCODE -ne 0) { throw 'Installed Art evaluator failed' }
+          ./tools/ci/check_windows_package_modules.ps1 -Package $package -Evidence (Join-Path $installedEvidence 'runtime-modules.json')
+      - name: Retain qualified Windows evaluator
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: art-workbench-collaborative-002-windows-${{ github.event.pull_request.head.sha || github.sha }}
+          path: |
+            packaging-source/build/art-workbench-collaborative-002-windows.zip
+            packaging-source/build/art-workbench-collaborative-002-windows.zip.sha256
+          if-no-files-found: error
       - name: Retain evidence
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
-          name: art-session-windows-${{ github.sha }}
+          name: art-workbench-windows-evidence-${{ github.event.pull_request.head.sha || github.sha }}
           path: evidence/
           if-no-files-found: warn

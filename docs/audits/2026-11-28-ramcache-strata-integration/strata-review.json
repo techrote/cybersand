@@ -1,0 +1,181 @@
+{
+  "acceptance": {
+    "classic_default": true,
+    "historical_relative_performance_percent": {
+      "architectural": 78.26,
+      "cinematic_deep_focus": 80.59,
+      "classic": 100.0,
+      "diorama_high": 73.49,
+      "gameplay_clarity": 75.68
+    },
+    "optional_optics_90_percent_gate": "owner-waived-2026-11-28",
+    "owner_preference": {
+      "global_default": false,
+      "profile": "diorama",
+      "rear_optical_depth": 1.3
+    },
+    "owner_prior_application": "fd0830abcfadd9ae19162e5677943bb131223e59"
+  },
+  "corrections": [
+    "Append retain_layers after existing actor pose and authoring-patch arguments",
+    "Refuse persistent-host Strata toolbar and direct preparation/load/enable/profile/save before native decorative allocation",
+    "Use the common reciprocal evidence/native-failure/Material-Audition save tail after selecting the appropriate scene codec",
+    "Test owner Diorama rear depth1.3 with named preset, separate quality, excluded inspection and true save/reopen",
+    "Exercise native Play and rear brush/erase/Undo through the changed input dispatch"
+  ],
+  "disposition": "source-review-complete-final-hosted-and-package-evidence-pending",
+  "exact_final_main_qualified": false,
+  "general_runner_context_commit": "00df15c1f2a1d0633f6080f73200c7ff1c454662",
+  "independent_review": {
+    "campaign_scope": "All11 profiles on one inherited smoke scene; separate challenge motion; source-matched native authoring; owner preference and persistent refusal pairs; no new retention benchmark claim",
+    "implementation_peer": "A: boundary, signature and common save semantics reviewed; discovered save warning-tail omission repaired and rereviewed",
+    "package_review": "Source review of exact Git/source/native/dependency/payload binding and actual cold CMD process verification; execution remains pending",
+    "resolved_coverage_findings": [
+      "Challenge-only native optical editing was missing from smoke; bounded owner fixture now covers actual input/native changes/history",
+      "Shared reciprocal tests were mechanical only; C agreed to add original live SWARM006 input integrity fixture",
+      "General runner required explicit persistent profile and isolated optics user data; principal added contextual routing without exclusions"
+    ]
+  },
+  "lineage": {
+    "accepted_main_plus_ramcache_commits_since_base": 501,
+    "implementation_correction": "f0a8f08fc3a0f222d6749b4707ddc345ed7c93b9",
+    "intake_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+    "local_merge": "f4b26c9917d97cea5d3bf160d89759d595ddad63",
+    "local_merge_tree": "c318167fb5cfdee34260e3f0110d29e335ad61b2",
+    "merge_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "ramcache_parent": "af45bfb332f9822780db9304779ff0cdf55661df",
+    "strata_002": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+    "strata_incoming_commits": 36,
+    "strata_parent": "d37fea86dbed2d9ae4b22e59c676d98f525c1ea8",
+    "test_only_input_witness": "included in the same commit as this review; exact file hash below"
+  },
+  "local_diagnostics": {
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "engine_version": "4.7.stable.official.5b4e0cb0f",
+    "process_isolation": "Separate actual CLI invocations. Boundary invocations reused PID5 in isolated execution namespaces; no distinct-PID hosted claim is made. Preference invocations used PID7 and PID6.",
+    "results": [
+      {
+        "checks": 121,
+        "completed": true,
+        "failures": [],
+        "graphical": false,
+        "label": "boundary-write",
+        "process_id": 5,
+        "receipt_sha256": "3d73a501783629689acfa181f21f610b6ac65b39669f44062f7a7dce0c0f5efe",
+        "scope": "local-headless-diagnostic",
+        "source_revision": "f4b26c9917d97cea5d3bf160d89759d595ddad63"
+      },
+      {
+        "checks": 131,
+        "completed": true,
+        "failures": [],
+        "graphical": false,
+        "label": "boundary-reopen",
+        "process_id": 5,
+        "receipt_sha256": "ecfe9d988910ded1792d340d7d50cfb8aba44b8586e370bd88d9052d3ab36083",
+        "scope": "local-headless-diagnostic",
+        "source_revision": "f4b26c9917d97cea5d3bf160d89759d595ddad63"
+      },
+      {
+        "checks": 128,
+        "completed": true,
+        "failures": [],
+        "graphical": false,
+        "label": "preference-install-with-paint",
+        "native_edit_witnesses": [
+          {
+            "before_sha256": "8598fd075b8e6563c488e786632287a2a0fd2c8002dacaa0f39ddba9e08e2b49",
+            "native_before": 58,
+            "native_brush": 131,
+            "native_erase": 0,
+            "native_restored": 58,
+            "plane": "scripted",
+            "point": [
+              120,
+              100
+            ],
+            "restored_sha256": "8598fd075b8e6563c488e786632287a2a0fd2c8002dacaa0f39ddba9e08e2b49"
+          },
+          {
+            "before_sha256": "a3b556bfdd29bf23682d23c62033f49bb532a5895d059bfd6d3b72cf51ace6af",
+            "native_before": 0,
+            "native_brush": 131,
+            "native_erase": 0,
+            "native_restored": 0,
+            "plane": "play",
+            "point": [
+              120,
+              100
+            ],
+            "restored_sha256": "a3b556bfdd29bf23682d23c62033f49bb532a5895d059bfd6d3b72cf51ace6af"
+          }
+        ],
+        "process_id": 7,
+        "receipt_sha256": "8105802c9892d8e41f62c12d07006697e7f1ef2b1a70a025905967533bc985eb",
+        "save_sha256": "6fa29bbce7cc9a827344913fd46166fcc85e763dd67478491c24a4a902619a23",
+        "scope": "local-headless-diagnostic",
+        "source_revision": "f0a8f08fc3a0f222d6749b4707ddc345ed7c93b9"
+      },
+      {
+        "checks": 22,
+        "completed": true,
+        "failures": [],
+        "graphical": false,
+        "label": "preference-reopen",
+        "process_id": 6,
+        "receipt_sha256": "b7fb9dcbd3297df8701e2425da322684ad3277bb773d54ea1c4f2de6ccbeeede",
+        "save_sha256": "6fa29bbce7cc9a827344913fd46166fcc85e763dd67478491c24a4a902619a23",
+        "scope": "local-headless-diagnostic",
+        "source_revision": "f0a8f08fc3a0f222d6749b4707ddc345ed7c93b9"
+      }
+    ],
+    "source_labels_are_final_frozen_commits": false
+  },
+  "mission": "RAMCACHE-STRATA-INTEGRATION-001",
+  "native_runtime": {
+    "disposition": "reuse-unchanged-native-inputs-and-publications",
+    "platforms": {
+      "linux": {
+        "binary_bytes": 5617072,
+        "binary_sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+        "build_commit": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+        "manifest_sha256": "48ad516871a9d29ff0892ec760e1fcff3525044164d7f349fae0bc586c42a787",
+        "mismatched_native_inputs": [],
+        "native_input_count": 114,
+        "source_commit": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4"
+      },
+      "win32": {
+        "binary_bytes": 6884864,
+        "binary_sha256": "3646940af7df53002db67260b8e45dc9500e434ca755ff0b2fa7c5613eb2c0f3",
+        "build_commit": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+        "manifest_sha256": "323a3dea6c40953d574e7bbbb262962e9746dd07d169d4f518dcfbeb2d917437",
+        "mismatched_native_inputs": [],
+        "native_input_count": 114,
+        "source_commit": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4"
+      }
+    },
+    "publication_child": "fa0c7aa65c1b8a27426da69ae0d62c9227f56479"
+  },
+  "pending_final_evidence": [
+    "Exact integrated source hosted Linux and Windows campaign",
+    "Required mainline gates and actual main merge identity",
+    "Clean extracted Windows archive/actual shipped CMD and fresh save/reopen",
+    "Independent final graphical and package review"
+  ],
+  "physical_gpu_test_for_combined_application": false,
+  "retained_limits": [
+    "Persistent-area and Strata hosts remain separate with visible refusal",
+    "Local optical actor assist is at most8 rectangles from the first64 observed parts; accepted main actor capacity, rendering and physics remain intact",
+    "Historical optical admission/p95/readability findings are retained; performance waiver is narrow",
+    "Camera rotation and bright-daylight qualifications remain bounded"
+  ],
+  "reviewed_date": "2026-11-28",
+  "reviewed_input_sha256": {
+    "godot/scripts/depth/workbench_strata_controller.gd": "1f953298d86d16e1acf0bf5efa8480051c8e036adf38e0540f4d14b9e0fce2f4",
+    "godot/scripts/shared_workbench.gd": "b0cc03602edeabdc32eed6baac1e9aac00bcff88eb0d45c8e0c482d9e9136ddf",
+    "godot/tests/test_ramcache_strata_boundaries.gd": "b1cb1d575fc79ddc9394cd4faf2e803107b43173d2b1512f068684b85dc28974",
+    "godot/tests/test_strata_owner_preference.gd": "3a7f0dd61929b53b0f4bae026833ccaa51605c8e3c145bf25719f275e29017de"
+  },
+  "schema": "ramcache-strata-specialist-b-review-v1",
+  "specialist": "B - Strata reconciliation and optical systems"
+}

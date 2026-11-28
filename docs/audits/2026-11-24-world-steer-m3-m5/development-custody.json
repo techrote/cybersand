@@ -1,0 +1,62 @@
+{
+  "schema": "cybersand.world-steer-development-custody.v1",
+  "scope": "Development only; final hosted exact-source campaign is authoritative. No physical owner or model acceptance.",
+  "completed_local_campaign": {
+    "source_commit": "b133c2a2a20acd19643116422bdeafc92ea1165d",
+    "status": "passed",
+    "cases": 44,
+    "elapsed_seconds": 846.28,
+    "graphical": false,
+    "development_dirty_allowed": true,
+    "actual_model_calls": 0,
+    "qualification_sha256": "552f41354b35960cc8e4d1ebd6622abb08890393f920b36a60abd75a8d4c3d33"
+  },
+  "environment_interruptions": [
+    {
+      "label": "module-contact-repair",
+      "source": "582cdfd4523c0a95aba2691949b00fcc77bf6824",
+      "exit_code": 137,
+      "status": "interrupted_by_host",
+      "assertion_failure_observed": false,
+      "sha256": "27824a5888c7a9a3aafd5d9340203163041da09e9704e6feb5e4ad887b86c583",
+      "archive_path": "environment-interruptions/module-contact-repair.log"
+    },
+    {
+      "label": "ui-import-replay",
+      "source": "3ced0ea3 plus uncommitted 8acf0a15 patch",
+      "exit_code": 137,
+      "status": "interrupted_by_host",
+      "assertion_failure_observed": false,
+      "sha256": "d0d7ddf3e3201cb2e61370d7a50a2b4cf4ca30113d37e52e1ca3f3e553274342",
+      "archive_path": "environment-interruptions/ui-import-replay.log"
+    },
+    {
+      "label": "ui-final-isolated",
+      "source": "8acf0a15 plus A582cdfd4",
+      "exit_code": 137,
+      "status": "interrupted_by_host",
+      "assertion_failure_observed": false,
+      "sha256": "c3f5da2a37805e4b542094ede9663c0290c8187c201445cd8017e9a93e25cf97",
+      "archive_path": "environment-interruptions/ui-final-isolated.log"
+    }
+  ],
+  "files": {
+    "development-observations.zip": {
+      "bytes": 2654547,
+      "sha256": "5c9c5e08cb57a9fff176865aae5c5b90a326dedb31bdcc2a11664e606e031b7c"
+    },
+    "development-sources.bundle": {
+      "bytes": 198117,
+      "sha256": "c672a56e71c4ad9bb66c1c59ad6405fc71a5546e3f9f8d253d793b6091d4b6bb"
+    }
+  },
+  "isolated_final_ui": {
+    "status": "passed",
+    "checks": 22,
+    "source_commit": "a631dea568583ab2672dbf84de0c71bfcb055ef7",
+    "graphical": false,
+    "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "log_sha256": "4d038a744710ef3e940681f0af9857513b6e09185821901215cd403a33349de5",
+    "scope": "Development-only shipped UI on exact local source; final hosted integrated source and graphical execution remain separate."
+  }
+}

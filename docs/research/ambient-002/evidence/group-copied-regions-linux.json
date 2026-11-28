@@ -1,0 +1,33 @@
+{
+  "command": [
+    "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/tmp/ambient-002/source/godot",
+    "--script",
+    "res://tests/test_ambient_group_transaction.gd"
+  ],
+  "exit_code": 0,
+  "elapsed_seconds": 1.0664733980011079,
+  "source_commit": "c814fe1da416e367fdb2edc32b888e1fb9a7889d",
+  "local_delta": [
+    "godot/scripts/physical_actor_session.gd",
+    "godot/tests/test_ambient_group_transaction.gd"
+  ],
+  "schema_version": 1,
+  "scope": "actual two-family group handoff, copied region isolation and optional terrain request admission",
+  "source_tree": "07af11350fb0eef221791284d5a744052d7bff71",
+  "recorded_at": "2026-11-25T02:00:54.644848+00:00",
+  "checks": 38,
+  "failures": 0,
+  "actual_rapier_steps": 8,
+  "logical_actors": 2,
+  "world_identity_probes": "synthetic copied envelopes",
+  "complete_qualification": false,
+  "source_inputs_sha256": {
+    "godot/scripts/physical_actor_session.gd": "93f677f251344b3fa6f9bfc662ab71c295a3f1e92e4ed524d5ed0b5e5c52328e",
+    "godot/tests/test_ambient_group_transaction.gd": "9c6b1258a70524b990c6db60696c4658ad12ff6606c564665657b5d51e0e1887"
+  },
+  "log_sha256": "b5f4a4b9dced879017ddd82a61abe3de3120d45a89ae62e84326dcead1de9ab9",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+}

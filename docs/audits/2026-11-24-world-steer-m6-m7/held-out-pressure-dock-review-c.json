@@ -1,0 +1,41 @@
+{
+  "format": "cybersand-independent-brief-source-review-v1",
+  "reviewer": "specialist-c-independent-readback",
+  "brief_commit": "aaf33d7c1",
+  "brief_id": "held-out-c-pressure-dock",
+  "registration_commit": "a42b3b7a5",
+  "expected_empty_region": [
+    72,
+    32,
+    32,
+    112
+  ],
+  "immutable_anchor": [
+    12,
+    124,
+    204,
+    4,
+    58
+  ],
+  "intersection": [
+    72,
+    124,
+    32,
+    4
+  ],
+  "observed_occupied_cells": 128,
+  "observed_material_ids": [
+    58
+  ],
+  "source_plane_sha256": "3e8128d3d687cb846caf36ed655c74a796441bd70188567caa9d59af07af45d9",
+  "source_plane_bytes": 98304,
+  "source_plane_extent": [
+    256,
+    192
+  ],
+  "source_plane_encoding": "uint16-le-row-major",
+  "outcome": "frozen-brief-source-clearance-contradiction",
+  "responsibility": "C-authored brief defect; not retrieval or model quality",
+  "decision": "Preserve unchanged brief, source, ten arm/seed refusals and original denominator. Classify this case separately from valid comparative architectural briefs.",
+  "native_authority": "The independently read file is the actual retained native baseline plane from the source-bound comparison; this review issues no World writes."
+}

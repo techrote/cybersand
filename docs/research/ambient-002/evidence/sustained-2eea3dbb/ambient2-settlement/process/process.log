@@ -1,0 +1,69 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+OpenGL API 4.5 (Core Profile) Mesa 25.2.8-0ubuntu0.24.04.5 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 20.1.2, 256 bits)
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+AMBIENT_LIVING_CAPTURE_FRAME frame-0000 native=0 physical=0
+AMBIENT_LIVING_CAPTURE_FRAME frame-0001 native=61 physical=61
+AMBIENT_LIVING_CAPTURE_FRAME frame-0002 native=121 physical=121
+AMBIENT_LIVING_CAPTURE_FRAME frame-0003 native=181 physical=181
+AMBIENT_LIVING_CAPTURE_FRAME frame-0004 native=241 physical=241
+AMBIENT_LIVING_CAPTURE_FRAME frame-0005 native=301 physical=301
+AMBIENT_LIVING_CAPTURE_FRAME frame-0006 native=361 physical=361
+AMBIENT_LIVING_CAPTURE_FRAME frame-0007 native=421 physical=421
+AMBIENT_LIVING_CAPTURE_FRAME frame-0008 native=481 physical=481
+AMBIENT_LIVING_CAPTURE_FRAME frame-0009 native=541 physical=541
+AMBIENT_LIVING_CAPTURE_FRAME frame-0010 native=601 physical=601
+AMBIENT_LIVING_CAPTURE_FRAME frame-0011 native=661 physical=661
+AMBIENT_LIVING_CAPTURE_FRAME frame-0012 native=721 physical=721
+AMBIENT_LIVING_CAPTURE_FRAME frame-0013 native=781 physical=781
+AMBIENT_LIVING_CAPTURE_FRAME frame-0014 native=841 physical=841
+AMBIENT_LIVING_CAPTURE_FRAME frame-0015 native=901 physical=901
+AMBIENT_LIVING_CAPTURE_FRAME frame-0016 native=961 physical=961
+AMBIENT_LIVING_CAPTURE_FRAME frame-0017 native=1021 physical=1021
+AMBIENT_LIVING_CAPTURE_FRAME frame-0018 native=1081 physical=1081
+AMBIENT_LIVING_CAPTURE_FRAME frame-0019 native=1141 physical=1141
+AMBIENT_LIVING_CAPTURE_FRAME frame-0020 native=1201 physical=1201
+AMBIENT_LIVING_CAPTURE_FRAME frame-0021 native=1261 physical=1261
+AMBIENT_LIVING_CAPTURE_FRAME frame-0022 native=1321 physical=1321
+AMBIENT_LIVING_CAPTURE_FRAME frame-0023 native=1381 physical=1381
+AMBIENT_LIVING_CAPTURE_FRAME frame-0024 native=1441 physical=1441
+AMBIENT_LIVING_CAPTURE_FRAME frame-0025 native=1501 physical=1501
+AMBIENT_LIVING_CAPTURE_FRAME frame-0026 native=1561 physical=1561
+AMBIENT_LIVING_CAPTURE_FRAME frame-0027 native=1621 physical=1621
+AMBIENT_LIVING_CAPTURE_FRAME frame-0028 native=1681 physical=1681
+AMBIENT_LIVING_CAPTURE_FRAME frame-0029 native=1741 physical=1741
+AMBIENT_LIVING_CAPTURE_FRAME frame-0030 native=1801 physical=1801
+AMBIENT_LIVING_CAPTURE_FRAME frame-0031 native=1861 physical=1861
+AMBIENT_LIVING_CAPTURE_FRAME frame-0032 native=1921 physical=1921
+AMBIENT_LIVING_CAPTURE_FRAME frame-0033 native=1981 physical=1981
+AMBIENT_LIVING_CAPTURE_FRAME frame-0034 native=2041 physical=2041
+AMBIENT_LIVING_CAPTURE_FRAME frame-0035 native=2101 physical=2101
+AMBIENT_LIVING_CAPTURE_FRAME frame-0036 native=2161 physical=2161
+AMBIENT_LIVING_CAPTURE_FRAME frame-0037 native=2221 physical=2221
+AMBIENT_LIVING_CAPTURE_FRAME frame-0038 native=2281 physical=2281
+AMBIENT_LIVING_CAPTURE_FRAME frame-0039 native=2341 physical=2341
+AMBIENT_LIVING_CAPTURE_FRAME frame-0040 native=2401 physical=2401
+AMBIENT_LIVING_CAPTURE_FRAME frame-0041 native=2461 physical=2461
+AMBIENT_LIVING_CAPTURE_FRAME frame-0042 native=2521 physical=2521
+AMBIENT_LIVING_CAPTURE_FRAME frame-0043 native=2581 physical=2581
+AMBIENT_LIVING_CAPTURE_FRAME frame-0044 native=2641 physical=2641
+AMBIENT_LIVING_CAPTURE_FRAME frame-0045 native=2701 physical=2701
+AMBIENT_LIVING_CAPTURE_FRAME frame-0046 native=2761 physical=2761
+AMBIENT_LIVING_CAPTURE_FRAME frame-0047 native=2821 physical=2821
+AMBIENT_LIVING_CAPTURE_FRAME frame-0048 native=2881 physical=2881
+AMBIENT_LIVING_CAPTURE_FRAME frame-0049 native=2941 physical=2941
+AMBIENT_LIVING_CAPTURE_FRAME frame-0050 native=3001 physical=3001
+AMBIENT_LIVING_CAPTURE_FRAME frame-0051 native=3061 physical=3061
+AMBIENT_LIVING_CAPTURE_FRAME frame-0052 native=3121 physical=3121
+AMBIENT_LIVING_CAPTURE_FRAME frame-0053 native=3181 physical=3181
+AMBIENT_LIVING_CAPTURE_FRAME frame-0054 native=3241 physical=3241
+AMBIENT_LIVING_CAPTURE_FRAME frame-0055 native=3301 physical=3301
+AMBIENT_LIVING_CAPTURE_FRAME frame-0056 native=3361 physical=3361
+AMBIENT_LIVING_CAPTURE_FRAME frame-0057 native=3421 physical=3421
+AMBIENT_LIVING_CAPTURE_FRAME frame-0058 native=3481 physical=3481
+AMBIENT_LIVING_CAPTURE_FRAME frame-0059 native=3541 physical=3541
+AMBIENT_LIVING_CAPTURE_FRAME frame-0060 native=3601 physical=3601
+AMBIENT_LIVING_WATCH {"actual_simulation_seconds":60.0166666666645,"failures":[],"samples":61,"scene":"ambient2-settlement"}

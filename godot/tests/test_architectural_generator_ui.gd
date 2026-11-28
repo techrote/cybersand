@@ -175,8 +175,19 @@ func run() -> void:
 	var unsupported: Dictionary = pair.duplicate(true)
 	unsupported.extent = [256,256]
 	unsupported.zone_scale = 32
-	check(not panel.set_project(unsupported) and panel._status.text.contains("512 or 1024"), "headless-only extent is refused explicitly instead of silently changing selected map size")
+	check(not panel.set_project(unsupported) and panel._status.text.contains("512, 1024 or 2048"), "native-only 256 extent is refused explicitly instead of silently changing selected map size")
 	check(Store.recipe_hash(panel.project()) == Store.recipe_hash(pair), "unsupported UI extent preserves previous editable configuration")
+	var large: Dictionary = pair.duplicate(true)
+	large.extent = [2048,2048]
+	large.zone_scale = 128
+	check(panel.set_project(large), "2048 architectural project is available through the ordinary five-card form")
+	check(panel._extent.get_selected_id() == 2048 and panel._zone_scale.get_selected_id() == 128, "large map and native-safe 128-cell zone are visibly selected")
+	check(panel.save_project(project_path) and panel.load_project(project_path) and Store.recipe_hash(panel.project()) == Store.recipe_hash(large), "2048 editable project survives save/load without dimension substitution")
+	check(panel.set_project(pair), "old extent restored before testing interactive resize")
+	panel._extent.select(2)
+	panel._extent.item_selected.emit(2)
+	check(panel._zone_scale.get_selected_id() == 128 and Project.compile(panel.project()).get("ok",false), "selecting 2048 raises 64-cell zones to 128 without increasing native planner cells")
+	check(panel.set_project(pair), "original UI state restored after large-world selection")
 	var precise: Dictionary = Project.default_project()
 	precise.styles[0].share = 45.12345
 	precise.styles[1].share = 29.87655

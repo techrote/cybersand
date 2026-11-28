@@ -27,6 +27,7 @@ const PlayerVehicle = preload("res://scripts/player_vehicle_controller.gd")
 const PlayerAcrobat = preload("res://scripts/player_acrobat_controller.gd")
 const FlightProfile = preload("res://scripts/physical_flight_profile.gd")
 const FlightController = preload("res://scripts/physical_flight_controller.gd")
+const SandboxCapacity = preload("res://scripts/workbench_sandbox_capacity.gd")
 
 var rig_id: StringName = &""
 var actor_slot: int = 0
@@ -315,10 +316,11 @@ static func valid_review_options(options: Dictionary) -> bool:
 
 func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnation: int = 1,
 		review_fleet_index: int = -1, review_options: Dictionary = {},
-		workbench_physical: bool = false) -> Error:
+		workbench_physical: bool = false, starting_angle: float = 0.0) -> Error:
 	if configured:
 		return ERR_ALREADY_IN_USE
-	if not is_inside_tree() or not origin.is_finite() or slot < 0 or slot >= 8 or incarnation <= 0:
+	if not is_inside_tree() or not origin.is_finite() or slot < 0 or slot >= SandboxCapacity.MAX_ACTORS \
+		or incarnation <= 0 or not is_finite(starting_angle) or absf(starting_angle) > TAU:
 		return ERR_INVALID_PARAMETER
 	var invalid: String = validate_definition(definition)
 	if not invalid.is_empty():
@@ -405,8 +407,8 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 		var part: Dictionary = _part_defs[index]
 		var body: RigidBody2D = RigidBody2D.new()
 		body.name = "Part_%s" % str(part.id)
-		body.position = to_local(origin + Vector2(part.offset))
-		body.rotation = float(part.get("angle", 0.0))
+		body.position = to_local(origin + Vector2(part.offset).rotated(starting_angle))
+		body.rotation = float(part.get("angle", 0.0)) + starting_angle
 		body.mass = float(part.get("mass", 1.0))*float(review_options.get("mass_multiplier",1.0))
 		body.inertia = maxf(0.01, body.mass * Vector2(part.size).length_squared() / 12.0)
 		var compound: bool=str(part.get("shape","rectangle"))=="rectangle_union"
@@ -478,7 +480,7 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 			_parts[a].add_collision_exception_with(_parts[b])
 			_parts[b].add_collision_exception_with(_parts[a])
 	for joint: Dictionary in _definition.get("joints", []):
-		_create_joint(joint, origin)
+		_create_joint(joint, origin, starting_angle)
 	for mount: Dictionary in _definition.get("mounts", []):
 		var instance: Dictionary = mount.duplicate(true)
 		instance["attached"] = true
@@ -515,11 +517,11 @@ func configure(definition: Dictionary, origin: Vector2, slot: int = 0, incarnati
 	return OK
 
 
-func _create_joint(definition: Dictionary, origin: Vector2) -> void:
+func _create_joint(definition: Dictionary, origin: Vector2, starting_angle: float = 0.0) -> void:
 	var joint: Dictionary = definition.duplicate(true)
 	var a: int = int(joint.a)
 	var b: int = int(joint.b)
-	var pivot: Vector2 = origin + Vector2(joint.anchor)
+	var pivot: Vector2 = origin + Vector2(joint.anchor).rotated(starting_angle)
 	var node: Joint2D
 	var type: String = str(joint.type)
 	if type == "rotary":
@@ -536,7 +538,7 @@ func _create_joint(definition: Dictionary, origin: Vector2) -> void:
 		pin.motor_enabled = false
 		node = pin
 	else:
-		var axis: Vector2 = Vector2(joint.axis).normalized()
+		var axis: Vector2 = Vector2(joint.axis).normalized().rotated(starting_angle)
 		var limits: Vector2 = joint.get("limits", Vector2(-2.0, 2.0))
 		var groove: GrooveJoint2D = GrooveJoint2D.new()
 		groove.position = to_local(pivot + axis * limits.x)
@@ -544,7 +546,7 @@ func _create_joint(definition: Dictionary, origin: Vector2) -> void:
 		groove.length = maxf(0.05, limits.y - limits.x)
 		groove.initial_offset = clampf(-limits.x, 0.0, groove.length)
 		node = groove
-		joint["axis_local"] = axis.rotated(-float(_part_defs[a].get("angle", 0.0)))
+		joint["axis_local"] = axis.rotated(-float(_part_defs[a].get("angle", 0.0)) - starting_angle)
 		joint["rest_separation"] = Vector2(_part_defs[b].offset) - Vector2(_part_defs[a].offset)
 		# Two spaced pin-in-slot constraints emulate a guided rail. One groove
 		# alone leaves a piston free to turn over under a foot strike; the second
@@ -559,8 +561,8 @@ func _create_joint(definition: Dictionary, origin: Vector2) -> void:
 		joint["guide_node"] = guide
 		if type == "spring":
 			var spring: DampedSpringJoint2D = DampedSpringJoint2D.new()
-			var start: Vector2 = origin + Vector2(_part_defs[a].offset)
-			var separation: Vector2 = (origin + Vector2(_part_defs[b].offset)) - start
+			var start: Vector2 = origin + Vector2(_part_defs[a].offset).rotated(starting_angle)
+			var separation: Vector2 = (Vector2(_part_defs[b].offset) - Vector2(_part_defs[a].offset)).rotated(starting_angle)
 			spring.position = to_local(start)
 			spring.rotation = separation.angle() - PI * 0.5
 			spring.length = maxf(0.1, separation.length())
@@ -627,6 +629,74 @@ func collision_rects(part_index: int = 0) -> Array[Dictionary]:
 
 func centre() -> Vector2:
 	return _transforms[0].origin if not _transforms.is_empty() else Vector2.ZERO
+
+
+func pick_part(world_point: Vector2) -> Dictionary:
+	# Read the actual manually stepped space, not scene properties or a stale
+	# render interpolation. Compound gaps and round wheels are genuine misses.
+	if not configured or not fault.is_empty() or not world_point.is_finite(): return {}
+	for index: int in range(_parts.size() - 1, -1, -1):
+		var body: RigidBody2D = _parts[index]
+		if not is_instance_valid(body) or not body.get_rid().is_valid() or body.freeze: continue
+		var pose: Transform2D = PhysicsServer2D.body_get_state(body.get_rid(), PhysicsServer2D.BODY_STATE_TRANSFORM)
+		var local: Vector2 = pose.affine_inverse() * world_point
+		var inside := false
+		if str(_part_defs[index].get("shape", "rectangle")) == "circle":
+			inside = local.length_squared() <= pow(_sizes[index].x * 0.5, 2.0)
+		else:
+			for rectangle: Dictionary in collision_rects(index):
+				var half: Vector2 = Vector2(rectangle.size) * 0.5
+				var distance: Vector2 = (local - Vector2(rectangle.center)).abs()
+				if distance.x <= half.x and distance.y <= half.y:
+					inside = true
+					break
+		if inside:
+			return {"part_index":index, "part_id":str(_part_defs[index].id),
+				"body_identity":body.get_instance_id(), "local_anchor":local,
+				"anchor":world_point, "pose":pose}
+	return {}
+
+
+func manipulation_geometry() -> Array:
+	var result: Array = []
+	for index: int in range(_parts.size()):
+		result.append({"part_index":index, "part_id":str(_part_defs[index].id),
+			"shape":str(_part_defs[index].get("shape", "rectangle")),
+			"size":_sizes[index], "rectangles":collision_rects(index)})
+	return result
+
+
+func physical_joint_count() -> int:
+	var result := 0
+	for joint: Dictionary in _joints:
+		if not bool(joint.enabled): continue
+		for key: String in ["node", "guide_node", "spring_node"]:
+			if joint.has(key) and is_instance_valid(joint[key]): result += 1
+	return result
+
+
+func placement_pose_error() -> String:
+	# Prepared authoring recreates the catalogue graph. Reusing current body
+	# poses after equipment release/pickup would reconnect different anchors.
+	# Refuse explicitly instead of turning an authored placement into a covert
+	# equipment checkpoint or snapping a distant released body back to a joint.
+	if not _detached.is_empty() or not _fixed_equipment.is_empty():
+		return "Reset or restore the actor before placement: equipment has been released or fixed."
+	var authored: Array = _definition.get("joints", [])
+	if authored.size() != _joints.size(): return "Reset the actor before placement: its joint graph has changed."
+	for index: int in range(authored.size()):
+		var original: Dictionary = authored[index]
+		var actual: Dictionary = _joints[index]
+		var a := int(original.a)
+		var b := int(original.b)
+		var local_a := (Vector2(original.anchor) - Vector2(_part_defs[a].offset)).rotated(-float(_part_defs[a].get("angle",0.0)))
+		var local_b := (Vector2(original.anchor) - Vector2(_part_defs[b].offset)).rotated(-float(_part_defs[b].get("angle",0.0)))
+		var relative := float(_part_defs[b].get("angle",0.0)) - float(_part_defs[a].get("angle",0.0))
+		if not bool(actual.enabled) or actual.type != original.type or actual.a != original.a or actual.b != original.b \
+			or not Vector2(actual.anchor_a_local).is_equal_approx(local_a) or not Vector2(actual.anchor_b_local).is_equal_approx(local_b) \
+			or not is_equal_approx(float(actual.initial_relative_angle),relative):
+			return "Reset the actor before placement: equipment pickup changed its joint anchors."
+	return ""
 
 
 func advance(action: Dictionary, delta: float, allowed: bool = true) -> void:
@@ -1475,6 +1545,143 @@ func _ray(from: Vector2, to: Vector2) -> Dictionary:
 	var query: PhysicsRayQueryParameters2D = PhysicsRayQueryParameters2D.create(from, to, TERRAIN_MASK, _exclusions)
 	query.hit_from_inside = false
 	return get_world_2d().direct_space_state.intersect_ray(query)
+
+
+# AMBIENT-001: two optional owner-mediated terrain probes. They have a separate
+# fixed budget and do not consume or retune the motor's existing ray allowance.
+# Only copied values leave this rig; RIDs, bodies and the direct-space state do
+# not cross into a procedural behaviour. UI inspection never calls this method.
+func ambient_ledge_observation(lookahead_cells: float, max_drop_cells: float,
+		canvas_extent: Vector2i = Vector2i.ZERO) -> Dictionary:
+	var unavailable := {"available":false, "reason":"physical terrain probe unavailable"}
+	var result := {"available":false, "left":unavailable.duplicate(), "right":unavailable.duplicate(),
+		"lookahead_cells":lookahead_cells, "max_drop_cells":max_drop_cells, "searched_drop_cells":max_drop_cells, "ray_queries":0}
+	if not configured or not fault.is_empty() or _parts.is_empty() \
+		or not is_finite(lookahead_cells) or not is_finite(max_drop_cells) \
+		or lookahead_cells < 0.0 or lookahead_cells > 32.0 or max_drop_cells < 1.0 or max_drop_cells > 64.0:
+		return result
+	var left := INF
+	var right := -INF
+	var bottom := -INF
+	for index: int in range(_parts.size()):
+		if _detached.has(index): continue
+		var pose: Transform2D = _transforms[index]
+		var half: Vector2 = _sizes[index] * 0.5
+		var angle: float = pose.get_rotation()
+		var half_x: float = absf(cos(angle)) * half.x + absf(sin(angle)) * half.y
+		var half_y: float = absf(sin(angle)) * half.x + absf(cos(angle)) * half.y
+		if str(_part_defs[index].get("shape", "rectangle")) == "circle":
+			half_x = half.x
+			half_y = half.x
+		left = minf(left, pose.origin.x - half_x)
+		right = maxf(right, pose.origin.x + half_x)
+		bottom = maxf(bottom, pose.origin.y + half_y)
+	if not is_finite(left) or not is_finite(right) or not is_finite(bottom): return result
+	for side: String in ["left", "right"]:
+		var x: float = left - lookahead_cells if side == "left" else right + lookahead_cells
+		var origin := Vector2(x, bottom - 2.0)
+		var target := Vector2(x, bottom + max_drop_cells)
+		if canvas_extent != Vector2i.ZERO and (x < 0.0 or x >= canvas_extent.x \
+			or origin.y < 0.0 or origin.y >= canvas_extent.y):
+			result[side] = {"available":false, "reason":"probe crosses canvas boundary",
+				"boundary":true, "origin":origin, "target":target}
+			continue
+		var clipped: bool = canvas_extent != Vector2i.ZERO and target.y >= canvas_extent.y
+		if clipped: target.y = canvas_extent.y - 0.001
+		var query := PhysicsRayQueryParameters2D.create(origin, target, TERRAIN_MASK, _exclusions)
+		# A taller adjacent block can contain the ray's starting point. Preserve
+		# that collision instead of mistaking an empty ray for a physical drop.
+		query.hit_from_inside = true
+		var hit: Dictionary = get_world_2d().direct_space_state.intersect_ray(query)
+		var support: bool = not hit.is_empty() and Vector2(hit.get("normal", Vector2.ZERO)).y < -0.35
+		var obstructed := not hit.is_empty() and not support
+		result[side] = {"available":support or (hit.is_empty() and not clipped),
+			"boundary":clipped and hit.is_empty(), "support_found":support,
+			"reason":"probe origin inside or obstructed by non-support geometry" if obstructed \
+				else "probe ends at canvas boundary" if clipped and not support else "",
+			"searched_drop_cells":maxf(0.0, target.y - bottom),
+			"drop_cells":maxf(0.0, float(hit.position.y) - bottom) if support else max_drop_cells + 0.001,
+			"lower_bound":hit.is_empty(), "origin":origin, "target":target,
+			"position":hit.get("position", target), "normal":hit.get("normal", Vector2.ZERO)}
+		if obstructed: result[side].erase("drop_cells")
+		result.ray_queries += 1
+	result.available = bool(result.left.available) or bool(result.right.available)
+	return result
+
+
+
+# AMBIENT-002 optional local route evidence. This is a finite terrain fan at a
+# policy decision, separate from the motor's ray allowance. It copies only
+# numbers/vectors; no RID, body or live physics-space reference leaves the rig.
+# A ray establishes clearance along a center line, not complete hull sweep or
+# global reachability. Ground only receives horizontal alternatives.
+func ambient_navigation_observation(distance_cells: float = 32.0,
+		canvas_extent: Vector2i = Vector2i.ZERO, vertical: bool = false) -> Dictionary:
+	var result := {"available":false, "directions":[], "ray_queries":0,
+		"maximum_distance_cells":distance_cells, "ray_budget":8 if vertical else 2,
+		"source":"owner-issued actual terrain rays; conservative attached-hull surface distance",
+		"semantics":"center-line clearance is local evidence, not a swept-volume path"}
+	if not configured or not fault.is_empty() or _parts.is_empty() \
+		or not is_finite(distance_cells) or distance_cells < 1.0 or distance_cells > 32.0:
+		return result
+	var origin := centre()
+	if not origin.is_finite(): return result
+	var axes: Array[Vector2] = [Vector2.LEFT, Vector2.RIGHT]
+	if vertical:
+		axes = [Vector2.RIGHT, Vector2(1,1).normalized(), Vector2.DOWN,
+			Vector2(-1,1).normalized(), Vector2.LEFT, Vector2(-1,-1).normalized(),
+			Vector2.UP, Vector2(1,-1).normalized()]
+	for direction: Vector2 in axes:
+		var hull_extent := 0.0
+		for index: int in range(_parts.size()):
+			if _detached.has(index): continue
+			var pose: Transform2D = _transforms[index]
+			var half: Vector2 = _sizes[index] * 0.5
+			var angle := pose.get_rotation()
+			var half_x := absf(cos(angle)) * half.x + absf(sin(angle)) * half.y
+			var half_y := absf(sin(angle)) * half.x + absf(cos(angle)) * half.y
+			if str(_part_defs[index].get("shape", "rectangle")) == "circle":
+				half_x = half.x
+				half_y = half.x
+			hull_extent = maxf(hull_extent, direction.dot(pose.origin - origin) \
+				+ absf(direction.x) * half_x + absf(direction.y) * half_y)
+		var length := hull_extent + distance_cells
+		var admitted_length := length
+		var boundary := false
+		var outside := canvas_extent != Vector2i.ZERO and not Rect2(Vector2.ZERO, Vector2(canvas_extent)).has_point(origin)
+		if outside:
+			result.directions.append({"available":false, "direction":direction, "boundary":true,
+				"reason":"actor center outside authored canvas", "maximum_distance_cells":distance_cells})
+			continue
+		if canvas_extent != Vector2i.ZERO:
+			if direction.x > 0.000001: admitted_length = minf(admitted_length, (float(canvas_extent.x) - 0.001 - origin.x) / direction.x)
+			elif direction.x < -0.000001: admitted_length = minf(admitted_length, (0.001 - origin.x) / direction.x)
+			if direction.y > 0.000001: admitted_length = minf(admitted_length, (float(canvas_extent.y) - 0.001 - origin.y) / direction.y)
+			elif direction.y < -0.000001: admitted_length = minf(admitted_length, (0.001 - origin.y) / direction.y)
+			boundary = admitted_length + 0.000001 < length
+		if admitted_length <= 0.0:
+			result.directions.append({"available":false, "direction":direction, "boundary":true,
+				"reason":"no admitted ray remains inside canvas", "maximum_distance_cells":distance_cells})
+			continue
+		var target := origin + direction * admitted_length
+		var query := PhysicsRayQueryParameters2D.create(origin, target, TERRAIN_MASK, _exclusions)
+		query.hit_from_inside = true
+		var hit: Dictionary = get_world_2d().direct_space_state.intersect_ray(query)
+		result.ray_queries += 1
+		var observed_hit := not hit.is_empty()
+		var available := observed_hit or not boundary
+		var clearance := maxf(0.0, origin.distance_to(Vector2(hit.position)) - hull_extent) \
+			if observed_hit else maxf(0.0, admitted_length - hull_extent)
+		var sample := {"available":available, "direction":direction, "hit":observed_hit,
+			"clearance_cells":minf(clearance, distance_cells), "maximum_distance_cells":distance_cells,
+			"boundary":boundary and not observed_hit, "origin":origin, "target":target,
+			"position":hit.get("position", target), "normal":hit.get("normal", Vector2.ZERO),
+			"reason":"ray clipped by canvas without observed terrain" if not available else "",
+			"hull_extent_cells":hull_extent, "searched_clearance_cells":maxf(0.0, admitted_length - hull_extent)}
+		if not available: sample.erase("clearance_cells")
+		result.directions.append(sample)
+		result.available = bool(result.available) or available
+	return result
 
 
 func refresh_observation() -> void:

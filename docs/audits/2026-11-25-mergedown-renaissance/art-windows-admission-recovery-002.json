@@ -1,0 +1,61 @@
+{
+  "schema": "cybersand-art-windows-admission-recovery-v1",
+  "date": "2026-11-26",
+  "principal_ledger": 784,
+  "authoritative_pr": 780,
+  "source_commit": "b4316693759643539aad92f883d240308499a21f",
+  "source_tree": "b9a1d587b5e7df978ffeb750c61e1bd6b509aad9",
+  "prior_campaign": {
+    "run_id": 45782333985,
+    "attempt": 1,
+    "harness_commit": "40a8b0d83415afa918e5e2e4a0ef966824c709df",
+    "status": "failed-before-product-import",
+    "failed_modes": 9,
+    "successful_subresults": [
+      "source/run/attempt runtime producer and consumer verification",
+      "source-pinned Godot archive and actual version lookup"
+    ],
+    "cause_boundary": "Product is not clean committed source; original run omitted exact status paths",
+    "product_execution": false,
+    "artifact_delivery": false
+  },
+  "original_evidence": {
+    "path": "docs/audits/2026-11-25-mergedown-renaissance/art-windows-first-admission-45782333985.zip",
+    "bytes": 475632,
+    "sha256": "c62aa4dac1ea81369bb4f27cdd063bc9a066448a9042a7abb5971b1b0d69d295",
+    "contents": "All nine original failed Windows job logs, complete job inventory, downloaded exact core0 runtime/engine admission artifact, and separately labelled actual Linux metadata reproduction."
+  },
+  "observed_local_reproduction": {
+    "platform": "linux",
+    "source": "b4316693759643539aad92f883d240308499a21f",
+    "dirty_paths": "Exactly two materialized Windows runtime DLLs",
+    "raw_lfs_bytes_verified": true,
+    "filtered_git_blobs_equal_head": true,
+    "index_before_and_after_equal_head_tree": true,
+    "actual_windows_cause_established": false
+  },
+  "correction": {
+    "source_diagnostics": "Raw text/NUL status, complete original staged/unstaged diffs, relevant config origins, HEAD/index trees, per-dirty-file raw/filtered/HEAD identity and canonical LFS pointers retained before refresh or refusal.",
+    "runtime_index": "Only two exact named DLL paths after source-owned native105/Rapier4 and canonical pointer/raw bytes/filtered blob proof; no unknown/staged change admitted, exact HEAD/index equality before/after, final strict fullstatus and runtime reverify. No transport API change.",
+    "retained_oracles": "Restore original five core marker classes (six scripts including native-render counterpart) and displayed native clipboard differential guard at execution and raw readback.",
+    "metadata": "One source-owned cumulative900s metadata allowance paused during original application fixtures; full source-owned300s runtime allowance required before each proof.",
+    "campaign": "One full Windows storage/admission mode precedes remaining eight modes; all nine original inventories/watchdogs unchanged. New expensive campaigns triggered by explicit request marker only."
+  },
+  "independent_review": {
+    "reviewer": "Specialist C",
+    "controls": 37,
+    "status": "approved for source-unchanged canary campaign",
+    "windows_execution": "pending at registration"
+  },
+  "lead_review": "Authorized exact verified same-tree runtime metadata refresh, no speculative clearing or new application source.",
+  "files_sha256": {
+    "tools/ci/mergedown_art_qualification.py": "e0a7b531c59238418ede6f98164188408ffc7819b97a7411c45b72c500549271",
+    "tools/ci/test_mergedown_art_qualification.py": "1d7b9a7a87d1fc18e3200b918d0ceee29bd9cfddccc13e2fa46de1cf53ad334e",
+    "tools/fixtures/mergedown-art-windows-request.json": "daa2bf32a58405332da164b557277cb3d793a7d3f11f9bef0de276c95748a4fd",
+    ".github/workflows/mergedown-art-windows.yml": "83f241b5719a22885d87d067927b47c0e6ef4924b89be05ffe391f41ff8b82f3"
+  },
+  "application_source_changed": false,
+  "native_runtime_changed": false,
+  "model_calls": 0,
+  "merged": false
+}

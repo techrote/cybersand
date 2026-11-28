@@ -120,12 +120,29 @@ def project_identity(project: Path, identity: dict, runtime: dict) -> dict:
     """Bind the actual loaded project, including an extracted evaluation copy."""
     expected = {name.removeprefix("godot/"): digest for name, digest in identity["source_inputs_sha256"].items()
                 if name.startswith("godot/")}
+    extracted = project.resolve() != (ROOT / "godot").resolve()
+    windows_runtime = runtime["cybersand_runtime"]["path"].endswith(".dll")
+    platform, other_platform = ("windows", "linux") if windows_runtime else ("linux", "windows")
+    host_binding = f"tools/swarm004-runtime.{platform}.json"
+    other_binding = f"tools/swarm004-runtime.{other_platform}.json"
+    if extracted and not (project / other_binding).exists():
+        # Only the other platform's CLI binding is optional in a portable package.
+        expected.pop(other_binding, None)
     inputs = {}
     for name, digest in expected.items():
         path = project / name
         require(path.is_file() and not path.is_symlink(), "Missing execution project input: " + name)
         inputs[name] = hashlib.sha256(path.read_bytes().replace(b"\r\n", b"\n")).hexdigest()
         require(inputs[name] == digest, "Loaded project differs from recorded source: " + name)
+    if extracted and host_binding in expected:
+        native_cli = "tools/gentek_reciprocal.exe" if windows_runtime else "tools/gentek_reciprocal"
+        binding = json.loads((project / host_binding).read_bytes())
+        path = project / native_cli
+        require(binding.get("artifact") == "godot/" + native_cli and binding.get("platform") == platform
+                and path.is_file() and not path.is_symlink() and path.stat().st_size == binding.get("bytes"),
+                "Missing or inconsistent installed reciprocal generator: " + native_cli)
+        inputs[native_cli] = sha(path)
+        require(inputs[native_cli] == binding.get("sha256"), "Installed reciprocal generator differs from source binding")
     require({p.relative_to(project).as_posix() for p in project.rglob("*.gd")} ==
             {name for name in expected if name.endswith(".gd")}, "Loaded project has an unrecorded GDScript")
     for kind in ("cybersand_runtime", "rapier_runtime"):

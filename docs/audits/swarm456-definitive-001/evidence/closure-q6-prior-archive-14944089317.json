@@ -1,0 +1,53 @@
+{
+  "artifact_id": 14944089317,
+  "run_id": 45437617377,
+  "run_attempt": 2,
+  "source_commit": "b126523158e22d8993b4899710799f88dd0b98d0",
+  "source_tree": "6cb4dc90437668748d4ec899f52b6a4ce371937e",
+  "archive_sha256": "71d9e71767faef0d06be1e0687ddaa6ad17cbceb07b0219fe2030322f829ba12",
+  "archive_bytes": 294266392,
+  "all9610_members_crc_verified": true,
+  "archive_locally_retained": true,
+  "archive_path": "/tmp/swarm456-q6/q6-attempt2-recovery-evidence.zip",
+  "temporary_extraction_retained": false,
+  "extraction_retirement_reason": "Full independent5760-document readback completed; exact original ZIP, compact metadata and selected native negative cases retained.",
+  "audit": "q6-attempt2-science-audit.json",
+  "audit_sha256": "c81ec08ffbbdbaff851bd3db19f908a9e66ac984c41981d97031ae0cf6e70b70",
+  "raw_document_sha256_and_length_equal_counts": {
+    "request.json": 1920,
+    "request-envelope.json": 1920,
+    "response-native.json": 1920
+  },
+  "native_normalization_used": false,
+  "original_compact_file_hashes": {
+    "manifest.json": "ae9122ac60ce587241d712e05d40bd123930055b4489f52adb097df1ee530a0d",
+    "unified-replay.json": "623589b07bb76b2bc8b43547fb077de9c35983e04b6b90ae91edcf138188b836",
+    "native-build.json": "b0429ed30d60bcb38998fafe09c1322e4422cf79346c4b5a31d148aed35fb02b",
+    "replay-plan.json": "37756ebc1ee728ae7e4d0327292b86ee3f048852893f3911344b95ed5f69c453",
+    "island--industrial--s1849470453--recovery--r2.log": "f3a6ccc998cb33bbf00973b2504690e9da57cd195d101eb85f85df43dc91b6ce",
+    "island--industrial--s1849470453--both--r2.log": "3bdf3f9a60ab5cb105920a49f59a5d45f765a375c13568aef8769deaccc1da64",
+    "historical-registration-unchanged.json": "e2110f7fdbcc1ab5f507597f347c15ae68f7902ce29f1adbe21577571e49fc96",
+    "island--industrial--s1849470453--both--r2/request.json.gz": "1b331994a1400edd3f9ba4d4b81dd540aa804980d7272f321c9de89a0a7427b9",
+    "island--industrial--s1849470453--both--r2/response-native.json.gz": "b3d8c20e07595300f0973c31ca224c52e5bca89a5a692c2e691e1142b0522f54",
+    "island--industrial--s1849470453--both--r2/request-envelope.json.gz": "81d0dbe0c21a22ce25ea2182ff3f83102b82ba12f5dc71b2f783b07f1a7606a2",
+    "island--industrial--s1849470453--both--r2/storage.json": "6dc4c69f33cdccf06c9d622e5a1e311486f4dceecba1ae78e60c2bf8204ac2d8",
+    "island--industrial--s1849470453--recovery--r2/request.json.gz": "7e6f05f3f61d685afa1928f17411156135390b6aeafb8e7ab99579a8b7bca4f4",
+    "island--industrial--s1849470453--recovery--r2/response-native.json.gz": "8a292075a62c564e90055df1b3e4e7b20872bc820beacaec037643913be6f4be",
+    "island--industrial--s1849470453--recovery--r2/request-envelope.json.gz": "42cd864019c64da682d72cc04d403c859b0422454d98f8afc2e91befb983e9ed",
+    "island--industrial--s1849470453--recovery--r2/storage.json": "703c087e95e30be0822ca30570d1c0f47146b16f5bc920a393044aabcb1b98b0"
+  },
+  "local_archive_path": "/tmp/swarm456-q6/q6-attempt2-recovery-evidence.zip",
+  "local_archive_retained": true,
+  "local_relocations": [
+    {
+      "utc": "2026-11-24T17:43:23.568104+00:00",
+      "from": "/workspace/scratch/28827b1ce0c8/q6-evidence/q6-attempt2-recovery-evidence.zip",
+      "to": "/tmp/swarm456-q6/q6-attempt2-recovery-evidence.zip",
+      "bytes": 294266392,
+      "sha256": "71d9e71767faef0d06be1e0687ddaa6ad17cbceb07b0219fe2030322f829ba12",
+      "verified_before_and_after": true,
+      "authority": "Root requested relocation to free workspace for final source and packet operations.",
+      "original_remote_unchanged": true
+    }
+  ]
+}

@@ -1,0 +1,484 @@
+{
+  "schema": "art-workbench-final-intake-v1",
+  "retrieved_at": "2026-11-24T16:06:58.246Z",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "repository": "techrote/cybersand",
+  "critical_correction": "LM Studio was not running. No listener can return HTTP404; invalid selected model incidental. Primary reproduction Send to configured absent local endpoint then ordinary X/Hide.",
+  "records": [
+    {
+      "number": 727,
+      "title": "[Draft/HOLD] ART-SESSION-LOG-001 — one JSONL audit per game session, no chat restore",
+      "url": "https://github.com/techrote/cybersand/pull/727",
+      "state": "closed",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-22T19:35:29Z",
+      "head_sha": "64a9ff4cfc5758998e315c250d1c443f83385331",
+      "head_branch": "fix/art-session-scoped-logging-20261122",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": false,
+      "merged": true,
+      "merge_commit_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "comments": [],
+      "runs": []
+    },
+    {
+      "number": 744,
+      "title": "[Investigation] Art window briefly locks Godot after Send with LM Studio NOT running",
+      "url": "https://github.com/techrote/cybersand/issues/744",
+      "state": "open",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-23T07:56:34Z",
+      "comments": [
+        {
+          "id": 7090500657,
+          "url": "https://github.com/techrote/cybersand/issues/744#issuecomment-7090500657",
+          "author": "techrote",
+          "body": "**ART-LOCAL-CLOSE-744 investigation checkpoint — source-qualified Draft PR #765**\n\nhttps://github.com/techrote/cybersand/pull/765\n\n- Isolated actual Art/Shared Workbench local HTTP fixture plus credential-free in-memory timing instrumentation now committed at `cb88ab25d6dbdc8b459431d0189332bb7d37188a` (one child of accepted main `00cdb02f`).\n- [Art CI run 45104013320](https://github.com/techrote/cybersand/actions/runs/45104013320) **PASS, both Linux Godot 4.7 and hosted Windows Godot 4.7**, including the new 9-case 404/open/close/reopen/Stop/unreachable/valid loopback fixture. Each case's frame gap remained under its explicit 2.5s threshold.\n- Architectural generator and source-scope advisory also passed. Documentation/provenance CI was still running when this comment was written.\n- This is a **hosted negative result**, not a demonstrated fix or physical Windows/NVIDIA reproduction. The existing close policy (hide without canceling in-flight inference) is intentionally unchanged. Run exact-source Art against the owner's actual LM Studio GPU process and compare `last_request_timing`, `last_close_timing`, `last_stop_timing` and frame gaps before choosing a remedy.\n- `docs/audits/2026-11-23-art-local-close/README.md` includes source boundaries, diagnostic keys, the local fixture, and owner Windows steps. No paid inference/credentials, no historical traffic restore, no native physics changes. Keep Draft/HOLD."
+        }
+      ],
+      "runs": []
+    },
+    {
+      "number": 765,
+      "title": "[Draft/HOLD] ART-LOCAL-CLOSE-744: absent LM Studio server / Art-close timing probe",
+      "url": "https://github.com/techrote/cybersand/pull/765",
+      "state": "open",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-23T07:56:50Z",
+      "head_sha": "cb88ab25d6dbdc8b459431d0189332bb7d37188a",
+      "head_branch": "investigation/art-local-close-744-20261123",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "merged": false,
+      "merge_commit_sha": "f9cc2d87e8b1f006bc1cc4ced22d1d8e8163296e",
+      "comments": [
+        {
+          "id": 7094871368,
+          "url": "https://github.com/techrote/cybersand/pull/765#issuecomment-7094871368",
+          "author": "techrote",
+          "body": "**Owner correction — diagnostic priority changed (2026-11-23).** LM Studio was **not running** during the original multi-second Godot freeze. The selected model name was incidental: with no server listening, no HTTP 404 model-validation response could have been returned. Primary repro is **LM Studio provider → configured local endpoint with no listener → Send → immediately close Art**. Compare against no-server Send with the Art window left open and Stop-before-close. This PR's existing hosted checks include only one unreachable-port case (the remaining cases use a running mock HTTP server); its passing suite does **not** rule out the owner-observed absent-server / physical Windows GUI problem. The present test also runs headless and programmatically emits the close signal; it is not a native interactive Windows X-button acceptance test. Keep Draft/HOLD; no change to close/cancel semantics until the corrected condition is measured."
+        }
+      ],
+      "runs": [
+        {
+          "id": 45104013350,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6368,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013350/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013350/logs",
+          "workflow_id": 344993860
+        },
+        {
+          "id": 45104013320,
+          "name": "Art session-only logging qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 58,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013320/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013320/logs",
+          "workflow_id": 426427472
+        },
+        {
+          "id": 45104013318,
+          "name": "Palette shader actual backend qualification",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 1733,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013318/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013318/logs",
+          "workflow_id": 403062058
+        },
+        {
+          "id": 45104013480,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6163,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013480/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013480/logs",
+          "workflow_id": 344993861
+        },
+        {
+          "id": 45104013344,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6143,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013344/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013344/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45104013313,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4561,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013313/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013313/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45104013348,
+          "name": "Architectural Generator A+B source qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 620,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013348/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45104013348/logs",
+          "workflow_id": 417954798
+        }
+      ]
+    },
+    {
+      "number": 766,
+      "title": "[Draft/HOLD] ART-INVALID-MODEL-CLOSE-744: bound failed HTTP path and hidden Art UI work",
+      "url": "https://github.com/techrote/cybersand/pull/766",
+      "state": "open",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-23T03:36:15Z",
+      "head_sha": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+      "head_branch": "fix/art-invalid-model-close-latency-744-20261123",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "merged": false,
+      "merge_commit_sha": "ec5acbd716533501b32167d71630b429c4f6c2a4",
+      "comments": [
+        {
+          "id": 7090874487,
+          "url": "https://github.com/techrote/cybersand/pull/766#issuecomment-7090874487",
+          "author": "techrote",
+          "body": "## #744 exact-source qualification closeout — hosted Linux/Windows PASS, owner NVIDIA still HOLD\n\n**Current HEAD:** `48970266ae3b1ae47d2278d25ea312328078ddbd`; base accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`.\n\n[Godot 4.7 Art session qualification run 45106738619](https://github.com/techrote/cybersand/actions/runs/45106738619) completed **SUCCESS**, both mandatory Linux and hosted Windows jobs SUCCESS. The original Art session-only/native/traffic/Undo suites executed alongside the new real-loopback regression.\n\nNew `test_art_invalid_local_model_close.gd`: **12/12 passed** on each platform, using a real localhost HTTP POST and a 4-KB HTTP 404 invalid-model response while the Art window is hidden (without any model API calls).\n\n| Result | Linux headless | Windows Server 2022 headless |\n| --- | ---: | ---: |\n| Actual request remains active after Hide | PASS | PASS |\n| Failed response terminates, no automatic retry | PASS | PASS |\n| One response; full redacted error in archive | PASS | PASS |\n| No fictitious usage/assistant records | PASS | PASS |\n| Bounded error + exactly two conversation turns | PASS | PASS |\n| Window remains hidden | PASS | PASS |\n| Maximum observed `process_frame` gap | **7.005 ms** | **8.367 ms** |\n| Request-to-terminal elapsed | **117.656 ms** | **135.543 ms** |\n\n**Historical red runs retained without relabelling:** first run failed in the new fixture because `main.tscn` was not given the ordinary Workbench host script; second failed because the `shared_workbench` launch meta was missing. The published HEAD corrects both fixture omissions and passes real Godot on both platforms. No application-source changes were made for those harness repairs.\n\n**Evidence boundary:** These tests prove the corrected error/hide path under hosted loopback conditions. They do **not** establish causation or reproduce the owner's original multi-second Windows 11/NVIDIA + LM Studio freeze. External LM Studio model-loading CPU/GPU contention and physical-driver effects remain outside this evidence. Keep Draft/HOLD and #744 open for owner physical test; no merge/Ready/auto-merge authority.\n\nSuggested single physical acceptance: source-exact Windows build, invalid LM Studio model with Image off, Send→close X, then compare frame responsiveness, error receipt, reopen, and Stop; confirm that the original lockup no longer reproduces."
+        }
+      ],
+      "runs": [
+        {
+          "id": 45106738619,
+          "name": "Art session-only logging qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 63,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738619/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738619/logs",
+          "workflow_id": 426427472
+        },
+        {
+          "id": 45106738499,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6149,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738499/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738499/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45106738536,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6169,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738536/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738536/logs",
+          "workflow_id": 344993861
+        },
+        {
+          "id": 45106738489,
+          "name": "Architectural Generator A+B source qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 625,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738489/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738489/logs",
+          "workflow_id": 417954798
+        },
+        {
+          "id": 45106738540,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4567,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738540/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738540/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45106738539,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6374,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738539/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45106738539/logs",
+          "workflow_id": 344993860
+        }
+      ]
+    },
+    {
+      "number": 713,
+      "title": "WB-ART-UI-APPLY-001 — Art conversation Note dialog grows beyond viewport; Apply unreachable",
+      "url": "https://github.com/techrote/cybersand/issues/713",
+      "state": "open",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-21T19:31:09Z",
+      "comments": [],
+      "runs": []
+    },
+    {
+      "number": 763,
+      "title": "[Draft/HOLD] WB-ART-UI-APPLY-001: bound conversation editor and keep Apply visible (#713)",
+      "url": "https://github.com/techrote/cybersand/pull/763",
+      "state": "open",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-23T03:04:52Z",
+      "head_sha": "2d63bba23932feb2c051c11df9d0775c24ea451d",
+      "head_branch": "fix/art-conversation-bounded-713-20261123",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "merged": false,
+      "merge_commit_sha": "55482d655020c02178b4a173c09d973e7f44cdd2",
+      "comments": [],
+      "runs": [
+        {
+          "id": 45103823987,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6367,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823987/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823987/logs",
+          "workflow_id": 344993860
+        },
+        {
+          "id": 45103823968,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4560,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823968/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823968/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45103823956,
+          "name": "Architectural Generator A+B source qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 619,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823956/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823956/logs",
+          "workflow_id": 417954798
+        },
+        {
+          "id": 45103824089,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6142,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103824089/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103824089/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45103824140,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6162,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103824140/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103824140/logs",
+          "workflow_id": 344993861
+        },
+        {
+          "id": 45103823960,
+          "name": "Art session-only logging qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 57,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823960/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45103823960/logs",
+          "workflow_id": 426427472
+        }
+      ]
+    },
+    {
+      "number": 750,
+      "title": "WB-ART-MODEL-ROSTER-001 — refresh NVIDIA Build and LM Studio model lineups",
+      "url": "https://github.com/techrote/cybersand/issues/750",
+      "state": "open",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-22T20:46:48Z",
+      "comments": [
+        {
+          "id": 7085538784,
+          "url": "https://github.com/techrote/cybersand/issues/750#issuecomment-7085538784",
+          "author": "techrote",
+          "body": "Implemented as **Draft/HOLD PR #756**: https://github.com/techrote/cybersand/pull/756\n\n- Corrected NVIDIA + LM Studio curated model IDs, defaults, invalid `astra5-6` UI suppression and preservation of custom/persisted history.\n- Added deterministic mounted-control model-roster regression and wired it into Linux + Windows Godot 4.7 CI.\n- **PASS**: both jobs in [Art session-only logging qualification run #45068142725](https://github.com/techrote/cybersand/actions/runs/45068142725). GEN-007 source publication guard and native source-scope advisory also passed. Documentation/provenance workflow was still running at this update.\n- Current HEAD: `8093a782a13a078ad6fa4fc9fdf11b969cbbf52f`. No paid inference or native engine changes. PR remains Draft, unmerged; owner integration decision outstanding.\n\nProvider caveat: NVIDIA currently labels Kimi K3.1 Pro as preview/playground only with programmatic API unavailable, so it is listed but not used as the default."
+        }
+      ],
+      "runs": []
+    },
+    {
+      "number": 756,
+      "title": "[Draft/HOLD] WB-ART-MODEL-ROSTER-001: refresh NVIDIA and LM Studio presets (#750)",
+      "url": "https://github.com/techrote/cybersand/pull/756",
+      "state": "open",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-22T21:12:52Z",
+      "head_sha": "8093a782a13a078ad6fa4fc9fdf11b969cbbf52f",
+      "head_branch": "fix/wb-art-model-roster-750-20261122",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": false,
+      "merged": false,
+      "merge_commit_sha": "ca93f28389c2c52c4372a41b1f05beb0e7a207c4",
+      "comments": [],
+      "runs": [
+        {
+          "id": 45070830072,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4524,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45070830072/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45070830072/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45070830043,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6330,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45070830043/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45070830043/logs",
+          "workflow_id": 344993860
+        },
+        {
+          "id": 45070830129,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6125,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45070830129/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45070830129/logs",
+          "workflow_id": 344993861
+        },
+        {
+          "id": 45070830077,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6105,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45070830077/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45070830077/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45068142837,
+          "name": "GDExtension build and current Godot regression",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6112,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142837/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142837/logs",
+          "workflow_id": 344993861
+        },
+        {
+          "id": 45068142799,
+          "name": "Native source-scope advisory (report only)",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 4511,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142799/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142799/logs",
+          "workflow_id": 402341461
+        },
+        {
+          "id": 45068142733,
+          "name": "Documentation and provenance",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 6317,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142733/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142733/logs",
+          "workflow_id": 344993860
+        },
+        {
+          "id": 45068142714,
+          "name": "Native C++ validation",
+          "status": "completed",
+          "conclusion": "skipped",
+          "run_number": 6092,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142714/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142714/logs",
+          "workflow_id": 344993864
+        },
+        {
+          "id": 45068142737,
+          "name": "Architectural Generator A+B source qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 579,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142737/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142737/logs",
+          "workflow_id": 417954798
+        },
+        {
+          "id": 45068142725,
+          "name": "Art session-only logging qualification",
+          "status": "completed",
+          "conclusion": "success",
+          "run_number": 35,
+          "jobs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142725/jobs",
+          "logs_url": "https://api.github.com/repos/techrote/cybersand/actions/runs/45068142725/logs",
+          "workflow_id": 426427472
+        }
+      ]
+    },
+    {
+      "number": 559,
+      "title": "WB-ART-002: rebuild permissive agent art workbench from main — direct drawing, persistent collaboration and LM Studio",
+      "url": "https://github.com/techrote/cybersand/issues/559",
+      "state": "open",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-10T21:47:05Z",
+      "comments": [
+        {
+          "id": 6778630821,
+          "url": "https://github.com/techrote/cybersand/issues/559#issuecomment-6778630821",
+          "author": "techrote",
+          "body": "Stage 1 of #559 delivered in Draft PR #560, based on main `d4b18e7f06839b35c8f6a66195206da0f33c5fa3`.\n\nExact head `76e4742a75c59107abb27ebf5f8198b45c47609a`, tree `bb8f90d874cb034571be6c4d79c84add72a05896`.\n\nReal current-main native runtimes (unchanged LFS binaries, no fresh C++ build): Windows Stage 1 **105/105**, Linux/Xvfb rendered Stage 1 **108/108**, ordinary Windows input **24/24**, ordinary Windows canvas **140/140**. Standalone non-Git Windows install also **105/105**. Historical M11, docs and current repository identity pass locally; retrieval ran with 31/32 canonical top-five hits (not an answer-correctness claim). Native/GDExtension Draft-skipped CI is not counted as a pass.\n\nActual differential controls include >4096-cell ordered shapes, 64 individual pixels, authoritative material readback, human-authored Sand/protected-region/selected-area exclusions, Stop after exactly one completed 4096-cell chunk, late epoch refusal, replacement before completion consumption, and mixed human/batch Save/reopen. Original 1920-wide and smaller-window post-draw PNGs and native-material PNG retained.\n\nReproduced and fixed a first-render ordering race: Shared Workbench now publishes its current frame settings before preparation captures the settings revision. Earlier failed graphical attempts remain in the local evidence archive.\n\nWindows launch: `C:/CyberSand-Art-Stage1-20261110/Launch Stage 1.cmd`, then **Art batches → Draw** for the prefilled example. Old `C:/CyberSand-Provider-Review-20261108` remains available and untouched. This stage has no LLM/provider entry yet. Native chunk size is not a batch limit. Existing Setup format can explicitly refuse an excessively fragmented Save; #548 remains separate.\n\nRecoverable source: `codex/agent-art-workbench-v2`. Local evidence: `C:/CyberSand-evidence/wb-art-stage1-76e4742a.zip`; source/runtime identities and commands in qualification JSON/logs, with the canonical runbook in `docs/systems/workbench-direct-art-batches.md`.\n\n**Draft / HOLD, no merge, no Ready promotion.** Owner Windows graphical feedback remains outstanding. Later #559 providers/LM Studio/context/scanline/traffic stages remain Planned. #531 remains reference only. No inference or paid API calls.\n\nExact-head hosted Documentation/provenance consistency passed: https://github.com/techrote/cybersand/actions/runs/42896651901 (head `76e4742a75c59107abb27ebf5f8198b45c47609a`). Draft-skipped production Native/GDExtension workflows remain unexecuted.\n"
+        },
+        {
+          "id": 6780119961,
+          "url": "https://github.com/techrote/cybersand/issues/559#issuecomment-6780119961",
+          "author": "techrote",
+          "body": "Stage 2 delivered on existing Draft PR #560, final source `abfd0cbd351caa714bef7161b4c491ca17115eba`, tree `92aee514406f372b511da846beb5f642c065a365`. Stage-1 checkpoint `76e4742a` remains recoverable; #531 remains read-only.\r\n\r\n**Launch:** `C:/CyberSand-Art-Stage2-20261110/Launch Stage 2.cmd` → Art batches → Model prompt. Select OpenAI/NVIDIA, use **Key…** locally, then Send. No keys in chat or profiles; key entry is per-provider/process memory. LM Studio is already running loopback-only with three installed models; the tested text alias defaults to `wb-art-instruct`. The small history dropdown offers the three local aliases. Prior builds are unchanged.\r\n\r\nImplemented thin OpenAI Responses and NVIDIA/LM Studio Chat Completions adapters, editable endpoints/manual model IDs/history, actual Toks/Secs controls, optional rendered-canvas PNG input, clear waiting/idle/error state, readable/raw durable redacted traffic and full-session export. Native protection, queued-versus-applied feedback and Stop/replacement fencing reuse Stage 1. No Git/pricing/catalog/deployment-name preflight, MCP or Python runner dependency in the product.\r\n\r\n**Qualification:** keyless 51/51; actual Windows HTTP fixtures through real native UI 34 checks per provider; Linux/Xvfb rendered-image HTTP/native UI 34 per provider; genuine local text UI/native 34/34; installed non-Git folder 34/34; retained Stage-1 native regression 105/105 and ordinary input/native/Rapier 24/24. Exact-head hosted Documentation/provenance run https://github.com/techrote/cybersand/actions/runs/42907184119 passed. Unchanged materialized main LFS native libraries were used, not a fresh C++ rebuild. Draft-skipped production Native/GDExtension CI is not a pass.\r\n\r\n**RTX/local evidence:** TITAN RTX 24576 MiB; LM Studio 0.4.26+4; NVIDIA CUDA llama.cpp 2.73.0; local models loaded with `--gpu max`, 16384 context, actual CUDA processes/VRAM retained. LFM2.5-1.2B Q4_K_M passed 4096/8192/16384 output allowances through the new UI. Genuine LFM3-Omni-2B image assessment ran through the adapter against an original native-workbench PNG; its projector reports unsupported CUDA attention and CPU fallback, so this is mixed GPU/CPU vision rather than fully GPU vision or a persistent visual-revision loop.\r\n\r\n**Exact-prompt statue trials:** `draw a detailed gundam mech style cyberpunk statue`, three independent fresh 64x128 areas per model, 8192 output allowance. Initial nine trials at `9dcae724` applied zero cells. Preserved those failures; clarified generic parameter instructions and normalized equivalent field/primitive spellings without weakening native execution checks. Revised trials: LFM2.5-1.2B **3/3 applied**, mean 1.24s; DavidAU 8B-A1B **3/3**, mean 23.85s; LFM3-Omni-2B **2/3**, mean 23.61s. Its last response truncated at 8192 tokens and drew nothing. Art remains crude; applying commands is not a subjective quality pass. No baseline result was discarded or relabelled.\r\n\r\nComparison gallery: `C:/CyberSand-evidence/wb-art-stage2-abfd0cbd/index.html`; original rendered PNGs, native masks, raw traffic, metrics/runtime identities and ZIP retained locally. ZIP SHA256 `e000468a2e98ba994c9e5b92f39ca6512cf0cfea43ca4649946ff25b969fb760`.\r\n\r\n**Remaining:** genuine OpenAI/NVIDIA inference awaits local key entry (no cloud calls/charges made); human Windows graphical verdict separate; conversation history/context modes remain Stage 3. This stage is one-shot inference, explicitly labelled in the UI. Existing fragmented Setup save-format capacity remains explicit. No merge, Ready promotion, physics/default changes or branch deletion.\r\n"
+        }
+      ],
+      "runs": []
+    },
+    {
+      "number": 558,
+      "title": "WB-COMMS-001: make agent painting communication and verified editing throughput efficient",
+      "url": "https://github.com/techrote/cybersand/issues/558",
+      "state": "open",
+      "author": "techrote",
+      "assignees": [],
+      "updated_at": "2026-11-10T19:38:28Z",
+      "comments": [],
+      "runs": []
+    }
+  ]
+}

@@ -1,0 +1,2 @@
+# Bounded test-process tree monitoring; runtime game/evaluator needs no Python.
+psutil==7.2.2

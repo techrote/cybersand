@@ -1,0 +1,19 @@
+{
+  "source_revision": "83a3db6ffb207761df999abedac77eb1401604a8",
+  "workflow_run": 45536810257,
+  "artifact_id": 14988238799,
+  "url": "https://github.com/techrote/cybersand/actions/runs/45536810257/artifacts/14988238799",
+  "archive_bytes": 42602890,
+  "archive_sha256": "996c30c61f2edc55cc51d6467652ceb5b128e4ac678809d35e1898214365a199",
+  "downloaded_once": true,
+  "entries": 719,
+  "expanded_bytes": 270358219,
+  "analysis_summary_sha256": "f96d961ab61f485b01fa89f38a499dd905ff2ead617e9940cbf2671f917fbac0",
+  "independent_review_sha256": "00604685048bfcefb35c6c793b9ab94a1a4ce698ef268b675d245e58879ec7cc",
+  "rereduced_summary_byte_equal": true,
+  "independent_rereview_byte_equal": true,
+  "metric_values_independently_checked": 2910,
+  "exact_ablation_groups_checked": 40,
+  "captured_renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "physical_display_acceptance": false
+}

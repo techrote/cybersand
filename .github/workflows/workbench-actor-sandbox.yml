@@ -1,0 +1,460 @@
+name: ACTOR-COMPOSE-FINAL-001 source-bound Windows acceptance
+on:
+  push:
+    branches: [integration/actor-compose-final-001-20261123, integration/swarm004-005-006-unified-20261122]
+    paths:
+      - '.github/workflows/workbench-actor-sandbox.yml'
+      - 'tools/ci/**'
+      - 'tools/swarm45/qualify_combined_workbench.py'
+      - 'tools/package_explore001_candidate.py'
+      - 'tools/build_pinned_godot_cpp.sh'
+      - 'tools/build_native_extension*.sh'
+      - 'tools/check_linux_runtime_floor.sh'
+      - 'tools/requirements-build.txt'
+      - 'tools/toolchains/**'
+      - 'tools/material_catalogue/**'
+      - 'tools/lcb/**'
+      - 'materials/catalogue/**'
+      - 'docs/reference/liquid-solver-capability-matrix.json'
+      - 'docs/reference/liquid-policy-wire-vectors.json'
+      - 'docs/reference/water-normalization-vectors.json'
+      - 'docs/reference/liquid-run-receipt-vectors.json'
+      - 'docs/operations/workbench-actor-composition.md'
+      - 'godot/**'
+      # Publishing the exact already-tested candidate bytes/manifests does not
+      # need another identical build. Every native source and script change
+      # remains selected, and ordinary repository custody gates still apply.
+      - '!godot/addons/cybersand_native/bin/**'
+      - '!godot/addons/cybersand_native/runtime-provenance*.json'
+      - 'native/**'
+      - 'third_party/**'
+      - 'examples/worldgen/**'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: wb-actor-sandbox-${{ github.event_name }}-${{ github.event_name == 'push' && github.ref || github.run_id }}
+  cancel-in-progress: ${{ github.event_name == 'push' }}
+
+# Explicitly bounded mission evaluation. Draft/HOLD remains mandatory; this
+# workflow neither promotes the PR nor publishes candidates into accepted main.
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+
+jobs:
+  linux:
+    name: Pinned native builds and Linux coupled Workbench
+    if: (github.ref == 'refs/heads/integration/actor-compose-final-001-20261123' || github.ref == 'refs/heads/integration/swarm004-005-006-unified-20261122')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 110
+    env:
+      CYBERSAND_LAB_CXX: /usr/bin/g++-13
+    outputs:
+      windows_candidate_ready: ${{ steps.windows_upload.outcome }}
+      artifact_attempt: ${{ steps.identity.outputs.attempt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - name: Record exact source and obtain pinned dependencies
+        id: identity
+        shell: bash
+        run: |
+          set -euo pipefail
+          echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+          mkdir -p evidence build/actor-linux build/actor-windows
+          git rev-parse HEAD > evidence/source-commit.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          python3 tools/ci/check_ci_provider_policy.py > evidence/provider.log
+          python3 -m unittest discover -s tools/ci -p test_workbench_actor_publication.py > evidence/runtime-publication-contract.log 2>&1
+          python3 -m unittest discover -s tools/ci -p test_actor_publication_stage.py >> evidence/runtime-publication-contract.log 2>&1
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/scons.log 2>&1
+          mkdir -p "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT" > evidence/godot-cpp-fetch.log 2>&1
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          timeout 1200 curl -fL --retry 3 -o "$RUNNER_TEMP/llvm-mingw.tar.xz" https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz > evidence/llvm-download.log 2>&1
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir -p "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          test -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar" || ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          g++-13 --version > evidence/linux-toolchain.txt
+          ld --version >> evidence/linux-toolchain.txt
+          "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-g++" --version > evidence/windows-toolchain.txt
+      - name: Build and attest Linux native capacity change
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          timeout 1800 bash tools/build_pinned_godot_cpp.sh linux > evidence/build-linux-godot-cpp.log 2>&1
+          timeout 1200 bash tools/build_native_extension.sh > evidence/build-linux-native.log 2>&1
+          python3 tools/ci/run_workbench_actor_qualification.py record --platform linux --binary "$CYBERSAND_NATIVE_OUTPUT" --output build/actor-linux --toolchain evidence/linux-toolchain.txt
+          python3 tools/ci/run_workbench_actor_qualification.py install --platform linux --candidate build/actor-linux
+          bash tools/check_linux_runtime_floor.sh > evidence/linux-abi-floor.log
+      - name: Build and attest Windows candidate from identical native source
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 1800 bash tools/build_pinned_godot_cpp.sh windows > evidence/build-windows-godot-cpp.log 2>&1
+          timeout 1200 bash tools/build_native_extension_windows.sh > evidence/build-windows-native.log 2>&1
+          python3 tools/ci/run_workbench_actor_qualification.py record --platform windows --binary "$CYBERSAND_NATIVE_OUTPUT" --output build/actor-windows --toolchain evidence/windows-toolchain.txt
+          python3 tools/ci/native_candidate_identity.py build/actor-windows --create
+      - name: Transfer attested Windows candidate inside this exact run
+        id: windows_upload
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: actor-windows-runtime-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/actor-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Execute native expanded ownership contract
+        run: |
+          set -euo pipefail
+          make CXX=g++-13 test-workbench-actor-capacity > evidence/native-capacity.log 2>&1
+      - name: Authenticate pinned engine and graphical Linux display
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/godot"
+          timeout 600 curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip' > evidence/godot-download.log 2>&1
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          echo "GODOT_BIN=$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+          bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+      - name: Execute Linux regressions, fresh authored reopen and actual framebuffer capture
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -euo pipefail
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/ci/run_workbench_actor_qualification.py test --godot "$GODOT_BIN" \
+            --candidate build/actor-linux --output evidence/linux --graphical --sandbox --measure
+      - name: Exercise installed reciprocal runtime with combined Linux World
+        if: github.ref == 'refs/heads/integration/swarm004-005-006-unified-20261122'
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+        run: |
+          set -euo pipefail
+          git lfs pull --include='godot/tools/gentek_reciprocal' --exclude=''
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/swarm45/qualify_combined_workbench.py --godot "$GODOT_BIN" --project godot --candidate build/actor-linux --output evidence/swarm-linux
+      - name: Retain Linux candidate and every original build/test failure
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: actor-linux-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            evidence/
+            build/actor-linux/
+          if-no-files-found: warn
+          retention-days: 90
+
+  windows:
+    name: Windows coupled Workbench and portable owner evaluation
+    needs: linux
+    if: ${{ !cancelled() && needs.linux.outputs.windows_candidate_ready == 'success' }}
+    runs-on: windows-2022
+    timeout-minutes: 90
+    env:
+      CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
+    outputs:
+      artifact_attempt: ${{ steps.identity.outputs.attempt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-windows-runtime-${{ github.sha }}-${{ github.run_id }}-${{ needs.linux.outputs.artifact_attempt }}
+          path: build/actor-windows
+      - name: Verify source-bound native candidate and retained Rapier
+        id: identity
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          "attempt=$env:GITHUB_RUN_ATTEMPT" | Out-File -Append -FilePath $env:GITHUB_OUTPUT
+          & $env:CYBERSAND_LAB_CXX --version | Set-Content evidence/lab-toolchain.txt
+          if ($LASTEXITCODE -ne 0) { throw 'The existing Materials Lab compiler is unavailable' }
+          git rev-parse HEAD | Set-Content evidence/source-commit.txt
+          python tools/ci/check_ci_provider_policy.py *> evidence/provider.log
+          if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Could not materialize the Windows Rapier runtime' }
+          if ($env:GITHUB_REF_NAME -eq 'integration/swarm004-005-006-unified-20261122') {
+            git lfs pull --include='godot/tools/gentek_reciprocal.exe' --exclude=''
+            if ($LASTEXITCODE -ne 0) { throw 'Could not materialize source-bound reciprocal generator' }
+          }
+          if ($LASTEXITCODE -ne 0) { throw 'Rapier materialization failed' }
+          python tools/ci/run_workbench_actor_qualification.py install --platform windows --candidate build/actor-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Native candidate source/byte identity mismatch' }
+      - name: Fetch and authenticate official pinned Windows Godot
+        shell: pwsh
+        run: |
+          $zip = Join-Path $env:RUNNER_TEMP 'godot-win47.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          $expected = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $expected) { throw 'Pinned Godot archive mismatch' }
+          $output = Join-Path $env:RUNNER_TEMP 'godot-win47'
+          Expand-Archive -Path $zip -DestinationPath $output
+          'GODOT_EXE=' + (Join-Path $output 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append -FilePath $env:GITHUB_ENV
+      - name: Execute Windows source-matched actor and authoring regressions
+        shell: pwsh
+        run: |
+          python tools/ci/run_workbench_actor_qualification.py test --godot $env:GODOT_EXE --candidate build/actor-windows --output evidence/windows --graphical --sandbox --measure
+          if ($LASTEXITCODE -ne 0) { throw 'Windows coupled actor qualification failed' }
+      - name: Stage signed redistributable, notices and committed portable Workbench
+        shell: pwsh
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
+          New-Item -ItemType Directory -Force $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Godot notices download failed' }
+          }
+          if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Godot notices identity mismatch' }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft developer licence download failed' }
+          $vcRuntime = Join-Path $env:RUNNER_TEMP 'actor-vc-runtime'
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output $vcRuntime -License $runtimeLicense -DeveloperLicense $developerLicense
+          $engine = Join-Path (Split-Path $env:GODOT_EXE) 'Godot_v4.7-stable_win64.exe'
+          python tools/package_explore001_candidate.py --engine $engine --engine-notices $notices --vc-runtime $vcRuntime --native-candidate build/actor-windows --output build/actor-workshop-windows --readme docs/operations/workbench-actor-composition.md
+          if ($LASTEXITCODE -ne 0) { throw 'Portable Workbench packaging refused' }
+      - name: Extract the delivered ZIP and qualify graphical Workbench and authored save/reopen
+        shell: pwsh
+        run: |
+          $archive = 'build/CyberSand-Actor-Sandbox-Windows-' + $env:GITHUB_SHA.Substring(0,12) + '.zip'
+          Compress-Archive -Path build/actor-workshop-windows/* -DestinationPath $archive
+          $archiveHash = (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant()
+          Get-FileHash $archive -Algorithm SHA256 | Format-List | Out-File evidence/windows-package-sha256.txt
+          $package = Join-Path $env:RUNNER_TEMP 'actor-workshop-installed'
+          if (Test-Path -LiteralPath $package) { throw 'Installed ZIP qualification requires a fresh directory' }
+          Expand-Archive -LiteralPath $archive -DestinationPath $package
+          $engine = Join-Path $package 'Godot_v4.7-stable_win64_console.exe'
+          python tools/ci/run_workbench_actor_qualification.py test --godot $engine --candidate build/actor-windows --package $package --output evidence/installed-windows --graphical --sandbox
+          if ($LASTEXITCODE -ne 0) { throw 'Installed Windows Workbench failed' }
+          if ($env:GITHUB_REF_NAME -eq 'integration/swarm004-005-006-unified-20261122') {
+            python tools/swarm45/qualify_combined_workbench.py --godot $engine --project (Join-Path $package 'godot') --candidate build/actor-windows --output evidence/swarm-windows-installed
+            if ($LASTEXITCODE -ne 0) { throw 'Combined reciprocal authoring and fresh-process reopen failed' }
+          }
+          ./tools/ci/check_windows_package_modules.ps1 -Package $package -Evidence evidence/installed-windows/runtime-modules.json
+          # Validate the packaged collector in hosted Windows without rerunning
+          # the same extensive fixture during extraction qualification.
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $package 'Actor Results Collector.ps1') -EvidenceOnly *> evidence/actor-collector-smoke.log
+          if ($LASTEXITCODE -ne 0) { throw 'Packaged Windows acceptance collector failed identity smoke test' }
+          $receipt = @(Get-ChildItem -LiteralPath (Join-Path $package 'Actor-Acceptance-Results') -Recurse -Filter acceptance-collector.json)
+          if ($receipt.Count -ne 1) { throw 'Missing source-matched packaged collector receipt' }
+          $collector = Get-Content -LiteralPath $receipt[0].FullName -Raw | ConvertFrom-Json
+          $packageManifest = Get-Content -LiteralPath (Join-Path $package 'candidate-manifest.json') -Raw | ConvertFrom-Json
+          $declared = @($packageManifest.files_sha256.PSObject.Properties).Count
+          if ($collector.status -ne 'passed' -or $collector.package_identity -ne 'passed' -or $collector.native_identity -ne 'passed' -or $collector.source_commit -ne $env:GITHUB_SHA -or
+              $collector.manifest_files_expected -ne $declared -or $collector.manifest_files_verified -ne $declared -or $declared -lt 100) {
+            throw 'Packaged collector did not verify the complete source-bound payload'
+          }
+          Copy-Item -LiteralPath $receipt[0].FullName -Destination evidence/installed-windows/actor-collector-smoke.json
+          # Adversarial proof: a harmless modification to a NON-native source
+          # script must make local -EvidenceOnly verification fail. Always
+          # restore the actual extracted bytes before the package is used again.
+          $tampered = Join-Path $package 'godot/scripts/workbench_actor_panel.gd'
+          $original = [IO.File]::ReadAllBytes($tampered)
+          try {
+            [IO.File]::AppendAllText($tampered, "`n# deliberate collector integrity negative test`n")
+            & powershell.exe -NoProfile -ExecutionPolicy Bypass -File (Join-Path $package 'Actor Results Collector.ps1') -EvidenceOnly *> evidence/actor-collector-tamper.log
+            $denied = $LASTEXITCODE
+            if ($denied -eq 0 -or -not (Select-String -Path evidence/actor-collector-tamper.log -SimpleMatch 'Packaged file differs from manifest: godot/scripts/workbench_actor_panel.gd')) {
+              throw 'Collector failed to refuse a modified non-native Workbench script'
+            }
+          } finally {
+            [IO.File]::WriteAllBytes($tampered,$original)
+          }
+          if ((Get-FileHash -LiteralPath $tampered -Algorithm SHA256).Hash.ToLowerInvariant() -ne
+              [string]$packageManifest.files_sha256.PSObject.Properties['godot/scripts/workbench_actor_panel.gd'].Value) {
+            throw 'Non-native tamper probe did not restore original source bytes'
+          }
+          if ((Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() -ne $archiveHash) { throw 'Delivered ZIP changed after extraction qualification' }
+          @{ status='passed'; source_commit=$env:GITHUB_SHA; archive=(Split-Path $archive -Leaf); sha256=$archiveHash;
+            procedure='Exact delivered ZIP extracted into fresh non-checkout directory; manifest, graphical gameplay, Save/Load and actual DLL paths verified';
+            installed_report='installed-windows/qualification.json'; modules_report='installed-windows/runtime-modules.json' } |
+            ConvertTo-Json | Set-Content evidence/windows-package-extraction.json
+          # The negative tamper probe is expected to exit nonzero. GitHub's pwsh
+          # wrapper propagates its LASTEXITCODE even after later successful
+          # PowerShell operations. Clear it only AFTER verifying refusal,
+          # restoring the script, rehashing the ZIP, and recording the receipt.
+          $global:LASTEXITCODE = 0
+      - name: Retain qualified portable Windows evaluation ZIP
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: actor-sandbox-windows-evaluation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/CyberSand-Actor-Sandbox-Windows-*.zip
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain Windows receipts, actual PNGs and failure evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: actor-windows-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 90
+
+  publish:
+    name: Append the fully qualified sandbox runtime pair to the unchanged Draft branch
+    needs: [linux, windows]
+    if: github.repository == 'techrote/cybersand' && (github.ref == 'refs/heads/integration/actor-compose-final-001-20261123' || github.ref == 'refs/heads/integration/swarm004-005-006-unified-20261122') && needs.linux.result == 'success' && needs.windows.result == 'success'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+      actions: read
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - name: Check out the pinned companion documentation required by repository custody
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+          persist-credentials: false
+      - name: Check out the exact qualified source with ordinary Actions authentication
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: workspace/source
+          fetch-depth: 0
+          lfs: false
+      - name: Require the dedicated Draft branch to remain at the built source
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          test "$(git ls-remote --exit-code origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
+          git switch -c "$GITHUB_REF_NAME" "$GITHUB_SHA"
+          git lfs install --local
+          python3 tools/ci/check_ci_provider_policy.py
+      - name: Restore same-run Linux candidate and complete receipts
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-linux-${{ github.sha }}-${{ github.run_id }}-${{ needs.linux.outputs.artifact_attempt }}
+          path: workspace/source/build/actor-publish/linux
+      - name: Restore the same-run source-bound Windows candidate
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-windows-runtime-${{ github.sha }}-${{ github.run_id }}-${{ needs.linux.outputs.artifact_attempt }}
+          path: workspace/source/build/actor-publish/windows
+      - name: Restore Windows source and extracted-package qualification
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-windows-${{ github.sha }}-${{ github.run_id }}-${{ needs.windows.outputs.artifact_attempt }}
+          path: workspace/source/build/actor-publish/windows-evidence
+      - name: Restore the exact delivered Windows ZIP
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: actor-sandbox-windows-evaluation-${{ github.sha }}-${{ github.run_id }}-${{ needs.windows.outputs.artifact_attempt }}
+          path: workspace/source/build/actor-publish/windows-package
+      - name: Check whether both installed Actor runtimes already match this application
+        id: retained
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p build/actor-publish
+          if git lfs pull --include='godot/addons/cybersand_native/bin/*' --exclude='' &&
+             PYTHONPATH=tools/ci python3 -c 'from check_actor_publication_stage import reusable_pair; raise SystemExit(0 if reusable_pair() else 1)'; then
+            python3 tools/ci/check_repository.py > build/actor-publish/final-repository-check.json
+            git rev-parse HEAD > build/actor-publish/publication-commit.txt
+            echo 'matched=true' >> "$GITHUB_OUTPUT"
+            echo 'Verified both retained runtime objects against their complete source maps and original publication.' >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo 'matched=false' >> "$GITHUB_OUTPUT"
+          fi
+      - name: Verify complete same-run evidence and variable-count LFS publication
+        shell: bash
+        env:
+          RETAINED_PAIR: ${{ steps.retained.outputs.matched }}
+        run: |
+          set -euo pipefail
+          mode=()
+          if [[ "$RETAINED_PAIR" == true ]]; then mode+=(--verify-only); fi
+          python3 tools/ci/run_workbench_actor_qualification.py publish-sandbox "${mode[@]}" \
+            --linux build/actor-publish/linux/build/actor-linux \
+            --windows build/actor-publish/windows \
+            --linux-report build/actor-publish/linux/evidence/linux/qualification.json \
+            --windows-report build/actor-publish/windows-evidence/windows/qualification.json \
+            --windows-installed-report build/actor-publish/windows-evidence/installed-windows/qualification.json \
+            --windows-modules-report build/actor-publish/windows-evidence/installed-windows/runtime-modules.json \
+            --windows-extraction-report build/actor-publish/windows-evidence/windows-package-extraction.json \
+            --windows-package "build/actor-publish/windows-package/CyberSand-Actor-Sandbox-Windows-${GITHUB_SHA:0:12}.zip"
+          if [[ "$RETAINED_PAIR" == true ]]; then
+            git diff --cached --exit-code
+            git diff --exit-code
+            exit 0
+          fi
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
+          python3 tools/ci/check_actor_publication_stage.py --source "$GITHUB_SHA" --branch "$GITHUB_REF_NAME" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT"
+          git diff --check --cached
+          git diff --exit-code
+      - name: Commit and upload only qualified runtimes with an exact source lease
+        if: steps.retained.outputs.matched != 'true'
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git ls-remote --exit-code origin "$GITHUB_REF" | cut -f1)" = "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(native): publish qualified Draft sandbox runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          python3 tools/ci/check_repository.py > build/actor-publish/final-repository-check.json
+          # A single child commit and exact expected-parent lease cannot replace
+          # concurrent source work. The LFS hook uploads only the two new objects.
+          git push --force-with-lease="$GITHUB_REF:$GITHUB_SHA" origin "HEAD:$GITHUB_REF"
+          {
+            echo '### Draft/HOLD sandbox runtime publication'
+            echo "Qualified source: $GITHUB_SHA"
+            echo "Cryptographically checked native publication: $(git rev-parse HEAD)"
+            echo 'Both complete sandbox campaigns, graphical captures, 16/32/64 matrices and extracted Windows package passed. Owner Windows 11/NVIDIA and playfeel acceptance remain outstanding. No Ready, merge or default promotion.'
+          } >> "$GITHUB_STEP_SUMMARY"
+          git rev-parse HEAD > build/actor-publish/publication-commit.txt
+      - name: Retain runtime publication and final repository verification
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: actor-sandbox-publication-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            workspace/source/build/actor-publish/publication-commit.txt
+            workspace/source/build/actor-publish/final-repository-check.json
+            workspace/source/godot/addons/cybersand_native/runtime-provenance*.json
+          if-no-files-found: warn
+          retention-days: 90

@@ -70,6 +70,11 @@ jobs:
       - name: Validate dependency pins and published runtime provenance
         if: github.event_name != 'pull_request' || github.event.pull_request.draft == false
         run: timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/check_repository.py --require-materialized
+      - name: Verify read-only CI coordination and publication custody contracts
+        timeout-minutes: 10
+        run: |
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/test_ci_campaign_status.py
+          timeout "$(python3 tools/ci/execution_policy.py seconds operation_seconds)" python3 tools/ci/test_publication_custody.py
       - name: Verify soliding object reuse and original compiler contracts
         run: |
           command -v g++

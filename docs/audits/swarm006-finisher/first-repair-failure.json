@@ -1,0 +1,98 @@
+{
+  "schema": "swarm006-successor-intermediate-independent-finding/v1",
+  "observed_utc": "2026-11-21T20:17:14.283133+00:00",
+  "classification": "revealed robustness development, intermediate failed repair; not unseen validation",
+  "finding": "No-reserve refusal empties proposed MOSAIC geometry but preserves copied preceding receipts. Rejected-round receipts bind to proposed_mosaic, so six receipts in each of four responses reference nonexistent proposed parts. Outer results remain Exhausted and deny Apply; accepted prior plan is intact.",
+  "recommendation": "Repair and separately retain a new execution; preserve these failed intermediate bytes.",
+  "rows": [
+    {
+      "id": "foreign_solid--industrial_gui--s1997581108--recovery--r3",
+      "raw_sha256": "8aaee89c485e0a2de10be0fab4bed31f8a240480a29599d73b449a45b451dff0",
+      "source": "5722f254144fb8bf84a94fa2881e8860c9512316+successor-native-diff",
+      "definition_sha256": "35e178bd6231965bf801477c8edb4d85625bcdbcd6e0b619752e6a1ccba4543e",
+      "outer_status": "exhausted",
+      "can_apply": false,
+      "round": 3,
+      "mosaic_accepted": false,
+      "proposed_material_cells": 0,
+      "proposed_parts": 0,
+      "retained_provisional_receipts": 6,
+      "unbound_receiving_instances": [
+        40,
+        40,
+        49,
+        39,
+        29,
+        10
+      ],
+      "selected_prior_parts": 66
+    },
+    {
+      "id": "foreign_solid--industrial_gui--s1997581108--recovery--r4",
+      "raw_sha256": "f09a126727ca55994dd514610c71fd5eb343f1cc85a88fe0aec5c2766391ca83",
+      "source": "5722f254144fb8bf84a94fa2881e8860c9512316+successor-native-diff",
+      "definition_sha256": "35e178bd6231965bf801477c8edb4d85625bcdbcd6e0b619752e6a1ccba4543e",
+      "outer_status": "exhausted",
+      "can_apply": false,
+      "round": 3,
+      "mosaic_accepted": false,
+      "proposed_material_cells": 0,
+      "proposed_parts": 0,
+      "retained_provisional_receipts": 6,
+      "unbound_receiving_instances": [
+        40,
+        40,
+        49,
+        39,
+        29,
+        10
+      ],
+      "selected_prior_parts": 66
+    },
+    {
+      "id": "foreign_solid--industrial_gui--s1376230570--recovery--r3",
+      "raw_sha256": "e32b359fd92011be0f4faaa6ce1acc8fd7f2a666f3c1814cf91c58f25a144876",
+      "source": "5722f254144fb8bf84a94fa2881e8860c9512316+successor-native-diff",
+      "definition_sha256": "35e178bd6231965bf801477c8edb4d85625bcdbcd6e0b619752e6a1ccba4543e",
+      "outer_status": "exhausted",
+      "can_apply": false,
+      "round": 3,
+      "mosaic_accepted": false,
+      "proposed_material_cells": 0,
+      "proposed_parts": 0,
+      "retained_provisional_receipts": 6,
+      "unbound_receiving_instances": [
+        49,
+        20,
+        19,
+        29,
+        20,
+        39
+      ],
+      "selected_prior_parts": 66
+    },
+    {
+      "id": "foreign_solid--industrial_gui--s1376230570--recovery--r4",
+      "raw_sha256": "ec85e2ac7753fe5e442bb825c601dfeae978c110f77a1c6355cf35b252e0948c",
+      "source": "5722f254144fb8bf84a94fa2881e8860c9512316+successor-native-diff",
+      "definition_sha256": "35e178bd6231965bf801477c8edb4d85625bcdbcd6e0b619752e6a1ccba4543e",
+      "outer_status": "exhausted",
+      "can_apply": false,
+      "round": 3,
+      "mosaic_accepted": false,
+      "proposed_material_cells": 0,
+      "proposed_parts": 0,
+      "retained_provisional_receipts": 6,
+      "unbound_receiving_instances": [
+        49,
+        20,
+        19,
+        29,
+        20,
+        39
+      ],
+      "selected_prior_parts": 66
+    }
+  ],
+  "source_receipt_sha256": "4f9cd3f88e6ae542cd46930390e8df4359ea1470ed923a30a3c15738ec0cd6b8"
+}

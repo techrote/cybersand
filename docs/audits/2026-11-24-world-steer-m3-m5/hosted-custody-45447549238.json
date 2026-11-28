@@ -1,0 +1,106 @@
+{
+  "schema": "cybersand.world-steer-hosted-custody.v1",
+  "mission": "WORLD-STEER-BATCH-M3-M5-001",
+  "campaign_role": "First fully passing M3-M5 source; superseded for a visual-review inspector framing defect",
+  "run_id": 45447549238,
+  "run_attempt": 1,
+  "source_commit": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+  "source_tree": "853eabe10d2cefa83812fef88275c357ca2ffc0f",
+  "url": "https://github.com/techrote/cybersand/actions/runs/45447549238",
+  "jobs": [
+    {
+      "id": 138635373060,
+      "name": "Bounded source and experiment guards",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 138635721844,
+      "name": "Pinned source-matched Windows runtime",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 138635721941,
+      "name": "Linux source-built native and graphical qualification",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 138639204807,
+      "name": "Windows graphical execution and extracted owner evaluator",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14949310056,
+      "name": "batch-lab-windows-1fb4fbb5b1edd6cee16ee9094691f3438f8577eb-1",
+      "bytes": 19372939,
+      "digest": "sha256:5541b0269b0e530cbed15a58abd913eb7d38c5c520ed4ebde810686ed359e532",
+      "expires_at": "2027-02-22T17:20:53Z"
+    },
+    {
+      "id": 14948353086,
+      "name": "batch-lab-linux-1fb4fbb5b1edd6cee16ee9094691f3438f8577eb-1",
+      "bytes": 11651293,
+      "digest": "sha256:6d1e25ef1d717f435f04ea639be64e370726fc72b810e7d7029989ce02fc9e1f",
+      "expires_at": "2027-02-22T17:20:53Z"
+    },
+    {
+      "id": 14948060489,
+      "name": "batch-lab-windows-build-1fb4fbb5b1edd6cee16ee9094691f3438f8577eb-1",
+      "bytes": 8241,
+      "digest": "sha256:18f2e3380bf48236b0d86e66dbc34ae7169d12cf52e9e6265dab59036aeeb706",
+      "expires_at": "2027-02-22T17:20:53Z"
+    },
+    {
+      "id": 14948043874,
+      "name": "batch-lab-owner-windows-1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+      "bytes": 96366734,
+      "digest": "sha256:7e2358c6324b710d3b3a57777e8c2726a443f1a651face0c0465aebb98621f40",
+      "expires_at": "2027-02-22T17:20:53Z"
+    },
+    {
+      "id": 14947565758,
+      "name": "batch-lab-windows-runtime-45447549238",
+      "bytes": 2106706,
+      "digest": "sha256:4b7a1449e7bc801b95109583fffff930d1defd0dbe53767368e141bc01db451d",
+      "expires_at": "2027-02-22T17:20:53Z"
+    }
+  ],
+  "application_runs": {
+    "linux": {
+      "process_cases": 47,
+      "elapsed_seconds": 350.271,
+      "qualification_sha256": "b30f431577324766ce83362fa378f70bae9520e3af9c0b925c6c8b1273d7e8af"
+    },
+    "windows_source": {
+      "process_cases": 47,
+      "elapsed_seconds": 553.015,
+      "qualification_sha256": "96563b8d459d0b39d9b6db8027def8faa9114a894244d2e9bd92e3e0d570ff18"
+    },
+    "windows_extracted": {
+      "process_cases": 29,
+      "elapsed_seconds": 324.547,
+      "qualification_sha256": "5ee62e7f6be168a6cc0d0a475d693969af1a251c0effef445cdf78402b96ae06"
+    }
+  },
+  "native_source_inputs": 105,
+  "native_inputs_equal_original_foundation": true,
+  "native": {
+    "linux_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "windows_sha256": "4156fa2a5cccbc6badbe063bffa9ebcb1e14b11eb8c337eb9e5492c4e33ba286"
+  },
+  "owner_evaluator": {
+    "filename": "CyberSand-Architecture-Workbench-Windows-1fb4fbb5b1ed.zip",
+    "sha256": "4eb7c3e4102904eb26fce637057a119fd75a0d2c5ec6636b31943036bc4ec97e",
+    "bytes": 97877829,
+    "manifest_files_verified": 1329,
+    "manifest_sha256": "1a37f68f6b97065d3fd43bd9e8e4061ce68f55f96a67a2dd5854b11909e1ff71"
+  },
+  "actual_model_calls": 0,
+  "physical_owner_acceptance": "PENDING",
+  "disposition": "Draft/HOLD; retained successful qualification, subsequently observed UI framing defect requires a source-specific correction campaign."
+}

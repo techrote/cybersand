@@ -1,0 +1,1369 @@
+{
+  "schema": "cybersand-final-hosted-scientific-review-b-v1",
+  "source_revision": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+  "tree": "ea59a4a95d647c58820c943d37dd14e3d760b2f8",
+  "run_id": 45520561849,
+  "reviewer": "Specialist B",
+  "scope": "Rehash original reports and referenced raw evidence; bind actual records to tested source/runtime and compare retained measured fields/bytes. No native construction, reducer, geometric metric or model rerun.",
+  "status": "source_linux_source_windows_and_extracted_windows_science_bound",
+  "platforms": {
+    "linux": {
+      "qualification_sha256": "ce2428b05762f88c60c4c937c4e91b3646e123150a779ad5fc110b4b5962f389",
+      "qualification_calls": 89,
+      "qualification_status": "passed",
+      "native_binary_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "studies": {
+        "comparison": {
+          "analysis_sha256": "3761c5a5fd1a387d4a9dfc0319a01af80979996f7ede34ade5dff1a1c695f6cb",
+          "manifest_sha256": "9d5d5082ada6420cb2b219d7150949a8fe9389f1602397509ba085c51e5233a5",
+          "registration_sha256": "1dbdb552dfcbb7f6e81fdd7807ea77aca4384eca523293ababb007b0664ef34f",
+          "counts": {
+            "case_count": 60,
+            "native_completed": 23,
+            "pre_native_refusals": 37,
+            "model_calls": 0
+          },
+          "raw_files_rehashed": 198,
+          "raw_native_records_source_runtime_bound": 69,
+          "semantic_geometry_fields_compared": [
+            "arm",
+            "brief_id",
+            "case_id",
+            "cohort",
+            "seed",
+            "status",
+            "native_attempted",
+            "native_completion",
+            "source_sha256",
+            "result_sha256",
+            "net_changed_cells",
+            "actual_counts",
+            "module_ids",
+            "reference_ids",
+            "clearance_blocked_cells",
+            "material_and_protection_safe",
+            "outside_slot_changes",
+            "source_occupied_changes",
+            "required_clearances_empty",
+            "input_contract_audit",
+            "declared_contacts"
+          ],
+          "semantic_or_geometry_differences_from_d948": [],
+          "all_referenced_planes_byte_identical_to_d948": true,
+          "arm_summary": [
+            {
+              "arm": "hand_typed",
+              "changed_cells_total": 4608,
+              "checked_cells_total": 4608,
+              "cohort": "development",
+              "completed": 4,
+              "completed_with_applicable_satisfied_contacts": 4,
+              "completed_with_empty_required_clearances": 4,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 0,
+              "unique_completed_geometry_hashes": 2,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "procedural_structure",
+              "changed_cells_total": 3168,
+              "checked_cells_total": 3168,
+              "cohort": "development",
+              "completed": 2,
+              "completed_with_applicable_satisfied_contacts": 2,
+              "completed_with_empty_required_clearances": 2,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 2,
+              "unique_completed_geometry_hashes": 1,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "random_fitting_modules",
+              "changed_cells_total": 1556,
+              "checked_cells_total": 1556,
+              "cohort": "development",
+              "completed": 3,
+              "completed_with_applicable_satisfied_contacts": 3,
+              "completed_with_empty_required_clearances": 3,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 1,
+              "unique_completed_geometry_hashes": 3,
+              "unique_selected_module_ids": [
+                "cantilever-bracket",
+                "deep-box-girder",
+                "parabolic-arch-rib",
+                "warren-beam"
+              ]
+            },
+            {
+              "arm": "reference_guided",
+              "changed_cells_total": 9152,
+              "checked_cells_total": 9152,
+              "cohort": "development",
+              "completed": 4,
+              "completed_with_applicable_satisfied_contacts": 4,
+              "completed_with_empty_required_clearances": 4,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 0,
+              "unique_completed_geometry_hashes": 2,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "retrieval_guided",
+              "changed_cells_total": 3864,
+              "checked_cells_total": 3864,
+              "cohort": "development",
+              "completed": 4,
+              "completed_with_applicable_satisfied_contacts": 4,
+              "completed_with_empty_required_clearances": 4,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 0,
+              "unique_completed_geometry_hashes": 2,
+              "unique_selected_module_ids": [
+                "alternating-lattice-truss",
+                "parabolic-arch-rib"
+              ]
+            },
+            {
+              "arm": "hand_typed",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "procedural_structure",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "random_fitting_modules",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": [
+                "asymmetric-cable-gallery",
+                "narrow-pressure-bulkhead",
+                "tall-blast-door"
+              ]
+            },
+            {
+              "arm": "reference_guided",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "retrieval_guided",
+              "changed_cells_total": 9680,
+              "checked_cells_total": 9680,
+              "cohort": "held_out",
+              "completed": 6,
+              "completed_with_applicable_satisfied_contacts": 6,
+              "completed_with_empty_required_clearances": 6,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 2,
+              "unique_completed_geometry_hashes": 3,
+              "unique_selected_module_ids": [
+                "asymmetric-cable-gallery",
+                "forked-column",
+                "parabolic-arch-rib",
+                "pipe-elbow",
+                "pipe-tee",
+                "stepped-foundation",
+                "tall-blast-door",
+                "tapered-pier",
+                "valve-chamber"
+              ]
+            }
+          ],
+          "distinct_output_blocks_unchanged": true,
+          "frozen_catalogue_sha256": "f47321fa74664d2cd16ee6624e7814751182fb08be20aa2fe58715ad29f16fd8",
+          "frozen_catalogue_source_commit": "3ef69c8645ab2aefa8189dac39195043824e824f",
+          "immutable_source_conflict_proposals": 10,
+          "conflict_cells_per_proposal": 128,
+          "file_inventory_sha256": "91e4bf563b06b835bf6680e96acbee640e8fb63e260f5acae0f749ed476be515",
+          "file_inventory_hash_definition": "SHA-256 of UTF-8 JSON mapping unique relative paths to actual file SHA-256, sorted keys and no whitespace. Comparison includes manifest source/program/result/record references and forty modules/<id>.json files; detail includes before/after/recipe/native_record references. Original manifests retain all referenced paths."
+        },
+        "detail": {
+          "analysis_sha256": "3c11c3b7d5d6d23f8e64deca071a572563fdd222d9bd3659a34e23b04cd7cbd1",
+          "manifest_sha256": "7e527932c810fa15df743c14232abd396f4d01dcd648c480a568628a353c0d3a",
+          "registration_sha256": "4e69cbdbca9a908ed2062cfc60b7bf448c4a44a73c1a5cd90b8640daabb16852",
+          "counts": {
+            "registered_cases": 24,
+            "evaluable_cases": 24,
+            "exact_projection_cases": 24,
+            "constraints_preserved_cases": 24,
+            "model_calls": 0,
+            "native_active_core_capacity": 1024
+          },
+          "raw_files_rehashed": 96,
+          "raw_native_records_source_runtime_bound": 24,
+          "semantic_geometry_fields_compared": [
+            "id",
+            "job",
+            "arm",
+            "status",
+            "seed",
+            "evaluable",
+            "source_sha256",
+            "result_sha256",
+            "metrics",
+            "exact_compiled_projection_match",
+            "native_changed_acknowledgements",
+            "native_checked_cells",
+            "native_receipts",
+            "source_pin_refusal_reported"
+          ],
+          "semantic_or_geometry_differences_from_d948": [],
+          "all_referenced_planes_byte_identical_to_d948": true,
+          "file_inventory_sha256": "1e87f107c7d17e56119d15a4475eb63c8aea5a9cf2601e61050488400e313c6d",
+          "file_inventory_hash_definition": "SHA-256 of UTF-8 JSON mapping unique relative paths to actual file SHA-256, sorted keys and no whitespace. Comparison includes manifest source/program/result/record references and forty modules/<id>.json files; detail includes before/after/recipe/native_record references. Original manifests retain all referenced paths."
+        }
+      },
+      "flagship_frames": {
+        "render_report_sha256": "8348f65878a10a28ad201a8eafcaa2c744cbe831a70e5b0534e64d78a3c95fca",
+        "source_revision": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+        "checks": 40,
+        "failures": 0,
+        "frame_count": 12,
+        "frames": [
+          {
+            "id": "orbital-fabrication",
+            "view": "whole",
+            "image": "orbital-fabrication-whole-godot.png",
+            "image_sha256": "a3b337216a9d6c53e119da050437e9a81dd0470b17aa2961e4ef41a9f20bd945",
+            "pixels": [
+              1024,
+              1024
+            ],
+            "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "orbital-fabrication",
+            "view": "district-upper",
+            "image": "orbital-fabrication-district-upper-godot.png",
+            "image_sha256": "a63ef608f71fbcb2a2e9822ede62a352af451881b2b2d975fca2d59a572307a1",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "orbital-fabrication",
+            "view": "district-lower",
+            "image": "orbital-fabrication-district-lower-godot.png",
+            "image_sha256": "2fcbd1f09934d1dcd325ea47ad5b70b15c3de857ed0314890131c7d027d46adc",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "terraced-arcology",
+            "view": "whole",
+            "image": "terraced-arcology-whole-godot.png",
+            "image_sha256": "f29f8d2b2da5ef757b60984886f9316776a5ed0b6d22337e3ab23dcc02a0fe1d",
+            "pixels": [
+              1024,
+              1024
+            ],
+            "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "terraced-arcology",
+            "view": "district-upper",
+            "image": "terraced-arcology-district-upper-godot.png",
+            "image_sha256": "f2c9ba786dffcea61e6182255a7599d9285008f964e8dd5d50979569b6aef53c",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "terraced-arcology",
+            "view": "district-lower",
+            "image": "terraced-arcology-district-lower-godot.png",
+            "image_sha256": "1ee23220baebeb695cd5622b435462b5d005a81552eddb5a710fb412fe121fc8",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "monumental-viaduct",
+            "view": "whole",
+            "image": "monumental-viaduct-whole-godot.png",
+            "image_sha256": "a2747c2f4b5b842405a599b9b7a6323fd07c6dcc7b7e67c32bb95b212495bd36",
+            "pixels": [
+              1536,
+              768
+            ],
+            "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "monumental-viaduct",
+            "view": "district-upper",
+            "image": "monumental-viaduct-district-upper-godot.png",
+            "image_sha256": "16495a66d94752bc677e3f6011dc732a2cecfbc15b7ed54f99a2ae1a5ec9a7cb",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "monumental-viaduct",
+            "view": "district-lower",
+            "image": "monumental-viaduct-district-lower-godot.png",
+            "image_sha256": "0330b7d61822cad2cdb5cb7c5925c7a5d19eca33a4182f95c5dc196cba4b5ac0",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "biomechanical-vault",
+            "view": "whole",
+            "image": "biomechanical-vault-whole-godot.png",
+            "image_sha256": "18d7a362cb55d02e8aa9cfdc4ee6a67125b65b1b454c129604c05f70d90dc3d5",
+            "pixels": [
+              1024,
+              768
+            ],
+            "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "biomechanical-vault",
+            "view": "district-upper",
+            "image": "biomechanical-vault-district-upper-godot.png",
+            "image_sha256": "c37f11f4ac711c01b7527c22da5f4680a975452e252313c6efd972e4ecc3269a",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+            "same_png_as_d948": true
+          },
+          {
+            "id": "biomechanical-vault",
+            "view": "district-lower",
+            "image": "biomechanical-vault-district-lower-godot.png",
+            "image_sha256": "f319312b270cbdb9aff8c57c9f11faa820c38c5cd9eb511f9a41a7bb8c587a42",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+            "same_png_as_d948": true
+          }
+        ],
+        "native_planes": {
+          "orbital-fabrication": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+          "terraced-arcology": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+          "monumental-viaduct": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+          "biomechanical-vault": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6"
+        },
+        "all_png_bytes_identical_to_visually_inspected_previous_linux": true,
+        "all_four_native_planes_identical_to_previous": true,
+        "scope": "Exact original-file continuity only; previous independent architectural observations apply to unchanged content. No preference or physics claim."
+      },
+      "graphical": true,
+      "packaged": false
+    },
+    "windows_source": {
+      "qualification_sha256": "acc1abfa05f6c0a5f6808c1a76a90ebd0f44645f3987354d988f63f57cd7abf1",
+      "qualification_calls": 89,
+      "qualification_status": "passed",
+      "graphical": true,
+      "packaged": false,
+      "native_binary_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d",
+      "godot_executable_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "studies": {
+        "comparison": {
+          "analysis_sha256": "6ba762bd480d1a2e9ef79c30e15953d677a3fa6fe97228fff22fcca6c24fb467",
+          "manifest_sha256": "b78773ab33950d8145434a0ee13cbcecf3221ea1017e0fcb5f93ab7a5706f7ff",
+          "registration_sha256": "1dbdb552dfcbb7f6e81fdd7807ea77aca4384eca523293ababb007b0664ef34f",
+          "counts": {
+            "case_count": 60,
+            "native_completed": 23,
+            "pre_native_refusals": 37,
+            "model_calls": 0
+          },
+          "raw_files_rehashed": 198,
+          "raw_native_records_source_runtime_bound": 69,
+          "semantic_geometry_fields_compared": [
+            "arm",
+            "brief_id",
+            "case_id",
+            "cohort",
+            "seed",
+            "status",
+            "native_attempted",
+            "native_completion",
+            "source_sha256",
+            "result_sha256",
+            "net_changed_cells",
+            "actual_counts",
+            "module_ids",
+            "reference_ids",
+            "clearance_blocked_cells",
+            "material_and_protection_safe",
+            "outside_slot_changes",
+            "source_occupied_changes",
+            "required_clearances_empty",
+            "input_contract_audit",
+            "declared_contacts"
+          ],
+          "semantic_or_geometry_differences_from_d948": [],
+          "all_referenced_planes_byte_identical_to_d948_and_final_linux": true,
+          "arm_summary": [
+            {
+              "arm": "hand_typed",
+              "changed_cells_total": 4608,
+              "checked_cells_total": 4608,
+              "cohort": "development",
+              "completed": 4,
+              "completed_with_applicable_satisfied_contacts": 4,
+              "completed_with_empty_required_clearances": 4,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 0,
+              "unique_completed_geometry_hashes": 2,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "procedural_structure",
+              "changed_cells_total": 3168,
+              "checked_cells_total": 3168,
+              "cohort": "development",
+              "completed": 2,
+              "completed_with_applicable_satisfied_contacts": 2,
+              "completed_with_empty_required_clearances": 2,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 2,
+              "unique_completed_geometry_hashes": 1,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "random_fitting_modules",
+              "changed_cells_total": 1556,
+              "checked_cells_total": 1556,
+              "cohort": "development",
+              "completed": 3,
+              "completed_with_applicable_satisfied_contacts": 3,
+              "completed_with_empty_required_clearances": 3,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 1,
+              "unique_completed_geometry_hashes": 3,
+              "unique_selected_module_ids": [
+                "cantilever-bracket",
+                "deep-box-girder",
+                "parabolic-arch-rib",
+                "warren-beam"
+              ]
+            },
+            {
+              "arm": "reference_guided",
+              "changed_cells_total": 9152,
+              "checked_cells_total": 9152,
+              "cohort": "development",
+              "completed": 4,
+              "completed_with_applicable_satisfied_contacts": 4,
+              "completed_with_empty_required_clearances": 4,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 0,
+              "unique_completed_geometry_hashes": 2,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "retrieval_guided",
+              "changed_cells_total": 3864,
+              "checked_cells_total": 3864,
+              "cohort": "development",
+              "completed": 4,
+              "completed_with_applicable_satisfied_contacts": 4,
+              "completed_with_empty_required_clearances": 4,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 0,
+              "unique_completed_geometry_hashes": 2,
+              "unique_selected_module_ids": [
+                "alternating-lattice-truss",
+                "parabolic-arch-rib"
+              ]
+            },
+            {
+              "arm": "hand_typed",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "procedural_structure",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "random_fitting_modules",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": [
+                "asymmetric-cable-gallery",
+                "narrow-pressure-bulkhead",
+                "tall-blast-door"
+              ]
+            },
+            {
+              "arm": "reference_guided",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "retrieval_guided",
+              "changed_cells_total": 9680,
+              "checked_cells_total": 9680,
+              "cohort": "held_out",
+              "completed": 6,
+              "completed_with_applicable_satisfied_contacts": 6,
+              "completed_with_empty_required_clearances": 6,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 2,
+              "unique_completed_geometry_hashes": 3,
+              "unique_selected_module_ids": [
+                "asymmetric-cable-gallery",
+                "forked-column",
+                "parabolic-arch-rib",
+                "pipe-elbow",
+                "pipe-tee",
+                "stepped-foundation",
+                "tall-blast-door",
+                "tapered-pier",
+                "valve-chamber"
+              ]
+            }
+          ],
+          "distinct_output_blocks_unchanged": true,
+          "frozen_catalogue_sha256": "f47321fa74664d2cd16ee6624e7814751182fb08be20aa2fe58715ad29f16fd8",
+          "frozen_catalogue_source_commit": "3ef69c8645ab2aefa8189dac39195043824e824f",
+          "immutable_source_conflict_proposals": 10,
+          "conflict_cells_per_proposal": 128,
+          "file_inventory_sha256": "a2dabe70adc84bd0fd44f4cd729f74d811467cca3aff2cc81b6f787866ac8e9c",
+          "file_inventory_hash_definition": "SHA-256 of UTF-8 JSON mapping unique relative paths to actual file SHA-256, sorted keys and no whitespace. Comparison includes manifest source/program/result/record references and forty modules/<id>.json files; detail includes before/after/recipe/native_record references. Original manifests retain all referenced paths."
+        },
+        "detail": {
+          "analysis_sha256": "1263456a3632e4824fb3f3e66baf208f50eb25cc44efca5ac67a42e4cc2f43ef",
+          "manifest_sha256": "07354a1cee7cefe7a6d4d5272d370908d2a01ec12c8df8807f9607257f59baad",
+          "registration_sha256": "4e69cbdbca9a908ed2062cfc60b7bf448c4a44a73c1a5cd90b8640daabb16852",
+          "counts": {
+            "registered_cases": 24,
+            "evaluable_cases": 24,
+            "exact_projection_cases": 24,
+            "constraints_preserved_cases": 24,
+            "model_calls": 0,
+            "native_active_core_capacity": 1024
+          },
+          "raw_files_rehashed": 96,
+          "raw_native_records_source_runtime_bound": 24,
+          "semantic_geometry_fields_compared": [
+            "id",
+            "job",
+            "arm",
+            "status",
+            "seed",
+            "evaluable",
+            "source_sha256",
+            "result_sha256",
+            "metrics",
+            "exact_compiled_projection_match",
+            "native_changed_acknowledgements",
+            "native_checked_cells",
+            "native_receipts",
+            "source_pin_refusal_reported"
+          ],
+          "semantic_or_geometry_differences_from_d948": [],
+          "all_referenced_planes_byte_identical_to_d948_and_final_linux": true,
+          "file_inventory_sha256": "da6c99a5f44cc0b663824341edc473745617859ba6170692501cfeacc4adeb32",
+          "file_inventory_hash_definition": "SHA-256 of UTF-8 JSON mapping unique relative paths to actual file SHA-256, sorted keys and no whitespace. Comparison includes manifest source/program/result/record references and forty modules/<id>.json files; detail includes before/after/recipe/native_record references. Original manifests retain all referenced paths."
+        }
+      },
+      "flagship_frames": {
+        "render_report_sha256": "d75c9a156a6706dd1a6723fe8a69ad71113f730697c22211cbe4e0392e94fb1e",
+        "source_revision": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+        "checks": 40,
+        "failures": 0,
+        "frame_count": 12,
+        "frames": [
+          {
+            "id": "orbital-fabrication",
+            "view": "whole",
+            "image": "orbital-fabrication-whole-godot.png",
+            "image_sha256": "74a08a93ae35b1b3f1614d102475c1df776fa0aab8f38b9b90ec6802f96861b1",
+            "pixels": [
+              1024,
+              1024
+            ],
+            "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "orbital-fabrication",
+            "view": "district-upper",
+            "image": "orbital-fabrication-district-upper-godot.png",
+            "image_sha256": "4553e805f12e04bed7d3d259f18db8697c7f165789b0ea9bd767e488dc9e3a01",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "orbital-fabrication",
+            "view": "district-lower",
+            "image": "orbital-fabrication-district-lower-godot.png",
+            "image_sha256": "1d9d72942b6bc33b3d138102cd004895bac157ddb7b13c9b8320f6d9af2b102f",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "terraced-arcology",
+            "view": "whole",
+            "image": "terraced-arcology-whole-godot.png",
+            "image_sha256": "e94db2f14d8fa271d2ea04287efc7d1a6679b21b62492a3d16885ec3e76c741a",
+            "pixels": [
+              1024,
+              1024
+            ],
+            "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "terraced-arcology",
+            "view": "district-upper",
+            "image": "terraced-arcology-district-upper-godot.png",
+            "image_sha256": "78d5d1bbb560d4954eda2e160713b0ec57a3544b3d1efdc361da89f9282c1ac2",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "terraced-arcology",
+            "view": "district-lower",
+            "image": "terraced-arcology-district-lower-godot.png",
+            "image_sha256": "2e087b6a7947e8fc21eeebb44b052131e3215991d410eee34982aa288e3c1230",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "monumental-viaduct",
+            "view": "whole",
+            "image": "monumental-viaduct-whole-godot.png",
+            "image_sha256": "d8f83bcc6ced85e0bf7256ace3968b79dd179e70f07c960380f55859b95e03d6",
+            "pixels": [
+              1536,
+              768
+            ],
+            "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "monumental-viaduct",
+            "view": "district-upper",
+            "image": "monumental-viaduct-district-upper-godot.png",
+            "image_sha256": "5525337fb7b58e14f1f82e06ca88709fbce503420b98ba4131a92a67b4fdd92d",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "monumental-viaduct",
+            "view": "district-lower",
+            "image": "monumental-viaduct-district-lower-godot.png",
+            "image_sha256": "10b132f76d9c47c475aac54a06be536bcee333209c61ad4143cdb4299cba1e65",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "biomechanical-vault",
+            "view": "whole",
+            "image": "biomechanical-vault-whole-godot.png",
+            "image_sha256": "a36a8be356073cdf3af861ae5025921aebc0a9f28436b9965f7a6e33b24ebdcc",
+            "pixels": [
+              1024,
+              768
+            ],
+            "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "biomechanical-vault",
+            "view": "district-upper",
+            "image": "biomechanical-vault-district-upper-godot.png",
+            "image_sha256": "019c25a015b059e416eb0bd3b9442cb76b1c1b0686c82fa09ed00359931831e6",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "biomechanical-vault",
+            "view": "district-lower",
+            "image": "biomechanical-vault-district-lower-godot.png",
+            "image_sha256": "f27b8f1811e0e0b00d8bb233f0ea0204276dd488b39fb2b59949865575d73f2c",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          }
+        ],
+        "native_planes": {
+          "orbital-fabrication": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+          "terraced-arcology": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+          "monumental-viaduct": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+          "biomechanical-vault": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6"
+        },
+        "all_png_bytes_identical_to_visually_inspected_previous_windows": true,
+        "all_png_bytes_identical_to_final_windows_source": true,
+        "all_four_native_planes_identical_to_prior_and_final_linux": true,
+        "scope": "Exact original-file continuity only; prior independent architectural observations apply if content hashes are unchanged. No preference or physics claim."
+      }
+    },
+    "windows_extracted": {
+      "qualification_sha256": "5b86b258ac78532a603809dd56268507582ec8c8e0b68a50759263e4ced7212d",
+      "qualification_calls": 72,
+      "qualification_status": "passed",
+      "graphical": true,
+      "packaged": true,
+      "native_binary_sha256": "dd2b1a9e0c2bc58a8bd31b7e7e25d67bf93c04b8c57ea6553a358874af76b36d",
+      "godot_executable_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "studies": {
+        "comparison": {
+          "analysis_sha256": "f0b58e85876d79676051adaa0b2d186ec38476552ea9c3d290e8afea44b818ba",
+          "manifest_sha256": "be33d7fec0b6ff92226520915e9ee8a9409aa13af88b90078e176dc5f19327c8",
+          "registration_sha256": "1dbdb552dfcbb7f6e81fdd7807ea77aca4384eca523293ababb007b0664ef34f",
+          "counts": {
+            "case_count": 60,
+            "native_completed": 23,
+            "pre_native_refusals": 37,
+            "model_calls": 0
+          },
+          "raw_files_rehashed": 198,
+          "raw_native_records_source_runtime_bound": 69,
+          "semantic_geometry_fields_compared": [
+            "arm",
+            "brief_id",
+            "case_id",
+            "cohort",
+            "seed",
+            "status",
+            "native_attempted",
+            "native_completion",
+            "source_sha256",
+            "result_sha256",
+            "net_changed_cells",
+            "actual_counts",
+            "module_ids",
+            "reference_ids",
+            "clearance_blocked_cells",
+            "material_and_protection_safe",
+            "outside_slot_changes",
+            "source_occupied_changes",
+            "required_clearances_empty",
+            "input_contract_audit",
+            "declared_contacts"
+          ],
+          "semantic_or_geometry_differences_from_d948": [],
+          "all_referenced_planes_byte_identical_to_d948_and_final_linux": true,
+          "arm_summary": [
+            {
+              "arm": "hand_typed",
+              "changed_cells_total": 4608,
+              "checked_cells_total": 4608,
+              "cohort": "development",
+              "completed": 4,
+              "completed_with_applicable_satisfied_contacts": 4,
+              "completed_with_empty_required_clearances": 4,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 0,
+              "unique_completed_geometry_hashes": 2,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "procedural_structure",
+              "changed_cells_total": 3168,
+              "checked_cells_total": 3168,
+              "cohort": "development",
+              "completed": 2,
+              "completed_with_applicable_satisfied_contacts": 2,
+              "completed_with_empty_required_clearances": 2,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 2,
+              "unique_completed_geometry_hashes": 1,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "random_fitting_modules",
+              "changed_cells_total": 1556,
+              "checked_cells_total": 1556,
+              "cohort": "development",
+              "completed": 3,
+              "completed_with_applicable_satisfied_contacts": 3,
+              "completed_with_empty_required_clearances": 3,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 1,
+              "unique_completed_geometry_hashes": 3,
+              "unique_selected_module_ids": [
+                "cantilever-bracket",
+                "deep-box-girder",
+                "parabolic-arch-rib",
+                "warren-beam"
+              ]
+            },
+            {
+              "arm": "reference_guided",
+              "changed_cells_total": 9152,
+              "checked_cells_total": 9152,
+              "cohort": "development",
+              "completed": 4,
+              "completed_with_applicable_satisfied_contacts": 4,
+              "completed_with_empty_required_clearances": 4,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 0,
+              "unique_completed_geometry_hashes": 2,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "retrieval_guided",
+              "changed_cells_total": 3864,
+              "checked_cells_total": 3864,
+              "cohort": "development",
+              "completed": 4,
+              "completed_with_applicable_satisfied_contacts": 4,
+              "completed_with_empty_required_clearances": 4,
+              "proposals": 4,
+              "proposals_with_immutable_source_clearance_conflict": 0,
+              "refused_before_native": 0,
+              "unique_completed_geometry_hashes": 2,
+              "unique_selected_module_ids": [
+                "alternating-lattice-truss",
+                "parabolic-arch-rib"
+              ]
+            },
+            {
+              "arm": "hand_typed",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "procedural_structure",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "random_fitting_modules",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": [
+                "asymmetric-cable-gallery",
+                "narrow-pressure-bulkhead",
+                "tall-blast-door"
+              ]
+            },
+            {
+              "arm": "reference_guided",
+              "changed_cells_total": 0,
+              "checked_cells_total": 0,
+              "cohort": "held_out",
+              "completed": 0,
+              "completed_with_applicable_satisfied_contacts": 0,
+              "completed_with_empty_required_clearances": 0,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 8,
+              "unique_completed_geometry_hashes": 0,
+              "unique_selected_module_ids": []
+            },
+            {
+              "arm": "retrieval_guided",
+              "changed_cells_total": 9680,
+              "checked_cells_total": 9680,
+              "cohort": "held_out",
+              "completed": 6,
+              "completed_with_applicable_satisfied_contacts": 6,
+              "completed_with_empty_required_clearances": 6,
+              "proposals": 8,
+              "proposals_with_immutable_source_clearance_conflict": 2,
+              "refused_before_native": 2,
+              "unique_completed_geometry_hashes": 3,
+              "unique_selected_module_ids": [
+                "asymmetric-cable-gallery",
+                "forked-column",
+                "parabolic-arch-rib",
+                "pipe-elbow",
+                "pipe-tee",
+                "stepped-foundation",
+                "tall-blast-door",
+                "tapered-pier",
+                "valve-chamber"
+              ]
+            }
+          ],
+          "distinct_output_blocks_unchanged": true,
+          "frozen_catalogue_sha256": "f47321fa74664d2cd16ee6624e7814751182fb08be20aa2fe58715ad29f16fd8",
+          "frozen_catalogue_source_commit": "3ef69c8645ab2aefa8189dac39195043824e824f",
+          "immutable_source_conflict_proposals": 10,
+          "conflict_cells_per_proposal": 128,
+          "file_inventory_sha256": "b5882669e5350141f078d770ced44075f55d3820e5c64d155e168c6bae52a3f8",
+          "file_inventory_hash_definition": "SHA-256 of UTF-8 JSON mapping unique relative paths to actual file SHA-256, sorted keys and no whitespace. Comparison includes manifest source/program/result/record references and forty modules/<id>.json files; detail includes before/after/recipe/native_record references. Original manifests retain all referenced paths."
+        },
+        "detail": {
+          "analysis_sha256": "2eb01d54b938506adf87e36f375457b571131fc8a5f290401ec669fd3fe3d0f9",
+          "manifest_sha256": "c44620da7375c696fd7ca01f186b13219c87959766f0ba8c0eeb713bcbd99c8a",
+          "registration_sha256": "4e69cbdbca9a908ed2062cfc60b7bf448c4a44a73c1a5cd90b8640daabb16852",
+          "counts": {
+            "registered_cases": 24,
+            "evaluable_cases": 24,
+            "exact_projection_cases": 24,
+            "constraints_preserved_cases": 24,
+            "model_calls": 0,
+            "native_active_core_capacity": 1024
+          },
+          "raw_files_rehashed": 96,
+          "raw_native_records_source_runtime_bound": 24,
+          "semantic_geometry_fields_compared": [
+            "id",
+            "job",
+            "arm",
+            "status",
+            "seed",
+            "evaluable",
+            "source_sha256",
+            "result_sha256",
+            "metrics",
+            "exact_compiled_projection_match",
+            "native_changed_acknowledgements",
+            "native_checked_cells",
+            "native_receipts",
+            "source_pin_refusal_reported"
+          ],
+          "semantic_or_geometry_differences_from_d948": [],
+          "all_referenced_planes_byte_identical_to_d948_and_final_linux": true,
+          "file_inventory_sha256": "1e47a235473ac5ca25e21afcfc715d94404c1e769c8d78c424a5ebf297beb0ed",
+          "file_inventory_hash_definition": "SHA-256 of UTF-8 JSON mapping unique relative paths to actual file SHA-256, sorted keys and no whitespace. Comparison includes manifest source/program/result/record references and forty modules/<id>.json files; detail includes before/after/recipe/native_record references. Original manifests retain all referenced paths."
+        }
+      },
+      "flagship_frames": {
+        "render_report_sha256": "d75c9a156a6706dd1a6723fe8a69ad71113f730697c22211cbe4e0392e94fb1e",
+        "source_revision": "17c6b5b35049b7b2541c2deeea23c02fd1e2fc5d",
+        "checks": 40,
+        "failures": 0,
+        "frame_count": 12,
+        "frames": [
+          {
+            "id": "orbital-fabrication",
+            "view": "whole",
+            "image": "orbital-fabrication-whole-godot.png",
+            "image_sha256": "74a08a93ae35b1b3f1614d102475c1df776fa0aab8f38b9b90ec6802f96861b1",
+            "pixels": [
+              1024,
+              1024
+            ],
+            "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "orbital-fabrication",
+            "view": "district-upper",
+            "image": "orbital-fabrication-district-upper-godot.png",
+            "image_sha256": "4553e805f12e04bed7d3d259f18db8697c7f165789b0ea9bd767e488dc9e3a01",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "orbital-fabrication",
+            "view": "district-lower",
+            "image": "orbital-fabrication-district-lower-godot.png",
+            "image_sha256": "1d9d72942b6bc33b3d138102cd004895bac157ddb7b13c9b8320f6d9af2b102f",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "terraced-arcology",
+            "view": "whole",
+            "image": "terraced-arcology-whole-godot.png",
+            "image_sha256": "e94db2f14d8fa271d2ea04287efc7d1a6679b21b62492a3d16885ec3e76c741a",
+            "pixels": [
+              1024,
+              1024
+            ],
+            "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "terraced-arcology",
+            "view": "district-upper",
+            "image": "terraced-arcology-district-upper-godot.png",
+            "image_sha256": "78d5d1bbb560d4954eda2e160713b0ec57a3544b3d1efdc361da89f9282c1ac2",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "terraced-arcology",
+            "view": "district-lower",
+            "image": "terraced-arcology-district-lower-godot.png",
+            "image_sha256": "2e087b6a7947e8fc21eeebb44b052131e3215991d410eee34982aa288e3c1230",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "monumental-viaduct",
+            "view": "whole",
+            "image": "monumental-viaduct-whole-godot.png",
+            "image_sha256": "d8f83bcc6ced85e0bf7256ace3968b79dd179e70f07c960380f55859b95e03d6",
+            "pixels": [
+              1536,
+              768
+            ],
+            "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "monumental-viaduct",
+            "view": "district-upper",
+            "image": "monumental-viaduct-district-upper-godot.png",
+            "image_sha256": "5525337fb7b58e14f1f82e06ca88709fbce503420b98ba4131a92a67b4fdd92d",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "monumental-viaduct",
+            "view": "district-lower",
+            "image": "monumental-viaduct-district-lower-godot.png",
+            "image_sha256": "10b132f76d9c47c475aac54a06be536bcee333209c61ad4143cdb4299cba1e65",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "biomechanical-vault",
+            "view": "whole",
+            "image": "biomechanical-vault-whole-godot.png",
+            "image_sha256": "a36a8be356073cdf3af861ae5025921aebc0a9f28436b9965f7a6e33b24ebdcc",
+            "pixels": [
+              1024,
+              768
+            ],
+            "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "biomechanical-vault",
+            "view": "district-upper",
+            "image": "biomechanical-vault-district-upper-godot.png",
+            "image_sha256": "019c25a015b059e416eb0bd3b9442cb76b1c1b0686c82fa09ed00359931831e6",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          },
+          {
+            "id": "biomechanical-vault",
+            "view": "district-lower",
+            "image": "biomechanical-vault-district-lower-godot.png",
+            "image_sha256": "f27b8f1811e0e0b00d8bb233f0ea0204276dd488b39fb2b59949865575d73f2c",
+            "pixels": [
+              512,
+              512
+            ],
+            "native_material_sha256": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6",
+            "same_png_as_d948": true,
+            "same_png_as_final_windows_source": true
+          }
+        ],
+        "native_planes": {
+          "orbital-fabrication": "5e25b77b59076fd676687aa3090e35337b2abb47e3ebb5b52946444339ef11b7",
+          "terraced-arcology": "7fc848fce3bdb281fbf21ee53fd4220bb95262a1dcb5bbe4bb67d506f7eb4de5",
+          "monumental-viaduct": "36fd37356a7ab317a6701506d96c6d8e5595ccd56761da3c36b606f1fee26a70",
+          "biomechanical-vault": "d75329146fe125476bd4bbe429244a3bfd880489fe47ee4d8aed5eacaf3878d6"
+        },
+        "all_png_bytes_identical_to_visually_inspected_previous_windows": true,
+        "all_png_bytes_identical_to_final_windows_source": true,
+        "all_four_native_planes_identical_to_prior_and_final_linux": true,
+        "scope": "Exact original-file continuity only; prior independent architectural observations apply if content hashes are unchanged. No preference or physics claim."
+      }
+    }
+  },
+  "comparison_interpretation": "60 proposals retain 23 native completions and 37 pre-native refusals. The 128-cell contradictory brief retains all ten refusals. Three feasible independent held-out briefs contribute six retrieval completions over two seeds; repeated seeds/platforms are not independent tasks. Deterministic tool policies differ in capability; no prompt/model, unseen artwork-family or blind preference conclusion.",
+  "actual_model_calls": 0,
+  "owner_accepted": false,
+  "previous_reviews": [
+    "corrected-hosted-science-review-b.json",
+    "first-hosted-visual-review-b.json",
+    "history-authority-review-b.json"
+  ],
+  "windows_outcomes_archive": {
+    "bytes": 48540546,
+    "sha256": "6117b1cce68461c267b0df1f11c98d9efa4e557abac2acafa505fab1dd043ea0",
+    "scope": "Original shared artifact ZIP; source and extracted phase prefixes read directly without another download."
+  },
+  "qualification_scope": "Linux source89, Windows source89 and extracted Windows72 successful groups at the same exact application. This independent review covers retained study/flagship evidence; parent/C/A custody reviews establish complete package and launcher scope separately.",
+  "linux_outcomes_archive": {
+    "artifact_id": 14981408538,
+    "bytes": 26226147,
+    "sha256": "2d2c94c44629d9a87a322d3834ad5dd327d91467aacfdb696dcf32b92b658146",
+    "scope": "Original root-acquired artifact; reviewed files read from its verified extraction."
+  },
+  "art_refresh": {
+    "head": "1c2d084cba2e44e455f6ffe7d269007519829102",
+    "draft": false,
+    "state": "open",
+    "merged": false,
+    "qualified_application": "981a740828decbeac04d5a14511d0222095de0a9",
+    "qualified_package": "fa22d386b802b686c371bb6e12996c7a93c18588",
+    "qualified_package_run": 45497650568,
+    "latest_owner_comment": 7149057968,
+    "latest_owner_comment_created_at": "2026-11-25T00:57:13Z",
+    "explicit_no_route_comment": 7148153448,
+    "first_parent_changed_files": [
+      ".github/workflows/gdextension.yml",
+      "docs/operations/ci-execution-and-performance.md",
+      "tools/ci/test_godot_job_plan.py",
+      "tools/play/run_palette_shader_qualification.py"
+    ],
+    "provider_or_conversation_code_changed": false,
+    "exclusive_proposal_route_delivered": false,
+    "scope": "Read-only exact-source comparison and owner comments. Latest head is a CI-only successor; original feature and evaluator qualification retain original source identities. No new application qualification, import, live model route or owner acceptance is inferred."
+  },
+  "retained_failed_campaigns": [
+    {
+      "run": 45506178712,
+      "source": "fc8194c00294d54a0e148aa933ccfb57ce194c6e",
+      "scope": "Linux source passed; Windows failed its gameplay cached-counter witness after completing all four routes; package/extracted not run."
+    },
+    {
+      "run": 45512988153,
+      "source": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+      "scope": "Both source applications passed; first extracted delivered-CMD observation timed out; subsequent extracted native/science cases did not run."
+    }
+  ],
+  "workshop_stop_scope": {
+    "method": "Read and hash original final native/reducer/reopen reports; the independent hierarchy reducer was not rerun.",
+    "observations": {
+      "application": {
+        "independent_report_sha256": "a0cf3b690dfa0c56fbc2681bed1eb7ff2bf1ea709046fcbe3c31f63eb6669dec",
+        "stopped_prefix_cells": 4096,
+        "native_checked_cells": 49898,
+        "native_receipt_chunks": 20,
+        "native_stages": 10,
+        "final_plane_sha256": "bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe",
+        "fresh_reopen_report_sha256": "48b6c9902770ce5ab4c822e2a622e879a9c71f7c9276f2f681f7fc7bc19da99c",
+        "fresh_reopen_checks": 12,
+        "saved_start_sha256": "8c828ccd8342be67c954e642de601a976f80e7147afef4d8ef1c231512d2de48"
+      },
+      "extracted-evaluator": {
+        "independent_report_sha256": "40c9c4d54d70a1230c9ee4acd1679ec17568ae41e3a0ae40c60c482708bf856c",
+        "stopped_prefix_cells": 3136,
+        "native_checked_cells": 47978,
+        "native_receipt_chunks": 20,
+        "native_stages": 10,
+        "final_plane_sha256": "bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe",
+        "fresh_reopen_report_sha256": "225028ee167ef35a7f3b449c274783203fa627ed3cb3ed0fcf46f1a9a400fa1f",
+        "fresh_reopen_checks": 12,
+        "saved_start_sha256": "c6107c9849adca7517c15a458c84df8378104408062032b6640a3c6e01e35d18"
+      }
+    },
+    "scope": "Timing-dependent acknowledged Stop prefixes and the saved authored edit histories differ. Each exact prefix is cleared and freshly approved recovery reaches the same final native plane. No fixed Stop-cell-count, intermediate-plane identity or saved-start-file identity is claimed."
+  }
+}

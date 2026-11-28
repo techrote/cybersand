@@ -1,0 +1,262 @@
+name: WORLD-STEER collaborative architecture M0-M7 qualification and Windows evaluator
+on:
+  push:
+    branches: [feat/world-steer-collaborative-architecture-20261124]
+    paths:
+      - '.github/world-steer-batch-request.json'
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: world-steer-batch-${{ github.ref }}
+  cancel-in-progress: false
+env:
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
+  RAPIER_SHA256: 566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  RAPIER_WINDOWS_SHA256: b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7
+jobs:
+  guards:
+    name: Bounded source and experiment guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    defaults:
+      run:
+        working-directory: workspace/source
+    steps:
+      - name: Restore accepted companion documentation layout
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          ref: 6a58311982941b75f46e22109a0829e5acb83c7e
+          path: workspace
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+          path: workspace/source
+      - name: Validate dedicated campaign and experimental controls
+        run: |
+          set -euo pipefail
+          python3 -m py_compile tools/batch_lab/*.py tools/batch_lab/m67/*.py
+          python3 tools/batch_lab/test_collaborative_qualification.py
+          python3 -m unittest discover -s tools/batch_lab -p test_verify_hierarchy_native.py
+          python3 -m unittest discover -s tools/batch_lab -p test_architecture_overview_transport.py
+          python3 tools/batch_lab/test_evaluate.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/check_docs.py
+          git diff --check
+  linux:
+    name: Linux source-built native and graphical qualification
+    needs: guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+      - name: Stage pinned dependencies
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/source-commit.txt
+          git rev-parse HEAD^{tree} > evidence/source-tree.txt
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo "$RAPIER_SHA256  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum -c --strict
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/scons-install.log 2>&1
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+      - name: Build pinned source-matched native runtime
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+        run: |
+          set -euo pipefail
+          timeout 3600 bash tools/build_pinned_godot_cpp.sh linux > evidence/build-godot-cpp.log 2>&1 || { tail -120 evidence/build-godot-cpp.log; exit 1; }
+          timeout 3600 python3 tools/ci/build_gentek80_runtime.py --platform linux --ledger evidence/runtime-build-linux.json > evidence/build-native.log 2>&1 || { tail -160 evidence/build-native.log; exit 1; }
+          cp godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so evidence/
+          bash tools/check_linux_runtime_floor.sh > evidence/abi-floor.log 2>&1
+      - name: Existing native ownership, material baseline and paint regressions
+        run: |
+          set -euo pipefail
+          timeout 1200 make -j2 build/tests material-baseline-test script-hotpath-native-test CXX=g++-13 > evidence/native-build-and-baseline.log 2>&1 || { tail -120 evidence/native-build-and-baseline.log; exit 1; }
+          timeout 1200 build/tests > evidence/native-core.log 2>&1 || { tail -120 evidence/native-core.log; exit 1; }
+          ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 \
+            timeout 1200 make material-baseline-sanitize CXX=g++-13 > evidence/baseline-sanitized.log 2>&1 || { tail -120 evidence/baseline-sanitized.log; exit 1; }
+      - name: Execute Batch foundation, native architecture, full-World actors and graphical UI
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          GALLIVM_PERF: nopt
+        run: |
+          set -euo pipefail
+          timeout 600 curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
+          echo "$GODOT_SHA256  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          bash tools/ci/prepare_linux_display.sh > evidence/display-setup.log 2>&1
+          xvfb-run --auto-servernum --server-args='-screen 0 1920x1080x24 -nolisten tcp' \
+            python3 tools/batch_lab/qualify.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --project godot --evidence evidence/application --graphical --regressions --architecture --collaborative
+      - name: Preserve exact Linux runtime and all original outcomes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: batch-lab-linux-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+  windows-build:
+    name: Pinned source-matched Windows runtime
+    needs: guards
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+      - name: Stage pinned Windows cross-toolchain
+        run: |
+          set -euo pipefail
+          mkdir -p evidence build/batch-lab-windows
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/scons-install.log 2>&1
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          timeout 1200 curl -fL --retry 3 -o "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; fi
+      - name: Build source-bound Windows DLL
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ github.workspace }}/build/batch-lab-windows/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 3600 bash tools/build_pinned_godot_cpp.sh windows > evidence/build-godot-cpp.log 2>&1 || { tail -120 evidence/build-godot-cpp.log; exit 1; }
+          timeout 3600 python3 tools/ci/build_gentek80_runtime.py --platform windows --ledger build/batch-lab-windows/runtime-build-windows.json > evidence/build-native.log 2>&1 || { tail -160 evidence/build-native.log; exit 1; }
+          python3 tools/ci/native_candidate_identity.py build/batch-lab-windows --create
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: batch-lab-windows-runtime-${{ github.run_id }}
+          path: build/batch-lab-windows/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: batch-lab-windows-build-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90
+  windows:
+    name: Windows graphical execution and extracted owner evaluator
+    needs: windows-build
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          ref: ${{ github.sha }}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: batch-lab-windows-runtime-${{ github.run_id }}
+          path: build/batch-lab-windows
+      - name: Verify native custody and official Godot 4.7
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          python tools/batch_lab/verify_windows_launcher.py --query-self-test > evidence/windows-launcher-query-self-test.log
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows PowerShell process-query preflight failed' }
+          python tools/ci/native_candidate_identity.py build/batch-lab-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Native source/runtime custody failed' }
+          Copy-Item build/batch-lab-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/ -Force
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Rapier pin mismatch' }
+          $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'
+          curl.exe -fL --retry 3 -o $zip https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          $sha = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $sha) { throw 'Godot archive pin mismatch' }
+          $engine = Join-Path $env:RUNNER_TEMP 'godot'
+          Expand-Archive $zip $engine
+          'GODOT_EXE=' + (Join-Path $engine 'Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
+      - name: Execute actual Windows native, rendering, persistence and regressions
+        shell: pwsh
+        run: |
+          python tools/batch_lab/qualify.py --godot $env:GODOT_EXE --project godot --evidence evidence/application --graphical --regressions --architecture --collaborative
+          if ($LASTEXITCODE -ne 0) { throw 'Windows Batch Lab qualification failed' }
+      - name: Package standalone evaluator from the exact committed source
+        shell: pwsh
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'godot-notices'
+          New-Item -ItemType Directory -Force $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notices download failed' }
+          }
+          if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Pinned Godot notices hash mismatch' }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution licence download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'VC runtime staging failed' }
+          $gui = $env:GODOT_EXE.Replace('_console.exe','.exe')
+          python tools/package_explore001_candidate.py --engine $gui --engine-notices $notices --native-candidate build/batch-lab-windows --vc-runtime $vc --readme docs/operations/world-steer-collaborative-architecture.md --output build/batch-lab-evaluator
+          if ($LASTEXITCODE -ne 0) { throw 'Evaluator packaging failed' }
+          python tools/batch_lab/bundle_architecture_evidence.py --evidence evidence/application --package build/batch-lab-evaluator --collaborative
+          if ($LASTEXITCODE -ne 0) { throw 'Source-bound architecture evidence packaging failed' }
+          $archive = "build/CyberSand-Architecture-Workbench-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
+          Compress-Archive -Path build/batch-lab-evaluator/* -DestinationPath $archive -CompressionLevel Optimal
+          (Get-FileHash $archive -Algorithm SHA256).Hash.ToLowerInvariant() + '  ' + (Split-Path $archive -Leaf) | Set-Content "$archive.sha256"
+          $validation = Join-Path $env:RUNNER_TEMP 'batch-lab-extracted-evaluator'
+          Expand-Archive $archive $validation
+          python tools/batch_lab/qualify.py --godot (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $validation 'godot') --package $validation --evidence evidence/extracted-evaluator --graphical --architecture --collaborative
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted evaluator execution failed' }
+      - name: Publish qualified Draft/HOLD owner evaluator
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: batch-lab-owner-windows-${{ github.sha }}
+          path: |
+            build/CyberSand-Architecture-Workbench-Windows-*.zip
+            build/CyberSand-Architecture-Workbench-Windows-*.zip.sha256
+          if-no-files-found: error
+          retention-days: 90
+      - name: Preserve all Windows outcomes including qualification failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: batch-lab-windows-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90

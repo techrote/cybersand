@@ -2,19 +2,22 @@
 title: Evaluate Strata Theatre in the ordinary Workbench
 status: Current
 document-kind: guide
-scope: Draft STRATA-THEATRE-002 owner workflow, native import and construction, atmosphere, authored Save and platform acceptance
+scope: Optional Strata owner workflow, native import and construction, atmosphere, authored Save and historical platform evidence
 canonical-for: [strata-workbench-owner-evaluation]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-28
 related-documents: [../systems/strata-workbench.md, ../systems/strata-authoring.md, ../systems/strata-environments.md, github-development-and-release.md]
 ---
 
 # Evaluate Strata Theatre in the ordinary Workbench
 
-**STRATA-THEATRE-002 — Draft/HOLD, PR #776.** This guide describes the successor
-candidate's ordinary interactive workflow. The [decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md)
-records the exact qualified source, original platform receipts, package checksum
-and remaining physical owner gate. Until that packet records a verified package,
-a development checkpoint is not an owner-ready platform qualification.
+This guide describes the complete Strata 002 authoring workflow retained in the
+owner-accepted Strata 003 integration. Use the [combined delivery guide](ramcache-strata-integration.md)
+for the current RAMCACHE and Strata evaluator and its exact qualification.
+The original [Strata 002 decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md)
+retains its qualified source, original platform receipts and historical package
+checksum. The owner accepted Strata 003 on Windows 11 with an NVIDIA TITAN RTX
+on 28 November 2026; that physical evaluation is evidence for the tested
+predecessor package, not a claim of physical testing of every later build.
 
 The [ownership contract](../systems/strata-workbench.md),
 [native authoring contract](../systems/strata-authoring.md) and
@@ -27,7 +30,7 @@ remains historical predecessor evidence and does not qualify this successor.
 Extract the complete verified Windows evaluator into a writable directory and
 run **Open Workbench.cmd**. It opens ordinary Workbench with Strata initially off;
 Godot and source-matched native/Rapier dependencies are included. Keep all files
-together. **Gallery.html** offers actual Windows Godot captures, isolated planes,
+together. The historical Strata 002 package's **Gallery.html** offers actual Windows Godot captures, isolated planes,
 matched atmosphere comparisons, native-pixel details and original receipt links.
 Those images document the packaged source; they are not concept-art substitutes.
 The [short visual tour](../audits/2026-11-24-strata-theatre-002/owner-visual-quick-tour.md)

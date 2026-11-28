@@ -1,0 +1,70 @@
+name: GIP-014 goblin-002 historical oracle reduction
+
+on:
+  push:
+    branches: [experiment/gip014-goblin-002-20261125]
+    paths: ['tools/gip014/historical-reproduction-request-002.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gip014-goblin-002-historical-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  historical-oracle-reduction:
+    runs-on: ubuntu-22.04
+    # Separate from successor qualification. Native worker <=900 seconds;
+    # acquisition, fixed export/check commands and upload have separate headroom.
+    timeout-minutes: 30
+    steps:
+      - name: Check out the exact forensic driver
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: driver
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Check out the unchanged historical game and oracle
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: d849be8ef99cd9226cfc3ca0925752e42b691515
+          path: historical
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize only the retained historical Linux libraries
+        working-directory: historical
+        run: |
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+          python -m pip install -r ../driver/tools/gip014/requirements.txt
+      - name: Validate the existing CI provider policy
+        working-directory: driver
+        run: python tools/ci/check_ci_provider_policy.py
+      - name: Reproduce and reduce the single registered historical case
+        working-directory: driver
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+        run: |
+          python tools/gip014/qualify_legacy_case.py --legacy-source ../historical --out '${{ runner.temp }}/goblin002-historical'
+      - name: Preserve all forensic attempts and the unchanged failing regression
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gip014-goblin-002-historical-oracle-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/goblin002-historical/**/*.json
+            ${{ runner.temp }}/goblin002-historical/**/*.log
+            ${{ runner.temp }}/goblin002-historical/**/executed-game-source.zip
+            ${{ runner.temp }}/goblin002-historical/regression-case/
+            !${{ runner.temp }}/goblin002-historical/**/project/**
+          if-no-files-found: warn
+          retention-days: 30
+          compression-level: 6

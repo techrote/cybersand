@@ -59,7 +59,7 @@ func _receipt_map(results: PackedFloat32Array) -> Dictionary:
 
 func _exercise(world: Object, native: bool) -> void:
 	var label: String = "native" if native else "fallback"
-	_check(CyberRigidBodyCoupling.MAX_BODIES == 64, "actor/part capacity is not 8 by 8")
+	_check(CyberRigidBodyCoupling.MAX_BODIES >= 64, "actor/part capacity regressed below 64")
 	var states := PackedFloat32Array()
 	for id: int in range(1, 65):
 		_append(states, id, _center(id), 7)
@@ -117,7 +117,7 @@ func _exercise(world: Object, native: bool) -> void:
 	var mixed := PackedFloat32Array()
 	_append(mixed, 17, Vector2(300, 300), 10)
 	_append(mixed, 17, Vector2(310, 300), 11)
-	_append(mixed, 65, Vector2(320, 300), 10)
+	_append(mixed, CyberRigidBodyCoupling.MAX_BODIES + 1, Vector2(320, 300), 10)
 	_append(mixed, 18, Vector2(330, 300), 10)
 	mixed[3 * CyberRigidBodyCoupling.INPUT_STRIDE] = 18.5
 	_append(mixed, 19, Vector2(340, 300), 10)
@@ -136,11 +136,11 @@ func _exercise(world: Object, native: bool) -> void:
 	if rows.has(17):
 		_check(int(rows[17][8]) == 10, label + " duplicate replaced source sample identity")
 
-	# Input work is bounded to 64 complete records. A valid record hidden behind
-	# a full invalid batch cannot expand that budget by becoming a 65th record.
+	# Input work is bounded to the configured protocol ceiling. A valid record
+	# hidden behind a full invalid batch cannot expand that record budget.
 	world.prepare_rigid_body_coupling(PackedFloat32Array(), false)
 	var over_capacity := PackedFloat32Array()
-	for _index: int in range(64):
+	for _index: int in range(CyberRigidBodyCoupling.MAX_BODIES):
 		_append(over_capacity, 0, Vector2.ZERO, 0)
 	_append(over_capacity, 64, Vector2(400, 400), 12)
 	world.prepare_rigid_body_coupling(over_capacity, false)

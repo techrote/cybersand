@@ -1,0 +1,16 @@
+{
+	"benchmark": {
+		"actors": 8,
+		"decisions": 960,
+		"elapsed_usec": 311113,
+		"mean_usec": 324.076041666667,
+		"modules": 11,
+		"profile": "persistent_scavenger",
+		"scope": "pure copied-value decisions, not native or physical progression"
+	},
+	"checks": 618,
+	"engine": "ambient-engine/v2",
+	"failure_labels": [],
+	"failures": 0,
+	"scope": "reconstructed pure copied-value living decisions; zero physical actor episodes"
+}

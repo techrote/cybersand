@@ -1,0 +1,42 @@
+{
+  "schema_version": "cybersand.architectural-experiment-registration.v1",
+  "id": "world-steer-contextual-native-20261124",
+  "status": "FROZEN_BEFORE_NATIVE_EXECUTION",
+  "families": ["industrial_hangar", "service_network", "organic_cavern"],
+  "arms": ["hand_typed", "procedural_modules", "random_valid", "reference_guided", "retrieval_guided"],
+  "seeds": [37901, 37917],
+  "expected_attempts": 30,
+  "extent": [256, 192],
+  "budget_cells": 65536,
+  "structural_materials": [58],
+  "detail_materials": [28],
+  "protected_marker": [2, 2, 4, 4],
+  "reference_cards": {
+    "industrial_hangar": "goldmaps-pr146",
+    "service_network": "goldmaps-pr159",
+    "organic_cavern": "goldmaps-pr125"
+  },
+  "corpus_sha256": "9153480ea622d5dc6a78543269840af64b3adbef43074af8cf78cfe685d0b057",
+  "matched_conditions": ["same family and seed", "same initial native plane", "same context declarations", "same native budget", "same proposed detail-cell area"],
+  "realized_budget_check": "Report actual new detail cells separately. Unequal realized areas prevent an equal-cell detail-quality interpretation even when proposed budgets match.",
+  "registered_metrics": ["native completion", "protected changes", "square-clearance route", "new corridor intrusion", "detail-to-actual-host face contact", "declared-anchor attachment", "detached detail components", "detail outside declared zones", "local density envelopes", "native acknowledged writes", "native wall time"],
+  "native_custody": "Exact source/runtime identities, compiled recipe digest, original completed CyberNativeCellWorld acknowledgements and full uint16 little-endian material readback with SHA-256.",
+  "context_contract": {
+    "structural_materials": "Nonempty disjoint native material IDs used as actual structural hosts.",
+    "detail_materials": "Nonempty native material IDs used for detail; exclude protected-marker material.",
+    "anchor_rects": "Local x,y,w,h regions of allowed attachment faces. A support is counted only where actual structural material exists inside the rectangle.",
+    "clearance_rects": "Local x,y,w,h required empty regions. Initial and new/final intrusions reported separately.",
+    "detail_zones": "Local rect plus minimum_fraction and maximum_fraction for declared contextual detail density, fixed across matched arms.",
+    "protection_rects": "Local x,y,w,h protected cells; compare before versus after exactly.",
+    "route": "Optional two local cell coordinates for finite square-clearance BFS.",
+    "clearance_radius": "Integer 0..16; geometric diagnostics only."
+  },
+  "interpretation_limits": [
+    "Hand-authored and deterministic-module equivalence is expected and does not establish model optimization.",
+    "Reference-guided and retrieval-guided arms are offline typed/procedural strategies, not model responses.",
+    "The six larger representative constructions are separate demonstrations, not extra independent comparative samples.",
+    "Context diagnostics are geometric proxies, not structural stress, native actor traversal, aesthetics or human preference.",
+    "No authorized model endpoint: zero model calls planned and no model-dependent conclusion.",
+    "No frozen GOLDMAPS training or evaluation split is changed."
+  ]
+}

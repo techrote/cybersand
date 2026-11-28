@@ -1,0 +1,102 @@
+name: AMBIENT-002 — sustained ordinary Workbench observation
+
+# Explicit owner-mission observation. The application remains the separately
+# frozen 50c6 source; external observation tools cannot change its project bytes.
+on:
+  push:
+    branches: [feature/ambient-002-living-inhabitants-20261125]
+    paths: ['tools/fixtures/ambient-002-observation-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ambient-002-observation-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+
+jobs:
+  observe:
+    name: Actual sustained native Workbench graphics and copied decisions
+    if: github.ref == 'refs/heads/feature/ambient-002-living-inhabitants-20261125' && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[ambient-002-observe]'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - name: Check out the separately identified observation tools
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: observer
+          persist-credentials: false
+
+      - name: Check out the exact frozen application
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 50c6df89528dc9ecdc5316d8c67abf203e192254
+          path: application
+          persist-credentials: false
+
+      - name: Record both sources and enforce provider policy
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git -C observer rev-parse HEAD > evidence/observer-source.txt
+          git -C application rev-parse HEAD > evidence/application-source.txt
+          cd observer
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ambient/test_graphical_watch.py
+
+      - name: Authenticate unchanged retained application runtimes
+        working-directory: application
+        run: |
+          set -euo pipefail
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          python3 - <<'PYCODE'
+          import json, pathlib, sys
+          sys.path.insert(0, 'tools')
+          import qualify_ambient_living as qualification
+          record = qualification.verify_runtime_identity()
+          pathlib.Path('../evidence/retained-runtime.json').write_text(json.dumps(record, indent=2)+'\n')
+          PYCODE
+
+      - name: Authenticate engine and prepare actual graphical execution
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y xvfb xauth libgl1-mesa-dri libglx-mesa0 ffmpeg
+          mkdir -p "$RUNNER_TEMP/ambient-observation-engine"
+          curl --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output "$RUNNER_TEMP/ambient-observation-engine/godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
+          python3 - "$RUNNER_TEMP/ambient-observation-engine/godot.zip" <<'PYCODE'
+          import hashlib, pathlib, sys, zipfile
+          archive = pathlib.Path(sys.argv[1])
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c'
+          with zipfile.ZipFile(archive) as opened:
+              assert opened.testzip() is None
+              assert opened.namelist() == ['Godot_v4.7-stable_linux.x86_64']
+              opened.extractall(archive.parent)
+          (archive.parent/'Godot_v4.7-stable_linux.x86_64').chmod(0o755)
+          PYCODE
+          printf 'GODOT_EXE=%s\n' "$RUNNER_TEMP/ambient-observation-engine/Godot_v4.7-stable_linux.x86_64" >> "$GITHUB_ENV"
+
+      - name: Compile the external observer against frozen application
+        run: |
+          python3 observer/tools/ambient/run_graphical_watch.py --application application --godot "$GODOT_EXE" --output evidence/observer-compile --application-revision 50c6df89528dc9ecdc5316d8c67abf203e192254 --check-only
+
+      - name: Observe Foundry Row home-rest correction for sixty simulation seconds
+        run: |
+          xvfb-run -a -s "-screen 0 1600x1000x24" python3 observer/tools/ambient/run_graphical_watch.py --application application --godot "$GODOT_EXE" --output evidence/graphical-watch --ffmpeg /usr/bin/ffmpeg --application-revision 50c6df89528dc9ecdc5316d8c67abf203e192254 --scene ambient2-settlement --seconds 60 --timeout-seconds 1800
+
+      - name: Retain original frames, copied decisions, sampled videos and custody
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ambient-002-observation-${{ github.sha }}
+          path: evidence
+          if-no-files-found: error
+          retention-days: 30

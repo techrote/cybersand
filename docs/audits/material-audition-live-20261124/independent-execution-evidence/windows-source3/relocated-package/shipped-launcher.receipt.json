@@ -1,0 +1,17 @@
+{
+  "command": [
+    "C:\\Users\\RUNNER~1\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Open Workbench.cmd",
+    "--quit-after",
+    "1800",
+    "--max-fps",
+    "30",
+    "--log-file",
+    "D:\\a\\cybersand\\cybersand\\evidence\\relocated-package\\shipped-launcher-engine.log"
+  ],
+  "elapsed_seconds": 58.297000000000025,
+  "exit_code": 0,
+  "log_sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59",
+  "process_id": 2884,
+  "status": "passed",
+  "timeout_seconds": 300
+}

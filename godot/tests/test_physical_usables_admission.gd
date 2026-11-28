@@ -139,13 +139,14 @@ func _run() -> void:
 		_check(refused.status == "refused" and refused.refused == 2 and validator._pending_physical_usables.is_empty(),
 			"invalid request partially admitted valid peer: " + str(mutation))
 	var batch: Array = []
-	for owner: int in range(8):
-		batch.append(_request(frame, owner))
-	batch.append(_request(frame, 0, 2))
+	for index: int in range(CyberPhysicalUsableRuntime.MAX_REQUESTS + 1):
+		batch.append(_request(frame, 0, index + 1))
 	refused = validator.set_physical_usable_state(frame, batch, states)
 	_check(refused.reason == "batch_capacity" and validator._pending_physical_usables.is_empty(),
-		"nine-request batch admitted prefix")
-	batch.pop_back()
+		"oversized request batch admitted prefix")
+	batch.clear()
+	for owner: int in range(8):
+		batch.append(_request(frame, owner))
 	accepted = validator.set_physical_usable_state(frame, batch, states)
 	_check(accepted.queued == 8 and validator._physical_usable_inflight.size() == 8,
 		"eight distinct actors did not fit bounded queue")

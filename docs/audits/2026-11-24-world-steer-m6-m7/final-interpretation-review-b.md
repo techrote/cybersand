@@ -1,0 +1,33 @@
+# Independent scientific and architectural interpretation review
+
+**Specialist B, source freeze `fc8194c00294d54a0e148aa933ccfb57ce194c6e`, tree `d632b6b77f7829c1e61d035844b52060c972e908`.** This tree is identical to reviewed local `a8dbe1142707f0f7520fd8c6e720d5ecb7ba804b`. Campaign [45506178712](https://github.com/techrote/cybersand/actions/runs/45506178712) was launched for this exact source. This review precedes its observed outcomes and grants no hosted, Windows, graphical or owner acceptance.
+
+The implementation and retained development results support a bounded native authoring system and reproducible deterministic comparisons. The final decision packet should preserve the following interpretation requirements; the technical lead accepted these corrections for the archival documentation child. No production source was changed for this review.
+
+## Comparison interpretation
+
+The earlier 30-case study produced identical material geometry in four contextual arms. That comparison **does not identify a causal retrieval or prompt advantage**. It also does not prove that all future retrieval or model planning has no effect. Native completion, matched material count and a visually plausible result are separate from a demonstrated causal improvement.
+
+The new frozen study retains 60 proposals: 23 native completions and 37 pre-native refusals at development source `2861317ebe279dca8c2d000c48a6933221507aac`, manifest SHA-256 `4763904334ec5f275f9980075aa6d02d89cb5ebc0595834ba989cd9a68c8ff76`. Its four independently frozen held-out briefs include three feasible briefs and one contradictory pressure-dock brief. The latter simultaneously requires 128 immutable Hardwall cells to be Empty; all ten associated proposals remain refused in the original denominator. Two seeds are repeated conditions, not independent new architectural tasks. Admission differences compare the particular deterministic selection and tool policies; they do not establish learned intelligence, expert preference or general architectural quality. The selector, briefs and original forty-part study export remain frozen after reveal.
+
+The 24-case detail study supports the tested source-anchoring rule: contextual additive procedures avoid the unattached cells seen in six random-valid controls. Identical framed openings and invariant panel/pipe seeds remain negative or non-discriminating observations. Equal global component counts in random wear show why component count alone cannot establish context-sensitive wear quality. No blind human preference, paid inference, genuine model call or training result is available.
+
+## Geometry and visual authority
+
+Zero-write projected material maps and diagnostic plots made from **actual native readback** are different evidence types. Neither is an actual Godot framebuffer. A's final local native replay verifies the four refined worlds at `5e6ef0d1fe412e369b0550ca2d9502087cd21e3a`: 55 stages, 337 receipt chunks and 1,160,376 changed rows, with exact projected/native material equality. The independent report SHA-256 is `a0907a7939179aba62c6a49678a98664876c965edcf64091175a960630330249`. The residual material-component counts 6/35/14/2 for hangar/arcology/viaduct/vault remain explicit. Complete material connectivity and general traversal are not claimed.
+
+B's inspection of those native diagnostic plots finds distinct macro compositions: a central hangar working bay, stepped arcology wings and shaft, a four-span viaduct with subordinate service levels, and an irregular vault enclosing a broad constructed arch. Arcology rooms remain sparse and repetitive; windows, treads and isolated details are not proof of inhabitable or mutually reachable rooms. Declared actor routes establish only their bounded tested trajectories. This is informed specialist assessment, not blinded preference or owner acceptance.
+
+A's final local workshop reducer `96584c777c89c67e26ccc0f7b4e3d71542ef9bf1` supersedes the earlier source-only `239d725` checkpoint. At source `ff5d2bdb25b34fd0aa05fb23abae1e3660e87e32`, it verifies ten native stages, twenty chunks and 49,898 changed rows, including exactly 1,024 final attachment cells, 128 contacts and the 256 explicitly approved exterior hanger cells. Report SHA-256: `6be71c5c4527d00ca23339da5ea8a59d39938cc3728a95b9ed9130b164216c43`. Its actual fresh-process Reopen passed twelve checks. The earlier startup-only interruption remains unqualified. Assertion totals and final report-write assertions must not be conflated: the initial workshop had console81/report80, just as the initial flagship had console439/report438.
+
+## Knowledge and integration authority
+
+The GOLDMAPS summary must keep 70 recovered maps separate from the 67-map primary policy/schema population, alongside 25 nominees, 27 protected features, 76 immutable states, twelve comparative families, five retained negative interventions and eight GOLD-ASTRA arms. Original PR155/183 refusals and zero owner acceptance at the frozen authority remain explicit. Existing retrieval keeps its 25 frozen cards; the separate consumer admits the identified 70-map knowledge export read-only, without promoting hints into native modules or altering the frozen cohort.
+
+The actual-export invocation passed 31 checks at `b49a0947e614e09a7807dd35043f20f88e31381b`: nineteen synthetic assertions, eleven actual-export assertions and one retention assertion. The exact export SHA-256 is `711e501597f0c9fa90a2553a643aabdbcbe5552693efc2dd578e626ca6c56557`; the retained actual-consumer report SHA-256 is `e041123d2e22806c5fef05c307f080a6e3f1d8fef5ff910fd5a5d066fdf26794`. Its initial longer-tag refusal and bounded reader correction remain documented.
+
+Art `fa22d386b802b686c371bb6e12996c7a93c18588` has a successful installed-evaluator campaign. The present integration gate is an exclusively owned proposal route and explicit handoff. The ordinary Art response still reaches automatic drawing submission. The isolated 43-check qualified-interface probe establishes callback compatibility only, with zero HTTP/model/native calls; the owner must forward the live guard into Provider's optional eleventh argument to cover asynchronous preparation. See [the exact probe and source review](qualified-art-bridge-review-b.md).
+
+## Hosted review remains separate
+
+The next review must inspect the exact campaign's native/report identities, original Godot overview and district frames, ordinary Workbench interaction captures and bounded actor results. It must retain failures or missing captures without substituting diagnostic maps or earlier source results. Physical Windows/NVIDIA acceptance, architectural preference, a completed Art handoff and authorized real-model evaluation remain separate gates.

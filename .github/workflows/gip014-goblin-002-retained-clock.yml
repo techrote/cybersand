@@ -1,0 +1,68 @@
+name: GIP-014 goblin-002 retained-clock oracle diagnostic
+
+on:
+  push:
+    branches: [experiment/gip014-goblin-002-20261125]
+    paths: ['tools/gip014/retained-clock-request-002.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gip014-goblin-002-retained-clock-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  retained-clock-diagnostic:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize the retained Linux runtime and process monitor
+        run: |
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+          python -m pip install -r tools/gip014/requirements.txt
+      - name: Check the fixed diagnostic driver and CI provider policy
+        run: |
+          python tools/ci/check_ci_provider_policy.py
+          python -m unittest discover -s tools/gip014 -p test_retained_clock.py
+      - name: Provision the exact bounded Linux engine
+        run: |
+          python - <<'PY'
+          import os
+          import sys
+          from pathlib import Path
+          sys.path.insert(0, str(Path('tools/gip014').resolve()))
+          from qualify_legacy_case import provision_engine
+          directory = Path(os.environ['RUNNER_TEMP']) / 'goblin002-retained-clock-runtime'
+          directory.mkdir(exist_ok=False)
+          print(provision_engine(directory))
+          PY
+      - name: Observe the nine ordinary game actions in fresh disposable fixtures
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+        run: |
+          python tools/gip014/qualify_retained_clock.py --godot '${{ runner.temp }}/goblin002-retained-clock-runtime/Godot_v4.7-stable_linux.x86_64' --out '${{ runner.temp }}/goblin002-retained-clock'
+      - name: Preserve all diagnostic attempts and automatic candidate evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gip014-goblin-002-retained-clock-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/goblin002-retained-clock/**/*.json
+            ${{ runner.temp }}/goblin002-retained-clock/**/*.log
+            ${{ runner.temp }}/goblin002-retained-clock/**/executed-game-source.zip
+            !${{ runner.temp }}/goblin002-retained-clock/**/project/**
+          if-no-files-found: warn
+          retention-days: 30
+          compression-level: 6

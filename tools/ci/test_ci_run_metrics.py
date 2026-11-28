@@ -99,6 +99,39 @@ class MetricsTests(unittest.TestCase):
             with self.assertRaisesRegex(ValueError, "source/run/attempt"):
                 metrics.summarize_evidence(root, run_id=10, attempt=1)
 
+    def test_original_clean_and_materialized_runtime_deltas_are_preserved(self):
+        # Shape recovered from original run 44967549040/attempt 2: preflight
+        # and case telemetry share source/run/attempt, with both null and digest
+        # tracked deltas. Reporting them must neither crash nor erase a delta.
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            source = {"commit": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+                      "tree": "39b658c5de9c5e541312b5190bd5d8ba797c6bed",
+                      "run_id": "44967549040", "run_attempt": "2"}
+            delta = "b0080a34bea508f46f0a0057dfe36eab18a77593a9fcc3401fe2fdd905ab10dd"
+            (root / "execution-plan.json").write_text(json.dumps({"linux": {
+                "shard_count": 1, "source": source,
+                "shards": [{"cases": [{"name": "sample"}]}]}}), encoding="utf-8")
+            rows = [{"source": {**source, "tracked_delta_sha256": value},
+                     "phase": phase, "fixture": fixture, "host": {"platform": "Linux"},
+                     "wall_seconds": 1, "result": "passed", "natural_completion": True,
+                     "watchdog_reached": False}
+                    for value, phase, fixture in ((None, "preflight", "import"),
+                                                   (delta, "case", "sample"))]
+            (root / "linux-coverage.json").write_text(json.dumps({
+                "status": "passed", "source_sha": source["commit"],
+                "source_tree": source["tree"], "run_id": source["run_id"],
+                "run_attempt": source["run_attempt"]}), encoding="utf-8")
+            expected = [(source["commit"], source["tree"], None),
+                        (source["commit"], source["tree"], delta)]
+            for order in (rows, list(reversed(rows)), [*rows, rows[0]]):
+                (root / "current.jsonl").write_text(
+                    "".join(json.dumps(row) + "\n" for row in order), encoding="utf-8")
+                result = metrics.summarize_evidence(root, run_id=44967549040, attempt=2)
+                self.assertEqual(result["tested_sources"], expected)
+                self.assertEqual(result["platforms"]["linux"]["successful_natural_cases"], 1)
+                self.assertEqual(result["platforms"]["linux"]["missing_observed_cases"], [])
+
 
 if __name__ == "__main__":
     unittest.main()

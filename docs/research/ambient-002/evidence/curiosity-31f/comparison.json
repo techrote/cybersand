@@ -1,0 +1,2686 @@
+{
+  "pairs": [
+    {
+      "seed": 605,
+      "low": {
+        "window_seconds": [
+          0,
+          10
+        ],
+        "samples": 100,
+        "initial_observed_oil": [
+          262.5,
+          190.5
+        ],
+        "investigation_seconds": 0.0,
+        "horizontal_approach_gain_cells": 0.0,
+        "initial_horizontal_distance_cells": 42.5,
+        "net_x_cells": -30.19306945800801,
+        "x_range_cells": 44.42231750488301,
+        "initial_policy_oil": {
+          "available": true,
+          "coverage_samples": 1025,
+          "distance": 45.2382581450701,
+          "nearest": [
+            262.5,
+            190.5
+          ],
+          "present": true,
+          "status": "observed"
+        },
+        "initial_candidates": [
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "discovery",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "investigating a novel observed material patch",
+            "remaining_seconds": 12.0,
+            "score": 0.1,
+            "strength": 0.1,
+            "target": [
+              262.5,
+              190.5
+            ],
+            "type": "investigate_material",
+            "weight": 1.0
+          },
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              -1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "routine",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "following the authored waypoint sequence",
+            "remaining_seconds": 12.0,
+            "score": 0.45,
+            "strength": 0.9,
+            "target": [
+              172.0,
+              175.0
+            ],
+            "type": "patrol_route",
+            "weight": 0.5
+          }
+        ]
+      },
+      "high": {
+        "window_seconds": [
+          0,
+          10
+        ],
+        "samples": 100,
+        "initial_observed_oil": [
+          262.5,
+          190.5
+        ],
+        "investigation_seconds": 4.3,
+        "horizontal_approach_gain_cells": 32.252136230469006,
+        "initial_horizontal_distance_cells": 42.5,
+        "net_x_cells": -41.29942321777301,
+        "x_range_cells": 75.71310424804702,
+        "initial_policy_oil": {
+          "available": true,
+          "coverage_samples": 1025,
+          "distance": 45.2382581450701,
+          "nearest": [
+            262.5,
+            190.5
+          ],
+          "present": true,
+          "status": "observed"
+        },
+        "initial_candidates": [
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "discovery",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "investigating a novel observed material patch",
+            "remaining_seconds": 12.0,
+            "score": 1.4,
+            "strength": 1.4,
+            "target": [
+              262.5,
+              190.5
+            ],
+            "type": "investigate_material",
+            "weight": 1.0
+          },
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              -1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "routine",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "following the authored waypoint sequence",
+            "remaining_seconds": 12.0,
+            "score": 0.45,
+            "strength": 0.9,
+            "target": [
+              172.0,
+              175.0
+            ],
+            "type": "patrol_route",
+            "weight": 0.5
+          }
+        ]
+      },
+      "high_minus_low": {
+        "investigation_seconds": 4.3,
+        "horizontal_approach_gain_cells": 32.252136230469006,
+        "net_x_cells": -11.106353759765,
+        "x_range_cells": 31.290786743164006
+      },
+      "joint_directional_support": true,
+      "secondary": {
+        "low": {
+          "whole_episode_metrics": {
+            "group": "curiosity_contrast",
+            "layout": "opposed_interest",
+            "arm": "low_curiosity",
+            "seed": 605,
+            "seconds": 30,
+            "episode_id": "curiosity_contrast-opposed_interest-runner-s605-t30-n1-low_curiosity-a100",
+            "campaign_id": "curiosity_contrast-opposed_interest-runner-s605-t30-n1-low_curiosity",
+            "cluster": "curiosity_contrast-opposed_interest-runner-s605-t30-n1-low_curiosity:072fcb495bba1f88c1079b685b3b5b05",
+            "model": "runner",
+            "controller": "low_curiosity",
+            "profile_id": "curiosity_contrast",
+            "x_range_cells": 44.743408203125,
+            "y_range_cells": 21.4443359375,
+            "net_displacement_cells": 14.920364379883011,
+            "physical_path_including_gait_cells": 345.176469111582,
+            "neutral_command_drift_cells": 56.7573317855131,
+            "sampled_intentional_idle_drift_cells": 53.388349149920344,
+            "territory_dimension": 1,
+            "stable_territory_cells": 4,
+            "observed_territory_cells": 4,
+            "stable_territory_extent": 64.0,
+            "stable_territory_units": "horizontal_cells",
+            "territory_reentries": 20,
+            "intention_transitions": 14,
+            "intentions_seconds": {
+              "routine": 29.300000000000146,
+              "blend:": 0.6,
+              "discovery": 0.1
+            },
+            "phases_seconds": {
+              "approach": 14.999999999999963,
+              "dwell": 14.399999999999965,
+              "": 0.6
+            },
+            "intentional_idle_seconds": 15.0,
+            "neutral_command_seconds": 15.0,
+            "active_intervals": 149,
+            "stalled_active_intervals": 4,
+            "stalled_active_fraction": 0.026845637583892617,
+            "horizontal_obstruction_intervals": 0,
+            "horizontal_obstruction_entries": 0,
+            "eight_cell_recoveries_within_five_seconds": 0,
+            "home_departures_40_cells": 4,
+            "home_returns_16_cells": 3,
+            "home_distance_final": 14.920364379883011,
+            "home_distance_semantics": "horizontal",
+            "oil_observed_seconds": 0.8,
+            "water_observed_seconds": 0.0,
+            "minimum_oil_sample_distance": 42.6943153760508,
+            "minimum_water_sample_distance": null,
+            "minimum_distance_to_first_oil_sample": 42.69431547853485,
+            "water_within20_seconds": 0.0,
+            "peer_observed_seconds": 0.0,
+            "peer_range_loss_events": 0,
+            "peer_distance_median": null,
+            "canvas_center_incidents": 0,
+            "decision_core_adapter_usec": 88750,
+            "sensor_usec": 621064,
+            "decision_plus_sensor_usec": 709814,
+            "decision_core_adapter_usec_per_decision": 295.8333333333333,
+            "sensor_usec_per_decision": 2070.213333333333,
+            "sensor_usec_max": 6446,
+            "decision_usec_max": 2619,
+            "independent_outcome_observer_usec": 412088
+          },
+          "inspection_seconds": 0.0,
+          "first_inspection_seconds": null,
+          "inspection_samples": [],
+          "discovery_inactive_reasons": [
+            "discovery investigation cooldown",
+            "requested material is not currently observed"
+          ],
+          "common_oil_present_samples": 8,
+          "policy_oil_present_samples": 108
+        },
+        "high": {
+          "whole_episode_metrics": {
+            "group": "curiosity_contrast",
+            "layout": "opposed_interest",
+            "arm": "high_curiosity",
+            "seed": 605,
+            "seconds": 30,
+            "episode_id": "curiosity_contrast-opposed_interest-runner-s605-t30-n1-high_curiosity-a100",
+            "campaign_id": "curiosity_contrast-opposed_interest-runner-s605-t30-n1-high_curiosity",
+            "cluster": "curiosity_contrast-opposed_interest-runner-s605-t30-n1-high_curiosity:a05aab36ff0e0f00042b4d203c68dfc6",
+            "model": "runner",
+            "controller": "high_curiosity",
+            "profile_id": "curiosity_contrast",
+            "x_range_cells": 75.969390869141,
+            "y_range_cells": 21.535797119140994,
+            "net_displacement_cells": 32.760665893555,
+            "physical_path_including_gait_cells": 411.402995707991,
+            "neutral_command_drift_cells": 37.062299967336,
+            "sampled_intentional_idle_drift_cells": 35.433194318026715,
+            "territory_dimension": 1,
+            "stable_territory_cells": 5,
+            "observed_territory_cells": 5,
+            "stable_territory_extent": 80.0,
+            "stable_territory_units": "horizontal_cells",
+            "territory_reentries": 14,
+            "intention_transitions": 31,
+            "intentions_seconds": {
+              "discovery": 9.99999999999998,
+              "routine": 19.80000000000001,
+              "blend:": 0.2
+            },
+            "phases_seconds": {
+              "approach": 21.600000000000037,
+              "inspect": 2.1000000000000005,
+              "dwell": 6.099999999999994,
+              "": 0.2
+            },
+            "intentional_idle_seconds": 8.4,
+            "neutral_command_seconds": 8.4,
+            "active_intervals": 215,
+            "stalled_active_intervals": 6,
+            "stalled_active_fraction": 0.027906976744186046,
+            "horizontal_obstruction_intervals": 0,
+            "horizontal_obstruction_entries": 0,
+            "eight_cell_recoveries_within_five_seconds": 0,
+            "home_departures_40_cells": 2,
+            "home_returns_16_cells": 1,
+            "home_distance_final": 32.760665893555,
+            "home_distance_semantics": "horizontal",
+            "oil_observed_seconds": 17.5,
+            "water_observed_seconds": 0.0,
+            "minimum_oil_sample_distance": 10.258428318339,
+            "minimum_water_sample_distance": null,
+            "minimum_distance_to_first_oil_sample": 11.178499715856862,
+            "water_within20_seconds": 0.0,
+            "peer_observed_seconds": 0.0,
+            "peer_range_loss_events": 0,
+            "peer_distance_median": null,
+            "canvas_center_incidents": 0,
+            "decision_core_adapter_usec": 97042,
+            "sensor_usec": 629782,
+            "decision_plus_sensor_usec": 726824,
+            "decision_core_adapter_usec_per_decision": 323.47333333333336,
+            "sensor_usec_per_decision": 2099.2733333333335,
+            "sensor_usec_max": 5772,
+            "decision_usec_max": 1493,
+            "independent_outcome_observer_usec": 432023
+          },
+          "inspection_seconds": 2.1,
+          "first_inspection_seconds": 2.2,
+          "inspection_samples": [
+            {
+              "seconds": 2.2,
+              "position": [
+                251.389877319336,
+                194.925537109375
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.1182693523369,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.3,
+              "position": [
+                252.252136230469,
+                194.965438842773
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 10.258428318339,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.4,
+              "position": [
+                252.09375,
+                194.863388061523
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 10.4125927906092,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.5,
+              "position": [
+                251.331390380859,
+                194.514205932617
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 11.1686184064715,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.6,
+              "position": [
+                250.402297973633,
+                194.640533447266
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1020,
+                "distance": 12.0985183186956,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.7,
+              "position": [
+                249.94596862793,
+                195.12174987793
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1013,
+                "distance": 12.5597279085464,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.79999999999999,
+              "position": [
+                250.236114501953,
+                195.218673706055
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 12.2671121461114,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.89999999999999,
+              "position": [
+                251.030838012695,
+                195.09342956543
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1015,
+                "distance": 11.476365723296,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.99999999999999,
+              "position": [
+                251.524368286133,
+                195.01545715332
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 10.9863220486094,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.09999999999999,
+              "position": [
+                251.561752319336,
+                194.840423583984
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 10.9435439495076,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.19999999999999,
+              "position": [
+                251.39176940918,
+                194.849319458008
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 11.1137216383525,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.29999999999999,
+              "position": [
+                251.346115112305,
+                194.895294189453
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 11.1608873661245,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.39999999999999,
+              "position": [
+                251.377655029297,
+                194.906356811523
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 11.1297655506924,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.49999999999999,
+              "position": [
+                251.460830688477,
+                194.903991699219
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.0465590284771,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.59999999999999,
+              "position": [
+                251.470321655273,
+                194.876541137695
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.0361037342136,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.69999999999999,
+              "position": [
+                251.487213134766,
+                194.862213134766
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0187415942475,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.79999999999999,
+              "position": [
+                251.485290527344,
+                194.865295410156
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0207649522089,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.89999999999999,
+              "position": [
+                251.464660644531,
+                194.866317749023
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.0414176097108,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.99999999999999,
+              "position": [
+                251.47575378418,
+                194.869659423828
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0304421623467,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 4.09999999999999,
+              "position": [
+                251.481063842773,
+                194.86555480957
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0249980900562,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 4.19999999999999,
+              "position": [
+                251.477264404297,
+                194.862731933594
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0287024822679,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            }
+          ],
+          "discovery_inactive_reasons": [
+            "discovery investigation cooldown",
+            "finite investigation deadline reached",
+            "inspection complete; finite selected interest released"
+          ],
+          "common_oil_present_samples": 175,
+          "policy_oil_present_samples": 213
+        }
+      }
+    },
+    {
+      "seed": 1701,
+      "low": {
+        "window_seconds": [
+          0,
+          10
+        ],
+        "samples": 100,
+        "initial_observed_oil": [
+          262.5,
+          190.5
+        ],
+        "investigation_seconds": 0.0,
+        "horizontal_approach_gain_cells": 0.0,
+        "initial_horizontal_distance_cells": 42.5,
+        "net_x_cells": -30.19306945800801,
+        "x_range_cells": 44.42231750488301,
+        "initial_policy_oil": {
+          "available": true,
+          "coverage_samples": 1025,
+          "distance": 45.2382581450701,
+          "nearest": [
+            262.5,
+            190.5
+          ],
+          "present": true,
+          "status": "observed"
+        },
+        "initial_candidates": [
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "discovery",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "investigating a novel observed material patch",
+            "remaining_seconds": 12.0,
+            "score": 0.1,
+            "strength": 0.1,
+            "target": [
+              262.5,
+              190.5
+            ],
+            "type": "investigate_material",
+            "weight": 1.0
+          },
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              -1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "routine",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "following the authored waypoint sequence",
+            "remaining_seconds": 12.0,
+            "score": 0.45,
+            "strength": 0.9,
+            "target": [
+              172.0,
+              175.0
+            ],
+            "type": "patrol_route",
+            "weight": 0.5
+          }
+        ]
+      },
+      "high": {
+        "window_seconds": [
+          0,
+          10
+        ],
+        "samples": 100,
+        "initial_observed_oil": [
+          262.5,
+          190.5
+        ],
+        "investigation_seconds": 4.3,
+        "horizontal_approach_gain_cells": 32.252136230469006,
+        "initial_horizontal_distance_cells": 42.5,
+        "net_x_cells": -41.29942321777301,
+        "x_range_cells": 75.71310424804702,
+        "initial_policy_oil": {
+          "available": true,
+          "coverage_samples": 1025,
+          "distance": 45.2382581450701,
+          "nearest": [
+            262.5,
+            190.5
+          ],
+          "present": true,
+          "status": "observed"
+        },
+        "initial_candidates": [
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "discovery",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "investigating a novel observed material patch",
+            "remaining_seconds": 12.0,
+            "score": 1.4,
+            "strength": 1.4,
+            "target": [
+              262.5,
+              190.5
+            ],
+            "type": "investigate_material",
+            "weight": 1.0
+          },
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              -1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "routine",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "following the authored waypoint sequence",
+            "remaining_seconds": 12.0,
+            "score": 0.45,
+            "strength": 0.9,
+            "target": [
+              172.0,
+              175.0
+            ],
+            "type": "patrol_route",
+            "weight": 0.5
+          }
+        ]
+      },
+      "high_minus_low": {
+        "investigation_seconds": 4.3,
+        "horizontal_approach_gain_cells": 32.252136230469006,
+        "net_x_cells": -11.106353759765,
+        "x_range_cells": 31.290786743164006
+      },
+      "joint_directional_support": true,
+      "secondary": {
+        "low": {
+          "whole_episode_metrics": {
+            "group": "curiosity_contrast",
+            "layout": "opposed_interest",
+            "arm": "low_curiosity",
+            "seed": 1701,
+            "seconds": 30,
+            "episode_id": "curiosity_contrast-opposed_interest-runner-s1701-t30-n1-low_curiosity-a100",
+            "campaign_id": "curiosity_contrast-opposed_interest-runner-s1701-t30-n1-low_curiosity",
+            "cluster": "curiosity_contrast-opposed_interest-runner-s1701-t30-n1-low_curiosity:53f5e3d6dd1418af3bb89646c8c4de35",
+            "model": "runner",
+            "controller": "low_curiosity",
+            "profile_id": "curiosity_contrast",
+            "x_range_cells": 44.743408203125,
+            "y_range_cells": 21.4443359375,
+            "net_displacement_cells": 14.920364379883011,
+            "physical_path_including_gait_cells": 345.176469111582,
+            "neutral_command_drift_cells": 56.7573317855131,
+            "sampled_intentional_idle_drift_cells": 53.388349149920344,
+            "territory_dimension": 1,
+            "stable_territory_cells": 4,
+            "observed_territory_cells": 4,
+            "stable_territory_extent": 64.0,
+            "stable_territory_units": "horizontal_cells",
+            "territory_reentries": 20,
+            "intention_transitions": 14,
+            "intentions_seconds": {
+              "routine": 29.300000000000146,
+              "blend:": 0.6,
+              "discovery": 0.1
+            },
+            "phases_seconds": {
+              "approach": 14.999999999999963,
+              "dwell": 14.399999999999965,
+              "": 0.6
+            },
+            "intentional_idle_seconds": 15.0,
+            "neutral_command_seconds": 15.0,
+            "active_intervals": 149,
+            "stalled_active_intervals": 4,
+            "stalled_active_fraction": 0.026845637583892617,
+            "horizontal_obstruction_intervals": 0,
+            "horizontal_obstruction_entries": 0,
+            "eight_cell_recoveries_within_five_seconds": 0,
+            "home_departures_40_cells": 4,
+            "home_returns_16_cells": 3,
+            "home_distance_final": 14.920364379883011,
+            "home_distance_semantics": "horizontal",
+            "oil_observed_seconds": 0.8,
+            "water_observed_seconds": 0.0,
+            "minimum_oil_sample_distance": 42.6943153760508,
+            "minimum_water_sample_distance": null,
+            "minimum_distance_to_first_oil_sample": 42.69431547853485,
+            "water_within20_seconds": 0.0,
+            "peer_observed_seconds": 0.0,
+            "peer_range_loss_events": 0,
+            "peer_distance_median": null,
+            "canvas_center_incidents": 0,
+            "decision_core_adapter_usec": 84771,
+            "sensor_usec": 621460,
+            "decision_plus_sensor_usec": 706231,
+            "decision_core_adapter_usec_per_decision": 282.57,
+            "sensor_usec_per_decision": 2071.5333333333333,
+            "sensor_usec_max": 5082,
+            "decision_usec_max": 1428,
+            "independent_outcome_observer_usec": 414183
+          },
+          "inspection_seconds": 0.0,
+          "first_inspection_seconds": null,
+          "inspection_samples": [],
+          "discovery_inactive_reasons": [
+            "discovery investigation cooldown",
+            "requested material is not currently observed"
+          ],
+          "common_oil_present_samples": 8,
+          "policy_oil_present_samples": 108
+        },
+        "high": {
+          "whole_episode_metrics": {
+            "group": "curiosity_contrast",
+            "layout": "opposed_interest",
+            "arm": "high_curiosity",
+            "seed": 1701,
+            "seconds": 30,
+            "episode_id": "curiosity_contrast-opposed_interest-runner-s1701-t30-n1-high_curiosity-a100",
+            "campaign_id": "curiosity_contrast-opposed_interest-runner-s1701-t30-n1-high_curiosity",
+            "cluster": "curiosity_contrast-opposed_interest-runner-s1701-t30-n1-high_curiosity:406f33a6eefb74ccb854ed4c18d52e34",
+            "model": "runner",
+            "controller": "high_curiosity",
+            "profile_id": "curiosity_contrast",
+            "x_range_cells": 75.969390869141,
+            "y_range_cells": 21.535797119140994,
+            "net_displacement_cells": 32.760665893555,
+            "physical_path_including_gait_cells": 411.402995707991,
+            "neutral_command_drift_cells": 37.062299967336,
+            "sampled_intentional_idle_drift_cells": 35.433194318026715,
+            "territory_dimension": 1,
+            "stable_territory_cells": 5,
+            "observed_territory_cells": 5,
+            "stable_territory_extent": 80.0,
+            "stable_territory_units": "horizontal_cells",
+            "territory_reentries": 14,
+            "intention_transitions": 31,
+            "intentions_seconds": {
+              "discovery": 9.99999999999998,
+              "routine": 19.80000000000001,
+              "blend:": 0.2
+            },
+            "phases_seconds": {
+              "approach": 21.600000000000037,
+              "inspect": 2.1000000000000005,
+              "dwell": 6.099999999999994,
+              "": 0.2
+            },
+            "intentional_idle_seconds": 8.4,
+            "neutral_command_seconds": 8.4,
+            "active_intervals": 215,
+            "stalled_active_intervals": 6,
+            "stalled_active_fraction": 0.027906976744186046,
+            "horizontal_obstruction_intervals": 0,
+            "horizontal_obstruction_entries": 0,
+            "eight_cell_recoveries_within_five_seconds": 0,
+            "home_departures_40_cells": 2,
+            "home_returns_16_cells": 1,
+            "home_distance_final": 32.760665893555,
+            "home_distance_semantics": "horizontal",
+            "oil_observed_seconds": 17.5,
+            "water_observed_seconds": 0.0,
+            "minimum_oil_sample_distance": 10.258428318339,
+            "minimum_water_sample_distance": null,
+            "minimum_distance_to_first_oil_sample": 11.178499715856862,
+            "water_within20_seconds": 0.0,
+            "peer_observed_seconds": 0.0,
+            "peer_range_loss_events": 0,
+            "peer_distance_median": null,
+            "canvas_center_incidents": 0,
+            "decision_core_adapter_usec": 89058,
+            "sensor_usec": 625403,
+            "decision_plus_sensor_usec": 714461,
+            "decision_core_adapter_usec_per_decision": 296.86,
+            "sensor_usec_per_decision": 2084.6766666666667,
+            "sensor_usec_max": 5481,
+            "decision_usec_max": 864,
+            "independent_outcome_observer_usec": 425851
+          },
+          "inspection_seconds": 2.1,
+          "first_inspection_seconds": 2.2,
+          "inspection_samples": [
+            {
+              "seconds": 2.2,
+              "position": [
+                251.389877319336,
+                194.925537109375
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.1182693523369,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.3,
+              "position": [
+                252.252136230469,
+                194.965438842773
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 10.258428318339,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.4,
+              "position": [
+                252.09375,
+                194.863388061523
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 10.4125927906092,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.5,
+              "position": [
+                251.331390380859,
+                194.514205932617
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 11.1686184064715,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.6,
+              "position": [
+                250.402297973633,
+                194.640533447266
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1020,
+                "distance": 12.0985183186956,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.7,
+              "position": [
+                249.94596862793,
+                195.12174987793
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1013,
+                "distance": 12.5597279085464,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.79999999999999,
+              "position": [
+                250.236114501953,
+                195.218673706055
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 12.2671121461114,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.89999999999999,
+              "position": [
+                251.030838012695,
+                195.09342956543
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1015,
+                "distance": 11.476365723296,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.99999999999999,
+              "position": [
+                251.524368286133,
+                195.01545715332
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 10.9863220486094,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.09999999999999,
+              "position": [
+                251.561752319336,
+                194.840423583984
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 10.9435439495076,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.19999999999999,
+              "position": [
+                251.39176940918,
+                194.849319458008
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 11.1137216383525,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.29999999999999,
+              "position": [
+                251.346115112305,
+                194.895294189453
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 11.1608873661245,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.39999999999999,
+              "position": [
+                251.377655029297,
+                194.906356811523
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 11.1297655506924,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.49999999999999,
+              "position": [
+                251.460830688477,
+                194.903991699219
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.0465590284771,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.59999999999999,
+              "position": [
+                251.470321655273,
+                194.876541137695
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.0361037342136,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.69999999999999,
+              "position": [
+                251.487213134766,
+                194.862213134766
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0187415942475,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.79999999999999,
+              "position": [
+                251.485290527344,
+                194.865295410156
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0207649522089,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.89999999999999,
+              "position": [
+                251.464660644531,
+                194.866317749023
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.0414176097108,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.99999999999999,
+              "position": [
+                251.47575378418,
+                194.869659423828
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0304421623467,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 4.09999999999999,
+              "position": [
+                251.481063842773,
+                194.86555480957
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0249980900562,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 4.19999999999999,
+              "position": [
+                251.477264404297,
+                194.862731933594
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0287024822679,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            }
+          ],
+          "discovery_inactive_reasons": [
+            "discovery investigation cooldown",
+            "finite investigation deadline reached",
+            "inspection complete; finite selected interest released"
+          ],
+          "common_oil_present_samples": 175,
+          "policy_oil_present_samples": 213
+        }
+      }
+    },
+    {
+      "seed": 2909,
+      "low": {
+        "window_seconds": [
+          0,
+          10
+        ],
+        "samples": 100,
+        "initial_observed_oil": [
+          262.5,
+          190.5
+        ],
+        "investigation_seconds": 0.0,
+        "horizontal_approach_gain_cells": 0.0,
+        "initial_horizontal_distance_cells": 42.5,
+        "net_x_cells": -30.19306945800801,
+        "x_range_cells": 44.42231750488301,
+        "initial_policy_oil": {
+          "available": true,
+          "coverage_samples": 1025,
+          "distance": 45.2382581450701,
+          "nearest": [
+            262.5,
+            190.5
+          ],
+          "present": true,
+          "status": "observed"
+        },
+        "initial_candidates": [
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "discovery",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "investigating a novel observed material patch",
+            "remaining_seconds": 12.0,
+            "score": 0.1,
+            "strength": 0.1,
+            "target": [
+              262.5,
+              190.5
+            ],
+            "type": "investigate_material",
+            "weight": 1.0
+          },
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              -1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "routine",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "following the authored waypoint sequence",
+            "remaining_seconds": 12.0,
+            "score": 0.45,
+            "strength": 0.9,
+            "target": [
+              172.0,
+              175.0
+            ],
+            "type": "patrol_route",
+            "weight": 0.5
+          }
+        ]
+      },
+      "high": {
+        "window_seconds": [
+          0,
+          10
+        ],
+        "samples": 100,
+        "initial_observed_oil": [
+          262.5,
+          190.5
+        ],
+        "investigation_seconds": 4.3,
+        "horizontal_approach_gain_cells": 32.252136230469006,
+        "initial_horizontal_distance_cells": 42.5,
+        "net_x_cells": -41.29942321777301,
+        "x_range_cells": 75.71310424804702,
+        "initial_policy_oil": {
+          "available": true,
+          "coverage_samples": 1025,
+          "distance": 45.2382581450701,
+          "nearest": [
+            262.5,
+            190.5
+          ],
+          "present": true,
+          "status": "observed"
+        },
+        "initial_candidates": [
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "discovery",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "investigating a novel observed material patch",
+            "remaining_seconds": 12.0,
+            "score": 1.4,
+            "strength": 1.4,
+            "target": [
+              262.5,
+              190.5
+            ],
+            "type": "investigate_material",
+            "weight": 1.0
+          },
+          {
+            "active": true,
+            "commit_seconds": 3.0,
+            "direction": [
+              -1.0,
+              0.0
+            ],
+            "effort": 0.7,
+            "goal_key": "1",
+            "hold": false,
+            "id": "routine",
+            "mode": "goal",
+            "pace": 0.45,
+            "phase": "approach",
+            "phase_selected_seconds": 0.0,
+            "primary": false,
+            "priority": 30,
+            "reason": "following the authored waypoint sequence",
+            "remaining_seconds": 12.0,
+            "score": 0.45,
+            "strength": 0.9,
+            "target": [
+              172.0,
+              175.0
+            ],
+            "type": "patrol_route",
+            "weight": 0.5
+          }
+        ]
+      },
+      "high_minus_low": {
+        "investigation_seconds": 4.3,
+        "horizontal_approach_gain_cells": 32.252136230469006,
+        "net_x_cells": -11.106353759765,
+        "x_range_cells": 31.290786743164006
+      },
+      "joint_directional_support": true,
+      "secondary": {
+        "low": {
+          "whole_episode_metrics": {
+            "group": "curiosity_contrast",
+            "layout": "opposed_interest",
+            "arm": "low_curiosity",
+            "seed": 2909,
+            "seconds": 30,
+            "episode_id": "curiosity_contrast-opposed_interest-runner-s2909-t30-n1-low_curiosity-a100",
+            "campaign_id": "curiosity_contrast-opposed_interest-runner-s2909-t30-n1-low_curiosity",
+            "cluster": "curiosity_contrast-opposed_interest-runner-s2909-t30-n1-low_curiosity:df60288db91bcf5012793c9b6e97f7f0",
+            "model": "runner",
+            "controller": "low_curiosity",
+            "profile_id": "curiosity_contrast",
+            "x_range_cells": 44.743408203125,
+            "y_range_cells": 21.4443359375,
+            "net_displacement_cells": 14.920364379883011,
+            "physical_path_including_gait_cells": 345.176469111582,
+            "neutral_command_drift_cells": 56.7573317855131,
+            "sampled_intentional_idle_drift_cells": 53.388349149920344,
+            "territory_dimension": 1,
+            "stable_territory_cells": 4,
+            "observed_territory_cells": 4,
+            "stable_territory_extent": 64.0,
+            "stable_territory_units": "horizontal_cells",
+            "territory_reentries": 20,
+            "intention_transitions": 14,
+            "intentions_seconds": {
+              "routine": 29.300000000000146,
+              "blend:": 0.6,
+              "discovery": 0.1
+            },
+            "phases_seconds": {
+              "approach": 14.999999999999963,
+              "dwell": 14.399999999999965,
+              "": 0.6
+            },
+            "intentional_idle_seconds": 15.0,
+            "neutral_command_seconds": 15.0,
+            "active_intervals": 149,
+            "stalled_active_intervals": 4,
+            "stalled_active_fraction": 0.026845637583892617,
+            "horizontal_obstruction_intervals": 0,
+            "horizontal_obstruction_entries": 0,
+            "eight_cell_recoveries_within_five_seconds": 0,
+            "home_departures_40_cells": 4,
+            "home_returns_16_cells": 3,
+            "home_distance_final": 14.920364379883011,
+            "home_distance_semantics": "horizontal",
+            "oil_observed_seconds": 0.8,
+            "water_observed_seconds": 0.0,
+            "minimum_oil_sample_distance": 42.6943153760508,
+            "minimum_water_sample_distance": null,
+            "minimum_distance_to_first_oil_sample": 42.69431547853485,
+            "water_within20_seconds": 0.0,
+            "peer_observed_seconds": 0.0,
+            "peer_range_loss_events": 0,
+            "peer_distance_median": null,
+            "canvas_center_incidents": 0,
+            "decision_core_adapter_usec": 88452,
+            "sensor_usec": 636003,
+            "decision_plus_sensor_usec": 724455,
+            "decision_core_adapter_usec_per_decision": 294.84,
+            "sensor_usec_per_decision": 2120.01,
+            "sensor_usec_max": 5314,
+            "decision_usec_max": 5039,
+            "independent_outcome_observer_usec": 432792
+          },
+          "inspection_seconds": 0.0,
+          "first_inspection_seconds": null,
+          "inspection_samples": [],
+          "discovery_inactive_reasons": [
+            "discovery investigation cooldown",
+            "requested material is not currently observed"
+          ],
+          "common_oil_present_samples": 8,
+          "policy_oil_present_samples": 108
+        },
+        "high": {
+          "whole_episode_metrics": {
+            "group": "curiosity_contrast",
+            "layout": "opposed_interest",
+            "arm": "high_curiosity",
+            "seed": 2909,
+            "seconds": 30,
+            "episode_id": "curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity-a100",
+            "campaign_id": "curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity",
+            "cluster": "curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity:f8098c70494d2b30683ddeb7e321f598",
+            "model": "runner",
+            "controller": "high_curiosity",
+            "profile_id": "curiosity_contrast",
+            "x_range_cells": 75.969390869141,
+            "y_range_cells": 21.535797119140994,
+            "net_displacement_cells": 32.760665893555,
+            "physical_path_including_gait_cells": 411.402995707991,
+            "neutral_command_drift_cells": 37.062299967336,
+            "sampled_intentional_idle_drift_cells": 35.433194318026715,
+            "territory_dimension": 1,
+            "stable_territory_cells": 5,
+            "observed_territory_cells": 5,
+            "stable_territory_extent": 80.0,
+            "stable_territory_units": "horizontal_cells",
+            "territory_reentries": 14,
+            "intention_transitions": 31,
+            "intentions_seconds": {
+              "discovery": 9.99999999999998,
+              "routine": 19.80000000000001,
+              "blend:": 0.2
+            },
+            "phases_seconds": {
+              "approach": 21.600000000000037,
+              "inspect": 2.1000000000000005,
+              "dwell": 6.099999999999994,
+              "": 0.2
+            },
+            "intentional_idle_seconds": 8.4,
+            "neutral_command_seconds": 8.4,
+            "active_intervals": 215,
+            "stalled_active_intervals": 6,
+            "stalled_active_fraction": 0.027906976744186046,
+            "horizontal_obstruction_intervals": 0,
+            "horizontal_obstruction_entries": 0,
+            "eight_cell_recoveries_within_five_seconds": 0,
+            "home_departures_40_cells": 2,
+            "home_returns_16_cells": 1,
+            "home_distance_final": 32.760665893555,
+            "home_distance_semantics": "horizontal",
+            "oil_observed_seconds": 17.5,
+            "water_observed_seconds": 0.0,
+            "minimum_oil_sample_distance": 10.258428318339,
+            "minimum_water_sample_distance": null,
+            "minimum_distance_to_first_oil_sample": 11.178499715856862,
+            "water_within20_seconds": 0.0,
+            "peer_observed_seconds": 0.0,
+            "peer_range_loss_events": 0,
+            "peer_distance_median": null,
+            "canvas_center_incidents": 0,
+            "decision_core_adapter_usec": 120369,
+            "sensor_usec": 888126,
+            "decision_plus_sensor_usec": 1008495,
+            "decision_core_adapter_usec_per_decision": 401.23,
+            "sensor_usec_per_decision": 2960.42,
+            "sensor_usec_max": 10901,
+            "decision_usec_max": 2230,
+            "independent_outcome_observer_usec": 606960
+          },
+          "inspection_seconds": 2.1,
+          "first_inspection_seconds": 2.2,
+          "inspection_samples": [
+            {
+              "seconds": 2.2,
+              "position": [
+                251.389877319336,
+                194.925537109375
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.1182693523369,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.3,
+              "position": [
+                252.252136230469,
+                194.965438842773
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 10.258428318339,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.4,
+              "position": [
+                252.09375,
+                194.863388061523
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 10.4125927906092,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.5,
+              "position": [
+                251.331390380859,
+                194.514205932617
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 11.1686184064715,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.6,
+              "position": [
+                250.402297973633,
+                194.640533447266
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1020,
+                "distance": 12.0985183186956,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.7,
+              "position": [
+                249.94596862793,
+                195.12174987793
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1013,
+                "distance": 12.5597279085464,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.79999999999999,
+              "position": [
+                250.236114501953,
+                195.218673706055
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 12.2671121461114,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.89999999999999,
+              "position": [
+                251.030838012695,
+                195.09342956543
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1015,
+                "distance": 11.476365723296,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 2.99999999999999,
+              "position": [
+                251.524368286133,
+                195.01545715332
+              ],
+              "goal_target": [
+                262.5,
+                195.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 10.9863220486094,
+                "nearest": [
+                  262.5,
+                  195.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.09999999999999,
+              "position": [
+                251.561752319336,
+                194.840423583984
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 10.9435439495076,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.19999999999999,
+              "position": [
+                251.39176940918,
+                194.849319458008
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1011,
+                "distance": 11.1137216383525,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.29999999999999,
+              "position": [
+                251.346115112305,
+                194.895294189453
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 11.1608873661245,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.39999999999999,
+              "position": [
+                251.377655029297,
+                194.906356811523
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1010,
+                "distance": 11.1297655506924,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.49999999999999,
+              "position": [
+                251.460830688477,
+                194.903991699219
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.0465590284771,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.59999999999999,
+              "position": [
+                251.470321655273,
+                194.876541137695
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.0361037342136,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.69999999999999,
+              "position": [
+                251.487213134766,
+                194.862213134766
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0187415942475,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.79999999999999,
+              "position": [
+                251.485290527344,
+                194.865295410156
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0207649522089,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.89999999999999,
+              "position": [
+                251.464660644531,
+                194.866317749023
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1009,
+                "distance": 11.0414176097108,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 3.99999999999999,
+              "position": [
+                251.47575378418,
+                194.869659423828
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0304421623467,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 4.09999999999999,
+              "position": [
+                251.481063842773,
+                194.86555480957
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0249980900562,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            },
+            {
+              "seconds": 4.19999999999999,
+              "position": [
+                251.477264404297,
+                194.862731933594
+              ],
+              "goal_target": [
+                262.5,
+                194.5
+              ],
+              "policy_oil": {
+                "available": true,
+                "coverage_samples": 1008,
+                "distance": 11.0287024822679,
+                "nearest": [
+                  262.5,
+                  194.5
+                ],
+                "present": true,
+                "status": "observed"
+              },
+              "action_move": [
+                0.0,
+                0.0
+              ]
+            }
+          ],
+          "discovery_inactive_reasons": [
+            "discovery investigation cooldown",
+            "finite investigation deadline reached",
+            "inspection complete; finite selected interest released"
+          ],
+          "common_oil_present_samples": 175,
+          "policy_oil_present_samples": 213
+        }
+      }
+    }
+  ],
+  "supporting_pairs": 3,
+  "predeclared_directional_hypothesis_supported": true,
+  "interpretation": "Three matched seed pairs for one authored goal competition; no population significance, universal curiosity or greater overall exploration claim. Secondary inspection is separate from choice.",
+  "schema": "ambient2-curiosity-contrast/v1",
+  "source_revision": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "source_tree": "a038e6df65d58529f4c496c01f26c65975654fa6",
+  "external_custody": {
+    "source_commit": "31f8ecf8b6d8821740b545e046501f90c86e06f3",
+    "sha256": {
+      "tools/ambient/diagnostics/curiosity_contrast.gd": "cb6eae5981fec8fe5100a767e2730daf868c2d747bd87e066615f3b6eaa7d735",
+      "tools/ambient/diagnostics/run_curiosity_contrast.py": "7db49bc056eec5f5e8902d8be3f92089b6fbfea1c78c25e822358cf98c695abb",
+      "docs/research/ambient-002/curiosity-preregistration.md": "ca358780cd3d5762b14eccff3c610148562785d58fb3bbe8b387fa092c6e2fe4"
+    }
+  },
+  "custody_sha256": "9654a41373e3a00c8ae56a349c9dd6554b7abe91875297f0b9a3aed1702bbea7",
+  "report_sha256": "f633961b80157c280f79a55375939892a65af81486956863c87805e80b380fbe",
+  "registration_sha256": "3bb98f1a5273b8c53f6759e921b141b1b87567a573ba97e196f300c685537982",
+  "actual_supplementary_episodes": 6,
+  "complete": true,
+  "qualifies_primary_programme": false,
+  "incomplete_attempt": {
+    "case_id": "curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity",
+    "returncode": -9,
+    "original_execution_receipt_sha256": "0ec920c8baed9917564f08309871c20e6380bf3939dc03a71866483e7c7109a9",
+    "progress": "No report or completion marker; actual physical progress is unestablished."
+  },
+  "recovery_script_sha256": "8c8d80f1275db2c88cf543508dd18250d03b21d103b3eef7fb5a26ecc13d82e5"
+}

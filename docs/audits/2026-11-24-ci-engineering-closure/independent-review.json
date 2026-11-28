@@ -1,0 +1,467 @@
+{
+  "disposition": "SOURCE_CONTRACT_GO_HOSTED_HOLD",
+  "documentation_workflow_integration": {
+    "existing_steps_changed_or_removed": false,
+    "new_suites": [
+      "test_ci_campaign_status.py",
+      "test_publication_custody.py"
+    ],
+    "no_qualification_exemption": true,
+    "operation_seconds_each": 300,
+    "position": "after early materialized-runtime admission and before compilation",
+    "step_timeout_minutes": 10
+  },
+  "important_limits": [
+    "No hosted workflow was dispatched by this reviewer.",
+    "No new product-source, native/graphical or extracted-package execution is established.",
+    "Trusted external contract and artifact acquisition remain mandatory; a hash-consistent bundle cannot authenticate itself.",
+    "Source contract GO does not confer publication, Ready or merge authority.",
+    "Unchanged policies still require the final candidate applicable Native/GDExtension/Palette/full provenance cohort.",
+    "Real account-wide capacity is not verified by repository snapshots."
+  ],
+  "original_palette_review": {
+    "all_original_log_hashes_match": true,
+    "attempt": 1,
+    "canonical_cohort_plan_match": true,
+    "canonical_verify_process_and_context": true,
+    "cases": 19,
+    "cohorts": [
+      {
+        "artifact": "palette-shader-cohort-linux-main-cache-0-44978447427-1",
+        "cases_checked": [
+          "main-cold",
+          "main-warm"
+        ],
+        "errors": [],
+        "run_attempt": "1",
+        "run_id": "44978447427",
+        "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+        "tree": "4a85d204d16d27812cde4ff163ba302934dbc592"
+      },
+      {
+        "artifact": "palette-shader-cohort-linux-visual-0-44978447427-1",
+        "cases_checked": [
+          "compile-guard",
+          "bounded-oracle",
+          "material-render",
+          "vapour-render"
+        ],
+        "errors": [],
+        "run_attempt": "1",
+        "run_id": "44978447427",
+        "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+        "tree": "4a85d204d16d27812cde4ff163ba302934dbc592"
+      },
+      {
+        "artifact": "palette-shader-cohort-linux-visual-1-44978447427-1",
+        "cases_checked": [
+          "water-render",
+          "water-integration",
+          "atlas-baseline-full",
+          "atlas-candidate-full"
+        ],
+        "errors": [],
+        "run_attempt": "1",
+        "run_id": "44978447427",
+        "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+        "tree": "4a85d204d16d27812cde4ff163ba302934dbc592"
+      },
+      {
+        "artifact": "palette-shader-cohort-win32-main-cache-0-44978447427-1",
+        "cases_checked": [
+          "main-cold",
+          "main-warm"
+        ],
+        "errors": [],
+        "run_attempt": "1",
+        "run_id": "44978447427",
+        "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+        "tree": "4a85d204d16d27812cde4ff163ba302934dbc592"
+      },
+      {
+        "artifact": "palette-shader-cohort-win32-visual-0-44978447427-1",
+        "cases_checked": [
+          "compile-guard",
+          "bounded-oracle",
+          "material-render",
+          "vapour-render"
+        ],
+        "errors": [],
+        "run_attempt": "1",
+        "run_id": "44978447427",
+        "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+        "tree": "4a85d204d16d27812cde4ff163ba302934dbc592"
+      },
+      {
+        "artifact": "palette-shader-cohort-win32-visual-1-44978447427-1",
+        "cases_checked": [
+          "water-render",
+          "water-integration",
+          "atlas-candidate-bounded"
+        ],
+        "errors": [],
+        "run_attempt": "1",
+        "run_id": "44978447427",
+        "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+        "tree": "4a85d204d16d27812cde4ff163ba302934dbc592"
+      }
+    ],
+    "intended_headless_controls": 4,
+    "linux_cases": 10,
+    "rendered_cases": 15,
+    "reviewer_did_not_replay_full_pixel_cache_semantics": true,
+    "run_id": 44978447427,
+    "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+    "tree": "4a85d204d16d27812cde4ff163ba302934dbc592",
+    "windows_cases": 9
+  },
+  "original_ramfirst_review": {
+    "actual_tmpfs_and_stock_filesystems_distinct": true,
+    "all_four_original_execution_medians_recomputed": true,
+    "all_four_ram_savings_negative": true,
+    "attempt": 1,
+    "run_id": 44976706404,
+    "source_engine_native_hashes_equal_between_arms": true,
+    "trials": 24
+  },
+  "original_replay_review": {
+    "acquisition_sha256": "d13c0a0b6aeb44d2fd3a83e0d8b6e291327197dab26ad06d8b7c1456b4432f32",
+    "build_inputs": 1283,
+    "case_counts": {
+      "installed_windows": 18,
+      "linux": 42,
+      "windows": 42
+    },
+    "contract_sha256": "172f77d2f56c6cece5c7ddebdd10abf3c4a2e800d76e859ee7b918e34958583c",
+    "generic_helper_semantic_qualification_verified": false,
+    "new_product_execution": false,
+    "owner_semantic_reducer_replay": "passed separately, attributed to original source and B recovery; not fresh execution",
+    "receipt_sha256": "c59f4f99ea29a72f2a05db4f5a344aa3ac1b61f940708441161781f5694bbc6a",
+    "source_inputs": 105
+  },
+  "original_timing_recalculation": {
+    "comparisons": [
+      {
+        "attempt": 2,
+        "peak": 17,
+        "platforms": {
+          "linux": {
+            "count": 24,
+            "peak": 8,
+            "span_seconds": 617.0
+          },
+          "windows": {
+            "count": 23,
+            "peak": 8,
+            "span_seconds": 803.0
+          }
+        },
+        "raw_jobs_sha256": "bf9facdc3acb049302a7fba2a565cb3b46be46c737875690264f006bb6ab4efc",
+        "run_id": 44967549040,
+        "runner_minutes": 175.85
+      },
+      {
+        "attempt": 1,
+        "peak": 25,
+        "platforms": {
+          "linux": {
+            "count": 24,
+            "peak": 12,
+            "span_seconds": 451.0
+          },
+          "windows": {
+            "count": 23,
+            "peak": 12,
+            "span_seconds": 605.0
+          }
+        },
+        "raw_jobs_sha256": "1917629869ff9bfbb3015669ac23b9057a5cd09276be2c9275de50ecbc2d90a9",
+        "run_id": 44974802645,
+        "runner_minutes": 169.533333
+      },
+      {
+        "attempt": 1,
+        "peak": 26,
+        "platforms": {
+          "linux": {
+            "count": 24,
+            "peak": 16,
+            "span_seconds": 396.0
+          },
+          "windows": {
+            "count": 23,
+            "peak": 16,
+            "span_seconds": 568.0
+          }
+        },
+        "raw_jobs_sha256": "e339a0cd98596fdc96b066ac2eca546f0a6f0fd39fd5990e0edb1247c481cedc",
+        "run_id": 44977849960,
+        "runner_minutes": 169.55
+      },
+      {
+        "attempt": 1,
+        "peak": 18,
+        "platforms": {
+          "linux": {
+            "count": 24,
+            "peak": 9,
+            "span_seconds": 675.0
+          },
+          "windows": {
+            "count": 23,
+            "peak": 16,
+            "span_seconds": 916.0
+          }
+        },
+        "raw_jobs_sha256": "8ebe2e5bd33ad7eef82891c0edf8135740219e2e7444c63f404292729e07528f",
+        "run_id": 44984940287,
+        "runner_minutes": 166.75
+      },
+      {
+        "attempt": 1,
+        "peak": 20,
+        "platforms": {
+          "linux": {
+            "count": 24,
+            "peak": 14,
+            "span_seconds": 488.0
+          },
+          "windows": {
+            "count": 23,
+            "peak": 13,
+            "span_seconds": 839.0
+          }
+        },
+        "raw_jobs_sha256": "d3202818dd3a056c8ca75546ed7a3026a5fce8dd676b9c961de23d126c0372cb",
+        "run_id": 44985182561,
+        "runner_minutes": 170.783333
+      },
+      {
+        "attempt": 1,
+        "peak": 19,
+        "platforms": {
+          "linux": {
+            "count": 24,
+            "peak": 14,
+            "span_seconds": 398.0
+          },
+          "windows": {
+            "count": 23,
+            "peak": 18,
+            "span_seconds": 490.0
+          }
+        },
+        "raw_jobs_sha256": "d738f66868e0e0f696d98e4b54fa0c88661b297ae5dc75d0c9a4f6bc36e8e11a",
+        "run_id": 44989006830,
+        "runner_minutes": 178.066667
+      }
+    ],
+    "original_failed_baseline": {
+      "attempt": 1,
+      "outcomes": {
+        "failure": 3,
+        "skipped": 5,
+        "success": 3
+      },
+      "run_id": 44967549040,
+      "runner_minutes": 19.716667
+    }
+  },
+  "resolved_findings": [
+    {
+      "id": "CI-STATUS-01",
+      "original": "Superseded ordinary PR success was omitted from the rendered summary and retained metadata eligibility.",
+      "regression": "test_superseded_success_is_visible_and_cannot_satisfy_current_request",
+      "repair": "Superseded registered PR head adds an explicit blocking reason rendered in Markdown; immutable historical job outcome remains intact.",
+      "severity": "P2"
+    },
+    {
+      "id": "CI-STATUS-02",
+      "original": "Future completion timestamps could be summarized as complete observed success.",
+      "regression": "clock/status negative controls in test_ci_campaign_status.py",
+      "repair": "Invalid/future clocks and completion/status contradictions mark inventory partial and block required metadata success.",
+      "severity": "P2"
+    },
+    {
+      "id": "CI-STATUS-03",
+      "original": "A completed row in an active-status query could leave snapshot complete.",
+      "regression": "query status mismatch negative control",
+      "repair": "Query/detail status disagreement is explicitly non-atomic/partial.",
+      "severity": "P2"
+    },
+    {
+      "id": "CI-STATUS-04",
+      "original": "Malformed job row triggered uncaught AttributeError in inherited pagination helper.",
+      "regression": "malformed page/row negative controls",
+      "repair": "Validate row objects, positive IDs and integer total_count before pagination; refuse malformed snapshots.",
+      "severity": "P3"
+    },
+    {
+      "id": "CI-CUSTODY-01",
+      "original": "Adding a rogue staged source path during report verification returned custody-verified with the old four-path list.",
+      "regression": "real temporary Git index movement of rogue source and changed runtime pointer",
+      "repair": "Full NUL-delimited index snapshot must remain identical and final changed-path set must match the original allowed set.",
+      "severity": "P2"
+    },
+    {
+      "id": "CI-CUSTODY-02",
+      "original": "Staged provenance qualification hashes were not joined to verified reports.",
+      "regression": "wrong provenance report reference and independently pinned member hash refusal",
+      "repair": "Independent member SHA-256 pins and provenance report/gameplay hashes must match actual verified report bytes.",
+      "severity": "P2"
+    },
+    {
+      "id": "CI-CUSTODY-03",
+      "original": "ZIP expansion had no explicit memory/member ceiling before reads.",
+      "regression": "all four bound refusals",
+      "repair": "Archive, member, expanded bytes and member-count limits checked before archive.read.",
+      "severity": "P3"
+    },
+    {
+      "id": "CI-CUSTODY-04",
+      "identified_by": "technical lead; delta independently reviewed by specialist C",
+      "original": "A local branch could switch to another branch at the same tested SHA during verification while preserving the staged files.",
+      "regression": "test_same_sha_local_branch_switch_during_check_is_rejected",
+      "repair": "Recheck exact local branch and HEAD after the remote lease and repeat full index snapshot equality.",
+      "severity": "P2"
+    },
+    {
+      "id": "CI-STATUS-05",
+      "identified_by": "technical lead; delta independently reviewed by specialist C",
+      "original": "Malformed top-level/status-query/run envelope could raise an uncaught attribute/type error.",
+      "regression": "test_malformed_envelopes_refuse_cleanly",
+      "repair": "Reject malformed envelopes, query entries, run records, rechecks and repository identities through ValueError.",
+      "severity": "P3"
+    },
+    {
+      "id": "CI-STATUS-06",
+      "identified_by": "specialist B; final28 suite independently rerun by specialist C",
+      "original": "Snapshot and ledger were parsed then hashed by later path reads, permitting pins for different bytes. Collected output was also reopened after reduction.",
+      "regression": "test_cli_pins_consumed_snapshot_and_ledger_when_paths_are_replaced; test_collect_pins_exact_written_snapshot_before_path_replacement",
+      "repair": "Bounded input reads return parsed content and its captured-byte digest together; serialized collection bytes supply their digest before any path replacement.",
+      "severity": "P2"
+    },
+    {
+      "id": "CI-CUSTODY-05",
+      "identified_by": "specialist C; full-helper reproduction and final focused regression independently verified",
+      "original": "Archive path was hashed then reopened for ZIP decoding; full helper accepted an atomically replaced archive with changed trailing bytes after pin verification.",
+      "regression": "test_archive_path_swap_after_capture_cannot_substitute_decoded_bytes",
+      "repair": "Read at most trusted size+1 bytes once; compare their SHA-256/size and decode that same immutable buffer. Later path replacement cannot substitute decoded members.",
+      "severity": "P2"
+    }
+  ],
+  "review_date": "2026-11-24",
+  "reviewed_deltas": {
+    "custody_commit": "4d6f03a6fa1b42dcc475a809a92372653eaa64a8",
+    "palette_semantic_delta": "Only jobs.windows.strategy.max-parallel changes2to3; complete source plan unchanged",
+    "root_status_commit": "a0d58445",
+    "runner_observation_interpretation": "Sampled IDs over collection interval, not guaranteed simultaneous occupancy"
+  },
+  "reviewed_file_sha256": {
+    "custody": {
+      "path": "tools/ci/publication_custody.py",
+      "sha256": "53de9c113be72768d28ee574f3d085adaddf060e4843bca77e9b2b2944704873"
+    },
+    "custody_tests": {
+      "path": "tools/ci/test_publication_custody.py",
+      "sha256": "97f9d570d27cc92af4c883aee574306955c3ac5b642d6eadcd752f50aa897376"
+    },
+    "documentation_workflow": {
+      "path": ".github/workflows/documentation.yml",
+      "sha256": "025a6ed7e5ecaf5b4c8bfaf7de7aa553501841db1994879820dd46542de9d82f"
+    },
+    "metrics": {
+      "path": "tools/ci/ci_run_metrics.py",
+      "sha256": "2bd1523b35e43ffb94fc0d5efbdd4c42abd852bb770ebe296a9e7f34141af706"
+    },
+    "metrics_tests": {
+      "path": "tools/ci/test_ci_run_metrics.py",
+      "sha256": "8cd64960316233ed2e787b07194196bdad2f9850878426cf2c8a878097db52b6"
+    },
+    "palette_workflow": {
+      "path": ".github/workflows/palette-shader-qualification.yml",
+      "sha256": "0250e3618af6e56f8b21b5f1e310e4d0fdf85fdb6e134d4c2690743fbfc64431"
+    },
+    "status": {
+      "path": "tools/ci/ci_campaign_status.py",
+      "sha256": "fc88a08b5c74dacf4bf105776ed47891e63b6366e36c405c7e56dcabe50779c6"
+    },
+    "status_tests": {
+      "path": "tools/ci/test_ci_campaign_status.py",
+      "sha256": "e77fa892af05cd1398710a08003c3ed2233ab0e33d3fa8d9d60e60b665708f6f"
+    }
+  },
+  "reviewer": "specialist C, non-author of status/custody/metrics implementation",
+  "schema": "cybersand-ci-closure-independent-review-v1",
+  "source_base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "validation": [
+    {
+      "command": "python3 tools/ci/test_ci_campaign_status.py",
+      "result": "PASS",
+      "scope": "offline metadata status, paging, clock, source and supersession contracts",
+      "seconds": 0.009,
+      "tests": 25
+    },
+    {
+      "command": "python3 tools/ci/test_publication_custody.py",
+      "result": "PASS",
+      "scope": "actual temporary local Git/LFS repositories; synthetic verifier payloads, not runtime qualification",
+      "seconds": 59.468,
+      "tests": 36
+    },
+    {
+      "command": "python3 tools/ci/test_ci_run_metrics.py",
+      "result": "PASS",
+      "scope": "source/run/attempt and recovered telemetry reporting controls",
+      "seconds": 0.015,
+      "tests": 8
+    },
+    {
+      "command": "python3 tools/ci/check_docs.py",
+      "documents": 146,
+      "questions": 33,
+      "result": "PASS",
+      "scope": "new packet plus existing corpus with legitimate pinned companion checkout"
+    },
+    {
+      "command": "python3 -m unittest test_ci_campaign_status.CoordinationContracts.test_malformed_envelopes_refuse_cleanly",
+      "result": "PASS",
+      "scope": "independent final added envelope regression; prior25-test complete suite also passed",
+      "seconds": 0.001,
+      "tests": 1
+    },
+    {
+      "command": "python3 -m unittest test_publication_custody.PublicationCustodyTests.test_same_sha_local_branch_switch_during_check_is_rejected test_publication_custody.PublicationCustodyTests.test_malformed_report_specification_is_cleanly_rejected test_publication_custody.PublicationCustodyTests.test_actual_index_rogue_path_or_pointer_movement_during_check_is_rejected",
+      "result": "PASS",
+      "scope": "independent final delta; one test overlaps prior36 suite; author final38 suite passed",
+      "seconds": 2.806,
+      "tests": 3
+    },
+    {
+      "byte_identical_to_author_receipt": true,
+      "command": "publication_custody.py --replay-child 47e87cb84cf302b4e283cfc7e8f884e01b7b4c73 with externally pinned original contract",
+      "receipt_sha256": "c59f4f99ea29a72f2a05db4f5a344aa3ac1b61f940708441161781f5694bbc6a",
+      "result": "PASS",
+      "scope": "immutable original #762 evidence only, no new execution"
+    },
+    {
+      "command": "python3 tools/ci/test_ci_campaign_status.py",
+      "result": "PASS",
+      "scope": "final integrated status suite including captured-byte file replacement controls",
+      "seconds": 0.049,
+      "tests": 28
+    },
+    {
+      "command": "python3 -m unittest test_publication_custody.PublicationCustodyTests.test_archive_path_swap_after_capture_cannot_substitute_decoded_bytes",
+      "result": "PASS",
+      "scope": "final archive byte-binding delta after prior full36+focused3",
+      "seconds": 0.984,
+      "tests": 1
+    },
+    {
+      "command": "python3 tools/ci/check_ci_provider_policy.py; python3 tools/ci/check_ci_scheduling_policy.py",
+      "result": "PASS",
+      "scope": "integrated GitHub-only provider and all93 workflow routing/budget checks; no product execution"
+    }
+  ]
+}

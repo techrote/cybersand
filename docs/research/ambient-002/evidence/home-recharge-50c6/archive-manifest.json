@@ -1,0 +1,32 @@
+{
+  "schema": "ambient2-original-artifact-parts/v1",
+  "original_artifact_id": 14994329664,
+  "run_id": 45552888360,
+  "job_id": 138997939605,
+  "application_commit": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "observer_commit": "52900f9d8ead1f6d0b3c4ae6fbdc1e0ac049ce4b",
+  "file_name": "ambient-002-observation-52900f9d.zip",
+  "bytes": 25590794,
+  "sha256": "0c13de36d1d60935a6d1e4b20ce764da670851f7199d402caf5059d493bd9447",
+  "part_bytes": 10420224,
+  "parts": [
+    {
+      "path": "archive/original.zip.part-000",
+      "bytes": 10420224,
+      "sha256": "afb46eec6eba5a581ff8b0d5389214828d4f58d22c4ce79863b25866eee9bb4c",
+      "git_blob_sha1": "3e3d3ebaad002799bf5828a5ba2b253a97c8493c"
+    },
+    {
+      "path": "archive/original.zip.part-001",
+      "bytes": 10420224,
+      "sha256": "e5ef244087db29f74b9cde399f68b430902be0aea2961102a8c36ea7a5ce1364",
+      "git_blob_sha1": "5f025eaf10545fed7d77a9ba74f0acad67891631"
+    },
+    {
+      "path": "archive/original.zip.part-002",
+      "bytes": 4750346,
+      "sha256": "e4da63fcf81ae85ac6b5d5e037150a2820057088c35fa5ad274536c40f7c6f5d",
+      "git_blob_sha1": "a1d263728449a03cdf6bb078b7d7220fa3ea9c43"
+    }
+  ]
+}

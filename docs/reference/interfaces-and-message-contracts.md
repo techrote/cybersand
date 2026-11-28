@@ -6,10 +6,28 @@ status: Current
 scope: Current C ABI, procedural-generation C++/Godot surfaces and private packed layouts; proposed gameplay/reconfiguration contracts remain distinct
 keywords: [C API v2, material_info_v3, material_info_v4, body packet, INPUT_STRIDE, RG8, gameplay command]
 related-documents: [../architecture/data-ownership-and-lifetimes.md, ../architecture/simulation-tick-and-threading.md, ../architecture/rendering-and-gameplay-bridges.md, level-saves-and-replay.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-27
 ---
 
 # Interfaces and message contracts
+
+The opt-in [GEN-006 persistent-area interface](../systems/persistent-authored-areas.md) adds `capture_workbench_continuation`, private prepared continuation capture and bounded advance to `CyberDemoBridge`, plus `CyberPersistentAreaStorage` for locked immutable-file/manifest transactions. `simulation_worker.persistent_request/persistent_poll` admits one operation lease and copied result at a time. A nonzero-tick `workbench_continuation` receipt binds the source checkpoint, current full state, original construction definition and session/area/generation/operation identity. Ordinary `applied_run` and strict host evidence admission remain distinct. No C ABI, World capacity or native save-format version changes.
+
+The [AMBIENT-002 successor](../systems/ambient-living-inhabitants.md) adds strict
+profile version 2 alongside version 1 and an optional scene-local
+`ambient_authoring` library. Copied environments additionally carry explicit
+World generation, bounded navigation and tagged peer observations. The physical
+command ABI and native material wire formats remain unchanged. Group authoring
+uses captured run/epoch/configuration identities and all-member preflight before
+one synchronous owner commit; it grants no new body or World ownership.
+
+The opt-in [AMBIENT-001 contract](../systems/ambient-actors.md) adds the
+`ambient-observation/v1` copied environment and authored profile version 1.
+These are local value schemas. Existing physical issued observation/command
+version 2, native material formats and Rapier interfaces remain unchanged.
+`control.source = "policy"`, `control.policy = "ambient"` and the validated
+`control.ambient` profile select the adapter. Unavailable sensor fields remain
+explicitly unavailable; they do not become safe ground or an absent material.
 
 The experimental PR #618 [Wave Flow interface](../architecture/wave-flow-v1.md)
 adds versioned construction options and full uint16 Water mass readback without
@@ -1079,6 +1097,18 @@ by stable authored instance ID. It validates controller/equipment capabilities,
 keeps inspection separate from the human pilot, and preserves body identity
 during producer takeover. Sampled packets are refused at the physical boundary.
 The optional authored control-v1 extension does not serialize command authority.
+WB-ACTOR-COMPOSE-002R adds a session-local manipulation interface:
+`manipulator().hit_test(point)`, `begin_grab(point)`, `update_target(point)` and
+`end_grab(reason)` operate on current physical part identities; `state()` copies
+the active instance/part, anchor, target and bounded force. They issue no policy
+command and expose no mutable native storage. `capture_workbench_assembly(id)`
+returns copied current part transforms plus run/epoch, origin, geometry and any
+topology-preservation refusal. A value-only placement preview is revalidated
+against that source before one ordinary prepared-owner transaction.
+Setup-v2 optionally includes actor `spawn_rotation_degrees` in `[-180,180]` and
+root `sandbox_capacity: {version:1, logical_limit, body_limit, proxy_limit}`.
+Absent values retain zero orientation and 8/64/64 admission. Integer capacity
+limits are independently bounded at 4096, and no live mouse/lease state is saved.
 
 **Current experimental ACT-004 / ACT-005:**
 [`CyberPhysicalActorSession`](../../godot/scripts/physical_actor_session.gd)

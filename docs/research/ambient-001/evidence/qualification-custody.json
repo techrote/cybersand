@@ -1,0 +1,122 @@
+{
+  "inputs_sha256": {
+    "ambient-independent-run.log": "dd2c93fa2ad282f28c2c80b2efc4f2e3812ab4e9b72a288c30ea5b62627b1ed4",
+    "ambient-ledge-run.log": "888ba4175b5fba24f53d618c9a43d45b60c7c2edc6202aa15b293f414a076cf5",
+    "ambient-motion-report.json": "fd29a87a7c41fb40303c74051bd7352577ba681d49a629301f540c2e948b9ffd",
+    "ambient-perception-report.json": "b797803b376b21d34c0e685d30443e0058024dd86a85ee234073c1666d024f6a"
+  },
+  "outputs_sha256": {
+    "native-motion-comparison.png": "f39648b172b9f5d1a1906cd85a513f9c612e527d9b5879a07e383f64caf5d080",
+    "native-motion-summary.json": "04ee13e62cb9a26707f8c25f9d001844fd2d1ed875e5add89f941ecadef8614d",
+    "native-motion-trajectories.csv": "1e10fb02a57bba9f64942ed82f171df59062ef11f56e4e2ebbed32d1f74c1af6",
+    "perception-summary.json": "47514aafdb067aeb98f8713e5e88e483acf1a6c4e5961f82333d7e4f8c60a459"
+  },
+  "repository_head": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "retained_runtimes": {
+    "native": {
+      "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "provenance_file_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "status": "validated-development-runtime"
+    },
+    "rapier": {
+      "artifact": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+      "provenance_file_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "source_commit": null,
+      "status": "source-matched-cooperative-bvh-backport"
+    }
+  },
+  "schema": "ambient-qualification-custody/v1",
+  "source_form": "accepted base plus source-hashed local implementation; final commit recorded by lead",
+  "source_identity": {
+    "captured_utc": "2026-11-24T18:50:38",
+    "display_server": "headless",
+    "godot": "4.7-stable (official)",
+    "godot_executable_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "platform": "Linux",
+    "runtime_artifacts": {
+      "native": {
+        "path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+      },
+      "rapier": {
+        "path": "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      }
+    },
+    "runtime_supported": true,
+    "sha256": {
+      "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+      "addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "addons/godot-rapier2d/godot-rapier2d.gdextension": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+      "scripts/ambient/ambient_actuator.gd": "11c14b1e2eca8e8623ac328e36ebf47d269fab17b329be07a0abfe66080608ef",
+      "scripts/ambient/ambient_engine.gd": "4c05449d0390782ab4f2427e3f1d03ca1f8c9fbee8ac54cf132894c7638b6834",
+      "scripts/ambient/ambient_modules.gd": "6077e1aff117747c2217a20cd698cda587f9dc47434d8f63e0ee616cac33c2f1",
+      "scripts/ambient/ambient_perception.gd": "8b76fd57be2eb79efeb316b32e544a42663c80b9aa3dae7f9fc697c03089f624",
+      "scripts/ambient/ambient_profile.gd": "cd0233dc4863a6acad9ff74feeb871e4766714e68bbac22b11712353a2141157",
+      "scripts/physical_actor_catalog.gd": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+      "scripts/physical_actor_rig.gd": "183fab96f2fd8a33694ff8bad6c2ae074548ce24b6d4a0a908f1b8e38b376ed2",
+      "scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+      "scripts/physical_actor_session.gd": "edb16c4fa1c7915baa24f1a7e0f5012584dfdea5272e15b877a1fa9631df48c7",
+      "scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+      "scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+      "scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+      "scripts/workbench_actor_catalog.gd": "b24cccf5ee5674103d62399fe8cf92b691daebecd51b74820dd9a70deedd67d7",
+      "scripts/workbench_actor_control.gd": "342a925a2ba0df06599768879fbb04e9f687dac21c0d72147cb1253b51c0cbff",
+      "scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+      "tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json": "7c7c13125fcbf4e6f07317efa2190656840417c8ce328820adb7dfea7ba9f78e",
+      "tests/test_ambient_native_motion.gd": "ba8e74256ced23dd99a5e4431cbe572775953b257f98935601b461ea61e062ee"
+    }
+  },
+  "source_sha256": {
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "godot/addons/cybersand_native/cybersand_native.gdextension": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "godot/addons/godot-rapier2d/godot-rapier2d.gdextension": "2b8b2115e94ca5d1a1494b6052dbf65f0fff7b4acce752d4c8367350a820eb14",
+    "godot/scripts/ambient/ambient_actuator.gd": "11c14b1e2eca8e8623ac328e36ebf47d269fab17b329be07a0abfe66080608ef",
+    "godot/scripts/ambient/ambient_engine.gd": "4c05449d0390782ab4f2427e3f1d03ca1f8c9fbee8ac54cf132894c7638b6834",
+    "godot/scripts/ambient/ambient_modules.gd": "6077e1aff117747c2217a20cd698cda587f9dc47434d8f63e0ee616cac33c2f1",
+    "godot/scripts/ambient/ambient_perception.gd": "8b76fd57be2eb79efeb316b32e544a42663c80b9aa3dae7f9fc697c03089f624",
+    "godot/scripts/ambient/ambient_profile.gd": "cd0233dc4863a6acad9ff74feeb871e4766714e68bbac22b11712353a2141157",
+    "godot/scripts/physical_actor_catalog.gd": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+    "godot/scripts/physical_actor_rig.gd": "183fab96f2fd8a33694ff8bad6c2ae074548ce24b6d4a0a908f1b8e38b376ed2",
+    "godot/scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+    "godot/scripts/physical_actor_session.gd": "edb16c4fa1c7915baa24f1a7e0f5012584dfdea5272e15b877a1fa9631df48c7",
+    "godot/scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+    "godot/scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+    "godot/scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+    "godot/scripts/workbench_actor_catalog.gd": "b24cccf5ee5674103d62399fe8cf92b691daebecd51b74820dd9a70deedd67d7",
+    "godot/scripts/workbench_actor_control.gd": "342a925a2ba0df06599768879fbb04e9f687dac21c0d72147cb1253b51c0cbff",
+    "godot/scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+    "godot/tests/fixtures/lcb/lcb.dam.water.freemass.reference.v1.json": "7c7c13125fcbf4e6f07317efa2190656840417c8ce328820adb7dfea7ba9f78e",
+    "godot/tests/test_ambient_independent.gd": "3ee20a3ee1195746ff007597e33e23cb3052c01ec91ef8213eddeb26e3026f9a",
+    "godot/tests/test_ambient_ledge_geometry.gd": "55feedfb3ae2f910d9ba0bd5e9d993382c6500d65e4dccc07e7d3d43f7a50983",
+    "godot/tests/test_ambient_native_motion.gd": "ba8e74256ced23dd99a5e4431cbe572775953b257f98935601b461ea61e062ee",
+    "godot/tests/test_ambient_perception.gd": "6c891605bec20e1d3d964f765b79eed21923e9f1d768e0aa74c79821c8be41fb"
+  },
+  "tests": {
+    "actual_rapier_ledge_geometry": {
+      "checks": 15,
+      "failures": [],
+      "scope": "actual Rapier terrain rays; no native material or Windows playfeel claim"
+    },
+    "independent_core_composition": {
+      "checks": 214,
+      "failures": [],
+      "scope": "independent pure-data source-adapter composition; no physical trajectory claim"
+    },
+    "native_motion": {
+      "checks": 306,
+      "failures": []
+    },
+    "perception": {
+      "checks": 130,
+      "failures": []
+    }
+  }
+}

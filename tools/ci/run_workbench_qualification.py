@@ -150,11 +150,25 @@ def stage_linux(args):
     subprocess.run(["git", "diff", "--exit-code", "HEAD", "--", "godot/scripts", "godot/tests", "examples/worldgen"],
                    cwd=ROOT, check=True)
     lfs_pins = committed_lfs_pins()
+    reciprocal = getattr(args, "reciprocal_candidate", None)
+    reciprocal_receipt = None
+    if reciprocal is not None:
+        import importlib.util
+        spec = importlib.util.spec_from_file_location("swarm45_stage_custody", ROOT / "tools/swarm45/runtime_custody.py")
+        custody = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(custody)
+        reciprocal_receipt = custody.verify(reciprocal.resolve())
+        if reciprocal_receipt["platform"] != "linux":
+            raise ValueError("Linux staging requires the actual Linux reciprocal candidate")
     payload = subprocess.check_output(["git", "archive", "HEAD", "--", "godot", "examples/worldgen"], cwd=ROOT)
     destination.mkdir(parents=True)
     with tarfile.open(fileobj=io.BytesIO(payload)) as archive:
         for item in archive:
             if not item.isfile() or item.name.startswith("godot/.godot/"):
+                continue
+            if item.name in ("godot/tools/gentek_reciprocal.exe", "godot/tools/swarm004-runtime.windows.json"):
+                continue
+            if reciprocal_receipt and item.name in ("godot/tools/gentek_reciprocal", "godot/tools/swarm004-runtime.linux.json"):
                 continue
             if "/bin/" in item.name and item.name not in (native, rapier):
                 continue
@@ -172,6 +186,13 @@ def stage_linux(args):
             target = destination / item.name
             target.parent.mkdir(parents=True, exist_ok=True)
             target.write_bytes(data)
+            target.chmod(item.mode & 0o777)
+    if reciprocal_receipt:
+        cli = destination / "godot/tools/gentek_reciprocal"
+        cli.parent.mkdir(parents=True, exist_ok=True)
+        shutil.copyfile(reciprocal / reciprocal_receipt["cli"], cli)
+        cli.chmod(0o755)
+        custody.write_json(cli.with_name("swarm004-runtime.linux.json"), custody.cli_binding(reciprocal_receipt))
     profiles = stage_generator_profiles(destination)
     # Retained provenance describes the old committed binary, not this rebuild.
     retained = destination / "godot/addons/cybersand_native/runtime-provenance.linux.json"
@@ -384,6 +405,8 @@ def main():
     sub = parser.add_subparsers(dest="mode", required=True)
     stage = sub.add_parser("stage-linux")
     stage.add_argument("--output", type=Path, required=True)
+    stage.add_argument("--reciprocal-candidate", type=Path,
+                       help="Install this same-run Linux CLI/binding; do not fetch or package an older retained CLI")
     stage.set_defaults(run=stage_linux)
     for name, function in (("installed", installed), ("regressions", regressions)):
         command = sub.add_parser(name)

@@ -1,0 +1,132 @@
+{
+  "all_eight_published_git_paths_unchanged": true,
+  "application_or_physical_owner_execution_claimed": false,
+  "attempt": 1,
+  "completed_successful_steps": 28,
+  "event": "workflow_dispatch",
+  "four_actual_published_lfs_objects": [
+    {
+      "bytes": 5844992,
+      "changed_during_original_publication": true,
+      "fresh_authenticated_fetch_and_materialization_passed": true,
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205"
+    },
+    {
+      "bytes": 5278840,
+      "changed_during_original_publication": false,
+      "fresh_authenticated_fetch_and_materialization_passed": true,
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+    },
+    {
+      "bytes": 1554128,
+      "changed_during_original_publication": true,
+      "fresh_authenticated_fetch_and_materialization_passed": true,
+      "path": "godot/tools/gentek_reciprocal",
+      "sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206"
+    },
+    {
+      "bytes": 3283968,
+      "changed_during_original_publication": true,
+      "fresh_authenticated_fetch_and_materialization_passed": true,
+      "path": "godot/tools/gentek_reciprocal.exe",
+      "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d"
+    }
+  ],
+  "job_id": 138695615359,
+  "job_url": "https://github.com/techrote/cybersand/actions/runs/45464485647/job/138695615359",
+  "original_evidence": [
+    {
+      "bytes": 288733,
+      "descriptor": "GitHub job decoded original log",
+      "job": 138695615359,
+      "run": 45464485647,
+      "sha256": "f79fe4596d64f8442578220130b940c3f5e8b3f2fa52eb59805facd48083dde4"
+    },
+    {
+      "descriptor": "Original terminal run API",
+      "sha256": "235a4370b69ba44c6e5da1eab59057661178f8f11a8ae852a7082972e69d4aa0"
+    },
+    {
+      "descriptor": "Original per-attempt jobs API",
+      "sha256": "ebccd9c6ae73edccf87b98a8a5339a59c3d951b394ff18282991ab90458bb4aa"
+    },
+    {
+      "descriptor": "Independent purpose-built connector jobs response",
+      "sha256": "9419ebe63c4e5f80d0b1a9edc20897ba7eb752296f3807cd9b58056cdbc5fc96"
+    }
+  ],
+  "publication_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+  "publication_tree": "9c0dcf061051e32194f5845cf024a3d5435d9122",
+  "qualified_runtime_metadata_retagged": false,
+  "qualified_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "remaining_scope": "Affected ordinary GDE/PLAY transport execution and physical owner acceptance are separate gates.",
+  "repository_result": {
+    "documentation": {
+      "canonical_claims": 289,
+      "documents": 155,
+      "errors": [],
+      "heading_anchors": 813,
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ],
+      "local_links": 4212,
+      "navigation_link_documents": 8,
+      "questions": 32,
+      "status": "passed",
+      "warnings": []
+    },
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ],
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+      "godot/tools/gentek_reciprocal",
+      "godot/tools/gentek_reciprocal.exe"
+    ],
+    "scope": "current source/documentation and artifact identity",
+    "status": "passed",
+    "unmaterialized_runtime_files": []
+  },
+  "result": "PASS",
+  "reviewer": "independent_assurance",
+  "run_id": 45464485647,
+  "schema": 1,
+  "scope": "Independent original fresh remote LFS materialization and exact runtime identity at corrected ordinary request source",
+  "skipped_steps": [],
+  "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+  "source_checkout_has_lfs_true_and_no_cache_restore": true,
+  "source_contract_sha256": {
+    ".github/workflows/documentation.yml": "276bb3f1405469ae36ba6569e4cc75d01b2a55568de76635fb9890ac38e2726d",
+    "tools/ci/check_repository.py": "e4ebfd2e6faca4ea9a12785be8afb60a5c5479edcd555ddf436c3081a4302e03",
+    "tools/ci/check_swarm_runtime.py": "c626f2a0856125326c74fdfdb3b284ed543d391b95ae8518b093f2341f4a5f57"
+  },
+  "source_empty_git_repository_then_authenticated_remote_fetch": true,
+  "source_or_original_evidence_modified": false,
+  "unchanged_from_original_full_docs_45459015485": true,
+  "unskipped_materialized_identity_gate_and_lfs_fsck": true
+}

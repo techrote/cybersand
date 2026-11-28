@@ -1,0 +1,42 @@
+{
+  "schema": "ambient2-sampled-media-independent/v1",
+  "scope": "Original derivatives from actual one-per-simulation-second images; no application execution",
+  "videos": [
+    {
+      "scene": "ambient2-courtyard",
+      "file": "ambient2-courtyard-sampled-timelapse.mp4",
+      "sha256": "a59950fa7fb33cda406ef3727f04ebdc0b9edde8d5dc9ad18f58699773e552c9",
+      "ffprobe": {
+        "width": 1920,
+        "height": 1152,
+        "r_frame_rate": "6/1",
+        "duration": "10.166667",
+        "nb_read_frames": "61"
+      }
+    },
+    {
+      "scene": "ambient2-refinery",
+      "file": "ambient2-refinery-sampled-timelapse.mp4",
+      "sha256": "14b5497a4a4a4a7be0006abe992ebb482f19678156c653a6d67996a453879658",
+      "ffprobe": {
+        "width": 1920,
+        "height": 1152,
+        "r_frame_rate": "6/1",
+        "duration": "10.166667",
+        "nb_read_frames": "61"
+      }
+    },
+    {
+      "scene": "ambient2-settlement",
+      "file": "ambient2-settlement-sampled-timelapse.mp4",
+      "sha256": "74bc8dcd99f535673e84ee4c0a5f65cc4c2ca424406e497defd5cad35ecc2f9b",
+      "ffprobe": {
+        "width": 1920,
+        "height": 1152,
+        "r_frame_rate": "6/1",
+        "duration": "10.166667",
+        "nb_read_frames": "61"
+      }
+    }
+  ]
+}

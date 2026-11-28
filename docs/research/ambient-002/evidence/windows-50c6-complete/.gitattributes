@@ -1,0 +1,7 @@
+# Preserve the exact target-host bytes of these original Windows records.
+# These exceptions apply only to retained evidence, never runtime inputs.
+original-evaluation-manifest.json -text whitespace=cr-at-eol
+original/ambient/qualification.json -text whitespace=cr-at-eol
+original/ambient-graphical/qualification.json -text whitespace=cr-at-eol
+original/extracted-package/qualification.json -text whitespace=cr-at-eol
+original/extracted-graphical/qualification.json -text whitespace=cr-at-eol

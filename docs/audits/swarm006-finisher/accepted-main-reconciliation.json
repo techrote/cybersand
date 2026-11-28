@@ -1,0 +1,18 @@
+{
+  "schema": 1,
+  "scope": "Accepted CI-only main reconciliation; no SWARM004/005 accepted merge is claimed. Final commit/tree and exact-source execution receipts are in PR716.",
+  "previous_accepted_main": "0f0161af337d6d0cee8fa961a9667aff570a75b0",
+  "accepted_main": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "accepted_pr": 714,
+  "initial_successor": "09561b21be09b99c312a442b15e35f5dae6ece17",
+  "accepted_delta_paths": [
+    ".github/workflows/documentation.yml",
+    "docs/operations/ci-execution-and-performance.md"
+  ],
+  "merge_conflicts": [],
+  "native_godot_tools_delta_from_initial_successor": [],
+  "native_definition_sha256": "72779688b897e4707d89ac1f6e692046abbc806bd27b4c129bd77fcd995093a0",
+  "swarm004_005_accepted_merge": "pending",
+  "superseded_qualification_run": 44947892459,
+  "qualification_policy": "The new published commit starts fresh exact-source qualification. Prior run is superseded, not relabelled as the new source."
+}

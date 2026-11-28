@@ -1,0 +1,37 @@
+{
+  "status": "INDEPENDENT_ORIGINAL_RECEIPT_READBACK_PASS",
+  "source_scope": "uncommitted two-file candidate against exact a725; not yet a qualified published application",
+  "candidate_engine_sha256": "a406e33433327229c077dc8cfdb065196c4eecea70a51752c2cc9120adc60ab7",
+  "candidate_test_sha256": "a48857d610fe2a630e3a5e3ee6fc1f4319847c5809325cdad5c595a72768fee2",
+  "engine_binary_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "original_archive_sha256": "c3fb9c66c1311476365e4e3e78a7be0e90a5899eef1fcf459720974127295a65",
+  "original_archive_bytes": 48575,
+  "original_receipt_sha256": "69b416048ca3ea91ec230cef86c54e5a9733626b5104c1973419aaba255eb0c8",
+  "verified_manifest_members": 18,
+  "cases": {
+    "living-candidate": {
+      "checks": 648,
+      "failures": 0,
+      "report_sha256": "b79e566216aed394e9455703b9185d236f91b3ef8d3590c649551d4c92b93a6c",
+      "result_terminal": "AMBIENT_LIVING_ENGINE_RESULT"
+    },
+    "legacy-candidate": {
+      "checks": 895,
+      "failures": 0,
+      "report_sha256": "fed0196e1cd2dca0ca95d746b2ab47fc0f0d8be7a7a31ced9977c2a749f2c80f",
+      "result_terminal": "AMBIENT_ENGINE_RESULT"
+    },
+    "baseline-new-tests": {
+      "checks": 648,
+      "failures": 5,
+      "report_sha256": "4b58d4519b7151ec7322648852d3f851ee2fe644253de9b6a6b732a05f31c9e1",
+      "result_terminal": "AMBIENT_LIVING_ENGINE_RESULT"
+    }
+  },
+  "readback_parser_adjustment": "The initial independent readback incorrectly counted both the legacy benchmark and completion JSON under a broad AMBIENT prefix and refused the ambiguity. The successful readback selects the exact documented RESULT terminal family, still requires exactly one result and exact report agreement, and leaves all original bytes unchanged.",
+  "limits": [
+    "This is independent readback of A's retained actual focused Linux execution, not another engine run.",
+    "Pure copied-value checks add zero physical episodes; full published-source/platform/physical qualification remains separate.",
+    "The deliberate original-engine negative remains retained with its five exact failed assertions."
+  ]
+}

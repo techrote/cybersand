@@ -1,0 +1,47 @@
+{
+  "schema": 1,
+  "scope": "Unmodified actual Windows reports for terminal authority regression only; Q1 remains failed and lacks four required fresh-process Reopens. These files are not new native or graphical execution.",
+  "source": "e8784e835635cce16bce8b480e0238b64f815f84",
+  "run_id": "44976065682",
+  "run_attempt": "1",
+  "artifact_id": "14736124565",
+  "artifact_sha256": "086831606271234e37981e25fdf3c7246f0cbeb46973436c169a7ca5a0515fae",
+  "files": [
+    {
+      "file": "transaction.json",
+      "original_path": "windows-package/transaction/create.json",
+      "sha256": "b483235d711e7fe612e596d25ffc9df335ea64f6ca70f57a322e9a03cc596b4c",
+      "bytes": 6388
+    },
+    {
+      "file": "swarm006_industrial_off.json",
+      "original_path": "windows-package/swarm006_industrial_off/evaluate.json",
+      "sha256": "5400a211b872e5729cc57d3030de81f48a5552f66f5ce878bd1ddd73ec0ab037",
+      "bytes": 4812
+    },
+    {
+      "file": "swarm006_industrial_on.json",
+      "original_path": "windows-package/swarm006_industrial_on/evaluate.json",
+      "sha256": "abfee62c5e7c8f7e4aa1d47f2ecc8ca04bb369bbc65b356578e8a272c4e3f426",
+      "bytes": 7197
+    },
+    {
+      "file": "swarm006_viaduct_on.json",
+      "original_path": "windows-package/swarm006_viaduct_on/evaluate.json",
+      "sha256": "994a12c67da882d7301d629a4cfcb2b4ae980b0e03e388d809dd736900074768",
+      "bytes": 7202
+    },
+    {
+      "file": "swarm006_irregular_on.json",
+      "original_path": "windows-package/swarm006_irregular_on/evaluate.json",
+      "sha256": "f7d9fe827e52f1f7d656d4d6e1ea186157cd17cef9eba488a93bf2c9dbd0e80d",
+      "bytes": 7164
+    },
+    {
+      "file": "swarm006_irregular_square_on.json",
+      "original_path": "windows-package/swarm006_irregular_square_on/evaluate.json",
+      "sha256": "4e2eca636f65be480e4b3a0a56fe0588ceec9c771d89cdef49471ca69bdd5873",
+      "bytes": 7174
+    }
+  ]
+}

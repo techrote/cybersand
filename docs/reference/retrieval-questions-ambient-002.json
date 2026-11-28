@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "purpose": "Additive AMBIENT-002 ownership, memory, perception and authoring retrieval questions; predecessor fixtures unchanged.",
+  "questions": [
+    {
+      "id": "AMBIENT2-Q01",
+      "query": "How does AMBIENT-002 living inhabitant memory invalidate when a World generation changes or becomes unavailable?",
+      "canonical": [
+        "systems/ambient-living-inhabitants.md"
+      ],
+      "facts": [
+        "World identity is copied from accepted owner snapshots even when material sensing is disabled.",
+        "Run, epoch, actor and World generation bind private knowledge; unavailable generation is not a new World.",
+        "Authored save does not serialize ephemeral spatial memory."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/ambient/ambient_perception.gd",
+        "../godot/scripts/shared_workbench.gd"
+      ]
+    },
+    {
+      "id": "AMBIENT2-Q02",
+      "query": "What is the bounded adaptive near-field material sensing budget and what does incomplete sampled coverage mean?",
+      "canonical": [
+        "systems/ambient-living-inhabitants.md"
+      ],
+      "facts": [
+        "Adaptive sensing admits at most 4096 unique native material ID reads, eight materials and radius96.",
+        "Requested spacing may coarsen explicitly; nearest observed does not guarantee nearest native cell.",
+        "Stale, unavailable, observed absence and incomplete coverage remain distinct."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/ambient/ambient_perception.gd",
+        "../godot/scripts/shared_workbench.gd"
+      ]
+    },
+    {
+      "id": "AMBIENT2-Q03",
+      "query": "Does group Apply atomically assign an ambient profile and preserve live Rapier actors when one selected actor is stale or incompatible?",
+      "canonical": [
+        "systems/ambient-living-inhabitants.md",
+        "operations/ambient-living-workbench.md"
+      ],
+      "facts": [
+        "Every captured actor identity/control is preflighted before any producer is revoked.",
+        "All replacements are visible before cancellation notices; a bad member refuses the whole group.",
+        "Successful group assignment preserves physical bodies, poses and resources."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/ambient/ambient_perception.gd",
+        "../godot/scripts/shared_workbench.gd"
+      ]
+    },
+    {
+      "id": "AMBIENT2-Q04",
+      "query": "How are scene-local shared profiles, individual overrides and authored home regions saved and reused?",
+      "canonical": [
+        "systems/ambient-living-inhabitants.md",
+        "operations/ambient-living-workbench.md"
+      ],
+      "facts": [
+        "The ambient_authoring library has at most32 validated profiles.",
+        "Selecting stages a copy and applying creates explicit per-actor overrides; library changes do not propagate implicitly.",
+        "Regions and assignments persist with authored configuration; drives, timers and memory restart."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/ambient/ambient_perception.gd",
+        "../godot/scripts/shared_workbench.gd"
+      ]
+    },
+    {
+      "id": "AMBIENT2-Q05",
+      "query": "Can AMBIENT-002 use 16 or32 real physical inhabitants or read every other actor private memory?",
+      "canonical": [
+        "systems/ambient-living-inhabitants.md"
+      ],
+      "facts": [
+        "The authoritative host remains eight logical actors; unaccepted762 is not imported.",
+        "Only copied poses, velocities, capabilities and authored tags are shared.",
+        "Bounded32 candidate observations is a future perception seam, not physical capacity."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/ambient/ambient_perception.gd",
+        "../godot/scripts/shared_workbench.gd"
+      ]
+    },
+    {
+      "id": "AMBIENT2-Q06",
+      "query": "Do local terrain rays give an ambient flyer or wheel a global route or a swept-volume clearance guarantee?",
+      "canonical": [
+        "systems/ambient-living-inhabitants.md"
+      ],
+      "facts": [
+        "Ground/wheel receives two horizontal rays and flight eight radial rays beyond the hull.",
+        "Clipped no-hit rays are unknown.",
+        "Center-line observations do not prove swept-volume clearance or global reachability."
+      ],
+      "sources": [
+        "../godot/scripts/physical_actor_session.gd",
+        "../godot/scripts/ambient/ambient_perception.gd",
+        "../godot/scripts/shared_workbench.gd"
+      ]
+    }
+  ]
+}

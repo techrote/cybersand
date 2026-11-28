@@ -1,0 +1,258 @@
+{
+  "artifact": {
+    "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14949153972/zip",
+    "created_at": "2026-11-24T18:05:37Z",
+    "digest": "sha256:63489418a674e5737adf988cc3056f043974b91a1c1f9485661d974e51ce4e8d",
+    "expired": false,
+    "expires_at": "2027-02-22T17:08:26Z",
+    "id": 14949153972,
+    "local_path": "/dev/shm/swarm456-q7-source/q7-windows-source-evidence.zip",
+    "name": "swarm456-windows-source-evidence-45445188802-1",
+    "sha256": "63489418a674e5737adf988cc3056f043974b91a1c1f9485661d974e51ce4e8d",
+    "size_in_bytes": 43294605,
+    "updated_at": "2026-11-24T18:05:37Z",
+    "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14949153972",
+    "workflow_run": {
+      "head_branch": "integration/swarm004-005-006-unified-20261122",
+      "head_repository_id": 1350077435,
+      "head_sha": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+      "id": 45445188802,
+      "repository_id": 1350077435
+    }
+  },
+  "checks": [
+    {
+      "name": "original archive API digest/size/source/run/attempt",
+      "status": "passed"
+    },
+    {
+      "name": "every runtime byte and complete source/build inventory",
+      "status": "passed"
+    },
+    {
+      "name": "complete original ZIP CRC/hash inventory",
+      "status": "passed"
+    },
+    {
+      "name": "windows-native original consumer",
+      "processes": 12,
+      "report_sha256": "226d2d87cd3dc14ab1b06c8068a913acf5903071ed8f9b3012b8ff22c4739da6",
+      "seconds": 8.2705,
+      "status": "passed"
+    },
+    {
+      "name": "windows-source original consumer",
+      "processes": 24,
+      "report_sha256": "9be6a245596ca141940ddf3b8ea59b7a5334d2451e8bf00278e8395f47574d7b",
+      "seconds": 21.2784,
+      "status": "passed"
+    },
+    {
+      "name": "windows-smokes original consumer",
+      "processes": 17,
+      "report_sha256": "379d710ccd1bd501b2e00fb4e703f7ca5e2d0bb3c4a94b8ace5cb33b9508f604",
+      "seconds": 0.2884,
+      "status": "passed"
+    },
+    {
+      "name": "windows-source original preservation and terminal custody consumer",
+      "processes": 14,
+      "seconds": 1.7982,
+      "status": "passed"
+    },
+    {
+      "name": "reviewer source unchanged throughout",
+      "status": "passed"
+    }
+  ],
+  "limits": [
+    "This is an independent invocation of frozen source validators, not a new application execution.",
+    "Complete campaign, publication and physical owner acceptance are separately required.",
+    "Scientific1920 and donor360 receive specialist-C review; this script does not replace it."
+  ],
+  "new_godot_executions": 0,
+  "new_native_executions": 0,
+  "original_evidence_modified": false,
+  "original_graphical_png_count": 95,
+  "original_graphical_png_paths": [
+    "input-integrity/independent-pending.png",
+    "input-integrity/shared-pending.png",
+    "input-integrity/territory-pressed.png",
+    "reciprocal/initial-native-pixels.png",
+    "reciprocal/inspector-final-clearance.png",
+    "reciprocal/inspector-final-joints.png",
+    "reciprocal/inspector-final-revisions.png",
+    "reciprocal/inspector-final-unresolved.png",
+    "reciprocal/native-applied.png",
+    "reciprocal/native-preview.png",
+    "reciprocal/native-reopened.png",
+    "reciprocal/native-saved.png",
+    "reciprocal/native-undone.png",
+    "reciprocal/regenerated-native-pixels.png",
+    "swarm005_irregular/initial-native-pixels.png",
+    "swarm005_irregular/inspector-final-clearance.png",
+    "swarm005_irregular/inspector-final-joints.png",
+    "swarm005_irregular/inspector-final-revisions.png",
+    "swarm005_irregular/inspector-final-unresolved.png",
+    "swarm005_irregular/native-applied.png",
+    "swarm005_irregular/native-preview.png",
+    "swarm005_irregular/native-reopened.png",
+    "swarm005_irregular/native-saved.png",
+    "swarm005_irregular/native-undone.png",
+    "swarm005_irregular/regenerated-native-pixels.png",
+    "swarm005_viaduct/initial-native-pixels.png",
+    "swarm005_viaduct/inspector-final-clearance.png",
+    "swarm005_viaduct/inspector-final-joints.png",
+    "swarm005_viaduct/inspector-final-revisions.png",
+    "swarm005_viaduct/inspector-final-unresolved.png",
+    "swarm005_viaduct/native-preview.png",
+    "swarm005_viaduct/native-unresolved.png",
+    "swarm006_industrial_off/initial-native-pixels.png",
+    "swarm006_industrial_off/inspector-final-clearance.png",
+    "swarm006_industrial_off/inspector-final-joints.png",
+    "swarm006_industrial_off/inspector-final-revisions.png",
+    "swarm006_industrial_off/inspector-final-unresolved.png",
+    "swarm006_industrial_off/native-preview.png",
+    "swarm006_industrial_off/native-unresolved.png",
+    "swarm006_industrial_on/initial-native-pixels.png",
+    "swarm006_industrial_on/inspector-final-clearance.png",
+    "swarm006_industrial_on/inspector-final-joints.png",
+    "swarm006_industrial_on/inspector-final-revisions.png",
+    "swarm006_industrial_on/inspector-final-unresolved.png",
+    "swarm006_industrial_on/native-applied.png",
+    "swarm006_industrial_on/native-preview.png",
+    "swarm006_industrial_on/native-reopened.png",
+    "swarm006_industrial_on/native-saved.png",
+    "swarm006_industrial_on/native-undone.png",
+    "swarm006_industrial_on/regenerated-native-pixels.png",
+    "swarm006_irregular_on/initial-native-pixels.png",
+    "swarm006_irregular_on/inspector-final-clearance.png",
+    "swarm006_irregular_on/inspector-final-joints.png",
+    "swarm006_irregular_on/inspector-final-revisions.png",
+    "swarm006_irregular_on/inspector-final-unresolved.png",
+    "swarm006_irregular_on/native-applied.png",
+    "swarm006_irregular_on/native-preview.png",
+    "swarm006_irregular_on/native-reopened.png",
+    "swarm006_irregular_on/native-saved.png",
+    "swarm006_irregular_on/native-undone.png",
+    "swarm006_irregular_on/regenerated-native-pixels.png",
+    "swarm006_irregular_square_on/initial-native-pixels.png",
+    "swarm006_irregular_square_on/inspector-final-clearance.png",
+    "swarm006_irregular_square_on/inspector-final-joints.png",
+    "swarm006_irregular_square_on/inspector-final-revisions.png",
+    "swarm006_irregular_square_on/inspector-final-unresolved.png",
+    "swarm006_irregular_square_on/native-applied.png",
+    "swarm006_irregular_square_on/native-preview.png",
+    "swarm006_irregular_square_on/native-reopened.png",
+    "swarm006_irregular_square_on/native-saved.png",
+    "swarm006_irregular_square_on/native-undone.png",
+    "swarm006_irregular_square_on/regenerated-native-pixels.png",
+    "swarm006_viaduct_on/initial-native-pixels.png",
+    "swarm006_viaduct_on/inspector-final-clearance.png",
+    "swarm006_viaduct_on/inspector-final-joints.png",
+    "swarm006_viaduct_on/inspector-final-revisions.png",
+    "swarm006_viaduct_on/inspector-final-unresolved.png",
+    "swarm006_viaduct_on/native-applied.png",
+    "swarm006_viaduct_on/native-preview.png",
+    "swarm006_viaduct_on/native-reopened.png",
+    "swarm006_viaduct_on/native-saved.png",
+    "swarm006_viaduct_on/native-undone.png",
+    "swarm006_viaduct_on/regenerated-native-pixels.png",
+    "transaction/historical-refresh-native-pixels.png",
+    "transaction/initial-native-pixels.png",
+    "transaction/inspector-final-clearance.png",
+    "transaction/inspector-final-joints.png",
+    "transaction/inspector-final-revisions.png",
+    "transaction/inspector-final-unresolved.png",
+    "transaction/native-applied.png",
+    "transaction/native-preview.png",
+    "transaction/native-reopened.png",
+    "transaction/native-saved.png",
+    "transaction/native-undone.png",
+    "transaction/regenerated-native-pixels.png"
+  ],
+  "original_member_count": 1237,
+  "original_uncompressed_bytes": 698729105,
+  "platform": "windows",
+  "review_finished_utc": "2026-11-24T18:08:45.017777+00:00",
+  "review_started_utc": "2026-11-24T18:08:09.190996+00:00",
+  "reviewer": "specialist-A-native-integration",
+  "run_attempt": "1",
+  "run_id": "45445188802",
+  "runtime": {
+    "archive_path": "qualification-audit/q7-evidence/q7-windows-runtime.zip",
+    "archive_sha256": "8d4002a83dd0170993d8f23a4edff9066318af57cf5dc362b6c13983d9a3148a",
+    "build_context": {
+      "branch": "integration/swarm004-005-006-unified-20261122",
+      "repository": "techrote/cybersand",
+      "run_attempt": "1",
+      "run_id": "45445188802",
+      "workflow": ".github/workflows/swarm456-qualification.yml",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45445188802"
+    },
+    "files": {
+      "cybersand_native.windows.x86_64.dll": {
+        "bytes": 5844992,
+        "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205"
+      },
+      "gentek_reciprocal.exe": {
+        "bytes": 3283968,
+        "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d"
+      },
+      "test_assembly.exe": {
+        "bytes": 1656320,
+        "sha256": "f61c08f2836bea5849fafaf91bcfb9dec473b677ce77a9e7849c37934e8febf0"
+      },
+      "test_custody_hash.exe": {
+        "bytes": 1461248,
+        "sha256": "c38de96ad8de785fb84dbb6e3e4fc098835a774cdecc7b0678c273781b4258f8"
+      },
+      "test_reciprocal.exe": {
+        "bytes": 3146752,
+        "sha256": "c33341eab99a89772d0fa28434702520b333ce7757e7241bef3493ad67103f16"
+      },
+      "test_reciprocal_mosaic.exe": {
+        "bytes": 3094528,
+        "sha256": "531c7bbf9c630110b039ccc8b2f0f29b0a4f9bd702c57e62c82737d859a09cfe"
+      },
+      "test_swarm005.exe": {
+        "bytes": 3090432,
+        "sha256": "926aa542a676eb20b29cb98fb6112ef3410f8da22f611132ab7c20c364550e43"
+      },
+      "test_swarm006_admission.exe": {
+        "bytes": 2036736,
+        "sha256": "2b451f8d96d5ceb1dfc0aaeb7d171bc54160ca5ab09aa71d47bc39823cf6ea3a"
+      },
+      "test_swarm006_recovery.exe": {
+        "bytes": 3300864,
+        "sha256": "314ff7cc5a0b86a290b13fd06abfcc90dbbbb4bbe46cd6362f32379325443550"
+      },
+      "test_swarm006_source.exe": {
+        "bytes": 3078656,
+        "sha256": "5fce51be5252f8cf8b41161f1d0c049765976bc33ee457235325ba72c6071441"
+      },
+      "test_workbench_authoring_patch.exe": {
+        "bytes": 12245504,
+        "sha256": "f7a49258e5c966c559eb98e47ab28cca0ac6b0293230062ba36391dfc585056f"
+      },
+      "toolchain.txt": {
+        "bytes": 836,
+        "sha256": "5f22e4cf4e9d655992c9fc5a3ba067588227a654fae290db602ca2bbcbf22938"
+      },
+      "workbench_process_fixture.exe": {
+        "bytes": 775168,
+        "sha256": "aeb4c095e182cc704967bf98b0b8f113e5a3e5e217a27a1e5d108cc23efdcb5e"
+      }
+    },
+    "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+    "runtime_manifest_sha256": "cd65a677c1876ab9c56a632f350f6d945f6e46cd8a8ec7a5a33c603f6eb24f17",
+    "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03"
+  },
+  "schema": "swarm456-independent-original-source-artifact-review-v1",
+  "scope": "Independent original artifact/source/runtime inspection and invocation of unchanged frozen native, graphical, preservation and accepted-main consumers",
+  "seconds": 35.8268,
+  "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+  "status": "passed"
+}

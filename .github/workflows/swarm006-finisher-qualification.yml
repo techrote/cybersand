@@ -1,0 +1,317 @@
+name: SWARM-006 integration finisher source and Windows qualification
+
+# Draft/HOLD: source-bound workflow for the experimental integration branch.
+# No Ready, merge or retained-runtime publication action.
+on:
+  push:
+    branches: [integration/gentek-swarm-006-finisher-20261121]
+    paths: [.github/swarm006-finisher-request.json]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: swarm006-finisher-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  TARGET_SOURCE: ${{ github.sha }}
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  RAPIER_WINDOWS_SHA256: b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7
+
+jobs:
+  sanitized:
+    name: Native recovery ASan UBSan and leak checks
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Execute all eight exact-source native suites
+        env:
+          ASAN_OPTIONS: detect_leaks=1:abort_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/swarm006-sanitized
+          git rev-parse HEAD HEAD^{tree} > evidence/swarm006-sanitized/source.txt
+          make -C native/experiments/gentek_swarm -f Makefile.reciprocal CXX=g++-13 BUILD="$RUNNER_TEMP/swarm006-sanitized" SANITIZE=1 -j2 test > evidence/swarm006-sanitized/tests.log 2>&1 || { tail -100 evidence/swarm006-sanitized/tests.log; exit 1; }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm006-finisher-sanitized-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/swarm006-sanitized/
+          retention-days: 90
+
+  linux:
+    name: Linux native and accepted Workbench preservation
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Prepare exact Linux dependencies
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$TARGET_SOURCE"
+          mkdir -p evidence/swarm006-linux-build
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+          curl -fL --retry 3 -o "$RUNNER_TEMP/godot.zip" https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+      - name: Build this native adapter and native recovery generator
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+        run: |
+          set -euo pipefail
+          bash tools/build_pinned_godot_cpp.sh linux > evidence/swarm006-linux-build/godot-cpp.log 2>&1
+          bash tools/build_native_extension.sh > evidence/swarm006-linux-build/adapter.log 2>&1
+          make -C native/experiments/gentek_swarm -f Makefile.reciprocal -j2 BUILD="$RUNNER_TEMP/swarm006-linux" "$RUNNER_TEMP/swarm006-linux/gentek_reciprocal" > evidence/swarm006-linux-build/cli.log 2>&1
+          make workbench-authoring-patch-test > evidence/swarm006-linux-build/atomic-native-patch.log 2>&1
+          make -C native/experiments/gentek_swarm -j2 BUILD="$RUNNER_TEMP/swarm006-legacy" test test-admission test-resilience > evidence/swarm006-linux-build/legacy-native.log 2>&1
+          sha256sum godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so "$RUNNER_TEMP/swarm006-linux/gentek_reciprocal" > evidence/swarm006-linux-build/binaries.sha256
+      - name: Execute real Godot reciprocal and ordinary Workbench regressions
+        run: |
+          python3 tools/swarm006/qualify_preserved_workbench.py --godot "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --cli "$RUNNER_TEMP/swarm006-linux/gentek_reciprocal" --output evidence/swarm006-linux-preservation
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm006-finisher-linux-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            evidence/swarm006-linux-build/
+            evidence/swarm006-linux-preservation/
+          retention-days: 90
+
+  build:
+    name: Pinned Windows native adapter and reciprocal generator
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - name: Verify frozen source and prepare pinned toolchain
+        run: |
+          set -euo pipefail
+          [[ "$TARGET_SOURCE" =~ ^[0-9a-f]{40}$ ]]
+          test "$(git rev-parse HEAD)" = "$TARGET_SOURCE"
+          test "$GITHUB_SHA" = "$TARGET_SOURCE"
+          mkdir -p evidence/swarm006-build build/swarm006-windows
+          python3 tools/swarm006/test_qualify_workbench.py > evidence/swarm006-build/qualification-gate-tests.log 2>&1
+          python3 tools/swarm006/test_seal_owner.py > evidence/swarm006-build/owner-package-tests.log 2>&1
+          python3 tools/swarm006/test_owner_dispatch.py > evidence/swarm006-build/owner-dispatch-admission-tests.log 2>&1
+          python3 tools/swarm006/test_prepare_publication.py > evidence/swarm006-build/source-publication-tests.log 2>&1
+          python3 tools/swarm006/test_registered_references.py > evidence/swarm006-build/registered-reference-tests.log 2>&1
+          python3 tools/swarm006/test_replay_finisher.py > evidence/swarm006-build/revealed-replay-contract.log 2>&1
+          python3 tools/swarm006/test_qualify_preserved_workbench.py > evidence/swarm006-build/preservation-gate-tests.log 2>&1
+          python3 native/experiments/gentek_swarm/test_swarm006_runner.py > evidence/swarm006-build/native-refusal-runner.log 2>&1
+          python3 tools/ci/check_ci_provider_policy.py > evidence/swarm006-build/provider.json
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/swarm006-build/scons.log 2>&1
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 600 git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          timeout 1200 curl -fL --retry 3 -o "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; fi
+
+      - name: Native historical controls and source-matched V4 recovery tests
+        run: |
+          set -euo pipefail
+          mkdir -p build/swarm006-linux evidence/swarm006-build evidence/swarm006-native-v3
+          make -C native/experiments/gentek_swarm -f Makefile.reciprocal -j2 BUILD="$GITHUB_WORKSPACE/build/swarm006-linux" MODE=-O2 test > evidence/swarm006-build/linux-native-tests.log 2>&1 || { tail -100 evidence/swarm006-build/linux-native-tests.log; exit 1; }
+          make -C native/experiments/gentek_swarm -f Makefile.reciprocal -j2 BUILD="$GITHUB_WORKSPACE/build/swarm006-linux" MODE=-O2 "$GITHUB_WORKSPACE/build/swarm006-linux/gentek_reciprocal" > evidence/swarm006-build/linux-native-cli.log 2>&1 || { tail -100 evidence/swarm006-build/linux-native-cli.log; exit 1; }
+          python3 tools/swarm005/test_v3_request.py --exe build/swarm006-linux/gentek_reciprocal --output evidence/swarm006-native-v3 | tee evidence/swarm006-build/linux-v3-assertions.log
+          python3 tools/swarm006/test_v4_request.py --exe build/swarm006-linux/gentek_reciprocal --output evidence/swarm006-native-v4 --source "$TARGET_SOURCE" | tee evidence/swarm006-build/linux-v4-assertions.log
+      - name: Build native adapter and Gentek generator from this source
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ github.workspace }}/build/swarm006-windows/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 3600 bash tools/build_pinned_godot_cpp.sh windows > evidence/swarm006-build/godot-cpp.log 2>&1 || { tail -120 evidence/swarm006-build/godot-cpp.log; exit 1; }
+          timeout 3600 bash tools/build_native_extension_windows.sh > evidence/swarm006-build/adapter.log 2>&1 || { tail -120 evidence/swarm006-build/adapter.log; exit 1; }
+          objects="$GITHUB_WORKSPACE/build/swarm006-objects"
+          # Frozen donor fixtures use std::abs without an explicit declaration.
+          # The Windows-only compatibility include preserves donor source bytes.
+          timeout 1200 make -C native/experiments/gentek_swarm -f Makefile.reciprocal -j2 CXX="$WINDOWS_CXX" BUILD="$objects" MODE='-O2 -include cstdlib' LDFLAGS='-static' "$objects/gentek_reciprocal" > evidence/swarm006-build/reciprocal.log 2>&1 || { tail -120 evidence/swarm006-build/reciprocal.log; exit 1; }
+          cp "$objects/gentek_reciprocal.exe" build/swarm006-windows/gentek_reciprocal.exe
+          "$WINDOWS_CXX" -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Werror -O2 -static -pthread native/tests/workbench_process_fixture.cpp -o build/swarm006-windows/workbench_process_fixture.exe
+          {
+            echo "Exact source: $TARGET_SOURCE"
+            echo "LLVM-MinGW archive SHA-256: $LLVM_MINGW_SHA256"
+            "$WINDOWS_CXX" --version
+            echo "godot-cpp: $GODOT_CPP_COMMIT; SCons4.10.1"
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a"
+            echo 'CLI flags: Makefile.reciprocal strict C++20; MODE=-O2 -include cstdlib; LDFLAGS=-static; no changed native resource ceilings'
+            echo 'Windows compatibility: declare std::abs through cstdlib without modifying frozen donor source'
+          } > build/swarm006-windows/toolchain.txt
+          python3 tools/ci/native_candidate_identity.py build/swarm006-windows --create
+          python3 tools/swarm006/runtime_custody.py build/swarm006-windows --create
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm006-finisher-windows-runtime-${{ github.run_id }}
+          path: build/swarm006-windows/
+          if-no-files-found: error
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm006-finisher-build-evidence-${{ github.run_id }}
+          path: |
+            evidence/swarm006-build/
+            evidence/swarm006-native-v3/
+            evidence/swarm006-native-v4/
+          if-no-files-found: warn
+          retention-days: 90
+
+  windows:
+    name: Actual graphical authoring and pristine ZIP reopen
+    needs: build
+    runs-on: windows-2022
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: swarm006-finisher-windows-runtime-${{ github.run_id }}
+          path: build/swarm006-windows
+      - name: Check Windows source admission and importer archive contracts
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence/swarm006-windows-gates | Out-Null
+          python tools/swarm006/test_qualify_preserved_workbench.py *> evidence/swarm006-windows-gates/preservation-gate-tests.log
+          if ($LASTEXITCODE -ne 0) {
+            Get-Content evidence/swarm006-windows-gates/preservation-gate-tests.log
+            throw 'Windows source admission or importer archive regression failed'
+          }
+      - name: Verify source custody and official Windows runtime
+        shell: pwsh
+        run: |
+          if ($env:TARGET_SOURCE -notmatch '^[0-9a-f]{40}$' -or (git rev-parse HEAD) -ne $env:TARGET_SOURCE -or $env:GITHUB_SHA -ne $env:TARGET_SOURCE) { throw 'Frozen source mismatch' }
+          python tools/swarm006/runtime_custody.py build/swarm006-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Native build custody failed' }
+          Copy-Item build/swarm006-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/ -Force
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Rapier pin mismatch' }
+          $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'
+          curl.exe -fL --retry 3 -o $zip https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          $sha = '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9'
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne $sha) { throw 'Godot archive pin mismatch' }
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
+          'GODOT_EXE=' + (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe') | Out-File -Append $env:GITHUB_ENV
+      - name: Execute the Windows V3 and V4 native transport and refusal regressions
+        shell: pwsh
+        run: |
+          python tools/swarm005/test_v3_request.py --exe build/swarm006-windows/gentek_reciprocal.exe --output evidence/swarm006-windows-native-v3
+          if ($LASTEXITCODE -ne 0) { throw 'Windows V3 native transport regression failed' }
+          python tools/swarm006/test_v4_request.py --exe build/swarm006-windows/gentek_reciprocal.exe --output evidence/swarm006-windows-native-v4 --source $env:TARGET_SOURCE
+          if ($LASTEXITCODE -ne 0) { throw 'Windows V4 native transport regression failed' }
+      - name: Preserve accepted Art Paint Water Rapier Flatten and architecture
+        shell: pwsh
+        run: |
+          python tools/swarm006/qualify_preserved_workbench.py --godot $env:GODOT_EXE --cli build/swarm006-windows/gentek_reciprocal.exe --output evidence/swarm006-preservation
+          if ($LASTEXITCODE -ne 0) { throw 'Accepted Workbench preservation regression failed' }
+      - name: Seal owner ZIP and qualify all seven real launcher exercises
+        shell: pwsh
+        run: |
+          $notices = Join-Path $env:RUNNER_TEMP 'swarm006-notices'
+          New-Item -ItemType Directory -Force $notices | Out-Null
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe -fL --retry 3 -o (Join-Path $notices $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Godot notices download failed' }
+          }
+          if ((Get-FileHash (Join-Path $notices 'LICENSE.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80' -or (Get-FileHash (Join-Path $notices 'COPYRIGHT.txt') -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d') { throw 'Godot notices mismatch' }
+          $runtimeLicense = Join-Path $notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe -fL --retry 3 -o $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Runtime licence download failed' }
+          curl.exe -fL --retry 3 -o $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Redistribution licence download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'swarm006-vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if (-not $?) { throw 'Runtime staging failed' }
+          python tools/swarm006/package_owner.py --engine $env:GODOT_EXE.Replace('_console.exe','.exe') --engine-notices $notices --native-candidate build/swarm006-windows --vc-runtime $vc --output build/swarm006-owner
+          if ($LASTEXITCODE -ne 0) { throw 'Owner packaging failed' }
+          python tools/swarm006/seal_owner.py --package build/swarm006-owner --output build/swarm006-sealed --source $env:TARGET_SOURCE
+          if ($LASTEXITCODE -ne 0) { throw 'Owner package seal failed' }
+          python tools/swarm006/test_owner_launcher.py --sealed build/swarm006-sealed --output evidence/swarm006-launcher --source $env:TARGET_SOURCE
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows owner launcher qualification failed' }
+      - name: Qualify pristine owner ZIP graphics and fresh-process material reopening
+        shell: pwsh
+        run: |
+          $archive = "build/swarm006-sealed/CyberSand-SWARM006-Draft-HOLD-Windows-$($env:TARGET_SOURCE.Substring(0,12)).zip"
+          $launcher = 'build/swarm006-sealed/CyberSand-SWARM006-Windows-Owner-Acceptance.ps1'
+          $validation = Join-Path $env:RUNNER_TEMP 'swarm006-pristine-package'
+          # VerifyOnly returns without setting the native LASTEXITCODE.
+          & $launcher -Archive $archive -Destination $validation -VerifyOnly
+          if (-not $?) { throw 'Source-bound owner launcher verification failed' }
+          python tools/swarm006/qualify_workbench.py --godot (Join-Path $validation 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $validation 'godot') --native-candidate build/swarm006-windows --package $validation --output evidence/swarm006-package
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine ZIP graphical reciprocal and transaction qualification failed' }
+      - name: Qualify historical controls and SWARM006 recovery in source Windows graphics
+        shell: pwsh
+        run: |
+          python tools/swarm006/qualify_workbench.py --godot $env:GODOT_EXE --project godot --native-candidate build/swarm006-windows --output evidence/swarm006-source
+          if ($LASTEXITCODE -ne 0) { throw 'Source graphical reciprocal and transaction qualification failed' }
+      - name: Recheck complete source and runtime identity after both graphical campaigns
+        shell: pwsh
+        run: |
+          python tools/swarm006/qualify_preserved_workbench.py --godot $env:GODOT_EXE --cli build/swarm006-windows/gentek_reciprocal.exe --recheck evidence/swarm006-preservation --output evidence/swarm006-final-custody
+          if ($LASTEXITCODE -ne 0) { throw 'Final source or runtime custody changed after graphical qualification' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm006-finisher-windows-evidence-${{ github.run_id }}
+          path: evidence/swarm006-*/
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: failure()
+        with:
+          name: swarm006-finisher-unqualified-owner-package-Draft-HOLD-${{ github.sha }}-${{ github.run_id }}
+          path: |
+            build/swarm006-sealed/CyberSand-SWARM006-Draft-HOLD-Windows-*.zip
+            build/swarm006-sealed/CyberSand-SWARM006-Draft-HOLD-Windows-*.zip.sha256
+            build/swarm006-sealed/CyberSand-SWARM006-Windows-Owner-Acceptance.ps1
+            build/swarm006-sealed/swarm006-owner-seal.json
+          if-no-files-found: warn
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: swarm006-finisher-owner-windows-${{ github.sha }}
+          path: |
+            build/swarm006-sealed/CyberSand-SWARM006-Draft-HOLD-Windows-*.zip
+            build/swarm006-sealed/CyberSand-SWARM006-Draft-HOLD-Windows-*.zip.sha256
+            build/swarm006-sealed/CyberSand-SWARM006-Windows-Owner-Acceptance.ps1
+            build/swarm006-sealed/swarm006-owner-seal.json
+          if-no-files-found: error
+          retention-days: 90

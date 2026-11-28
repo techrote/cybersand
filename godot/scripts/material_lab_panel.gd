@@ -1,16 +1,19 @@
 extends VBoxContainer
 
-# Copied inspection data and isolated experiments; no shared World access.
+# Copied inspection, isolated experiments and a scene-local configuration view.
+# The audition controller submits values to the existing exclusive native owner.
 signal close_requested
 const Catalogue = preload("res://scripts/material_lab_catalogue.gd")
 const Experiment = preload("res://scripts/material_lab_experiment.gd")
 const Service = preload("res://scripts/material_lab_service.gd")
 const WorldPanel = preload("res://scripts/material_lab_world_panel.gd")
+const AuditionPanel = preload("res://scripts/material_lab_audition_panel.gd")
 const EFFECT_KINDS: Array[String] = ["replace_with_defaults","keep_existing","set_state"]
 var catalogue := Catalogue.new()
 var experiment := Experiment.new()
 var service := Service.new()
 var world_panel := WorldPanel.new()
+var audition_panel := AuditionPanel.new()
 var selected_id: int = 3
 var candidate: Dictionary = {}
 var candidate_state: String = "No candidate"
@@ -154,7 +157,7 @@ func _build() -> void:
 	_button(header,"Close",func() -> void:
 		_pause_experiment()
 		close_requested.emit())
-	_label(self,"Explore a material, edit a copy, then test it. Your experiments do not change the ordinary game.",true)
+	_label(self,"Inspect built-in definitions, compare an isolated edit, or deliberately audition admitted changes in your current Workbench scene.",true)
 	_summary.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	add_child(_summary)
 	var split := HSplitContainer.new()
@@ -192,6 +195,8 @@ func _build() -> void:
 	world_panel.move_child(case_actions,2)
 	_button(case_actions,"Save World recipe…",func() -> void: _open_file("export_world_case",true))
 	_button(case_actions,"Import World recipe…",func() -> void: _open_file("import_world_case",false))
+	audition_panel.name = "Current scene"
+	_mount_tab("Current scene",audition_panel)
 	_status.autowrap_mode = TextServer.AUTOWRAP_WORD_SMART
 	_status.text = "Opening native catalogue…"
 	add_child(_status)
@@ -462,12 +467,13 @@ func reload_catalogue() -> void:
 	_fill_material_picker(_partner)
 	_fill_material_picker(_experiment_partner)
 	world_panel.set_materials(catalogue.materials)
+	audition_panel.set_catalogue(catalogue.materials)
 	_select_partner(partner_id)
 	for key: String in ["first","second","first_product","second_product"]:
 		_fill_material_picker(_reaction_fields[key])
 	_refresh_list()
 	select_material(selected_id)
-	_status.text = "Built-in materials loaded. Make an editable copy to experiment; the ordinary game stays unchanged."
+	_status.text = "Built-in materials loaded. Edit copy and comparison are isolated; Current scene requires an explicit Apply."
 
 func _fill_material_picker(picker: OptionButton) -> void:
 	picker.clear()
@@ -499,7 +505,18 @@ func set_policy_readback(receipt: Dictionary, context: String) -> void:
 	policy_context = context if not receipt.is_empty() else "Showing built-in settings; no running game has been inspected"
 	if is_node_ready(): select_material(selected_id)
 
+func bind_current_scene(owner: Object) -> void:
+	audition_panel.bind_current_scene(owner)
+
 func select_material(id: int) -> void:
+	if not audition_panel.select_material(id):
+		_status.text = "Finish or discard invalid input in Current scene before selecting another material."
+		_list.deselect_all()
+		for index: int in range(_list.item_count):
+			if int(_list.get_item_metadata(index)) == selected_id:
+				_list.select(index)
+				break
+		return
 	if selected_id != id: _retire_reaction_diagnostic()
 	selected_id = id
 	_list.deselect_all()
@@ -514,7 +531,7 @@ func select_material(id: int) -> void:
 		return
 	_summary.text = "%03d / %s · built-in material" % [id,info.name]
 	_summary.tooltip_text = policy_context + "\n" + JSON.stringify(info.get("solver",{}))
-	_summary.text += "\n" + ("Movement settings copied from the Workbench; reopen to refresh." if policy_context.begins_with("Workbench") else ("Showing settings from this separate experiment." if not applied_policy.is_empty() else "Showing built-in movement settings; no running game has been inspected."))
+	_summary.text += "\n" + ("Inspect and isolated comparison copy Workbench movement settings; reopen to refresh those settings." if policy_context.begins_with("Workbench") else ("Showing settings from this separate experiment." if not applied_policy.is_empty() else "Showing built-in movement settings; no running game has been inspected."))
 	_property_tree.clear()
 	var root := _property_tree.create_item()
 	for record: Dictionary in info.get("rows",[]):

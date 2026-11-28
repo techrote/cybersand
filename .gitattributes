@@ -22,11 +22,14 @@
 *.tscn text eol=lf
 *.tres text eol=lf
 *.gdextension text eol=lf
+# Godot rewrites these tracked import descriptors with LF on every host.
+*.import text eol=lf
 *.cfg text eol=lf
 *.json text eol=lf
 # Retained raw campaign reports preserve their original target-host bytes.
 docs/audits/play-auto002-2026-10-28/windows-campaign.json -text whitespace=cr-at-eol
 docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
+tools/swarm45/fixtures/ui_process_q5/* -text whitespace=cr-at-eol
 *.md text eol=lf
 *.yml text eol=lf
 *.yaml text eol=lf
@@ -39,3 +42,5 @@ docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
 *.dylib filter=lfs diff=lfs merge=lfs -text
 *.wasm filter=lfs diff=lfs merge=lfs -text
 godot/addons/godot-rapier2d/bin/*.framework/libgodot_rapier.* filter=lfs diff=lfs merge=lfs -text
+godot/tools/gentek_reciprocal filter=lfs diff=lfs merge=lfs -text
+godot/tools/gentek_reciprocal.exe filter=lfs diff=lfs merge=lfs -text

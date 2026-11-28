@@ -1,0 +1,8 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+MATERIAL_LAB_POPUP_PLACEMENT {"client_position":"(200, 90)","client_size":"(1000, 650)","context":"initial","display":"headless","outer_position":"(200, 90)","outer_size":"(1000, 650)","parent_position":"(0, 0)","parent_screen":-1,"parent_size":"(1280, 720)","placement":{},"screen":0,"usable_position":"(0, 0)","usable_size":"(1920, 1080)"}
+MATERIAL_LAB_POPUP_GEOMETRY {"control_screen_scale":[1.0,1.0],"display":"headless","embedded":true,"native":false,"requested_size":[1000,650],"size":[1000,650]}
+MATERIAL_LAB_POPUP_GEOMETRY {"control_screen_scale":[1.0,1.0],"display":"headless","embedded":true,"native":false,"requested_size":[1280,720],"size":[1280,720]}
+MATERIAL_LAB_UI: 226 assertions; 0 failures; artifacts=D:/a/cybersand/cybersand/evidence/relocated-package/isolated-userdata/Godot/app_userdata/Cyber Sand Reference Sandbox/materials_lab/ui-acceptance-241962

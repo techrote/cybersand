@@ -1,0 +1,95 @@
+{
+  "source_revision": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "case": "AMBIENT-002 native thin-patch observation diagnostic",
+  "checks": 228,
+  "failures": [],
+  "complete": true,
+  "source_input_count": 1143,
+  "loaded_project_input_count": 855,
+  "report_sha256": "14d1311b1658e4843a9c8ab8f389092670b4994ec6e30d91741e676c2068f9e7",
+  "publication_sha256": "8b4d44aa9c68f931b30c10c44a6837312753cd795efd747ea75a3b0f9f253165",
+  "diagnostic_sha256": "d3162736f8a8b3b29c0445b20cfd79f49fe25ee48626c97d5ef6cde57c856238",
+  "actual_worlds": 1,
+  "actual_actors": 1,
+  "native_steps": 1,
+  "physical_steps": 1,
+  "behavioral_episodes_added": 0,
+  "position": [
+    128.5,
+    100.521293640137
+  ],
+  "near": {
+    "cell": [
+      129,
+      94
+    ],
+    "distance_cells": 6.10376739501953,
+    "material_id": 16,
+    "outside_parts": [
+      {
+        "native_mask": "matching_rectangle",
+        "outside_entire_part": true,
+        "part_index": 0,
+        "separating_axis_margin_cells": 2.52129364013672,
+        "shape": "rectangle"
+      }
+    ]
+  },
+  "far": {
+    "cell": [
+      169,
+      94
+    ],
+    "distance_cells": 41.4397888183594,
+    "material_id": 3,
+    "outside_parts": [
+      {
+        "native_mask": "matching_rectangle",
+        "outside_entire_part": true,
+        "part_index": 0,
+        "separating_axis_margin_cells": 35.5,
+        "shape": "rectangle"
+      }
+    ]
+  },
+  "queries_per_arm": 101,
+  "warm_repeated_query_count_per_arm": 100,
+  "arms": {
+    "coarse": {
+      "sample_count": 489,
+      "near_sample_count": 0,
+      "refinement_sample_count": 0,
+      "oil_present": false,
+      "oil_status": "unobserved_in_incomplete_coverage",
+      "water_present": false,
+      "water_status": "unobserved_in_incomplete_coverage",
+      "coverage_complete": false,
+      "budget_exhausted": false,
+      "elapsed_owner_call_usec": {
+        "median": 884.0,
+        "mean": 927.41,
+        "min": 802,
+        "max": 1413,
+        "sample_count": 100
+      }
+    },
+    "adaptive": {
+      "sample_count": 677,
+      "near_sample_count": 194,
+      "refinement_sample_count": 4,
+      "oil_present": true,
+      "oil_status": "observed",
+      "water_present": false,
+      "water_status": "unobserved_in_incomplete_coverage",
+      "coverage_complete": false,
+      "budget_exhausted": false,
+      "elapsed_owner_call_usec": {
+        "median": 1216.0,
+        "mean": 1253.68,
+        "min": 1146,
+        "max": 1709,
+        "sample_count": 100
+      }
+    }
+  }
+}

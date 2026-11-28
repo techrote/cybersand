@@ -1,0 +1,34 @@
+{
+	"checks": 1,
+	"configuration_revision": 0,
+	"display": "Windows",
+	"extent": [
+		2048,
+		2048
+	],
+	"failures": 0,
+	"frame": {
+		"file": "shipped-launcher-native.png",
+		"height": 578,
+		"sha256": "23987ac6f9cacdd60c17494604e4137c6e8d78797213b1fbeaa3d50ab65a4578",
+		"width": 1028
+	},
+	"godot": "4.7-stable (official)",
+	"host_scene": "res://main.tscn",
+	"native_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+	"native_tick": 0,
+	"native_world_generation": 2,
+	"nonce": "77dfaa1291cab06a493d3f0b72df51a2",
+	"profile": {
+		"materials": [],
+		"profile_id": "default",
+		"reactions": [],
+		"schema_version": 1
+	},
+	"schema": "cybersand.material-audition.launcher",
+	"schema_version": 1,
+	"source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+	"status": "passed",
+	"workbench_visible": true,
+	"world_id": "3"
+}

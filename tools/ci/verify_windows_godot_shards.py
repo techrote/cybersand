@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Verify complete Windows headless execution across independent CI shards.
+"""Verify complete applicable Windows execution across independent CI shards.
 
 This is a source/coverage/log-byte reducer, not an alternative runtime test.
 """
@@ -14,6 +14,8 @@ from pathlib import Path
 import subprocess
 
 import execution_policy
+import verify_godot_shard_command
+import _architecture_campaign_context as architecture_context
 import run_godot_regressions as runner
 from verify_retained_play_readback import same_json
 
@@ -101,8 +103,8 @@ def _source_contract(root: Path, source_sha: str, shard_count: int, native_candi
                 ":!godot/.godot")
     tree = windows.git(root, "rev-parse", "HEAD^{tree}").decode().strip()
     cases = runner.discover_cases(root)
-    selected = [case for case in cases if not case.requires_display]
-    excluded = [case.name for case in cases if case.requires_display]
+    selected = [case for case in cases if architecture_context.windows_applicable(case)]
+    excluded = [case.name for case in cases if not architecture_context.windows_applicable(case)]
     require(bool(selected), "source discovery has no applicable Windows cases")
     shards, _ = runner.build_shard_plan(selected, shard_count)
     if native_candidate is None:
@@ -209,21 +211,25 @@ def verify_source_report(report: dict, directory: Path, expected: dict, index: i
         command = result.get("command")
         require(result.get("name") == case["name"] and result.get("role") == role
                 and same_json(result.get("timeout_seconds"), case["timeout_seconds"])
-                and result.get("requires_display") is False
+                and result.get("requires_display") is case["requires_display"]
                 and isinstance(command, list) and len(command) >= 4
                 and all(isinstance(part, str) and part for part in command),
                 f"source-derived command or watchdog mismatch: {directory}")
-        require(ntpath.isabs(command[0]) and ntpath.basename(command[0]) == "Godot_v4.7-stable_win64_console.exe"
-                and ntpath.isabs(command[3]) and ntpath.basename(command[3]) == "godot"
-                and ".." not in command[0].replace("\\", "/").split("/")
-                and ".." not in command[3].replace("\\", "/").split("/"),
+        require(command.count("--path") == 1 and command.index("--path") + 1 < len(command),
                 f"source-derived command or watchdog mismatch: {directory}")
-        paths = (command[0], command[3])
+        project_index = command.index("--path") + 1
+        project = command[project_index]
+        require(ntpath.isabs(command[0]) and ntpath.basename(command[0]) == "Godot_v4.7-stable_win64_console.exe"
+                and ntpath.isabs(project) and ntpath.basename(project) == "godot"
+                and ".." not in command[0].replace("\\", "/").split("/")
+                and ".." not in project.replace("\\", "/").split("/"),
+                f"source-derived command or watchdog mismatch: {directory}")
+        paths = (command[0], project)
         require(host_paths is None or paths == host_paths, f"inconsistent original Windows command roots: {directory}")
         host_paths = paths
-        source_case = runner.Case(case["name"], tuple(case["flags"]), case["timeout_seconds"], 0)
-        expected_command = runner.case_command(command[0], source_case, "win32")
-        expected_command[3] = command[3]  # The original Windows checkout root is retained, not rewritten to Linux.
+        source_case = runner.Case(case["name"], tuple(case["flags"]), case["timeout_seconds"], 0, case["requires_display"])
+        expected_command = verify_godot_shard_command.shard_case_command(
+            command[0], source_case, "win32", project, index, directory)
         require(command == expected_command, f"source-derived command or watchdog mismatch: {directory}")
         require(same_json(result.get("execution_policy"), expected["execution_policy"]),
                 f"source-derived execution policy mismatch: {directory}")

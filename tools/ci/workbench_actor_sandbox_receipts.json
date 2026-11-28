@@ -1,0 +1,360 @@
+{
+  "actor_sandbox_render": {
+    "also_compare_record_to_retained_capture_json": true,
+    "display_non_headless": true,
+    "equal": {
+      "failure": "",
+      "status": "passed"
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "minimum_array": {
+      "images": 9
+    },
+    "prefix": "WB_ACTOR_SANDBOX_CAPTURE "
+  },
+  "actor_workshop_render": {
+    "also_compare_record_to_retained_capture_json": true,
+    "display_non_headless": true,
+    "equal": {
+      "failure": "",
+      "status": "passed"
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "minimum_array": {
+      "images": 4
+    },
+    "prefix": "WB_ACTOR_CAPTURE "
+  },
+  "import": {
+    "kind": "import",
+    "note": "Import has no assertion fixture; still require natural exit0 and rescan original diagnostics/SKIP.",
+    "required_engine_banner": "Godot Engine v4.7.stable.official.5b4e0cb0f"
+  },
+  "test_act004_body_capacity": {
+    "each_exactly_once": true,
+    "kind": "literal",
+    "required_lines": [
+      "ACT-004 body capacity fixtures passed",
+      "ACT004_BODY_CAPACITY native parts=64 admission/receipts/retirement checked",
+      "ACT004_BODY_CAPACITY fallback parts=64 admission/receipts/retirement checked"
+    ]
+  },
+  "test_ambient_group_transaction": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "AMBIENT_GROUP "
+  },
+  "test_ambient_living_group_integration": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "AMBIENT_LIVING_GROUP_INTEGRATION "
+  },
+  "test_material_audition_ambient_integration": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "MATERIAL_AMBIENT_INTEGRATION "
+  },
+  "test_material_lab_workbench_integration": {
+    "equal": {
+      "complete": true,
+      "errors": [],
+      "failures": 0
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "MAT_WB_EVIDENCE "
+  },
+  "test_paint_editor_generated_workbench": {
+    "equal": {
+      "completed": true,
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "PAINT_EDITOR_GENERATED_WORKBENCH "
+  },
+  "test_paint_editor_workbench": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "PAINT_EDITOR_WORKBENCH "
+  },
+  "test_physical_actor_effect_admission": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^Physical actor effect admission: (\\d+) assertions, 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_physical_actor_effect_cancellation": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^Physical actor effect cancellation: (\\d+) checks, 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_physical_actor_effects": {
+    "each_exactly_once": true,
+    "kind": "literal",
+    "required_lines": [
+      "ACT-004 physical usable effects passed",
+      "ACT004_EFFECTS native adapter=executed"
+    ]
+  },
+  "test_physical_actor_script": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^PHYSICAL_ACTOR_SCRIPT: (\\d+) assertions, 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_physical_actor_session": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^Physical actor session: (\\d+) assertions, 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_physical_usable_equipment": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^Physical usable equipment: (\\d+) assertions, 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_physical_usable_lifecycle": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^Physical usable lifecycle: (\\d+) assertions, 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_physical_usable_script": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^PHYSICAL_USABLE_SCRIPT assertions=(\\d+) failures=0$",
+    "positive_integer_capture": 1
+  },
+  "test_physical_usables_admission": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^USABLE002_ADMISSION checks=(\\d+) failures=0 native=executed$",
+    "positive_integer_capture": 1
+  },
+  "test_physical_usables_runtime": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^USABLE002_NATIVE checks=(\\d+) failures=0 native=executed catalogue=32$",
+    "positive_integer_capture": 1
+  },
+  "test_prepared_physical_owner": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^PREPARED_PHYSICAL_OWNER: (\\d+) assertions; 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_workbench_actor_capacity": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_CAPACITY "
+  },
+  "test_workbench_actor_catalog": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "minimum_capture": {
+      "2": 50
+    },
+    "pattern": "^WB_ACTOR_CATALOG checks=(\\d+) failures=0 models=(\\d+)(?: .*)?$",
+    "positive_integer_capture": 1
+  },
+  "test_workbench_actor_composition": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_COMPOSE "
+  },
+  "test_workbench_actor_composition_native": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^Workbench actor composition native: (\\d+) checks, 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_workbench_actor_composition_reopen": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_COMPOSE "
+  },
+  "test_workbench_actor_composition_session": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^Workbench actor composition session: (\\d+) checks, 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_workbench_actor_configuration": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_CONFIGURATION "
+  },
+  "test_workbench_actor_configuration_native": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_CONFIGURATION_NATIVE "
+  },
+  "test_workbench_actor_equipment_extent": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^Workbench actor equipment extent: (\\d+) checks, 0 failures$",
+    "positive_integer_capture": 1
+  },
+  "test_workbench_actor_interaction": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_SANDBOX_INTERACTION "
+  },
+  "test_workbench_actor_interaction_reopen": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_SANDBOX_INTERACTION "
+  },
+  "test_workbench_actor_manipulation": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_MANIPULATION_RESULT "
+  },
+  "test_workbench_actor_sandbox": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_SANDBOX "
+  },
+  "test_workbench_actor_topology": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_ACTOR_TOPOLOGY "
+  },
+  "test_workbench_combined_authoring": {
+    "equal": {
+      "author_complete": true,
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WB_COMBINED_EVIDENCE "
+  },
+  "test_workbench_failure_recovery": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "prefix": "WORKBENCH_FAILURE_RECOVERY "
+  },
+  "test_workbench_flatten": {
+    "equal": {
+      "completed": true,
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "FLATTEN_RESULT "
+  },
+  "test_workbench_fleet_session": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^WORKBENCH_FLEET checks=(\\d+) failures=0$",
+    "positive_integer_capture": 1
+  },
+  "test_workbench_hard_placement": {
+    "each_exactly_once": true,
+    "kind": "literal",
+    "required_lines": [
+      "WORKBENCH_HARD_PLACEMENT failures=[]"
+    ]
+  },
+  "test_workbench_input": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "checks",
+    "prefix": "WORKBENCH_INPUT "
+  },
+  "test_workbench_material_baseline": {
+    "exactly_one_match": true,
+    "kind": "regex",
+    "pattern": "^WORKBENCH_MATERIAL_BASELINE checks=(\\d+) failures=0$",
+    "positive_integer_capture": 1
+  },
+  "test_workbench_physics_play": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "assertions",
+    "prefix": "WORKBENCH_PHYSICS "
+  },
+  "test_workbench_pilot_ui": {
+    "equal": {
+      "failures": []
+    },
+    "exactly_one_record": true,
+    "kind": "json",
+    "positive_integer": "assertions",
+    "prefix": "WORKBENCH_PILOT_UI "
+  }
+}

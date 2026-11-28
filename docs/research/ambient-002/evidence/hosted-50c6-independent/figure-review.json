@@ -1,0 +1,41 @@
+{
+  "source_revision": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "source_artifact_sha256": "e96d284ac7e44eea93ff9269461166a09cc40b8a352893cb43dc9975c24bf9ac",
+  "viewed_original_numeric_figures": [
+    {
+      "path": "behaviour-timelines.png",
+      "sha256": "73fab06f44121faf508b4a2f849b05df585d54d8fbb6d23c76cdc954cf408871",
+      "bytes": 165309
+    },
+    {
+      "path": "catalogue-timelines.png",
+      "sha256": "1c5348f432784b883dae66e744eab935f6eb0d9bf0338cbd718ec9e344d80b34",
+      "bytes": 136116
+    },
+    {
+      "path": "catalogue-trajectories.png",
+      "sha256": "9c8ea03501bf14cfee41b4887ead1376410e1ceba42fb57a04de6a7e08693f39",
+      "bytes": 252808
+    },
+    {
+      "path": "social-trajectories.png",
+      "sha256": "4863cf1d8d124367dbc5334b52aa61e764a6bd4c9b3c6775c1502a4de65ce079",
+      "bytes": 559126
+    },
+    {
+      "path": "matched-trajectories.png",
+      "sha256": "29b884539dc3ab65a518645aeaecd1c52669a012407694704d326f4f3aa2ef6d",
+      "bytes": 208392
+    }
+  ],
+  "findings": [
+    "All five figures were directly viewed after exact hosted-output reproduction.",
+    "The trajectory axes include the full512x256 native World; short ground extents remain visible rather than being cropped into apparent exploration.",
+    "Module timelines distinguish selected-module/blend labels from distinct goal instances and use distinct catalogue colors.",
+    "Social plots expose initial grouping, later proximity changes and the near-stationary random control."
+  ],
+  "limits": [
+    "These are plots of original copied physical records, not game screenshots.",
+    "No claim of viewing every29 original Linux graphical capture is made by this figure review; all29 image hashes and their material/frame identity joins were independently verified."
+  ]
+}

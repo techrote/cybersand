@@ -1,0 +1,22 @@
+{
+  "command": [
+    "D:\\a\\_temp\\godot47\\Godot_v4.7-stable_win64_console.exe",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "D:\\a\\cybersand\\cybersand\\godot",
+    "--headless",
+    "--script",
+    "res://tests/test_material_lab_experiment.gd"
+  ],
+  "completion": {
+    "checks": 141,
+    "failures": 0
+  },
+  "elapsed_seconds": 20.640999999999963,
+  "exit_code": 0,
+  "log_sha256": "858d143fa6b5e8a6680921d19532064da94d8d8924c8d52c5258f8735e5581e6",
+  "process_id": 2848,
+  "status": "passed",
+  "timeout_seconds": 1200
+}

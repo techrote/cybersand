@@ -1,0 +1,120 @@
+{
+  "schema": "ambient-002-specialist-b-sustained-visual-review/v1",
+  "source_revision": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "observer_revision": "2eea3dbb921058db418fbb243b4abc493cddbdb9",
+  "artifact_id": 14992866806,
+  "artifact_sha256": "907f8bcdd11ef4c7150dc252844ec8545a0a7a46e66abf41ff10e889ad868cef",
+  "physical_readback_sha256": "8a5d3ae17696debaa2e83f478b74d1f03e1de4783eb272daf9d5603571ebd8a0",
+  "inspection_scope": "Three contact sheets plus three original full-resolution frames were visually inspected alongside all 61 copied-physics snapshots in each report. This does not claim manual playback of a continuous video or inspection of every original PNG.",
+  "viewed_images": [
+    {
+      "member": "ambient2-courtyard/media/ambient2-courtyard-contact-sheet.png",
+      "sha256": "c8cb6de5c5b159bd4db009fd3247f635fd1ddcb09c605609c4e31c2dc1591cdf",
+      "dimensions": [
+        1536,
+        628
+      ],
+      "kind": "contact sheet derived from actual retained PNGs",
+      "requested_seconds_shown": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        60
+      ]
+    },
+    {
+      "member": "ambient2-refinery/media/ambient2-refinery-contact-sheet.png",
+      "sha256": "f9ad4802ca8b6326f945c1e73661758976b1c1dfb59754a928af7a8d54832387",
+      "dimensions": [
+        1536,
+        628
+      ],
+      "kind": "contact sheet derived from actual retained PNGs",
+      "requested_seconds_shown": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        60
+      ]
+    },
+    {
+      "member": "ambient2-settlement/media/ambient2-settlement-contact-sheet.png",
+      "sha256": "6856cd4d363932861930e4acd31a42f76c8d0c652e49fb023dc3435a79c9ab33",
+      "dimensions": [
+        1536,
+        628
+      ],
+      "kind": "contact sheet derived from actual retained PNGs",
+      "requested_seconds_shown": [
+        0,
+        12,
+        24,
+        36,
+        48,
+        60
+      ]
+    },
+    {
+      "member": "ambient2-courtyard/frames/frame-0036.png",
+      "sha256": "681b4775ab268a721a3c0d1064ace490a9dab93c7277b8de8b4ede0fa3c6401e",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "kind": "original actual framebuffer PNG",
+      "requested_second": 36
+    },
+    {
+      "member": "ambient2-refinery/frames/frame-0050.png",
+      "sha256": "1e60455d785685a68eb9781af74780dd3bec5ed505a4cb31bdf658d97c38ad9e",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "kind": "original actual framebuffer PNG",
+      "requested_second": 50
+    },
+    {
+      "member": "ambient2-settlement/frames/frame-0050.png",
+      "sha256": "a4cdc768a08460a0e46e9d2089f0598da85314f8a203652cc7ababc35afeb49f",
+      "dimensions": [
+        1920,
+        1080
+      ],
+      "kind": "original actual framebuffer PNG",
+      "requested_second": 50
+    }
+  ],
+  "findings": [
+    {
+      "scene": "Common Ground",
+      "focus": "Social Drifter, actor 1",
+      "assessment": "The approaching, watching and separating bodies make local social activity legible in Follow view. The copied positive-affinity peer set changes between actor 2 alone, actors 2/3 and actors 2/3/4. The scene shows moving subgroups; it does not establish cooperation, persistent leadership or a causal affinity effect without a matched ablation.",
+      "quantitative_context": "145.82-cell sampled horizontal range, 73.98-cell net horizontal displacement. At the 40-cell post-run threshold, 75% of post-start actor snapshots belong to components of at least two. This is sampled proximity, not exact time in a social state."
+    },
+    {
+      "scene": "Pipe Orchard",
+      "focus": "Persistent Scavenger, actor 5",
+      "assessment": "The actor repeatedly approaches the cabinet and retreats. The pattern is understandable and visibly differs from the courtyard, but becomes repetitive. The body does not visibly enter the cabinet in the inspected frames. Oil identity is established by copied material 16 observations, never inferred from pixel colors.",
+      "quantitative_context": "45.25-cell sampled horizontal range versus 417.63 cells summed absolute horizontal travel between one-second samples; 14 recorded supported failure events. Of 60 post-start snapshots, 13 select investigation, 27 revisit, 16 withdrawal, 3 unfamiliar exploration and 1 material seeking. These snapshot counts are not exact phase durations."
+    },
+    {
+      "scene": "Foundry Row",
+      "focus": "Cautious Flyer, actor 7",
+      "assessment": "Exploration and a later homeward movement are visible. The actor also remains locally constrained near an overhead structure. The overlay at 50s says home_rest, but the physics/drive record must control the interpretation: the body settles about 16.49 cells from home and exploration declines during sampled home_rest. Specialist A independently identifies the authored 20-cell arrival versus 16-cell recharge mismatch; this is retained as a negative.",
+      "quantitative_context": "115.42-cell horizontal and 38.74-cell vertical sampled range. Home approach is sampled at 44\u201347s, home_rest at 48\u201351s, then exploration resumes at 52s. These observations do not establish a successful 16-cell geometric return or replenishment."
+    }
+  ],
+  "presentation_limits": [
+    "Actual frames are 1920x1080 under llvmpipe software rendering. The layouts are visually legible in overview, but actors are small there; Follow view is more useful for behavior.",
+    "Actor labels and the optional explanation/memory overlays can overlap and run across scenery. The original frames preserve that limitation.",
+    "Camera following changes screen positions and viewport content. World-coordinate copied poses establish actual travel; camera movement is not credited as actor exploration.",
+    "The sampled timelapse assembles actual one-second PNGs at six samples per playback second. It is not continuous video, physical display capture, OS CPU accounting or a measured six-FPS play session.",
+    "The three observed Worlds remain separate from the registered 194 primary actor episodes and from any later corrected application source."
+  ],
+  "conclusion": "The ordinary Workbench visibly exhibits distinct social attention, persistent material interest and homeward control. The observed repetitions, constrained motion, arrival/recharge mismatch and overlapping overlays are substantial limitations. Owner review remains appropriate; this is not a physical-hardware playfeel acceptance."
+}

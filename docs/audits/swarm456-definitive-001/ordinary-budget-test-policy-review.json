@@ -1,0 +1,109 @@
+{
+  "basis": "Existing documented postpublication distinction between compiled/native input identity and historical complete build/execution input inventories, and SWARM resulting-source gate contract. This is not a new verification-only publication exception and not based only on checker omission.",
+  "corrected_path_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+  "decision": "APPROVE retained exact Q7 application/runtime/evaluator identities plus fresh complete ordinary resulting-source gates; no new publication or full Q8 required for this exact bounded test-only correction",
+  "failed_budget_job": 138676199669,
+  "failed_full_gde_run": 45459025464,
+  "final_patch_review": "Exact proposed one-file diff independently approved; exhaustive source/input comparison recorded separately in postpublication-ci-test-source-impact-review.json",
+  "historical_build_inventory": {
+    "expected_changed_paths_after_correction": [
+      "tools/ci/test_godot_job_plan.py"
+    ],
+    "must_remain_unedited": true,
+    "path_count": 1856
+  },
+  "native_source_inputs_count": 106,
+  "no_material_contract_relaxation": true,
+  "original_evidence_modified": false,
+  "original_path_sha256": "da834242be0ca2922d46d8c24fa998a88a4b99aa97ff9f714506ba2ec9853cc7",
+  "proposed_path": "tools/ci/test_godot_job_plan.py",
+  "publication_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+  "qualification_run": 45445188802,
+  "qualification_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "reference_sections": {
+    "authoritative_growing_ci_inventory": [
+      "Scheduling estimates and hosted safety boundaries"
+    ],
+    "current_build_freshness_guide": [
+      "Published and development identity-test controls",
+      "Physical usable validation"
+    ],
+    "documented_postpublication_test_correction": [
+      "Post-publication identity-test correction \u2014 2026-10-25"
+    ],
+    "swarm_consolidated_qualification": [
+      "Closure qualification \u2014 24 November 2026",
+      "Physical owner acceptance"
+    ],
+    "swarm_native_binding_and_resulting_source_admission": [
+      "Source custody and donor ancestry",
+      "Qualification and owner evaluation"
+    ]
+  },
+  "reference_source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+  "references": {
+    "authoritative_growing_ci_inventory": {
+      "path": "docs/operations/ci-execution-and-performance.md",
+      "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd"
+    },
+    "current_build_freshness_guide": {
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "e52154ed1d6144748794ce42d854691aea95a7bee434622ebfc85218d781a33e"
+    },
+    "documented_postpublication_test_correction": {
+      "path": "docs/audits/2026-10-25-lcb003-runtime-publication.md",
+      "sha256": "a65633f0b272205a0dfed7932cc68d1abe03aa4c8a72e244a15f026aba74d850"
+    },
+    "ordinary_cli_native_identity": {
+      "path": "tools/ci/check_swarm_runtime.py",
+      "sha256": "c626f2a0856125326c74fdfdb3b284ed543d391b95ae8518b093f2341f4a5f57"
+    },
+    "ordinary_published_native_provenance": {
+      "path": "tools/ci/check_repository.py",
+      "sha256": "e4ebfd2e6faca4ea9a12785be8afb60a5c5479edcd555ddf436c3081a4302e03"
+    },
+    "qualified_campaign_scope": {
+      "path": ".github/workflows/swarm456-qualification.yml",
+      "sha256": "6abb0cbceb313ddb45bce39d42fb5143b7e61e16126379b65ffd88db475dd4db"
+    },
+    "source_inventory": {
+      "path": "tools/swarm45/runtime_custody.py",
+      "sha256": "3b9fac9f09cae2c51b6bd5d6faece5e87d4ab53e1622221ce59f6a7d3d7a4207"
+    },
+    "strict_prepublication_admission": {
+      "path": "tools/swarm45/publish_runtime.py",
+      "sha256": "6f808e5f2dec453cc22596ebb3f88da7e392b39f58d13032d8c1f192474b0201"
+    },
+    "swarm_consolidated_qualification": {
+      "path": "docs/operations/swarm456-unified-mainline.md",
+      "sha256": "ec11ff57257f698e082d98417597157890e71df110300190fe974c211392a1bf"
+    },
+    "swarm_native_binding_and_resulting_source_admission": {
+      "path": "docs/operations/swarm45-mainline-integration.md",
+      "sha256": "b62ae338211e6a72afb8b1270d6eae5a4a1590404a08f83a289a28b4cc255b2b"
+    }
+  },
+  "required_conditions": [
+    "Independently review exact one-file test diff against unchanged scheduler256-matrix/16-case policy",
+    "Preserve exact source/run/attempt and original failed GDE outcome",
+    "Run changed test and complete newly dispatched GDE/Linux/Windows coverage with no hidden skipped mandatory job",
+    "Run fresh ordinary materialized provenance and required resulting-source gates, each with exact execution source recorded",
+    "Keep original runtime source/build/tree and complete1856-entry historical build_inputs unchanged",
+    "Record exact test-only delta separately; do not label Q7 as execution of corrected test",
+    "Preserve all current native, application, SWARM fixture, scientific policy and package payload bytes",
+    "Do not republish original Q7 bundle against changed all-tools inventory; existing strict publisher must continue to refuse that request"
+  ],
+  "reviewer": "independent_assurance",
+  "schema": 1,
+  "scope": "Prospective one-file ordinary CI unit-test correction; no production, fixture, scheduler, budget, runtime or qualification-reducer changes",
+  "test_executed_by_q7_campaign": false,
+  "test_is_delivered_owner_source_file": false,
+  "test_is_native_definition_input": false,
+  "test_is_native_source_input": false,
+  "tracked_source_modified_by_reviewer": false,
+  "would_require_reassessment": [
+    "Any scheduler, actual resource ceiling, application, native input, qualification producer/reducer or scientific contract change",
+    "Any change to delivered evaluator payload",
+    "Any publication or manifest identity rewrite"
+  ]
+}

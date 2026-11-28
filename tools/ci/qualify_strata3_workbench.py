@@ -343,6 +343,42 @@ def validate_result(result: dict, scene: str, phase: str, source: str) -> None:
                 "Fresh process did not restore authored optics independently of inspection")
 
 
+def validate_loaded_project_record(report: dict, source: dict) -> None:
+    """Replay the existing project_identity contract, including portable SWARM.
+
+    Accepted main permits an extracted installation to omit only the other
+    platform's generator binding and records its actual, verified local CLI.
+    All original scripts, host bindings, native libraries and raw art remain
+    mandatory. The source checkout itself still uses the full source map.
+    """
+    runtime, project = report["runtime"], report.get("project", {})
+    expected = {name.removeprefix("godot/"): digest for name, digest in source["source_inputs_sha256"].items()
+                if name.startswith("godot/")}
+    actual = project.get("inputs_sha256", {})
+    windows = runtime["cybersand_runtime"]["path"].endswith(".dll")
+    host, other = ("windows", "linux") if windows else ("linux", "windows")
+    cli = "tools/gentek_reciprocal.exe" if windows else "tools/gentek_reciprocal"
+    binding_name = "tools/swarm004-runtime." + host + ".json"
+    other_binding = "tools/swarm004-runtime." + other + ".json"
+    if cli in actual:
+        raw = (ROOT / "godot" / binding_name).read_bytes()
+        require(hashlib.sha256(raw.replace(b"\r\n", b"\n")).hexdigest() == expected.get(binding_name),
+                "Installed CLI binding differs from the recorded source")
+        binding = json.loads(raw)
+        require(binding.get("artifact") == "godot/" + cli and binding.get("platform") == host
+                and re.fullmatch(r"[0-9a-f]{64}", str(binding.get("sha256", ""))),
+                "Installed CLI binding has an invalid target or hash")
+        expected[cli] = binding["sha256"]
+        if other_binding not in actual:
+            expected.pop(other_binding, None)
+    for key in ("cybersand_runtime", "rapier_runtime"):
+        item = runtime[key]
+        expected[item["path"].removeprefix("godot/")] = item["sha256"]
+    require(expected and actual == expected
+            and project.get("assets_sha256") == {k.removeprefix("godot/"): v for k, v in source["source_assets_sha256"].items()},
+            "Actual loaded project lacks full source/runtime/raw artwork custody")
+
+
 def verify_campaign(folder: Path, expected: dict | None = None, *, full: bool = True) -> dict:
     folder = folder.resolve(strict=True)
     report = json.loads((folder / "campaign.json").read_text(encoding="utf-8"))
@@ -364,13 +400,7 @@ def verify_campaign(folder: Path, expected: dict | None = None, *, full: bool = 
     require(all(source.get("source_inputs_sha256",{}).get(name) == digest
                 for name,digest in runtime["native_source_inputs"].items()), "Native runtime no longer matches its production source")
     project = report.get("project",{})
-    project_inputs = {name.removeprefix("godot/"):digest for name,digest in source["source_inputs_sha256"].items()
-                      if name.startswith("godot/")}
-    for key in ("cybersand_runtime","rapier_runtime"):
-        item = runtime[key]; project_inputs[item["path"].removeprefix("godot/")] = item["sha256"]
-    require(project_inputs and project.get("inputs_sha256") == project_inputs
-            and project.get("assets_sha256") == {k.removeprefix("godot/"):v for k,v in source["source_assets_sha256"].items()},
-            "Actual loaded project lacks full source/runtime/raw artwork custody")
+    validate_loaded_project_record(report, source)
     require(not full or report.get("suite") == "full", "Full optical corpus required for owner packaging")
     ledger = report.get("files_sha256", {})
     require(isinstance(ledger, dict) and ledger and ledger == evidence_files(folder),

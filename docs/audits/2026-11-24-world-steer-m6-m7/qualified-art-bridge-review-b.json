@@ -1,0 +1,408 @@
+{
+  "format": "qualified-art-proposal-boundary-probe-v1",
+  "art_source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+  "architecture_source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+  "bridge_source": "3f0f146e8052cfa8f20af5da6cc1cf89cc662d31",
+  "passed": true,
+  "checks": 43,
+  "failures": 0,
+  "model_calls": 0,
+  "http_calls": 0,
+  "native_writes": 0,
+  "application_import": false,
+  "owner_proposal_route_supplied": false,
+  "physical_owner_acceptance": "pending",
+  "pinned_engine": {
+    "version": "4.7.stable.official.5b4e0cb0f",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "api_refresh": {
+    "run": {
+      "id": 45497650568,
+      "head_sha": "fa22d386b802b686c371bb6e12996c7a93c18588",
+      "status": "completed",
+      "conclusion": "success",
+      "updated_at": "2026-11-24T22:09:19Z",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/45497650568"
+    },
+    "jobs": [
+      {
+        "id": 138812277672,
+        "name": "Verify application qualification source",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Checkout exact source and qualification ancestry",
+            "conclusion": "success"
+          },
+          {
+            "name": "Test application evidence boundaries",
+            "conclusion": "success"
+          },
+          {
+            "name": "Prove reuse or require full application qualification",
+            "conclusion": "success"
+          },
+          {
+            "name": "Retain application qualification decision",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Checkout exact source and qualification ancestry",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 138812592850,
+        "name": "Windows 4.7 displayed Art and installed evaluator",
+        "status": "completed",
+        "conclusion": "success",
+        "steps": [
+          {
+            "name": "Set up job",
+            "conclusion": "success"
+          },
+          {
+            "name": "Checkout exact source",
+            "conclusion": "success"
+          },
+          {
+            "name": "Materialize source-matched native runtime",
+            "conclusion": "success"
+          },
+          {
+            "name": "Authenticate official Godot 4.7",
+            "conclusion": "success"
+          },
+          {
+            "name": "Import and execute fresh user-data Workbench tests",
+            "conclusion": "skipped"
+          },
+          {
+            "name": "Download verified application qualification decision",
+            "conclusion": "success"
+          },
+          {
+            "name": "Checkout fresh committed packaging inputs",
+            "conclusion": "success"
+          },
+          {
+            "name": "Materialize and check fresh packaging inputs",
+            "conclusion": "success"
+          },
+          {
+            "name": "Package exact source with retained Windows runtime",
+            "conclusion": "success"
+          },
+          {
+            "name": "Exercise actual delivered launcher from an extracted installation",
+            "conclusion": "success"
+          },
+          {
+            "name": "Retain qualified Windows evaluator",
+            "conclusion": "success"
+          },
+          {
+            "name": "Retain evidence",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Checkout fresh committed packaging inputs",
+            "conclusion": "success"
+          },
+          {
+            "name": "Post Checkout exact source",
+            "conclusion": "success"
+          },
+          {
+            "name": "Complete job",
+            "conclusion": "success"
+          }
+        ]
+      },
+      {
+        "id": 138812595490,
+        "name": "Linux 4.7 native and displayed Art Workbench",
+        "status": "completed",
+        "conclusion": "skipped"
+      }
+    ],
+    "pr": {
+      "number": 773,
+      "draft": true,
+      "head": "fa22d386b802b686c371bb6e12996c7a93c18588",
+      "updated_at": "2026-11-24T22:20:35Z",
+      "coordination": [
+        "[Final package run 45497650568](https://github.com/techrote/cybersand/actions/runs/45497650568), source `fa22d386`, passed:",
+        "#727 is the accepted session-only baseline. #713, #744, #750, #559 and #558 were inspected alongside current PR identities, comments, ownership and CI. #756 is actually non-Draft despite its title/body; this candidate is an actual Draft. Latest Architecture coordination remains a separate future proposal, without imported implementation.",
+        "Two packaging failures also remain explicit: `981a7408` failed a used-checkout guard whose rejected filenames were not retained; `2eedd8f3` built and launched but failed an import-descriptor hash check whose changed bytes were not retained. The final fresh-checkout/canonical-export run proves current stability without retroactively assigning an unproved cause to either missing observation. External local SIGKILLs and the brief workspace outage remain incomplete observations with no product-cause attribution."
+      ]
+    }
+  },
+  "dependencies": {
+    "format": "isolated-art-bridge-probe-inputs-v1",
+    "upstream_source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+    "architecture_source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+    "files": {
+      "tests/test_architecture_proposal_bridge.gd": {
+        "sha256": "1d7565539620f1cdb03f6a4f3d37d97ade7c58159db167dd7b0ad7ab7c5a657f",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 16939
+      },
+      "scripts/batch_lab/architecture_proposal_bridge.gd": {
+        "sha256": "3430e24c80a81fd5672a68113acee83151d505f692bd1c976dfec4c0645c83b8",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 14499
+      },
+      "scripts/batch_lab/architecture_workflow.gd": {
+        "sha256": "b31fa9544ab5d7a7a6fe7129f0f60501de9791bd52ee2d9ada5d219c6c05b26b",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 22275
+      },
+      "tests/test_architecture_workflow.gd": {
+        "sha256": "2ea4df6b8465398dfe0ff134acc2e37fc970d44e9bccab8ce43236bf45ecfdc1",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 14110
+      },
+      "scripts/art_provider.gd": {
+        "sha256": "2d0ed93d25dcca9f683b4c34f68f3178e5741e35b12ad8b3a8c1a9132f5d4e78",
+        "source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+        "bytes": 75964
+      },
+      "scripts/batch_lab/architecture_stage_plan.gd": {
+        "sha256": "4af0c7cf31e0566807348a12f90ae4374464f101185ac88c575a3198463b3795",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 23245
+      },
+      "scripts/batch_lab/architecture_intent_recipes.gd": {
+        "sha256": "28bfd430ec5f408399e3e135a015dd1c4ef6df5f62a4870500ec34f336af83dc",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 7803
+      },
+      "scripts/batch_lab/architecture_planning_adapter.gd": {
+        "sha256": "f3f5f5b7eb15bbcf8364909cd97909907144ed2f8f0127d406ae3fbf8281be3e",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 22026
+      },
+      "scripts/batch_lab/architecture_campaign.gd": {
+        "sha256": "0b35479ddf41b639f91a92a3b4fe43de5cbe95ecb9d66f745499b20dfa9bb256",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 34157
+      },
+      "scripts/batch_lab/architecture_delegation.gd": {
+        "sha256": "b05d9d05ee71002f66950879d01e69bbd6e1c86bc8ef0af562a4be319f08cc48",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 13584
+      },
+      "scripts/batch_lab/architecture_stage_session.gd": {
+        "sha256": "464f1ae5f907b258f0779bac2099536019eeeac93aa9fa52d8cb135887f7dc3a",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 47406
+      },
+      "scripts/batch_lab/native_module_library.gd": {
+        "sha256": "6eea7540964687d0d3697eb5def4bea62e9f7ad32561fff5a06376fd6a11532c",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 14226
+      },
+      "tests/test_architecture_delegation.gd": {
+        "sha256": "3bd64b800c382b9a13cbd03530633a98150d0109933ab4faf8476193c5150800",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 9348
+      },
+      "scripts/art_redaction.gd": {
+        "sha256": "6c10726d493dec202334c08b28bfa11aa8d345e285121a8e9adcb06e98224269",
+        "source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+        "bytes": 6903
+      },
+      "scripts/art_response_preparation.gd": {
+        "sha256": "4e3134fe84a6903fd9982dd64837f9a6db033e1ff81da93ffcd4445f7a33ca8e",
+        "source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+        "bytes": 9345
+      },
+      "scripts/art_traffic_archive.gd": {
+        "sha256": "8a541e712006adca121b0428b93d3a4274e894125ffb5daa3af5c8469ecd5162",
+        "source": "fa22d386b802b686c371bb6e12996c7a93c18588",
+        "bytes": 18200
+      },
+      "scripts/art_batch_plan.gd": {
+        "sha256": "b9b011c8d38470ff7dab46e741e5d610addcda7ae9adbd79adcc3ef2b7d76df2",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 9667
+      },
+      "scripts/workbench_setup.gd": {
+        "sha256": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 38816
+      },
+      "scripts/batch_lab/native_module.gd": {
+        "sha256": "e3b0b67f31f9667d2f37a364c5e94ffb0bfb1544a80b798bd1da049526ff73f5",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 31985
+      },
+      "scripts/batch_lab/native_module_connections.gd": {
+        "sha256": "b512cfa5cb32cfee8202f5e256014c4b789dd60051c9b5cbc600fb2a3bbe97ab",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 32797
+      },
+      "scripts/batch_lab/architectural_retrieval.gd": {
+        "sha256": "a9c130afc9cdf3b53f45bab00c950eb573168021074ed004c926e55e83f8c1f2",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 19325
+      },
+      "scripts/batch_lab/architecture_compositional_retrieval.gd": {
+        "sha256": "caca3f318615c2b903910db02c9dc828c627ba0f9e62a22b785e8532ee5471e8",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 24352
+      },
+      "scripts/batch_lab/native_detail_jobs.gd": {
+        "sha256": "984242abf3470166ac498c44c76d3f016a6fd44fe8b00e143089fe45bc63dc42",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 29988
+      },
+      "tests/test_native_detail_jobs.gd": {
+        "sha256": "f1632c2527870e5080f12d2e04a90b3c33a361fb5756ca49eb55747af3711b4a",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 11999
+      },
+      "scripts/gcr_review_fleet.gd": {
+        "sha256": "344f6fcbc30967ac7591aff03c00e47d8ed87594b7f4a35a28c48a2381c9467a",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 8495
+      },
+      "scripts/workbench_actor_catalog.gd": {
+        "sha256": "404c48724375dca3c2ec557ab3fc609cccfa7f8088fc9ca7c2e133233a400927",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 8834
+      },
+      "scripts/workbench_liquid_equipment.gd": {
+        "sha256": "27411a621e6fb3faf98a19688aa31c7df8843c60dc4fcb662751162b27ff5ee4",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 26091
+      },
+      "data/batch_lab/architectural_design_cards.v1.json": {
+        "sha256": "9153480ea622d5dc6a78543269840af64b3adbef43074af8cf78cfe685d0b057",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 180282
+      },
+      "tests/test_native_module_catalogue.gd": {
+        "sha256": "c84c46d5380a1556f4daa80fdd2ebeaa58a7aeb46a3380ec33abe7b4ac119915",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 6542
+      },
+      "scripts/physical_actor_catalog.gd": {
+        "sha256": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 37381
+      },
+      "scripts/gcr_flyer_authoring.gd": {
+        "sha256": "f9e5795bc8ef2e4e28856b95949150aca03ccf2bc9b075ec66270606a1a642fd",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 8959
+      },
+      "authoring/flyers/manifest.json": {
+        "sha256": "2ddb4de6bdd6ba270f070cdef2003812608960ea34e42d7bf62a40375b4827a5",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 213
+      },
+      "scripts/player_actor_catalog.gd": {
+        "sha256": "f506c97fcfe6772ffb3a989b422c2d0a5e7ae189f2020bf15826fa4f6a0a7091",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 7564
+      },
+      "scripts/physical_flight_profile.gd": {
+        "sha256": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 9567
+      },
+      "scripts/physical_usable_equipment.gd": {
+        "sha256": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 21291
+      },
+      "scripts/physical_usable_loadouts.gd": {
+        "sha256": "f09afeabae2aea9abbc033b721bfa3d11f6dcadb110c0079c991d2f908826bcc",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 6526
+      },
+      "scripts/usable_catalog.gd": {
+        "sha256": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 11500
+      },
+      "scripts/rigid_body_coupling.gd": {
+        "sha256": "9882be8764318981aa8a8b4a189379012818984a28cb6a35f3bd5787f85ab724",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 2785
+      },
+      "scripts/usable_runtime.gd": {
+        "sha256": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 31729
+      },
+      "scripts/batch_lab/native_module_catalogue.gd": {
+        "sha256": "4ba41d82e3d12d14f39ce9b32902f19cf063ec6587c178925129ff5dd60477da",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 22267
+      },
+      "scripts/batch_lab/native_module_examples.gd": {
+        "sha256": "7c76fe48ec8ed46e313299ad4bdb945ea6e74468e810da5112f67a88e980bb0b",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 4151
+      },
+      "scripts/actor_rig_catalog.gd": {
+        "sha256": "5808438bd056686c7f96d4ee81908588a2004b49d4b7c048124a86042ade2944",
+        "source": "b49a0947e614e09a7807dd35043f20f88e31381b",
+        "bytes": 23345
+      }
+    },
+    "scope": "Copied source-only fixture dependencies; no accepted application imports, credentials, native execution or remote inference.",
+    "fixture_adaptation": {
+      "path": "tests/test_architecture_proposal_bridge.gd",
+      "original_sha256": "1d7565539620f1cdb03f6a4f3d37d97ade7c58159db167dd7b0ad7ab7c5a657f",
+      "adapted_sha256": "2e012804ef2a0c2b34b21519e5708e7bf254ca43761f8734ccd969f58658639c",
+      "scope": "Probe-only inherited send override adds optional eleventh Callable argument, forwards supplied guard, and adds two real Provider pre-dispatch-refusal checks. Production bridge and all accepted application/provider files remain untouched.",
+      "negative_case": "When use_guard=false, deliberately omit both the owner-side call and Provider optional guard. Otherwise Provider executes the supplied guard, so the old negative expectation no longer represents guard omission."
+    }
+  },
+  "fixture_patch": {
+    "path": "qualified-art-bridge-fixture-b.patch",
+    "sha256": "ed86f357a07f3f6eda518c13881fa9cc3e6c63fdb2d0f73364c40288305f38ab"
+  },
+  "logs": [
+    {
+      "path": "m67-evidence/proposal-bridge-fa22-unchanged.log",
+      "sha256": "fb1fe837677b0756c3b72ddc8eb156afbb957eaea4bfedf8a7ebbd33b8214f18",
+      "bytes": 560,
+      "checks": 0,
+      "failures": 1,
+      "scope": "Expected inherited-signature parse refusal; zero fixture assertions executed."
+    },
+    {
+      "path": "m67-evidence/proposal-bridge-fa22-adapted-first.log",
+      "sha256": "9dd4ea36a09dc52a19915bb71b1b7dfbf5e39b916f14677abc9bf3f807674f80",
+      "bytes": 4684,
+      "checks": 43,
+      "failures": 1,
+      "scope": "Probe negative omitted only owner-side guard while Provider correctly called forwarded guard; retained as fixture-adaptation failure."
+    },
+    {
+      "path": "m67-evidence/proposal-bridge-fa22-adapted.log",
+      "sha256": "3a2dcec17533852fb9912d26684dc84274a9613312a83e93a301b0589cfbb462",
+      "bytes": 4383,
+      "checks": 43,
+      "failures": 0,
+      "scope": "Qualified-signature probe and two actual Provider pre-dispatch refusal checks passed."
+    }
+  ],
+  "scope": "Disposable source-only compatibility probe against qualified Art Provider dependencies. This is not integrated Art/application/native/model qualification; production bridge and accepted Art source remain unchanged."
+}

@@ -1,0 +1,670 @@
+{
+  "schema": "cybersand-goblin-C-final-linux11-custody-review-v1",
+  "status": "pass",
+  "scope": "Independent frozen C reader executed once in passive phase1; this receipt review launches no game and does not rewrite the failed original Linux job or its four bounded incomplete episodes.",
+  "qualified_source": "6f359ce2b24291ee219810773c641d53802fd31d",
+  "qualified_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+  "original_linux_artifact": {
+    "artifact_id": 15003384515,
+    "run_id": 45565621408,
+    "job_id": 139039653373,
+    "bytes": 50241858,
+    "sha256": "c5ab54aa45062bf12912e29743058019bc1db38ae59c0a4b234172d6b371fe6e"
+  },
+  "passive_execution": {
+    "run_id": 45579669046,
+    "job_id": 139086236044,
+    "driver_commit": "2a627a3131be72fcb876acec0d0b848a7e42c3e3",
+    "driver_blob": "6b9c3e327437f5426776da78abef02ef62636212",
+    "stage_artifact_id": 15005776720,
+    "stage_bytes": 942877571,
+    "stage_sha256": "8621cf2811e14fdda3e98749f84b7d0887228f0c64b91967ae67485627552da9",
+    "originals_verified": 13,
+    "original_bytes_verified": 661216192,
+    "supervisor": {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-B",
+        "/home/runner/work/cybersand/cybersand/driver/tools/gip014/passive_evidence.py",
+        "--worker"
+      ],
+      "diagnostic_errors": [],
+      "diagnostic_prefix_bytes": 331866,
+      "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+      "elapsed_seconds": 31.765,
+      "exit_code": 0,
+      "interrupted": false,
+      "log_bytes": 331866,
+      "log_limit_bytes": 16777216,
+      "log_sha256": "d479034c5b4037d06094da33930755962982f7fed7386e10c4d372e053a3ef99",
+      "memory_limit_mib": 4096,
+      "observed_processes": 6,
+      "peak_tree_rss_bytes": 229445632,
+      "process_exit_status": "pass",
+      "resource_samples": 305,
+      "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+      "status": "pass",
+      "surviving_owned_pids": [],
+      "timeout_seconds": 1800
+    }
+  },
+  "review": {
+    "reader_sha256": "80c3d813938a38b9028db0ed7c0e77494b466ac2f0e25b682ab60f6fe4d63745",
+    "report_identity": {
+      "bytes": 66553,
+      "path": "/home/agent/goblin002/evidence/review-c-linux-request11/report.json",
+      "sha256": "37b91339a5cf53b5dd0c8df0ebedda8d33fc1df717d947fe2065e54c61ce1c95"
+    },
+    "total_checks": 18667,
+    "errors": [],
+    "process": {
+      "command": [
+        "/opt/hostedtoolcache/Python/3.12.16/x64/bin/python",
+        "-B",
+        "/home/agent/goblin002/evidence/review-c-linux-request11/audit.py"
+      ],
+      "diagnostic_errors": [],
+      "diagnostic_prefix_bytes": 1286,
+      "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+      "elapsed_seconds": 2.705,
+      "exit_code": 0,
+      "interrupted": false,
+      "log_bytes": 1286,
+      "log_limit_bytes": 16777216,
+      "log_sha256": "60ba35406f6f5df186e2c601c515aeaf492e77f77b29e51cada29865d5330770",
+      "memory_limit_mib": 1024,
+      "observed_processes": 2,
+      "peak_tree_rss_bytes": 184332288,
+      "process_exit_status": "pass",
+      "resource_samples": 26,
+      "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+      "status": "pass",
+      "surviving_owned_pids": [],
+      "timeout_seconds": 60
+    },
+    "full_report_body_location": "The immutable stage artifact contains the exact original report bytes at the reported path relative to /home/agent/goblin002. The complete report object is also transported in the exact retained job log."
+  },
+  "source_archives": [
+    {
+      "group": "adapter",
+      "members": 816,
+      "path": "source-tests/adapter/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "authored_lineage",
+      "members": 816,
+      "path": "source-tests/authored_lineage/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "baseline",
+      "members": 816,
+      "path": "source-tests/baseline/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "controller",
+      "members": 816,
+      "path": "source-tests/controller/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "discovery",
+      "members": 816,
+      "path": "source-tests/discovery/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "expanded",
+      "members": 816,
+      "path": "source-tests/expanded/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "gameplay",
+      "members": 816,
+      "path": "source-tests/gameplay/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "graphical",
+      "members": 816,
+      "path": "source-tests/graphical/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "laboratory",
+      "members": 816,
+      "path": "source-tests/laboratory/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "metamorphic",
+      "members": 816,
+      "path": "source-tests/metamorphic/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    },
+    {
+      "group": "unit",
+      "members": 816,
+      "path": "source-tests/unit/executed-game-source.zip",
+      "sha256": "156123359183c7d9f02d26a8bd21dff0a6be7bff76711270966af0e970913652",
+      "snapshot_sha256": "68b7ef1704793f46a39878e3215d727b094469a4855207361eddf30304b8751d"
+    }
+  ],
+  "source_archive_scope": "Campaign snapshot is checked against every independently retained focused source archive and the exact Git tree; no separate campaign source ZIP is assumed.",
+  "runtime_provenance": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "host_platform": "Linux-6.8.0-1070-azure-x86_64-with-glibc2.35",
+    "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+    "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+    "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+    "native_source_input_count": 105,
+    "platform": "linux",
+    "python": "3.12.16",
+    "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+    "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "rapier_source_input_count": 4,
+    "source_commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "source_dirty": false,
+    "source_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed"
+  },
+  "native_process_receipts": 37,
+  "process_categories": {
+    "campaign_episode": {
+      "maximum_sampled_tree_rss_bytes": 881831936,
+      "receipts": 8,
+      "statuses": {
+        "pass": 4,
+        "test_failure": 4
+      },
+      "summed_recorded_seconds": 3654.629,
+      "surviving_owned_pids": []
+    },
+    "campaign_import": {
+      "maximum_sampled_tree_rss_bytes": 752144384,
+      "receipts": 1,
+      "statuses": {
+        "pass": 1
+      },
+      "summed_recorded_seconds": 6.573,
+      "surviving_owned_pids": []
+    },
+    "outer_wrapper": {
+      "maximum_sampled_tree_rss_bytes": 1473556480,
+      "receipts": 2,
+      "statuses": {
+        "pass": 2
+      },
+      "summed_recorded_seconds": 217.372,
+      "surviving_owned_pids": []
+    },
+    "regression_unittest": {
+      "maximum_sampled_tree_rss_bytes": 7737344,
+      "receipts": 1,
+      "statuses": {
+        "pass": 1
+      },
+      "summed_recorded_seconds": 0.105,
+      "surviving_owned_pids": []
+    },
+    "source_import": {
+      "maximum_sampled_tree_rss_bytes": 752300032,
+      "receipts": 11,
+      "statuses": {
+        "pass": 11
+      },
+      "summed_recorded_seconds": 76.53,
+      "surviving_owned_pids": []
+    },
+    "source_test": {
+      "maximum_sampled_tree_rss_bytes": 1371258880,
+      "receipts": 14,
+      "statuses": {
+        "pass": 14
+      },
+      "summed_recorded_seconds": 396.378,
+      "surviving_owned_pids": []
+    }
+  },
+  "resource_limits": "RSS and wall sampling are monitored process-tree bounds; import/wrapper categories can overlap child costs and must not be summed as disjoint wall time.",
+  "long_horizon": [
+    {
+      "episode": "long-0000-random-construction-s1701-n128",
+      "budget": 128,
+      "attempted": 128,
+      "completed": 128,
+      "process_status": "pass",
+      "termination": "budget_complete",
+      "process_seconds": 82.765,
+      "peak_tree_rss_bytes": 612884480,
+      "process_timeout_seconds": 213,
+      "pending_action_retained": false,
+      "failed_assertions": [],
+      "transcript_sha256": "7db4f6396abf1c3d4e02aefe8d8a7b3988135ed28cd36cab662bd6fd3567568f"
+    },
+    {
+      "episode": "long-0001-coverage_hunter-construction-s1701-n128",
+      "budget": 128,
+      "attempted": 128,
+      "completed": 128,
+      "process_status": "pass",
+      "termination": "budget_complete",
+      "process_seconds": 57.475,
+      "peak_tree_rss_bytes": 598360064,
+      "process_timeout_seconds": 213,
+      "pending_action_retained": false,
+      "failed_assertions": [],
+      "transcript_sha256": "11bcc6de7bc18f3653cb6ffa7786ff67e6b7fb4eddc3ce287f28048eb3608222"
+    },
+    {
+      "episode": "long-0002-random-construction-s1701-n256",
+      "budget": 256,
+      "attempted": 256,
+      "completed": 254,
+      "process_status": "pass",
+      "termination": "budget_complete",
+      "process_seconds": 258.265,
+      "peak_tree_rss_bytes": 695025664,
+      "process_timeout_seconds": 367,
+      "pending_action_retained": false,
+      "failed_assertions": [],
+      "transcript_sha256": "3c6bf49da16ee79df5012eb9cab7e8cd84fe5e575a6c93b7a82cb3a398b2e9c3"
+    },
+    {
+      "episode": "long-0003-coverage_hunter-construction-s1701-n256",
+      "budget": 256,
+      "attempted": 256,
+      "completed": 255,
+      "process_status": "pass",
+      "termination": "budget_complete",
+      "process_seconds": 191.335,
+      "peak_tree_rss_bytes": 657563648,
+      "process_timeout_seconds": 367,
+      "pending_action_retained": false,
+      "failed_assertions": [],
+      "transcript_sha256": "35403f3fdd50418a5e967e940ceea20148ba7e9e3696c03be2ed2083933ec0ac"
+    },
+    {
+      "episode": "long-0004-random-construction-s1701-n512",
+      "budget": 512,
+      "attempted": 436,
+      "completed": 434,
+      "process_status": "test_failure",
+      "termination": "campaign_timeout",
+      "process_seconds": 622.892,
+      "peak_tree_rss_bytes": 802693120,
+      "process_timeout_seconds": 674,
+      "pending_action_retained": false,
+      "failed_assertions": [],
+      "transcript_sha256": "31c8ee8878dd65f4936f0b19802decb083ac7cdfd9029f5cfa3110e42b807e5a"
+    },
+    {
+      "episode": "long-0005-coverage_hunter-construction-s1701-n512",
+      "budget": 512,
+      "attempted": 501,
+      "completed": 499,
+      "process_status": "test_failure",
+      "termination": "campaign_timeout",
+      "process_seconds": 622.547,
+      "peak_tree_rss_bytes": 778534912,
+      "process_timeout_seconds": 674,
+      "pending_action_retained": false,
+      "failed_assertions": [],
+      "transcript_sha256": "d2b1d396d0291d88feeb3b545ee5cd3b64fa18a56741c0872de58435056f77c7"
+    },
+    {
+      "episode": "long-0006-random-construction-s1701-n1024",
+      "budget": 1024,
+      "attempted": 537,
+      "completed": 535,
+      "process_status": "test_failure",
+      "termination": "campaign_timeout",
+      "process_seconds": 909.588,
+      "peak_tree_rss_bytes": 881831936,
+      "process_timeout_seconds": 960,
+      "pending_action_retained": false,
+      "failed_assertions": [],
+      "transcript_sha256": "9b044f059de4b14a0eab97b389147253d09d4fd5b375f2547bf789735ba5baa0"
+    },
+    {
+      "episode": "long-0007-coverage_hunter-construction-s1701-n1024",
+      "budget": 1024,
+      "attempted": 616,
+      "completed": 614,
+      "process_status": "test_failure",
+      "termination": "campaign_timeout",
+      "process_seconds": 909.762,
+      "peak_tree_rss_bytes": 825188352,
+      "process_timeout_seconds": 960,
+      "pending_action_retained": false,
+      "failed_assertions": [],
+      "transcript_sha256": "c286b2cdcc2a3fffbe74815ccfa8d93d1be89f52e38dfa6e73c547c0b6e82953"
+    }
+  ],
+  "actual_attempted_actions": 2858,
+  "actual_completed_actions": 2847,
+  "replays": [
+    {
+      "group": "controller",
+      "original_actions": 4,
+      "original_archive": "run-002.json",
+      "original_sha256": "482ea347e3211c2bb73b52ecc25cf0afbfc65cb31d205f902697d140d08a3471",
+      "replay_actions": 4,
+      "replay_archive": "run-003.json",
+      "replay_sha256": "79911db6eb4f1e941b64702a0ab30c940d679c0820ad6f3128c00f9bd5617d23",
+      "report": {
+        "classification": "matched",
+        "differences": [
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 0
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 1
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 2
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 3
+          }
+        ],
+        "exact_observation_match": false,
+        "same_action_count": true,
+        "same_source_runtime": true,
+        "semantic_match": true
+      }
+    },
+    {
+      "group": "graphical",
+      "original_actions": 24,
+      "original_archive": "run-001.json",
+      "original_sha256": "aed09a24449e8d1da821e248d67eeeb7d845fa618ad421c7007c925327d10e56",
+      "replay_actions": 24,
+      "replay_archive": "run-002.json",
+      "replay_sha256": "9dd21ef2cb9abdc7a7fcbdc9147f9643550c700b72cdfdf4859060ab720c38c4",
+      "report": {
+        "classification": "matched",
+        "differences": [
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 0
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 1
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 2
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 3
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 4
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 5
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 6
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 7
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 8
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 9
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 10
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 11
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 12
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 13
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 14
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 15
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 16
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 17
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 18
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 19
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 20
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 21
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 22
+          },
+          {
+            "exact_observation_match": false,
+            "semantic_match": true,
+            "step": 23
+          }
+        ],
+        "exact_observation_match": false,
+        "same_action_count": true,
+        "same_source_runtime": true,
+        "semantic_match": true
+      }
+    }
+  ],
+  "reduction": {
+    "acceptance_rule": {
+      "action_id": "pause",
+      "kind": "semantic_outcome",
+      "scope": "last completed semantic outcome; legal gameplay, not a failing regression",
+      "semantic_sha256": "b7b5ec1f85e321a75b99215140da26e0dce33b3193565fe1c3395515a9a0af7d"
+    },
+    "classification": "legal_unusual_gameplay",
+    "elapsed_msec": 15168,
+    "full_physics_checkpoint": false,
+    "gameplay_defect_confirmed": false,
+    "max_trial_absolute_msec": 60000,
+    "max_trial_active_msec": 30000,
+    "max_trials": 12,
+    "ok": true,
+    "original_actions": 4,
+    "original_tape_sha256": "ae44b4483a4dc14537342a7a3cc17f4f5e8502eb35da6fa3b5a951a498ba027b",
+    "reduced_actions": 1,
+    "reduction_success": true,
+    "schema": "cybersand-goblin-interactive-reduction-v1",
+    "status": "reproduced"
+  },
+  "actual_reduction_probes": [
+    {
+      "accepted": true,
+      "actions": 4,
+      "archive": "run-005.json",
+      "sha256": "ceca5f610050d51e67319e3e2d4b5db7d71dd65b20f959d142a54a08cfb2e1d1",
+      "termination": "budget_complete"
+    },
+    {
+      "accepted": true,
+      "actions": 4,
+      "archive": "run-006.json",
+      "sha256": "57b34dc7aa2c4bde84045776deafdd78c6a60d74ecea2ca99d484ff8296cbaa7",
+      "termination": "budget_complete"
+    },
+    {
+      "accepted": true,
+      "actions": 2,
+      "archive": "run-007.json",
+      "sha256": "1560cbb8be99ba9e3403b1c3f07519d7cfc0601dc52d5b9ce714c3a31ce160dc",
+      "termination": "budget_complete"
+    },
+    {
+      "accepted": true,
+      "actions": 2,
+      "archive": "run-008.json",
+      "sha256": "65f7f758ace72a016987d78672bb20a66e709a69fd96c9b85eb549bed609560c",
+      "termination": "budget_complete"
+    },
+    {
+      "accepted": true,
+      "actions": 1,
+      "archive": "run-009.json",
+      "sha256": "a3ec4fafe763d5796d4f7f263fab9bd0e323507faeca71f79349fcb56389b549",
+      "termination": "budget_complete"
+    },
+    {
+      "accepted": true,
+      "actions": 1,
+      "archive": "run-010.json",
+      "sha256": "32e87b40faa90bf3f0a7dc2141ed9566688256751700720d65b0f8443a0e5d53",
+      "termination": "budget_complete"
+    }
+  ],
+  "regression_export_status": "pass",
+  "regression_export_classification": "legal_unusual_gameplay",
+  "graphical": {
+    "checks": 36,
+    "colors_sampled": 132,
+    "display": "X11",
+    "evidence_kind": "graphical_godot",
+    "failures": [],
+    "panel_rect": [
+      1170,
+      18,
+      412,
+      864
+    ],
+    "physical_owner_acceptance": false,
+    "renderer": "gl_compatibility",
+    "size": [
+      1600,
+      900
+    ],
+    "ui_goal": "Finished 24 observed game operations",
+    "ui_state": "finished · 24 completed / 24 attempted / 24 budget",
+    "video_adapter": "llvmpipe (LLVM 15.0.7, 256 bits)"
+  },
+  "screenshots": [
+    {
+      "bytes": 193128,
+      "path": "source-tests/graphical/profile-00-goblin_interactive/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/interactive-discovery.png",
+      "sha256": "1f173292d46c7428f87f2c39f9d9760129b9fe5cce1f87fae4994ac726d7ca49",
+      "size": [
+        1600,
+        900
+      ]
+    },
+    {
+      "bytes": 167620,
+      "path": "source-tests/graphical/profile-00-goblin_interactive/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/interactive-memory.png",
+      "sha256": "3b14f9394044f75c99cf019d58b84d65152f8738a1562493f926f9296d51c9fd",
+      "size": [
+        1600,
+        900
+      ]
+    },
+    {
+      "bytes": 182056,
+      "path": "source-tests/graphical/profile-00-goblin_interactive/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/interactive.png",
+      "sha256": "b6594c02a51a0f403d43dde2875830cca540148b7d7c68a5d9dfe3fc18ffaf23",
+      "size": [
+        1600,
+        900
+      ]
+    }
+  ],
+  "job_log": {
+    "git_blob": "7e99bc3d49a24ee31c9c87872063d664de2d5b33",
+    "bytes": 478721,
+    "sha256": "5e1ac4e5f2ad2af3d4ed95db9237cebf49ba963056ed65dcbceab8dc6c90cc91"
+  },
+  "limits": [
+    "This is custody and replay/reduction qualification, not a new production defect claim.",
+    "C's37 process receipts exclude the separate seven-arm memory-specific process audit owned by A.",
+    "Import/wrapper durations can overlap child durations and are not disjoint wall time.",
+    "No requested512- or1024-action budget completed in this exact6f long8 cohort; observed partial actions remain retained.",
+    "The six historical predecessor Linux raw tape bodies remain unavailable after the local host outage; their metadata and original Windows artifacts are preserved separately."
+  ],
+  "new_gameplay_actions": 0
+}

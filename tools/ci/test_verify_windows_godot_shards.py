@@ -18,10 +18,10 @@ def digest(data: bytes) -> str:
     return hashlib.sha256(data).hexdigest()
 
 
-def case(name: str) -> dict:
+def case(name: str, display: bool = False) -> dict:
     return {"name": name, "flags": ["--script", f"res://tests/{name}.gd"],
             "timeout_seconds": execution_policy.watchdog_seconds("ordinary_case_seconds"),
-            "estimated_seconds": 5.0, "requires_display": False}
+            "estimated_seconds": 5.0, "requires_display": display}
 
 
 def fixture_contract() -> tuple[dict, bytes]:
@@ -71,14 +71,16 @@ def make_fixture(root: Path, expected: dict, manifest: bytes) -> None:
                      "requires_display": False,
                      "flags": ["--editor", "--quit"]}
         for role, item in [("preflight", preflight), *[("case", c) for c in plan]]:
+            source_case = subject.runner.Case(item["name"], tuple(item["flags"]), item["timeout_seconds"], 5, item["requires_display"])
+            command = subject.runner.case_command(r"C:\tools\Godot_v4.7-stable_win64_console.exe", source_case, "win32")
+            command[command.index("--path") + 1] = r"C:\source\godot"
             name = item["name"]; log = name + ".log"; data = (name + " passed\n").encode()
             (directory / log).write_bytes(data)
             report["results"].append({"role": role, "name": name, "status": "passed",
                 "log": log, "log_sha256": digest(data), "returncode": 0, "skip_messages": [],
                 "execution_policy": execution_policy.identity(), "natural_completion": True,
-                "requires_display": False, "timeout_seconds": item["timeout_seconds"],
-                "command": [r"C:\tools\Godot_v4.7-stable_win64_console.exe", "--headless", "--path",
-                            r"C:\source\godot", *item["flags"]]})
+                "requires_display": item["requires_display"], "timeout_seconds": item["timeout_seconds"],
+                "command": command})
             report["log_sha256"][log] = digest(data)
         (directory / "windows-execution.json").write_text(json.dumps(report), encoding="utf-8")
 
@@ -138,6 +140,32 @@ class WindowsCoverageTests(unittest.TestCase):
         self.assertEqual(result["source_tree"], self.expected["source_tree"])
         self.assertEqual(result["execution_policy"], execution_policy.identity())
         self.assertEqual(result["source_inputs_verified"], 2)
+
+    def test_registered_graphics_require_original_angle_command_and_display_bit(self):
+        expected, manifest = fixture_contract()
+        expected["plans"][0][0] = case("test_architecture_gameplay", display=True)
+        expected["applicable_cases"][0] = "test_architecture_gameplay"
+        with tempfile.TemporaryDirectory() as directory:
+            root = Path(directory)
+            make_fixture(root, expected, manifest)
+            report_path = root / "shard-0/windows-execution.json"
+            original = report_path.read_text()
+            self.assertEqual(subject.verify(root, SOURCE, "123", "1", 2, expected=expected)["status"], "passed")
+            def missing_angle(row):
+                offset = row["command"].index("--rendering-driver")
+                del row["command"][offset:offset + 2]
+            def missing_path(row):
+                row["command"][row["command"].index("--path")] = "--wrong-path"
+            def duplicate_path(row):
+                row["command"] += ["--path", r"C:\source\godot"]
+            for mutation in (lambda row: row.update(requires_display=False), missing_angle, missing_path, duplicate_path,
+                             lambda row: row["command"].append("--headless"),
+                             lambda row: row["command"].__setitem__(-1, "res://tests/other.gd")):
+                report = json.loads(original)
+                mutation(report["results"][1])
+                report_path.write_text(json.dumps(report))
+                with self.subTest(mutation=mutation), self.assertRaisesRegex(ValueError, "command or watchdog"):
+                    subject.verify(root, SOURCE, "123", "1", 2, expected=expected)
 
     def test_coordinated_omission_cannot_redefine_source_inventory(self):
         def omit(report):

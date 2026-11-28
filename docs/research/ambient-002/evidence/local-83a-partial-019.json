@@ -1,0 +1,13 @@
+{
+  "source": "83a3db6ffb207761df999abedac77eb1401604a8",
+  "complete": false,
+  "completed_campaigns": 19,
+  "completed_actor_episodes": 19,
+  "aggregate_sha256": "3ca7039b2baa8025b16ebc66cb4e94c1feb5fc218b35d08779e5b0ffa4fe0d66",
+  "created_utc": "2026-11-25T03:03:20.699926+00:00",
+  "path": "/tmp/ambient-002/evidence/perception/isolated-83a3-checkpoint-019.zip",
+  "bytes": 1556066,
+  "sha256": "f6ed13be0e3dd7c0eb64bf2d34f039ad0e6e66a2f8d85898b9c87bd5bc025df4",
+  "blob_sha": "40a18f9a1c1a4b97eed0ee1904394a6fdd2528b7",
+  "files": 63
+}

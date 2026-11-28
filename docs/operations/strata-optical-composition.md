@@ -2,17 +2,19 @@
 title: Composing optical depth in Strata
 status: Current
 document-kind: guide
-scope: Draft Strata Optics Lab artistic workflow, profile intent and physical readability guidance; graphical and owner acceptance remain source-bound
+scope: Optional Strata Optics Lab artistic workflow, profile intent and physical readability guidance; graphical and owner acceptance remain source-bound
 canonical-for: [strata-optical-composition]
-last-reviewed: 2026-11-26
+last-reviewed: 2026-11-28
 related-documents: [strata-workbench-evaluation.md, ../systems/strata-workbench.md, ../systems/strata-environments.md, ../systems/strata-authoring.md]
 ---
 
-# Composing optical depth in Strata — Draft/HOLD
+# Composing optical depth in Strata
 
 Strata's optical controls can make physical structures more prominent while retaining intricate surroundings. Their success depends on the authored geometry, camera scale and purpose of the view. Several gentle depth cues are not a universal readability solution: final matched captures retain false bridges and floors in otherwise attractive detailed profiles. Begin with a native layout whose physical route is understandable. A lens cannot reliably repair a rear staircase that looks and aligns like a physical staircase at every useful camera scale.
 
-This guide combines implemented controls with observations from application `fd0830abcfadd9ae19162e5677943bb131223e59`. The [final artistic recommendations](../audits/2026-11-25-strata-theatre-003/b-final-artistic-recommendations.md) and [capture ledger](../audits/2026-11-25-strata-theatre-003/b-final-corpus-review.json) bind those observations to original Linux images and exact configuration/geometry identities. They are agent assessments, not human perceptual testing. The enabled optical profiles have a registered hosted-software-renderer progression regression; [the independent performance review](../audits/2026-11-25-strata-theatre-003/c-performance-review-linux.md) retains that HOLD. Artistic preference does not override it or establish physical Windows/NVIDIA acceptance.
+This guide combines implemented controls with observations from application `fd0830abcfadd9ae19162e5677943bb131223e59`. The [final artistic recommendations](../audits/2026-11-25-strata-theatre-003/b-final-artistic-recommendations.md) and [capture ledger](../audits/2026-11-25-strata-theatre-003/b-final-corpus-review.json) bind those observations to original Linux images and exact configuration/geometry identities. They are agent assessments. The [independent performance review](../audits/2026-11-25-strata-theatre-003/c-performance-review-linux.md) retains the original hosted progression regression and failed 90% retention target without alteration.
+
+The owner subsequently accepted the optical results on Windows 11 with an NVIDIA TITAN RTX on 28 November 2026 and waived that specific retention target for optional optical profiles. Classic remains the default. The [combined delivery guide](ramcache-strata-integration.md) records integration qualification separately. The preferred **Diorama** profile with **Rear architecture → Optical depth = 1.3** is reproducible through the panel and named presets; it is artistic feedback, not a new global default or proof of every scene's physical readability.
 
 ## Start with physical authority
 

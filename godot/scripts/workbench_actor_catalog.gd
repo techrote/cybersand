@@ -10,10 +10,16 @@ const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Loadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const Usables = preload("res://scripts/usable_catalog.gd")
 const Coupling = preload("res://scripts/rigid_body_coupling.gd")
+const AmbientProfile = preload("res://scripts/ambient/ambient_profile.gd")
+const AmbientActuator = preload("res://scripts/ambient/ambient_actuator.gd")
 const BARREL := "reference_barrel"
 const VERSION := 1
-const MAX_ACTORS := 8
-const MAX_PARTS := 8
+const Capacity = preload("res://scripts/workbench_sandbox_capacity.gd")
+const MAX_ACTORS := Capacity.MAX_ACTORS
+# A temporarily piloted or paused AMBIENT actor keeps its policy slot for handback.
+const MAX_AMBIENT_CONTROLLERS := 8
+const AMBIENT_CAPACITY_ERROR := "A scene supports up to eight assigned AMBIENT controllers, including paused and piloted inhabitants."
+const MAX_PARTS := Capacity.MAX_PARTS
 const CONTROL_KEYS := ["version", "source", "enabled", "decision_ticks", "policy", "usable_index"]
 const SOURCES := ["human", "scripted", "policy", "passive"]
 const FAMILY_NAMES := {"setA":"Ground and hover", "setB":"Survey and excavation",
@@ -125,36 +131,68 @@ static func equipment_error(model: String, usable_index: Variant) -> String:
 
 
 static func control_error(model: String, value: Variant) -> String:
-	if not value is Dictionary or value.size() != CONTROL_KEYS.size() or not value.has_all(CONTROL_KEYS):
+	if not value is Dictionary or value.size() != CONTROL_KEYS.size() + (1 if value.has("ambient") else 0) or not value.has_all(CONTROL_KEYS):
 		return "Missing or unknown actor control fields."
 	if not _integer(value.version, VERSION, VERSION): return "Unsupported actor control version."
 	if not value.source is String or not supports(model, value.source):
 		return "Controller source is unsupported for " + model + "."
 	if not value.enabled is bool: return "Controller enabled must be true or false."
 	if not _integer(value.decision_ticks, 1, 12): return "Controller decisions must be spaced 1–12 physical ticks."
-	if not value.policy is String or value.policy not in ["fixture", "external"]:
+	if not value.policy is String or value.policy not in ["fixture", "external", "ambient"]:
 		return "Unknown external-policy adapter."
+	if value.policy == "ambient" and not value.has("ambient"):
+		return "Procedural NPC control requires an authored behaviour profile."
+	if value.has("ambient"):
+		var caps := AmbientActuator.capabilities(model)
+		if not bool(caps.supported): return "No supported procedural locomotion adapter for " + model + "."
+		var profile_error := AmbientProfile.validate(value.ambient, [], caps)
+		if not profile_error.is_empty(): return profile_error
 	return equipment_error(model, value.usable_index)
 
 
-# Called before preparing or mutating the live session. The eight logical slots,
-# eight prepared parts per actor and 64 native proxies are separate limits.
-static func capacity_error(actors: Array) -> String:
-	if actors.size() > MAX_ACTORS: return "The physical session has eight actor slots. Remove an actor first."
-	var parts := 0
-	var proxies := 0
+# Count actual prepared topology, including permanent equipment. A one-body
+# barrel consumes one body and one proxy; a compound flyer may consume more
+# proxies than bodies. Repeated models share only copied count calculations.
+static func resource_usage(actors: Array) -> Dictionary:
+	var result := {"actors":actors.size(), "ambient_controllers":0, "bodies":0, "proxies":0, "joints":0, "authored_links":0, "error":""}
+	var counts := {}
 	for actor: Variant in actors:
-		if not actor is Dictionary or not actor.get("model") is String: return "Invalid actor definition."
+		if not actor is Dictionary or not actor.get("model") is String:
+			result.error = "Invalid actor definition."
+			return result
+		var control: Variant = actor.get("control", {})
+		if control is Dictionary and control.get("policy") == "ambient": result.ambient_controllers += 1
 		var model := str(actor.model)
-		var data := definition(model)
-		if data.is_empty(): return "Unavailable physical actor definition: " + model
-		var count: int = data.get("parts", []).size()
-		if count < 1 or count > MAX_PARTS:
-			return "%s needs %d physical parts including equipment; each actor allows 1–8." % [model, count]
-		parts += count
-		proxies += proxy_count(model)
-	if parts > Coupling.MAX_BODIES or proxies > Coupling.MAX_BODIES:
-		return "Composition needs %d physical parts and %d native masks; the shared limit is %d. Equipment retains its slot when released." % [parts, proxies, Coupling.MAX_BODIES]
+		if not counts.has(model):
+			var data := definition(model)
+			if data.is_empty():
+				result.error = "Unavailable physical actor definition: " + model
+				return result
+			var count: int = data.get("parts", []).size()
+			if count < 1 or count > MAX_PARTS:
+				result.error = "%s needs %d physical parts including equipment; each actor allows 1–%d." % [model, count, MAX_PARTS]
+				return result
+			var joints := 0
+			for joint: Dictionary in data.get("joints", []):
+				joints += 3 if joint.type == "spring" else (2 if joint.type == "slide" else 1)
+			counts[model] = {"bodies":count, "proxies":proxy_count(model), "joints":joints,
+				"authored_links":data.get("joints", []).size()}
+		for key: String in ["bodies", "proxies", "joints", "authored_links"]:
+			result[key] += int(counts[model][key])
+	return result
+
+
+static func capacity_error(actors: Array, capacity: Dictionary = {}) -> String:
+	var limits := Capacity.defaults() if capacity.is_empty() else capacity
+	var invalid := Capacity.error(limits)
+	if not invalid.is_empty(): return invalid
+	if actors.size() > int(limits.logical_limit):
+		return "Composition needs %d actors; configured logical capacity is %d. Increase it in Sandbox Capacity." % [actors.size(), limits.logical_limit]
+	var used := resource_usage(actors)
+	if not str(used.error).is_empty(): return str(used.error)
+	if used.ambient_controllers > MAX_AMBIENT_CONTROLLERS: return AMBIENT_CAPACITY_ERROR
+	if int(used.bodies) > int(limits.body_limit) or int(used.proxies) > int(limits.proxy_limit):
+		return "Composition needs %d physical bodies and %d native masks; configured budgets are %d and %d. Equipment retains its slot when released." % [used.bodies, used.proxies, limits.body_limit, limits.proxy_limit]
 	return ""
 
 

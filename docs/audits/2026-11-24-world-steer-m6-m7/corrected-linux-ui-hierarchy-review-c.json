@@ -1,0 +1,93 @@
+{
+  "caption_limit": "The native-snap PNG shows selected-part inspection; candidate list is below the visible scroll position. Executed UI tests separately establish the bounded snap interactions.",
+  "format": "cybersand-m67-independent-corrected-linux-visual-review-c-v1",
+  "images": [
+    {
+      "extent": [
+        640,
+        440
+      ],
+      "id": "collaborative-module-semantics",
+      "notes": "Anchor/transform controls, semantics tabs, authored-meaning scope, explicit v2 upgrade and validate/save controls are legible and contained. The captured tab does not display the connector or material-role forms themselves.",
+      "path": "ui/collaborative-module-semantics.png",
+      "same_png_as_first_source": false,
+      "sha256": "db0cc74e92d40eae875e93b0166c42e05e46765079ca673e7f7e74333b121e4b",
+      "visual_binding": "Corrected-source original PNG directly viewed; current content identity text changes, controls and scope remain the same"
+    },
+    {
+      "extent": [
+        774,
+        520
+      ],
+      "id": "collaborative-native-snap",
+      "notes": "Selected complete pier, authored-guide overlay, current-observation=false provenance, pose controls and scrollable module panel are visible. The lower native-target/candidate controls lie below this captured scroll position; this PNG alone is not visual evidence of their contents.",
+      "path": "ui/collaborative-native-snap.png",
+      "same_png_as_first_source": false,
+      "sha256": "ea3efa5dc281edc643d3d38a1852e3ca3633eabefb62fc69984b7bdb2a13bab3",
+      "visual_binding": "Corrected-source original PNG directly viewed; current content identity text changes, controls and scope remain the same"
+    },
+    {
+      "extent": [
+        774,
+        520
+      ],
+      "id": "collaborative-detail-controls",
+      "notes": "Typed mounted-rib dimensions, spacing, density, seed, maximum changed cells and Metal choice are visible. Current source/scope and ZERO-WRITE proposal are explicit; review and native approval are separate.",
+      "path": "ui/collaborative-detail-controls.png",
+      "same_png_as_first_source": true,
+      "sha256": "8b6bd411faaf78cd5bbc0b64339b9a70ddcb9a3dd6109370a39fbc53e236a70d",
+      "visual_binding": "Byte-identical to directly viewed original PNG"
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "id": "recovered-workshop",
+      "notes": "Whole 512x512 orthographic recovered workshop. Broad central negative space, two attached hanging-fin bays and retained lower detail are visible. No dynamic stability or actor traversal is inferred.",
+      "path": "hierarchy/recovered-workshop-godot.png",
+      "same_png_as_first_source": true,
+      "sha256": "d579536f7d275c54d8f0e8815c7ae5252b9825eca1830ec9015091ef7a7eba51",
+      "visual_binding": "Byte-identical to directly viewed original PNG"
+    },
+    {
+      "extent": [
+        512,
+        192
+      ],
+      "id": "delegated-detail",
+      "notes": "Exact lower 512x192 region: wall-mounted ribs, panel/infill detail and right-wall service routing remain visible with open floor space.",
+      "path": "hierarchy/delegated-detail-godot.png",
+      "same_png_as_first_source": true,
+      "sha256": "34e6b326b28cbad030a7afc0ac6ed3cc23f2ee3ed091c66eafec7b39e39d8e6b",
+      "visual_binding": "Byte-identical to directly viewed original PNG"
+    },
+    {
+      "extent": [
+        512,
+        512
+      ],
+      "id": "stopped-prefix",
+      "notes": "Whole 512x512 pre-recovery retained partial stripe and unchanged lower detail are visible. It is labelled stopped native geometry, not completed recovery.",
+      "path": "hierarchy/stopped-prefix-godot.png",
+      "same_png_as_first_source": true,
+      "sha256": "d834a6fc75200e8f92fc9ba2e58c1d63128ec2befefc849be4dab7c1f9ee0307",
+      "visual_binding": "Byte-identical to directly viewed original PNG"
+    }
+  ],
+  "native_planes_sha256": {
+    "hierarchy/stopped-workshop.u16le": "961f17b139d37135ec87f9d53e20612e6286f7aaeb5ecf398d04b13596f92386",
+    "hierarchy/workshop.u16le": "bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe"
+  },
+  "phase": "successful corrected Linux source qualification; Windows packaging/extracted phase still pending when reviewed",
+  "physical_owner_acceptance": "pending",
+  "reports_sha256": {
+    "hierarchy/hierarchy-render.json": "1e52a72d6da3ee9d586d7132a9383d270e4a64bf34a1c4b913f4c703c9507223",
+    "ui/collaborative-ui.json": "a9a83eecc38cb5a9b2c19f6e5e20fa8e49eb8e3ee2b9db372c8d166c8c70c8e1"
+  },
+  "required_application_changes": [],
+  "run_id": 45512988153,
+  "scope": "Read-only direct inspection of current-source semantics/native-part PNGs and byte-equality binding of already viewed detail/workshop PNGs. All selected dimensions/report hashes/native planes rechecked. No Windows extracted result, physical acceptance or general gameplay is inferred.",
+  "source_revision": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+  "status": "REVIEWED_WITH_CAPTURE_SCOPE_LIMIT"
+}

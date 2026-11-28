@@ -1,0 +1,288 @@
+{
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "actor_fix_in_accepted_main": false,
+  "actor_pr": {
+    "draft": true,
+    "head": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+    "number": 762,
+    "state": "open"
+  },
+  "as_of": "2026-11-24",
+  "downloaded_artifacts": [
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "c41f665c3d82f64c1a6c7847ed348590a4bb5129b303c7865f1f2fb8aa5b0e76",
+      "archive_size": 147365,
+      "branch": "recovery/actor-compose-002r-final-20261122",
+      "crc_checked": true,
+      "id": "14772894102",
+      "name": "actor-sandbox-publication-a85b3a5655e7f711ce27fbfc8fee7819332006f0-45068056417-1",
+      "run_id": "45068056417",
+      "source_commit": "a85b3a5655e7f711ce27fbfc8fee7819332006f0",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45068056417/artifacts/14772894102"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "606efd9635563f946fc14b8e5dc8b3d692375831599ef6dbcd58a563921d3452",
+      "archive_size": 5030316,
+      "branch": "recovery/actor-compose-002r-final-20261122",
+      "crc_checked": true,
+      "id": "14772771460",
+      "name": "actor-linux-a85b3a5655e7f711ce27fbfc8fee7819332006f0-45068056417-1",
+      "run_id": "45068056417",
+      "source_commit": "a85b3a5655e7f711ce27fbfc8fee7819332006f0",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45068056417/artifacts/14772771460"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "a74e81ee62d65743c757b76617fd0f2c0db50964246eeca1b083fbf5f1b55bdf",
+      "archive_size": 2164772,
+      "branch": "recovery/actor-compose-002r-final-20261122",
+      "crc_checked": true,
+      "id": "14771903798",
+      "name": "actor-windows-runtime-a85b3a5655e7f711ce27fbfc8fee7819332006f0-45068056417-1",
+      "run_id": "45068056417",
+      "source_commit": "a85b3a5655e7f711ce27fbfc8fee7819332006f0",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45068056417/artifacts/14771903798"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "2325551a9bf40ec05601e2bc25aa07adc716b030d6eeab90d66c8bf1363809be",
+      "archive_size": 148485,
+      "branch": "recovery/actor-compose-publication-tooling-20261122",
+      "crc_checked": true,
+      "id": "14774142026",
+      "name": "actor-sandbox-publication-66218ba9170939b6517b5452f837fb838c88cd72-45073351155-1",
+      "run_id": "45073351155",
+      "source_commit": "66218ba9170939b6517b5452f837fb838c88cd72",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45073351155/artifacts/14774142026"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "f9f23fc15e94bb9433d613f9f11ed481c45802054e946a955f8f0c4d223a1b09",
+      "archive_size": 148830,
+      "branch": "integration/actor-compose-final-001-20261123",
+      "crc_checked": true,
+      "id": "14792097545",
+      "name": "actor-sandbox-publication-af13c6a3926da0749a32708a44a12b66ed5d0c7c-45112739808-1",
+      "run_id": "45112739808",
+      "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14792097545"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "1fffbe456cad79b9db2b5ada3ddc5dc6b2d56cd37f33066a67169cb2981113ad",
+      "archive_size": 6701530,
+      "branch": "integration/actor-compose-final-001-20261123",
+      "crc_checked": true,
+      "id": "14791814169",
+      "name": "actor-windows-af13c6a3926da0749a32708a44a12b66ed5d0c7c-45112739808-1",
+      "run_id": "45112739808",
+      "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14791814169"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "84795b2c9911164423a9649bed3a63a229398326a6827d5ea46352ab19f6e6eb",
+      "archive_size": 5041978,
+      "branch": "integration/actor-compose-final-001-20261123",
+      "crc_checked": true,
+      "id": "14791386230",
+      "name": "actor-linux-af13c6a3926da0749a32708a44a12b66ed5d0c7c-45112739808-1",
+      "run_id": "45112739808",
+      "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14791386230"
+    },
+    {
+      "actual_archive_sha256_verified": true,
+      "archive_sha256": "35b5fd89968aeebcdc40c57f1317b59d95938cad768005bdf14a60fbc716c8b4",
+      "archive_size": 2165267,
+      "branch": "integration/actor-compose-final-001-20261123",
+      "crc_checked": true,
+      "id": "14790766458",
+      "name": "actor-windows-runtime-af13c6a3926da0749a32708a44a12b66ed5d0c7c-45112739808-1",
+      "run_id": "45112739808",
+      "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14790766458"
+    }
+  ],
+  "historical_failure": {
+    "attempt": "1",
+    "linux_job": {
+      "conclusion": "success",
+      "id": "137348591907"
+    },
+    "publication_job": {
+      "commit_step": "skipped",
+      "conclusion": "failure",
+      "failed_step": "Verify complete sandbox evidence before staging exactly four runtime paths",
+      "id": "137361496328",
+      "log_inspected": true
+    },
+    "reason": "Actual unchanged byte-identical Linux pointer left only three changed paths; fixed four-changed-path assertion refused. Printed intended staged paths are not actual index evidence.",
+    "run_id": "45068056417",
+    "source_commit": "a85b3a5655e7f711ce27fbfc8fee7819332006f0",
+    "source_tree": "71abcb257f775db8ba4751b23d50d9428dd7c9ee",
+    "windows_job": {
+      "conclusion": "success",
+      "id": "137354023073"
+    },
+    "workflow_conclusion": "failure"
+  },
+  "historical_recovery": {
+    "attempt": "1",
+    "changed_paths": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    ],
+    "conclusion": "success",
+    "exact_single_parent_verified": true,
+    "interpretation": "Verifier-only replay of original immutable qualified product evidence; workflow SHA is not new product qualification.",
+    "publication_child": "30a4c3032fbbc0feb4b31b66bcfa64632ea3d84a",
+    "qualified_product_run_id": "45068056417",
+    "qualified_product_source": "a85b3a5655e7f711ce27fbfc8fee7819332006f0",
+    "run_id": "45073351155",
+    "runtime_bytes": {
+      "linux": {
+        "downloaded_actual_bytes_hash_checked": true,
+        "parent_and_child_pointer_same_blob": true,
+        "pointer_changed": false,
+        "pointer_content_independently_fetched": true,
+        "pointer_git_blob": "a5629ce83b94a6a810a3feed5d3af631662e2fde",
+        "sha256": "1aa42ed85b2fafa31d1c521224ed9d4f8199709b41cbe8b9c1299f9c2392fb4f",
+        "size": 5253840
+      },
+      "windows": {
+        "downloaded_actual_bytes_hash_checked": true,
+        "pointer_changed": true,
+        "pointer_content_independently_fetched": true,
+        "pointer_git_blob": "38a6c5ffb6987ad6bdf5c663d08651b9ddc7a921",
+        "sha256": "db24ec1de3a259608a4a44ad7b8a46c7f87d1eb4758a99fd75ed62aa06ca9336",
+        "size": 5811200
+      }
+    },
+    "workflow_source": "66218ba9170939b6517b5452f837fb838c88cd72",
+    "workflow_tree": "ef7c304cca1b71170142d970c20dd9eba0b00476"
+  },
+  "later_campaign": {
+    "attempt": "1",
+    "changed_paths": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    ],
+    "conclusion": "success",
+    "exact_single_parent_verified": true,
+    "jobs": [
+      {
+        "conclusion": "success",
+        "id": "137488547370",
+        "role": "linux"
+      },
+      {
+        "conclusion": "success",
+        "id": "137494640600",
+        "role": "windows-and-installed-package"
+      },
+      {
+        "conclusion": "success",
+        "id": "137502992790",
+        "role": "publication"
+      }
+    ],
+    "native_bytes": {
+      "linux": {
+        "sha256": "987f75ecee8c0e8672c82b8d6c23507fe1212226e73ad17d92329d30a9f0c230",
+        "size": 5258936
+      },
+      "windows": {
+        "sha256": "492f92c8c141fa90e6adb6923b7de76aa5d16c4957ffbecb3c62abb024c373dc",
+        "size": 5811712
+      }
+    },
+    "publication_child": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+    "report_run_attempt_fields_present": false,
+    "reports": [
+      {
+        "all_natural_exit_zero": true,
+        "artifact_id": "14791386230",
+        "member": "evidence/linux/qualification.json",
+        "original_log_joins": 42,
+        "platform": "linux",
+        "provenance_refers_exact_report": true,
+        "scope": "source",
+        "sha256": "c98552bac765bf45c99b54cac482c7bd7d6587e65c97a553d4ad097db3273366",
+        "unique_cases": 42
+      },
+      {
+        "all_natural_exit_zero": true,
+        "artifact_id": "14791814169",
+        "member": "windows/qualification.json",
+        "original_log_joins": 42,
+        "platform": "windows",
+        "provenance_refers_exact_report": true,
+        "scope": "source",
+        "sha256": "ecffe70c3b4543dee9892cc978e1b99b2a15a9f1fe2710e69b30362d8f69d11b",
+        "unique_cases": 42
+      },
+      {
+        "all_natural_exit_zero": true,
+        "artifact_id": "14791814169",
+        "member": "installed-windows/qualification.json",
+        "original_log_joins": 18,
+        "platform": "windows",
+        "provenance_refers_exact_report": true,
+        "scope": "installed",
+        "sha256": "eda699699bca4cc2acdf996597f8010611fb8c8e757a09942d8bfc771a5bd7ca",
+        "unique_cases": 18
+      }
+    ],
+    "run_attempt_custody": "Authenticated original artifact metadata/API digest plus original exact report bytes and provenance run/attempt; absent report fields are not invented.",
+    "run_id": "45112739808",
+    "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+    "source_tree": "3ab33cfd661b2204d965803f0e9f8312e7e43aa0"
+  },
+  "limits": [
+    "No original historical failure changed or rerun",
+    "No active publisher or Actor branch modified",
+    "No new product-source/native/graphical execution performed",
+    "Source case-specific acceptance remains with original owner reducer",
+    "94 MB owner evaluator not redownloaded by closure lane",
+    "No physical Windows/NVIDIA acceptance claimed",
+    "No new LFS object availability on remote established"
+  ],
+  "new_helper": {
+    "files": [
+      "tools/ci/publication_custody.py",
+      "tools/ci/test_publication_custody.py",
+      "docs/operations/publication-custody.md"
+    ],
+    "hosted_resulting_source_qualification": "PENDING; root request ledger owns any execution",
+    "independent_result": "Specialist C: full 36-test suite PASS 59.468s; branch-switch, malformed-report and index-movement delta regressions 3/3 PASS 2.806s; trust/migration documentation reviewed. Later review reproduced the archive pathname swap, repaired by hashing and decoding one bounded captured buffer.",
+    "independent_reviewer": "CI-ENGINEERING-CLOSURE-001 specialist C",
+    "integrated_into_existing_publisher": false,
+    "local_result": "Complete 38-test suite PASS 103.081s before final archive-path repair; original implementation fails new real-path-replacement regression as expected; repaired implementation passes 5 focused archive-integrity/budget/path tests in 2.714s. Inventory now 39 tests. Real local Git/LFS/ZIP fixtures; no new product execution.",
+    "original_immutable_replay": {
+      "build_input_inventory": 1283,
+      "contract": "actor-custody-replay-contract.json",
+      "contract_sha256": "172f77d2f56c6cece5c7ddebdd10abf3c4a2e800d76e859ee7b918e34958583c",
+      "exact_missing_git_blobs_recovered": 57,
+      "new_product_execution": false,
+      "original_semantic_reducer_replayed": true,
+      "original_source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "pins": "actor-custody-replay-pin.json",
+      "publication_child": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+      "receipt": "actor-custody-replay-result.json",
+      "remote_lfs_storage_verified": false,
+      "source_input_inventory": 105,
+      "status": "custody-verified"
+    },
+    "publication_authorized": false,
+    "status": "GO-for-additive-offline-helper; HOLD-for-publisher-integration",
+    "unit_tests": 39
+  },
+  "programme": "CI-ENGINEERING-CLOSURE-001",
+  "schema_version": 1
+}

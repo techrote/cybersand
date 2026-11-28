@@ -1,0 +1,57 @@
+ROOT := ../../..
+CXX ?= g++
+BUILD ?= /tmp/gentek-reciprocal-build
+DEFINITION_HASH := $(shell python3 -c 'import hashlib; from pathlib import Path; paths=sorted(Path(".").glob("*.cpp"))+sorted(Path(".").glob("*.hpp"))+[Path("../../../native/src/generation_spatial.cpp"),Path("../../../native/include/cybersand/material.hpp"),Path("../../../native/include/cybersand/generation_spatial.hpp"),Path("../../../native/include/cybersand/generation_numeric.hpp")]; print(hashlib.sha256(b"".join(str(p).encode()+b"\0"+p.read_bytes() for p in paths)).hexdigest())')
+FLAGS := -std=c++20 -Wall -Wextra -Wpedantic -Werror -I$(ROOT)/native/include -DGENTEK_DEFINITION_SHA256=\"$(DEFINITION_HASH)\"
+FLAGS += $(CPPFLAGS)
+MODE := -O2
+ifeq ($(SANITIZE),1)
+MODE := -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined
+endif
+LEGACY := common fixtures meshing io frameweaver mosaic receptor negotiated mosaic_admission resilience_solver
+CORE := $(addprefix $(BUILD)/,$(addsuffix .o,$(LEGACY) assembly reciprocal_mosaic mosaic_recovery recovery_admission reciprocal reciprocal_io)) $(BUILD)/generation_spatial.o
+HEADERS := $(wildcard *.hpp) $(wildcard $(ROOT)/native/include/cybersand/*.hpp)
+.PHONY: all tests test
+all: tests $(BUILD)/gentek_reciprocal $(BUILD)/audit_reciprocal_causality
+tests: $(BUILD)/test_assembly $(BUILD)/test_reciprocal_mosaic $(BUILD)/test_reciprocal $(BUILD)/test_swarm005 $(BUILD)/test_swarm006_source $(BUILD)/test_swarm006_admission $(BUILD)/test_custody_hash $(BUILD)/test_swarm006_recovery
+$(BUILD):
+	mkdir -p $@
+$(BUILD)/definition-$(DEFINITION_HASH): | $(BUILD)
+	touch $@
+$(BUILD)/%.o: %.cpp $(HEADERS) $(BUILD)/definition-$(DEFINITION_HASH) | $(BUILD)
+	$(CXX) $(FLAGS) $(MODE) -c $< -o $@
+$(BUILD)/generation_spatial.o: $(ROOT)/native/src/generation_spatial.cpp $(HEADERS) $(BUILD)/definition-$(DEFINITION_HASH) | $(BUILD)
+	$(CXX) $(FLAGS) $(MODE) -c $< -o $@
+$(BUILD)/test_assembly: $(BUILD)/assembly.o $(BUILD)/assembly_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_reciprocal_mosaic: $(CORE) $(BUILD)/reciprocal_mosaic_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_swarm005: $(CORE) $(BUILD)/swarm005_research_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_swarm006_source: $(CORE) $(BUILD)/swarm006_source_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_swarm006_admission: $(BUILD)/recovery_admission.o $(BUILD)/recovery_admission_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_custody_hash: $(BUILD)/custody_hash_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_swarm006_recovery: $(CORE) $(BUILD)/swarm006_recovery_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/test_reciprocal: $(CORE) $(BUILD)/reciprocal_tests.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/gentek_reciprocal: $(CORE) $(BUILD)/reciprocal_main.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/audit_reciprocal_causality: $(CORE) $(BUILD)/reciprocal_causal.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+$(BUILD)/replay_known_control.o: $(ROOT)/tools/swarm45/replay_known_control.cpp $(HEADERS) $(BUILD)/definition-$(DEFINITION_HASH) | $(BUILD)
+	$(CXX) $(FLAGS) $(MODE) -I. -c $< -o $@
+$(BUILD)/replay_swarm005_known: $(CORE) $(BUILD)/replay_known_control.o
+	$(CXX) $(MODE) $^ $(LDFLAGS) -o $@
+test: tests
+	$(BUILD)/test_assembly
+	$(BUILD)/test_reciprocal_mosaic
+	$(BUILD)/test_reciprocal
+	$(BUILD)/test_swarm005
+	$(BUILD)/test_swarm006_source
+	$(BUILD)/test_swarm006_admission
+	$(BUILD)/test_custody_hash
+	$(BUILD)/test_swarm006_recovery

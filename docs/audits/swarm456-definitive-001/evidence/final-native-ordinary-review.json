@@ -1,0 +1,198 @@
+{
+  "accepted_main_live_readback": {
+    "drift_since_integrated_freeze": false,
+    "latest_change": "Accepted Art session-only logging #727",
+    "read_utc": "2026-11-24T19:45:55Z",
+    "sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "tree": "06b62d73138028d1f7615b83edc9810491bf6287"
+  },
+  "ancestry": {
+    "accepted_main": {
+      "preserved_as_genuine_ancestor": true,
+      "sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    "donor715": {
+      "preserved_as_genuine_ancestor": true,
+      "sha": "919134a39d31461947c410c233d59d1965c48414"
+    },
+    "donor716": {
+      "preserved_as_genuine_ancestor": true,
+      "sha": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+    },
+    "qualified_source": {
+      "preserved_as_genuine_ancestor": true,
+      "sha": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f"
+    }
+  },
+  "authority": {
+    "Draft_HOLD": true,
+    "Ready_promotion": false,
+    "automatic_merge": false,
+    "production_default_activation": false
+  },
+  "completed_final_gde": {
+    "control_only_skips": 2,
+    "jobs": 57,
+    "linux_actual_rendered_pixel_cases": 23,
+    "linux_cases": 344,
+    "linux_imports": 25,
+    "linux_independent_receipt_sha256": "726e694fa73b3e9f5cce6ea1df538bfb7e0e723f66d5a7c016adae0440affb77",
+    "linux_original_logs": 369,
+    "linux_shards": 25,
+    "mandatory_skips": 0,
+    "missing_or_duplicate_cases": 0,
+    "ordinary_art_graphical_checks": 38,
+    "ordinary_windows_candidate_distinct_from_published_Q7_DLL": true,
+    "retained_PLAY_packets_independently_reviewed_by_C": 30,
+    "run": 45467878171,
+    "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+    "successful_jobs": 55,
+    "total_actual_cases": 665,
+    "total_original_case_and_import_logs": 713,
+    "windows_cases": 321,
+    "windows_explicit_display_cases_out_of_scope": 23,
+    "windows_imports": 23,
+    "windows_independent_receipt_sha256": "1791bf53b523327dc0ab84883661c696a52118c05afa9a060826447195175628",
+    "windows_original_logs": 344,
+    "windows_shards": 23
+  },
+  "completed_native_campaigns": [
+    {
+      "aggregate_sha256": "460d1303aa2c01de5926bad5d4cdadff7b42c8b7f9a0fc0ec3bb905dda4a5b8a",
+      "families": 6,
+      "ordered_native_cases_per_normal_ASanUBSan_TSan_family": 192,
+      "original_aggregate_independently_byte_identical": true,
+      "run": 45459020583,
+      "source": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+      "source_declared_commands": 20
+    },
+    {
+      "aggregate_sha256": "8a356452b96addc75549000a6dc9b16ab02ac12ad7c8d8898eef327db39a771e",
+      "families": 6,
+      "ordered_native_cases_per_normal_ASanUBSan_TSan_family": 192,
+      "original_aggregate_independently_byte_identical": true,
+      "retained_on_later_transport_docs_overlay_by_exact_unchanged_Native_inputs": true,
+      "run": 45464490633,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+      "source_declared_commands": 20
+    }
+  ],
+  "decision": "APPROVE_ENGINEERING_COMPLETION_DRAFT_HOLD_OWNER_ACCEPTANCE_PENDING",
+  "engineering_gates_in_this_scope": "passed",
+  "final_ordinary_source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "final_ordinary_tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+  "material_findings_open": [],
+  "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+  "next_scope": "Review the final documentation-only commit and canonical packet for source equivalence after root publishes; no further tests/builds required by this review.",
+  "original_archive_custody": {
+    "all_original_API_digests_and_members_verified": true,
+    "both_Native_campaigns_archives_each": 9,
+    "final_GDE_archive_bytes": 160624462,
+    "final_GDE_archives": 59,
+    "original_evidence_modified": false,
+    "raw_originals_retained_until_root_durable_archive_receipt": true
+  },
+  "original_outcomes_preserved": {
+    "Q1_through_Q5": "All original failures remain unchanged.",
+    "Q6_attempt1": "failure",
+    "Q6_attempt2": "success at superseded b126, not current Q7 qualification",
+    "final_local_final_Linux_reader": "unchanged consumer passed with pristine exact source at original hosted pathname; no command/evidence/source rewriting",
+    "first_full_GDE_45459025464": "failure: obsolete live-inventory unit bound; no missing-case reinterpretation",
+    "first_local_final_Linux_reader": "failed source command comparison in different absolute checkout context; preserved local diagnostic, not a campaign outcome",
+    "old_local_e4a_Windows_reader": "interrupted by local executor reset without completion; no local full-reader PASS claimed",
+    "second_full_GDE_45464495877": "failure: Linux/Art pinned-engine transport before execution; hosted Windows23-shard coverage passed separately"
+  },
+  "published_runtime_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+  "qualified_application_runtime_evaluator_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "qualified_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+  "remaining_nonblocking_limitations": [
+    "Coarse bounded native diagnostic reason strings remain an existing product limitation; no solver redesign or new recovery policy was introduced.",
+    "The revealed-corpus scientific driver executable/compiler byte payloads are absent from its original archive. Independent source/compiler/log/custody receipts and complete original scientific outputs are the stated evidence scope. The separate retained known360 executable was independently hashed; no executable substitution is claimed."
+  ],
+  "remaining_owner_dependent_gates": [
+    "Physical Windows11/NVIDIA appearance, responsiveness, sound and usability/preferences.",
+    "Acceptance on a local copy of an original populated authored map, including recovery OFF/ON, valid Apply, composition Save/fresh Reopen before later edits, and ordinary authoring/history/Save/fresh Reopen.",
+    "Owner private map contents remain local; no upload required."
+  ],
+  "reviewed_utc": "2026-11-24T19:47:08.944204+00:00",
+  "reviewer": "Specialist A, independent native/source/mainline/ordinary assurance",
+  "reviews": {
+    "corrected_complete_native": {
+      "report": "postpublication-ordinary/native-45464490633/final-independent-review.json",
+      "sha256": "8bd62549c671cc1398dc352e62f4b02383bd01a32ab3d09643606875ab2f5439"
+    },
+    "final_art_graphical": {
+      "report": "postpublication-ordinary/gde-45467878171/art-graphical-independent-review.json",
+      "sha256": "7c64155979905807c8c510343738252dee32b1c077ea7e4be4987efce6a5b2ae"
+    },
+    "final_complete_gde": {
+      "report": "postpublication-ordinary/gde-45467878171/final-independent-review.json",
+      "sha256": "cf2dacaae057cb814e797c021c2c4d3a5a667fc3b8f1b82161166fb14df65a95"
+    },
+    "first_complete_native": {
+      "report": "postpublication-ordinary/native-45459020583/final-independent-review.json",
+      "sha256": "98c91279f8f5be1ee21ff86551867e2e2fe609294fcb4bf26b78e42c8577c033"
+    },
+    "q7_linux_source": {
+      "report": "q7-source-evidence/linux-review/review.json",
+      "sha256": "a0784e42a1efd7e316d714f704fe5ad977937b26cb6a5223c64678790a488171"
+    },
+    "q7_original_native_source": {
+      "report": "FINAL-NATIVE-SOURCE-REVIEW.json",
+      "sha256": "159a34ba7063406b812a19716fa1839e447a20a6750bc39edb8f113c50896f9b"
+    },
+    "q7_windows_source": {
+      "report": "q7-source-evidence/windows-review/review.json",
+      "sha256": "2221a5df993d24f75a625c2137f163296da18df90235136a96abe1f71b48c9e2"
+    }
+  },
+  "schema": "swarm456-final-native-mainline-ordinary-closure-supplement-v1",
+  "source_preservation": {
+    "all_product_changes_are_reviewed_publication_paths": true,
+    "application_script_or_scene_changes": false,
+    "changed_publication_paths": 7,
+    "experimental_default_activation": false,
+    "material_catalogue_expansion": false,
+    "native_algorithm_changes": false,
+    "new_research_programme": false,
+    "post_q7_changed_paths": [
+      ".github/swarm456-broad-request.json",
+      ".github/swarm456-runtime-publication-request.json",
+      ".github/workflows/gdextension.yml",
+      ".github/workflows/play-desktop-packet.yml",
+      "README.md",
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-correction.json",
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-correction.md",
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-independent-review.json",
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-policy-review.json",
+      "docs/audits/swarm456-definitive-001/ordinary-budget-test-source-impact.json",
+      "docs/audits/swarm456-definitive-001/ordinary-linux-download-correction.json",
+      "docs/audits/swarm456-definitive-001/ordinary-linux-download-correction.md",
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "godot/tools/gentek_reciprocal",
+      "godot/tools/gentek_reciprocal.exe",
+      "godot/tools/swarm004-runtime.linux.json",
+      "godot/tools/swarm004-runtime.windows.json",
+      "tools/ci/test_godot_job_plan.py"
+    ],
+    "product_subtree_changed_paths": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "godot/tools/gentek_reciprocal",
+      "godot/tools/gentek_reciprocal.exe",
+      "godot/tools/swarm004-runtime.linux.json",
+      "godot/tools/swarm004-runtime.windows.json"
+    ],
+    "reviewed_publication_paths": 8,
+    "scientific_policy_or_denominator_changes": false,
+    "unchanged_linux_runtime_included": true,
+    "unrelated_Draft_branch_imports_after_accepted_main_reconciliation": false
+  },
+  "supplements_earlier_report_without_rewriting_it": {
+    "report": "FINAL-NATIVE-SOURCE-REVIEW.json",
+    "sha256": "159a34ba7063406b812a19716fa1839e447a20a6750bc39edb8f113c50896f9b"
+  }
+}

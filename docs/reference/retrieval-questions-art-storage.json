@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-26",
+  "purpose": "Additive current-source questions for the unmerged verified Art storage integration; existing frozen question sets are unchanged.",
+  "questions": [
+    {
+      "id": "ART-STORAGE-001",
+      "query": "When does Art export verify its closed output, and can I still cancel before replacing the destination?",
+      "canonical": ["systems/workbench-art-providers.md"],
+      "facts": [
+        "The unmerged candidate verifies closed staging length and SHA-256 cooperatively before native atomic replacement.",
+        "Stop and Cancel remain effective during verification; refusal does not publish that export and source aliases are checked again at commit.",
+        "This is not a power-loss or fsync guarantee."
+      ],
+      "sources": ["../godot/scripts/art_provider.gd", "../godot/scripts/art_traffic_archive.gd", "../godot/tests/test_art_storage_integrity.gd"]
+    },
+    {
+      "id": "ART-STORAGE-002",
+      "query": "Do verified Art preference saves rewrite unchanged settings or lose the previous cache after a failed write?",
+      "canonical": ["systems/workbench-art-providers.md"],
+      "facts": [
+        "The existing unchanged-settings cache avoids rewriting the committed configuration.",
+        "A failed write preserves the previous file and cache; only verified success updates the cache.",
+        "Successful retry or reversion clears only the save-owned error, with the profile size and admission guards preserved."
+      ],
+      "sources": ["../godot/scripts/art_batch_panel.gd", "../godot/scripts/workbench_file_transaction.gd", "../godot/tests/art_storage_fault_child.gd"]
+    },
+    {
+      "id": "ART-STORAGE-003",
+      "query": "Does verifying a private pending Art history receipt restore old conversations or change native Undo authority?",
+      "canonical": ["systems/workbench-art-providers.md"],
+      "facts": [
+        "Receipt identity and order advance only after complete closed-byte verification and publication.",
+        "The retained private writer does not activate old-journal restoration in ordinary session-only Art.",
+        "Native history and Architecture execution retain their existing owners; Windows and physical acceptance require distinct evidence."
+      ],
+      "sources": ["../godot/scripts/art_batch_panel.gd", "../godot/scripts/batch_lab/art_architecture_mount.gd", "../godot/tests/test_art_architecture_workbench.gd"]
+    }
+  ]
+}

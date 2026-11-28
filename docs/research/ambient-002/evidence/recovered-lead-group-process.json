@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/tmp/ambient-002/source/godot",
+    "--script",
+    "res://tests/test_ambient_group_transaction.gd",
+    "--",
+    "--ci"
+  ],
+  "exit_code": 0,
+  "log_sha256": "c3b0a474f0174409f75298280c083bc509aefc8dc468d2ccef65a41964e8b180",
+  "pid": 803,
+  "seconds": 1.072,
+  "status": "passed",
+  "timeout_seconds": 3940.0
+}

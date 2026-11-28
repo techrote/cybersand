@@ -1,0 +1,42 @@
+name: SWARM-004/005/006 explicit complete Draft validation
+
+on:
+  push:
+    branches: [integration/swarm004-005-006-unified-20261122]
+    paths: ['.github/swarm456-broad-request.json']
+
+permissions:
+  contents: read
+concurrency:
+  group: swarm456-broad-dispatch-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  dispatch:
+    name: Lease the exact published head and dispatch unchanged full gates
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/swarm004-005-006-unified-20261122' && github.event_name == 'push'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    permissions:
+      contents: read
+      actions: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+          lfs: false
+      - name: Dispatch source-bound Documentation Native and Godot workflows
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/swarm45/broad_validation.py --output build/swarm456-broad-dispatch.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm456-broad-dispatch-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/swarm456-broad-dispatch.json
+          if-no-files-found: error
+          retention-days: 90

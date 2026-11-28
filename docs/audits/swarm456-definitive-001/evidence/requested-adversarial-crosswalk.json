@@ -1,0 +1,60 @@
+{
+  "schema": 1,
+  "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "observation_utc": "2026-11-24T17:58:56.074595+00:00",
+  "scope": "Existing frozen tests and independent original-data reviews; no extra tests or source edits",
+  "required_cases": {
+    "legitimate_positive": [
+      "test_complete_original_inventory_fixture_passes",
+      "test_complete_build_undo_reapply_and_saved_receipt_pass",
+      "actual_Q7_source_and_pristine_original_consumers"
+    ],
+    "unrelated_process": [
+      "test_summary_cannot_replace_missing_or_different_original_process"
+    ],
+    "wrong_source_or_runtime": [
+      "test_rehashed_fail_log_missing_process_or_foreign_runtime_is_refused",
+      "test_saved_receipt_source_runtime_map_request_and_native_bytes_are_bound"
+    ],
+    "missing_transactions": [
+      "test_all_three_transactions_and_fresh_read_only_reopen_are_required",
+      "test_legacy_shallow_receipt_fixture_requires_transaction_witnesses"
+    ],
+    "fabricated_substituted_logs": [
+      "test_rehashed_failure_or_duplicate_marker_log_is_rejected",
+      "test_rehashed_transport_child_logs_must_match_native_completion_or_exact_refusal"
+    ],
+    "forged_native_receipts": [
+      "test_rehashed_nonzero_wrong_count_is_refused",
+      "test_rehashed_false_patch_digest_and_protection_are_refused",
+      "test_invalid_schema_semantics_operation_and_integer_types_are_refused",
+      "test_source_fence_must_match_independent_capture",
+      "test_collapsed_or_disconnected_generation_sequence_is_refused",
+      "test_foreign_world_change_is_refused_even_with_updated_capture_hash",
+      "test_substituted_saved_map_and_rehashed_sidecar_are_refused",
+      "test_blocked_original_cannot_claim_applied_or_saved_native_transactions"
+    ]
+  },
+  "Q5_original_evidence_mutated": false,
+  "original_Q5_disposition": "FAIL",
+  "Q4_reason_distinct": true,
+  "regression_results": "112 SWARM45 helper tests passed in original Q7 request artifact; full244helpertests no skips",
+  "original_artifact_id": 14945572574,
+  "original_Q5_regressions": {
+    "file": "tools/swarm45/test_ui_process_identity.py",
+    "tests": [
+      "test_original_linux_process_report_and_log_join_passes",
+      "test_original_windows_wrapper_process_join_remains_refused",
+      "test_mismatched_process_identity_is_not_a_windows_exception",
+      "test_fabricated_rehashed_report_must_match_unique_original_log",
+      "test_wrong_source_runtime_and_test_identity_are_refused_after_rehash",
+      "test_missing_report_and_substituted_reopen_are_refused",
+      "test_unrelated_missing_and_unacknowledged_transaction_are_refused",
+      "test_missing_duplicate_and_fabricated_log_markers_are_refused",
+      "test_real_direct_child_pid_joins_without_alias_or_report_rewriting",
+      "test_pinned_console_argument_resolves_to_actual_engine",
+      "test_unpinned_name_and_linked_engine_are_refused",
+      "test_all_windows_preservation_lanes_receive_the_actual_engine"
+    ]
+  }
+}

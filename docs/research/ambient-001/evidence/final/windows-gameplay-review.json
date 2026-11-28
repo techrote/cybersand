@@ -1,0 +1,930 @@
+{
+  "schema": "ambient-independent-frozen-windows-headless-review/v1",
+  "reviewed_utc": "2026-11-24T20:10:12.504763+00:00",
+  "reviewer": "Specialist B; independent evidence inspection without rerunning gameplay",
+  "status": "passed",
+  "source_commit": "f4f94631d61d492554627949497e727b26043ccb",
+  "source_tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10",
+  "local_delta": [],
+  "campaign": "/workspace/scratch/befe4151f3cf/ambient-evidence/windows-f4f/payload/ambient",
+  "qualification_sha256": "b2ae02cf0eab5160aedf4abec7903c1fb2580d47bcd0d003d0676c0764f12960",
+  "review_program_sha256": "70c1c097f5c1550b48b55532d2f51c5e7fb14ca458aa6c11085033ec0237547d",
+  "integration_review_sha256": "38e3ba5f34252353fbc81c6261235bb961df1b6fe2e9d6f5314ad51658821496",
+  "source_inputs_rehashed": 1115,
+  "loaded_project_inputs_rehashed": 837,
+  "official_archive_receipt_sha256": "417f9acc9eb586f73e26c01424b2dfee364ceb6bc9b61bfa89c8fb9c9b757a43",
+  "current_checkpoint": "f4f94631d61d492554627949497e727b26043ccb",
+  "source_binding": "All headless case receipts bind exact freeze03 source f4f94631. Previous failed delivery gates remain separately recorded.",
+  "previous_failed_windows_delivery_attempts": [
+    {
+      "source_commit": "f80aab91d31ce5e753eb6056d679100d83c7b7e7",
+      "failed_gate": "Graphical execution encountered unavailable WASAPI device; repaired by explicit Dummy audio for hosted capture.",
+      "original_workflow_log_sha256": "9b11a8de7ca860cfec95c8fd9c9fee288882d60479781c8d6075581142365cdb",
+      "headless_review_sha256": "e6e088a2336212045f6b2e4ef8b4b751377c27567a75ece262c2a7964be13eea"
+    },
+    {
+      "source_commit": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+      "failed_gate": "Final postlaunch inventory rejected generated depth_composite.gdshader.uid after all execution stages completed.",
+      "original_workflow_log_sha256": "b266255c7b5633fd9c74a49883f0b96e843f62781a14255af94288164359a5ff",
+      "headless_review_sha256": "60236dd03af48e82ed8ab8a4d5f73de15fea7a4864dbb91f403ca3793908dacd",
+      "extracted_execution_review_sha256": "542ffd8f0011c9d1e9025121af5af24a4e1374f8c8010dfc60831df01349c9c2"
+    }
+  ],
+  "linux_same_source_review_sha256": "7c408eeae5b996c0d8a14e861886c292e40225d47b8c1bf4298715b82dac844a",
+  "integration_review_source_bridge": [
+    {
+      "original_commit": "f80aab91d31ce5e753eb6056d679100d83c7b7e7",
+      "qualified_commit": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+      "changed_paths": [
+        "docs/research/ambient-001/mission-ledger.md",
+        "tools/fixtures/ambient-001-qualification-request.json",
+        "tools/qualify_ambient.py"
+      ],
+      "gameplay_source_changed": false,
+      "reason": "Explicit Dummy audio driver for hosted graphical capture; strict error and renderer gates preserved."
+    },
+    {
+      "from_source_commit": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+      "to_source_commit": "f4f94631d61d492554627949497e727b26043ccb",
+      "changed_paths": [
+        "docs/research/ambient-001/mission-ledger.md",
+        "tools/ci/test_ambient_delivery.py",
+        "tools/fixtures/ambient-001-qualification-request.json",
+        "tools/package_ambient_evaluator.py"
+      ],
+      "gameplay_and_retained_platform_runtime_inputs_unchanged_across_commits": true,
+      "common_cross_platform_source_data_inputs": 835,
+      "platform_specific_runtime_inputs_each": 2,
+      "independent_source_bridge_sha256": "fe6ec5a2f52aebe4b859022e746c0165931750d9495ebcd4c3e9e9e59fe153ab",
+      "linux_review_sha256": "7c408eeae5b996c0d8a14e861886c292e40225d47b8c1bf4298715b82dac844a",
+      "reason": "Only source-bound generated shader UID metadata admission, refusal tests, request and mission ledger changed. Fresh Windows gameplay is independently executed at the new exact source."
+    }
+  ],
+  "cross_platform_descriptive_comparison": [
+    {
+      "kind": "matched_motion",
+      "controller": "ambient",
+      "model": "runner",
+      "metrics_compared": [
+        "x_range_cells",
+        "actual_path_cells",
+        "minimum_observed_oil_distance",
+        "minimum_distance_to_first_oil_coordinate",
+        "neutral_moves",
+        "x_action_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "matched_motion",
+      "controller": "ambient",
+      "model": "monowheel",
+      "metrics_compared": [
+        "x_range_cells",
+        "actual_path_cells",
+        "minimum_observed_oil_distance",
+        "minimum_distance_to_first_oil_coordinate",
+        "neutral_moves",
+        "x_action_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "matched_motion",
+      "controller": "ambient",
+      "model": "4ly_trainer",
+      "metrics_compared": [
+        "x_range_cells",
+        "actual_path_cells",
+        "minimum_observed_oil_distance",
+        "minimum_distance_to_first_oil_coordinate",
+        "neutral_moves",
+        "x_action_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "matched_motion",
+      "controller": "scripted",
+      "model": "runner",
+      "metrics_compared": [
+        "x_range_cells",
+        "actual_path_cells",
+        "minimum_observed_oil_distance",
+        "minimum_distance_to_first_oil_coordinate",
+        "neutral_moves",
+        "x_action_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "matched_motion",
+      "controller": "scripted",
+      "model": "monowheel",
+      "metrics_compared": [
+        "x_range_cells",
+        "actual_path_cells",
+        "minimum_observed_oil_distance",
+        "minimum_distance_to_first_oil_coordinate",
+        "neutral_moves",
+        "x_action_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "matched_motion",
+      "controller": "scripted",
+      "model": "4ly_trainer",
+      "metrics_compared": [
+        "x_range_cells",
+        "actual_path_cells",
+        "minimum_observed_oil_distance",
+        "minimum_distance_to_first_oil_coordinate",
+        "neutral_moves",
+        "x_action_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "matched_motion",
+      "controller": "random",
+      "model": "runner",
+      "metrics_compared": [
+        "x_range_cells",
+        "actual_path_cells",
+        "minimum_observed_oil_distance",
+        "minimum_distance_to_first_oil_coordinate",
+        "neutral_moves",
+        "x_action_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "matched_motion",
+      "controller": "random",
+      "model": "monowheel",
+      "metrics_compared": [
+        "x_range_cells",
+        "actual_path_cells",
+        "minimum_observed_oil_distance",
+        "minimum_distance_to_first_oil_coordinate",
+        "neutral_moves",
+        "x_action_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "matched_motion",
+      "controller": "random",
+      "model": "4ly_trainer",
+      "metrics_compared": [
+        "x_range_cells",
+        "actual_path_cells",
+        "minimum_observed_oil_distance",
+        "minimum_distance_to_first_oil_coordinate",
+        "neutral_moves",
+        "x_action_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "personalities",
+      "profile": "oil_moth",
+      "metrics_compared": [
+        "physical_path_cells",
+        "physical_path_during_selected_rest",
+        "intentional_idle_decisions",
+        "selected_rest_decisions",
+        "action_x_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals",
+        "rest_to_active_resumptions"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "personalities",
+      "profile": "shy_crawler",
+      "metrics_compared": [
+        "physical_path_cells",
+        "physical_path_during_selected_rest",
+        "intentional_idle_decisions",
+        "selected_rest_decisions",
+        "action_x_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals",
+        "rest_to_active_resumptions"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    },
+    {
+      "kind": "personalities",
+      "profile": "idle_mechanic",
+      "metrics_compared": [
+        "physical_path_cells",
+        "physical_path_during_selected_rest",
+        "intentional_idle_decisions",
+        "selected_rest_decisions",
+        "action_x_sign_changes",
+        "stalled_active_intervals",
+        "active_intervals",
+        "rest_to_active_resumptions"
+      ],
+      "differences_beyond_1e-6_absolute_or_1e-7_relative": {}
+    }
+  ],
+  "graphical_disposition": "Specialist C independently verifies actual source and extracted graphical captures, portable package custody and final postlaunch inventory. This receipt certifies actual Windows03 headless gameplay only; headless results do not establish physical Windows/NVIDIA playfeel.",
+  "independent_checks": 14532,
+  "completed_fixture_assertions": 5959,
+  "completed_cases": 16,
+  "case_receipts": [
+    {
+      "name": "engine",
+      "checks": 877,
+      "seconds": 0.937,
+      "process_sha256": "20980859795acded34bc613f793c7f1e9b2bb0ffff10cd9627b7cf32d9f1ea28",
+      "log_sha256": "23633830a074a943ae3a4a2b2cefeb7afb179466de24eac86d7fda96c5bce03f",
+      "report_sha256": null
+    },
+    {
+      "name": "independent",
+      "checks": 214,
+      "seconds": 0.468,
+      "process_sha256": "09fc7e7ca25f9296e9caf2676f4a03bb2c0022bd06786e04043e9110a477c80c",
+      "log_sha256": "a4fdfe8de44f6fd66826a615d11e9ed1575f7364b0918f94ae1271487d60996b",
+      "report_sha256": null
+    },
+    {
+      "name": "perception",
+      "checks": 130,
+      "seconds": 1.859,
+      "process_sha256": "d99aa4aed68c586234918d6791d14f1a6e2f715e64340a9aa877eb9fdcb92107",
+      "log_sha256": "623da3f680f7f18334e87afb8b494039e4484c85e0adee71819e7f43fceaaf1d",
+      "report_sha256": "6c07873fac3c7ae7ab3d36f4d571c45fc3c7b573c61a9625854014c26ce69f86"
+    },
+    {
+      "name": "ledge_geometry",
+      "checks": 15,
+      "seconds": 0.656,
+      "process_sha256": "851147a5464a1c6ec7fd3ef640663c38d4a94ab1941763db9a96d9d1f40b325a",
+      "log_sha256": "bba3bcc8d60528a0b8e6a5e8a2a7f9170b7f4af3bb4710d6a30f467816d5963a",
+      "report_sha256": null
+    },
+    {
+      "name": "clock",
+      "checks": 21,
+      "seconds": 1.031,
+      "process_sha256": "76820ab01936f483cc555d60483217ecd66d5aaf05776fd126799a0cb782cfa1",
+      "log_sha256": "e129543631ad42885dfd266878ef11b732b120c77ed55411307fbd88918ad2c6",
+      "report_sha256": null
+    },
+    {
+      "name": "authoring_save",
+      "checks": 242,
+      "seconds": 1.406,
+      "process_sha256": "0948f3543fb6fec77a91c5b9280ff8418d3db47bec458fb5ceeaac0085ae0c61",
+      "log_sha256": "8b95cb7c518f60734a980820a83aadcb9e98842ac2100c3ed05ee07dfb353301",
+      "report_sha256": null
+    },
+    {
+      "name": "authoring_reopen",
+      "checks": 256,
+      "seconds": 1.39,
+      "process_sha256": "b3a3f8383f7fb10074a5dd4a6b34c10f1d4045ea92530a29485143797704145a",
+      "log_sha256": "d8cefd07cd3cf5433557abea1ab58a50128d839f5402b31bd19ce37047e0e7bd",
+      "report_sha256": null
+    },
+    {
+      "name": "editor",
+      "checks": 46,
+      "seconds": 8.297,
+      "process_sha256": "8016aa2dcf6a332a33cf7a341934723e929a376f63419ca06508ef6f4b615abe",
+      "log_sha256": "097f819b983b582110e12cb2d29ea5072506658ad83342635344bccc103f1eb0",
+      "report_sha256": "e4ea963973a611ffa8767575fce0a55f000780205a9dd778411a7c785e7f945a"
+    },
+    {
+      "name": "native_motion",
+      "checks": 306,
+      "seconds": 6.344,
+      "process_sha256": "157f4b48378f8eb9c822ea5708e02028c0a0a4970444ffe60fcc6c518ae0dd72",
+      "log_sha256": "38644484bcac3b9f7b9a218a4420d43a87c44a1d7d70d5d48b7760d7014c0654",
+      "report_sha256": "094bf646cac92aa77cdc39942e8e14d13009764ffba3d8046161d4a1ab238f64"
+    },
+    {
+      "name": "personalities",
+      "checks": 2877,
+      "seconds": 14.875,
+      "process_sha256": "a92072b5cdc88af2a833207a17a4c7fb4da7c000b033be4093f957b932b5801a",
+      "log_sha256": "f1d0615186b31c50c1a718f26d676a689fa2ed1c30780ef7afab837f63744e68",
+      "report_sha256": "a80b7b9d3bbe49a2ceeca59baa3cfd657c1a320f40cd5aaf17d4e26c76ef6e2f"
+    },
+    {
+      "name": "workbench",
+      "checks": 43,
+      "seconds": 31.313,
+      "process_sha256": "6cd275d37153b697869a88fa08e3a21aa9c4d3033a2f3937cb38be8c76af636d",
+      "log_sha256": "ad1cf3131fea3d98e8f9ee1e37715f7a6c3e73f524182a42cef3117f174e1cf0",
+      "report_sha256": "f1852defae6c676ae9cb1fa0f0027fe9572f3d111fb4ec672d59c1bcfa953e8a"
+    },
+    {
+      "name": "examples",
+      "checks": 121,
+      "seconds": 62.062,
+      "process_sha256": "f4f1c9ae4d27ee08af63c1debfdbcd597cd229262d77cd80e4bf874fe5b5018b",
+      "log_sha256": "a588c1ffbea48963ef5e44e174116a8eccfa04106bb1171254970c954af587aa",
+      "report_sha256": "b108f85fa61c2b20a986a9142c85c340ef6f20bf8b79bb0b619af7bdea3af308"
+    },
+    {
+      "name": "legacy_catalog",
+      "checks": 415,
+      "seconds": 1.047,
+      "process_sha256": "311cc9bc232a953ea942ccc0f5f44271a6bc39da4da51a26a18fb30aa11f5bf8",
+      "log_sha256": "60c439e4288679f1d01c6e6837149481a65f180a839ef686a2e4676e866251ea",
+      "report_sha256": null
+    },
+    {
+      "name": "legacy_composition",
+      "checks": 199,
+      "seconds": 44.61,
+      "process_sha256": "66fa6a1eacde18b0cebff78a115efa073bbb2e9417b32c2b972359f9d137b5a6",
+      "log_sha256": "d27c3bbae921852889661b61a431f1ab4c33f794317ea891feb4e0dfcf7d2045",
+      "report_sha256": null
+    },
+    {
+      "name": "legacy_session",
+      "checks": 84,
+      "seconds": 1.125,
+      "process_sha256": "186c6e78e3fbbe00cda33756a299596762bd9eb3483c33287ee246123b946f09",
+      "log_sha256": "d384e20fac6d6090022a4f39e214d960231d1237c1c9a74aa9583b7b967da8f9",
+      "report_sha256": null
+    },
+    {
+      "name": "legacy_physical",
+      "checks": 113,
+      "seconds": 1.031,
+      "process_sha256": "166d64102156a0d35fb3714d4aa24f40359eeea4438e57c635f93d3d90ddfc48",
+      "log_sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72",
+      "report_sha256": null
+    }
+  ],
+  "perception": {
+    "checks": 130,
+    "actual_native_edits": [
+      "Oil right",
+      "Oil relocated left",
+      "Water x=524",
+      "Water x=544",
+      "Water x=548",
+      "Water x=544",
+      "Water x=536",
+      "Water x=-1"
+    ],
+    "benchmarks": [
+      {
+        "actors": 1,
+        "decisions_each": 100,
+        "elapsed_usec": 58778,
+        "maximum_actor_capacity": 8,
+        "radius_cells": 50
+      },
+      {
+        "actors": 4,
+        "decisions_each": 100,
+        "elapsed_usec": 238767,
+        "maximum_actor_capacity": 8,
+        "radius_cells": 50
+      },
+      {
+        "actors": 8,
+        "decisions_each": 100,
+        "elapsed_usec": 467437,
+        "maximum_actor_capacity": 8,
+        "radius_cells": 50
+      }
+    ],
+    "scope": "actual native material and progression; fixed copied actor pose, no Rapier motion in this phase"
+  },
+  "matched_motion": [
+    {
+      "controller": "ambient",
+      "model": "runner",
+      "x_range_cells": 25.967277526855497,
+      "actual_path_cells": 65.3773919744417,
+      "minimum_observed_oil_distance": 3.71849969614553,
+      "minimum_distance_to_first_oil_coordinate": 17.7154541015625,
+      "neutral_moves": 10,
+      "x_action_sign_changes": 2,
+      "stalled_active_intervals": 0,
+      "active_intervals": 29,
+      "average_decision_usec": 250.125,
+      "maximum_decision_usec": 307,
+      "maximum_sensor_usec": 1089
+    },
+    {
+      "controller": "ambient",
+      "model": "monowheel",
+      "x_range_cells": 28.74755859375,
+      "actual_path_cells": 55.7279375107901,
+      "minimum_observed_oil_distance": 4.16444403813144,
+      "minimum_distance_to_first_oil_coordinate": 18.3023281097412,
+      "neutral_moves": 10,
+      "x_action_sign_changes": 1,
+      "stalled_active_intervals": 1,
+      "active_intervals": 29,
+      "average_decision_usec": 216.35,
+      "maximum_decision_usec": 299,
+      "maximum_sensor_usec": 960
+    },
+    {
+      "controller": "ambient",
+      "model": "4ly_trainer",
+      "x_range_cells": 24.99880981445301,
+      "actual_path_cells": 33.8865188312193,
+      "minimum_observed_oil_distance": 11.5517019627977,
+      "minimum_distance_to_first_oil_coordinate": 11.5517015457153,
+      "neutral_moves": 14,
+      "x_action_sign_changes": 2,
+      "stalled_active_intervals": 3,
+      "active_intervals": 26,
+      "average_decision_usec": 161.575,
+      "maximum_decision_usec": 228,
+      "maximum_sensor_usec": 1196
+    },
+    {
+      "controller": "scripted",
+      "model": "runner",
+      "x_range_cells": 62.2251777648926,
+      "actual_path_cells": 137.846982572228,
+      "minimum_observed_oil_distance": 3.44002135314524,
+      "minimum_distance_to_first_oil_coordinate": 4.11581707000732,
+      "neutral_moves": 0,
+      "x_action_sign_changes": 2,
+      "stalled_active_intervals": 0,
+      "active_intervals": 39,
+      "average_decision_usec": 65.45,
+      "maximum_decision_usec": 110,
+      "maximum_sensor_usec": 0
+    },
+    {
+      "controller": "scripted",
+      "model": "monowheel",
+      "x_range_cells": 86.04545593261699,
+      "actual_path_cells": 163.868144899607,
+      "minimum_observed_oil_distance": 5.44722623321854,
+      "minimum_distance_to_first_oil_coordinate": 4.33478212356567,
+      "neutral_moves": 0,
+      "x_action_sign_changes": 2,
+      "stalled_active_intervals": 0,
+      "active_intervals": 39,
+      "average_decision_usec": 42.55,
+      "maximum_decision_usec": 50,
+      "maximum_sensor_usec": 0
+    },
+    {
+      "controller": "scripted",
+      "model": "4ly_trainer",
+      "x_range_cells": 25.00012207031301,
+      "actual_path_cells": 26.7072844248032,
+      "minimum_observed_oil_distance": 11.5529323273933,
+      "minimum_distance_to_first_oil_coordinate": 11.5529327392578,
+      "neutral_moves": 0,
+      "x_action_sign_changes": 0,
+      "stalled_active_intervals": 28,
+      "active_intervals": 39,
+      "average_decision_usec": 31.975,
+      "maximum_decision_usec": 59,
+      "maximum_sensor_usec": 0
+    },
+    {
+      "controller": "random",
+      "model": "runner",
+      "x_range_cells": 10.101951599121094,
+      "actual_path_cells": 46.4344106991775,
+      "minimum_observed_oil_distance": 6.47794826945525,
+      "minimum_distance_to_first_oil_coordinate": 25.7404022216797,
+      "neutral_moves": 12,
+      "x_action_sign_changes": 14,
+      "stalled_active_intervals": 3,
+      "active_intervals": 27,
+      "average_decision_usec": 0.0,
+      "maximum_decision_usec": 0,
+      "maximum_sensor_usec": 0
+    },
+    {
+      "controller": "random",
+      "model": "monowheel",
+      "x_range_cells": 8.110534667968977,
+      "actual_path_cells": 31.9950358634815,
+      "minimum_observed_oil_distance": 25.4763612572549,
+      "minimum_distance_to_first_oil_coordinate": 32.5125961303711,
+      "neutral_moves": 10,
+      "x_action_sign_changes": 17,
+      "stalled_active_intervals": 10,
+      "active_intervals": 29,
+      "average_decision_usec": 0.0,
+      "maximum_decision_usec": 0,
+      "maximum_sensor_usec": 0
+    },
+    {
+      "controller": "random",
+      "model": "4ly_trainer",
+      "x_range_cells": 15.543182373046989,
+      "actual_path_cells": 25.3073173316661,
+      "minimum_observed_oil_distance": 36.503424496888,
+      "minimum_distance_to_first_oil_coordinate": 36.5034255981445,
+      "neutral_moves": 4,
+      "x_action_sign_changes": 13,
+      "stalled_active_intervals": 8,
+      "active_intervals": 35,
+      "average_decision_usec": 0.0,
+      "maximum_decision_usec": 0,
+      "maximum_sensor_usec": 0
+    }
+  ],
+  "matched_motion_ambient_sensor": {
+    "available": true,
+    "backend": "native-phased",
+    "cache_bytes": 262144,
+    "current_tick": 234,
+    "extent": [
+      512,
+      256
+    ],
+    "ignored_older_publications": 0,
+    "ingest_usec_max": 411,
+    "ingest_usec_total": 1049,
+    "ingestions": 40,
+    "maximum_materials": 8,
+    "maximum_radius_cells": 96,
+    "maximum_samples_per_query": 2401,
+    "owner_epoch": 11,
+    "owner_snapshot_serial": 235,
+    "patches": 118,
+    "publication_serial": 235,
+    "queries": 120,
+    "query_samples": 58952,
+    "query_usec_max": 605,
+    "query_usec_total": 54723,
+    "reason": "",
+    "revision": 286,
+    "sample_spacing_cells": 4,
+    "sample_tick": 234,
+    "source_bytes": 423058,
+    "version": "ambient-perception/v1",
+    "world_generation": 1
+  },
+  "personalities": [
+    {
+      "id": "oil_moth",
+      "physical_path_cells": 443.928673828021,
+      "physical_path_during_selected_rest": 0.0,
+      "intentional_idle_decisions": 0,
+      "selected_rest_decisions": 0,
+      "action_x_sign_changes": 11,
+      "stalled_active_intervals": 64,
+      "active_intervals": 299,
+      "rest_episodes": [],
+      "rest_to_active_resumptions": 0,
+      "overrides": {
+        "escape_obstruction": 83
+      },
+      "materials": {
+        "16": {
+          "absent_observed": 0,
+          "last_distance": 26.097037358419,
+          "maximum_distance": 47.8173608640209,
+          "minimum_distance": 11.2977920940851,
+          "present": 300,
+          "unavailable": 0
+        },
+        "3": {
+          "absent_observed": 242,
+          "last_distance": 48.8177238922056,
+          "maximum_distance": 49.7450899547822,
+          "minimum_distance": 41.430025603231,
+          "present": 58,
+          "unavailable": 0
+        }
+      }
+    },
+    {
+      "id": "shy_crawler",
+      "physical_path_cells": 271.049198832305,
+      "physical_path_during_selected_rest": 0.0,
+      "intentional_idle_decisions": 22,
+      "selected_rest_decisions": 0,
+      "action_x_sign_changes": 18,
+      "stalled_active_intervals": 21,
+      "active_intervals": 277,
+      "rest_episodes": [],
+      "rest_to_active_resumptions": 0,
+      "overrides": {
+        "avoid_material": 32,
+        "escape_obstruction": 20
+      },
+      "materials": {
+        "16": {
+          "absent_observed": 0,
+          "last_distance": 31.4194002319825,
+          "maximum_distance": 47.8173608640209,
+          "minimum_distance": 11.192264842174,
+          "present": 300,
+          "unavailable": 0
+        },
+        "3": {
+          "absent_observed": 150,
+          "last_distance": 48.6912055313252,
+          "maximum_distance": 49.9416920760788,
+          "minimum_distance": 42.5636099111891,
+          "present": 150,
+          "unavailable": 0
+        }
+      }
+    },
+    {
+      "id": "idle_mechanic",
+      "physical_path_cells": 201.152959549334,
+      "physical_path_during_selected_rest": 37.2286194011103,
+      "intentional_idle_decisions": 130,
+      "selected_rest_decisions": 129,
+      "action_x_sign_changes": 7,
+      "stalled_active_intervals": 12,
+      "active_intervals": 169,
+      "rest_episodes": [
+        {
+          "completed": true,
+          "duration_seconds": 5.00000000000023,
+          "end_reason": "timer_expired",
+          "end_seconds": 12.6000000000002,
+          "following_override": "",
+          "selected_decisions": 50,
+          "start_seconds": 7.59999999999998
+        },
+        {
+          "completed": true,
+          "duration_seconds": 4.99999999999972,
+          "end_reason": "timer_expired",
+          "end_seconds": 22.2,
+          "following_override": "",
+          "selected_decisions": 50,
+          "start_seconds": 17.2000000000003
+        },
+        {
+          "completed": false,
+          "duration_seconds": 2.89999999999984,
+          "end_reason": "observation_window_ended",
+          "end_seconds": 29.9999999999996,
+          "selected_decisions": 29,
+          "start_seconds": 27.0999999999997
+        }
+      ],
+      "rest_to_active_resumptions": 2,
+      "overrides": {
+        "avoid_material": 15,
+        "escape_obstruction": 13,
+        "rest": 129
+      },
+      "materials": {
+        "16": {
+          "absent_observed": 93,
+          "last_distance": 48.0737653410101,
+          "maximum_distance": 49.9353659392256,
+          "minimum_distance": 11.1339551908079,
+          "present": 207,
+          "unavailable": 0
+        },
+        "3": {
+          "absent_observed": 135,
+          "last_distance": 39.9508548191556,
+          "maximum_distance": 49.8212478595353,
+          "minimum_distance": 27.7125144920604,
+          "present": 165,
+          "unavailable": 0
+        }
+      }
+    }
+  ],
+  "ordinary_workbench": {
+    "checks": 43,
+    "retreat": {
+      "completed_seconds": 10.3000000000001,
+      "finish_tick": 649,
+      "label": "ten-second retreat",
+      "module_state": {
+        "armed": false,
+        "retreat": [
+          -1.0,
+          0.0
+        ],
+        "rng": 1551752653,
+        "safe_time": 0.300000000000015,
+        "triggers": 1,
+        "until": 10.5
+      },
+      "paused_wall_ms": 400,
+      "trigger_count": 1,
+      "trigger_tick": 31
+    },
+    "observed_held_retreat_rows": 100,
+    "first_retreat_sample": {
+      "accepted": 6,
+      "decision_usec": 156,
+      "direction": [
+        -1.0,
+        0.0
+      ],
+      "epoch": 2,
+      "grounded": true,
+      "instance_id": 1,
+      "native_tick": 35,
+      "override": "ledge",
+      "pace": 0.4,
+      "physical_tick": 36,
+      "position": [
+        284.967529296875,
+        291.183166503906
+      ],
+      "rejected": 0,
+      "remaining": 10.0,
+      "run_id": "ec4bf3f3d5eebc89472de2ac3284adfa",
+      "sensor_usec": 330
+    },
+    "last_retreat_sample": {
+      "accepted": 106,
+      "decision_usec": 156,
+      "direction": [
+        -1.0,
+        0.0
+      ],
+      "epoch": 2,
+      "grounded": true,
+      "instance_id": 1,
+      "native_tick": 630,
+      "override": "ledge",
+      "pace": 0.4,
+      "physical_tick": 630,
+      "position": [
+        122.496421813965,
+        296.234191894531
+      ],
+      "rejected": 0,
+      "remaining": 0.0833333333332362,
+      "run_id": "ec4bf3f3d5eebc89472de2ac3284adfa",
+      "sensor_usec": 337
+    },
+    "population": 8,
+    "source_bound_direct_assertions": [
+      "Real running Water brush and conflict reversal",
+      "Inspector preservation, human takeover and procedural handback",
+      "400 ms wall pause preserves actual tick, clock, private state and retires lease",
+      "Held retreat active before 9.5 s and released by the 10.3 s inspection",
+      "Actor deletion and accepted population"
+    ]
+  },
+  "ordinary_examples": [
+    {
+      "example": "ambient-oil-water",
+      "actors": 3,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "wall_usec": 10257360,
+      "actor_path_cells": [
+        46.6227708111983,
+        36.7445649507572,
+        46.0125294176396
+      ],
+      "intentional_idle_decisions": [
+        4,
+        11,
+        22
+      ],
+      "material_revision": [
+        3,
+        3
+      ]
+    },
+    {
+      "example": "ambient-ledge-walkway",
+      "actors": 2,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "wall_usec": 9465472,
+      "actor_path_cells": [
+        43.5596859529614,
+        40.9680206195917
+      ],
+      "intentional_idle_decisions": [
+        0,
+        16
+      ],
+      "material_revision": [
+        4,
+        244
+      ]
+    },
+    {
+      "example": "ambient-industrial-yard",
+      "actors": 5,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "wall_usec": 13414513,
+      "actor_path_cells": [
+        53.5556289553642,
+        47.0962685234845,
+        44.3127614688128,
+        76.7589460788295,
+        14.6191961460136
+      ],
+      "intentional_idle_decisions": [
+        0,
+        0,
+        0,
+        1,
+        19
+      ],
+      "material_revision": [
+        246,
+        489
+      ]
+    },
+    {
+      "example": "ambient-settlement",
+      "actors": 8,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "wall_usec": 13014431,
+      "actor_path_cells": [
+        53.5857909098268,
+        28.8912115590647,
+        44.9169846829027,
+        73.579519988969,
+        54.1029428914189,
+        23.7896102701707,
+        38.0019776895642,
+        40.8533312287182
+      ],
+      "intentional_idle_decisions": [
+        0,
+        0,
+        0,
+        1,
+        0,
+        32,
+        0,
+        0
+      ],
+      "material_revision": [
+        491,
+        491
+      ]
+    },
+    {
+      "example": "ambient-flight",
+      "actors": 2,
+      "native_ticks": 240,
+      "completed_rapier_steps": 240,
+      "wall_usec": 10213412,
+      "actor_path_cells": [
+        48.8819503188133,
+        52.4258487671614
+      ],
+      "intentional_idle_decisions": [
+        0,
+        0
+      ],
+      "material_revision": [
+        492,
+        732
+      ]
+    }
+  ],
+  "development_comparison": "Selected Linux and Windows paths, rest/idle, stall and oscillation metrics from835 byte-identical common Godot source/data inputs and source-matched platform runtimes are compared descriptively above; full source commits differ only by the documented package guard change. Differences use1e-6 absolute or1e-7 relative tolerance only for reporting; passing this review does not require physical agreement. No exhaustive bitwise trajectory comparison or cross-platform determinism guarantee is made. Timing results come from different hosted machines. No duplicate campaign was run.",
+  "negative_results_and_limits": [
+    "Oil Moth retains 64/299 stalled intervals and 83 recovery decisions against an inaccessible cup.",
+    "Idle Mechanic retains 37.23 cells of physical drift during neutral selected rest; neutral intent does not freeze physics.",
+    "Scripted ground movement approaches the fixed initial Oil coordinate more closely in the four-second comparison.",
+    "No in-range flyer Water avoidance success is claimed in the three-family fixture.",
+    "Material distance means nearest observed sample; dynamic material can move independently of an actor.",
+    "Physical path sums center movement and can include gait and vertical motion.",
+    "Native material edit fixture uses an explicitly fixed copied pose; separate cases supply actual physical movement.",
+    "No GUI pixels, Windows/NVIDIA playfeel, global navigation superiority or subjective personality acceptance follows from this Windows headless review."
+  ]
+}

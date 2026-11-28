@@ -1,0 +1,165 @@
+{
+  "source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+  "tree": "56687bcaa8eb58fbdf1bbeb673d74a40dcc9b634",
+  "evidence_commit": "39a7a1fb72b9c694f442963ca6852499e2f56eee",
+  "checks": 813,
+  "failures": [],
+  "scope": "Independent reduction of derived receipt index and original summary; raw cell arrays and PNG bytes not yet independently read.",
+  "native_case_checks": 771,
+  "cases": [
+    {
+      "name": "test_art_owned_transport",
+      "status": "passed",
+      "checks": 155
+    },
+    {
+      "name": "test_art_authoring_proposal",
+      "status": "passed",
+      "checks": 75
+    },
+    {
+      "name": "test_art_creative_cohort",
+      "status": "passed",
+      "checks": 251
+    },
+    {
+      "name": "test_art_collaborative_native",
+      "status": "passed",
+      "checks": 771
+    },
+    {
+      "name": "test_art_collaboration_authority",
+      "status": "passed",
+      "checks": 39
+    },
+    {
+      "name": "test_art_collaboration_session",
+      "status": "passed",
+      "checks": 184
+    },
+    {
+      "name": "test_art_collaboration_workspace",
+      "status": "passed",
+      "checks": 94
+    }
+  ],
+  "totals": {
+    "staged_changed": 184396,
+    "direct_changed": 184396,
+    "staged_chunks": 66,
+    "direct_chunks": 60,
+    "staged_execution_ms": 9100.183,
+    "direct_execution_ms": 7657.192
+  },
+  "rows": [
+    {
+      "id": "industrial_repair",
+      "stages": 2,
+      "changed": 5739,
+      "checked": 5762,
+      "chunks": 2,
+      "direct_chunks": 2,
+      "staged_execution_ms": 329.363,
+      "direct_execution_ms": 256.11,
+      "context_build_ms": 21.237,
+      "max_preview_poll_ms": 8.727
+    },
+    {
+      "id": "structural_facade",
+      "stages": 3,
+      "changed": 11585,
+      "checked": 11937,
+      "chunks": 5,
+      "direct_chunks": 4,
+      "staged_execution_ms": 580.983,
+      "direct_execution_ms": 425.293,
+      "context_build_ms": 19.989,
+      "max_preview_poll_ms": 8.613
+    },
+    {
+      "id": "scifi_interior",
+      "stages": 2,
+      "changed": 7952,
+      "checked": 7952,
+      "chunks": 3,
+      "direct_chunks": 3,
+      "staged_execution_ms": 367.568,
+      "direct_execution_ms": 317.659,
+      "context_build_ms": 20.449,
+      "max_preview_poll_ms": 8.239
+    },
+    {
+      "id": "revised_arcology",
+      "stages": 3,
+      "changed": 6229,
+      "checked": 6259,
+      "chunks": 4,
+      "direct_chunks": 3,
+      "staged_execution_ms": 453.054,
+      "direct_execution_ms": 297.62,
+      "context_build_ms": 20.179,
+      "max_preview_poll_ms": 8.566
+    },
+    {
+      "id": "protected_courtyard",
+      "stages": 2,
+      "changed": 5910,
+      "checked": 5910,
+      "chunks": 4,
+      "direct_chunks": 3,
+      "staged_execution_ms": 350.242,
+      "direct_execution_ms": 254.835,
+      "context_build_ms": 20.322,
+      "max_preview_poll_ms": 8.785
+    },
+    {
+      "id": "palette_foundry",
+      "stages": 3,
+      "changed": 10456,
+      "checked": 10456,
+      "chunks": 4,
+      "direct_chunks": 3,
+      "staged_execution_ms": 514.663,
+      "direct_execution_ms": 421.359,
+      "context_build_ms": 20.64,
+      "max_preview_poll_ms": 8.578
+    },
+    {
+      "id": "stopped_workshop",
+      "stages": 2,
+      "changed": 31284,
+      "checked": 31284,
+      "chunks": 11,
+      "direct_chunks": 11,
+      "staged_execution_ms": 2473.128,
+      "direct_execution_ms": 2137.393,
+      "context_build_ms": 38.967,
+      "max_preview_poll_ms": 12.334
+    },
+    {
+      "id": "staged_megaframe",
+      "stages": 6,
+      "changed": 96737,
+      "checked": 100397,
+      "chunks": 29,
+      "direct_chunks": 27,
+      "staged_execution_ms": 3482.666,
+      "direct_execution_ms": 3104.569,
+      "context_build_ms": 107.814,
+      "max_preview_poll_ms": 16.456
+    },
+    {
+      "id": "xeno_vault",
+      "stages": 2,
+      "changed": 8504,
+      "checked": 8660,
+      "chunks": 4,
+      "direct_chunks": 4,
+      "staged_execution_ms": 548.516,
+      "direct_execution_ms": 442.354,
+      "context_build_ms": 47.325,
+      "max_preview_poll_ms": 10.414
+    }
+  ],
+  "interpretation": "Matched deterministic geometry. Timing scope now matches executor intervals, but arm order and stage boundaries differ; no causal speed or model-creativity claim."
+}

@@ -1,0 +1,42 @@
+{
+  "decoded_log_sha256": "e95e5c165351303017347d19da7c7b34822fee8a527f2bf87dddef8b0410dd9f",
+  "disposition": "Do not relabel the Draft provenance skip as executed. Full source-sensitive materialization was separately verified by both actual current-source PLAY packet prechecks; existing earlier full Docs result retains its exact source identity.",
+  "event": "pull_request",
+  "job_id": 138707578728,
+  "lfs_fsck": "PASS",
+  "observed_at_utc": "2026-11-24T19:22:47.628070+00:00",
+  "original_log": "/workspace/scratch/e18127ed82c6/qualification-audit/post-publication/pr-docs-45467889468-original-decoded.log",
+  "require_materialized_executed_by_this_job": false,
+  "run_id": 45467889468,
+  "schema": 1,
+  "separate_current_source_materialization_evidence": {
+    "all20_materialized_runtime_paths_no_pointers_errors": true,
+    "engine_or_physical_execution_claimed": false,
+    "platforms": [
+      "linux",
+      "windows"
+    ],
+    "report": "play-45467888942-independent-review.json",
+    "run_id": 45467888942,
+    "source": "5fd9985eb27919eeefdad959a9970a0eef57d832"
+  },
+  "separate_full_documentation_gate": {
+    "independent_review": "full-docs-45464485647-independent-review.json",
+    "run_id": 45464485647,
+    "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+    "steps_skipped": 0,
+    "steps_success": 28
+  },
+  "skipped_step": {
+    "completed_at": "2026-11-24T19:14:13Z",
+    "conclusion": "skipped",
+    "name": "Validate dependency pins and published runtime provenance",
+    "number": 10,
+    "started_at": "2026-11-24T19:14:13Z",
+    "status": "completed"
+  },
+  "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "status": "PASS within normal Draft-PR documentation scope",
+  "steps_skipped": 1,
+  "steps_success": 27
+}

@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/tmp/ambient-002/perception/godot",
+    "--script",
+    "res://tests/test_ambient2_episodes.gd"
+  ],
+  "mode": "full",
+  "case_id": "main-pockets-4ly_trainer-s1701-t30-n1-stateful",
+  "source_revision": "9278de5757b29b9df40a089e11a4daef744990f7",
+  "custody_sha256": "45c733e85af4ed7418339c44cfd4e689a6a3436b97a971b59aa8c60481cae91c",
+  "timeout_seconds": 1800,
+  "started_utc": "2026-11-25T02:47:34Z",
+  "returncode": 0,
+  "elapsed_seconds": 7.231590397001128,
+  "console_sha256": "b657e46084e6380106c3599f00f8580969b975915b83b6d908d50c1637990940",
+  "report_sha256": "4bbf864458ba03a0da7a5bdf428bccb7c2fe26a6189a5e830c080d1b5ab80860"
+}

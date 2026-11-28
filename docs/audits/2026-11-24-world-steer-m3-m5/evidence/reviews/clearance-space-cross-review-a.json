@@ -1,0 +1,147 @@
+{
+  "schema": "cybersand.clearance-space-independent-a.v1",
+  "status": "passed",
+  "source_commit": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+  "reviewed_commit": "d0a3a4f99ac03934ed9825e2f73f2bb9bb88b5d2",
+  "reference_result_sha256": "f561d07c4d2dfc501855f6f8788562fbf9a3d67f85aaa4f35241fc8fb3d4640f",
+  "algorithm": "Independent obstacle-centered Chebyshev-radius-two dilation plus four-neighbor flood fill from each stage-clearance center. No production prefix-sum helper imported.",
+  "examples": [
+    {
+      "id": "assembly-hangar",
+      "plane_sha256": "9706fc47ec4379923ae061c255e455d7783a5715c79144de62794b05229830a9",
+      "probe_count": 2,
+      "all_five_by_five_probes_fit": true,
+      "connected_probe_groups": [
+        [
+          0,
+          1
+        ]
+      ],
+      "independent_partition_matches": true
+    },
+    {
+      "id": "interconnected-arcology",
+      "plane_sha256": "73a46d909f3e3a42ca7c1132e93e19236cb9072159eb8a6c5828c3889c75bafe",
+      "probe_count": 3,
+      "all_five_by_five_probes_fit": true,
+      "connected_probe_groups": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "independent_partition_matches": true
+    },
+    {
+      "id": "biomechanical-arboretum",
+      "plane_sha256": "98beef6ce9b9818604f4872721a4a74aee66027de507d95599bcec74fdae7fce",
+      "probe_count": 2,
+      "all_five_by_five_probes_fit": true,
+      "connected_probe_groups": [
+        [
+          0
+        ],
+        [
+          1
+        ]
+      ],
+      "independent_partition_matches": true
+    },
+    {
+      "id": "irregular-megastructure",
+      "plane_sha256": "c99010351ab1bf5fc2f0f6ce5841f4d522b68971ba96d108e0ab10fdf75f5e80",
+      "probe_count": 2,
+      "all_five_by_five_probes_fit": true,
+      "connected_probe_groups": [
+        [
+          0
+        ],
+        [
+          1
+        ]
+      ],
+      "independent_partition_matches": true
+    },
+    {
+      "id": "service-network",
+      "plane_sha256": "a3153d751fa8b5412269ac31c45784debb276e2540c1292f979982c5cbc79265",
+      "probe_count": 7,
+      "all_five_by_five_probes_fit": true,
+      "connected_probe_groups": [
+        [
+          0,
+          1,
+          2,
+          3,
+          4,
+          5,
+          6
+        ]
+      ],
+      "independent_partition_matches": true
+    },
+    {
+      "id": "constructed-cavern",
+      "plane_sha256": "b214f6378a3f6f873d1690fc1b020e1500ff2a5a11d0cea3a723e26ffad01ff2",
+      "probe_count": 4,
+      "all_five_by_five_probes_fit": true,
+      "connected_probe_groups": [
+        [
+          0,
+          1,
+          2,
+          3
+        ]
+      ],
+      "independent_partition_matches": true
+    },
+    {
+      "id": "modular-assembly-hangar",
+      "plane_sha256": "628fd9620f650ef744edb98f747d269442e4e23bc8d0e27597ca75309be5ef47",
+      "probe_count": 1,
+      "all_five_by_five_probes_fit": true,
+      "connected_probe_groups": [
+        [
+          0
+        ]
+      ],
+      "independent_partition_matches": true
+    },
+    {
+      "id": "modular-service-stack",
+      "plane_sha256": "450b9bb7bfa52fa33ef041943bd09191a32364d3ef63bfc7d41e4b3f191db939",
+      "probe_count": 3,
+      "all_five_by_five_probes_fit": true,
+      "connected_probe_groups": [
+        [
+          0
+        ],
+        [
+          1
+        ],
+        [
+          2
+        ]
+      ],
+      "independent_partition_matches": true
+    },
+    {
+      "id": "modular-transfer-viaduct",
+      "plane_sha256": "d5d287d3e38dc4400d72ed04af0ae7133624e8efe8a5c031e2ab1f47b10cadf5",
+      "probe_count": 1,
+      "all_five_by_five_probes_fit": true,
+      "connected_probe_groups": [
+        [
+          0
+        ]
+      ],
+      "independent_partition_matches": true
+    }
+  ],
+  "scope": "Only explicit stage-level clearance rectangle centers; module-local clearances and equipment cavities are not added. Every probe fits; partitions agree. A sole probe gives no inter-region connection evidence. Unrestricted square translation does not certify actor motion, reachability under gravity, structural stability or owner acceptance."
+}

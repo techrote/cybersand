@@ -1,0 +1,151 @@
+name: GIP-014 goblin-002 focused discovery qualification
+
+on:
+  push:
+    branches: [experiment/gip014-goblin-002-20261125]
+    paths: ['tools/gip014/qualification-request-002.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gip014-goblin-002-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  qualification-scope:
+    runs-on: ubuntu-22.04
+    timeout-minutes: 5
+    outputs:
+      linux: ${{ steps.scope.outputs.linux }}
+      windows: ${{ steps.scope.outputs.windows }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+          persist-credentials: false
+      - name: Read the finite committed platform scope
+        id: scope
+        run: |
+          python3 - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+          request = json.loads(Path('tools/gip014/qualification-request-002.json').read_text())
+          platforms = request.get('platforms', ['linux', 'windows'])
+          if (not isinstance(platforms, list) or not 1 <= len(platforms) <= 2
+                  or any(type(item) is not str or item not in ('linux', 'windows') for item in platforms)
+                  or len(set(platforms)) != len(platforms)):
+              raise ValueError('Qualification platforms must be a nonempty unique subset of linux/windows')
+          with Path(os.environ['GITHUB_OUTPUT']).open('a', encoding='utf-8') as stream:
+              for platform in ('linux', 'windows'):
+                  stream.write(platform + '=' + str(platform in platforms).lower() + '\n')
+          print(json.dumps({'source': os.environ['GITHUB_SHA'], 'requested_platforms': platforms}))
+          PY
+
+  linux-discovery-campaign:
+    needs: qualification-scope
+    if: needs.qualification-scope.outputs.linux == 'true'
+    runs-on: ubuntu-22.04
+    # The queue remains bounded at 120 minutes. Leave separate headroom for
+    # focused/graphical gates, the 15-minute memory experiment and evidence upload.
+    timeout-minutes: 180
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize only retained Linux libraries
+        run: |
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so'
+          python -m pip install -r tools/gip014/requirements.txt
+      - name: Provision the bounded graphical test display
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y xvfb xauth libgl1-mesa-dri libglx-mesa0
+      - name: Validate the existing CI provider policy
+        run: python tools/ci/check_ci_provider_policy.py
+      - name: Run bounded source, graphical and comparative experiments
+        env:
+          GODOT_SILENCE_ROOT_WARNING: '1'
+          DISPLAY: ':99'
+        run: |
+          python tools/gip014/qualify_linux.py --out '${{ runner.temp }}/goblin002-linux' --qualification-request
+      - name: Preserve all Linux attempts, including failures and pending actions
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gip014-goblin-002-linux-evidence-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/goblin002-linux/**/*.json
+            ${{ runner.temp }}/goblin002-linux/**/*.log
+            ${{ runner.temp }}/goblin002-linux/**/*.png
+            ${{ runner.temp }}/goblin002-linux/**/executed-game-source.zip
+            ${{ runner.temp }}/goblin002-linux/regression-case/
+            !${{ runner.temp }}/goblin002-linux/**/project/**
+          if-no-files-found: warn
+          retention-days: 30
+          compression-level: 6
+
+  windows-developer-evaluator:
+    needs: qualification-scope
+    if: needs.qualification-scope.outputs.windows == 'true'
+    runs-on: windows-2022
+    timeout-minutes: 55
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize only retained Windows libraries
+        run: |
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'Git LFS initialization failed.' }
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
+          if ($LASTEXITCODE -ne 0) { throw 'Retained Windows runtime unavailable.' }
+          python -m pip install -r tools/gip014/requirements.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Process-tree monitor unavailable.' }
+      - name: Qualify actual source gameplay and the extracted evaluator
+        run: |
+          & tools/gip014/qualify_windows.ps1 -Output (Join-Path $env:RUNNER_TEMP 'goblin002-windows')
+          if ($LASTEXITCODE -ne 0) { throw 'Windows qualification failed; original attempts remain retained.' }
+      - name: Preserve every Windows attempt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gip014-goblin-002-windows-evidence-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/goblin002-windows/source-tests/
+            ${{ runner.temp }}/goblin002-windows/extracted/CyberSand-goblin/test-output/
+            ${{ runner.temp }}/goblin002-windows/extracted/CyberSand-goblin/goblin-evaluator-manifest.json
+            ${{ runner.temp }}/goblin002-windows/*.json
+            ${{ runner.temp }}/goblin002-windows/*.log
+            ${{ runner.temp }}/goblin002-windows/extracted-selftest.powershell-probe.ps1
+            ${{ runner.temp }}/goblin002-windows/regression-case/
+            ${{ runner.temp }}/goblin002-windows/CyberSand-goblin-base.zip
+          if-no-files-found: warn
+          retention-days: 30
+      - name: Retain only the qualified Draft Windows evaluator
+        if: success()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gip014-goblin-002-qualified-windows-evaluator-${{ github.sha }}
+          path: ${{ runner.temp }}/goblin002-windows/CyberSand-goblin.zip
+          if-no-files-found: error
+          retention-days: 30

@@ -1,0 +1,7 @@
+{
+  "owner_zip": "CyberSand-Architecture-Workbench-Windows-fe2395c7060d.zip",
+  "embedded_source_report": "architecture-evidence/source-qualification.json",
+  "source_report_sha256": "79bfb762d1ce3feec9fcf049eae596489d8b4a1c2398394d02b6bb9005a2d977",
+  "byte_equals_source_windows_report": true,
+  "separate_extracted_report_sha256": "818c3a0af9aaea91e80bb4ba1047b7718a3baf9fe23c256d377bc3702f08c41c"
+}

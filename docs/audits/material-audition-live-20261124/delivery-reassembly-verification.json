@@ -1,0 +1,50 @@
+{
+  "status": "verified",
+  "operation": "exact_byte_reassembly",
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "qualification_run": 45465121123,
+  "transport_run": 45473429772,
+  "transport_commit": "c112b01e9f3b75432660e31403d1be5cf6a1d16d",
+  "source_archive_artifact": 14956377609,
+  "parts": [
+    {
+      "name": "CyberSand-Material-Audition-Windows.zip.part01",
+      "offset": 0,
+      "bytes": 419430400,
+      "sha256": "801d27b553c2a50cd720c1b8d304665196b5f8fdd9ee9a7525bda0b0eb4ba78c"
+    },
+    {
+      "name": "CyberSand-Material-Audition-Windows.zip.part02",
+      "offset": 419430400,
+      "bytes": 334708387,
+      "sha256": "4b238ac2a57d3eb91ed7c388f409cdb0cbbbe2db84e96a0784b87882ba0de287"
+    }
+  ],
+  "archive": {
+    "name": "CyberSand-Material-Audition-Windows.zip",
+    "bytes": 754138787,
+    "sha256": "cb4c67025fb1de64b3f647d70873421cf9be601372fccd2a915791222d94bb96"
+  },
+  "local_path": "/tmp/cybersand-mat-audition-delivery-5f73b0ae/CyberSand-Material-Audition-Windows.zip",
+  "package_transformed": false,
+  "zip_entries": 23358,
+  "uncompressed_bytes": 1616146588,
+  "root_entries": [
+    "dependencies/",
+    "qualification/",
+    "source/",
+    "Godot-COPYRIGHT.txt",
+    "Godot-LICENSE.txt",
+    "Godot_v4.7-stable_win64.exe",
+    "Godot_v4.7-stable_win64_console.exe",
+    "material-audition-evaluator.json",
+    "Microsoft-Visual-C-Runtime-LICENSE.docx",
+    "Microsoft-Visual-Studio-2022-LICENSE.docx",
+    "Open Materials Lab.cmd",
+    "Open Workbench.cmd",
+    "README.txt",
+    "vc-runtime-provenance.json",
+    "vcruntime140.dll"
+  ],
+  "readme_sha256": "c9ca0ab02c121a6b3b9b0fd218a867e21135ec4a8dccb6531bddf6d096f37216"
+}

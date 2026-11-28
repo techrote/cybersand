@@ -2,17 +2,40 @@
 title: Strata Optics Lab owner evaluation
 status: Current
 document-kind: guide
-scope: Portable Draft Strata Theatre 003 Workbench walkthrough and owner acceptance observations
+scope: Optional Strata Theatre 003 controls, accepted artistic preference, authored persistence and historical owner evaluator
 canonical-for: [strata-optics-owner-evaluation]
-last-reviewed: 2026-11-26
+last-reviewed: 2026-11-28
 related-documents: [strata-optical-composition.md, strata-workbench-evaluation.md, ../systems/strata-optics.md, ../systems/strata-workbench.md]
 ---
 
 # Strata Optics Lab — owner walkthrough
 
-The portable evaluator opens the ordinary interactive CyberSand Workbench. [Download the evaluator artifact](https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080761776), extract that GitHub ZIP, then extract its inner **CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip** into a writable folder and run **Open Workbench.cmd** from the inner folder. No Git, Python, compilation or separate Godot installation is needed. The first launch prepares the bundled resource imports; keep the complete extracted directory together.
+Use the definitive evaluator and launch route in the
+[combined RAMCACHE/Strata guide](ramcache-strata-integration.md). Run **Open
+Workbench.cmd** from its complete writable extracted folder. Strata remains
+optional in ordinary Workbench. The persistent-area profile has its own durable
+exit and explicitly refuses Strata authoring; return through **Launcher** and
+open ordinary Workbench before following this guide.
 
-The exact application commit, source tree, official Godot hashes, retained native/Rapier provenance, source files and payload hashes are in `evaluation-manifest.json`. The hosted package execution receipt identifies the actual commands exercised from a pristine extraction. Those receipts qualify the stated execution, not physical Windows 11/NVIDIA appearance or responsiveness. This is **Draft/HOLD**, with no merge or default optical activation.
+The owner physically accepted the previous Strata evaluator on Windows 11 with
+an NVIDIA TITAN RTX. That immutable
+[historical evaluator](https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080761776)
+contains `CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip` and remains the
+source of the original measurements below. It is not relabelled as the new
+integrated application. The combined source, runtime and package have separate
+identities and qualification records. **Classic stays the default.**
+
+## Reproduce the accepted Diorama preference
+
+Open **Strata Theatre… → Scenes**, select an example and use **Load selected
+example…**. In **Optics**, choose **Diorama** from the profile dropdown below
+**Enable optical processing**. Scroll to **Per-plane composition**, select
+**Rear architecture**, and set **Optical depth** to **1.3**. This is the owner's
+preferred configuration, not a global default. Use **Named custom presets →
+Name for this optical composition → Save / duplicate as named preset** to retain
+a reusable copy. Use the separate ordinary **Save start [Ctrl+S]** control to
+retain the complete authored scene. The named preset and map-name fields remain
+independent.
 
 ## First ten minutes
 
@@ -70,13 +93,13 @@ Native paint, erase, Undo/Redo, import and module composition still use their or
 
 Start in **Classic** and briefly use the actor, moving Water/Sand, pan and zoom. Then compare a processed profile at **Balanced**, keeping the same scene and view. Low caps decorative defocus to one source cell; its name does not establish that the complete optical pipeline meets the progression target. High is useful for optional optical experiments and needs separate scrutiny during movement. Evaluate actual actor response, Water/Sand progression and pauses; a displayed FPS number cannot establish those behaviours.
 
-**The frozen fd0830ab candidate has an enabled-optics PERFORMANCE HOLD.** Its hosted Linux matched challenge cohort retained about 80% of Classic's native/Rapier progression for Architectural, 82% for Cinematic Deep Focus, 75% for Gameplay Clarity and 75% for Diorama High. All missed the registered 90% minimum and the physical-interval p95 criterion. Classic separately passed the hosted Linux exact-image and progression comparisons with qualified Strata002. The five-minute Windows software-host session admitted its scene in 69.196 seconds and had physical-interval p95 of 662.318 ms. The authored slider value changed quickly, but the next completed draw had p95 of 545.874 ms. These are distinct observations, not a physical input-to-photon measurement. See the [performance review](../audits/2026-11-25-strata-theatre-003/c-performance-review-linux.md) and [sustained review](../audits/2026-11-25-strata-theatre-003/c-sustained-v2-review.md).
+**The frozen fd0830ab candidate recorded enabled-optics performance failures.** The owner accepted optional use on 28 November 2026 and waived only the 90% retention gate for this integration; the original measured failures below remain unchanged. Its hosted Linux matched challenge cohort retained about 80% of Classic's native/Rapier progression for Architectural, 82% for Cinematic Deep Focus, 75% for Gameplay Clarity and 75% for Diorama High. All missed the registered 90% minimum and the physical-interval p95 criterion. Classic separately passed the hosted Linux exact-image and progression comparisons with qualified Strata002. The five-minute Windows software-host session admitted its scene in 69.196 seconds and had physical-interval p95 of 662.318 ms. The authored slider value changed quickly, but the next completed draw had p95 of 545.874 ms. These are distinct observations, not a physical input-to-photon measurement. See the [performance review](../audits/2026-11-25-strata-theatre-003/c-performance-review-linux.md) and [sustained review](../audits/2026-11-25-strata-theatre-003/c-sustained-v2-review.md).
 
 The final Windows source campaign likewise misses the 90% rate target for all four enabled profiles: approximately 84% Architectural, 83% Deep Focus, 76% Clarity and 76% Diorama High. Architectural alone meets its p95 criterion. All nine initial scene admissions miss 45 seconds (46.620–52.362 seconds), while fresh-process reopening takes 5.871–8.934 seconds. These source-campaign figures are separate from the extracted evaluator results. The [Windows summary](../audits/2026-11-25-strata-theatre-003/profile-observations-windows.json) preserves all repeats and source identities.
 
 In the Linux capture review, Gameplay Clarity and Noir provided the strongest ownership cues in the deliberately difficult fixture; gentle architectural profiles still left false routes convincing. At Overview, the actor body remained too small and localization relied on its marker or label. Closer movement frames resolved three actual actor bodies. Test both scales on your machine and retain misleading settings for reproduction instead of tuning away every failure before reporting it.
 
-The inherited scene-admission target is **45 seconds**. The five final Strata 002 extracted Windows scenes missed that target. New results retain the same threshold and report misses independently of functional success. Hosted Windows uses a software graphics backend; your physical Windows 11/NVIDIA observations remain the acceptance gate.
+The inherited scene-admission target is **45 seconds**. The five final Strata 002 extracted Windows scenes missed that target. New results retain the same threshold and report misses independently of functional success. Hosted Windows uses a software graphics backend. The owner has now separately accepted the predecessor on physical Windows 11/NVIDIA hardware; new integrated-source qualification does not claim another physical owner test.
 
 The [25-minute owner feedback route](../audits/2026-11-25-strata-theatre-003/owner-feedback-route.md) covers Underworks, the challenge, Lunar, live controls and a complete save/reopen. The [navigation addendum](../audits/2026-11-25-strata-theatre-003/OWNER-GUIDE-ADDENDUM.md) corrects the guide inside the immutable package without changing its tested bytes.
 
@@ -91,4 +114,4 @@ Record feedback in `OWNER-FEEDBACK.md` with the package/source identity, hardwar
 - Did admission, slider response, simulation progression or shutdown regress? Distinguish a visual preference from a reproducible engineering fault.
 - Which custom values and further experiments would you keep?
 
-A matched Classic capture, processed capture and short ordinary movement recording are more useful than a general description such as “too blurry”. Retain disagreements about artistic preference. The owner can request changes or accept this candidate for later merge review; no evaluation action automatically promotes or merges it.
+A matched Classic capture, processed capture and short ordinary movement recording are more useful than a general description such as “too blurry”. Retain disagreements about artistic preference. The owner has authorized the current bounded integration. Further artistic feedback does not automatically change Classic defaults or the persisted artistic configuration.

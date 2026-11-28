@@ -1,0 +1,60 @@
+{
+  "attempt": "1",
+  "changed_paths": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "limitations": [
+    "Trusted external contract and artifact acquisition are required",
+    "Programme-specific native, graphical and readback gates remain mandatory",
+    "Stage lease observations do not replace the publisher's atomic expected-parent push",
+    "Local LFS object presence does not prove remote LFS storage or physical owner acceptance"
+  ],
+  "mode": "immutable-replay",
+  "publication_authorized": false,
+  "publication_child": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+  "qualification_semantics_verified": false,
+  "remote_lfs_storage_verified": false,
+  "reports": [
+    {
+      "case_count": 42,
+      "member": "evidence/linux/qualification.json",
+      "platform": "linux",
+      "role": "linux",
+      "sha256": "c98552bac765bf45c99b54cac482c7bd7d6587e65c97a553d4ad097db3273366"
+    },
+    {
+      "case_count": 42,
+      "member": "windows/qualification.json",
+      "platform": "windows",
+      "role": "windows",
+      "sha256": "ecffe70c3b4543dee9892cc978e1b99b2a15a9f1fe2710e69b30362d8f69d11b"
+    },
+    {
+      "case_count": 18,
+      "member": "installed-windows/qualification.json",
+      "platform": "windows",
+      "role": "installed-windows",
+      "sha256": "eda699699bca4cc2acdf996597f8010611fb8c8e757a09942d8bfc771a5bd7ca"
+    }
+  ],
+  "run_id": "45112739808",
+  "runtimes": {
+    "linux": {
+      "pointer_changed": true,
+      "sha256": "987f75ecee8c0e8672c82b8d6c23507fe1212226e73ad17d92329d30a9f0c230",
+      "size": 5258936
+    },
+    "windows": {
+      "pointer_changed": true,
+      "sha256": "492f92c8c141fa90e6adb6923b7de76aa5d16c4957ffbecb3c62abb024c373dc",
+      "size": 5811712
+    }
+  },
+  "schema_version": 1,
+  "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+  "source_tree": "3ab33cfd661b2204d965803f0e9f8312e7e43aa0",
+  "status": "custody-verified"
+}

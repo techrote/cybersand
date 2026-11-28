@@ -4,6 +4,7 @@ extends Node2D
 # A distinct synchronous ACT-004 environment. The ordinary desktop worker and
 # sampled Thunderbowl v1 retain their own scheduling and observation contracts.
 const Session = preload("res://scripts/physical_actor_session.gd")
+const Capacity = preload("res://scripts/workbench_sandbox_capacity.gd")
 const Catalog = preload("res://scripts/physical_actor_catalog.gd")
 const Equipment = preload("res://scripts/physical_usable_equipment.gd")
 const Effects = preload("res://scripts/physical_actor_effects.gd")
@@ -55,7 +56,7 @@ static func default_config(model: StringName = &"ripper", count: int = 4) -> Dic
 	var first: int = Catalog.RIG_IDS.find(model)
 	if first < 0:
 		first = 0
-	for index: int in range(clampi(count, 1, Session.MAX_ACTORS)):
+	for index: int in range(clampi(count, 1, Capacity.DEFAULT_ACTORS)):
 		actors.append({"model": str(Catalog.RIG_IDS[(first + index) % Catalog.RIG_IDS.size()]), "producer": "demo"})
 	return {"version": VERSION, "seed": 0, "max_ticks": 36000, "actors": actors, "local_patch_radius": 6}
 
@@ -81,7 +82,7 @@ func _validated_config(value: Variant) -> Dictionary:
 		or not Session._integer(value.get("local_patch_radius", 6), 0, 8):
 		return {}
 	var actors: Variant = value.get("actors")
-	if not actors is Array or actors.is_empty() or actors.size() > Session.MAX_ACTORS:
+	if not actors is Array or actors.is_empty() or actors.size() > Capacity.DEFAULT_ACTORS:
 		return {}
 	var definitions: Array = []
 	for index: int in range(actors.size()):
@@ -342,7 +343,7 @@ func set_paused(paused: bool) -> void:
 func step(commands: Variant = []) -> Dictionary:
 	if session == null or _finished or _paused:
 		return snapshot()
-	if not commands is Array or commands.size() > Session.MAX_ACTORS:
+	if not commands is Array or commands.size() > Capacity.DEFAULT_ACTORS:
 		last_error = "command_batch"
 		return snapshot()
 	_command_receipts.clear()

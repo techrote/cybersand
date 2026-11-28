@@ -1,0 +1,246 @@
+{
+  "format": "cybersand-independent-history-authority-review-b-v1",
+  "source_revision": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+  "run_id": 45512988153,
+  "platform_scope": "Windows source application; enclosing campaign failed later at first extracted launcher call. No successful extracted cases are asserted.",
+  "reviewer": "Specialist B; independent of C UI/qualification ownership and root Session/Workflow ownership",
+  "method": "Read original retained files and exact tested code; verify hashes and correlate existing native terminals. No application, rendering, construction, reducer or metric rerun.",
+  "qualification_sha256": "489a8e843b9f7cedb8a0d616e166dd027f150cec22a0174c4670d9a4e8f7e853",
+  "source_files_sha256": {
+    "scripts/batch_lab/architecture_stage_session.gd": "464f1ae5f907b258f0779bac2099536019eeeac93aa9fa52d8cb135887f7dc3a",
+    "scripts/batch_lab/architecture_workflow.gd": "6232c4ee4e4142373bd4495487eeb3c69c4bcade451a9a739bf80598341d0c31",
+    "scripts/batch_lab/architecture_campaign.gd": "0b35479ddf41b639f91a92a3b4fe43de5cbe95ecb9d66f745499b20dfa9bb256",
+    "tests/test_architecture_session_views.gd": "183d89346f741ff167fb473325efdd02915818297ef76464224b5f27fa55db0c",
+    "tests/test_architecture_collaborative_ui.gd": "be078f8c8f62a33b7e2a185e1339d83fb047920b42404ba375663e2cb0d7b1fc",
+    "tests/test_architecture_hierarchy_native.gd": "3e4d9540e75531513e68e2a38a543ad8da00cb226ebc7c71558bd7797304003f",
+    "tests/test_architecture_hierarchy_reopen.gd": "67c69e29ef838037b86fd9b50cc422f16cca627e713e39aba19e4a9f9bc0b3bc"
+  },
+  "files_sha256": {
+    "ui/collaborative-ui.json": "3c85a7667f489875c59d98b154abdc9ec8c53ae56aceab2895df1fb25966ce63",
+    "ui/collaborative-session.json": "58e80c73d33812c5a76d1af41e9fee6edadbda94e0a270c57682e6e29dbe40e6",
+    "ui/connected-native-region.u16le": "a4936a4423966f19cfb203eef8c67ecc9eb87c764697a1af05dd9b625b630b70",
+    "hierarchy/hierarchy-native.json": "ab2e6a63be690c488de12b79e818464e8b30df604eaca43a154716f3a290a387",
+    "hierarchy/hierarchy-reopen.json": "aa3ff8b3dd1fb1bda0635b6661d381bcd1e3749f793463e539385ff58312fd68",
+    "hierarchy/workshop-session.json": "ea36016d2d0f83bf62d487e16b404e8d6cf949e66f7219b15f8f7f2b4da8261d",
+    "hierarchy/stopped-session.json": "30be6381f90e4b1583f5b69cafbe5e9845ea13c6ff1464a2e285ee7635e1c71c",
+    "hierarchy/workshop-workflow.json": "9f960bc9d8866c6b1ce386635ba833e5abf9c67af52b309f442794899be21738",
+    "hierarchy/workshop-start.json": "8c828ccd8342be67c954e642de601a976f80e7147afef4d8ef1c231512d2de48",
+    "hierarchy/workshop-modules.json": "02fd1a0c8d67c8ba059b8dc965de96ee3d4f2b0b5551ecee6124b3d592e77ff0",
+    "hierarchy/original-campaign.json": "f0b78d792b30f72274c9b3b23bf5955a6db050b2c5a646187e76f5baf1dc210a",
+    "hierarchy/recovery-campaign.json": "c3f1d9e2097944c4a0115e917ef7c689f9b94a8c5ec557f8f1363aece8060604",
+    "hierarchy/independent-hierarchy-verification.json": "f26e1b32ce85489fa66022027c3bf3946838feed9683ed7960d33ef961e69535"
+  },
+  "shipped_ui_native_observations": [
+    {
+      "stage_id": "place-stepped-foundation",
+      "native_submission": 1,
+      "status": "completed",
+      "changed_cells": 624,
+      "checked_cells": 624,
+      "result_sha256": "f9a807299e8addbb1c4f5678c03a638ad7c2fc4d17c9e93a97645b3d56fc6636"
+    },
+    {
+      "stage_id": "snap-23462427",
+      "native_submission": 2,
+      "status": "completed",
+      "changed_cells": 928,
+      "checked_cells": 928,
+      "result_sha256": "fa024f7ba34da005ad8831573fd6d977e111faa2e125c3f3a248d2857349a0a6"
+    },
+    {
+      "stage_id": "detail-27896264",
+      "native_submission": 3,
+      "status": "completed",
+      "changed_cells": 130,
+      "checked_cells": 130,
+      "result_sha256": "a4936a4423966f19cfb203eef8c67ecc9eb87c764697a1af05dd9b625b630b70"
+    }
+  ],
+  "cancelled_new_plan_states_at_save": {
+    "detail": "proposed",
+    "services": "proposed",
+    "structure": "cancelled"
+  },
+  "workflow_terminal_correlations": [
+    {
+      "stage_id": "workshop-frame",
+      "native_submission": 1,
+      "status": "completed",
+      "checked_cells": 26624
+    },
+    {
+      "stage_id": "service-parts",
+      "native_submission": 2,
+      "status": "completed",
+      "checked_cells": 2194
+    },
+    {
+      "stage_id": "access-gallery",
+      "native_submission": 3,
+      "status": "completed",
+      "checked_cells": 1536
+    },
+    {
+      "stage_id": "mounted-ribs",
+      "native_submission": 4,
+      "status": "completed",
+      "checked_cells": 144
+    },
+    {
+      "stage_id": "service-connection",
+      "native_submission": 5,
+      "status": "completed",
+      "checked_cells": 64
+    },
+    {
+      "stage_id": "controlled-wear",
+      "native_submission": 6,
+      "status": "completed",
+      "checked_cells": 8
+    },
+    {
+      "stage_id": "cladding-trial",
+      "native_submission": 7,
+      "status": "partial",
+      "checked_cells": 4096
+    },
+    {
+      "stage_id": "clear-stopped-prefix",
+      "native_submission": 8,
+      "status": "completed",
+      "checked_cells": 4096
+    },
+    {
+      "stage_id": "open-workshop-bays",
+      "native_submission": 9,
+      "status": "completed",
+      "checked_cells": 10112
+    },
+    {
+      "stage_id": "attach-workshop-bays",
+      "native_submission": 10,
+      "status": "completed",
+      "checked_cells": 1024
+    }
+  ],
+  "fresh_process_result": {
+    "fresh_process": true,
+    "native_source_revision": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+    "plane_sha256": "bd73f674e3626809ce2b12be5e8133d53cfc9291a8a4380b56f652f21e5e93fe",
+    "prior_campaigns": 1,
+    "records": 0,
+    "start_sha256": "8c828ccd8342be67c954e642de601a976f80e7147afef4d8ef1c231512d2de48"
+  },
+  "source_qualification_groups": [
+    {
+      "label": "collaborative-catalogue-wear",
+      "status": "passed",
+      "exit_code": 0,
+      "completion": {
+        "checks": 10,
+        "failures": [],
+        "passed": true
+      }
+    },
+    {
+      "label": "collaborative-session-views",
+      "status": "passed",
+      "exit_code": 0,
+      "completion": {
+        "checks": 21,
+        "failures": 0,
+        "scope": "Copied-value UI fixture contracts; no inference or native construction claim."
+      }
+    },
+    {
+      "label": "collaborative-campaign",
+      "status": "passed",
+      "exit_code": 0,
+      "completion": {
+        "checks": 86,
+        "failures": 0
+      }
+    },
+    {
+      "label": "collaborative-workflow",
+      "status": "passed",
+      "exit_code": 0,
+      "completion": {
+        "checks": 60,
+        "failures": 0
+      }
+    },
+    {
+      "label": "collaborative-gameplay-fresh-reopen",
+      "status": "passed",
+      "exit_code": 0,
+      "completion": {
+        "checks": 66,
+        "failures": 0
+      }
+    },
+    {
+      "label": "collaborative-native-ui",
+      "status": "passed",
+      "exit_code": 0,
+      "completion": {
+        "checks": 57,
+        "failures": 0
+      }
+    },
+    {
+      "label": "collaborative-hierarchy-fresh-reopen",
+      "status": "passed",
+      "exit_code": 0,
+      "completion": {
+        "checks": 12,
+        "failures": 0
+      }
+    }
+  ],
+  "visually_reviewed_frames": [
+    {
+      "path": "ui/collaborative-module-browser.png",
+      "sha256": "d651b05b7b53904911c8dc3f8ca0869ea253a8e1827704a12d5193ad4870a925",
+      "directly_viewed_original": true
+    },
+    {
+      "path": "ui/collaborative-zero-write-snap.png",
+      "sha256": "37aa37c44d43875d773dc8f20f5d2224373c2f90693a802d36ed791e34dbdf71",
+      "directly_viewed_original": true
+    },
+    {
+      "path": "ui/collaborative-native-result.png",
+      "sha256": "dd19611f86197ae32477a94707d1aeef9aeb98dd6344635b291c27900bb1533b",
+      "directly_viewed_original": true
+    },
+    {
+      "path": "ui/collaborative-intent-tasks.png",
+      "sha256": "b2ae6c44b98f1df6a7381d2600a077fe1de0700ba6786c5010c428f40fefeab2",
+      "directly_viewed_original": true
+    },
+    {
+      "path": "hierarchy/stopped-prefix-godot.png",
+      "sha256": "073bfdbbb0fdecb6cf33c2a6b675173efefce2640562687d8f3af34734c7577c",
+      "directly_viewed_original": true
+    },
+    {
+      "path": "hierarchy/recovered-workshop-godot.png",
+      "sha256": "5b04450f77c62137532ba62e53e20f2d5c8c335a1e58212f8f9f1e5fa895229c",
+      "directly_viewed_original": true
+    }
+  ],
+  "findings": {
+    "serialized_decisions_restore_no_approval_or_queue": true,
+    "fresh_reopen_restores_authored_world_separately": true,
+    "current_process_live_guards_are_not_serialized_import_authority": true,
+    "old_skip_and_partial_decisions_retained": true,
+    "selected_native_variable_wear_completed_cells": 8,
+    "variable_instance_guard_adversaries_scope": "21 copied-value fixture assertions; separately qualified actual selected-instance delegated wear and actual UI native inventory. No claim that adversarial injected fixtures are genuine native observations.",
+    "same_process_nuance": "Importing history cannot grant live instance authority; independently retained current-process guards may persist for the existing World and are rechecked. Fresh-process imports create none.",
+    "visual_scope": "Actual UI captions distinguish historical imported module geometry, zero-write preview, retained native result and planned tasks. The recovered/stopped shader frames show distinct recorded material outcomes; they are not physics or preference certificates."
+  },
+  "actual_model_calls": 0,
+  "physical_owner_acceptance": false,
+  "required_application_changes": []
+}

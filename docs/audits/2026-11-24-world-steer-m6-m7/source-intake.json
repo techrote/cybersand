@@ -1,0 +1,201 @@
+{
+  "schema": "cybersand.world-steer-m6-m7-intake.v1",
+  "mission": "WORLD-STEER-COLLABORATIVE-ARCHITECTURE-M6-M7-001",
+  "captured_at": "2026-11-24 19:48:30 UTC",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "foundation": {
+    "archival_commit": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+    "application_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "application_tree": "ce012a8c6b616ab038d4dc65f4ac1896a6388795",
+    "qualification_run": 45454711939,
+    "artifacts": [
+      {
+        "id": 14951941657,
+        "name": "batch-lab-linux-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52-1",
+        "bytes": 11743422,
+        "digest": "sha256:4e0dae64563f765c0d18fd0025d12e94a94722ee074be0e62416b024e19121b1",
+        "expired": false
+      },
+      {
+        "id": 14951455759,
+        "name": "batch-lab-windows-build-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52-1",
+        "bytes": 8262,
+        "digest": "sha256:582d3ce4886cefb1267343406be3344dbd6a6cfe95e38580b0e47efd82ccfef6",
+        "expired": false
+      },
+      {
+        "id": 14951367035,
+        "name": "batch-lab-windows-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52-1",
+        "bytes": 19519629,
+        "digest": "sha256:6dae899e528fa6e3a7d608d8f7126862623f08ce5209d30df69794d8bc4df6a4",
+        "expired": false
+      },
+      {
+        "id": 14951042272,
+        "name": "batch-lab-owner-windows-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+        "bytes": 96459342,
+        "digest": "sha256:4c72abc1b15b760373af0715738b3db8f96d0433483755b65eb37e083427fe90",
+        "expired": false
+      },
+      {
+        "id": 14949014000,
+        "name": "batch-lab-windows-runtime-45454711939",
+        "bytes": 2106709,
+        "digest": "sha256:c17042a700e29fe434941044c38e122f385cc3701c8afc9122ad48be876e2adb",
+        "expired": false
+      }
+    ]
+  },
+  "ownership": [
+    {
+      "pr": 770,
+      "title": "[Draft/HOLD] WORLD-STEER-BATCH M3–M5: native modules, GOLDMAPS retrieval and staged architecture",
+      "branch": "feat/world-steer-m3-m5-20261124",
+      "head": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 720,
+      "title": "[Draft/HOLD] WORLD-STEER-BATCH M0–M2 — Native Workbench Batch Lab",
+      "branch": "feat/world-steer-batch-001-20261121",
+      "head": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 773,
+      "title": "[Draft/HOLD] ART-WORKBENCH-FINAL-001 — Art Workbench finisher",
+      "branch": "art/workbench-final-001",
+      "head": "eb0fb363f7cdcb483e071d395c22cd105eb8f457",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 771,
+      "title": "[CI-ENGINEERING-CLOSURE-001] Recovered evidence, coordination and publication custody — Draft/HOLD",
+      "branch": "codex/ci-engineering-closure-001",
+      "head": "911a3448e8e331cb097f1654bf861e20d77f57ca",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 767,
+      "title": "[Draft/HOLD] PUBPRES FINAL: physical progression recovery and playable Workbench qualification",
+      "branch": "codex/pubpres-playability-final-001-20261124",
+      "head": "d4f4afe93d02192d9165622b78b762d9fbf8dc3e",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 754,
+      "title": "[DRAFT / HOLD] OBJECTSHARD-M4-COMPLETION-001 — playable ordinary Workbench integration",
+      "branch": "integration/objectshard-m4-mainline-20261122",
+      "head": "f5b7ac7e651356c9f6d5657dfb0cb9d60111be81",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 724,
+      "title": "[DRAFT/HOLD] EQUIP-RECOVERY-001: recover BS-001 native ballistic transport and U33–U45",
+      "branch": "recovery/equip-bs001-20261121",
+      "head": "b73476657a3fb4adccb8f19e578afd15c69cd7e3",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 768,
+      "title": "MAT-AUDITION-LIVE-001: current-scene native material audition",
+      "branch": "mat/audition-live-001",
+      "head": "206f14dade78f42b5d8502627bcc19c7093c808e",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 729,
+      "title": "SWARM-004/005/006: consolidated reciprocal Workbench integration (Draft/HOLD)",
+      "branch": "integration/swarm004-005-006-unified-20261122",
+      "head": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 769,
+      "title": "[Draft/HOLD] STRATA-THEATRE-WORKBENCH-001: editable four-plane composition",
+      "branch": "feat/strata-theatre-workbench-001-20261124",
+      "head": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 762,
+      "title": "[Draft/HOLD] ACTOR-COMPOSE-FINAL-001: integrated pilot, stack and Windows acceptance",
+      "branch": "integration/actor-compose-final-001-20261123",
+      "head": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 745,
+      "title": "[Draft/HOLD] GEN-006 RAMCACHE finisher — accepted-main integration and lifecycle qualification",
+      "branch": "exp/gen006-ramcache-finisher-001-20261122",
+      "head": "47e4fee8aa50ef007cdd9769841712edb5be40b5",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 775,
+      "title": "Draft/HOLD: AMBIENT-001 modular procedural actors and native perception",
+      "branch": "feature/ambient-001-20261124",
+      "head": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 772,
+      "title": "Draft/HOLD: GIP-014 goblin real-game playtesting",
+      "branch": "experiment/gip014-goblin-gameplay-20261124",
+      "head": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    },
+    {
+      "pr": 774,
+      "title": "DOCS-RENAISSANCE-001: rebuild current documentation and retrieval assurance [Draft/HOLD]",
+      "branch": "docs/docs-renaissance-001",
+      "head": "35c61c2b08325128fc023344820af3ee90685bf7",
+      "draft": true,
+      "state": "open",
+      "merged": false
+    }
+  ],
+  "art_dependency": {
+    "pr": 773,
+    "source": "eb0fb363f7cdcb483e071d395c22cd105eb8f457",
+    "run": 45469283511,
+    "status": "FAILED_BOTH_PLATFORM_JOBS",
+    "integrated": false,
+    "coordination": "Proposal-only route requested; independent injected adapter proceeds without provider duplication."
+  },
+  "upstream_gold": {
+    "pr": 217,
+    "head": "3786597c5837c54ada2608fe7fc0ddf5b7731435",
+    "status": "IN_PROGRESS",
+    "consumed_as_qualified": false
+  },
+  "disposition": "Draft/HOLD"
+}

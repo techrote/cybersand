@@ -1,0 +1,85 @@
+{
+  "checks": 96,
+  "display": "headless",
+  "elapsed_seconds": 9.417,
+  "failures": [],
+  "godot": "4.7-stable (official)",
+  "layout": {
+    "apply_rect": "[P: (12.0, 560.0), S: (168.0, 26.0)]",
+    "content_minimum": "(613.0, 24.0)",
+    "inspector_rect": "[P: (12.0, 633.0), S: (996.0, 115.0)]",
+    "living_tabs": [
+      {
+        "apply_rect": "[P: (12.0, 560.0), S: (168.0, 26.0)]",
+        "inspector_rect": "[P: (12.0, 633.0), S: (996.0, 115.0)]",
+        "size": "(1020, 760)",
+        "tab": "Modules",
+        "tab_rect": "[P: (12.0, 190.0), S: (996.0, 344.0)]"
+      },
+      {
+        "apply_rect": "[P: (12.0, 560.0), S: (168.0, 26.0)]",
+        "inspector_rect": "[P: (12.0, 633.0), S: (996.0, 115.0)]",
+        "size": "(1020, 760)",
+        "tab": "Personality",
+        "tab_rect": "[P: (12.0, 190.0), S: (996.0, 344.0)]"
+      },
+      {
+        "apply_rect": "[P: (12.0, 560.0), S: (168.0, 26.0)]",
+        "inspector_rect": "[P: (12.0, 633.0), S: (996.0, 115.0)]",
+        "size": "(1020, 760)",
+        "tab": "Places and peers",
+        "tab_rect": "[P: (12.0, 190.0), S: (996.0, 344.0)]"
+      },
+      {
+        "apply_rect": "[P: (12.0, 560.0), S: (168.0, 26.0)]",
+        "inspector_rect": "[P: (12.0, 633.0), S: (996.0, 115.0)]",
+        "size": "(1020, 760)",
+        "tab": "Library and group",
+        "tab_rect": "[P: (12.0, 190.0), S: (996.0, 344.0)]"
+      },
+      {
+        "apply_rect": "[P: (12.0, 280.0), S: (168.0, 26.0)]",
+        "inspector_rect": "[P: (12.0, 353.0), S: (708.0, 115.0)]",
+        "size": "(740, 480)",
+        "tab": "Modules",
+        "tab_rect": "[P: (12.0, -34.0), S: (708.0, 288.0)]"
+      },
+      {
+        "apply_rect": "[P: (12.0, 280.0), S: (168.0, 26.0)]",
+        "inspector_rect": "[P: (12.0, 353.0), S: (708.0, 115.0)]",
+        "size": "(740, 480)",
+        "tab": "Personality",
+        "tab_rect": "[P: (12.0, -6.0), S: (708.0, 260.0)]"
+      },
+      {
+        "apply_rect": "[P: (12.0, 280.0), S: (168.0, 26.0)]",
+        "inspector_rect": "[P: (12.0, 353.0), S: (708.0, 115.0)]",
+        "size": "(740, 480)",
+        "tab": "Places and peers",
+        "tab_rect": "[P: (12.0, -6.0), S: (708.0, 260.0)]"
+      },
+      {
+        "apply_rect": "[P: (12.0, 280.0), S: (168.0, 26.0)]",
+        "inspector_rect": "[P: (12.0, 353.0), S: (708.0, 115.0)]",
+        "size": "(740, 480)",
+        "tab": "Library and group",
+        "tab_rect": "[P: (12.0, -6.0), S: (708.0, 260.0)]"
+      }
+    ],
+    "minimum_apply_rect": "[P: (12.0, 280.0), S: (168.0, 26.0)]",
+    "minimum_inspector_rect": "[P: (12.0, 353.0), S: (708.0, 115.0)]",
+    "minimum_window_size": "(740, 480)",
+    "module_list_rect": "[P: (12.0, 238.0), S: (290.0, 206.0)]",
+    "window_size": "(1020, 760)"
+  },
+  "live_audition": {
+    "applied_generation": 6,
+    "paused_generation": 4,
+    "playing_generation": 5,
+    "resume_configuration_unchanged": true,
+    "unapplied_configuration_unchanged": true,
+    "unapplied_generation": 5
+  },
+  "platform": "Linux",
+  "scope": "actual mounted editor + ordinary native/Rapier owner; staged and live Apply/Revert, not sustained behavioural or physical display acceptance"
+}

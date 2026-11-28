@@ -1,0 +1,34 @@
+{
+  "schema": "ambient2-original-artifact-parts/v1",
+  "original_artifact_id": 14995491989,
+  "run_id": 45552786466,
+  "job_id": 138997623535,
+  "application_commit": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "application_tree": "d9740be7cafb8ac7b7d6eee4a16219989745fd95",
+  "file_name": "ambient-002-windows-evidence-50c6df89528d.zip",
+  "bytes": 28268700,
+  "sha256": "5d12ce325cc0c3024a7c60e4e303e8fed8ef55a437596def809624c561c1101d",
+  "part_bytes": 10420224,
+  "parts": [
+    {
+      "path": "archive/original.zip.part-000",
+      "bytes": 10420224,
+      "sha256": "9b1ff424c7454eed1fb29c66a26de4c12276ca41a95c6ae044d27bd5684ccf99",
+      "git_blob_sha1": "5c21a48f9b3a0aa1aec221520929117a3c5c6bd5"
+    },
+    {
+      "path": "archive/original.zip.part-001",
+      "bytes": 10420224,
+      "sha256": "83250f83545ea50af7bddd8a737c85822050c0bed5c17014fa293d4674137dd9",
+      "git_blob_sha1": "86853e4a8ace4ed5afbe7e6b356b2d9061c0773b"
+    },
+    {
+      "path": "archive/original.zip.part-002",
+      "bytes": 7428252,
+      "sha256": "1dc1beaddd351a958cd641b03ca03a2d4beb3f750894643b0e0ac4581e224fa8",
+      "git_blob_sha1": "1e01462a4cd614df5fdae8849458466864bfa1a6"
+    }
+  ],
+  "contains": "Entire original Windows Actions evidence artifact, including source/extracted reports, all 58 original PNGs and original execution records.",
+  "restore": "Verify each part count/hash, concatenate in listed order, verify full size/SHA256, then extract the exact ZIP. The separate large portable owner ZIP is not duplicated in these parts."
+}

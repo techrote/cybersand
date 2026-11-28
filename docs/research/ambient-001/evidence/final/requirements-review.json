@@ -1,0 +1,261 @@
+{
+  "schema": "ambient-001-requirements-review/v1",
+  "reviewed_utc": "2026-11-24T20:20:33.630165+00:00",
+  "reviewer": "AMBIENT-001 specialist A, independent requirement-to-scope review",
+  "scope": "User milestones M0 through M7; read-only review of implementation and retained development evidence. No tests rerun and no product scope expanded.",
+  "source_checkpoint": {
+    "head": "f4f94631d61d492554627949497e727b26043ccb",
+    "tree": "02f22944e9de8874f97e7acdc28990e3e0c35d10",
+    "basis": "Freeze03 changes only package metadata admission, its independent tests, qualification request and ledger. An explicit source bridge verifies all 835 recorded Godot inputs, 837 loaded Linux project inputs and native/Rapier bytes unchanged from qualified Linux38177. The archived Linux engine also streams to its original authenticated hash. No final-commit Linux gameplay rerun is claimed."
+  },
+  "overall_disposition": "Core usable opt-in ambient feature and source-matched portable Windows evaluator implemented and qualified. Supported subsets remain explicit. Draft/HOLD pending owner playfeel, believability and product acceptance.",
+  "matrix": [
+    {
+      "milestone": "M0",
+      "requirement": "Separate perception, decision and actuation under the existing policy authority.",
+      "disposition": "implemented; exact-source Windows qualification and Linux gameplay-source bridge passed",
+      "implemented": "Copied ambient-observation/v1 values feed a pure-data engine and capability adapter. Production decisions obtain fresh issued v2 observations and use existing normalized commands, sequence, generation, epoch, authored identity and lease checks. Cadence remains the accepted 1–12 physical ticks (default 6).",
+      "evidence": [
+        "godot/scripts/ambient/ambient_engine.gd",
+        "godot/scripts/ambient/ambient_perception.gd",
+        "godot/scripts/ambient/ambient_actuator.gd",
+        "godot/scripts/physical_actor_session.gd",
+        "godot/tests/test_ambient_clock.gd"
+      ],
+      "limits": [
+        "No mutable World/Rapier references or direct position/velocity authority enter the engine. Godot values are copied and isolated; this is an ownership contract rather than a language-level immutable type.",
+        "Pause preserves private intent while revoking command authority; handoff, reprofile, disable and replacement reset ephemeral behavior."
+      ]
+    },
+    {
+      "milestone": "M1",
+      "requirement": "Bounded native material and local spatial perception.",
+      "disposition": "implemented bounded subset",
+      "implemented": "Owner-mediated numeric native material-ID publication, including native ballistic projection, supplies a shared copied cache. Up to eight configured IDs are sampled on a four-cell center lattice within inclusive Euclidean circles of radius 1–96 world cells. Results distinguish nearest observed match, observed absence and unavailable coverage. Copied pose/velocity, walls, grounded/support, exact per-module ledge probes, canvas bounds, authored home, compatible nearby actors and own energy are available.",
+      "evidence": [
+        "godot/scripts/ambient/ambient_perception.gd",
+        "godot/scripts/physical_actor_rig.gd",
+        "godot/tests/test_ambient_perception.gd",
+        "godot/tests/test_ambient_ledge_geometry.gd",
+        "docs/research/ambient-001/evidence/perception-summary.json"
+      ],
+      "limits": [
+        "Sparse coverage can miss isolated off-grid material; no true-nearest-cell or exhaustive-absence guarantee. No framebuffer color classification.",
+        "Up to 2,401 candidate sites per query; up to seven compatible neighbors within 96 cells from the accepted eight-actor host. A changed material publication becomes unavailable after twelve native ticks; unchanged revision remains current.",
+        "Ordinary integration exposes the canvas boundary. The pure contract accepts a rectangle, but there is no authored roaming-region editor. Home return supplies a separate radius preference.",
+        "No visited-region exploration history or material-role abstraction; explicit native material IDs are used.",
+        "A valid support hit before a clipped ray endpoint remains available; a clipped ray without a support hit is unavailable. Up to 32 added ledge rays per actor decision, deduplicated for identical requests."
+      ]
+    },
+    {
+      "milestone": "M2",
+      "requirement": "Reusable deterministic, stateful module composition and explanations.",
+      "disposition": "implemented",
+      "implemented": "Strict versioned profiles contain stable typed module instances, validated parameters, enabled flags, priorities and weights. Private per-module seeded streams drive bounded state machines. Continuous steering blends below ordered temporary overrides. Candidate diagnostics include activity, reasons and scores; selected intent includes duration and direction. Simulation time derives from completed physical steps.",
+      "evidence": [
+        "godot/scripts/ambient/ambient_engine.gd",
+        "godot/scripts/ambient/ambient_modules.gd",
+        "godot/scripts/ambient/ambient_profile.gd",
+        "godot/tests/test_ambient_engine.gd",
+        "godot/tests/test_ambient_independent.gd",
+        "docs/systems/ambient-actors.md"
+      ],
+      "limits": [
+        "Up to sixteen module instances. Typed parameters and capability/sensor prerequisites replace arbitrary condition scripting or code evaluation.",
+        "Missing observations disable dependent acquisition or use the module’s documented finite-intention fallback; no applicable contribution produces neutral intent.",
+        "Seeded equality is for identical copied decision streams. Cross-platform Rapier trajectories are not claimed bit deterministic.",
+        "Long decision gaps expire persistent deadlines but do not invent uninterrupted safe support or obstruction; those accumulations reset after a gap above 0.25 seconds."
+      ]
+    },
+    {
+      "milestone": "M3",
+      "requirement": "Core six behaviors and useful additional modules.",
+      "disposition": "all six core behaviors plus five additional modules implemented",
+      "implemented": [
+        "wander",
+        "seek_material",
+        "avoid_material",
+        "avoid_ledge",
+        "avoid_boundary",
+        "escape_obstruction",
+        "return_home",
+        "rest",
+        "follow_actor",
+        "avoid_crowding",
+        "maintain_altitude"
+      ],
+      "evidence": [
+        "godot/scripts/ambient/ambient_modules.gd",
+        "godot/tests/test_ambient_engine.gd",
+        "godot/data/ambient/profiles.json"
+      ],
+      "limits": [
+        "Ledge retreat latches its original direction and duration once, with continuous safe support required to rearm. Default example duration is ten simulation seconds.",
+        "Seek standoff and avoidance are movement preferences, not impermeable distances or immunity; inertia, native material flow and inaccessible geometry can defeat them.",
+        "Own energy is observed, but there is no resource-sensitive rest/effort module. There is no dedicated explore-memory, loose-patrol, finite-investigation or cohesion module; existing seek/dwell, wander/home and follow/separation combinations provide narrower effects.",
+        "Recovery remains bounded reversal and optional supported grounded jump. It does not teleport or solve global routes."
+      ]
+    },
+    {
+      "milestone": "M4",
+      "requirement": "Capability-based use of genuine supported locomotion and lifecycle controls.",
+      "disposition": "implemented for supported ground/wheel/4LY families; wider rigs explicitly unsupported",
+      "implemented": "Ground/walk/roll adapters translate horizontal intent through existing motion feedback and supported action keys. Accepted 4LY rigs receive only the existing two-axis move command. Actual native/Rapier comparisons cover Runner, Monowheel and 4LY Trainer. Ordinary examples also exercise other eligible rigs. Human takeover, handback, pause, deletion, reset and reprofile retain existing owners.",
+      "evidence": [
+        "godot/scripts/ambient/ambient_actuator.gd",
+        "godot/scripts/workbench_actor_control.gd",
+        "godot/tests/test_ambient_native_motion.gd",
+        "godot/tests/test_ambient_workbench.gd",
+        "docs/research/ambient-001/evidence/native-motion-summary.json"
+      ],
+      "limits": [
+        "Eligibility is capability based; not every catalogue model is supported. Separate player-controller mappings and passive props do not acquire locomotion.",
+        "4LY exposes Pace through move, with no separate Effort channel; the editor disables and explains Effort. Zero move is active braking/hover, not passive authority loss.",
+        "No motor tuning, native laws, Rapier bridge or equipment catalogue changes. No generic intent invents a missing axis or usable action.",
+        "Physical hardware Windows/NVIDIA playfeel remains owner acceptance, separate from headless/native correctness."
+      ]
+    },
+    {
+      "milestone": "M5",
+      "requirement": "Ordinary Workbench profile authoring, assignment, inspection and persistence.",
+      "disposition": "implemented per actor; optional group assignment absent",
+      "implemented": "Procedural NPC / Ambient is an additive ordinary controller choice. The staged editor supports six presets, duplicate/customize, name/description/seed, module add/remove/reorder/enable, typed numeric controls and native material picker. Apply/revert validate transactions and refuse stale actor/world/profile bindings. Live copied diagnostics and default-off overlays expose intent, targets, timing and ledge probes. Authored saves retain exact admitted profiles and actor assignment.",
+      "evidence": [
+        "godot/scripts/ambient/ambient_profile_editor.gd",
+        "godot/scripts/ambient/ambient_debug_overlay.gd",
+        "godot/scripts/workbench_actor_panel.gd",
+        "godot/tests/test_ambient_authoring.gd",
+        "godot/tests/test_ambient_profile_editor.gd",
+        "docs/operations/ambient-workbench.md"
+      ],
+      "limits": [
+        "Assignment is individual. The optional apply-to-selected-compatible-group action is not implemented; users reuse presets per actor.",
+        "Independent actor-ID seed mixing is the default; shared seed is explicit and does not guarantee identical decisions under different observations.",
+        "Reopen reconstructs the authored start with fresh timers/RNG. Evolved material, live pose/velocity and exact ephemeral continuation are not serialized.",
+        "No separate arbitrary-condition expression editor or authored region-painting tool. Existing Human, Scripted, Policy and Passive choices remain."
+      ]
+    },
+    {
+      "milestone": "M6",
+      "requirement": "Reusable personalities and genuine playable ambient worlds.",
+      "disposition": "six profiles and five ordinary native examples delivered; human aesthetic assessment pending",
+      "implemented": "Oil Moth, Shy Crawler, Curious Surveyor, Idle Mechanic, Drifting Flyer and Social Roamer share the eleven-module vocabulary. Five editable 1024×512 authored examples cover Oil/Water preferences, a ledged walkway, a mixed industrial yard, an eight-actor settlement and 4LY flight. Live painting, physical movement, controller editing and handoff run through ordinary Workbench ownership.",
+      "evidence": [
+        "godot/data/ambient/profiles.json",
+        "godot/scripts/ambient/ambient_examples.gd",
+        "godot/examples/workbench/ambient-oil-water.json",
+        "godot/examples/workbench/ambient-ledge-walkway.json",
+        "godot/examples/workbench/ambient-industrial-yard.json",
+        "godot/examples/workbench/ambient-settlement.json",
+        "godot/examples/workbench/ambient-flight.json",
+        "godot/tests/test_ambient_examples_native.gd",
+        "docs/research/ambient-001/evidence/personality-independent-review.json"
+      ],
+      "limits": [
+        "The accepted host capacity is eight logical actors, eight parts per actor and 64 total response bodies/native proxies. Draft Actor Compose #762 was not imported.",
+        "Names grant no new biological or physical capabilities. The longer personality comparison intentionally uses the same Runner for all three arms.",
+        "Activity distributions differ, but believability is not established by automated counters. Oil Moth remains visibly obstructed by inaccessible cup geometry in the controlled comparison.",
+        "The initial non-triggering walkway arrangement was corrected only through authored spawn placement; motors and materials were unchanged."
+      ]
+    },
+    {
+      "milestone": "M7",
+      "requirement": "Independent correctness, actual physical/material comparisons, measurements and honest limits.",
+      "disposition": "exact-source Windows gameplay, native/Rapier, graphical and extracted-package gates passed; Linux38177 gameplay is bridged by verified unchanged inputs; human acceptance remains pending",
+      "implemented": "Pure and independent adapter fixtures cover thresholds, identity, stale/unavailable input, deterministic streams, invalid profiles, timer latch/rearm and neutral fallback. Actual native edits affect decisions; actual Rapier support and movement are exercised independently. Matched ambient/scripted/seeded-random comparisons use equal worlds, poses and budgets across three locomotion families. A longer three-profile comparison measures thirty completed simulation seconds per arm and real scheduled rest/resume. Ordinary host tests cover painting, ten-second pause/release, eight actors and deletion; authoring tests use fresh-process reopen.",
+      "evidence": [
+        "docs/research/ambient-001/behaviour-ledger.md",
+        "docs/research/ambient-001/perception-ledger.md",
+        "docs/research/ambient-001/authoring-ledger.md",
+        "docs/research/ambient-001/mission-ledger.md",
+        "docs/research/ambient-001/evidence/native-motion-summary.json",
+        "docs/research/ambient-001/evidence/personality-summary.json",
+        "docs/research/ambient-001/evidence/personality-independent-review.json",
+        "tools/qualify_ambient.py"
+      ],
+      "limits": [
+        "The final sixteen-case Windows campaign completed 5,959 assertions with original process/log/report custody passed. Extracted-package selected regressions completed five cases and 1,548 assertions. Actual original and extracted ANGLE captures each progressed all five examples and retained twelve images. Earlier development reports lost with executor temporary memory are not used as delivery substitutes.",
+        "One/four/eight isolated sensor-query workloads and actual eight-actor progression are measured. There is no comprehensive controlled physical FPS scaling curve or statistical population performance study.",
+        "Matched baseline runs are short, single-seed comparisons. Scripted ground controls reached closer to the first fixed Oil point in that fixture; no optimal pathfinding claim is made.",
+        "Dynamic material distance, intended steering, actual body travel, rests and physical drift are separate metrics. Own energy stayed at one in the thirty-second comparison; resource depletion response was not demonstrated.",
+        "Local Linux graphical execution was blocked. Final-source Windows ANGLE capture, portable evaluator construction, pristine extraction, extracted gameplay/graphics and ordinary launcher gates passed. Hosted Microsoft Basic Render Driver is not physical Windows/NVIDIA playfeel; that and ambient believability remain owner judgements."
+      ]
+    }
+  ],
+  "cross_cutting_nonclaims": [
+    "No global route finding or guaranteed terrain passability.",
+    "No exhaustive/true-nearest material sensing.",
+    "No actor capacity beyond accepted eight-actor main.",
+    "No resource-sensitive behavior merely because resources are observed.",
+    "No optional group assignment UI.",
+    "No all-rig support or generic free two-axis ground motion.",
+    "No exact physical continuation from authored save/reopen.",
+    "No human aesthetic or hardware playfeel acceptance from automated/headless evidence."
+  ],
+  "documentation_precision_note": "The lead included the reviewed correction in frozen source: a canvas-clipped ray without a support hit is unavailable; a valid upward support hit before the clipped endpoint remains available.",
+  "final_linux_review": {
+    "path": "/workspace/scratch/befe4151f3cf/ambient-evidence/linux-freeze-02-behaviour-review.json",
+    "sha256": "ffdd8e15077d0d6d670592ba3497c1d7cc181e16965af522e8dfc98edb434f2c",
+    "source_commit": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+    "qualified_cases": 16,
+    "qualified_assertions": 5959,
+    "all_case_receipts_authenticated": true,
+    "platform": "Linux headless",
+    "semantic_review_carried_forward_from": "f80aab91d31ce5e753eb6056d679100d83c7b7e7",
+    "carried_forward_semantic_cases": 9,
+    "carried_forward_semantic_assertions": 2421,
+    "reviewer_launched_additional_tests": false
+  },
+  "linux_source_bridge": {
+    "path": "/workspace/scratch/befe4151f3cf/ambient-evidence/linux-38177-to-f4f946-source-bridge.json",
+    "sha256": "fe6ec5a2f52aebe4b859022e746c0165931750d9495ebcd4c3e9e9e59fe153ab",
+    "from_commit": "38177d57d7d5dc99763f5366668890c4f53a15e6",
+    "to_commit": "f4f94631d61d492554627949497e727b26043ccb",
+    "linux_rerun_performed": false,
+    "new_package_custody_test_methods_passed": 41
+  },
+  "final_windows_delivery": {
+    "source_commit": "f4f94631d61d492554627949497e727b26043ccb",
+    "qualification_summaries": {
+      "ambient": {
+        "path": "/workspace/scratch/befe4151f3cf/ambient-evidence/windows-f4f/payload/ambient/qualification.json",
+        "sha256": "b2ae02cf0eab5160aedf4abec7903c1fb2580d47bcd0d003d0676c0764f12960",
+        "headless": true,
+        "cases": 16,
+        "assertions": 5959,
+        "input_custody": "passed"
+      },
+      "ambient-graphical": {
+        "path": "/workspace/scratch/befe4151f3cf/ambient-evidence/windows-f4f/payload/ambient-graphical/qualification.json",
+        "sha256": "a9e3ea284db7cd925b9e9e89bc38071bf8e16d41e4afaf5367cd29f07fdfb9d7",
+        "headless": false,
+        "cases": 0,
+        "assertions": 0,
+        "input_custody": "passed"
+      },
+      "extracted-package": {
+        "path": "/workspace/scratch/befe4151f3cf/ambient-evidence/windows-f4f/payload/extracted-package/qualification.json",
+        "sha256": "fc928bd7e813fde5ea83ca7b12815fe4f22c0a7d48656f1d273956bbc77521e2",
+        "headless": true,
+        "cases": 5,
+        "assertions": 1548,
+        "input_custody": "passed"
+      },
+      "extracted-graphical": {
+        "path": "/workspace/scratch/befe4151f3cf/ambient-evidence/windows-f4f/payload/extracted-graphical/qualification.json",
+        "sha256": "dae42fe4a81cffbfa54ca836f6cbbf519cdf1501c563a88e7e4a9b0f6d1235e2",
+        "headless": false,
+        "cases": 0,
+        "assertions": 0,
+        "input_custody": "passed"
+      }
+    },
+    "archive_path": "/workspace/scratch/befe4151f3cf/ambient-evidence/windows-f4f/CyberSand-AMBIENT-001-Windows-f4f94631d61d.zip",
+    "archive_sha256": "8324c9390565b8c1f5106f0d8ee40e5286f0bd718403b1626ac09f31b7a396ec",
+    "streaming_review_path": "/workspace/scratch/befe4151f3cf/ambient-evidence/windows-f4f/evaluator-streaming-independent-review.json",
+    "streaming_review_sha256": "4c078fec7b1e276404910b48a4a47c379f6b2805849ba56da8ada2e3a48ff817",
+    "manifest_payload_hashes_independently_verified": 1172,
+    "full_local_archive_extraction_performed_by_this_reviewer": false,
+    "owner_playfeel_accepted": false
+  }
+}

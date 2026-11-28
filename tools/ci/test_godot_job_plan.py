@@ -2,6 +2,7 @@
 
 from collections import Counter
 import copy
+import math
 from pathlib import Path
 import re
 import unittest
@@ -9,6 +10,7 @@ from unittest import mock
 
 import execution_policy
 import godot_job_plan as subject
+import godot_scheduling as scheduling
 import run_godot_regressions as runner
 
 
@@ -16,16 +18,26 @@ class HostedBudgetTests(unittest.TestCase):
     def test_original_linux_and_windows_inventory_is_complete_and_fits(self):
         all_cases = runner.discover_cases()
         for platform in ("linux", "windows"):
-            cases = [case for case in all_cases if platform == "linux" or not case.requires_display]
+            cases = [case for case in all_cases if platform == "linux" or runner.architecture_context.windows_applicable(case)]
             result = subject.plan(cases, platform=platform)
             with self.subTest(platform=platform):
                 self.assertEqual(Counter(row["name"] for shard in result["shards"] for row in shard["cases"]),
                                  Counter(case.name for case in cases))
-                self.assertGreaterEqual(result["shard_count"], 12)
-                self.assertLessEqual(result["shard_count"], 24)
+                # The matrix grows with the discovered suite; 24 was a historical
+                # observation, not a safety boundary. Preserve the planner's
+                # expected-cost target, per-shard case cap and hosted matrix limit.
+                minimum = max(math.ceil(len(cases) / scheduling.MAX_CASES_PER_SHARD),
+                              math.ceil(sum(case.weight for case in cases) / scheduling.TARGET_CASE_SECONDS))
+                self.assertGreaterEqual(result["shard_count"], min(len(cases), minimum))
+                self.assertLessEqual(result["shard_count"], min(len(cases), 256))
+                self.assertEqual(result["matrix"]["shard"], list(range(result["shard_count"])))
+                self.assertEqual(len(result["shards"]), result["shard_count"])
                 self.assertLessEqual(result["job_minutes"], 360)
                 for shard in result["shards"]:
                     self.assertTrue(shard["cases"])
+                    self.assertLessEqual(len(shard["cases"]), scheduling.MAX_CASES_PER_SHARD)
+                    self.assertLessEqual(shard["estimated_seconds"], result["execution_seconds"]
+                        - result["import_with_cleanup_seconds"] - result["metadata_seconds"])
                     self.assertLessEqual(shard["largest_case_allowance_seconds"] + result["import_with_cleanup_seconds"]
                         + result["metadata_seconds"], result["execution_seconds"])
                     self.assertFalse(shard["watchdog_sum_is_execution_deadline"])
@@ -33,6 +45,20 @@ class HostedBudgetTests(unittest.TestCase):
                                    result["execution_seconds"], "Planning must not sum exceptional watchdog ceilings")
                 self.assertLessEqual(result["execution_minutes"] * 60 + result["setup_artifact_seconds"]
                     + result["aggregate_headroom_seconds"], result["job_minutes"] * 60)
+
+    def test_growing_inventory_can_require_more_than_24_shards(self):
+        cases = [runner.Case(str(i), (), 1200, 15) for i in range(400)]
+        result = subject.plan(cases, platform="linux")
+        self.assertEqual(result["shard_count"], 25)
+        self.assertEqual(Counter(row["name"] for shard in result["shards"] for row in shard["cases"]),
+                         Counter(case.name for case in cases))
+        self.assertTrue(all(0 < len(shard["cases"]) <= scheduling.MAX_CASES_PER_SHARD
+                            for shard in result["shards"]))
+        self.assertTrue(all(shard["largest_case_allowance_seconds"] == subject.case_allowance(cases[0])
+                            for shard in result["shards"]))
+        for shard in result["shards"]:
+            self.assertEqual(len(shard["cases"]), 16)
+            self.assertTrue(all(row["timeout_seconds"] == 1200 for row in shard["cases"]))
 
     def test_cannot_shorten_a_child_to_fit_a_small_parent(self):
         huge = runner.Case("large", (), 21600, 1)

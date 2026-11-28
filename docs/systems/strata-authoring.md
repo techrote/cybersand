@@ -2,17 +2,19 @@
 title: Native import and layered construction in Strata Theatre
 status: Current
 document-kind: contract
-scope: Draft/HOLD STRATA-THEATRE-002 source contracts for local artwork, exact native modules, finite construction, preview approval and historical provenance
+scope: Optional Strata source contracts for local artwork, exact native modules, finite construction, preview approval and historical provenance
 canonical-for: [strata-native-import, strata-native-parts, strata-construction-plan, strata-authoring-provenance]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-28
 related-documents: [strata-workbench.md, strata-environments.md, ../operations/strata-workbench-evaluation.md, ../architecture/shared-workbench-authoring-data.md]
 ---
 
 # Native import and layered construction in Strata Theatre
 
-**Current implementation on the STRATA-THEATRE-002 Draft/HOLD branch.** This is
-an extension of the separately retained #769 candidate, not accepted-main
-functionality or an owner appearance/performance decision. The ordinary
+The complete STRATA-THEATRE-002 authoring functionality is retained in the
+owner-accepted Strata 003 integration. The 28 November 2026 decision authorizes
+adoption with RAMCACHE; the [combined delivery guide](../operations/ramcache-strata-integration.md)
+records qualification of the resulting application. The original #769 and #776
+receipts remain source-bound predecessor evidence. The ordinary
 Workbench remains the sole Play, actor, Rapier, camera and simulation-worker
 owner. The [foundation contract](strata-workbench.md) owns those boundaries and
 the versioned save envelope. The [environment contract](strata-environments.md)

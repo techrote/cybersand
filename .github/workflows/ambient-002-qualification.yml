@@ -1,0 +1,248 @@
+name: AMBIENT-002 — Linux, Windows and extracted living evaluator
+
+# The explicit request marker is changed only after a coherent source freeze.
+# Ordinary branch pushes and Draft PR updates do not queue another campaign.
+# Retained native inputs must match exactly; no runtime build or publication.
+on:
+  push:
+    branches: [feature/ambient-002-living-inhabitants-20261125]
+    paths: ['tools/fixtures/ambient-002-qualification-request.json']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ambient-002-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+
+jobs:
+  windows:
+    name: Actual Windows ambient gameplay and portable evaluator
+    if: github.ref == 'refs/heads/feature/ambient-002-living-inhabitants-20261125' && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[ambient-002-qualify]'))
+    runs-on: windows-2022
+    # Accepted hosted allowance leaves the owned-process watchdog time to write
+    # failure receipts and upload them before the job itself can be cancelled.
+    timeout-minutes: 180
+    steps:
+      - name: Check out the exact frozen host source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+
+      - name: Verify provider policy and unchanged retained Windows runtimes
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          git rev-parse HEAD | Set-Content evidence/source-commit.txt
+          python tools/ci/check_ci_provider_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+          python tools/ci/test_ambient_living_delivery.py
+          if ($LASTEXITCODE -ne 0) { throw 'Ambient completion and delivery custody tests failed' }
+          python tools/ambient/test_episode_tools.py
+          if ($LASTEXITCODE -ne 0) { throw 'Physical episode reduction and custody tests failed' }
+          python tools/ambient/test_independent_review.py
+          if ($LASTEXITCODE -ne 0) { throw 'Independent physical readback boundary tests failed' }
+          python tools/ambient/test_recovery_probe.py
+          if ($LASTEXITCODE -ne 0) { throw 'Matched recovery comparison custody tests failed' }
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Retained runtime download failed' }
+          @'
+          import json, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import verify_retained_runtime
+          result = verify_retained_runtime(pathlib.Path.cwd())
+          pathlib.Path('evidence/retained-runtime.json').write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Source-matched retained runtime verification failed' }
+
+      - name: Authenticate pinned Godot and portable Windows dependencies
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP 'godot-windows.zip'
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot download failed' }
+          $env:AMBIENT_GODOT_ARCHIVE = $archive
+          @'
+          import json, os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          executable, record = prepare_godot(pathlib.Path(os.environ['AMBIENT_GODOT_ARCHIVE']))
+          pathlib.Path('evidence/godot-archive.json').write_text(json.dumps(record, indent=2)+'\n', encoding='utf-8')
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as stream:
+              stream.write('GODOT_EXE='+str(executable)+'\nWINDOWS_DEPENDENCIES='+str(executable.parent)+'\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot archive/version verification failed' }
+          $dependencies = Join-Path $env:RUNNER_TEMP 'godot-windows'
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output (Join-Path $dependencies "Godot-$name") "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notice download failed' }
+          }
+          $runtimeLicense = Join-Path $dependencies 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $dependencies 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime notice download failed' }
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution notice download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'ambient-vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'Portable VC runtime staging failed' }
+          Copy-Item (Join-Path $vc 'vcruntime140.dll') $dependencies
+          Copy-Item (Join-Path $vc 'vc-runtime-provenance.json') $dependencies
+
+      - name: Execute scoped ambient and existing control regressions
+        shell: pwsh
+        run: |
+          python tools/qualify_ambient_living.py --godot $env:GODOT_EXE --output evidence/ambient
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows ambient qualification failed; original receipts retained' }
+
+      - name: Capture actual Windows ANGLE examples and profile editor
+        shell: pwsh
+        run: |
+          python tools/qualify_ambient_living.py --godot $env:GODOT_EXE --capture --output evidence/ambient-graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows graphical ambient examples failed; headless is not a substitute' }
+
+      - name: Build source-bound ordinary interactive Workbench evaluator
+        shell: pwsh
+        run: |
+          $archive = "build/CyberSand-AMBIENT-002-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
+          python tools/package_ambient_living_evaluator.py build --dependencies $env:WINDOWS_DEPENDENCIES --qualification evidence/ambient --graphical-qualification evidence/ambient-graphical --output build/ambient-evaluation --archive $archive
+          if ($LASTEXITCODE -ne 0) { throw 'Source-bound evaluator construction failed' }
+          'AMBIENT_EVALUATION_ARCHIVE=' + $archive | Out-File -Append -FilePath $env:GITHUB_ENV
+
+      - name: Pristine extraction, gameplay, save-reopen and ordinary launcher
+        shell: pwsh
+        run: |
+          $extracted = Join-Path $env:RUNNER_TEMP 'ambient owner package'
+          Expand-Archive -LiteralPath $env:AMBIENT_EVALUATION_ARCHIVE -DestinationPath $extracted
+          python tools/package_ambient_living_evaluator.py verify $extracted --pristine
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted evaluator identity failed' }
+          $console = Join-Path $extracted 'Godot_v4.7-stable_win64_console.exe'
+          python tools/qualify_ambient_living.py --godot $console --project (Join-Path $extracted 'godot') --case living_engine --case living_spatial --case living_authoring_save --case living_authoring_reopen --case living_editor --case living_group --case living_examples --case living_episodes --output evidence/extracted-package
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted Windows gameplay or reopening failed' }
+          python tools/qualify_ambient_living.py --godot $console --project (Join-Path $extracted 'godot') --capture --output evidence/extracted-graphical
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine extracted package graphical launch failed' }
+          $start = New-Object System.Diagnostics.ProcessStartInfo
+          $start.FileName = $env:ComSpec
+          $start.Arguments = '/d /s /c ""' + (Join-Path $extracted 'Open Workbench.cmd') + '" --headless --quit-after 180"'
+          $start.UseShellExecute = $false
+          $start.RedirectStandardOutput = $true
+          $start.RedirectStandardError = $true
+          $process = New-Object System.Diagnostics.Process
+          $process.StartInfo = $start
+          [void]$process.Start()
+          $stdout = $process.StandardOutput.ReadToEndAsync()
+          $stderr = $process.StandardError.ReadToEndAsync()
+          if (!$process.WaitForExit(300000)) {
+            $process.Kill($true)
+            throw 'Ordinary packaged launcher exceeded300 seconds'
+          }
+          $stdout.Result | Set-Content evidence/packaged-launcher.stdout.log
+          $stderr.Result | Set-Content evidence/packaged-launcher.stderr.log
+          if ($process.ExitCode -ne 0 -or ($stdout.Result + $stderr.Result) -match 'SCRIPT ERROR:|Parse Error:|Failed to load script|ERROR:') { throw 'Ordinary packaged launcher failed' }
+          if ($stdout.Result -notmatch 'SHARED_WORKBENCH_LAUNCH_READY') { throw 'Ordinary Workbench launch marker absent' }
+          python tools/package_ambient_living_evaluator.py verify $extracted
+          if ($LASTEXITCODE -ne 0) { throw 'Original evaluator input changed during execution' }
+
+      - name: Retain verified portable Windows evaluator
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ambient-002-windows-${{ github.sha }}
+          path: |
+            build/CyberSand-AMBIENT-002-Windows-*.zip
+            build/CyberSand-AMBIENT-002-Windows-*.zip.sha256
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Retain original source, runtime and execution evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ambient-002-evidence-${{ github.sha }}
+          path: evidence
+          if-no-files-found: error
+          retention-days: 30
+
+  linux:
+    name: Actual Linux living gameplay, graphics and physical episodes
+    if: github.ref == 'refs/heads/feature/ambient-002-living-inhabitants-20261125' && (github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[ambient-002-qualify]'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    steps:
+      - name: Check out the exact frozen source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify provider, custody tests and retained native runtimes
+        id: retained_inputs
+        run: |
+          set -euo pipefail
+          mkdir -p evidence
+          git rev-parse HEAD > evidence/source-commit.txt
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_ambient_living_delivery.py
+          python3 tools/ambient/test_episode_tools.py
+          python3 tools/ambient/test_independent_review.py
+          python3 tools/ambient/test_recovery_probe.py
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+      - name: Authenticate pinned official engine and graphical dependencies
+        id: engine_inputs
+        run: |
+          set -euo pipefail
+          sudo apt-get update
+          sudo apt-get install -y xvfb xauth libgl1-mesa-dri libglx-mesa0 python3-venv
+          mkdir -p "$RUNNER_TEMP/ambient-002-engine"
+          curl --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output "$RUNNER_TEMP/ambient-002-engine/godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
+          python3 - "$RUNNER_TEMP/ambient-002-engine/godot.zip" <<'PYCODE'
+          import hashlib, pathlib, sys, zipfile
+          archive = pathlib.Path(sys.argv[1])
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == '0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c'
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None
+              assert z.namelist() == ['Godot_v4.7-stable_linux.x86_64']
+              z.extractall(archive.parent)
+          (archive.parent/'Godot_v4.7-stable_linux.x86_64').chmod(0o755)
+          PYCODE
+      - name: Execute full living and legacy regression campaign
+        run: |
+          python3 tools/qualify_ambient_living.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --output evidence/ambient
+      - name: Capture all eleven ordinary native examples and editors
+        run: |
+          xvfb-run -a -s "-screen 0 1600x1000x24" python3 tools/qualify_ambient_living.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --capture --output evidence/ambient-graphical
+      - name: Execute full matched physical episode programme
+        id: physical_programme
+        # Independent evidence may proceed after a UI/graphics failure; the job
+        # still fails overall and no failed platform qualifies a package.
+        if: ${{ !cancelled() && steps.retained_inputs.outcome == 'success' && steps.engine_inputs.outcome == 'success' }}
+        run: |
+          python3 tools/ambient/run_episodes.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --root "$GITHUB_WORKSPACE" --output evidence/episodes-full
+      - name: Reduce original physical traces and render scientific figures
+        id: reduced_physics
+        if: ${{ !cancelled() && steps.physical_programme.outcome == 'success' }}
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/ambient-002-analysis"
+          "$RUNNER_TEMP/ambient-002-analysis/bin/python" -m pip install --disable-pip-version-check 'matplotlib==3.10.8' > evidence/analysis-dependencies.log
+          "$RUNNER_TEMP/ambient-002-analysis/bin/python" -m pip freeze > evidence/analysis-environment.txt
+          "$RUNNER_TEMP/ambient-002-analysis/bin/python" tools/ambient/analyze_episodes.py --report evidence/episodes-full/episodes.json --output evidence/analysis --source-root "$GITHUB_WORKSPACE"
+      - name: Independently audit matched physical evidence and ablations
+        if: ${{ !cancelled() && steps.reduced_physics.outcome == 'success' }}
+        run: |
+          "$RUNNER_TEMP/ambient-002-analysis/bin/python" tools/ambient/review_episodes.py --report evidence/episodes-full/episodes.json --summary evidence/analysis/summary.json --source-sha "$GITHUB_SHA" --output evidence/independent-review
+      - name: Retain original Linux source, runtime, graphical and scientific evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ambient-002-linux-evidence-${{ github.sha }}
+          path: evidence
+          if-no-files-found: error
+          retention-days: 30

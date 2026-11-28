@@ -1,0 +1,87 @@
+{
+  "description": "An editable Oil investigation competes with an ordinary left-side patrol.",
+  "drives_enabled": true,
+  "id": "curiosity_contrast",
+  "memory": {
+    "capacity": 64,
+    "cell_size": 24.0,
+    "enabled": true,
+    "interest_capacity": 16,
+    "lifetime_seconds": 90.0,
+    "obstruction_capacity": 16
+  },
+  "modules": [
+    {
+      "enabled": true,
+      "id": "discovery",
+      "params": {
+        "approach_seconds": 12,
+        "commit_seconds": 3,
+        "cooldown_seconds": 8,
+        "effort": 0.7,
+        "habituation_seconds": 12,
+        "inspect_seconds": 2,
+        "material_id": 16,
+        "pace": 0.45,
+        "radius": 64,
+        "standoff": 12
+      },
+      "priority": 30,
+      "type": "investigate_material",
+      "weight": 1.0
+    },
+    {
+      "enabled": true,
+      "id": "routine",
+      "params": {
+        "arrival_radius": 6.0,
+        "commit_seconds": 3,
+        "dwell_seconds": 2,
+        "effort": 0.7,
+        "leg_seconds": 12.0,
+        "loop": true,
+        "pace": 0.45,
+        "points": [
+          [
+            -48.0,
+            0.0
+          ],
+          [
+            -8.0,
+            0.0
+          ]
+        ]
+      },
+      "priority": 30,
+      "type": "patrol_route",
+      "weight": 0.5
+    }
+  ],
+  "name": "Discovery versus routine",
+  "perception": {
+    "near_radius_cells": 8,
+    "refine_boundaries": true,
+    "spacing_cells": 4
+  },
+  "personality": {
+    "activity": 0.5,
+    "caution": 0.5,
+    "curiosity": 1.0,
+    "enabled": true,
+    "failure_tolerance": 3,
+    "persistence": 0.5,
+    "preferred_distance": 24.0,
+    "sociability": 0.5,
+    "territoriality": 0.5
+  },
+  "regions": [],
+  "relations": {
+    "avoid_tags": [],
+    "peer_id": -1,
+    "prefer_tags": [],
+    "tags": []
+  },
+  "seed": 1701,
+  "shared_seed": false,
+  "version": 2
+}

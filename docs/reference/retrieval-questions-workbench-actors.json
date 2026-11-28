@@ -1,7 +1,7 @@
 {
   "version": 1,
-  "reviewed": "2026-11-20",
-  "scope": "Additive WB-ACTOR-COMPOSE-001 candidate retrieval questions; frozen baseline untouched.",
+  "reviewed": "2026-11-22",
+  "scope": "Additive WB-ACTOR-COMPOSE-002R sandbox candidate retrieval questions; frozen baseline untouched.",
   "questions": [
     {
       "id": "WB-ACTOR-01",
@@ -65,7 +65,7 @@
         "operations/workbench-actor-composition.md"
       ],
       "facts": [
-        "Separate limits admit at most eight logical actors,eight prepared parts per actor and64 actual response bodies/native occupancy proxies.",
+        "Defaults remain eight logical actors and64 bodies/proxies; version1 sandbox_capacity independently configures logical/body/proxy limits through4096, with eight prepared parts per actor and narrower actual runtime qualification.",
         "Compound masks map to their real body owner; equipment chassis and released items keep reserved capacity.",
         "Tool requests use the existing ACT005 physical authority,mask/hit validation and native material accounting."
       ],
@@ -84,7 +84,7 @@
       ],
       "facts": [
         "Optional strict control-v1 fields extend existing Setup-v2 and its generated-start/material-baseline containers.",
-        "Save retains authored models,spawns,compatible options,controller configuration and starting equipment.",
+        "Save retains authored models,spawns,optional orientation,capacity budgets,compatible options,controllers,starting equipment and accepted paint; missing new fields retain zero orientation and8/64/64.",
         "Load reconstructs authored starts; live momentum,resource consumption,policy memory and outstanding commands are not persisted."
       ],
       "sources": [
@@ -104,6 +104,60 @@
         "The full sampled session and arena remain outside the physical Workbench owner.",
         "A narrow copied-view policy adapter reuses the pure local steering helper for compatible ordinary ground/jump physical rigs.",
         "Virtual tag,oracle privilege,sampled metal actuation,NCA training and operational model services are not claimed."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-ACTOR-07",
+      "query": "How do I drag and rotate a whole actor precisely in a paused Workbench?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "Place / rotate captures copied current part transforms, supports Q/E rotation, grid snapping and Shift fine adjustment, and commits one prepared-owner transaction on release or Enter.",
+        "Escape,focus loss,configuration entry and outside release cancel; out-of-bounds or failed preparation preserves the old owner and authored data.",
+        "Current articulation is retained where supported; released,fixed or reattached equipment topology explicitly refuses retention until Reset or removal."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-ACTOR-08",
+      "query": "Does physical mouse grabbing teleport an actor or fight its NPC controller?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "Live grab picks one real physical collider and applies bounded damped point forces through the existing Rapier session and joints.",
+        "Only the grabbed actor drive is suppressed; release revokes stale leases and resumes its previous compatible source.",
+        "Pause,focus loss,Save,world replacement and teardown revoke temporary ownership; no grab is serialized or routed into PAINT/equipment."
+      ],
+      "sources": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "WB-ACTOR-09",
+      "query": "Where are sandbox configuration and the large barrel examples?",
+      "canonical": [
+        "systems/workbench-actor-composition.md",
+        "operations/workbench-actor-composition.md"
+      ],
+      "facts": [
+        "One Configuration window has Actors,Controllers,Equipment,Physics,Capacity and Diagnostics and does not automatically pause unrelated NPCs.",
+        "Living Mixed Workshop,Barrel Crowd and Mechanical Chaos are ordinary authored Workbench starts.",
+        "Capacity uses actual bodies,proxies and joints; poor FPS alone never deletes actors or rejects a safe admitted population."
       ],
       "sources": [
         "systems/workbench-actor-composition.md",

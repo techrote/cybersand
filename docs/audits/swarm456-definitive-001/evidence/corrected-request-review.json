@@ -1,0 +1,58 @@
+{
+  "all_changes_since_q7": [
+    ".github/swarm456-broad-request.json",
+    ".github/swarm456-runtime-publication-request.json",
+    "docs/audits/swarm456-definitive-001/ordinary-budget-test-correction.json",
+    "docs/audits/swarm456-definitive-001/ordinary-budget-test-correction.md",
+    "docs/audits/swarm456-definitive-001/ordinary-budget-test-independent-review.json",
+    "docs/audits/swarm456-definitive-001/ordinary-budget-test-policy-review.json",
+    "docs/audits/swarm456-definitive-001/ordinary-budget-test-source-impact.json",
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json",
+    "godot/tools/gentek_reciprocal",
+    "godot/tools/gentek_reciprocal.exe",
+    "godot/tools/swarm004-runtime.linux.json",
+    "godot/tools/swarm004-runtime.windows.json",
+    "tools/ci/test_godot_job_plan.py"
+  ],
+  "all_eight_published_paths_byte_identical_to_publication": true,
+  "corrected_ordinary_execution_source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+  "corrected_test_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+  "donor_and_reconciled_main_ancestry_preserved": true,
+  "expected_corrected_workflow_runs_reported_by_root": {
+    "dispatcher": 45464413161,
+    "documentation": 45464485647,
+    "gdextension": 45464495877,
+    "native": 45464490633,
+    "play": 45464427423
+  },
+  "full_corrected_ordinary_gate_status": "PENDING original terminal mandatory coverage",
+  "only_postpublication_code_change": "tools/ci/test_godot_job_plan.py",
+  "original_github_commit_api": {
+    "path": "/workspace/scratch/e18127ed82c6/independent-assurance/corrected-broad-original-github-api.json",
+    "sha256": "2092424a7cb983b32970a00e530d0206d7ddae1372decb8c3a227cfc3b3755ac"
+  },
+  "physical_owner_acceptance": "PENDING",
+  "qualified_application_and_runtime_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "request": {
+    "action": "qualify-full-regressions",
+    "expected_parent_sha": "5fd5ab8b34c46d3c275d284559498e65d80be466",
+    "qualification_programme": "GENTEK-SWARM-004-005-006-UNIFIED",
+    "request_id": "swarm456-definitive-20261124-broad-q7-ci2",
+    "schema": 1,
+    "workflows": [
+      "documentation.yml",
+      "native.yml",
+      "gdextension.yml"
+    ]
+  },
+  "request_parent": "5fd5ab8b34c46d3c275d284559498e65d80be466",
+  "result": "PASS request ancestry and unchanged qualified application/runtime identities; execution outcomes remain separate",
+  "reviewer": "independent_assurance",
+  "runtime_publication_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+  "schema": 1,
+  "source_or_original_evidence_modified": false,
+  "source_tree": "b971f25fa8532705c414fc1bf0ee8c9e1064e087",
+  "workflow_completion_or_pass_inferred": false
+}

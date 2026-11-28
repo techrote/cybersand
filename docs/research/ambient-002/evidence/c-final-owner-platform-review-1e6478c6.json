@@ -1,0 +1,84 @@
+{
+  "schema": "ambient2-scoped-closing-packet-review/v2",
+  "reviewer": "Specialist C \u2014 authoring, owner workflow, Windows delivery and graphical evidence",
+  "reviewed_at_utc": "2026-11-25T06:09:12.645059+00:00",
+  "reviewed_packet_path": "docs/research/ambient-002/decision-packet.md",
+  "reviewed_packet_bytes": 57667,
+  "reviewed_packet_sha256": "1e6478c683912f2429465a1dbe626269b0ada6257f2692d3fdb483da1996b153",
+  "reviewed_packet_git_blob_sha1": "ca1a6be654b5c8d9a588a422d22643922a025262",
+  "status": "scoped_signoff",
+  "material_issues": [],
+  "review_scope": [
+    "Owner delivery filename, portable inner/outer archive identities, source versus later closing-evidence identity",
+    "Owner UI workflow and labels checked against the qualified shipped source and owner guide",
+    "Windows original/extracted 24/8 case counts, 15349/9300 assertions, 648 core/96 editor coverage and lease sequence",
+    "Four-campaign 1143 committed/855 project input custody, 1473-file portable payload and launcher scope",
+    "All 58 actual Windows images: individual visual review, own-hash custody, 1028x578 dimensions, software renderer and source-specific timing scope",
+    "Preserved a725 graphical findings versus corrected 50c6 Foundry observation, configured 20-cell arrival versus 16-cell metric, drive/pose/phase evidence and sampled-movie limits",
+    "Explicit Draft/HOLD, no capacity increase, no owner hardware/NVIDIA/manual desktop acceptance"
+  ],
+  "not_reviewed_by_this_signoff": [
+    "The primary 194-episode scientific quantities, old-to-new statistics, performance comparisons and new Linux scientific readback remain Specialist B scope.",
+    "A later edited packet does not inherit this exact-file signoff without a stated scoped re-review."
+  ],
+  "evidence_used": {
+    "windows_review_path": "docs/research/ambient-002/evidence/windows-50c6df89-review.json",
+    "windows_review_sha256": "f4d0843d2569995631041d80efc3be6c03fdcc43f934525ae56df9ec9bbf366e",
+    "application_commit": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+    "application_tree": "d9740be7cafb8ac7b7d6eee4a16219989745fd95",
+    "portable_name": "CyberSand-AMBIENT-002-Windows-50c6df89528d.zip",
+    "portable_bytes": 259734965,
+    "portable_sha256": "54a4dc71c10a6ca77dcc8ba48a1fb5be39cc0e63ae33099b3dd0d452e9c71a5a",
+    "windows_run": 45552786466,
+    "windows_job": 138997623535,
+    "windows_original_artifact": 14995491989,
+    "foundry_run": 45552888360,
+    "foundry_artifact": 14994329664,
+    "foundry_original_report_sha256": "8099576e84f310ae99a0bc5e0390eed20c3606a7007bc27a8b60281692bf8c47"
+  },
+  "work_performed": "Read-only final packet, already downloaded Windows and Linux originals, already qualified ZIP source/guide and existing independent receipts; public PR metadata read. No new application execution, artifact download, packet edit, production change or PR mutation.",
+  "previous_scoped_review": {
+    "packet_sha256": "7739cadd3c707349599fb7fb1a8b3192d3d52917e045bf05d9681498f8290a6f",
+    "receipt_path": "docs/research/ambient-002/evidence/c-final-owner-platform-review.json",
+    "receipt_blob": "31b61665cf1c331deb9681735038cda108f50269",
+    "disposition": "Preserved as the earlier scoped snapshot; this new receipt binds only the final packet named above."
+  },
+  "changes_rechecked": [
+    "Added related home-recharge observation link",
+    "Repaired catalogue findings anchor",
+    "Clarified horizontal-only obstruction proxy",
+    "Explicitly retained original a725 thin-probe source scope",
+    "Corrected final Linux source suite to 24 cases and 15349 assertions",
+    "Recorded exact final compact 49-member archive size 1875766 bytes and SHA256"
+  ],
+  "additional_direct_readback": {
+    "linux_qualification": "Read ambient/qualification.json from the already verified shared original Linux artifact; source50c6/tree d974, statuspassed,24 cases,15349 assertions,1143source/855project inputs. No new execution or download.",
+    "compact_archive_members": 49,
+    "compact_archive_bytes": 1875766,
+    "compact_archive_sha256": "3e7c4004182fc539259b9b575527eb0b5490bde651a1ad82fa11b262eb8fe606"
+  },
+  "owner_steps_audit": {
+    "missing_material_packet_details": [],
+    "confirmed": [
+      "Exact corrected portable artifact, inner filename/size/hash and source identity",
+      "Complete extraction into a writable folder, Open Workbench.cmd and first import",
+      "Actor Composition, scene choice, Load scene, Play, Inspect/Follow/zoom",
+      "Editable profile/group workflow and authored Save/Reopen with ephemeral memory distinction",
+      "Eight-actor limit, predecessor preservation, unchanged production defaults and Draft/HOLD",
+      "Exact source/extracted evidence with software-renderer and sampled-video limitations"
+    ]
+  },
+  "live_pr_handoff_at_review": {
+    "pr": 779,
+    "url": "https://github.com/techrote/cybersand/pull/779",
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head_commit": "353c973e0b86cff3db021fcf771dc866aed94315",
+    "snapshot_path": "docs/research/ambient-002/evidence/c-pr-handoff-before-final.json",
+    "requires_final_refresh": true,
+    "material_issue": "The current PR body still says corrected-source campaigns are running and no corrected evaluator is qualified; final50c6 artifact, packet and extracted review links are promised rather than present.",
+    "lead_response": "Lead confirmed a final body replacement immediately after final evidence publication, followed by the final documentation-gate result. C did not mutate the PR.",
+    "scope": "This is a historical live-handoff finding, separate from the clean final-packet signoff. A later PR refresh needs its own readback."
+  }
+}

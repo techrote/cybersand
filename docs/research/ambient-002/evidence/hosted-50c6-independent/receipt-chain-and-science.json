@@ -1,0 +1,4505 @@
+{
+  "status": "PASS",
+  "source_revision": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "source_tree": "d9740be7cafb8ac7b7d6eee4a16219989745fd95",
+  "baseline_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "artifact_id": 14995028842,
+  "artifact_sha256": "e96d284ac7e44eea93ff9269461166a09cc40b8a352893cb43dc9975c24bf9ac",
+  "artifact_bytes": 42796506,
+  "artifact_members": 719,
+  "raw_report_sha256": "1cfb085b65c9fbf295294fbf5360d7d8f0ac78f9b95039c384fe416bdc889137",
+  "summary_sha256": "298cc3977a5c318ab8530e983a05ce9c298f17a105a5690fd4bb3018b1938a91",
+  "independent_review_sha256": "aa768ced95e3ae3f7c00c02e3ebb8bacb59d11d185b5a62f2bd208a5a0e4d8cb",
+  "runner_receipt_sha256": "fd80bcc1268485c5f773a96d4dfd2e4ec4896663fdb232861ff1bab2ea07e59d",
+  "custody_sha256": "1b84632d8a5b4c6dd6d33e24f64e779e5f4abd107634e06b4b3990314ea71a31",
+  "qualifications": [
+    {
+      "path": "ambient/qualification.json",
+      "sha256": "f95f4b01867ba7ec44c860337bfe37e920b13d0b881175f91871e106e5508b13",
+      "cases": 24
+    },
+    {
+      "path": "ambient-graphical/qualification.json",
+      "sha256": "3b6394768a23bfb42ce87b3a4ccdcd0f4ccbd15d51d355ab3c59a58f17f1e814",
+      "cases": 0
+    }
+  ],
+  "original_headless_case_completions": [
+    {
+      "name": "engine",
+      "checks": 895,
+      "failures": 0
+    },
+    {
+      "name": "independent",
+      "checks": 214,
+      "failures": 0
+    },
+    {
+      "name": "perception",
+      "checks": 130,
+      "failures": 0
+    },
+    {
+      "name": "ledge_geometry",
+      "checks": 15,
+      "failures": 0
+    },
+    {
+      "name": "clock",
+      "checks": 21,
+      "failures": 0
+    },
+    {
+      "name": "authoring_save",
+      "checks": 278,
+      "failures": 0
+    },
+    {
+      "name": "authoring_reopen",
+      "checks": 292,
+      "failures": 0
+    },
+    {
+      "name": "editor",
+      "checks": 46,
+      "failures": 0
+    },
+    {
+      "name": "native_motion",
+      "checks": 306,
+      "failures": 0
+    },
+    {
+      "name": "personalities",
+      "checks": 2877,
+      "failures": 0
+    },
+    {
+      "name": "workbench",
+      "checks": 43,
+      "failures": 0
+    },
+    {
+      "name": "examples",
+      "checks": 121,
+      "failures": 0
+    },
+    {
+      "name": "living_authoring_save",
+      "checks": 282,
+      "failures": 0
+    },
+    {
+      "name": "living_authoring_reopen",
+      "checks": 289,
+      "failures": 0
+    },
+    {
+      "name": "living_editor",
+      "checks": 96,
+      "failures": 0
+    },
+    {
+      "name": "living_engine",
+      "checks": 648,
+      "failures": 0
+    },
+    {
+      "name": "living_group",
+      "checks": 40,
+      "failures": 0
+    },
+    {
+      "name": "living_spatial",
+      "checks": 2644,
+      "failures": 0
+    },
+    {
+      "name": "living_episodes",
+      "checks": 5091,
+      "failures": 0
+    },
+    {
+      "name": "living_examples",
+      "checks": 210,
+      "failures": 0
+    },
+    {
+      "name": "legacy_catalog",
+      "checks": 415,
+      "failures": 0
+    },
+    {
+      "name": "legacy_composition",
+      "checks": 199,
+      "failures": 0
+    },
+    {
+      "name": "legacy_session",
+      "checks": 84,
+      "failures": 0
+    },
+    {
+      "name": "legacy_physical",
+      "checks": 113,
+      "failures": 0
+    }
+  ],
+  "original_graphical_readback": {
+    "report_sha256": "3a017ebc2aa54f9db8be16ba4e5f37806362d3ea20dbfc16e49583170478a42b",
+    "images": 29,
+    "image_dimensions": [
+      [
+        1920,
+        1080
+      ]
+    ],
+    "renderer": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "rendering_method": "gl_compatibility",
+    "phases": [
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 155229,
+          "mean_usec": 146727.092436975,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 143292,
+          "observed_intervals": 119,
+          "p50_usec": 146228,
+          "p95_usec": 151905,
+          "p99_usec": 154630,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient-oil-water",
+        "memory_bytes": 112032373,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 17612733
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 158947,
+          "mean_usec": 145936.319327731,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 139521,
+          "observed_intervals": 119,
+          "p50_usec": 145558,
+          "p95_usec": 153041,
+          "p99_usec": 155350,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient-ledge-walkway",
+        "memory_bytes": 116643633,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 17515854
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 159870,
+          "mean_usec": 150523.672268908,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 146270,
+          "observed_intervals": 119,
+          "p50_usec": 150102,
+          "p95_usec": 155963,
+          "p99_usec": 159698,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient-industrial-yard",
+        "memory_bytes": 119039273,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 18064932
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 168775,
+          "mean_usec": 154696.033613445,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 147997,
+          "observed_intervals": 119,
+          "p50_usec": 153315,
+          "p95_usec": 164830,
+          "p99_usec": 168465,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient-settlement",
+        "memory_bytes": 120657917,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 18565204
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 151011,
+          "mean_usec": 144859.344537815,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 140633,
+          "observed_intervals": 119,
+          "p50_usec": 144582,
+          "p95_usec": 149075,
+          "p99_usec": 150739,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient-flight",
+        "memory_bytes": 116443219,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 17389075
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 222802,
+          "mean_usec": 172454.193277311,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 164180,
+          "observed_intervals": 119,
+          "p50_usec": 169528,
+          "p95_usec": 188889,
+          "p99_usec": 190662,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient2-settlement",
+        "memory_bytes": 125666340,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 20696850
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 210787,
+          "mean_usec": 169934.151260504,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 160652,
+          "observed_intervals": 119,
+          "p50_usec": 168294,
+          "p95_usec": 183959,
+          "p99_usec": 189573,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient2-refinery",
+        "memory_bytes": 130611980,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 20394076
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 185233,
+          "mean_usec": 161214.042016807,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 154366,
+          "observed_intervals": 119,
+          "p50_usec": 158956,
+          "p95_usec": 174139,
+          "p99_usec": 176617,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient2-cavern",
+        "memory_bytes": 131138950,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 19345286
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 187291,
+          "mean_usec": 149618.983193277,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 140464,
+          "observed_intervals": 119,
+          "p50_usec": 146672,
+          "p95_usec": 168131,
+          "p99_usec": 171766,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient2-courtyard",
+        "memory_bytes": 130760587,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 17957196
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 198269,
+          "mean_usec": 169260.075630252,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 162666,
+          "observed_intervals": 119,
+          "p50_usec": 167089,
+          "p95_usec": 181548,
+          "p99_usec": 185558,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient2-floodyard",
+        "memory_bytes": 130191268,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 20315459
+      },
+      {
+        "draw_intervals": {
+          "discarded_intervals": 0,
+          "maximum_usec": 215627,
+          "mean_usec": 179008.428571429,
+          "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+          "minimum_usec": 168082,
+          "observed_intervals": 119,
+          "p50_usec": 177635,
+          "p95_usec": 194125,
+          "p99_usec": 195345,
+          "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+          "retained_intervals": 119,
+          "sample_capacity": 4096
+        },
+        "example": "ambient2-aerial-habitat",
+        "memory_bytes": 131372879,
+        "native_ticks": 119,
+        "passed": true,
+        "physical_ticks": 120,
+        "requested_physical_ticks": 120,
+        "wall_usec": 21486065
+      }
+    ],
+    "scope": "Original graphical receipt/hash readback; not a claim that every image was visually inspected."
+  },
+  "source_inputs": 1143,
+  "loaded_project_inputs": 855,
+  "campaigns": 122,
+  "actor_episodes": 194,
+  "subject_actor_episodes": 178,
+  "auxiliary_actor_episodes": 16,
+  "world_simulation_seconds": 4560,
+  "actor_simulation_seconds": 6720,
+  "native_steps": 273600,
+  "physical_steps": 273600,
+  "accepted_commands": 62400,
+  "rejected_commands": 0,
+  "canvas_center_incidents": 0,
+  "independently_checked_metrics": 2910,
+  "copied_peer_samples_checked": 67200,
+  "exact_ablation_groups": 40,
+  "reduction_byte_identical_to_hosted": true,
+  "independent_review_byte_identical_to_hosted": true,
+  "loaded_project_changes_from_baseline": [
+    {
+      "path": "scripts/ambient/ambient_engine.gd",
+      "old_sha256": "6a01634bf5913f6e64ead72a19f8e0488717895774ab400221fe740b317c1ec2",
+      "new_sha256": "a406e33433327229c077dc8cfdb065196c4eecea70a51752c2cc9120adc60ab7"
+    },
+    {
+      "path": "scripts/ambient/ambient_profile_editor.gd",
+      "old_sha256": "24f5b101b37b506a3682806e61e24245478d90001413c3115f365718734e39ba",
+      "new_sha256": "16519fd316271b171d82e485ff6d7f1f369ac85a80694363b23c4bfb0f84fba6"
+    },
+    {
+      "path": "tests/test_ambient_living_engine.gd",
+      "old_sha256": "446eaa7ab6dde31223e05210a4a09c4f3f90ac0dd928201ad864a03f3839648b",
+      "new_sha256": "a48857d610fe2a630e3a5e3ee6fc1f4319847c5809325cdad5c595a72768fee2"
+    }
+  ],
+  "source_input_changed_paths": [
+    "godot/scripts/ambient/ambient_engine.gd",
+    "godot/scripts/ambient/ambient_profile_editor.gd",
+    "godot/tests/test_ambient_living_engine.gd",
+    "tools/fixtures/ambient-002-qualification-request.json"
+  ],
+  "baseline_comparison_cases": [
+    {
+      "campaign_id": "main-pockets-runner-s605-t30-n1-legacy",
+      "group": "main",
+      "arm": "legacy",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-legacy/attempt-001/report.json",
+      "current_report_sha256": "84746963f899929b65b3735b2c63216f312614a172a7a208959a7f79cca6622f",
+      "baseline_report_sha256": "86bb386775080421db0eae889657039e66c435750b5db15d7b5d2d9de577e9b6",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s605-t30-n1-legacy-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s605-t30-n1-random",
+      "group": "main",
+      "arm": "random",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random/attempt-001/report.json",
+      "current_report_sha256": "ef10977401af556ca5c7f2ed38d3b0ee8c98d29a3fdc4ec5dd3d80f5addc6b4b",
+      "baseline_report_sha256": "44fbddd61f49f211b6d80345aa40ed7643d84708be4f3095014983d2917c2e8d",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s605-t30-n1-random-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s605-t30-n1-random_hold",
+      "group": "main",
+      "arm": "random_hold",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-random_hold/attempt-001/report.json",
+      "current_report_sha256": "435211a240cb0a3f8762dbe05f95a8ee66febb3f7fbab79a8808351d09600936",
+      "baseline_report_sha256": "70956858b545f7f149efc9ec9fba11bdbe997c3371d733f52003ff883dc3318f",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s605-t30-n1-random_hold-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s605-t30-n1-scripted",
+      "group": "main",
+      "arm": "scripted",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-scripted/attempt-001/report.json",
+      "current_report_sha256": "e4a7ad4621437fad820cc4afdf834b0da8359b28093db2f8103e874eb59f212a",
+      "baseline_report_sha256": "c5cca198b8211aba69022485220e1077aceffa73d35f6ce5accaf98c25e9e824",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s605-t30-n1-scripted-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s605-t30-n1-stateful",
+      "group": "main",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "b96d9656136918a07c97dcc70ce11d72bb857953b56dc7bfbbd718e06dbb740c",
+      "baseline_report_sha256": "ca23dde9a074e7eab7523912febe0c7db834bec08d3b207d0df1978dfa3f9f15",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s605-t30-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 13,
+          "current_heading_reversals": 13,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s605-t30-n1-no_memory",
+      "group": "main",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "d405ae1bc20e3c530d23d1d1f13325039b59d7711acf9dde10d7ddbd67cf5539",
+      "baseline_report_sha256": "74cd03fed4b7961775b15af7e2e221e1886d1dc8b9c465db11625de23ab62727",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s605-t30-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s605-t30-n1-no_traits",
+      "group": "main",
+      "arm": "no_traits",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-no_traits/attempt-001/report.json",
+      "current_report_sha256": "13f68f66768a908a2fc33aa52d4c3e98f2e9c4e2e1cdcbcbbba6c12afc597fa5",
+      "baseline_report_sha256": "c4c76a3cb3b48d1339366aa34379dc4ce31f81cb0ad4bc48ea45a4e416dee3ae",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s605-t30-n1-no_traits-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s605-t30-n1-coarse_only",
+      "group": "main",
+      "arm": "coarse_only",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s605-t30-n1-coarse_only/attempt-001/report.json",
+      "current_report_sha256": "c1bb1ed232ff97873408d2ed49f35bd1efdea8587f7220fb46e8fde8574be27d",
+      "baseline_report_sha256": "35cebabc84abc7ffa9b88c4c1f2ee157f61c5c64edb922a27b0fcb6d12981ca0",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s605-t30-n1-coarse_only-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s605-t30-n1-legacy",
+      "group": "main",
+      "arm": "legacy",
+      "model": "monowheel",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-legacy/attempt-001/report.json",
+      "current_report_sha256": "42d4ceeca5da5a862c39deaeef8b83837f210ad0270e2a6b41dba49124fade16",
+      "baseline_report_sha256": "0642db3e95af86e54a493410d1eadec4bd78d53d39b768025e78cadfaa2a77a3",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s605-t30-n1-legacy-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s605-t30-n1-random",
+      "group": "main",
+      "arm": "random",
+      "model": "monowheel",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random/attempt-001/report.json",
+      "current_report_sha256": "3fc6546bf96ac3ad3c17e35526b7486b2f8cbfcf39d2e343805e348203556a1f",
+      "baseline_report_sha256": "98aee9db3a74987b73f17922a0aa1303b352ccedbdab1ccd9384a1cdff282bad",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s605-t30-n1-random-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s605-t30-n1-random_hold",
+      "group": "main",
+      "arm": "random_hold",
+      "model": "monowheel",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-random_hold/attempt-001/report.json",
+      "current_report_sha256": "b67ef2f03d4e5c78301ed1f574574f31b80cdcaac5ee3020f74db0184cf31451",
+      "baseline_report_sha256": "f673bb34bc62f6db5b53db746e70be6a503fa6689e5ecdbdf3fb2d86a88e7e0e",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s605-t30-n1-random_hold-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s605-t30-n1-scripted",
+      "group": "main",
+      "arm": "scripted",
+      "model": "monowheel",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-scripted/attempt-001/report.json",
+      "current_report_sha256": "8ea7eddd223763d44969a1272475175a2f9f7ada7a62604976b80ddc3765cc62",
+      "baseline_report_sha256": "1588c8370d05a56214326fe6cb3729498580d439db63b736e71ec0d5b2dbdfd7",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s605-t30-n1-scripted-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s605-t30-n1-stateful",
+      "group": "main",
+      "arm": "stateful",
+      "model": "monowheel",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "c6822800d0a212a10dfe67948d7326c8b0c1d734e2432cb67df9b09b05b45eaa",
+      "baseline_report_sha256": "33345df7b016eddb46c0dd1b6ea5060578c90e6ee419c7d389a0785b4d6a782c",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s605-t30-n1-stateful-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s605-t30-n1-no_memory",
+      "group": "main",
+      "arm": "no_memory",
+      "model": "monowheel",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "06cd6ba46d213f4809a461118eb7a17dd5fc323a54b95e42347a2377a417f446",
+      "baseline_report_sha256": "7554bb13459d4606498a49a50bb42b1136bddb07bf2821f1b699883c1b430826",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s605-t30-n1-no_memory-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s605-t30-n1-no_traits",
+      "group": "main",
+      "arm": "no_traits",
+      "model": "monowheel",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-no_traits/attempt-001/report.json",
+      "current_report_sha256": "638528f7954b4d1c375998fa83c720d782f1d7896c7c0617dd50068c4b78e3bc",
+      "baseline_report_sha256": "040fecdc47e03ddcf097f5f694d21f317217278ae855b0bc9480349824769ec4",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s605-t30-n1-no_traits-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s605-t30-n1-coarse_only",
+      "group": "main",
+      "arm": "coarse_only",
+      "model": "monowheel",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s605-t30-n1-coarse_only/attempt-001/report.json",
+      "current_report_sha256": "04c678bd55de187df35672f62fd9359e3ac72d6f4bfb8d5d7e509642264afc53",
+      "baseline_report_sha256": "5390d0e0dae4c81581693dfa9ec8b72957929b066f03ddae9845e4b9cf39844a",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s605-t30-n1-coarse_only-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s605-t30-n1-legacy",
+      "group": "main",
+      "arm": "legacy",
+      "model": "4ly_trainer",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-legacy/attempt-001/report.json",
+      "current_report_sha256": "cef1cf9957ee73174385da25f94ff916eec3ac776ebd645a0a2716e87f4c595b",
+      "baseline_report_sha256": "e4e9a0511c657f66c4e1dc92a1e3f1f36a612e6bf6ea6d3c88db55f0ebccb86a",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s605-t30-n1-legacy-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 7,
+          "current_heading_reversals": 7,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s605-t30-n1-random",
+      "group": "main",
+      "arm": "random",
+      "model": "4ly_trainer",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random/attempt-001/report.json",
+      "current_report_sha256": "0e36600eda69ef8842bbc7c809c9b2543377e2f801c28d72760fa44836e71b6d",
+      "baseline_report_sha256": "78ff9ca72cf2d3e79f0b6c6685c1532e075819b7c294609dc26c2a504b9234bd",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s605-t30-n1-random-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s605-t30-n1-random_hold",
+      "group": "main",
+      "arm": "random_hold",
+      "model": "4ly_trainer",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-random_hold/attempt-001/report.json",
+      "current_report_sha256": "e781ba61c64370c570f99a2e2f809cd6295d809061e39ae541f3ce187d70b6e1",
+      "baseline_report_sha256": "5dcee24d56cb2dff9645b98c671c119877a2f070e9c4230f3d7e4dc7f2bc761c",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s605-t30-n1-random_hold-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s605-t30-n1-scripted",
+      "group": "main",
+      "arm": "scripted",
+      "model": "4ly_trainer",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-scripted/attempt-001/report.json",
+      "current_report_sha256": "760d10c40fef9d5ff113dc2283ebefed77baf0047d5da4e0441212db80346023",
+      "baseline_report_sha256": "bc939ad27d0476ee20f19425f1c7d66b01459e62a92c4f8421032b6e1b255927",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s605-t30-n1-scripted-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s605-t30-n1-stateful",
+      "group": "main",
+      "arm": "stateful",
+      "model": "4ly_trainer",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "ddf6bc08a52b30e956e1eed874f2f8cdf2a2e9cb3304c8d9dbc9694fcd057a06",
+      "baseline_report_sha256": "991b57909c006e80d2ac45e4cfd6d27567eb1ab13ed4da9b84ecb29f2f4b279e",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s605-t30-n1-stateful-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 2,
+          "current_heading_reversals": 2,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s605-t30-n1-no_memory",
+      "group": "main",
+      "arm": "no_memory",
+      "model": "4ly_trainer",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "0ac81a3b71bb7b1ace704b9d44ce117287ff19d47c0c624982ccbf8b837f5b2c",
+      "baseline_report_sha256": "02aeb08c041202bd33361e7188ce17632e8e5196c255dafac852094802fb5d0a",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s605-t30-n1-no_memory-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s605-t30-n1-no_traits",
+      "group": "main",
+      "arm": "no_traits",
+      "model": "4ly_trainer",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-no_traits/attempt-001/report.json",
+      "current_report_sha256": "31e124226d122b5b6bf7871fbefc24654e72f83f4bde455c7382e52951697a1c",
+      "baseline_report_sha256": "87b35d244ed13147158462353cc36269c6ee0ee35b93f951507451dd898e11ec",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s605-t30-n1-no_traits-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 3,
+          "current_heading_reversals": 3,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s605-t30-n1-coarse_only",
+      "group": "main",
+      "arm": "coarse_only",
+      "model": "4ly_trainer",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s605-t30-n1-coarse_only/attempt-001/report.json",
+      "current_report_sha256": "ae62b11f30b60c715a00d7d47f7d456a9289281476737d8148de1316518e0a2a",
+      "baseline_report_sha256": "62a3d43d095ac079d9b2875b7d496c4e8ba795ac656aef1675f8ab22e3ce25a2",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s605-t30-n1-coarse_only-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 2,
+          "current_heading_reversals": 2,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s1701-t30-n1-legacy",
+      "group": "main",
+      "arm": "legacy",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-legacy/attempt-001/report.json",
+      "current_report_sha256": "60bbfb8a05a191f25ef960c8b9a92d0d338dc9fc5f922cd1aba36c2f54cab5ad",
+      "baseline_report_sha256": "30dda06ea48fc251a49e5b7b05a52c6071c7a917809276c946306437edadbc60",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s1701-t30-n1-legacy-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s1701-t30-n1-random",
+      "group": "main",
+      "arm": "random",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random/attempt-001/report.json",
+      "current_report_sha256": "4d5335f43c3e2477a5ee0db68b227f947c871db3ed2b3aa6832f1b4d394dd5f3",
+      "baseline_report_sha256": "1926bda347655c0c8b85e69e1df509c1933db59f46f51ef91089c82b682d0e14",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s1701-t30-n1-random-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s1701-t30-n1-random_hold",
+      "group": "main",
+      "arm": "random_hold",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-random_hold/attempt-001/report.json",
+      "current_report_sha256": "6c787803aca478c241efeafd76e1c03385b80c6def32a6af86c583e8229c44b1",
+      "baseline_report_sha256": "294216ac224b4ae7c201bb21368d650c02fdd746fff1bf3f2bebbb25bb4a3192",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s1701-t30-n1-random_hold-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s1701-t30-n1-scripted",
+      "group": "main",
+      "arm": "scripted",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-scripted/attempt-001/report.json",
+      "current_report_sha256": "4af6e05fc455eb2ee8c3dd17fe73150ec19265951120268caff46fa2c99ed9c1",
+      "baseline_report_sha256": "b59ed1c54507e1775efb982995c2ea74e8378e3ff5e17ebd6114a522d2d5fc10",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s1701-t30-n1-scripted-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s1701-t30-n1-stateful",
+      "group": "main",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "c2629a596355345ff7d934061500f78b5f301c702e2fd4014bb9281ed24a2ea5",
+      "baseline_report_sha256": "d421d8da2e08effd208008d7753fe52dbf4f17de79c73a35dc2ce0b4ce8d73ee",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s1701-t30-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 17,
+          "current_heading_reversals": 17,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s1701-t30-n1-no_memory",
+      "group": "main",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "17972f2c18e2ddabac3240ca73fd074a790cc79e7de7da4de2f901caf7387b0e",
+      "baseline_report_sha256": "021278124357e0ce444d1282569cda1639107680f246c5429938b4129db92a47",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s1701-t30-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s1701-t30-n1-no_traits",
+      "group": "main",
+      "arm": "no_traits",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-no_traits/attempt-001/report.json",
+      "current_report_sha256": "df7a8457522f20f016bb0cff5a0a1db06649d32b3c91252bc3eb97e0e95a0be6",
+      "baseline_report_sha256": "917f7674f01c777b1b9e00d1d3fff0a4ab2dddb841204778328d0261a3f7650a",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s1701-t30-n1-no_traits-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s1701-t30-n1-coarse_only",
+      "group": "main",
+      "arm": "coarse_only",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s1701-t30-n1-coarse_only/attempt-001/report.json",
+      "current_report_sha256": "b2f746e922d0892fad24eeee63be46b042a39445d70bc067a48118868cb5d262",
+      "baseline_report_sha256": "a577a20b7d1bb8e97fc8f76492b4183c5eb0b26cb00885066a0a00a5fb284e6e",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s1701-t30-n1-coarse_only-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s1701-t30-n1-legacy",
+      "group": "main",
+      "arm": "legacy",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-legacy/attempt-001/report.json",
+      "current_report_sha256": "341dd6ea09013220c3918bf0f492ab7ffa9e5f74d96e7129665e23e31db8593e",
+      "baseline_report_sha256": "d3531641a6d032d4be4a94964481b1717990b0e2517bfa33525387ccc3ce9f62",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s1701-t30-n1-legacy-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s1701-t30-n1-random",
+      "group": "main",
+      "arm": "random",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random/attempt-001/report.json",
+      "current_report_sha256": "74bd81a49c29fa29e1c2c6ee793daadf088522bb684fbf628b8baf01383e3762",
+      "baseline_report_sha256": "a7a08f4803fc47ca1171056a816f8ce124d2be95d2f572ae44c3f83461b2dc46",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s1701-t30-n1-random-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s1701-t30-n1-random_hold",
+      "group": "main",
+      "arm": "random_hold",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-random_hold/attempt-001/report.json",
+      "current_report_sha256": "1ec8d5bc2618d89e88e3ed3748283f9a8cdb29774c8ed44cadd8f88821857100",
+      "baseline_report_sha256": "4f512a6c6c6fb78c34b3db68199954a828ad7342f3e351b9ab3a8fb93f77b87c",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s1701-t30-n1-random_hold-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s1701-t30-n1-scripted",
+      "group": "main",
+      "arm": "scripted",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-scripted/attempt-001/report.json",
+      "current_report_sha256": "06f1684ffb05418757b1ea9b0461fe6a2721674184b51ef9c10a2f8a7a33fe20",
+      "baseline_report_sha256": "cc641691caeb8a61a68a4a7b799e874a2d707545812de26a5903efc683254e76",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s1701-t30-n1-scripted-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s1701-t30-n1-stateful",
+      "group": "main",
+      "arm": "stateful",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "eb85d719ed2fac74b89c80c9e56b4c43d061bade5701bc268177b229c384f420",
+      "baseline_report_sha256": "99e6ac4e7cee2ee08860e3d3e539b32795b0e708a2b0b6ed31be9b90d00f3d0c",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s1701-t30-n1-stateful-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s1701-t30-n1-no_memory",
+      "group": "main",
+      "arm": "no_memory",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "0f09c6c7632cc2e223a437d5a2c85fd90a62eea67792ad0b59c49fc5c6715e4e",
+      "baseline_report_sha256": "6c3a620264632d407e7f2e3806a85b38f7c99dcbc725bba97d595f9730e5ce64",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s1701-t30-n1-no_memory-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s1701-t30-n1-no_traits",
+      "group": "main",
+      "arm": "no_traits",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-no_traits/attempt-001/report.json",
+      "current_report_sha256": "f7b93e64a938cb11289c0d93849a2e8273e50836b5158103a4804a186523c68e",
+      "baseline_report_sha256": "c3b169bb3fb6d1ece583be0a5820c554e8978a650cb27c8db25f0f033eb6ccad",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s1701-t30-n1-no_traits-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s1701-t30-n1-coarse_only",
+      "group": "main",
+      "arm": "coarse_only",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s1701-t30-n1-coarse_only/attempt-001/report.json",
+      "current_report_sha256": "f14e9e56b2166fcbcff2d3e8af54c27e1ba2b53ecfbcd9f14e7367dfd7f9789e",
+      "baseline_report_sha256": "328ca87f0235b5e072a870216d7cc4710228c850470f79cd21fa39688b9689c7",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s1701-t30-n1-coarse_only-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s1701-t30-n1-legacy",
+      "group": "main",
+      "arm": "legacy",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-legacy/attempt-001/report.json",
+      "current_report_sha256": "6c54c226694798e754576959ecac1381d3959a6b5ee41cc69e97c1e431e082bd",
+      "baseline_report_sha256": "627a34424c62fb736a9a5658544ab57f5a465c9071003488a1d265f593ead5b3",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s1701-t30-n1-legacy-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 2,
+          "current_heading_reversals": 2,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s1701-t30-n1-random",
+      "group": "main",
+      "arm": "random",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random/attempt-001/report.json",
+      "current_report_sha256": "447c9c1259ceab866059f752af375050abe82b0deab8166e8bfc1345007df0de",
+      "baseline_report_sha256": "aafe3b09cd74f4addc8b92d9a941ead183d757f1745c4366e0a4c03d0b6ca079",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s1701-t30-n1-random-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s1701-t30-n1-random_hold",
+      "group": "main",
+      "arm": "random_hold",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-random_hold/attempt-001/report.json",
+      "current_report_sha256": "63dfd0db148dabff9b3f75101cb4297fa4b070212258cd0ee71d2bf2d533fc17",
+      "baseline_report_sha256": "77a21f94192999e333541e324388a6272a40549958d373d91e9df5bbfa0fcc76",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s1701-t30-n1-random_hold-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s1701-t30-n1-scripted",
+      "group": "main",
+      "arm": "scripted",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-scripted/attempt-001/report.json",
+      "current_report_sha256": "dbadf27d028335179bd416d1ecea1d975adfc083a96a71f647c1f5a8e19ac02a",
+      "baseline_report_sha256": "40c508199eb080cc636717713b406759f300b61d1423b46f051a72418116bf52",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s1701-t30-n1-scripted-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s1701-t30-n1-stateful",
+      "group": "main",
+      "arm": "stateful",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "36838a869c3a8a95fdf8a8bc95ffba5bc288c372425d7ea442d956a8105c4d75",
+      "baseline_report_sha256": "b4f58f59496d00833455fe2aef1c65397ee67c25640951471486cd7704ecad68",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s1701-t30-n1-stateful-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 4,
+          "current_heading_reversals": 4,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s1701-t30-n1-no_memory",
+      "group": "main",
+      "arm": "no_memory",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "ce404827f79c8daa6bd048591544d1dee463da6ba96ba283e3f110d62218767c",
+      "baseline_report_sha256": "1bb8375e35f4fe68939c40ddc96aa7bfc99781d6bb0a959545d6d426ccf7b706",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s1701-t30-n1-no_memory-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 4,
+          "current_heading_reversals": 4,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s1701-t30-n1-no_traits",
+      "group": "main",
+      "arm": "no_traits",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-no_traits/attempt-001/report.json",
+      "current_report_sha256": "8cc71632da8f3df4aafebc70d51a2657856b85ad154b6faef5e1b7b53e121023",
+      "baseline_report_sha256": "58e0aa9a3c62d79337460f73ad288e8523b4f0eb3581b77c6810091983e18c5f",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s1701-t30-n1-no_traits-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 3,
+          "current_heading_reversals": 3,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s1701-t30-n1-coarse_only",
+      "group": "main",
+      "arm": "coarse_only",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s1701-t30-n1-coarse_only/attempt-001/report.json",
+      "current_report_sha256": "e02c6bcf7f69b7461f2f7d28c9880b4408152c853ed14dcf1736277c163fcd47",
+      "baseline_report_sha256": "9dfe8672a6387077a5828e2e3de69bc43ab0a013541e963b50dbcb1d0424ba67",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s1701-t30-n1-coarse_only-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 2,
+          "current_heading_reversals": 2,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s2909-t30-n1-legacy",
+      "group": "main",
+      "arm": "legacy",
+      "model": "runner",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-legacy/attempt-001/report.json",
+      "current_report_sha256": "e5c135fbf992a8e4eee3925835e504d9c8bf8de910d667e7875385f792d44933",
+      "baseline_report_sha256": "9d685ed4d5f81902b5e3a59637d93b8ba6bca78c0f4b6ae88fdc81af6a3d57a3",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s2909-t30-n1-legacy-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s2909-t30-n1-random",
+      "group": "main",
+      "arm": "random",
+      "model": "runner",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random/attempt-001/report.json",
+      "current_report_sha256": "02f896a3c786bab0c9b4b952863264fbb6251a80110291fb1fb24b77783bfc21",
+      "baseline_report_sha256": "2ae798ce3b343bdb2975ea9a757852fcf1fbbf37340c9577fab6fc5c60924832",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s2909-t30-n1-random-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s2909-t30-n1-random_hold",
+      "group": "main",
+      "arm": "random_hold",
+      "model": "runner",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-random_hold/attempt-001/report.json",
+      "current_report_sha256": "24333d16f46a991f7713fb3cffcac8d178dfb968090d068f11215a8f329fe79f",
+      "baseline_report_sha256": "cec68904ea914ccd6e372dc84b745fe6ef9571c037f1a29745afbfa15b72567e",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s2909-t30-n1-random_hold-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s2909-t30-n1-scripted",
+      "group": "main",
+      "arm": "scripted",
+      "model": "runner",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-scripted/attempt-001/report.json",
+      "current_report_sha256": "db10f6737cd718e70708e8b910c8dec51eafd94263c794816aa5d40aa7616479",
+      "baseline_report_sha256": "26d7db47aa93df61b4846af0a3a9b8a74537e4d3d45e5e33e765fe3f58879c02",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s2909-t30-n1-scripted-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s2909-t30-n1-stateful",
+      "group": "main",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "5929a499c3907a67a1fd50cf85c93e3604b340966f3b658750f9957843be062f",
+      "baseline_report_sha256": "76ca7252bc83248384e69e179e6712e6b6cef52d48533fcbc789308a2297ea2e",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s2909-t30-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 13,
+          "current_heading_reversals": 13,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s2909-t30-n1-no_memory",
+      "group": "main",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "6516c0347fe22a4888136a02d72a0c72aa7b4e6d3acfc90eca31977978fffbe6",
+      "baseline_report_sha256": "05e86bd4234d20e441c810515fbcb80c4cd86e1514325318cf4fbd69557dcbc0",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s2909-t30-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s2909-t30-n1-no_traits",
+      "group": "main",
+      "arm": "no_traits",
+      "model": "runner",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-no_traits/attempt-001/report.json",
+      "current_report_sha256": "ef7bad580e349cde35883f9923db579968ef2f7ea2dfd04236f82fef21774e86",
+      "baseline_report_sha256": "b533e8fba65ba61e4427ce8508db9953d288de8d53adc3ea5771c48a627370c2",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s2909-t30-n1-no_traits-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-runner-s2909-t30-n1-coarse_only",
+      "group": "main",
+      "arm": "coarse_only",
+      "model": "runner",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-runner-s2909-t30-n1-coarse_only/attempt-001/report.json",
+      "current_report_sha256": "9194c79baf4b468bf7dd5c73d88f147a96545e88601aca774e47fbbad76f1368",
+      "baseline_report_sha256": "113db42b168fd5b148483a3c7bfdc3fab4f78c61eec58d859804c77107ca5c09",
+      "actors": [
+        {
+          "episode_id": "main-pockets-runner-s2909-t30-n1-coarse_only-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s2909-t30-n1-legacy",
+      "group": "main",
+      "arm": "legacy",
+      "model": "monowheel",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-legacy/attempt-001/report.json",
+      "current_report_sha256": "56924febc40d3f8abbea78c9e082b311b8ce04af07d98038df399d7564e7dd04",
+      "baseline_report_sha256": "905d0e52cfe17c5314d3a6e70d669279fccd44115f34e8af3ddb03c5f26f4bed",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s2909-t30-n1-legacy-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s2909-t30-n1-random",
+      "group": "main",
+      "arm": "random",
+      "model": "monowheel",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random/attempt-001/report.json",
+      "current_report_sha256": "8be537b2d7ab3539102eedf0fe47075aad2d70fb80b16ed2a5db6fd472a5d2e8",
+      "baseline_report_sha256": "fe754fa9edab51232201b69dc5160105075f3876407ad539de2e51b9ffe53f29",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s2909-t30-n1-random-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s2909-t30-n1-random_hold",
+      "group": "main",
+      "arm": "random_hold",
+      "model": "monowheel",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-random_hold/attempt-001/report.json",
+      "current_report_sha256": "8a2ea92483f9fa41b878b88763a9840f4bcbc228612c781f5abd8ec5bcbdd1a8",
+      "baseline_report_sha256": "25c0bc74688c65bf667ff2657a72267a2ae734782548df09e2d4e0803d7e1f35",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s2909-t30-n1-random_hold-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s2909-t30-n1-scripted",
+      "group": "main",
+      "arm": "scripted",
+      "model": "monowheel",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-scripted/attempt-001/report.json",
+      "current_report_sha256": "8aff67883f43db2dda5a694158205f2a8202f203bea3f5809fdda986738780ee",
+      "baseline_report_sha256": "9221aadcf6e26b782a26769ba59be400eff96aff2a4373488b5dd76cb1eb1bb3",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s2909-t30-n1-scripted-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s2909-t30-n1-stateful",
+      "group": "main",
+      "arm": "stateful",
+      "model": "monowheel",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "b0199132fc1917982251ff794155891b2005b4aaca54384ed65628a4e08ea6d1",
+      "baseline_report_sha256": "c63a1875d8909166de05c75e7bd755baec24acbe899fa7bd678c12faf76a0819",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s2909-t30-n1-stateful-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s2909-t30-n1-no_memory",
+      "group": "main",
+      "arm": "no_memory",
+      "model": "monowheel",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "6518c3afc8cc8ce2020fbfdb6851d7781758e4085e358e645ebb048f6b95d819",
+      "baseline_report_sha256": "0bba54640292e3b72fb41b51cbef9cc3da854d24cf857d865d9c727e43258541",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s2909-t30-n1-no_memory-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s2909-t30-n1-no_traits",
+      "group": "main",
+      "arm": "no_traits",
+      "model": "monowheel",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-no_traits/attempt-001/report.json",
+      "current_report_sha256": "f63b4bb33067b32b74fc31af9bcbf206c950c39bfd18d85582d704d9077e1e88",
+      "baseline_report_sha256": "2f0a3112c9f4cbbba8100e7f09d213e1b3686ca1ca2c9b302b9c30048808f397",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s2909-t30-n1-no_traits-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-monowheel-s2909-t30-n1-coarse_only",
+      "group": "main",
+      "arm": "coarse_only",
+      "model": "monowheel",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-monowheel-s2909-t30-n1-coarse_only/attempt-001/report.json",
+      "current_report_sha256": "fc424ac68be962babe54171d5a6a69b3ffed13a24ad08737d55a8763ddfbb57e",
+      "baseline_report_sha256": "193efd8fee81582e65acdf490123e7c140f1cc3f4b47edcef107210254ffe149",
+      "actors": [
+        {
+          "episode_id": "main-pockets-monowheel-s2909-t30-n1-coarse_only-a100",
+          "model": "monowheel",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s2909-t30-n1-legacy",
+      "group": "main",
+      "arm": "legacy",
+      "model": "4ly_trainer",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-legacy/attempt-001/report.json",
+      "current_report_sha256": "098007fe402b9b71745b112b2e5aa55ff481f9cea7442e164010bebb10190cf0",
+      "baseline_report_sha256": "67f36e265a3b8396996314ec2896de91b60061a87346ce02acd09f941f222617",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s2909-t30-n1-legacy-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 4,
+          "current_heading_reversals": 4,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s2909-t30-n1-random",
+      "group": "main",
+      "arm": "random",
+      "model": "4ly_trainer",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random/attempt-001/report.json",
+      "current_report_sha256": "2a4abb852d08814c0f8764dbb1ce25c8752a74253dd6e8f0b7adcb2eaa42df3e",
+      "baseline_report_sha256": "e77611829c67b80455e40393d6a6777b702ed584bf425a934f4308fec702cc13",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s2909-t30-n1-random-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s2909-t30-n1-random_hold",
+      "group": "main",
+      "arm": "random_hold",
+      "model": "4ly_trainer",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-random_hold/attempt-001/report.json",
+      "current_report_sha256": "35673ba0630a6275898b4301659848c475f19e7a26a75420db9023d613aebf70",
+      "baseline_report_sha256": "2b37e7a4680efe623773d49f34a3891790e9f69844327ea42bc3f89228203d34",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s2909-t30-n1-random_hold-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s2909-t30-n1-scripted",
+      "group": "main",
+      "arm": "scripted",
+      "model": "4ly_trainer",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-scripted/attempt-001/report.json",
+      "current_report_sha256": "44d7cb535367e2171317961230e7bb17b4e2bc2033f227d996af106c182877f1",
+      "baseline_report_sha256": "fe67262f8685e01608037f5cbcd1159e42063a3e4e3ef1ffdc8a81839baaec79",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s2909-t30-n1-scripted-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s2909-t30-n1-stateful",
+      "group": "main",
+      "arm": "stateful",
+      "model": "4ly_trainer",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "3bb5fe69cdffffbb42fdc4e7a13d04dcd1a92f9e0b854f1b76d84e7f5d0cd4f6",
+      "baseline_report_sha256": "bccf24c44bcedb6883064c5e83f6b8a1a7badab46f6cf960c521b70db7a0f631",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s2909-t30-n1-stateful-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": 1,
+          "current_failure_events": 1
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s2909-t30-n1-no_memory",
+      "group": "main",
+      "arm": "no_memory",
+      "model": "4ly_trainer",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "e620812cdd561231a0a900b4cfae3a9f32d8acc39fffd2b845876741703c99a3",
+      "baseline_report_sha256": "f5d0232e56c3f08e546cdeed0f53944848169030dbe3ed769eefae5002e03e46",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s2909-t30-n1-no_memory-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s2909-t30-n1-no_traits",
+      "group": "main",
+      "arm": "no_traits",
+      "model": "4ly_trainer",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-no_traits/attempt-001/report.json",
+      "current_report_sha256": "b65d6c540bced7827dff904ba644c64f715926fc21dea601aa3bacb7723196dc",
+      "baseline_report_sha256": "23e678b26c4849480ebe524c184538839f9814dac603b40b218d1e760b5f34de",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s2909-t30-n1-no_traits-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": 1,
+          "current_failure_events": 1
+        }
+      ]
+    },
+    {
+      "campaign_id": "main-pockets-4ly_trainer-s2909-t30-n1-coarse_only",
+      "group": "main",
+      "arm": "coarse_only",
+      "model": "4ly_trainer",
+      "seed": 2909,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/main-pockets-4ly_trainer-s2909-t30-n1-coarse_only/attempt-001/report.json",
+      "current_report_sha256": "a1c1d8ab836d51ce8f292df56026fdca5d44d60443f00d44528226dc6cfdb623",
+      "baseline_report_sha256": "5744fd63a05b4eaf77dcec5f8912dbed7dd7ef135966eccb06b06fa0bfd5f728",
+      "actors": [
+        {
+          "episode_id": "main-pockets-4ly_trainer-s2909-t30-n1-coarse_only-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": 1,
+          "current_failure_events": 1
+        }
+      ]
+    },
+    {
+      "campaign_id": "social-courtyard-runner-s605-t30-n4-legacy",
+      "group": "social",
+      "arm": "legacy",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-legacy/attempt-001/report.json",
+      "current_report_sha256": "cd85c4238eba3e6d0cef9d0ad334fe25bebc47f9edd26fd0413f9702cd8c17c5",
+      "baseline_report_sha256": "f30b9332f76f86bfd98e8a70f17cf840dc1c424e917582bb69a3922be312aaf4",
+      "actors": [
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-legacy-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 62,
+          "current_heading_reversals": 62,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-legacy-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 93,
+          "current_heading_reversals": 93,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-legacy-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 110,
+          "current_heading_reversals": 110,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-legacy-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 93,
+          "current_heading_reversals": 93,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "social-courtyard-runner-s605-t30-n4-stateful",
+      "group": "social",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-stateful/attempt-001/report.json",
+      "current_report_sha256": "c7f416caf87cba30fdc8efb25289a0a2139ac3c25613141a4c83857576ae4528",
+      "baseline_report_sha256": "9543edafd6458f340ce8b50ce749560ef31c5e012951cbc7a48f96b5c8fe668a",
+      "actors": [
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-stateful-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 38,
+          "current_heading_reversals": 38,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-stateful-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 34,
+          "current_heading_reversals": 34,
+          "baseline_failure_events": 1,
+          "current_failure_events": 1
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-stateful-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 15,
+          "current_heading_reversals": 15,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "social-courtyard-runner-s605-t30-n4-no_social",
+      "group": "social",
+      "arm": "no_social",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-no_social/attempt-001/report.json",
+      "current_report_sha256": "e013f4010d6ae3cd7faf1e7cc4e754dafb4573abee3223bec6d3200d6e524aa2",
+      "baseline_report_sha256": "73ee9af5438b428afaa6c8b2d77c36a83276023d90cc7ed9e015064ffab61c61",
+      "actors": [
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-no_social-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 4,
+          "current_heading_reversals": 4,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-no_social-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 9,
+          "current_heading_reversals": 9,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-no_social-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-no_social-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 8,
+          "current_heading_reversals": 8,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "social-courtyard-runner-s605-t30-n4-random",
+      "group": "social",
+      "arm": "random",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/social-courtyard-runner-s605-t30-n4-random/attempt-001/report.json",
+      "current_report_sha256": "8f62e0776c5d62b2e6421610cacf90340c8a7467faa654bb6dec134ab688b93f",
+      "baseline_report_sha256": "e89f7a8325dd68567460a72ddb4b4b60825f0f8875148a9ec59193573790cf91",
+      "actors": [
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-random-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-random-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-random-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        },
+        {
+          "episode_id": "social-courtyard-runner-s605-t30-n4-random-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-sealed_goal-runner-s605-t30-n1-stateful",
+      "group": "adverse",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "e5efdc24b4faf98acc9e9ca3fb75e21748378007bee864ca76cf2f109e2f4a9c",
+      "baseline_report_sha256": "985825c72780310d3752d65602c92104ed45641040952d188af955e6e243fce1",
+      "actors": [
+        {
+          "episode_id": "adverse-sealed_goal-runner-s605-t30-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 7,
+          "current_heading_reversals": 7,
+          "baseline_failure_events": 7,
+          "current_failure_events": 7
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-sealed_goal-runner-s605-t30-n1-no_memory",
+      "group": "adverse",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-sealed_goal-runner-s605-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "c245bd4c61b450789540a22de2ee73b814215fa088808870d12eb4d79cc80f63",
+      "baseline_report_sha256": "f323580b8222a35a179573120482cd4669570ab5ef6c595a591f6d71b47df33a",
+      "actors": [
+        {
+          "episode_id": "adverse-sealed_goal-runner-s605-t30-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 1,
+          "current_heading_reversals": 1,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-moved_material-runner-s605-t30-n1-stateful",
+      "group": "adverse",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "83609860c5c7b90f766cb8e49e690a9a83c7e27ee62ac5f6765e4c408b07f225",
+      "baseline_report_sha256": "2ce8e9ad362dca7c968c5d63040e7f43bfa421fdc606e9ecb9850d99e2e44411",
+      "actors": [
+        {
+          "episode_id": "adverse-moved_material-runner-s605-t30-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-moved_material-runner-s605-t30-n1-no_memory",
+      "group": "adverse",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-moved_material-runner-s605-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "0740a1e0c520c60d2dfaa41b4e09a2de0f53c4907c565df46f42f0cf3c3fae98",
+      "baseline_report_sha256": "9c9eafc643bc95ce12fd9768418f0864860b180cdb8a5e802243af250df23888",
+      "actors": [
+        {
+          "episode_id": "adverse-moved_material-runner-s605-t30-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-blocked_route-runner-s605-t30-n1-stateful",
+      "group": "adverse",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "07f5c79175b912c332fb5828403fc1efc1745614abd0bd6c6be7bfdb8553e578",
+      "baseline_report_sha256": "6d2cb3e9aa45f3be6529eba921a8e3f2a88aa7ce0d328a15e66b8563be4c25a0",
+      "actors": [
+        {
+          "episode_id": "adverse-blocked_route-runner-s605-t30-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 5,
+          "current_failure_events": 5
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-blocked_route-runner-s605-t30-n1-no_memory",
+      "group": "adverse",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-blocked_route-runner-s605-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "93c2eec92063065ef1802315496a43d4f38e41fa7a3d4610dfe07f21f3dadb9f",
+      "baseline_report_sha256": "3cc96497bec6000d312818f3fab782a008993dadae145b48730c8b4cea74ba1a",
+      "actors": [
+        {
+          "episode_id": "adverse-blocked_route-runner-s605-t30-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 3,
+          "current_heading_reversals": 3,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "departure-peer_departure-runner-s605-t30-n2-stateful",
+      "group": "departure",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-stateful/attempt-001/report.json",
+      "current_report_sha256": "1a1d92ca2befd0abb56cf496bed687db971ba5ffd72f20124c18bcaa48cf8f96",
+      "baseline_report_sha256": "ea3329897fe65363f4a7b63c3ff1085de6e42c6d1ab34fab182227f5329785dc",
+      "actors": [
+        {
+          "episode_id": "departure-peer_departure-runner-s605-t30-n2-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 16,
+          "current_heading_reversals": 16,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "departure-peer_departure-runner-s605-t30-n2-stateful-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "departure-peer_departure-runner-s605-t30-n2-no_social",
+      "group": "departure",
+      "arm": "no_social",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/departure-peer_departure-runner-s605-t30-n2-no_social/attempt-001/report.json",
+      "current_report_sha256": "c8b493592f8abd18870907af81cc136c8036ddc5864887ac7d15cd9a70cc0a4a",
+      "baseline_report_sha256": "f6d3e6264e7032f0c0139be3ffb6515d20aeea28d1f15d0651ad48b2c3d4f1b5",
+      "actors": [
+        {
+          "episode_id": "departure-peer_departure-runner-s605-t30-n2-no_social-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 2,
+          "current_heading_reversals": 2,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "departure-peer_departure-runner-s605-t30-n2-no_social-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "capacity-courtyard-runner-s605-t30-n8-legacy",
+      "group": "capacity",
+      "arm": "legacy",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-legacy/attempt-001/report.json",
+      "current_report_sha256": "47865c2ca6b30572e6b231ed80ee8de64a2d16274d19ee0e64d58e228b73590a",
+      "baseline_report_sha256": "f0227bd434f4bc210eb9ac2c92a5bae4b269adfb1de0e7081435d6eb139976f9",
+      "actors": [
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-legacy-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 58,
+          "current_heading_reversals": 58,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-legacy-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 82,
+          "current_heading_reversals": 82,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-legacy-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 118,
+          "current_heading_reversals": 118,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-legacy-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 121,
+          "current_heading_reversals": 121,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-legacy-a104",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 110,
+          "current_heading_reversals": 110,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-legacy-a105",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 112,
+          "current_heading_reversals": 112,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-legacy-a106",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 124,
+          "current_heading_reversals": 124,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-legacy-a107",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 98,
+          "current_heading_reversals": 98,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "capacity-courtyard-runner-s605-t30-n8-stateful",
+      "group": "capacity",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 605,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/capacity-courtyard-runner-s605-t30-n8-stateful/attempt-001/report.json",
+      "current_report_sha256": "39a94013d728379f87035a14b1f8a4f13a7a531fd1a00e7461d7a07b5f0c4b06",
+      "baseline_report_sha256": "9af514a4c088b9e06dabd688b1d84717e4db42fae56adf4bf534280bcb28e4e4",
+      "actors": [
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 13,
+          "current_heading_reversals": 13,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-stateful-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 30,
+          "current_heading_reversals": 30,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-stateful-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 1,
+          "current_heading_reversals": 1,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-stateful-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 27,
+          "current_heading_reversals": 27,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-stateful-a104",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 26,
+          "current_heading_reversals": 26,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-stateful-a105",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 3,
+          "current_heading_reversals": 3,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-stateful-a106",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 2,
+          "current_heading_reversals": 2,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s605-t30-n8-stateful-a107",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 15,
+          "current_heading_reversals": 15,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "social-courtyard-runner-s1701-t30-n4-legacy",
+      "group": "social",
+      "arm": "legacy",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-legacy/attempt-001/report.json",
+      "current_report_sha256": "cdc360dfe5ba3e548cd87d84371cfa95745b36a6f42450a5807a87943f3e0073",
+      "baseline_report_sha256": "0ec7f31b73f8b3d23f5c55208adc452ffd0b8e7d886291fbd29d567fa12400e9",
+      "actors": [
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-legacy-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 99,
+          "current_heading_reversals": 99,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-legacy-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 109,
+          "current_heading_reversals": 109,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-legacy-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 102,
+          "current_heading_reversals": 102,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-legacy-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 100,
+          "current_heading_reversals": 100,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "social-courtyard-runner-s1701-t30-n4-stateful",
+      "group": "social",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-stateful/attempt-001/report.json",
+      "current_report_sha256": "c0fe8af36d3d223982729b0db00bf2ac49880d3ea25ca5ee5deedf33af26b506",
+      "baseline_report_sha256": "6d3fd220e090cdee6f11be76c0b8f39bc556fad8e30e4e9175916f4e38f09c2e",
+      "actors": [
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 9,
+          "current_heading_reversals": 9,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-stateful-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 28,
+          "current_heading_reversals": 28,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-stateful-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 38,
+          "current_heading_reversals": 38,
+          "baseline_failure_events": 1,
+          "current_failure_events": 1
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-stateful-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 14,
+          "current_heading_reversals": 14,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "social-courtyard-runner-s1701-t30-n4-no_social",
+      "group": "social",
+      "arm": "no_social",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-no_social/attempt-001/report.json",
+      "current_report_sha256": "ce33be85892102a1eedf7821bf2f5bdb2e1d65d1159abac5bd87fe64a3f2adab",
+      "baseline_report_sha256": "5a8a464c1ca95e58b9849e504edebf4efb014d0ef86615277f6c3547ff017d5f",
+      "actors": [
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-no_social-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 6,
+          "current_heading_reversals": 6,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-no_social-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 16,
+          "current_heading_reversals": 16,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-no_social-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 17,
+          "current_heading_reversals": 17,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-no_social-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "social-courtyard-runner-s1701-t30-n4-random",
+      "group": "social",
+      "arm": "random",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/social-courtyard-runner-s1701-t30-n4-random/attempt-001/report.json",
+      "current_report_sha256": "1df2e333a17c336ef841f41ec6c045d430b7227c99bae1ad144a9fe3dfb16599",
+      "baseline_report_sha256": "d57a307e0beb902437599bf5cc1bf490193d6921c76310e2d7a878c18ab2f0f4",
+      "actors": [
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-random-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-random-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-random-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        },
+        {
+          "episode_id": "social-courtyard-runner-s1701-t30-n4-random-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-sealed_goal-runner-s1701-t30-n1-stateful",
+      "group": "adverse",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "4f08e0250a024f70c7a94a9879786ed5e3a0042a4037c2e6ae9e4e0189396030",
+      "baseline_report_sha256": "07caa07a3e1222638c3490efc15b98d00df9586d139c37d6e5fb5730946b81cf",
+      "actors": [
+        {
+          "episode_id": "adverse-sealed_goal-runner-s1701-t30-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 7,
+          "current_heading_reversals": 7,
+          "baseline_failure_events": 7,
+          "current_failure_events": 7
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-sealed_goal-runner-s1701-t30-n1-no_memory",
+      "group": "adverse",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-sealed_goal-runner-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "0fafcd65358e2a233d467becd008bf7ff530b7ef1b1fad6849eb8224771b8d2f",
+      "baseline_report_sha256": "9d03f8d0c774170e3d7d5a7bde033ea6e8cde1525e31f5fb336a7d46dcd59aa4",
+      "actors": [
+        {
+          "episode_id": "adverse-sealed_goal-runner-s1701-t30-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 2,
+          "current_heading_reversals": 2,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-moved_material-runner-s1701-t30-n1-stateful",
+      "group": "adverse",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "b194cd37626576ec3e4f53e248a9886305ea69a29824a611c27e3ec3856a1b37",
+      "baseline_report_sha256": "499150bcdfb10e02d13871b500798812c6526fdd24e37f6746d68e81c0076429",
+      "actors": [
+        {
+          "episode_id": "adverse-moved_material-runner-s1701-t30-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-moved_material-runner-s1701-t30-n1-no_memory",
+      "group": "adverse",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-moved_material-runner-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "30d42949626bc6d267a9cff2e12deb0654ee33e75502bdb779850d1237b97172",
+      "baseline_report_sha256": "7f4f37dada81b2f4f0827a7ecaf5ae44416adbd17607871bd355d16b28a1c815",
+      "actors": [
+        {
+          "episode_id": "adverse-moved_material-runner-s1701-t30-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-blocked_route-runner-s1701-t30-n1-stateful",
+      "group": "adverse",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "c08b84519f360d496ab5aef9f63910cf07bdf93c951d651a45894d5e2aeffccf",
+      "baseline_report_sha256": "523c240b29687ff8cb069507342f7f76b051da773aa10482fd627f1da37c6793",
+      "actors": [
+        {
+          "episode_id": "adverse-blocked_route-runner-s1701-t30-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 5,
+          "current_failure_events": 5
+        }
+      ]
+    },
+    {
+      "campaign_id": "adverse-blocked_route-runner-s1701-t30-n1-no_memory",
+      "group": "adverse",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/adverse-blocked_route-runner-s1701-t30-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "41212da29d67452e9fa6bb496c8fc240c1358fde722f4808fcf019138cb28a02",
+      "baseline_report_sha256": "53bc6d08705d1c8abb0030777d98ac1764353ecc2bc43e7044ba776ddb9cfff2",
+      "actors": [
+        {
+          "episode_id": "adverse-blocked_route-runner-s1701-t30-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 1,
+          "current_heading_reversals": 1,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "departure-peer_departure-runner-s1701-t30-n2-stateful",
+      "group": "departure",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-stateful/attempt-001/report.json",
+      "current_report_sha256": "6ab36730f8f0e32aa2bf5a27520be4e0e229f49a9cd698a08789e1efc014a7c9",
+      "baseline_report_sha256": "aefb80769212ed9b9c5a8235a3bb184d34bc0a19de998844b56c22bf21b3499a",
+      "actors": [
+        {
+          "episode_id": "departure-peer_departure-runner-s1701-t30-n2-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 21,
+          "current_heading_reversals": 21,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "departure-peer_departure-runner-s1701-t30-n2-stateful-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "departure-peer_departure-runner-s1701-t30-n2-no_social",
+      "group": "departure",
+      "arm": "no_social",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/departure-peer_departure-runner-s1701-t30-n2-no_social/attempt-001/report.json",
+      "current_report_sha256": "087ea8bc2826c0b4acdba1ee62e774ae73bcf372a75b0d22a8f4305777410c8b",
+      "baseline_report_sha256": "0acbb8c8b04c4ad4f1e12691b6fc58b6c6f8cc984ed96f7a5521cb1be373705b",
+      "actors": [
+        {
+          "episode_id": "departure-peer_departure-runner-s1701-t30-n2-no_social-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 3,
+          "current_heading_reversals": 3,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "departure-peer_departure-runner-s1701-t30-n2-no_social-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "capacity-courtyard-runner-s1701-t30-n8-legacy",
+      "group": "capacity",
+      "arm": "legacy",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-legacy/attempt-001/report.json",
+      "current_report_sha256": "f464e00af9118029610450c6ec29a794f317b181bc1bbfbb6899dc68863772cc",
+      "baseline_report_sha256": "1f89dedcdce50aa3219718150e8e04974827daa957cd9c0aa95102d8dd24c8d6",
+      "actors": [
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-legacy-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 90,
+          "current_heading_reversals": 90,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-legacy-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 97,
+          "current_heading_reversals": 97,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-legacy-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 109,
+          "current_heading_reversals": 109,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-legacy-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 138,
+          "current_heading_reversals": 138,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-legacy-a104",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 113,
+          "current_heading_reversals": 113,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-legacy-a105",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 114,
+          "current_heading_reversals": 114,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-legacy-a106",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 61,
+          "current_heading_reversals": 61,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-legacy-a107",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 84,
+          "current_heading_reversals": 84,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "capacity-courtyard-runner-s1701-t30-n8-stateful",
+      "group": "capacity",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/capacity-courtyard-runner-s1701-t30-n8-stateful/attempt-001/report.json",
+      "current_report_sha256": "4eb6458e5611bccee192fd1f747582b559f25fed03205b08542120c7bb15c0e9",
+      "baseline_report_sha256": "cf7a4fa34990b399534e83c3a4868143ba6038bac345a91d7339395b4789d132",
+      "actors": [
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-stateful-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-stateful-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 16,
+          "current_heading_reversals": 16,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-stateful-a102",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 1,
+          "current_heading_reversals": 1,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-stateful-a103",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 22,
+          "current_heading_reversals": 22,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-stateful-a104",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 17,
+          "current_heading_reversals": 17,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-stateful-a105",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 5,
+          "current_heading_reversals": 5,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-stateful-a106",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 1,
+          "current_heading_reversals": 1,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "capacity-courtyard-runner-s1701-t30-n8-stateful-a107",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "sustained-pockets-runner-s1701-t120-n1-stateful",
+      "group": "sustained",
+      "arm": "stateful",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 120,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "4bf6f9fde8ae431d1433e39f5e2add4d3b4be7c67bb0855081583003853b1870",
+      "baseline_report_sha256": "b9b2b198689f45ea4188946b0d703fd002c97777892f7a354ee3613638bd48a9",
+      "actors": [
+        {
+          "episode_id": "sustained-pockets-runner-s1701-t120-n1-stateful-a100",
+          "model": "runner",
+          "position_samples": 1200,
+          "exact_position_samples": 1200,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 86,
+          "current_heading_reversals": 86,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "sustained-pockets-runner-s1701-t120-n1-no_memory",
+      "group": "sustained",
+      "arm": "no_memory",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 120,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/sustained-pockets-runner-s1701-t120-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "fd045de39d52780faf75466d6da03fc27191f8fb60ce8d93c56cac3222b6b69e",
+      "baseline_report_sha256": "c1a09526b26b76b5faf9e6887e985a40e7d45898197e287a426833098732d6a9",
+      "actors": [
+        {
+          "episode_id": "sustained-pockets-runner-s1701-t120-n1-no_memory-a100",
+          "model": "runner",
+          "position_samples": 1200,
+          "exact_position_samples": 1200,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 45,
+          "current_heading_reversals": 45,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "sustained-pockets-4ly_trainer-s1701-t120-n1-stateful",
+      "group": "sustained",
+      "arm": "stateful",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 120,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "efb489bee3c463fa4683e7965a00422336e99fce7e5454db92308540b71756db",
+      "baseline_report_sha256": "2d4d4251fb894e8b8ada90baf5310a41bbcf62fb1dfef4b3b44d6128efe2676b",
+      "actors": [
+        {
+          "episode_id": "sustained-pockets-4ly_trainer-s1701-t120-n1-stateful-a100",
+          "model": "4ly_trainer",
+          "position_samples": 1200,
+          "exact_position_samples": 725,
+          "maximum_position_difference_cells": 110.25440978261288,
+          "exact_complete_trace": false,
+          "baseline_heading_reversals": 22,
+          "current_heading_reversals": 21,
+          "baseline_failure_events": 1,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory",
+      "group": "sustained",
+      "arm": "no_memory",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 120,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "707427fdbfd1b5ea56e6919822be9395f281a25526c974615b20cdfba0de6d46",
+      "baseline_report_sha256": "8b95e1e80895985b960c4d23b26fea812b3f1a99bfc0cf1fc511bdaa5d8d1662",
+      "actors": [
+        {
+          "episode_id": "sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory-a100",
+          "model": "4ly_trainer",
+          "position_samples": 1200,
+          "exact_position_samples": 688,
+          "maximum_position_difference_cells": 87.82148880171829,
+          "exact_complete_trace": false,
+          "baseline_heading_reversals": 14,
+          "current_heading_reversals": 17,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "sustained-pockets-monowheel-s1701-t300-n1-stateful",
+      "group": "sustained",
+      "arm": "stateful",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 300,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-stateful/attempt-001/report.json",
+      "current_report_sha256": "33dc4e938f366c54ad19f50c1531ffffd0d0e0e340f29c6654d2365ce26744f9",
+      "baseline_report_sha256": "43bc35e5ffd2d926fb6e5c5b95de250c1e9afa86cc39456193bf96bd66caf9b5",
+      "actors": [
+        {
+          "episode_id": "sustained-pockets-monowheel-s1701-t300-n1-stateful-a100",
+          "model": "monowheel",
+          "position_samples": 3000,
+          "exact_position_samples": 3000,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 173,
+          "current_heading_reversals": 173,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "sustained-pockets-monowheel-s1701-t300-n1-no_memory",
+      "group": "sustained",
+      "arm": "no_memory",
+      "model": "monowheel",
+      "seed": 1701,
+      "seconds": 300,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/sustained-pockets-monowheel-s1701-t300-n1-no_memory/attempt-001/report.json",
+      "current_report_sha256": "3f18671a2f431de80e013d8ed10fd7412ed0db8170f10bdf50527b3ceba0cfcc",
+      "baseline_report_sha256": "ea9c78ea18423529bb748c04a286a05b9c6d8b145aabf810530d57f9576e1c8b",
+      "actors": [
+        {
+          "episode_id": "sustained-pockets-monowheel-s1701-t300-n1-no_memory-a100",
+          "model": "monowheel",
+          "position_samples": 3000,
+          "exact_position_samples": 3000,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 106,
+          "current_heading_reversals": 106,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-oil_moth",
+      "group": "catalogue",
+      "arm": "oil_moth",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-oil_moth/attempt-001/report.json",
+      "current_report_sha256": "9482aa58ccadfb23db728ed45ad42e2ad22ba561579e1f023a8d50d391fe51c6",
+      "baseline_report_sha256": "de96637c3b98e866219dc1664e8d3ebc6e9ec76b4f475d395342750383205f63",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-oil_moth-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 11,
+          "current_heading_reversals": 11,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-oil_moth-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-shy_crawler",
+      "group": "catalogue",
+      "arm": "shy_crawler",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-shy_crawler/attempt-001/report.json",
+      "current_report_sha256": "7f546207067ef4ef5e646d2a0363d3adc4423cc72fdadd9c8ea1b60668fca771",
+      "baseline_report_sha256": "4a0bd4cf36ee5f79ea12425c4d8ed0c81a213e54894e4ba391711e2891dfd531",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-shy_crawler-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 16,
+          "current_heading_reversals": 16,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-shy_crawler-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-curious_surveyor",
+      "group": "catalogue",
+      "arm": "curious_surveyor",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-curious_surveyor/attempt-001/report.json",
+      "current_report_sha256": "06f865cefdc408f3b685aab9d46280f33870e634117d6bccea10468d72802f21",
+      "baseline_report_sha256": "210910dc337203e731a3d94fbbb4d3a66eae2a75824a3e1511be1c36b8396806",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-curious_surveyor-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 5,
+          "current_heading_reversals": 5,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-curious_surveyor-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-idle_mechanic",
+      "group": "catalogue",
+      "arm": "idle_mechanic",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-idle_mechanic/attempt-001/report.json",
+      "current_report_sha256": "77e3fee8c1c2af1105b99084047e225233507d4cbc631cc97402e1b49f6d9328",
+      "baseline_report_sha256": "1e8036a73dd1099eda21a0dd1f44ab7e86756b57febdaa83d96e7033168f86dc",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-idle_mechanic-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 5,
+          "current_heading_reversals": 5,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-idle_mechanic-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer",
+      "group": "catalogue",
+      "arm": "drifting_flyer",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer/attempt-001/report.json",
+      "current_report_sha256": "eecf9ce3b6bf841d739904adcfa3b006a4e4c2b56d1b1ccaf0666ea7de6742a0",
+      "baseline_report_sha256": "7a0493fbe08ba84ec5855dc7046cc19f7e92c73b569afd606f0fc2d74d2fabb5",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 2,
+          "current_heading_reversals": 2,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer-a101",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-social_roamer",
+      "group": "catalogue",
+      "arm": "social_roamer",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_roamer/attempt-001/report.json",
+      "current_report_sha256": "96ccd953ec1950fcb435679bbeb4c46e7afca787cbb3b19c951a61d864d172ca",
+      "baseline_report_sha256": "0a3c2b2bb557dcea46f0727d4af61587d3be06bdbf40209c32ae1f1f842d1c5f",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-social_roamer-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 127,
+          "current_heading_reversals": 127,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-social_roamer-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-restless_explorer",
+      "group": "catalogue",
+      "arm": "restless_explorer",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-restless_explorer/attempt-001/report.json",
+      "current_report_sha256": "e419c9e70f435da07e90ff2d9669c747f5f32434a5e852f9c0f3afc1928b3b0f",
+      "baseline_report_sha256": "ba49ce2082d9de98d811a6deba5d7f66db63be3846c1640e51c3d2689e7f1fbe",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-restless_explorer-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 12,
+          "current_heading_reversals": 12,
+          "baseline_failure_events": 5,
+          "current_failure_events": 5
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-restless_explorer-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-territorial_watcher",
+      "group": "catalogue",
+      "arm": "territorial_watcher",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-territorial_watcher/attempt-001/report.json",
+      "current_report_sha256": "e492708b401267ef10ecb7fea1b110bc5568d4a6d8a93c68db1dcaf31af492e8",
+      "baseline_report_sha256": "5d53b0369829e1f5f5d0d525f2207085590ee64d39ff0fe466e6ee00352371eb",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-territorial_watcher-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 6,
+          "current_heading_reversals": 6,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-territorial_watcher-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-social_drifter",
+      "group": "catalogue",
+      "arm": "social_drifter",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-social_drifter/attempt-001/report.json",
+      "current_report_sha256": "0e1dded704832dea5005d26b9067b8f93253920ac95a167fc253f672fda827eb",
+      "baseline_report_sha256": "913666303bee000adf2cd82d413b680fa77bcfe402b5c8c21ede9382c620b9bf",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-social_drifter-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 64,
+          "current_heading_reversals": 64,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-social_drifter-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-timid_follower",
+      "group": "catalogue",
+      "arm": "timid_follower",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-timid_follower/attempt-001/report.json",
+      "current_report_sha256": "e37661a59741de6990d1cf401129ab0a66a96c5e59713ba7b71f1ab54fe0f704",
+      "baseline_report_sha256": "04d8e236e47c68735c8b0a3a7dd2da472239eb9c084fab8565a9ea8ffd2de7d0",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-timid_follower-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 49,
+          "current_heading_reversals": 49,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-timid_follower-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger",
+      "group": "catalogue",
+      "arm": "persistent_scavenger",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger/attempt-001/report.json",
+      "current_report_sha256": "d659d8cd71a452f34dc2126155bcfcf622d42df941eab2066efe2ded1484a9ad",
+      "baseline_report_sha256": "30fbb146cd8b3b96d06bbbf1e09ea8e6fd1a0dc4f319f0891e60ed19a354228d",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 17,
+          "current_heading_reversals": 17,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-routine_patrol",
+      "group": "catalogue",
+      "arm": "routine_patrol",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-routine_patrol/attempt-001/report.json",
+      "current_report_sha256": "123d7678d248c4dbcbb46fd3d9bb7d3dff797bc478c9060c3c0a67d4d125f434",
+      "baseline_report_sha256": "d19b78e7cd8106db8a2929f00a31c6058cdcf49e90b4514e58d8e97de8ceb9ce",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-routine_patrol-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 22,
+          "current_heading_reversals": 22,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-routine_patrol-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-independent_wanderer",
+      "group": "catalogue",
+      "arm": "independent_wanderer",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-independent_wanderer/attempt-001/report.json",
+      "current_report_sha256": "ee9eea3f030c9123c7c3c3ab90e221a5fc307e33d18510e041e085387e47c1bc",
+      "baseline_report_sha256": "39ba3c5c3a327abb7ee09e8b482f87af31523762276342c65e7365cc2daa0af5",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-independent_wanderer-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 23,
+          "current_heading_reversals": 23,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-independent_wanderer-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer",
+      "group": "catalogue",
+      "arm": "cautious_flyer",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer/attempt-001/report.json",
+      "current_report_sha256": "5b12b955862119dac147605c6060b88384d6fe5a89aff525c3cb3551446681ab",
+      "baseline_report_sha256": "94aaa12948ebbecfda4d6226fd89f23768e6101fb510d64d0d0738ea3bf42043",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 2,
+          "current_heading_reversals": 2,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer-a101",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer",
+      "group": "catalogue",
+      "arm": "boundary_grazer",
+      "model": "4ly_trainer",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer/attempt-001/report.json",
+      "current_report_sha256": "5c4d2b050fa386e312cbc771460cb5f95c1d20997f746c9865311165ed4e65f9",
+      "baseline_report_sha256": "86415c08b33b4a24f68dbdd7f2212cf970ab1341fc318b1aefe0420379ce3843",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer-a100",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 3,
+          "current_heading_reversals": 3,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer-a101",
+          "model": "4ly_trainer",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    },
+    {
+      "campaign_id": "catalogue-pockets-runner-s1701-t30-n2-homebody_keeper",
+      "group": "catalogue",
+      "arm": "homebody_keeper",
+      "model": "runner",
+      "seed": 1701,
+      "seconds": 30,
+      "initial_materials_pose_geometry_and_profiles_match": true,
+      "original_report_path": "episodes-full/shards/catalogue-pockets-runner-s1701-t30-n2-homebody_keeper/attempt-001/report.json",
+      "current_report_sha256": "be1066c2bcd4cd39fe90ecd3c9bc28abfe0a6ee82239c62ab4ed79c891f1be38",
+      "baseline_report_sha256": "17f9030dbe64aaf6d65aa450256a713a1faa65d89e0b2351aba1512dbde7aeb5",
+      "actors": [
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-homebody_keeper-a100",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": false,
+          "baseline_heading_reversals": 10,
+          "current_heading_reversals": 10,
+          "baseline_failure_events": 0,
+          "current_failure_events": 0
+        },
+        {
+          "episode_id": "catalogue-pockets-runner-s1701-t30-n2-homebody_keeper-a101",
+          "model": "runner",
+          "position_samples": 300,
+          "exact_position_samples": 300,
+          "maximum_position_difference_cells": 0.0,
+          "exact_complete_trace": true,
+          "baseline_heading_reversals": 0,
+          "current_heading_reversals": 0,
+          "baseline_failure_events": null,
+          "current_failure_events": null
+        }
+      ]
+    }
+  ],
+  "auditor_sha256": "03b6a381ea2ae5bb562fa3adc1cbaed3e041383df2270915d21c36aef86830fe",
+  "limits": [
+    "Separate hosted re-executions of the same registered cases do not add independent treatment registrations.",
+    "The complete loaded project differs only at the three independently approved source/test/help paths.",
+    "The qualified source inventory also contains the separately pinned new qualification-request marker; it is not a loaded Godot application input.",
+    "Pose/trajectory differences after re-execution are descriptive and are not all uniquely attributable to the recharge change.",
+    "Elapsed-call timings depend on the hosted machine and are not CPU utilization or physical presentation acceptance.",
+    "This local readback uses exact pinned analysis bytes, not a claim that the local mutable source checkout is a clean qualified execution."
+  ]
+}

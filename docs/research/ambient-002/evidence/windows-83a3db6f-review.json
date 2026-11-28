@@ -1,0 +1,1414 @@
+{
+  "schema": "ambient-002-windows-artifact-review/v1",
+  "source_commit": "83a3db6ffb207761df999abedac77eb1401604a8",
+  "source_tree": "9037dc374a782d60df116e1731a05abacb54a6cf",
+  "run_id": 45536810257,
+  "windows_job_id": 138945319423,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/45536810257",
+  "reviewer": "Specialist C; independent readback of hosted execution and package output by the editor/scenario author. This is not an independent user study.",
+  "outer_artifacts": [
+    {
+      "id": 14988512726,
+      "name": "ambient-002-evidence-83a3db6ffb207761df999abedac77eb1401604a8",
+      "bytes": 28274245,
+      "sha256": "d06ed44aa613ae2433b11ca36c9d13ee14ce34790cb068554448a2f49119f779"
+    },
+    {
+      "id": 14987898480,
+      "name": "ambient-002-windows-83a3db6ffb207761df999abedac77eb1401604a8",
+      "bytes": 100883497,
+      "sha256": "65514414bda02197c27a29033cbbf6ab268a2ac3484cce682404f2ff1da69915"
+    }
+  ],
+  "portable_zip": {
+    "name": "CyberSand-AMBIENT-002-Windows-83a3db6ffb20.zip",
+    "bytes": 101252911,
+    "sha256": "5dbd1640488bb2d23d1dd6ca1a0a048590920e4568620aeae0e3e9945ae5f3d7",
+    "manifest_sha256": "cdc2243fb954f8e5a3fa107538f422fea0de733517b0e6da4815075aa683e293",
+    "payload_files_independently_hash_checked": 1305,
+    "unexpected_members": 0,
+    "zip_crc_integrity": "passed",
+    "qualification_platform": "win32",
+    "owner_playfeel_accepted": false
+  },
+  "cross_campaign_identity": {
+    "source_commit_and_tree_equal": true,
+    "source_inputs_equal": true,
+    "project_inputs_equal": true,
+    "retained_runtime_equal": true,
+    "image_bytes_required_equal": false,
+    "cross_campaign_identical_png_bytes": 0
+  },
+  "runtime": {
+    "cybersand_runtime": {
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "size": 5820416
+    },
+    "rapier_runtime": {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "size": 9987072
+    },
+    "runtime_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+    "runtime_provenance": {
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+    },
+    "runtime_source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299"
+  },
+  "godot": {
+    "gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "campaigns": {
+    "ambient": {
+      "qualification_sha256": "a2456a9b63171a6b4521c93cf7bf57173bb4257da3932a3783e83f219b1318bf",
+      "status": "passed",
+      "input_custody": "passed",
+      "platform": "win32",
+      "elapsed_seconds": 332.937,
+      "complete_campaign": true,
+      "cases": [
+        {
+          "name": "engine",
+          "checks": 895,
+          "status": "passed",
+          "process_sha256": "86eb40076ae5f588fe1df3eff634282e0d6f35b293d2278e32399530dffead81",
+          "log_sha256": "c10cc506860c5159917f6337a1b00b387d41c50c05517984585b51ac63f402a1"
+        },
+        {
+          "name": "independent",
+          "checks": 214,
+          "status": "passed",
+          "process_sha256": "61b52bd5508503994f2bf124b3bf67576fd702cd3f34e4940665428b32f67509",
+          "log_sha256": "a4fdfe8de44f6fd66826a615d11e9ed1575f7364b0918f94ae1271487d60996b"
+        },
+        {
+          "name": "perception",
+          "checks": 130,
+          "status": "passed",
+          "process_sha256": "8aca6b36b526019cfc756648246c2d7174014d35f90033bb35489a682d6a2acf",
+          "log_sha256": "b346d4d33336a4120c309660a1314571cb820ea3595148af259c66b04df4a2f4",
+          "report_sha256": "4197b56c3eb68a3f0f23969a431406bd2bbc016a9d490be3a513a887b7bd4919"
+        },
+        {
+          "name": "ledge_geometry",
+          "checks": 15,
+          "status": "passed",
+          "process_sha256": "98ae7a8f43535039588a74fb15f8658fb323bfb92b4b684b123a8f8544d9f2ff",
+          "log_sha256": "bba3bcc8d60528a0b8e6a5e8a2a7f9170b7f4af3bb4710d6a30f467816d5963a"
+        },
+        {
+          "name": "clock",
+          "checks": 21,
+          "status": "passed",
+          "process_sha256": "5a77b257593c7f1842b4579d844dc75f83e79f0835106fd72fc72cd9ebf0907b",
+          "log_sha256": "e129543631ad42885dfd266878ef11b732b120c77ed55411307fbd88918ad2c6"
+        },
+        {
+          "name": "authoring_save",
+          "checks": 278,
+          "status": "passed",
+          "process_sha256": "60dd5fc307d63353f709b3c687206d909a2f06778b2fc13a34c7cd235aa79bd6",
+          "log_sha256": "6dbacb305d7198a934d57088fa39d1fbe6be6fe5e480a873ae6a5f7e65a263b3"
+        },
+        {
+          "name": "authoring_reopen",
+          "checks": 292,
+          "status": "passed",
+          "process_sha256": "e00336005c38b742df6de2ef477dc5824aff0df72f15383453af6fb90ae6c2e5",
+          "log_sha256": "9ac82e745b040634cd34b34fccc434d88966dd047e4274a1fb380a28502f006b"
+        },
+        {
+          "name": "editor",
+          "checks": 46,
+          "status": "passed",
+          "process_sha256": "551a212f8b7cd1f3fe4bd7e24055e33ec51c41c45377b43821aa9f0321c77eaf",
+          "log_sha256": "0c6e07344731593d46dc3e54e1d2d20378da071347dbee8b396d5ea8a8a439ee",
+          "report_sha256": "793e587ecf5226597ae09a9afbddd0519d7c9235b211c4ae728bb1d17293f09e"
+        },
+        {
+          "name": "native_motion",
+          "checks": 306,
+          "status": "passed",
+          "process_sha256": "bd39a937e81f012f60c3dd312be7d5aa88707355fc3c03f889ffcb969d068a8f",
+          "log_sha256": "310cfd70b46ca0286753ea3be4d9935adcda8819074d53ebfb61f8b08fce5f07",
+          "report_sha256": "24a388435cc229d0dd770607beec4b8c7667a90a6d471a2196b2747a828d4937"
+        },
+        {
+          "name": "personalities",
+          "checks": 2877,
+          "status": "passed",
+          "process_sha256": "d4fbf49c8bc2ecb0b3ab945af2c90ed54317de84cdbfea387a5477d0d04ddc77",
+          "log_sha256": "f2e0f36d8763a9e17c817cf5381387c0ec52b1b8337748829acabe860717c9f7",
+          "report_sha256": "f6f3032e5c339da2127abe50d408499d1c4bb97681d51ca21ab6d7c8459c4e8e"
+        },
+        {
+          "name": "workbench",
+          "checks": 43,
+          "status": "passed",
+          "process_sha256": "7fc93d9dee7929ae25eab6793833b0b6cb6522e0ee08e335f677e55f1e78a6af",
+          "log_sha256": "ad1cf3131fea3d98e8f9ee1e37715f7a6c3e73f524182a42cef3117f174e1cf0",
+          "report_sha256": "ad77fad6349c5172842fe817a1938d6c2b61ed093a60ab6e1afadb23b5c8d67b"
+        },
+        {
+          "name": "examples",
+          "checks": 121,
+          "status": "passed",
+          "process_sha256": "a80db67c37485cfa8eeaf229bd949fa5aa9266d9fa2ca09872c851f557b5155f",
+          "log_sha256": "e90096a9bd39eea6c322bf4aa4c2334692dbcfa96a951b70bc70dea36970488c",
+          "report_sha256": "7ea218404c5d64899e8aa27ae8d1f77116777907abe33c794c4d5d887299b249"
+        },
+        {
+          "name": "living_authoring_save",
+          "checks": 282,
+          "status": "passed",
+          "process_sha256": "91e4a4af11ded77c9d431e7437a3d4e6f3b9600e06e879e86bbe277b7c5b0688",
+          "log_sha256": "8f4105dd1bb7ad42054cde81735722551ea7463fbd574753bf8a96ee198834dc"
+        },
+        {
+          "name": "living_authoring_reopen",
+          "checks": 289,
+          "status": "passed",
+          "process_sha256": "db11a3f3872b3fffca87f26ce1dcbe203ca201c9b0a75a87df7a0e3c743d7421",
+          "log_sha256": "990009c8d8c2b3f0cf89d5adb4db90951e00ff9b9a3520fe226c759a1d6d9fe9"
+        },
+        {
+          "name": "living_editor",
+          "checks": 96,
+          "status": "passed",
+          "process_sha256": "fd36185a532e74ea8ce41ef455bf8ca40dc989c2f35122e6583d898c48ffc7ee",
+          "log_sha256": "d5b827dd33944754348ebfd6fd8fb6af6a9f4b4a30183ede90cb67276796326f",
+          "report_sha256": "0c7a4cae82d2e0f2d06aabf091ed8a948979ef04642852fed022a95361dd6caa"
+        },
+        {
+          "name": "living_engine",
+          "checks": 567,
+          "status": "passed",
+          "process_sha256": "8fa8f31e99406269cfe496186bd490c87774421a7d8985e29142d7f4cb2f2e84",
+          "log_sha256": "f51ce98c27f55cadfebc6af6f0f097f1d8adbd29b9bd95988fad76a7feca5d57",
+          "report_sha256": "bd5429ed6e8db02fcaf71ce65914d1c24ecd94a39a2d1fa157b2d5350e8d5d69"
+        },
+        {
+          "name": "living_group",
+          "checks": 40,
+          "status": "passed",
+          "process_sha256": "ba8f41ed6dc244f1ada12beae376066e79051d3307d5e5c946ce022db7d9582b",
+          "log_sha256": "ea10f110f76c580f6f2ca7957e0ea73a60fd1d1a5111d008cc11a66c197adf3e"
+        },
+        {
+          "name": "living_spatial",
+          "checks": 2644,
+          "status": "passed",
+          "process_sha256": "087ae32b69a58da2f58b13bd810b2e2631aa78b3179717ad6bd31a31ef5b852c",
+          "log_sha256": "5eff50e334f46d624c488f5e2f944efad53206d4b559124c10549c6130aae7cc",
+          "report_sha256": "a8ad7ac45111c199bb667fe70e54a84024c6171624489c6a7872bda2f40775b1"
+        },
+        {
+          "name": "living_episodes",
+          "checks": 5091,
+          "status": "passed",
+          "process_sha256": "b931fc1a8840456c3f8e784a95c7d11bbf5213ae3cff3f7f5bbd13cc1355e134",
+          "log_sha256": "35b396e7513d4a55732b2102821df87fedc271f8e89125ca53c5c40f8c1d615d",
+          "report_sha256": "d4faf80272fe1c112595db46fde83d1e4a8dafcfaeef1c549821cbbc1dbf996e"
+        },
+        {
+          "name": "living_examples",
+          "checks": 210,
+          "status": "passed",
+          "process_sha256": "cecc945f3f6d7d4cc21b437a43517809e32d40392341e0d28c17e0fc78038063",
+          "log_sha256": "fafa025687052fafe46cb0e18b04cc474514e830a06f93abaaca428fcf988933",
+          "report_sha256": "368cf58a20ccda6d3d19e17f0c219269729097f5be07a6d1a724347cccd913fc"
+        },
+        {
+          "name": "legacy_catalog",
+          "checks": 415,
+          "status": "passed",
+          "process_sha256": "1cc12214901febdfd25833a678db2f905f8d95f1ab8727e6f14f58cc506901d6",
+          "log_sha256": "60c439e4288679f1d01c6e6837149481a65f180a839ef686a2e4676e866251ea"
+        },
+        {
+          "name": "legacy_composition",
+          "checks": 199,
+          "status": "passed",
+          "process_sha256": "3e0cb0da6b6f860a742b961bb3744ebd2377edd8f7f8ce886c6a5a0abde1c67b",
+          "log_sha256": "33e928f590ac58ffcf89dbf0b67e73027f25ee9d2274ed7dc1fbe9ec308ad84e"
+        },
+        {
+          "name": "legacy_session",
+          "checks": 84,
+          "status": "passed",
+          "process_sha256": "fe31c0a296a29e87c41bf55d3c5d363e868e7f33404df18156001114551f94b6",
+          "log_sha256": "d384e20fac6d6090022a4f39e214d960231d1237c1c9a74aa9583b7b967da8f9"
+        },
+        {
+          "name": "legacy_physical",
+          "checks": 113,
+          "status": "passed",
+          "process_sha256": "5bcc9d83d3b5bdc50b68abf18d275a5e492bbb7f6254050a98cb3878ae7cba9b",
+          "log_sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72"
+        }
+      ],
+      "checks": 15268,
+      "original_process_custody": "Every recorded process JSON, log and optional report was independently checked against its campaign hash.",
+      "live_editor": {
+        "checks": 96,
+        "live_audition": {
+          "applied_generation": 6,
+          "paused_generation": 4,
+          "playing_generation": 5,
+          "resume_configuration_unchanged": true,
+          "unapplied_configuration_unchanged": true,
+          "unapplied_generation": 5
+        },
+        "layout_cases": 9
+      }
+    },
+    "ambient-graphical": {
+      "qualification_sha256": "58de58915eeee75cccc3ce8ae72c3b94add1ebbb1624df4740432ede7b8f579b",
+      "status": "passed",
+      "input_custody": "passed",
+      "platform": "win32",
+      "elapsed_seconds": 378.219,
+      "complete_campaign": false,
+      "cases": [],
+      "checks": 0,
+      "original_process_custody": "Every recorded process JSON, log and optional report was independently checked against its campaign hash.",
+      "graphical": {
+        "report_sha256": "8eb9f9580f777842970996d0566e2e4eba66e808513c7c0b7a3c36161f1d20b0",
+        "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "display": "Windows",
+        "rendering_driver": "opengl3_angle",
+        "captured_dimensions": [
+          1028,
+          578
+        ],
+        "requested_dimensions": [
+          1600,
+          1000
+        ],
+        "images": [
+          {
+            "name": "ambient-behaviour-profile-editor.png",
+            "sha256": "121562e5bbc0b4e817732ba2724df3a252f24fc0a29a49b7b05007e2c1a894c4",
+            "bytes": 162073,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-flight-authored.png",
+            "sha256": "2ba9b18bfb3dcde6d4a4165d5be99b0f2173cab2c2b0ed8cc857cf94ab895e19",
+            "bytes": 150275,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-flight-playing.png",
+            "sha256": "c9e8050b622bfee7796d5ba67869ff9ae71773534c457d214bab5f53b32a0946",
+            "bytes": 151784,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-industrial-yard-authored.png",
+            "sha256": "678fb0db036a957b35c1c17d3d9e2a0f84f47ee75eebc2df7e3338340e270b50",
+            "bytes": 149844,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-industrial-yard-playing.png",
+            "sha256": "22846ca240ff6d6ee9aebda6b54afe9a9e376d7f1b3ae2440356bd806ecccac0",
+            "bytes": 159467,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-ledge-walkway-authored.png",
+            "sha256": "b265d3ec4a2370833e11c62f671c4e913bd658b30016bb32975dc760a33e7e0b",
+            "bytes": 142731,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-ledge-walkway-playing.png",
+            "sha256": "d08beb68e43dd5b4f4a93d24c56b16a74c85826c1c94d397a8648bc039594aae",
+            "bytes": 143840,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-oil-water-authored.png",
+            "sha256": "b097bcf7eb3fa477c43627d2946e6d551694359d0038d2eb04d59d686abc343c",
+            "bytes": 121351,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-oil-water-overlay.png",
+            "sha256": "624e3dcb5a4456d05a3d8f7e77133cbc2148c68a4d1d3bea3193fef991d4aa06",
+            "bytes": 124292,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-oil-water-playing.png",
+            "sha256": "694d2a45b8b7da97e01cbdf2caff840b65c0edb8832ed92554b510a3c099abcf",
+            "bytes": 121529,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-settlement-authored.png",
+            "sha256": "b68155d9f6a8f171a2c60b709239cebb9bffe5e9b00dff475ef5732aff252119",
+            "bytes": 182661,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-settlement-playing.png",
+            "sha256": "173401617405d34a073404c1e5b87d2051f2f535ebe163721ae3c4a990e8218f",
+            "bytes": 189457,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-aerial-habitat-authored.png",
+            "sha256": "9d72bf7cfe5ef4d5a7d9f73d3ec8260c1b2c5646c629d9cdc72b2569f2ff7b5c",
+            "bytes": 237865,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-aerial-habitat-playing.png",
+            "sha256": "06b3059d4baf9e3d78515ffd93ae55c78c9366eac5ceb96498510292461d364b",
+            "bytes": 238369,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-behaviour-profile-editor.png",
+            "sha256": "a0b9d5cf54a630ae3cc6576b6a1a4668ffd2a3e3a1eff17007a4ec64c6d817b9",
+            "bytes": 272962,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-cavern-authored.png",
+            "sha256": "1c0bba7a2038d5f867e0a9660ff928cba592b3f11ff6f30e1e3fb36760da1384",
+            "bytes": 255297,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-cavern-playing.png",
+            "sha256": "e6f2c323ba3ec535485c82f13114578c9c8f7be48511cda7c490faee258ce5c1",
+            "bytes": 275261,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-courtyard-authored.png",
+            "sha256": "60ad37816f0564ec4b34f841f65ea11713600be68fb09598f935002dd414fa7a",
+            "bytes": 237121,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-courtyard-playing.png",
+            "sha256": "4d939c838f2c8d546a18a06467361880ddb4618d1ee5b876d75574009664bb77",
+            "bytes": 237590,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-floodyard-authored.png",
+            "sha256": "10178a0e6c9f89aa4ebd763d9cffe6640ad6a952ad16f0d78b42d7d7d8ca875a",
+            "bytes": 283260,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-floodyard-playing.png",
+            "sha256": "f553f98b9ae92d9e808543a9018e98ea5a95a714c9df3884aac1dd5d55493faf",
+            "bytes": 288135,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-library-and-group.png",
+            "sha256": "e80231f4549886461ac433dc7697534f0502b2fc48fab5ae987323de40e1fcbd",
+            "bytes": 275892,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-personality-settings.png",
+            "sha256": "74a15f6ce46243f55af8bb51289532a1b82a9d59d3505b05429520e30fc367c8",
+            "bytes": 277289,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-places-and-peers.png",
+            "sha256": "d7247746afc7c858e33a48bb6afe637fba13e6884a774686cba55d4874a19e8e",
+            "bytes": 268465,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-refinery-authored.png",
+            "sha256": "d4b6bba116bb0c8884dc3bf81d64fc51150c58ec554894a08084a609c8889a80",
+            "bytes": 285238,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-refinery-playing.png",
+            "sha256": "170ab2f1d304014bcb7960ee0d5b45836917c171cd2880cbc5049df132875470",
+            "bytes": 289986,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-settlement-authored.png",
+            "sha256": "2783062f2f390771345d357690e272418a64210ac3f45017f5687e4ecc1d2b8d",
+            "bytes": 292842,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-settlement-overlay.png",
+            "sha256": "3a63f87e100a8b01a4bdd9fbb33045cd2d771965882aade85d1c8e6eac487211",
+            "bytes": 298842,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-settlement-playing.png",
+            "sha256": "67cbe394b43b88429abdd2c6fccfc37bef2b8c04e5702230be81ec6e9b4ea714",
+            "bytes": 293067,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          }
+        ],
+        "matched_displayed_actor_frames": 29,
+        "phases": [
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 474958,
+              "mean_usec": 156579.189393939,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 33937,
+              "observed_intervals": 132,
+              "p50_usec": 158335,
+              "p95_usec": 396697,
+              "p99_usec": 469976,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 132,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-oil-water",
+            "memory_bytes": 116348569,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 20714594
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 259637,
+              "mean_usec": 165850.294642857,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 62998,
+              "observed_intervals": 112,
+              "p50_usec": 164909,
+              "p95_usec": 173669,
+              "p99_usec": 259393,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 112,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-ledge-walkway",
+            "memory_bytes": 121514061,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 18615211
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 271972,
+              "mean_usec": 171053.579831933,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 63009,
+              "observed_intervals": 119,
+              "p50_usec": 171241,
+              "p95_usec": 176486,
+              "p99_usec": 265789,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 119,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-industrial-yard",
+            "memory_bytes": 124349093,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 20396362
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 486278,
+              "mean_usec": 164057.463636364,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 58309,
+              "observed_intervals": 110,
+              "p50_usec": 165260,
+              "p95_usec": 219388,
+              "p99_usec": 469492,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 110,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-settlement",
+            "memory_bytes": 125347865,
+            "native_ticks": 120,
+            "passed": true,
+            "physical_ticks": 121,
+            "requested_physical_ticks": 120,
+            "wall_usec": 18177056
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 255467,
+              "mean_usec": 165253.366666667,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 65197,
+              "observed_intervals": 120,
+              "p50_usec": 163265,
+              "p95_usec": 173076,
+              "p99_usec": 175916,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 120,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-flight",
+            "memory_bytes": 121392289,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 19866188
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 502940,
+              "mean_usec": 201919.528846154,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 69659,
+              "observed_intervals": 104,
+              "p50_usec": 201877,
+              "p95_usec": 294869,
+              "p99_usec": 325509,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 104,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-settlement",
+            "memory_bytes": 130294258,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 21075026
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 312262,
+              "mean_usec": 199119.389830508,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 79575,
+              "observed_intervals": 118,
+              "p50_usec": 198426,
+              "p95_usec": 295554,
+              "p99_usec": 305679,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 118,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-refinery",
+            "memory_bytes": 135318921,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 23568726
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 482008,
+              "mean_usec": 204140.933884298,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 41035,
+              "observed_intervals": 121,
+              "p50_usec": 203963,
+              "p95_usec": 213991,
+              "p99_usec": 294859,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 121,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-cavern",
+            "memory_bytes": 136962706,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 24771929
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 307241,
+              "mean_usec": 167622.516949153,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 67702,
+              "observed_intervals": 118,
+              "p50_usec": 168554,
+              "p95_usec": 220297,
+              "p99_usec": 242579,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 118,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-courtyard",
+            "memory_bytes": 135443235,
+            "native_ticks": 120,
+            "passed": true,
+            "physical_ticks": 121,
+            "requested_physical_ticks": 120,
+            "wall_usec": 19980948
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 322629,
+              "mean_usec": 199845.65,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 58937,
+              "observed_intervals": 120,
+              "p50_usec": 201032,
+              "p95_usec": 294976,
+              "p99_usec": 314484,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 120,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-floodyard",
+            "memory_bytes": 135007289,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 24061444
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 289076,
+              "mean_usec": 207440.283333333,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 39574,
+              "observed_intervals": 120,
+              "p50_usec": 210183,
+              "p95_usec": 219302,
+              "p99_usec": 231048,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 120,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-aerial-habitat",
+            "memory_bytes": 136059911,
+            "native_ticks": 120,
+            "passed": true,
+            "physical_ticks": 121,
+            "requested_physical_ticks": 120,
+            "wall_usec": 24969533
+          }
+        ],
+        "measurement": "Draw intervals are between actual RenderingServer.frame_post_draw callbacks. They are not monitor latency or physical display acceptance. Percentiles use bounded samples."
+      }
+    },
+    "extracted-package": {
+      "qualification_sha256": "52da7c96e780de243efbc121fd94b507adf0cf171b23120368034349eaa30c1f",
+      "status": "passed",
+      "input_custody": "passed",
+      "platform": "win32",
+      "elapsed_seconds": 140.14,
+      "complete_campaign": false,
+      "cases": [
+        {
+          "name": "living_authoring_save",
+          "checks": 282,
+          "status": "passed",
+          "process_sha256": "89209185d6c16bc816f564e94c23cc74427c78e91b25d778f055198dc1f80f07",
+          "log_sha256": "8f4105dd1bb7ad42054cde81735722551ea7463fbd574753bf8a96ee198834dc"
+        },
+        {
+          "name": "living_authoring_reopen",
+          "checks": 289,
+          "status": "passed",
+          "process_sha256": "c0be42b9c3af2512c3980f3eaca8fd6e3263b830d30ab0c45f9f5ba981aee51c",
+          "log_sha256": "990009c8d8c2b3f0cf89d5adb4db90951e00ff9b9a3520fe226c759a1d6d9fe9"
+        },
+        {
+          "name": "living_editor",
+          "checks": 96,
+          "status": "passed",
+          "process_sha256": "f9ab8e4cadac79c6d99f5576dcd4b347e5f121055b58aee6b7e8d31f7087f5d6",
+          "log_sha256": "485f85b6bb2bfd165b684f6686efd85bee68105987a682efc0749403381d9cf5",
+          "report_sha256": "a8da406a4c3b8ce25ff0b91674c847340e2a24c71ab75fa0dbe29027e1f02db7"
+        },
+        {
+          "name": "living_engine",
+          "checks": 567,
+          "status": "passed",
+          "process_sha256": "96b1d4c7de021be3b6bf9556809bb553749a7c8431ac4e8b3ea982cc1844d4d2",
+          "log_sha256": "47edecbf2078094ca29b815d1c7034c53d553aa5337b60641f221df378e75580",
+          "report_sha256": "bcadcdfc952a5e5a94d6e584840eabe7ca20ec70e0b7b6c27cf566f7b1dbff00"
+        },
+        {
+          "name": "living_group",
+          "checks": 40,
+          "status": "passed",
+          "process_sha256": "d3edac12d52bf48467d15247d8f632c7b563f57ac11b06cf7e1d2663454b679c",
+          "log_sha256": "ea10f110f76c580f6f2ca7957e0ea73a60fd1d1a5111d008cc11a66c197adf3e"
+        },
+        {
+          "name": "living_spatial",
+          "checks": 2644,
+          "status": "passed",
+          "process_sha256": "340076bdc799d5fa0004966448c2de0d1a56cc2c2c77491ccf1e8c88fd4b8969",
+          "log_sha256": "19cb0c121f2f3e4e07fb52aa1b80b8660b5a3170bc93ba2bb45796655fdc2a1a",
+          "report_sha256": "b0611f5bde52e109a1914af1b27af9fcc54b3ffea420d56c54e658a6c8ddcab5"
+        },
+        {
+          "name": "living_episodes",
+          "checks": 5091,
+          "status": "passed",
+          "process_sha256": "ff5c36b234fb16226a24afa57b9f62c4ef091f5164275d31646a9bd6d115bf74",
+          "log_sha256": "152fcf6fb7e07c17780381d9b9dcd3f4b41b4af2781f8b5a158edcaa80673bbb",
+          "report_sha256": "3de036f8560d2fcf0b23f96bbe5a240758f13dce20f8d63ec68462a7aad6f38a"
+        },
+        {
+          "name": "living_examples",
+          "checks": 210,
+          "status": "passed",
+          "process_sha256": "a52e8f90140861c6895f8c201a777bf0ddcac082013c05501d22660ab114b7e0",
+          "log_sha256": "427ba2b66bb5eae523f2886deb22f7226424532c82a645860a60f3720ec4b069",
+          "report_sha256": "bc99db4336fdaa72fce06b1e09ab20f9945c21c81fa9521574011dcaaf0d6c8d"
+        }
+      ],
+      "checks": 9219,
+      "original_process_custody": "Every recorded process JSON, log and optional report was independently checked against its campaign hash.",
+      "live_editor": {
+        "checks": 96,
+        "live_audition": {
+          "applied_generation": 6,
+          "paused_generation": 4,
+          "playing_generation": 5,
+          "resume_configuration_unchanged": true,
+          "unapplied_configuration_unchanged": true,
+          "unapplied_generation": 5
+        },
+        "layout_cases": 9
+      }
+    },
+    "extracted-graphical": {
+      "qualification_sha256": "0b2d235872ab8336f41d1cecc552d15c9f2e01ee261e2d9c53447d69961f4e8c",
+      "status": "passed",
+      "input_custody": "passed",
+      "platform": "win32",
+      "elapsed_seconds": 378.953,
+      "complete_campaign": false,
+      "cases": [],
+      "checks": 0,
+      "original_process_custody": "Every recorded process JSON, log and optional report was independently checked against its campaign hash.",
+      "graphical": {
+        "report_sha256": "9129f6deb52f227cb9ac092f3ccc8a0a4e41acf9dbcaf13c77f9d44d16f91947",
+        "renderer": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+        "display": "Windows",
+        "rendering_driver": "opengl3_angle",
+        "captured_dimensions": [
+          1028,
+          578
+        ],
+        "requested_dimensions": [
+          1600,
+          1000
+        ],
+        "images": [
+          {
+            "name": "ambient-behaviour-profile-editor.png",
+            "sha256": "7dae5d4be42840497b03e2046cee818a7b3f55c1ea7426aaab3410c8ff06d5cf",
+            "bytes": 161868,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-flight-authored.png",
+            "sha256": "65398c303068b01cf6fc45c69591b3b30fc9a0eb9af25fc3775e2f1937c05247",
+            "bytes": 150191,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-flight-playing.png",
+            "sha256": "44cc5d86bd778f720e45a90a554dcc54fffd18a44aae73a5f5a53832a43ffcd3",
+            "bytes": 151466,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-industrial-yard-authored.png",
+            "sha256": "e8c033f59920f1337dec14f04bd0fb799ea44c85d62d7615174d57d5029f6bdf",
+            "bytes": 149676,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-industrial-yard-playing.png",
+            "sha256": "4d7a823fecea20adc3bbcddf77d5c1496842d34f6e050ca7b4baaa3c078f4d26",
+            "bytes": 159406,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-ledge-walkway-authored.png",
+            "sha256": "dd7bcd23b69c6936ecafb2badd9b77419dbc3609d9c58ccd7340e09cff980703",
+            "bytes": 142743,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-ledge-walkway-playing.png",
+            "sha256": "f7738f74fc8d1233448ec102a14bb5f66e79b55c4d5fa0e14f8797c5de62a2a4",
+            "bytes": 144101,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-oil-water-authored.png",
+            "sha256": "0369f4bc153cca4d9c086c840fcf1f6a70f430f8ccf0551d40654c02f61b65ba",
+            "bytes": 121561,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-oil-water-overlay.png",
+            "sha256": "8711b6b99f3e3ffe92538981b9fe249fa57d180010b0435b849545f79ad0ec46",
+            "bytes": 124484,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-oil-water-playing.png",
+            "sha256": "c2cab5231b5a7e95d2692f1a182fffcf3b177885285eed7653bb19b4bdf5bfd1",
+            "bytes": 121628,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-settlement-authored.png",
+            "sha256": "a9e0869a1007bbbf29404847d5a008dbbaa25cc0bc99267cefb9fa55f21834a9",
+            "bytes": 182842,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient-settlement-playing.png",
+            "sha256": "4470859224ea329a5b1fa38c0dc5973726ab366fc26f40b8e002ae6720a1ad91",
+            "bytes": 189532,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-aerial-habitat-authored.png",
+            "sha256": "d987bd35c2faa88a1d5c02d13415ac2e1561310b2752bf06d61def3f62dfafe9",
+            "bytes": 238165,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-aerial-habitat-playing.png",
+            "sha256": "0fd38186a5e91e25c3a1001b7fafc7af8fcbca948535a716c091fa2e2d6f8591",
+            "bytes": 238371,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-behaviour-profile-editor.png",
+            "sha256": "1884befabb53cbe1984352232d1ab20b7c44733664ee6d6d0cad8fc40d35b8f6",
+            "bytes": 272867,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-cavern-authored.png",
+            "sha256": "192abf42731db5244e846805323d776da6bfce397dc508f1bf4afa3e3fe811e3",
+            "bytes": 255294,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-cavern-playing.png",
+            "sha256": "29e3693023cf465b0fd65c38be0fa5d9273d41511625eacc84d3fe2bcec548ac",
+            "bytes": 275477,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-courtyard-authored.png",
+            "sha256": "47ab0139847f64d1b38f11461960423856576a7675d4788b053ad421871c0c62",
+            "bytes": 237361,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-courtyard-playing.png",
+            "sha256": "7fbf2a4ed3aef8474b05b5cb78c6b2a6605ade5e87973e189d95da2b74a9ad00",
+            "bytes": 237512,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-floodyard-authored.png",
+            "sha256": "9e5022b64cf616a78f9bb76c7bc30217faceef3787b6df697ade2369303a5c24",
+            "bytes": 282895,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-floodyard-playing.png",
+            "sha256": "7fc70558e124ed1c5bb064de749ad1a090aca1f991c798ba941fd092096b7439",
+            "bytes": 288333,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-library-and-group.png",
+            "sha256": "98861db51f193b78e2284d63a0f844a3dbc0fcaa2bae7da545b424aae1a07800",
+            "bytes": 275748,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-personality-settings.png",
+            "sha256": "1ba8428209d8e8334602fa9fa5da3ca3c9880ec1da6a3779aefbee819dcdee89",
+            "bytes": 277660,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-places-and-peers.png",
+            "sha256": "19969a4736adff257564668f5b8354c58c45a42c3f6626a2e64c6de524c0eb3e",
+            "bytes": 268469,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-refinery-authored.png",
+            "sha256": "a78d0163ca06bc737c1995a64902507ac04ac27c424da686b55f2a9968a0f10d",
+            "bytes": 285226,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-refinery-playing.png",
+            "sha256": "1ddd05e6b0e2576a774bdb6484212dcfa9fbeecfffc48d72a8b57904542a94bf",
+            "bytes": 289661,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-settlement-authored.png",
+            "sha256": "2d2d8f39e93f3e2dbf66c57e8233bfe2959ffea1203322cccd1de32ad3f45e1d",
+            "bytes": 292932,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-settlement-overlay.png",
+            "sha256": "2b6b49c52f892da5bc7401a386e186e2a2ce848706bbed4db8855d8e64702e5a",
+            "bytes": 298859,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          },
+          {
+            "name": "ambient2-settlement-playing.png",
+            "sha256": "96535c82092ca2fe4521e05a0aa25dfc62365d1981dcbb3f341520b1c83e4f65",
+            "bytes": 293796,
+            "width": 1028,
+            "height": 578,
+            "visually_reviewed": true
+          }
+        ],
+        "matched_displayed_actor_frames": 29,
+        "phases": [
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 465977,
+              "mean_usec": 155865.955882353,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 35062,
+              "observed_intervals": 136,
+              "p50_usec": 157633,
+              "p95_usec": 453430,
+              "p99_usec": 465514,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 136,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-oil-water",
+            "memory_bytes": 116346009,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 21236207
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 277401,
+              "mean_usec": 164829.891666667,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 37959,
+              "observed_intervals": 120,
+              "p50_usec": 163889,
+              "p95_usec": 174609,
+              "p99_usec": 176293,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 120,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-ledge-walkway",
+            "memory_bytes": 122204709,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 19815845
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 277845,
+              "mean_usec": 170596.618644068,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 61082,
+              "observed_intervals": 118,
+              "p50_usec": 169796,
+              "p95_usec": 176334,
+              "p99_usec": 182781,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 118,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-industrial-yard",
+            "memory_bytes": 123617647,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 20172741
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 479780,
+              "mean_usec": 163130.855855856,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 45454,
+              "observed_intervals": 111,
+              "p50_usec": 164635,
+              "p95_usec": 243737,
+              "p99_usec": 475428,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 111,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-settlement",
+            "memory_bytes": 125415491,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 121,
+            "requested_physical_ticks": 120,
+            "wall_usec": 18313382
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 260258,
+              "mean_usec": 163883.840336134,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 64475,
+              "observed_intervals": 119,
+              "p50_usec": 162326,
+              "p95_usec": 172089,
+              "p99_usec": 172987,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 119,
+              "sample_capacity": 4096
+            },
+            "example": "ambient-flight",
+            "memory_bytes": 121486621,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 19538222
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 581633,
+              "mean_usec": 199644.882882883,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 72138,
+              "observed_intervals": 111,
+              "p50_usec": 199719,
+              "p95_usec": 293267,
+              "p99_usec": 306755,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 111,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-settlement",
+            "memory_bytes": 130287911,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 22235188
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 315346,
+              "mean_usec": 197908.131578947,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 83923,
+              "observed_intervals": 114,
+              "p50_usec": 198541,
+              "p95_usec": 288387,
+              "p99_usec": 295219,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 114,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-refinery",
+            "memory_bytes": 135336549,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 22634085
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 310629,
+              "mean_usec": 202562.049180328,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 83869,
+              "observed_intervals": 122,
+              "p50_usec": 203948,
+              "p95_usec": 284789,
+              "p99_usec": 305638,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 122,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-cavern",
+            "memory_bytes": 136959910,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 24788370
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 323799,
+              "mean_usec": 167609.262711864,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 47231,
+              "observed_intervals": 118,
+              "p50_usec": 165963,
+              "p95_usec": 235096,
+              "p99_usec": 247474,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 118,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-courtyard",
+            "memory_bytes": 135529943,
+            "native_ticks": 120,
+            "passed": true,
+            "physical_ticks": 121,
+            "requested_physical_ticks": 120,
+            "wall_usec": 19955725
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 414825,
+              "mean_usec": 199181.512396694,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 47081,
+              "observed_intervals": 121,
+              "p50_usec": 199484,
+              "p95_usec": 294441,
+              "p99_usec": 323063,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 121,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-floodyard",
+            "memory_bytes": 135049726,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 121,
+            "requested_physical_ticks": 120,
+            "wall_usec": 24326649
+          },
+          {
+            "draw_intervals": {
+              "discarded_intervals": 0,
+              "maximum_usec": 234193,
+              "mean_usec": 207273.851239669,
+              "measurement": "wall intervals between actual RenderingServer.frame_post_draw callbacks during Play; not monitor latency or physical display acceptance",
+              "minimum_usec": 90659,
+              "observed_intervals": 121,
+              "p50_usec": 210405,
+              "p95_usec": 220516,
+              "p99_usec": 229159,
+              "percentile_scope": "first bounded intervals; arithmetic mean and extrema include all observed intervals",
+              "retained_intervals": 121,
+              "sample_capacity": 4096
+            },
+            "example": "ambient2-aerial-habitat",
+            "memory_bytes": 136056827,
+            "native_ticks": 119,
+            "passed": true,
+            "physical_ticks": 120,
+            "requested_physical_ticks": 120,
+            "wall_usec": 25158275
+          }
+        ],
+        "measurement": "Draw intervals are between actual RenderingServer.frame_post_draw callbacks. They are not monitor latency or physical display acceptance. Percentiles use bounded samples."
+      }
+    }
+  },
+  "ordinary_launcher": {
+    "stdout_sha256": "44f2e0098bfac17814189f2038725aa1fc41fa334640780b5af0ead98eb54f08",
+    "stderr_sha256": "7eb70257593da06f682a3ddda54a9d260d4fc514f645237f5ca74b08f8da61a6",
+    "launch_ready_marker": true,
+    "error_markers_absent": true,
+    "exit_status_evidence": "Hosted extraction step completed successfully after checking launcher exit_code==0."
+  },
+  "visual_review": {
+    "original_pngs_reviewed": 29,
+    "fresh_extracted_pngs_reviewed": 29,
+    "findings": [
+      "All eleven examples show native textured geometry and the expected actors in authored and progressed frames. The six new scenes have legible side elevations, clear ground promenades or aerial bays, and distinct industrial/cavern/tank/dock arrangements.",
+      "Rain Exchange visibly drains the overhead native Water tank and forms a growing lower pool; the actual material display changes between authored and playing frames.",
+      "Common Ground shows nearby runners moving closer together. Its copied physical positions corroborate visible convergence, but two-second captures do not demonstrate sustained group formation or dissolution.",
+      "Both original and freshly extracted legacy and living profile editors render within the captured frame. Apply/Revert and the read-only inspector remain visible; long personality, region/relationship and module settings use scroll containers.",
+      "Home, interest and avoid regions appear in the optional overlay together with the copied material radius and intent. At Overview, text around the selected actor overlaps nearby actor/region labels.",
+      "Large decorative facades occupy much of the overview; inhabitants are small. Follow selected, Focus or zoom is needed for detailed behavior. Labels show rig/model and policy, so personality distinctions often require opening the inspector.",
+      "Actual hosted framebuffers are 1028 x 578 despite the helper initially requesting 1600 x 1000. Text is dense and small at this hosted size; no assertion of 1600 x 1000 actual output is made.",
+      "The hosted software renderer is slow: new-scene two-second phases take roughly20-25 wall seconds. It is unsuitable evidence for smooth physical desktop playfeel."
+    ],
+    "interesting_to_watch_assessment": "Short observed approaches, spacing and changing Water make the scenes promising places to watch. These frames alone do not establish sustained interesting lives. Ground stalls, low overview actor prominence and hosted rendering slowness remain material limitations. A later avoidance-latch change requires separate exact-source qualification.",
+    "limits": [
+      "All claims here bind only to source 83a3db6f and its own artifacts.",
+      "No physical Windows/NVIDIA acceptance, no cross-platform Rapier bit-determinism claim, no full scientific campaign acceptance from these screenshots.",
+      "Original and extracted screenshots were individually hash verified and visually reviewed; they were not required to have identical pixel bytes."
+    ]
+  }
+}

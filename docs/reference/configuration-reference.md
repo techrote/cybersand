@@ -412,12 +412,16 @@ stages body-free sampled ownership. Candidate collision queries keep the same
 32×32 maximum box and four modes as the existing native owner query. Initial
 owner interest uses the definition camera, existing 480×270 view and selected
 buffers/window; request/settings/profile changes fence commit. The subsequent
-desktop articulated route stages at most the existing 8 actors/64 body parts,
+desktop articulated route defaults to the existing 8 actors/64 body parts,
 strict 11-float copied body records and actual masks before receipt capture.
 Its permanent private physics space remains inactive with frozen bodies through
 at least two distinct real physics frames and complete initial terrain setup.
 The app retains its existing 32-chunk/750-microsecond collider budget. Other body
 constructors remain open; see [staged physical ownership](../architecture/liquid-prepared-setup-and-receipts.md#staged-articulated-physical-owners).
+The Shared Workbench's optional `sandbox_capacity` extension separately admits
+larger authored compositions; its current checked ceilings are 4,096 logical
+actors, response bodies and occupancy proxies, with actual topology charged to
+the independent body/proxy budgets. Ordinary saved starts retain 8/64/64 defaults.
 
 **Integrated #202 IN application control:** prepared options accept explicit
 `maximum_rule_radius`2 or3(default2). Brine IN requires3; its Current comparator
@@ -942,18 +946,22 @@ per-rig limitations remain in the [catalog contract](../systems/actor-rigs.md).
 ## Actor usable values
 
 **Current experimental USABLE-001 / ACT-005:** [actor usables](../systems/actor-usables.md)
-share the same catalogue/material budgets across physical and retained sampled
-routes. Physical control uses the articulated session's issued-observation lease;
+share the same catalogue across physical and retained sampled routes. The
+retained sampled route keeps the baseline budgets below. An expanded physical
+owner scales aggregate budgets by `S = max(1, ceil(slot_span / 8))`, where its
+first validated frame establishes `slot_span = highest actor_id + 1`, at most
+4,096. Storage is allocated for that span; projectiles/effects/devices are created
+only when admitted. Physical control uses the articulated session's issued-observation lease;
 sampled control retains its separate equipment session. Units are gameplay cells,
 seconds and authored charge; recipe accounting is authored cell slots.
 
 | Boundary | Current value and consequence |
 |---|---|
-| Equipment actor slots | 8; follows the actor-session count |
-| Committed projectiles | 64 globally |
-| Fixed processors | 16 globally; at most 4 owned by one actor |
-| Visual effects / hit receipts | 64 / 64 |
-| Material work | At most 2,048 reads and 128 writes per equipment owner step |
+| Equipment actor slots | Sampled: 8. Physical: actual admitted slot span, at most 4,096; ordinary compositions retain at most 8 |
+| Committed projectiles | Sampled: 64 globally. Physical: `64 × S` |
+| Fixed processors | Sampled: 16 globally. Physical: `16 × S`; at most 4 owned by one actor in either route |
+| Visual effects / hit receipts | Sampled: 64 / 64. Physical: `64 × S` / `64 × S` |
+| Material work | Sampled: at most 2,048 reads and 128 writes per owner step. Physical: `2,048 × S` reads and `128 × S` writes |
 | Swept projectile trace | At most 96 samples per movement segment |
 | Accepted delta | At most 1/15 second |
 | Shared equipment charge | 100 maximum; regenerates 6 per simulation second |
@@ -961,10 +969,10 @@ seconds and authored charge; recipe accounting is authored cell slots.
 | Equipment leases | 12 ticks default, 18 maximum; desktop human input uses six ticks |
 | Publications | Copied equipment selection, charge/cooldown/result, projectiles, devices, effects, hit receipts and work counters |
 | Physical chassis | One per actor, reusing a held part or adding one jointed body before installation; included in the eight-part assembly limit |
-| Physical request admission | At most eight requests, one pending/in-flight request per actor; atomic batch refusal preserves other pending work |
+| Physical request admission | At most 4,096 requests, one pending/in-flight request per actor; ordinary rosters supply at most eight. Atomic batch refusal preserves other pending work |
 | Processor settling | Supported body at most 3 cells/s and 0.45 rad/s for eight consecutive physical ticks; stop automatic settling after 360 ticks |
 | Physical processor ports | Local x = ±ceil(half-width + 2), local y = ±1; rotate by body angle and round to cell coordinates |
-| Physical processor history | At most 8 × 10 actor/processor records; retain stock, age, cycles and cooldown across pickup and redeployment |
+| Physical processor history | At most admitted slot span × 10 actor/processor records; retain stock, age, cycles and cooldown across pickup and redeployment |
 | Physical recoil | Accepted primary projectile use: 8 × power; tool use: 1.1 × power; tool alternate scales by 0.35; early projectile activation adds no launch recoil |
 | Physical pickup / release grace | Owning grip within eight cells with clear path; released-body self-collision grace 0.2 seconds |
 
@@ -1026,7 +1034,7 @@ limits, not calibrated real-world actuator specifications.
 |---|---|
 | Catalogue | 46 rigs in eight sets; all 29 original IDs plus twelve SetX and five SetP IDs |
 | Assembly | At most eight parts, fourteen authored joints and three mounts per rig; current authored definitions use one through seven parts, and ACT-005 adds a chassis only where no held part exists |
-| Population | One through eight actors and at most 64 total coupled parts; held/released objects retain their part slot |
+| Population | Ordinary physical starts: one through eight actors and at most 64 total coupled parts. Shared Workbench: versioned numeric logical/body/proxy budgets, each 1–4,096, with defaults 8/64/64; held/released objects retain their actual part slot |
 | Physics / demo cadence | 60 Hz physical owner; demo decisions every six ticks, or 10 Hz |
 | Command lease | One through eighteen ticks from the issued observation; helper/demo default twelve, desktop human six; nineteen issuance-history slots |
 | Accepted physical delta | Positive finite delta, at most 1/30 second; oversized calls do not enlarge a control step |
@@ -1034,8 +1042,8 @@ limits, not calibrated real-world actuator specifications.
 | Actuation safeguards | Acceleration at most 1,200 cells/s², angular acceleration at most 100 rad/s², requested impulse at most 100 times the receiving part's mass |
 | Local sensing | At most 24 rays per rig observation and eight reported contacts per part |
 | Terrain rope | One straight attachment per rig; current runtime length clamp six through 96 cells; no wrapping |
-| Effect batch | At most eight requests, one admitted request per actor, with epoch and sequence validation |
-| Desktop pending effects | Eight requests total; atomic incoming-batch admission; over-capacity refusal preserves the existing queue and reports copied counters/last outcome |
+| Effect batch | At most 4,096 requests, one admitted request per actor, with epoch and sequence validation; ordinary eight-actor populations supply at most eight |
+| Desktop pending effects | At most 4,096 requests total; atomic incoming-batch admission; over-capacity refusal preserves the existing queue and reports copied counters/last outcome |
 | Per-effect work | At most 1,024 reads and 64 attempted writes; trace at most 100 cells; source-to-origin reach at most 32 cells; radius one through four |
 | Deposition | Ordinary Sand ID 2; named `rocket_charge` permits Fire ID 6 and Gunpowder ID 26 in empty unmasked cells |
 | Physical arena | Version 2; one native worker; one through 36,000 ticks; seed 0 through 2,147,483,647; local patch radius zero through eight, default six |
@@ -1047,6 +1055,18 @@ checks the complete assembly budget before installation. Its dictionary
 observations and version-2 commands are separate from sampled actor packed rows.
 Usable lifecycle, gyro/play semantics and producer limits belong to the
 [physical actor contract](../systems/physical-actor-rigs.md).
+
+The Workbench's `sandbox_capacity` object contains exactly `version: 1`,
+`logical_limit`, `body_limit`, and `proxy_limit`. Missing metadata retains the
+8/64/64 contract. Limits must be finite integer values in 1–4,096; logical
+admission also checks each assembly's existing eight-part bound and the actual
+aggregate body/proxy topology. A barrel charges one body/proxy, not eight. A
+compound hull can charge multiple proxies for one response body. Invalid budget
+changes or insufficient headroom refuse without truncating the composition.
+The native 4,096 ceiling bounds preallocated identity/response workspaces; it is
+an engineering storage bound, not a frame-rate policy or a claim of interactive
+4,096-actor qualification. Larger counts remain experiments and never silently
+disable equipment, joints or controllers to recover frame rate.
 
 ## 4LY-003 flight laboratory configuration
 

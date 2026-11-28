@@ -1,0 +1,14 @@
+{
+  "candidate_manifest_sha256": "2809b421ac72ed592feb02035223f5842db84721496cfac3cf6a36c940e482ec",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "graphical_checks": 4002,
+  "graphical_execution_sha256": "0a19df25f9aa3932bcf5a33f3ea28f79f5b9f6a56c06c80a800551f383d762f4",
+  "headless_checks": 6000,
+  "headless_execution_sha256": "8aa19bca62131ac1b4d7d3d12f9a939b9dbf7d1daabb93581c0c323d43285f5a",
+  "native_sha256": "b7afb86202d3a99c4a2c20751819899b362931b78454d1b29c3d7c32888b8f78",
+  "original_receipts_logs_frames_reverified": true,
+  "schema": "cybersand.material-audition.independent-process-review",
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+  "status": "passed"
+}

@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: Articulated desktop roster with ACT-005 physical equipment and SetP human movement presets, authored mechanics, local scripted control and leased input; sampled references and scientific material acceptance remain separate
 canonical-for: [physical-actor-rigs, physical-actor-control-v2, physical-actor-usables]
-last-reviewed: 2026-10-22
+last-reviewed: 2026-11-22
 related-documents: [physical-free-flight.md, actor-usables.md, actor-rigs.md, thunderbowl-control-reference.md, ../operations/physical-actor-programme.md, ../architecture/rigid-body-and-cellular-coupling.md, ../reference/configuration-reference.md, ../reference/interfaces-and-message-contracts.md, ../operations/local-build-and-validation.md, ../audits/2026-10-19-act005-physical-usables.md]
 ---
 
@@ -92,6 +92,71 @@ The retained single-body barrel/Ripper comparison is described separately in
 the [physical programme](../operations/physical-actor-programme.md). The current
 articulated Ripper is the five-part sprung crawler, not that historical hull arm.
 Desktop integration does not migrate the synchronous Web control owner.
+
+## Workbench physical grabbing and paused placement
+
+The WB-ACTOR-COMPOSE-002R candidate adds two distinct operations in the ordinary
+Shared Workbench. Its [composition contract](workbench-actor-composition.md)
+owns the UI, authored schema, capacity and prepared transaction behavior.
+
+**Live part grabbing** uses the existing main-thread physical session and Rapier
+space. [`CyberWorkbenchActorManipulator`](../../godot/scripts/workbench_actor_manipulator.gd)
+picks an actual part using its current server transform, exact circular collider
+or rectangular union. Gaps in a compound hull are not clickable solid material.
+The clicked point follows a bounded implicit damped spring; its two-dimensional
+effective-mass solve includes the part's angular response. A force at a wheel or
+limb acts through the existing joint graph. Grabbing allocates no body or joint,
+does not teleport a running body and does not freeze collisions. Fixed equipment
+is refused rather than silently unfrozen.
+
+The session advances this temporary force only at its existing
+prepare-before-Rapier-step boundary. It revokes the selected actor's command and
+equipment leases, suppresses that actor's decisions and motors, and leaves other
+actors' producers running. Release requires fresh controller authority and
+preserves the actual pose and momentum. Model identity, pilot selection, body
+graph and energy are not replaced. Existing input cancellation still discards
+future charged actions, temporary grips and ropes. Pause, targeted cancellation
+and session teardown revoke the grab before bodies can be retired. The Workbench
+host additionally handles focus, pointer, panels and authoring transitions.
+
+| Grab setting | Default | Admitted range |
+|---|---:|---:|
+| Mass-normalized stiffness, s⁻² | 160 | 5–2400 |
+| Mass-normalized damping, s⁻¹ | 24 | 0–160 |
+| Maximum force, mass·cells/s² | 24000 | 10–1000000 |
+
+Settings refuse unknown fields, nonfinite values and values outside these bounds
+without partially changing the accepted configuration. The actual impulse is
+also limited to 100 times the selected mass per step and angular impulse to 20
+times its inertia; the maximum admitted step is 1/30 second. Pointer targets
+outside the canvas clamp to its boundary. These are explicit finite safety
+bounds, not a different physics owner or a guarantee that every assembly can be
+lifted with every setting.
+
+**Paused whole-actor placement** captures copied current part transforms and
+previews one rigid transform of that complete pose. Nothing is moved during
+preview. The prepared commit can preserve bent articulation through its retained
+part poses; the newly placed actor starts with zero velocity. Authored starting
+rotation is applied to actual part offsets, angles, rotary anchors, slider axes
+and springs before registration, so the native occupancy sample describes the
+same rotated physical assembly. Old starts without rotation retain zero degrees.
+The transform roundtrip uses the backend's float32 geometry; the focused test
+allows at most one microradian of angle roundtrip error while requiring exact
+retained positions and velocities.
+
+Prepared authoring reconstructs catalogue equipment and joints. Released, fixed
+or reattached equipment with changed local anchors therefore refuses current-pose
+placement with an explicit Reset instruction. It must not be silently reconnected
+at a distant retained position. The host checks every actor whose pose would be
+retained by the transaction. This narrow refusal does not prevent live physical
+grabbing of an ordinary released dynamic part and does not add a simulation
+checkpoint format. Ordinary Save still stores authored starts rather than mouse
+grabs, momentum, deformed poses or private controller memory.
+
+`test_workbench_actor_manipulation.gd` exercises real Rapier lifting, off-centre
+torque, connected-limb pulling, controller suppression and fresh-lease recovery,
+pause/repeated-grab/teardown, rotated retained poses, and actual proxy geometry.
+Its headless evidence does not establish graphical Windows/NVIDIA playfeel.
 
 ## What does plausible physical behaviour mean here?
 

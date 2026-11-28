@@ -1,0 +1,48 @@
+{
+  "kind": "exact original Actions artifact, raw ordered byte parts",
+  "source_revision": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "source_tree": "d9740be7cafb8ac7b7d6eee4a16219989745fd95",
+  "workflow_run": 45552786466,
+  "artifact_id": 14995028842,
+  "original_bytes": 42796506,
+  "original_sha256": "e96d284ac7e44eea93ff9269461166a09cc40b8a352893cb43dc9975c24bf9ac",
+  "original_members": 719,
+  "parts": [
+    {
+      "path": "ambient-002-linux-50c6.zip.part-01",
+      "offset": 0,
+      "bytes": 10420224,
+      "sha256": "167dcc918a2fa290b298fe4732be57c213d5ed8e03296ff3a6a5e06242fc76d0",
+      "git_blob": "0d078a3c6a0dc05c544a07d76010a2338d6fe357"
+    },
+    {
+      "path": "ambient-002-linux-50c6.zip.part-02",
+      "offset": 10420224,
+      "bytes": 10420224,
+      "sha256": "f43d1182f2d9f8f1f756bf4280f85aa57d3f052360e4b149c0b43e7c2ec81115",
+      "git_blob": "344905762bde1676253d887086e8af4f55c16f5f"
+    },
+    {
+      "path": "ambient-002-linux-50c6.zip.part-03",
+      "offset": 20840448,
+      "bytes": 10420224,
+      "sha256": "bff2b802f89d9249c19540bfe3d71f7408b989e510d445278b9e4b413560895d",
+      "git_blob": "ded30042c9ae57ad0a37b5c365403d95c8a3db4f"
+    },
+    {
+      "path": "ambient-002-linux-50c6.zip.part-04",
+      "offset": 31260672,
+      "bytes": 10420224,
+      "sha256": "f97ff82067d3a2bdf9f177a5d8cc8f8e895002858cf67976491e7d46e17458f9",
+      "git_blob": "a85d5ffc887b668812b268bd0e75349eda72b2fa"
+    },
+    {
+      "path": "ambient-002-linux-50c6.zip.part-05",
+      "offset": 41680896,
+      "bytes": 1115610,
+      "sha256": "6f74d2f15780a8828d64ad25aa80227c5d5ae6262b1d87adf180f5f2716da0c0",
+      "git_blob": "8e08282b5e9b4713c75f09038d52bc00cf48fbc1"
+    }
+  ],
+  "scope": "No ZIP member or original report is re-encoded. Concatenating verified parts reproduces the exact downloaded Actions envelope. No new runtime execution."
+}

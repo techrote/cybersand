@@ -1,0 +1,168 @@
+{
+  "format": "cybersand-m67-composition-comparison-registration-v1",
+  "id": "WORLD-STEER-M67-COMPOSITION-TRANSFER-001",
+  "disposition": "Draft/HOLD",
+  "stage": "registered-after-two-pure-development-probes-before-withheld-brief-reveal",
+  "frozen_selectors": {
+    "retriever_commit": "8f1632cbe",
+    "retriever_path": "godot/scripts/batch_lab/architecture_compositional_retrieval.gd",
+    "catalogue_source_commit": "3ef69c8645ab2aefa8189dac39195043824e824f",
+    "cards_sha256": "9153480ea622d5dc6a78543269840af64b3adbef43074af8cf78cfe685d0b057",
+    "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+    "archival_commit": "b9535405853a5cd16e4bba968ec7167222861c42",
+    "excluded_reference_families": [
+      "bioindustrial",
+      "civic",
+      "vessel_dock"
+    ],
+    "selector_weight_tuning_after_reveal": false,
+    "safety_fixes_policy": "Retain original result; label any source correction and rerun both development and held-out cohorts without changing briefs or scoring weights."
+  },
+  "development_probes": [
+    {
+      "id": "development-arch-bay",
+      "intent": "curved arch enclosing useful negative space",
+      "preferred_tags": [
+        "arch",
+        "curved"
+      ],
+      "target_extent": [
+        96,
+        52
+      ],
+      "observed_choice": "parabolic-arch-rib",
+      "qualification": "pure StagePlan projection only"
+    },
+    {
+      "id": "development-lattice-bay",
+      "intent": "repeated deep lattice structural span",
+      "preferred_tags": [
+        "truss",
+        "repetition"
+      ],
+      "target_extent": [
+        96,
+        32
+      ],
+      "observed_choice": "alternating-lattice-truss",
+      "qualification": "pure StagePlan projection only"
+    }
+  ],
+  "held_out": {
+    "brief_count": 4,
+    "authors": [
+      "independent-specialist-A",
+      "independent-specialist-C"
+    ],
+    "briefs_per_author": 2,
+    "reveal_policy": "Authors freeze machine-readable brief and expectation files before sending content to retrieval implementer. No indexed card names or paraphrase-only queries.",
+    "scope": "Held-out authored composition briefs and spatial/connector combinations, not a prospectively unseen historical artwork corpus or blinded human preference."
+  },
+  "seeds": [
+    47017,
+    47051
+  ],
+  "extent": [
+    256,
+    192
+  ],
+  "max_native_checked_cells": 32768,
+  "max_raster_candidates": 1048576,
+  "max_search_candidates": 256,
+  "max_slots": 4,
+  "arm_order": [
+    "hand_typed",
+    "procedural_structure",
+    "random_fitting_modules",
+    "reference_guided",
+    "retrieval_guided"
+  ],
+  "arm_contracts": {
+    "hand_typed": "Finite generic side-elevation outline with a continuous four-cell bottom deck, two four-cell edge uprights and a four-cell top lintel in each supplied slot; no library or reference consultation.",
+    "procedural_structure": "Same slot bounds with four-cell top/bottom chords, two-cell vertical webs every16cells and alternating two-cell staircase diagonals; seed changes diagonal phase only.",
+    "random_fitting_modules": "Seeded uniform choice among structurally typed catalogue parts whose permitted transformed bounding box fits the slot, with current native observation and global material/budget/protection safety; ignores preferred motifs, target scales, reference scores and connector relationships. Host stage constraints still apply and refusals stay in denominator.",
+    "reference_guided": "Retrieve the same frozen reference corpus, then deterministic authored geometry strategy: open_span/suspended yields stepped arch shoulders and bottom deck; multi_level/vertical_chain yields offset supported shelves; other topology yields perimeter frame with sparse service webs. It does not select native modules or call a model.",
+    "retrieval_guided": "Use frozen joint part/pose retrieval, including preferred motifs, target scale, native observation, declared connector relationships and bounded search; native StagePlan rechecks exact geometry and guards."
+  },
+  "shared_controls": [
+    "Same source material plane, protected marker, anchors, region, allowed materials[0,7,28,58], intent/slot objectives, stage clearances, native/raster ceilings, and seeds per brief.",
+    "Native module pool is freshly built/harvested in the same harness process; importing stored flags is insufficient.",
+    "Actual changed/checked material counts may differ by tool geometry and must be reported, not artificially equated with quality.",
+    "Ordered input programs, source/query/corpus/module/program/plane SHA-256 identities and raw native receipts retained.",
+    "Every proposed, refused, cancelled, partial and completed case remains in the result population. No adaptive retries or arm replacement in confirmatory comparison."
+  ],
+  "metrics": {
+    "primary": [
+      "native_completion",
+      "required_clearances_empty",
+      "declared_contact_requirements_satisfied",
+      "out_of_region_and_protected_preservation"
+    ],
+    "secondary": [
+      "actual_native_checked_cells",
+      "actual_changed_cells",
+      "material_plane_sha256",
+      "occupied_face_components",
+      "empty_fraction",
+      "module_identity_diversity",
+      "distinct_output_hashes_within_brief",
+      "finite_search_exhaustion",
+      "elapsed_usec"
+    ],
+    "interpretation": "Constraint/tool-capability comparison. Structural contact and empty-space counts are geometric diagnostics, not proven load bearing, actor traversal, design beauty or language-model optimization."
+  },
+  "model_arm": {
+    "registered": true,
+    "status": "not-qualified-unless-genuine-authorized-local-provider-witnessed",
+    "paid_calls_authorized": false,
+    "training_authorized": false,
+    "fixture_calls_are_not_model_calls": true
+  },
+  "evaluation_record_contract": {
+    "manifest": "cases.json",
+    "case_fields": [
+      "case_id",
+      "cohort",
+      "brief_id",
+      "arm",
+      "seed",
+      "extent",
+      "status",
+      "source_sha256",
+      "program_sha256",
+      "query_sha256",
+      "module_ids",
+      "module_hashes",
+      "source_plane_path",
+      "result_plane_path",
+      "result_sha256",
+      "raw_native_record_path",
+      "raw_native_record_sha256",
+      "compile_reason",
+      "actual_counts",
+      "elapsed_usec"
+    ],
+    "plane_encoding": "complete row-major little-endian uint16",
+    "authority": "Actual native records and complete readback planes, never queued operations or rendered-only imagery."
+  },
+  "brief_schema": {
+    "required": [
+      "id",
+      "cohort",
+      "family",
+      "intent",
+      "slots",
+      "required_empty_regions",
+      "anchors",
+      "relations",
+      "expectations"
+    ],
+    "slot": "{id,region:[x,y,w,h],part_types:[taxonomy],preferred_tags:[authored motif],target_extent:[w,h],align?:bottom-left|top-left|center,transforms?:[identity|mirror_x|mirror_y|rotate_90|rotate_180|rotate_270],connection_types?:[tags],connector_contract?:face-adjacent-grid-v2}",
+    "relation": "{kind:face-contact,a:<slot id>,b:<slot id>,role:<authored connector role>,compatibility:<tag>}",
+    "anchors": "rectangles [x,y,w,h,material] outside slot bounding boxes; source-native construction shared by all arms",
+    "required_empty_regions": "rectangles within canvas; host stage must keep them empty, including authored negative space inside a slot when useful",
+    "expectations": "separate hard constraints and reasoned architectural intent; no success prediction or preferred arm",
+    "author_guidance": "Use up to4slots in256x192 with at least one feasible current catalogue part assignment. Include concrete asymmetry, negative space or aligned/misaligned connector demands. The brief may legitimately make some arm refuse; do not make all arms impossible."
+  },
+  "prior_campaign": "Original M3–M5 thirty attempts remain frozen: four contextual arms had identical output within each family/seed. This comparison neither rewrites nor retroactively improves that result."
+}

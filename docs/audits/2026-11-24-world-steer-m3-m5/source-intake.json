@@ -1,0 +1,98 @@
+{
+  "schema": "cybersand.world-steer-m3-m5-source-intake.v1",
+  "reviewed_utc": "2026-11-24",
+  "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "foundation": {
+    "pr": 720,
+    "source": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+    "original_run": 44962406023,
+    "scope": "M0–M2 native Batch Lab; original artifacts preserved"
+  },
+  "goldmaps": {
+    "repository": "techrote/sandmapsreference",
+    "pr": 216,
+    "evidence_authority": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+    "archival_packet": "b9535405853a5cd16e4bba968ec7167222861c42",
+    "owner_accepted": 0
+  },
+  "concurrent_branches_not_imported": [
+    {
+      "pr": 754,
+      "head": "e39c423872c9e1682a1fc67d0fedde2313068756",
+      "title": "[DRAFT / HOLD] OBJECTSHARD-M4-COMPLETION-001 — playable ordinary Workbench integration"
+    },
+    {
+      "pr": 729,
+      "head": "b126523158e22d8993b4899710799f88dd0b98d0",
+      "title": "SWARM-004/005/006: consolidated reciprocal Workbench integration (Draft/HOLD)"
+    },
+    {
+      "pr": 767,
+      "head": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+      "title": "[Draft/HOLD] PUBPRES FINAL: physical progression recovery and playable Workbench qualification"
+    },
+    {
+      "pr": 765,
+      "head": "cb88ab25d6dbdc8b459431d0189332bb7d37188a",
+      "title": "[Draft/HOLD] ART-LOCAL-CLOSE-744: absent LM Studio server / Art-close timing probe"
+    },
+    {
+      "pr": 762,
+      "head": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+      "title": "[Draft/HOLD] ACTOR-COMPOSE-FINAL-001: integrated pilot, stack and Windows acceptance"
+    },
+    {
+      "pr": 757,
+      "head": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "title": "[DRAFT/HOLD] PUBPRES-COMPLETION-001 — integrated Workbench physical progression and presentation repair"
+    },
+    {
+      "pr": 766,
+      "head": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+      "title": "[Draft/HOLD] ART-INVALID-MODEL-CLOSE-744: bound failed HTTP path and hidden Art UI work"
+    },
+    {
+      "pr": 758,
+      "head": "da83f83ff20a5ae0ec0184079146d6d696a9c0e3",
+      "title": "[DRAFT / HOLD] GENTEK-WINDOWS-FINAL-B — current-mainline source-exact evaluator and offline owner acceptance"
+    },
+    {
+      "pr": 745,
+      "head": "47e4fee8aa50ef007cdd9769841712edb5be40b5",
+      "title": "[Draft/HOLD] GEN-006 RAMCACHE finisher — accepted-main integration and lifecycle qualification"
+    },
+    {
+      "pr": 763,
+      "head": "2d63bba23932feb2c051c11df9d0775c24ea451d",
+      "title": "[Draft/HOLD] WB-ART-UI-APPLY-001: bound conversation editor and keep Apply visible (#713)"
+    },
+    {
+      "pr": 748,
+      "head": "30a4c3032fbbc0feb4b31b66bcfa64632ea3d84a",
+      "title": "[Draft/HOLD] ACTOR-RECOVERY final: reconcile Art main + acknowledged Apply"
+    },
+    {
+      "pr": 760,
+      "head": "d5b2def695e64d8ab0c79fcc986a9d5ae250c75d",
+      "title": "[Draft/HOLD] ACTOR-PILOT-759: restore keyboard drive with idle Grab/Place and preserve active manipulation"
+    },
+    {
+      "pr": 673,
+      "head": "521cf47e8bc08cf25b3263e9ef95120b7f3de0fe",
+      "title": "[DRAFT / HOLD] GENTEK-SWARM-001-CORPUS-100 — corrected foundation + 100-example campaign"
+    },
+    {
+      "pr": 756,
+      "head": "8093a782a13a078ad6fa4fc9fdf11b969cbbf52f",
+      "title": "[Draft/HOLD] WB-ART-MODEL-ROSTER-001: refresh NVIDIA and LM Studio presets (#750)"
+    },
+    {
+      "pr": 753,
+      "head": "89f62ff0f312163ff566d80ac709c44aec567e59",
+      "title": "[Draft/HOLD] GEN-006 pinned-runtime OS process-death supplement — original qualified DLL/SO"
+    }
+  ],
+  "disposition": "Draft/HOLD. No merge, Ready promotion, production physics/material defaults, paid inference or training.",
+  "source_reconciliation": "Foundation merged with accepted main; no unfinished concurrent branch imported.",
+  "source_change_boundary": "Godot orchestration, module value codecs, retrieval, tests, qualification and documentation. Native simulation source unchanged."
+}

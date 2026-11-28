@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-006",
+  "registration_id": "SWARM006-HOLDOUT-001",
+  "freeze_comment": "https://github.com/techrote/cybersand/issues/704#issuecomment-7062307952",
+  "drawn_utc": "2026-11-21T12:04:34.378437+00:00",
+  "entropy_hex": "89dbc9d1432e95682eb89fcd7bff2086298beb52abe1d7ab35143c798d750ea5",
+  "analysis_plan_sha256": "35a654559f28e96fed4ba60da0567d042cdb47050a82165c7100072acda71850",
+  "exclusion_ledger_sha256": "b27fde9f11049ccfb633ac9b5422cae12873f89b03838193e703cd857131dabf",
+  "draw_program_sha256": "bee877ab0ecd57d9e5741412c34c4d4cc3818024ef5ecc6ffe8cc2ed92397a3a",
+  "source_commit": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+  "no_native_outcomes_consulted": true
+}

@@ -1,0 +1,85 @@
+{
+  "schema": "swarm456-owner-delivery-access-review-c/v1",
+  "reviewer": "closure-independent-assurance-C",
+  "result": "PASS_WITH_EXPLICIT_ARCHIVE_LAYER_INSTRUCTIONS",
+  "completed_utc": "2026-11-24T19:11:27.759802+00:00",
+  "same_single_evaluator": true,
+  "source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "qualified_inner_archive": {
+    "name": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+    "bytes": 93903365,
+    "sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522"
+  },
+  "authoritative_github_access": {
+    "url": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14949325922",
+    "outer_archive_sha256": "9db077d7be6ba1173a63f0f869fea88c4c0c844471b504da6cbe972b9b1a47c4",
+    "outer_archive_bytes": 93564703,
+    "outer_members": [
+      {
+        "path": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip.sha256",
+        "bytes": 122
+      },
+      {
+        "path": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+        "bytes": 93903365
+      },
+      {
+        "path": "CyberSand-SWARM456-Windows-Owner-Acceptance.ps1",
+        "bytes": 10300
+      },
+      {
+        "path": "swarm456-owner-seal.json",
+        "bytes": 410
+      }
+    ],
+    "steps": [
+      "Download the GitHub Actions artifact and extract its outer ZIP into a fresh folder.",
+      "Keep the inner evaluator ZIP, matching .zip.sha256, owner PowerShell launcher and seal together.",
+      "Run the supplied PowerShell launcher against the inner ZIP. It verifies archive/payload integrity, extracts to a fresh folder and launches ordinary Workbench.",
+      "For later launches, use Open Workbench.cmd in the installed evaluator folder."
+    ],
+    "exact_first_launch_command": "powershell.exe -NoProfile -ExecutionPolicy Bypass -File .\\CyberSand-SWARM456-Windows-Owner-Acceptance.ps1 -Archive .\\CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip"
+  },
+  "saved_file_access": {
+    "library_file_id": "libfile_52bf61caf6d08191a679ac5c70bb9e90",
+    "file_name": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+    "upload_status": "succeeded",
+    "archive_layer": "Exact inner evaluator ZIP only; not the outer four-file Actions wrapper.",
+    "local_uploaded_source_rehashed_equal_qualified_inner": true,
+    "saved_native_file_re_downloaded_by_this_review": false,
+    "steps": [
+      "Check the downloaded inner ZIP against SHA-256 d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522.",
+      "Extract that ZIP into a fresh local folder.",
+      "Double-click Open Workbench.cmd in that extracted folder. The first launch imports the project automatically, then opens ordinary Workbench."
+    ],
+    "external_ps1_required": false,
+    "owner_sealer_ps1_contained_in_inner_archive": false,
+    "separate_zip_sha256_sidecar_contained_in_inner_archive": false
+  },
+  "actual_inner_launcher": {
+    "path": "Open Workbench.cmd",
+    "sha256": "4a50dc73c900c1d6d3de78ed885dfc7ba5c74e4a8e5dae624a922f7b13ddd132",
+    "imports_then_starts_pinned_ordinary_workbench": true,
+    "source_bound_environment": true
+  },
+  "packet_instruction_requirement": "Prefer the single authoritative GitHub artifact route. If the exact saved inner ZIP is also linked for convenience, explicitly label it as the same evaluator and give direct extraction/Open Workbench.cmd instructions. Do not require an adjacent owner PS1 for an inner-only download. The two distinct archive SHA-256 values must not be interchanged.",
+  "stale_staging_status": "Earlier owner-delivery-staging.json recorded library_saved=false before upload. The later succeeded owner-evaluator-library-upload-result.json is the current save receipt. Neither file should be silently reinterpreted.",
+  "evidence": [
+    {
+      "path": "/workspace/scratch/e18127ed82c6/root-assurance/owner-evaluator-delivery-staging.json",
+      "sha256": "5466941db650310f2cfe9d213abf474259294f00c71b50d74fa1dcfe54b5a323"
+    },
+    {
+      "path": "/workspace/scratch/e18127ed82c6/root-assurance/owner-evaluator-library-upload-result.json",
+      "sha256": "96d1e812ece0cddd60d121f22149aafbc82a0d45551fe98d66c59cce0fe3fd95"
+    },
+    {
+      "path": "/workspace/scratch/28827b1ce0c8/audit-independent/q7-owner-archive-audit-c.json",
+      "sha256": "1977c4a9083384d662fa05373bbd6608440ff4e9f7100f4a69c8e99c1b17b33b"
+    }
+  ],
+  "new_downloads": 0,
+  "repackaging_performed": false,
+  "source_or_original_payload_modified": false,
+  "physical_owner_acceptance": "pending"
+}

@@ -1,0 +1,179 @@
+{
+  "schema": 1,
+  "mission": "GENTEK-SWARM-456-DEFINITIVE-001",
+  "date": "2026-11-24",
+  "reviewed_base": "b126523158e22d8993b4899710799f88dd0b98d0",
+  "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+  "scope": "Reviewed qualification observation/reader delta; no product/native/default/scientific-policy change",
+  "final_source_qualification": false,
+  "original_evidence_modified": false,
+  "original_q5_reproduction": {
+    "execution_source": "d59a82241eaf7d7bf48551139e41c3da277a8eff",
+    "mutation_scope": "Temporary copies only; rehashed reports, original stdout markers, process receipts and outer summary inventory.",
+    "original_archive_sha256": "2abd03c999b51910485f1b6a4b76b91cdb629fb84194bfd4e43ce23600f0dfa8",
+    "originals_modified": false,
+    "results": [
+      {
+        "accepted": true,
+        "case": "original_positive"
+      },
+      {
+        "accepted": true,
+        "case": "wrong_changed_cells"
+      },
+      {
+        "accepted": true,
+        "case": "wrong_patch_hash"
+      },
+      {
+        "accepted": true,
+        "case": "wrong_receipt_schema"
+      },
+      {
+        "accepted": true,
+        "case": "wrong_receipt_semantics"
+      },
+      {
+        "accepted": true,
+        "case": "negative_native_generation"
+      }
+    ],
+    "reviewed_source": "b126523158e22d8993b4899710799f88dd0b98d0",
+    "run_id": 44988900817,
+    "scope": "Full publication_candidate.report graphical admission, not merely UI helper validation; no claim to alter GitHub artifact digest."
+  },
+  "source_files_sha256": {
+    "godot/tests/swarm456_reciprocal_ui.gd": "fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164",
+    "tools/swarm45/reduce_evidence.py": "e5cd740d77eb1dd085b6bc5ad1554af0eabcfd8caac3027c386f07b0ec428f47",
+    "tools/swarm45/test_native_receipt_identity.py": "57bd7fefb86ff630aca8086acbf2649af91170a07cedea0adcb89a4c30be58ed",
+    "tools/swarm45/test_reduce_evidence.py": "bc03c02bf79e74a0d19c3b10b7c90950f189087d9cc885ca1c82f5bae88aa4ee",
+    "tools/swarm006/owner_dispatch.py": "2efe10d4baca058d7991ea4d434d3160644119cb280972bf6e441997afdfa56e",
+    "tools/swarm006/test_owner_dispatch.py": "6051cc2c82d1de6d7f2fcbbb7a8ff4797fa3eed80c1705f93633a9c91e5c5421"
+  },
+  "helper_tests": {
+    "additional_independent_adversarial_probes": {
+      "accepted": 0,
+      "refused": 10
+    },
+    "complete_swarm45_helper_suite": {
+      "failed": 0,
+      "passed": 112,
+      "seconds": 50.036,
+      "skipped": 0
+    },
+    "existing_reducer": {
+      "failed": 0,
+      "passed": 15,
+      "skipped": 0
+    },
+    "focused_receipt": {
+      "failed": 0,
+      "passed": 17,
+      "skipped": 0
+    }
+  },
+  "owner_observer_tests": {
+    "command": "python tools/swarm006/test_owner_dispatch.py",
+    "tests": 17,
+    "passed": true,
+    "new_cases": [
+      "API code captured before CloseHandle changes last error",
+      "EnumWindows callback retains and rethrows the same exception with callback PID/HWND",
+      "recorded observer error remains failed and executes private-job retirement"
+    ]
+  },
+  "original_positive_patch_and_sidecar_matches": 21,
+  "original_q5_fixture_matches": 12,
+  "independent_reviews": {
+    "receipt": [
+      "native_integration: APPROVE",
+      "qualification_publication: APPROVE"
+    ],
+    "observer": [
+      "native_integration: APPROVE",
+      "independent_assurance: APPROVE"
+    ]
+  },
+  "native_preflight": {
+    "scope": "Actual Linux headless Godot4.7 with reused original Q5 native/CLI bytes and bindings, b126 application plus final qualification fixture delta; not final-source or graphical qualification",
+    "runtime_source": "d59a82241eaf7d7bf48551139e41c3da277a8eff",
+    "extension_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+    "cli_sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206",
+    "cases": [
+      {
+        "case": "transaction",
+        "mode": "create",
+        "assertions": 274,
+        "failures": [],
+        "report_sha256": "014673f43e550ba3551b6a371ca4dae8f59b0f280036465b9e07368fdc8c2fa5",
+        "log_sha256": "2316feb7f4396940b44df5fd62e2ea6be5c8edafc7e4b53cd5386bd4963bcc68",
+        "process_id": 10,
+        "returncode": 0,
+        "timeout_seconds": 420,
+        "wall_seconds": 98.06172053499995,
+        "test_sha256": "fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164"
+      },
+      {
+        "case": "transaction",
+        "mode": "reopen",
+        "assertions": 156,
+        "failures": [],
+        "report_sha256": "f9ccb0dc3ce383041318256bb357bb77a55e6b650afab065ccb5af2d7c7b37e3",
+        "log_sha256": "ac3ae0b02a8bbc8f016ad5685a165090db097e4ecbbcb4c23dc3490fde936545",
+        "process_id": 273,
+        "returncode": 0,
+        "timeout_seconds": 420,
+        "wall_seconds": 24.622332752999682,
+        "test_sha256": "fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164"
+      },
+      {
+        "case": "swarm006_industrial_on",
+        "mode": "evaluate",
+        "assertions": 292,
+        "failures": [],
+        "report_sha256": "c27d78bc6117790a8cf0a4822e45b4970cd11bb0b889abbdbbfe009326ec41c2",
+        "log_sha256": "65a57505b29028b40b26a9e07f0e8c5dbaa2627579c874ceb60e9fc8d699c0bd",
+        "process_id": 7,
+        "returncode": 0,
+        "timeout_seconds": 420,
+        "wall_seconds": 100.77638897799989,
+        "test_sha256": "fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164"
+      },
+      {
+        "case": "swarm006_industrial_on",
+        "mode": "reopen",
+        "assertions": 78,
+        "failures": [],
+        "report_sha256": "1f3612ba8eee5c096a56674a03c5787457cee97b206769e9d23c0d7a191d5075",
+        "log_sha256": "a14addf816a711ddc9cd14f6570245cef53f15a1ec381f1f739a67dd845650fa",
+        "process_id": 145,
+        "returncode": 0,
+        "timeout_seconds": 420,
+        "wall_seconds": 21.389403286999368,
+        "test_sha256": "fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164"
+      }
+    ],
+    "total_assertions": 800,
+    "reader_passes": 2,
+    "negative_parallel_attempt": {
+      "case": "swarm006_industrial_on",
+      "returncode": -9,
+      "wall_seconds": 76.35169244999997,
+      "completed_report": false,
+      "outcome": "incomplete SIGKILL; cause unproven; fresh sequential replacement recorded separately"
+    }
+  },
+  "q6_owner_observer": {
+    "run_id": 45437617377,
+    "attempt": 1,
+    "failed_job_id": 138606002356,
+    "archive_sha256": "8bc935778d74e6839b6d781be6833a450849dd96727fc8bfb545530eed82fef5",
+    "dispatch_report_sha256": "bc3c3a1749b64ead2efc820c7d62e9159a24cecfc79d72a17e8651521b1c3654",
+    "failure": "[WinError 5] Access is denied.",
+    "root_cause": "Unresolved: original capture omits API and traceback; no harmless-exit-race claim is supported"
+  },
+  "required_successor": "Fresh complete source/run/attempt-bound campaign; no retrospective witness creation, failed-attempt mixing or later source edit after runtime publication",
+  "publication": "pending",
+  "owner_physical_acceptance": "pending",
+  "draft_hold": true
+}

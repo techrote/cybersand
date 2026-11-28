@@ -1,0 +1,27 @@
+{
+  "actual_episodes": 194,
+  "command": [
+    "python3",
+    "tools/ambient/review_episodes.py",
+    "--report",
+    "<original-baseline-directory>/episodes.json",
+    "--summary",
+    "<original-baseline-directory>/analysis/summary.json",
+    "--source-sha",
+    "83a3db6ffb207761df999abedac77eb1401604a8",
+    "--output",
+    "<review-output-directory>"
+  ],
+  "copied_peer_samples_checked": 67200,
+  "exit_code": 0,
+  "independent_markdown_sha256": "23943b971ba6b5f3ae1e1ae7e480dea31911a2be09b5990b492d4b922b850123",
+  "independent_report_sha256": "213598a054fabd1d515b0989c0b26a320d0573d8aee61b756ac00a3da35506a4",
+  "matched_ablation_groups": 40,
+  "metrics_checked": 2910,
+  "raw_report_sha256": "e9d31cfd40ba881753294a2e6ff546722312ec3c61fa16802c6d3c6d8b1a6d5b",
+  "reducer_summary_sha256": "abacd5f372f45f04e86cde6ff8030478a7103fd4fa128497c94bb9bc5afc0959",
+  "reviewer_sha256": "c2e0608aff1eebd6a656ace312b6ff41f2fba4d1f0940c2a5219dddb9d55801f",
+  "scope": "Complete local baseline at83a3; distinct from941b nine-case repair and later final-source qualification.",
+  "source_revision": "83a3db6ffb207761df999abedac77eb1401604a8",
+  "world_clusters": 122
+}

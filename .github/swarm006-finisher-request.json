@@ -1,0 +1,22 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-006-INTEGRATION-FINISHER",
+  "draft_hold": true,
+  "request": "2026-11-21-windows-fixture-canonical-path-repair-04",
+  "accepted_base": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+  "swarm004_005_accepted_merge": "pending",
+  "native_definition_sha256": "72779688b897e4707d89ac1f6e692046abbc806bd27b4c129bd77fcd995093a0",
+  "scope": [
+    "strict_native",
+    "asan_ubsan_leaks",
+    "linux_preservation",
+    "actual_input_integrity",
+    "source_admission_importer",
+    "windows_preservation",
+    "windows_graphical_source",
+    "windows_pristine_package",
+    "owner_launcher"
+  ],
+  "publication": "isolated provisional successor; no merge, Ready, auto-merge or production-runtime publication",
+  "superseded_candidate": "ca63445888d818ed868f71869abb37ae4d00975e"
+}

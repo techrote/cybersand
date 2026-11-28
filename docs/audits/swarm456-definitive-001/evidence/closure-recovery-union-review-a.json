@@ -1,0 +1,98 @@
+{
+  "additional_historical_github_ids": [
+    14726234776,
+    14726486823,
+    14726599971,
+    14726647933,
+    14726659913,
+    14727344824,
+    14727568272,
+    14727612467,
+    14727701534,
+    14727751402,
+    14728553987,
+    14728803920,
+    14728908283,
+    14728998753,
+    14730879629,
+    14731542453,
+    14737637480,
+    14737702119,
+    14737851434,
+    14738045743
+  ],
+  "baseline_gitHub_records": 236,
+  "baseline_manifest": "/workspace/scratch/e18127ed82c6/root-assurance/canonical-evidence-staging/recovery-manifest.json",
+  "baseline_sha256": "1e9d155c4aa5bcf1fdb9c64030a2312944e341d7449a8826b8d96c8810aec8a1",
+  "expected_deduplicated_all_archive_count": 259,
+  "expected_deduplicated_github_union": 256,
+  "findings": [],
+  "historical_github_bytes": 3491359509,
+  "historical_github_records": 62,
+  "historical_supplement": "/workspace/scratch/28827b1ce0c8/mission-evidence/closure-historical-recovery-final.json",
+  "historical_supplement_sha256": "33c4a1cd46cef9e32760c69d5acea6e4b872b5279d600cc74100cfa39da78ddb",
+  "matching_whole_measured_archive_hashes_in_both_lanes": 35,
+  "new_whole_archive_verification_for_prior_partial_only": [
+    {
+      "artifact_id": 14736306227,
+      "partial_event_keys": [
+        "selected_member_recovery"
+      ],
+      "prior_measured_sha256": null
+    },
+    {
+      "artifact_id": 14736159512,
+      "partial_event_keys": [
+        "selected_member_recovery"
+      ],
+      "prior_measured_sha256": null
+    },
+    {
+      "artifact_id": 14737270987,
+      "partial_event_keys": [
+        "selected_member_recovery"
+      ],
+      "prior_measured_sha256": null
+    },
+    {
+      "artifact_id": 14737211469,
+      "partial_event_keys": [
+        "selected_member_recovery"
+      ],
+      "prior_measured_sha256": null
+    },
+    {
+      "artifact_id": 14739312486,
+      "partial_event_keys": [
+        "selected_member_recovery"
+      ],
+      "prior_measured_sha256": null
+    },
+    {
+      "artifact_id": 14737089613,
+      "partial_event_keys": [
+        "selected_member_recovery"
+      ],
+      "prior_measured_sha256": null
+    },
+    {
+      "artifact_id": 14738724058,
+      "partial_event_keys": [
+        "selected_member_recovery"
+      ],
+      "prior_measured_sha256": null
+    }
+  ],
+  "original_evidence_modified": false,
+  "overlapping_name_source_run_size_API_digest_conflicts": 0,
+  "overlapping_original_identities": 42,
+  "result": "PASS",
+  "reviewer": "Closure Specialist A independent recovery-manifest union review",
+  "schema": 1,
+  "science_supplement_sha256": "47f58c1e063dcf569676f6c2054e09b749c1d52df1963def4a75c360f0728d5a",
+  "scope": "Read-only comparison of exact prior receipts, not a new archive download or current-cache claim. Preserve prior partial events, all historical conclusions, exact per-receipt member verification scope and temporary-cache lifecycle.",
+  "separate_scientific_bytes": 1256895676,
+  "separate_scientific_records": 3,
+  "source_or_remote_modified": false,
+  "utc": "2026-11-24T20:00:11.962513+00:00"
+}

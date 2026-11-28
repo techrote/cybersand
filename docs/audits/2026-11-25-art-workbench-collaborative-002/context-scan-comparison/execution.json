@@ -1,0 +1,32 @@
+{
+  "schema": "art-context-scan-execution-v1",
+  "source": "3f56020b3a0ed59da2a8387788a89ffe342f34d8",
+  "source_tree": "ab315123888553e912ce8d2bb62591e8a1c240e4",
+  "execution": "Lead-brokered exact specialist source; one process alternating comparison. No live World or model experiment.",
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "processor": "",
+  "cpu_model": "INTEL(R) XEON(R) PLATINUM 8573C",
+  "mem_total": "MemTotal:       10206468 kB",
+  "clean_source_after": true,
+  "comparison": {
+    "path": "context-scan-comparison.json",
+    "bytes": 31332,
+    "sha256": "67b3b02688b461054409ec2e00d3eaf29b89e5803dd9247d3ad7d09d1fcd19ac"
+  },
+  "proposal_result_markers": [
+    "ART_PROPOSAL_RESULT {\"checks\":107,\"evidence_kind\":\"synthetic copied-value contracts; no model or native writes\",\"failures\":0}"
+  ],
+  "proposal_log_sha256": "97796d13ea04f86e07bee113d178a233ca52dc87373008bd501cc0bc11bef7e2",
+  "runtime": "Godot4.7.stable.official.5b4e0cb0f",
+  "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "proposal_result": {
+    "checks": 107,
+    "evidence_kind": "synthetic copied-value contracts; no model or native writes",
+    "failures": 0
+  },
+  "source_status_before_and_after": "clean",
+  "commands": [
+    "ART_CONTEXT_BENCH_NATIVE_DIR=<authenticated full-displayed-2743/test_art_collaborative_native> CYBERSAND_TEST_ARTIFACT_DIR=<output> CYBERSAND_SOURCE_REVISION=3f56020b3a0ed59da2a8387788a89ffe342f34d8 Godot_v4.7-stable_linux.x86_64 --headless --path godot --script res://tests/run_art_context_scan_comparison.gd",
+    "CYBERSAND_SOURCE_REVISION=3f56020b3a0ed59da2a8387788a89ffe342f34d8 Godot_v4.7-stable_linux.x86_64 --headless --path godot --script res://tests/test_art_authoring_proposal.gd"
+  ]
+}

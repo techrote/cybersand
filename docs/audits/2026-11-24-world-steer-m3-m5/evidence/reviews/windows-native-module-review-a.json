@@ -1,0 +1,303 @@
+{
+  "schema": "cybersand.windows-native-module-independent-a.v1",
+  "status": "passed",
+  "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+  "native_sha256": "7113128dbbe0bab1a8dd5c86c23699e49fdb45594bf43a7f9b95abb6d322ae16",
+  "owner_evaluator_sha256": "d4a91592bad81040e7f6c828bf410196fce141bc9f908bb3efa5daa6edf1a6da",
+  "library_snapshots": [
+    {
+      "path": "architecture-evidence/modules/starter-library-v1.json",
+      "modules": 8,
+      "content_sha256": "c43356c055227fca6655d192bd84923c5cf42c7e7827eef1a667a621eee01dcf",
+      "persisted_current_process_attestation": false
+    },
+    {
+      "path": "architecture-evidence/stages/source-part-library.json",
+      "modules": 8,
+      "content_sha256": "ac0d70ef658a73a16369091e5febbbbc829dac3f4f34987e2b39b042f6c301a5",
+      "persisted_current_process_attestation": false
+    }
+  ],
+  "module_observations_checked": 16,
+  "unique_starter_geometries": 8,
+  "modules": [
+    {
+      "library": "architecture-evidence/modules/starter-library-v1.json",
+      "id": "buttressed-column",
+      "extent": [
+        16,
+        48
+      ],
+      "geometry_sha256": "b49dfbc6aca411e02f2f8f70b7a576a29cb1c9030135bb3f9d5b472be2332879",
+      "content_sha256": "ac9a79943800da5a357686e3a2db9cec95986332a1558d3db93f3c158299f083",
+      "occupied_cells": 288,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 3,
+      "changed_cells": 288,
+      "full_native_plane_sha256": "d10e397ff86fb71a4b316ca5313752dbf248123d26cba880ef7a8da6a78444f8",
+      "source_attempt_id": "1-ee121ac1ada5",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/modules/starter-library-v1.json",
+      "id": "machine-housing",
+      "extent": [
+        32,
+        32
+      ],
+      "geometry_sha256": "501a8f832f8abd57563f097472e7bc3a05831af29123d11b9b16cab7360a5ee5",
+      "content_sha256": "1e7651a4423e24c144231b9e05f92c216b6572215ca81ade149eedba182baecc",
+      "occupied_cells": 546,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 2,
+      "changed_cells": 546,
+      "full_native_plane_sha256": "fcf566c34070da0751101579b8ed54a4d0bbcf95cbf17d4e5eca8023f2d94545",
+      "source_attempt_id": "7-d8854874a3d5",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/modules/starter-library-v1.json",
+      "id": "return-pipe",
+      "extent": [
+        48,
+        32
+      ],
+      "geometry_sha256": "fa3fe796b5ab7175fd6194263cff745f363a4f1b7c34ced2f35de7bbb26ebe37",
+      "content_sha256": "b6e897521cbaac553fb36474a459687d1076a209db70f824a1f85998edc07319",
+      "occupied_cells": 366,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 1,
+      "changed_cells": 366,
+      "full_native_plane_sha256": "4aee968138fd80b136ed3da8ac6c890ffa4ecdca2a9853148a074eb3dfc4c73c",
+      "source_attempt_id": "5-245f5ade8539",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/modules/starter-library-v1.json",
+      "id": "ribbed-floor",
+      "extent": [
+        64,
+        8
+      ],
+      "geometry_sha256": "b5ff5f4e9454e0c75a3f85507ce89fff8eeb0ee7a3f6338d502cf972ad6b62af",
+      "content_sha256": "c04dfd1a677443b03921ea56ac877cce8856ef8d25c226f37970cc0cdbe35317",
+      "occupied_cells": 320,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 2,
+      "changed_cells": 320,
+      "full_native_plane_sha256": "18d886ae1e3c2dd51cf4efaec9df2d901612f262fbb6b69d5ebe0153827ffbea",
+      "source_attempt_id": "3-589c519798bc",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/modules/starter-library-v1.json",
+      "id": "service-doorway",
+      "extent": [
+        32,
+        48
+      ],
+      "geometry_sha256": "168a39302c6029ad2bd60b96b3bf3f4f157e39e4f9f28aca42ccd358e1b78697",
+      "content_sha256": "dae4757b9df9754dde94b1d1bca3041cb201ef3b9734fea65363ba7ecfa96d59",
+      "occupied_cells": 480,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 1,
+      "changed_cells": 480,
+      "full_native_plane_sha256": "85b88062a82c69a0f92ae5a61d49de585e4071205676373b20957d8dffdc61f1",
+      "source_attempt_id": "4-9ec28151ede7",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/modules/starter-library-v1.json",
+      "id": "stepped-transition",
+      "extent": [
+        48,
+        32
+      ],
+      "geometry_sha256": "471b87234a488bab483dd6d9d395ccf428cd6811c926fc17dad56c055311f2a3",
+      "content_sha256": "1f57fadaea27a2a305b373e077c12cc6f4492c2d4ef1c2304fd965a15624979a",
+      "occupied_cells": 576,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 1,
+      "changed_cells": 576,
+      "full_native_plane_sha256": "972ba4a0776241f6b5904dee85afea9e5a9a5315e5f4b67cf92e557088abab2b",
+      "source_attempt_id": "8-45c7a80da740",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/modules/starter-library-v1.json",
+      "id": "suspended-gallery",
+      "extent": [
+        64,
+        24
+      ],
+      "geometry_sha256": "385b566d70fb24330ab94643f4d126edac16295496ead9649cc0993c31fe3ad1",
+      "content_sha256": "94685d39ec33d137e4548e102597664e8fa2e34e7d7b7e44d17a8b77f71d3945",
+      "occupied_cells": 516,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 2,
+      "changed_cells": 516,
+      "full_native_plane_sha256": "d4ee9c5b256f8d1fe61558b31497e32d1ba4d012bce378a136ade0f12f60d603",
+      "source_attempt_id": "6-dfcb3ff0ab2c",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/modules/starter-library-v1.json",
+      "id": "warren-beam",
+      "extent": [
+        64,
+        16
+      ],
+      "geometry_sha256": "16187edc9dc2bfa309b22c84e997429251bec38e79bfc4ce26bd2239d16263cb",
+      "content_sha256": "6d9740c587f9d598e9be9b556b54122be09acc1cb39561df62d4ae610f1661cf",
+      "occupied_cells": 464,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 2,
+      "changed_cells": 464,
+      "full_native_plane_sha256": "23f1fac74090567904b530b6123bc3169052b2715209766ddd7a746ff77e9987",
+      "source_attempt_id": "2-76566de57045",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/stages/source-part-library.json",
+      "id": "buttressed-column",
+      "extent": [
+        16,
+        48
+      ],
+      "geometry_sha256": "b49dfbc6aca411e02f2f8f70b7a576a29cb1c9030135bb3f9d5b472be2332879",
+      "content_sha256": "e3dae2e847348e76e5c9e63b113f87c67fd08415854fc6691ac12012d1f41bec",
+      "occupied_cells": 288,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 3,
+      "changed_cells": 288,
+      "full_native_plane_sha256": "d10e397ff86fb71a4b316ca5313752dbf248123d26cba880ef7a8da6a78444f8",
+      "source_attempt_id": "1-5627bdf79097",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/stages/source-part-library.json",
+      "id": "machine-housing",
+      "extent": [
+        32,
+        32
+      ],
+      "geometry_sha256": "501a8f832f8abd57563f097472e7bc3a05831af29123d11b9b16cab7360a5ee5",
+      "content_sha256": "1d43a376236f970284a2e0503c33108462a75bd1e286c5b78beb26adaabdbb1d",
+      "occupied_cells": 546,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 2,
+      "changed_cells": 546,
+      "full_native_plane_sha256": "fcf566c34070da0751101579b8ed54a4d0bbcf95cbf17d4e5eca8023f2d94545",
+      "source_attempt_id": "7-83e935f09850",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/stages/source-part-library.json",
+      "id": "return-pipe",
+      "extent": [
+        48,
+        32
+      ],
+      "geometry_sha256": "fa3fe796b5ab7175fd6194263cff745f363a4f1b7c34ced2f35de7bbb26ebe37",
+      "content_sha256": "d39104914c6bcecffc0651b812544e5202028b9749696d6b07bd7ad0e5dea517",
+      "occupied_cells": 366,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 1,
+      "changed_cells": 366,
+      "full_native_plane_sha256": "4aee968138fd80b136ed3da8ac6c890ffa4ecdca2a9853148a074eb3dfc4c73c",
+      "source_attempt_id": "5-469eb5df51c8",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/stages/source-part-library.json",
+      "id": "ribbed-floor",
+      "extent": [
+        64,
+        8
+      ],
+      "geometry_sha256": "b5ff5f4e9454e0c75a3f85507ce89fff8eeb0ee7a3f6338d502cf972ad6b62af",
+      "content_sha256": "6df65b3240edbbdd4c98a0eda495fbb17f15a53acf1682cb116dba7b1eefd6d4",
+      "occupied_cells": 320,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 2,
+      "changed_cells": 320,
+      "full_native_plane_sha256": "18d886ae1e3c2dd51cf4efaec9df2d901612f262fbb6b69d5ebe0153827ffbea",
+      "source_attempt_id": "3-14af8b8fbd1a",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/stages/source-part-library.json",
+      "id": "service-doorway",
+      "extent": [
+        32,
+        48
+      ],
+      "geometry_sha256": "168a39302c6029ad2bd60b96b3bf3f4f157e39e4f9f28aca42ccd358e1b78697",
+      "content_sha256": "7ca36c39bd852f27090af8db94dac4dac8ee7bf1e82fc3aa4b11050aad33571b",
+      "occupied_cells": 480,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 1,
+      "changed_cells": 480,
+      "full_native_plane_sha256": "85b88062a82c69a0f92ae5a61d49de585e4071205676373b20957d8dffdc61f1",
+      "source_attempt_id": "4-55d69dfa6ce9",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/stages/source-part-library.json",
+      "id": "stepped-transition",
+      "extent": [
+        48,
+        32
+      ],
+      "geometry_sha256": "471b87234a488bab483dd6d9d395ccf428cd6811c926fc17dad56c055311f2a3",
+      "content_sha256": "e91297b65a1e9c047d7fc3b9a299c11ba18de96f5c4d53eca6d3d42532e58e70",
+      "occupied_cells": 576,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 1,
+      "changed_cells": 576,
+      "full_native_plane_sha256": "972ba4a0776241f6b5904dee85afea9e5a9a5315e5f4b67cf92e557088abab2b",
+      "source_attempt_id": "8-d3c53d614e90",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/stages/source-part-library.json",
+      "id": "suspended-gallery",
+      "extent": [
+        64,
+        24
+      ],
+      "geometry_sha256": "385b566d70fb24330ab94643f4d126edac16295496ead9649cc0993c31fe3ad1",
+      "content_sha256": "62c96d99d2285b46b9903770786179726ca72927f0d02ffc9541791fab1d5ba2",
+      "occupied_cells": 516,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 2,
+      "changed_cells": 516,
+      "full_native_plane_sha256": "d4ee9c5b256f8d1fe61558b31497e32d1ba4d012bce378a136ade0f12f60d603",
+      "source_attempt_id": "6-53115c6ae155",
+      "all_declared_clearances_empty": true
+    },
+    {
+      "library": "architecture-evidence/stages/source-part-library.json",
+      "id": "warren-beam",
+      "extent": [
+        64,
+        16
+      ],
+      "geometry_sha256": "16187edc9dc2bfa309b22c84e997429251bec38e79bfc4ce26bd2239d16263cb",
+      "content_sha256": "948f63300c460df05087db32c5941552c60a3e7121132c102654c8af4b3ebbbd",
+      "occupied_cells": 464,
+      "face_connected_components": 1,
+      "native_receipt_chunks": 2,
+      "changed_cells": 464,
+      "full_native_plane_sha256": "23f1fac74090567904b530b6123bc3169052b2715209766ddd7a746ff77e9987",
+      "source_attempt_id": "2-72d8db2badbd",
+      "all_declared_clearances_empty": true
+    }
+  ],
+  "qualification_checks": {
+    "module_author": 101,
+    "module_fresh_process_reopen": 14,
+    "eight_native_parts_and_replay": 78
+  },
+  "scope": "Independent standard-library reconstruction of declared rectangle recipes, exact local/full material planes, content/library hashes, receipt counter/revision continuity, scope and clearance, and one face-connected component per starter. Fresh replay claims tied to source-bound hosted report; no physical simulation or owner acceptance."
+}

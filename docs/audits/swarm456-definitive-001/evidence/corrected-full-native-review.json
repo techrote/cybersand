@@ -1,0 +1,157 @@
+{
+  "aggregate_byte_identical_to_hosted_original": true,
+  "all_required_families_completed": true,
+  "all_six_source_receipts_and_original_command_log_exits_pass": true,
+  "command_count": 20,
+  "disposition": "PASS",
+  "families": [
+    {
+      "commands": 2,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "asan-ubsan",
+      "log_sha256": "8c007a5bf7e366435e9b5d8caae002b7b5599ae6772f7ff8f56bc0d7eb72a9a0",
+      "native_case_passes": 192,
+      "receipt_sha256": "1f700aba55460f7b58b918e892e15e527b83318cf39937cb2454b09ffe9dc1ba",
+      "scientific_output_files": 0
+    },
+    {
+      "commands": 6,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "native-normal",
+      "log_sha256": "e925814e2b3d8e9eae91c3938902fa261687d683b3749a1048026e3d22c533d4",
+      "native_case_passes": 192,
+      "receipt_sha256": "426c057dfe74a25795bb81679d66a4c3f6d4a08a2510c3bb3946369e14c1f6cc",
+      "scientific_output_files": 0
+    },
+    {
+      "commands": 3,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "soliding-asan",
+      "log_sha256": "099c965c147081977ffb47ea2d2b39d492721958410dcd648836552aa4be7d14",
+      "native_case_passes": 0,
+      "receipt_sha256": "8f886fa45afc002d5ebf5681b54c2b2e73d0182644259af62bdbe7a2e72660f7",
+      "scientific_output_files": 0
+    },
+    {
+      "commands": 4,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "soliding-normal",
+      "log_sha256": "c60505b5b77d852407d45547a31bc732e470d6b196193f3d64b6aba6eb73b266",
+      "native_case_passes": 0,
+      "receipt_sha256": "5361452b02ca99d04273ae1f17b791e98cfb5c1f85e5150db4fd08fadb695b23",
+      "scientific_output_files": 2
+    },
+    {
+      "commands": 2,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "tsan",
+      "log_sha256": "e70e5e5983919a7a60d6e65c1ff65bedd8480bf1feca4ed758e010b9de35a93d",
+      "native_case_passes": 192,
+      "receipt_sha256": "b1d1fb9147cf809c7ca5cb91c4b48f2e67f7c0749e476fe8cbabfc0869981e0b",
+      "scientific_output_files": 0
+    },
+    {
+      "commands": 3,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "worldgen",
+      "log_sha256": "9153a5d9c1a93f91716194a78da70bf9339f0650debb8e4af0e165e0e5a4ae35",
+      "native_case_passes": 0,
+      "receipt_sha256": "a6e19c30fd908179e10d7aa653e9110a23882969da81bfc8c67742d74932157e",
+      "scientific_output_files": 324
+    }
+  ],
+  "independent_aggregate_sha256": "8a356452b96addc75549000a6dc9b16ab02ac12ad7c8d8898eef327db39a771e",
+  "job_outcomes": [
+    {
+      "conclusion": "success",
+      "id": 138695635899,
+      "name": "Native evidence and provider policy"
+    },
+    {
+      "conclusion": "skipped",
+      "id": 138695639275,
+      "name": "ready validation scope"
+    },
+    {
+      "conclusion": "success",
+      "id": 138696129803,
+      "name": "Native family / soliding-asan"
+    },
+    {
+      "conclusion": "success",
+      "id": 138696129812,
+      "name": "Native family / soliding-normal"
+    },
+    {
+      "conclusion": "success",
+      "id": 138696129873,
+      "name": "Native family / tsan"
+    },
+    {
+      "conclusion": "success",
+      "id": 138696129877,
+      "name": "Native family / asan-ubsan"
+    },
+    {
+      "conclusion": "success",
+      "id": 138696129949,
+      "name": "Native family / native-normal"
+    },
+    {
+      "conclusion": "success",
+      "id": 138696129957,
+      "name": "Native family / worldgen"
+    },
+    {
+      "conclusion": "success",
+      "id": 138709387118,
+      "name": "native"
+    }
+  ],
+  "later_checkpoint_scope": {
+    "exact_delta": [
+      ".github/workflows/gdextension.yml",
+      ".github/workflows/play-desktop-packet.yml",
+      "README.md",
+      "docs/audits/swarm456-definitive-001/ordinary-linux-download-correction.json",
+      "docs/audits/swarm456-definitive-001/ordinary-linux-download-correction.md"
+    ],
+    "interpretation": "Retain exact e4a Native execution identity. The later transport/admission/documentation-only overlay does not change any Native execution input and does not need a third Native campaign.",
+    "native_workflow_helpers_registry_and_all_native_scientific_application_inputs_unchanged": true,
+    "new_runtime_compilation_or_execution_claim": false,
+    "source": "5fd9985eb27919eeefdad959a9970a0eef57d832"
+  },
+  "only_skipped_job": "ready_for_review control is inapplicable to workflow_dispatch; no mandatory suite skipped",
+  "original_archives": {
+    "api_bound": true,
+    "bytes": 493010,
+    "count": 9,
+    "currently_cached_on_persistent_workspace": true,
+    "recovery_report_sha256": "0a4c31b4d95588b7d8240d68b00d6969186dbc0b6d90e37a68830ab0bb05a147"
+  },
+  "qualified_runtime_role": "Selected published runtime and evaluator remain Q7 application producer5e34e0dd and publication5323; ordinary source evidence is not retagged.",
+  "run_attempt": 1,
+  "run_id": 45464490633,
+  "schema": "independent-complete-native-qualification-review-v1",
+  "source_registry_cases": 192,
+  "source_sha": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+  "source_tree": "b971f25fa8532705c414fc1bf0ee8c9e1064e087"
+}

@@ -1,0 +1,11 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-004-005-MAINLINE",
+  "action": "publish-runtime",
+  "request_id": "swarm45-mainline-runtime-20261121-r3",
+  "expected_parent_sha": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "qualification_source_sha": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+  "qualification_run_id": "44953582341",
+  "qualification_run_attempt": "1",
+  "publication_artifact_id": "14727612467"
+}

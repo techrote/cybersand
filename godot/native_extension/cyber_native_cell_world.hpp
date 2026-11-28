@@ -119,6 +119,10 @@ public:
     // generation counts committed World replacements; refusals never advance it.
     [[nodiscard]] Dictionary get_liquid_solver_policy() const;
     [[nodiscard]] std::int64_t get_liquid_policy_session_generation() const;
+    // MAT-AUDITION-LIVE-001. Exclusive native owner only, between ticks; all
+    // dictionaries are copied values and never expose mutable World storage.
+    [[nodiscard]] Dictionary get_material_audition_state() const;
+    [[nodiscard]] Dictionary apply_material_audition(const Dictionary& request);
     [[nodiscard]] static Dictionary liquid_policy_receipt(
         const cybersand::LiquidSolverPolicy& policy, std::int64_t session_generation,
         const cybersand::World* actual = nullptr);
@@ -264,7 +268,7 @@ private:
     mutable std::uint64_t tick_failure_count_ = 0;
     std::uint64_t liquid_policy_session_generation_ = 0;
     Vector2i extent_{kWorldWidth, kWorldHeight};
-    // Eight authored actors can own multiple real parts, including released
+    // Configured authored actors can own multiple real parts, including released
     // equipment. Each physical body retains its own response and mask budget.
     static constexpr std::size_t kWorkbenchBodies = cybersand::World::kMaximumTransientBodies;
     struct WorkbenchBody {
@@ -283,6 +287,9 @@ private:
     struct Workbench {
         String response;
         WorkbenchSample sample;
+        // Reused heap-owned parse destination: no population-sized stack frame
+        // or allocation during an ordinary physical publication.
+        WorkbenchSample pending;
         bool valid = false, sampled = false;
         std::uint64_t prepared_tick = 0;
         std::array<std::array<cybersand::gcr::Bin,8>,cybersand::World::kMaximumTransientBodies + 1> bins{};
@@ -338,6 +345,12 @@ private:
         std::unique_ptr<cybersand::RenderSnapshotExchange> exchange;
         cybersand::setup::SetupDescriptor setup;
         Dictionary receipt;
+        // GEN-006 continuation has distinct authority from the tick-zero
+        // authored-source construction receipt. Both are copied values.
+        Dictionary continuation_identity, continuation_capsule, source_construction_receipt;
+        String source_checkpoint_sha256;
+        std::uint64_t source_checkpoint_tick = 0;
+        bool continuation = false, continuation_dirty = false;
         BodyStates initial_bodies{};
         PackedFloat32Array initial_body_input;
         String initial_body_digest, workbench_initial_digest;
@@ -348,6 +361,22 @@ private:
         bool retained_cadence = false, retained_window = true;
     };
     std::unique_ptr<PendingLiquidWorld> pending_liquid_world_;
+    // The same exclusive desktop owner owns every inactive native allocation.
+    // An active record has no payload; exactly one bundle is installed in this
+    // adapter. Handles are never reused, including after eviction.
+    struct ResidentArea {
+        Dictionary identity;
+        String physics_profile;
+        std::unique_ptr<PendingLiquidWorld> payload;
+        std::uint64_t handle = 0, generation = 1, mutation = 0;
+        std::uint64_t active_construction_generation = 0;
+    };
+    std::vector<std::unique_ptr<ResidentArea>> resident_areas_;
+    std::uint64_t active_resident_handle_ = 0, next_resident_handle_ = 0;
+    std::uint64_t resident_hot_activations_ = 0, resident_captures_ = 0, resident_steps_ = 0;
+    std::uint64_t resident_admissions_ = 0, resident_releases_ = 0, resident_imports_ = 0;
+    std::uint64_t resident_source_constructions_ = 0, resident_native_restorations_ = 0;
+    String resident_last_operation_;
     std::uint64_t next_liquid_preparation_token_ = 0;
     cybersand::setup::SetupDescriptor applied_liquid_setup_ = [] {
         cybersand::setup::SetupDescriptor value;
@@ -383,7 +412,7 @@ private:
     void refresh_simulation_region();
     void refresh_render_cells() const;
     void clear_observations();
-    [[nodiscard]] static BodyStates parse_body_state_values(const PackedFloat32Array& states, bool strict);
+    static void parse_body_state_values(BodyStates& out, const PackedFloat32Array& states, bool strict);
     [[nodiscard]] static PackedInt32Array hard_surface_chunks_from_cells(const PackedByteArray& cells, Vector2i extent);
     // Diagnostic: the chunk packet rebuilt in full from the display projection.
     [[nodiscard]] PackedInt32Array diagnostic_full_hard_surface_chunk_rectangles() const;

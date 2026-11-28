@@ -1,0 +1,83 @@
+{
+  "schema": "cybersand.independent-final-review-custody.v1",
+  "files": [
+    {
+      "file": "framing-correction-source-review-a.json",
+      "sha256": "2c73e2a62c10f5c9fc4d456597a598e486ca21569b776d27b665f7fa62fdc16c",
+      "bytes": 963,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "windows-runtime-custody-a.json",
+      "sha256": "049f3f624dfe4deb7ed08315a2541758b9acb7189ab3b9528ca81a148cedf542",
+      "bytes": 1652,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "owner-evaluator-custody-a.json",
+      "sha256": "8650cbf7a8d68373d60904df425fc47e28c496a0d8896cfea961a86a97693ae3",
+      "bytes": 2119,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "owner-evaluator-custody-root.json",
+      "sha256": "8bd6ca4504f1d23110d628ae630ca1b2b648076d90d63755264f141b7cd293a7",
+      "bytes": 1039,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "windows-native-module-review-a.json",
+      "sha256": "0d9949b117562de88a7c19e0b473680ae5b443d4b086b6331f5361b1fc4d6b0d",
+      "bytes": 12199,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "ui-framing-review-a.json",
+      "sha256": "969d86f262bd8cc640866a6f318228f33580a8aa5aff37e77a2bae1a634665d8",
+      "bytes": 2170,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "linux-nine-review-b.json",
+      "sha256": "878573a5ba653d029fa3979d7d6695d2a2e4fd40f88072be24082022242cde05",
+      "bytes": 56112,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "windows-source-nine-review-b.json",
+      "sha256": "0aba7c1e927fb7c9bfbacd02ef96eaa7417e014123036336a92eeb94a6da6982",
+      "bytes": 56994,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "windows-extracted-nine-review-b.json",
+      "sha256": "a3bef4e49476be7ccb277d6bf72db9f61500c15e91b9b030f53cc2b4b2c5b32b",
+      "bytes": 56994,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "linux-native-review-root.json",
+      "sha256": "878573a5ba653d029fa3979d7d6695d2a2e4fd40f88072be24082022242cde05",
+      "bytes": 56112,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "windows-independent-review-c.json",
+      "sha256": "8badc6a2ca8522e6d9897e5f7dfd968021e39ef5aabd68cd7e8904d8dc279f04",
+      "bytes": 14843,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "owner-source-report-pairing-c.json",
+      "sha256": "43b1ccb3eb71e22577f4f350699792e56caa1301041c7fdf5f0ca2c3bf24269c",
+      "bytes": 403,
+      "classification": "Post-campaign independent review; not an original runner output"
+    },
+    {
+      "file": "clearance-space-cross-review-a.json",
+      "sha256": "5be358d83449bb9d952e95d31060695c3679f1fbd772ca699adda8c960e08d16",
+      "bytes": 4126,
+      "classification": "Post-campaign independent review; not an original runner output"
+    }
+  ]
+}

@@ -44,7 +44,8 @@ concurrency:
 
 env:
   CYBERSAND_CI_WATCHDOG_SCALE: "1"
-  GODOT_URL: https://downloads.godotengine.org/?flavor=stable&platform=linux.64&slug=linux.x86_64.zip&version=4.7
+  # Official release asset, identical to the locked Linux editor bytes.
+  GODOT_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
   GODOT_SHA256: 0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c
   GODOT_VERSION: 4.7.stable.official.5b4e0cb0f
   GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
@@ -188,8 +189,10 @@ jobs:
 
       - name: Fetch Linux Rapier runtime only
         run: |
-          git lfs install --local
-          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" --exclude=""
+          set -euo pipefail
+          python3 tools/ci/materialize_lfs.py \
+            --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so \
+            --expected-source "$GITHUB_SHA" --output build/build-timing/lfs-acquisition
           echo "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum --check --strict
 
       - name: Validate shard planner
@@ -205,6 +208,8 @@ jobs:
           python3 tools/ci/test_physical_progress_watchdog.py
           python3 tools/ci/test_physical_stress.py
           python3 tools/ci/test_rapier_candidate_identity.py
+          python3 tools/ci/test_materialize_lfs.py
+          python3 tools/ci/test_lfs_runtime_artifact.py
           python3 tools/ci/test_rapier_pair.py
           python3 tools/ci/test_rapier_same_host.py
 
@@ -302,10 +307,22 @@ jobs:
         (github.event.action != 'ready_for_review' ||
          needs.ready_scope.outputs.required == 'true')))
     runs-on: ubuntu-24.04
-    timeout-minutes: 240
+    # Preserve the previous 240-minute build envelope plus the moved 10-minute
+    # Rapier acquisition and its independent five-minute artifact retention.
+    timeout-minutes: 255
     steps:
       - name: Check out source
         uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+
+      - name: Acquire exact committed Windows Rapier once for this attempt
+        timeout-minutes: 10
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/ci/lfs_runtime_artifact.py stage --root . \
+            --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" \
+            --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll \
+            --output build/windows-lfs-runtime --allowance-seconds 600
 
       - name: Verify required host tools
         run: |
@@ -387,6 +404,16 @@ jobs:
           if-no-files-found: error
           retention-days: 90
 
+      - name: Retain original Windows Rapier acquisition and exact payload
+        if: always()
+        timeout-minutes: 5
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: windows-lfs-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/windows-lfs-runtime/
+          if-no-files-found: error
+          retention-days: 90
+
       - name: Retain compiler process timing and original logs
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
@@ -397,7 +424,7 @@ jobs:
           retention-days: 90
 
   windows-regression:
-    name: windows headless regression shard ${{ matrix.shard }}
+    name: windows regression shard ${{ matrix.shard }}
     needs: [ready_scope, execution-plan, windows-build]
     if: >-
       always() && inputs.physical_actor_stress != true &&
@@ -438,12 +465,22 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Materialize pinned Windows Rapier runtime
-        timeout-minutes: 10
+      - name: Download exact same-attempt Windows Rapier payload
+        timeout-minutes: 5
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: windows-lfs-runtime-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/windows-lfs-runtime
+
+      - name: Verify committed Windows Rapier bytes and producer custody
+        timeout-minutes: 5
         run: |
           set -euo pipefail
-          git lfs install --local
-          git lfs pull --include="godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll" --exclude=""
+          python tools/ci/lfs_runtime_artifact.py install --root . \
+            --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" \
+            --artifact build/windows-lfs-runtime --allowance-seconds 300 \
+            --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll \
+            --output "build/godot-regressions/windows-${{ matrix.shard }}/acquisition/install.json"
 
       - name: Download same-run source-built Windows candidate
         timeout-minutes: 5
@@ -466,6 +503,7 @@ jobs:
           python tools/ci/test_godot_regression_sharding.py
           python tools/ci/test_windows_godot_regressions.py
           python tools/ci/test_native_candidate_identity.py
+          python tools/ci/test_lfs_runtime_artifact.py
           python tools/ci/test_godot_timeout_diagnostics.py
           python tools/ci/test_godot_process_monitor.py
           python tools/ci/test_physical_progress_watchdog.py
@@ -535,16 +573,22 @@ jobs:
         if: always()
         env:
           SHARD_RESULT: ${{ needs.windows-regression.result }}
+          PLAN_RESULT: ${{ needs.execution-plan.result }}
+          SHARD_COUNT: ${{ needs.execution-plan.outputs.windows_shard_count }}
         run: |
           set -euo pipefail
           mkdir -p build
+          if [[ "$PLAN_RESULT" != success || ! "$SHARD_COUNT" =~ ^[1-9][0-9]*$ ]]; then
+            echo "Windows coverage incomplete: execution plan failed or has no valid shard count (plan=$PLAN_RESULT)" | tee build/windows-coverage-verification.log
+            exit 1
+          fi
           python3 tools/ci/test_verify_windows_godot_shards.py
           python3 tools/ci/verify_windows_godot_shards.py \
             --root build/windows-coverage-input --native-candidate build/windows-candidate \
             --source-sha "${{ github.sha }}" \
             --run-id "${{ github.run_id }}" \
             --attempt "${{ github.run_attempt }}" \
-            --shard-count ${{ needs.execution-plan.outputs.windows_shard_count }} \
+            --shard-count "$SHARD_COUNT" \
             --output build/windows-coverage.json 2>&1 | tee build/windows-coverage-verification.log
           test "$SHARD_RESULT" = "success"
       - name: Retain Windows exact-coverage receipt
@@ -749,12 +793,20 @@ jobs:
         env:
           SHARD_RESULT: ${{ needs.linux-regression.result }}
           ART_SMOKE_RESULT: ${{ needs.art-graphical-smoke.result }}
+          PLAN_RESULT: ${{ needs.execution-plan.result }}
+          SHARD_COUNT: ${{ needs.execution-plan.outputs.linux_shard_count }}
         run: |
+          set -euo pipefail
+          mkdir -p build
+          if [[ "$PLAN_RESULT" != success || ! "$SHARD_COUNT" =~ ^[1-9][0-9]*$ ]]; then
+            echo "Linux coverage incomplete: execution plan failed or has no valid shard count (plan=$PLAN_RESULT)" | tee build/linux-coverage-verification.log
+            exit 1
+          fi
           python3 tools/ci/verify_linux_godot_shards.py \
             --root build/linux-coverage-input --runtime build/linux-runtime \
             --source-sha "${{ github.sha }}" --run-id "${{ github.run_id }}" \
             --attempt "${{ github.run_attempt }}" \
-            --shard-count "${{ needs.execution-plan.outputs.linux_shard_count }}" \
+            --shard-count "$SHARD_COUNT" \
             --godot-version "$GODOT_VERSION" --output build/linux-coverage.json
           test "$SHARD_RESULT" = "success"
           test "$ART_SMOKE_RESULT" = "success"
@@ -765,6 +817,7 @@ jobs:
           name: linux-coverage-${{ github.run_id }}-${{ github.run_attempt }}
           path: |
             build/linux-coverage.json
+            build/linux-coverage-verification.log
             build/linux-play-readback/
           if-no-files-found: warn
           retention-days: 90

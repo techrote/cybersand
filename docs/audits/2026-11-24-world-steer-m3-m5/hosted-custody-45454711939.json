@@ -1,0 +1,979 @@
+{
+  "schema": "cybersand.world-steer-hosted-custody.v1",
+  "mission": "WORLD-STEER-BATCH-M3-M5-001",
+  "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+  "source_tree": "ce012a8c6b616ab038d4dc65f4ac1896a6388795",
+  "run": {
+    "id": 45454711939,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45454711939",
+    "attempt": 1,
+    "status": "completed",
+    "conclusion": "success",
+    "created_at": "2026-11-24T18:00:12Z",
+    "updated_at": "2026-11-24T18:20:42Z"
+  },
+  "jobs": [
+    {
+      "id": 138660943403,
+      "name": "Bounded source and experiment guards",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-24T18:00:15Z",
+      "completed_at": "2026-11-24T18:00:37Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/job/138660943403"
+    },
+    {
+      "id": 138661209024,
+      "name": "Pinned source-matched Windows runtime",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-24T18:00:39Z",
+      "completed_at": "2026-11-24T18:04:43Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/job/138661209024"
+    },
+    {
+      "id": 138661209193,
+      "name": "Linux source-built native and graphical qualification",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-24T18:00:40Z",
+      "completed_at": "2026-11-24T18:20:41Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/job/138661209193"
+    },
+    {
+      "id": 138663907816,
+      "name": "Windows graphical execution and extracted owner evaluator",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-24T18:04:47Z",
+      "completed_at": "2026-11-24T18:16:08Z",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/job/138663907816"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14951941657,
+      "name": "batch-lab-linux-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52-1",
+      "bytes": 11743422,
+      "sha256": "4e0dae64563f765c0d18fd0025d12e94a94722ee074be0e62416b024e19121b1",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14951941657",
+      "independently_downloaded_and_hashed": true
+    },
+    {
+      "id": 14951455759,
+      "name": "batch-lab-windows-build-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52-1",
+      "bytes": 8262,
+      "sha256": "582d3ce4886cefb1267343406be3344dbd6a6cfe95e38580b0e47efd82ccfef6",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14951455759",
+      "independently_downloaded_and_hashed": true
+    },
+    {
+      "id": 14951367035,
+      "name": "batch-lab-windows-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52-1",
+      "bytes": 19519629,
+      "sha256": "6dae899e528fa6e3a7d608d8f7126862623f08ce5209d30df69794d8bc4df6a4",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14951367035",
+      "independently_downloaded_and_hashed": true
+    },
+    {
+      "id": 14951042272,
+      "name": "batch-lab-owner-windows-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "bytes": 96459342,
+      "sha256": "4c72abc1b15b760373af0715738b3db8f96d0433483755b65eb37e083427fe90",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14951042272",
+      "independently_downloaded_and_hashed": true
+    },
+    {
+      "id": 14949014000,
+      "name": "batch-lab-windows-runtime-45454711939",
+      "bytes": 2106709,
+      "sha256": "c17042a700e29fe434941044c38e122f385cc3701c8afc9122ad48be876e2adb",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14949014000",
+      "independently_downloaded_and_hashed": true
+    }
+  ],
+  "additional_art_logging": {
+    "run_id": 45454730839,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45454730839",
+    "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "jobs": [
+      {
+        "id": 138661001413,
+        "name": "Linux 4.7 native Workbench session logging",
+        "conclusion": "success"
+      },
+      {
+        "id": 138661001879,
+        "name": "Windows 4.7 real Workbench session logging",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "physical_owner_acceptance": "PENDING",
+  "actual_model_calls": 0,
+  "application_qualification": {
+    "linux": {
+      "report_path_in_original_artifact": "application/qualification.json",
+      "report_sha256": "ce6a7699aacde1feed712b60dd7f4ae4aec6b57239a49fa7473e92bd6a5f1ba8",
+      "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "status": "passed",
+      "process_cases": 47,
+      "passed_process_cases": 47,
+      "elapsed_seconds": 349.788,
+      "graphical": true,
+      "packaged": false,
+      "architecture_m3_m5": true,
+      "development_dirty_allowed": false,
+      "actual_model_calls": 0,
+      "physical_owner_acceptance": "pending",
+      "cases": [
+        {
+          "label": "import",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "actual-workbench-launch",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 1
+        },
+        {
+          "label": "experiment-contracts",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 523
+        },
+        {
+          "label": "independent-metric-controls",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "provider-loopback-protocol",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 94
+        },
+        {
+          "label": "independent-security",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 64
+        },
+        {
+          "label": "independent-archive-namespace",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 43
+        },
+        {
+          "label": "native-failure-recovery",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 10
+        },
+        {
+          "label": "independent-ui-lifecycle",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 68
+        },
+        {
+          "label": "batch-native",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 407
+        },
+        {
+          "label": "batch-fresh-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 79
+        },
+        {
+          "label": "independent-native-reduction",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "mounted-workbench",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 63
+        },
+        {
+          "label": "batch-ui",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 164
+        },
+        {
+          "label": "native-module-author",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 101
+        },
+        {
+          "label": "native-module-fresh-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 14
+        },
+        {
+          "label": "native-module-starter-parts",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 78
+        },
+        {
+          "label": "native-module-observation-custody",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 14
+        },
+        {
+          "label": "architecture-retrieval",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 145
+        },
+        {
+          "label": "architecture-independent-metrics",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "architecture-context-detail",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 59
+        },
+        {
+          "label": "architecture-stage-plan",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 57
+        },
+        {
+          "label": "architecture-module-contracts",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 98
+        },
+        {
+          "label": "architecture-stage-native",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 178
+        },
+        {
+          "label": "architecture-stage-fresh-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 16
+        },
+        {
+          "label": "architecture-module-compositions",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 170
+        },
+        {
+          "label": "architecture-native-comparison",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 83
+        },
+        {
+          "label": "architecture-native-independent-reduction",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "architecture-stage-render",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 72
+        },
+        {
+          "label": "regression-art-keyless",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 54
+        },
+        {
+          "label": "regression-art-archive-integrity",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 148
+        },
+        {
+          "label": "regression-art-lazy-history",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 15
+        },
+        {
+          "label": "regression-art-history-identity",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 122
+        },
+        {
+          "label": "regression-art-native",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 148
+        },
+        {
+          "label": "regression-edit-ordering",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 144
+        },
+        {
+          "label": "regression-manual-shapes",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 165
+        },
+        {
+          "label": "regression-manual-recovery",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 5
+        },
+        {
+          "label": "regression-actors",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 323
+        },
+        {
+          "label": "regression-equipment",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 103
+        },
+        {
+          "label": "regression-worldgen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 226
+        },
+        {
+          "label": "regression-materials",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 1348
+        },
+        {
+          "label": "manual-native-1",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 114
+        },
+        {
+          "label": "shared-undo-1",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 260
+        },
+        {
+          "label": "manual-native-4",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 114
+        },
+        {
+          "label": "shared-undo-4",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 260
+        },
+        {
+          "label": "ordinary-history-author",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 1884
+        },
+        {
+          "label": "ordinary-history-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 1920
+        }
+      ]
+    },
+    "windows_source": {
+      "report_path_in_original_artifact": "application/qualification.json",
+      "report_sha256": "79bfb762d1ce3feec9fcf049eae596489d8b4a1c2398394d02b6bb9005a2d977",
+      "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "status": "passed",
+      "process_cases": 47,
+      "passed_process_cases": 47,
+      "elapsed_seconds": 382.578,
+      "graphical": true,
+      "packaged": false,
+      "architecture_m3_m5": true,
+      "development_dirty_allowed": false,
+      "actual_model_calls": 0,
+      "physical_owner_acceptance": "pending",
+      "cases": [
+        {
+          "label": "import",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "actual-workbench-launch",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 1
+        },
+        {
+          "label": "experiment-contracts",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 523
+        },
+        {
+          "label": "independent-metric-controls",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "provider-loopback-protocol",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 94
+        },
+        {
+          "label": "independent-security",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 64
+        },
+        {
+          "label": "independent-archive-namespace",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 43
+        },
+        {
+          "label": "native-failure-recovery",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 10
+        },
+        {
+          "label": "independent-ui-lifecycle",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 68
+        },
+        {
+          "label": "batch-native",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 407
+        },
+        {
+          "label": "batch-fresh-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 79
+        },
+        {
+          "label": "independent-native-reduction",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "mounted-workbench",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 63
+        },
+        {
+          "label": "batch-ui",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 164
+        },
+        {
+          "label": "native-module-author",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 101
+        },
+        {
+          "label": "native-module-fresh-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 14
+        },
+        {
+          "label": "native-module-starter-parts",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 78
+        },
+        {
+          "label": "native-module-observation-custody",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 14
+        },
+        {
+          "label": "architecture-retrieval",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 145
+        },
+        {
+          "label": "architecture-independent-metrics",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "architecture-context-detail",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 59
+        },
+        {
+          "label": "architecture-stage-plan",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 57
+        },
+        {
+          "label": "architecture-module-contracts",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 98
+        },
+        {
+          "label": "architecture-stage-native",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 178
+        },
+        {
+          "label": "architecture-stage-fresh-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 16
+        },
+        {
+          "label": "architecture-module-compositions",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 170
+        },
+        {
+          "label": "architecture-native-comparison",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 83
+        },
+        {
+          "label": "architecture-native-independent-reduction",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "architecture-stage-render",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 72
+        },
+        {
+          "label": "regression-art-keyless",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 54
+        },
+        {
+          "label": "regression-art-archive-integrity",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 148
+        },
+        {
+          "label": "regression-art-lazy-history",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 15
+        },
+        {
+          "label": "regression-art-history-identity",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 122
+        },
+        {
+          "label": "regression-art-native",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 148
+        },
+        {
+          "label": "regression-edit-ordering",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 144
+        },
+        {
+          "label": "regression-manual-shapes",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 165
+        },
+        {
+          "label": "regression-manual-recovery",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 5
+        },
+        {
+          "label": "regression-actors",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 323
+        },
+        {
+          "label": "regression-equipment",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 103
+        },
+        {
+          "label": "regression-worldgen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 226
+        },
+        {
+          "label": "regression-materials",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 1348
+        },
+        {
+          "label": "manual-native-1",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 114
+        },
+        {
+          "label": "shared-undo-1",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 260
+        },
+        {
+          "label": "manual-native-4",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 114
+        },
+        {
+          "label": "shared-undo-4",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 260
+        },
+        {
+          "label": "ordinary-history-author",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 1884
+        },
+        {
+          "label": "ordinary-history-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 1920
+        }
+      ]
+    },
+    "windows_extracted": {
+      "report_path_in_original_artifact": "extracted-evaluator/qualification.json",
+      "report_sha256": "818c3a0af9aaea91e80bb4ba1047b7718a3baf9fe23c256d377bc3702f08c41c",
+      "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "status": "passed",
+      "process_cases": 29,
+      "passed_process_cases": 29,
+      "elapsed_seconds": 207.547,
+      "graphical": true,
+      "packaged": true,
+      "architecture_m3_m5": true,
+      "development_dirty_allowed": false,
+      "actual_model_calls": 0,
+      "physical_owner_acceptance": "pending",
+      "cases": [
+        {
+          "label": "import",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "actual-workbench-launch",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 1
+        },
+        {
+          "label": "experiment-contracts",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 523
+        },
+        {
+          "label": "independent-metric-controls",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "provider-loopback-protocol",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 94
+        },
+        {
+          "label": "independent-security",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 64
+        },
+        {
+          "label": "independent-archive-namespace",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 43
+        },
+        {
+          "label": "native-failure-recovery",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 10
+        },
+        {
+          "label": "independent-ui-lifecycle",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 68
+        },
+        {
+          "label": "batch-native",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 407
+        },
+        {
+          "label": "batch-fresh-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 79
+        },
+        {
+          "label": "independent-native-reduction",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "mounted-workbench",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 63
+        },
+        {
+          "label": "batch-ui",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 164
+        },
+        {
+          "label": "native-module-author",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 101
+        },
+        {
+          "label": "native-module-fresh-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 14
+        },
+        {
+          "label": "native-module-starter-parts",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 78
+        },
+        {
+          "label": "native-module-observation-custody",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 14
+        },
+        {
+          "label": "architecture-retrieval",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 145
+        },
+        {
+          "label": "architecture-independent-metrics",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "architecture-context-detail",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 59
+        },
+        {
+          "label": "architecture-stage-plan",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 57
+        },
+        {
+          "label": "architecture-module-contracts",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 98
+        },
+        {
+          "label": "architecture-stage-native",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 178
+        },
+        {
+          "label": "architecture-stage-fresh-reopen",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 16
+        },
+        {
+          "label": "architecture-module-compositions",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 170
+        },
+        {
+          "label": "architecture-native-comparison",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 83
+        },
+        {
+          "label": "architecture-native-independent-reduction",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": null
+        },
+        {
+          "label": "architecture-stage-render",
+          "status": "passed",
+          "exit_code": 0,
+          "checks": 72
+        }
+      ]
+    }
+  },
+  "runtimes": {
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "linux_native": {
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "bytes": 5253776
+    },
+    "windows_native": {
+      "sha256": "7113128dbbe0bab1a8dd5c86c23699e49fdb45594bf43a7f9b95abb6d322ae16",
+      "bytes": 5820416
+    },
+    "unchanged_native_input_count": 105,
+    "scope": "Native source inputs unchanged from original #720; final source-specific runtime custody separately verified."
+  },
+  "owner_evaluator": {
+    "filename": "CyberSand-Architecture-Workbench-Windows-fe2395c7060d.zip",
+    "bytes": 97970858,
+    "sha256": "d4a91592bad81040e7f6c828bf410196fce141bc9f908bb3efa5daa6edf1a6da",
+    "outer_artifact_id": 14951042272,
+    "manifest_sha256": "d7030eaddfcd8aad118ad2d3928bc12516f155ea19a75b1def2208e83073bd51",
+    "verified_manifest_files": 1330,
+    "regular_files_including_manifest": 1331,
+    "qualified_application_file_identities": 59,
+    "native_input_identities": 105,
+    "embedded_architecture_evidence_files": 204,
+    "embedded_source_qualification_sha256": "79bfb762d1ce3feec9fcf049eae596489d8b4a1c2398394d02b6bb9005a2d977",
+    "extracted_execution_qualification_sha256": "818c3a0af9aaea91e80bb4ba1047b7718a3baf9fe23c256d377bc3702f08c41c",
+    "unsafe_paths_duplicates_case_collisions_symlinks": false,
+    "independent_review_files": [
+      "evidence/reviews/owner-evaluator-custody-a.json",
+      "evidence/reviews/owner-evaluator-custody-root.json"
+    ]
+  },
+  "retained_observations": {
+    "schema": "cybersand.qualified-observations-custody.v1",
+    "path": "qualified-observations.zip",
+    "sha256": "75ffd31507ff1fe6b5bea6ee0a08feb9cab9e0026f8a57725176f32f388e94b6",
+    "bytes": 7094094,
+    "payload_files": 675,
+    "uncompressed_payload_bytes": 106394424,
+    "archive_manifest_sha256": "6f9e96b4cab5188fcbdc304be376b1ec135896ccdbf4c8cefb2ca9daf2352cf6",
+    "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "source_run": 45454711939,
+    "original_artifacts": [
+      {
+        "id": 14951941657,
+        "sha256": "4e0dae64563f765c0d18fd0025d12e94a94722ee074be0e62416b024e19121b1"
+      },
+      {
+        "id": 14951367035,
+        "sha256": "6dae899e528fa6e3a7d608d8f7126862623f08ce5209d30df69794d8bc4df6a4"
+      },
+      {
+        "id": 14730981459,
+        "sha256": "28218bf88508389423cb2740c21d25d5063ec08961e65167c50a9c648698cdff"
+      },
+      {
+        "id": 14948353086,
+        "sha256": "6d1e25ef1d717f435f04ea639be64e370726fc72b810e7d7029989ce02fc9e1f"
+      },
+      {
+        "id": 14949310056,
+        "sha256": "5541b0269b0e530cbed15a58abd913eb7d38c5c520ed4ebde810686ed359e532"
+      }
+    ]
+  },
+  "independent_reviews": {
+    "manifest": "evidence/reviews/manifest.json",
+    "sha256": "5bd6622b9a10472bb638de7a9170e25c8dcc1e9baec75ad729fbdd9e1dd5aad8",
+    "classification": "Independent post-campaign analyses; these are not original hosted-runner outputs."
+  },
+  "final_native_visual_review": {
+    "path": "hosted-architecture-review-45454711939.json",
+    "sha256": "44adfc737a5168be3f792dc2295b503447bb7db0e0966342f66ce5bbebfa4466"
+  }
+}

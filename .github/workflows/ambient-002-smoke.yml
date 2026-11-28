@@ -1,0 +1,57 @@
+name: AMBIENT-002 — scoped source iteration
+on:
+  push:
+    branches: [feature/ambient-002-living-inhabitants-20261125]
+    paths: ['tools/fixtures/ambient-002-smoke-request.json']
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: ambient-002-iteration-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  linux:
+    name: Source-bound Linux import and focused gameplay
+    if: github.ref == 'refs/heads/feature/ambient-002-living-inhabitants-20261125'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      GIT_CONFIG_COUNT: '1'
+      GIT_CONFIG_KEY_0: core.autocrlf
+      GIT_CONFIG_VALUE_0: 'false'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Verify provider and retained native runtime
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+      - name: Authenticate pinned official engine
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/ambient-002-engine"
+          curl --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output "$RUNNER_TEMP/ambient-002-engine/godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
+          python3 - "$RUNNER_TEMP/ambient-002-engine/godot.zip" <<'PY'
+          import hashlib, pathlib, sys, zipfile
+          archive = pathlib.Path(sys.argv[1])
+          assert hashlib.sha256(archive.read_bytes()).hexdigest() == "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c"
+          with zipfile.ZipFile(archive) as z:
+              assert z.testzip() is None
+              assert z.namelist() == ["Godot_v4.7-stable_linux.x86_64"]
+              z.extractall(archive.parent)
+          (archive.parent / "Godot_v4.7-stable_linux.x86_64").chmod(0o755)
+          PY
+      - name: Execute requested physical and value regressions
+        run: |
+          python3 tools/qualify_ambient_iteration.py --godot "$RUNNER_TEMP/ambient-002-engine/Godot_v4.7-stable_linux.x86_64" --output evidence/iteration
+      - name: Retain original failed or successful execution receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ambient-002-iteration-${{ github.sha }}
+          path: evidence
+          if-no-files-found: error
+          retention-days: 30

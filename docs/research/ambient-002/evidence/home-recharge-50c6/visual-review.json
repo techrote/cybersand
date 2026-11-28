@@ -1,0 +1,33 @@
+{
+  "semantics": "Original labelled sampled timelapse, approximately1sample/simulated second,6samples/playback second; not continuous video or hardware FPS",
+  "probe": {
+    "programs": [],
+    "stream_groups": [],
+    "streams": [
+      {
+        "width": 1920,
+        "height": 1152,
+        "r_frame_rate": "6/1",
+        "nb_frames": "61"
+      }
+    ],
+    "format": {
+      "duration": "10.166667",
+      "size": "1231335"
+    }
+  },
+  "directly_viewed": [
+    "media/ambient2-settlement-contact-sheet.png",
+    "frames/frame-0048.png",
+    "frames/frame-0051.png",
+    "frames/frame-0060.png"
+  ],
+  "all_original_frames_hash_checked": 61,
+  "findings": [
+    "Follow selected keeps flyer legible; Overview actor is small.",
+    "Actual overlay at51 says resting at home and at60 exploring a less familiar local destination.",
+    "Flyer remains close to overhead beam for a long interval; the repair does not improve local traversal.",
+    "The numeric recharge evidence comes from copied diagnostics; it is not inferred from sprite appearance."
+  ],
+  "owner_playfeel_accepted": false
+}

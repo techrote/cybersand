@@ -1,0 +1,442 @@
+{
+  "schema": "cybersand-goblin-specialist-B-activated-seal-binding-review-v1",
+  "status": "pass",
+  "scope": "Read-only Git object and manifest binding review. No local executor probe, native process, game, test, data-reader or archive-builder rerun.",
+  "reviewed_activation": {
+    "commit": "f3324f462091d1778b9472ebcafbab35372e6411",
+    "tree": "23955d51fbe0f570fed1589c5f2a82ff5e36eb98",
+    "direct_parent": "e8df89b48757096428ee6a9d12e55c7e417c10d5",
+    "results_tree": "c5c6f89c377d78843c919101671aff1c2001f6c0",
+    "manifest_git_blob": "d999352b245f42f8837677b121fe868e2f78bed6",
+    "reviewed_draft_manifest_git_blob": "ff72983ba87a72a00fdf119c6b73503edfbd0e7c",
+    "driver_git_blob": "765ae16020018ba39e6627b6926183252d43a640",
+    "workflow_git_blob": "a4a0fd12255232331cd1cbb48fa4eeb4769b0595",
+    "prior_source_review_git_blob": "fa6037b3f597d0f1554a9bfe526068ad07d6f57c"
+  },
+  "qualified_game": {
+    "commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+    "subtrees": [
+      {
+        "path": "godot",
+        "qualified_tree": "65cf1567d6eb1f5a83a2db7d25e89038939a24d5",
+        "activated_tree": "65cf1567d6eb1f5a83a2db7d25e89038939a24d5",
+        "unchanged": true
+      },
+      {
+        "path": "native",
+        "qualified_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+        "activated_tree": "e6946f5c5d47eddd6118696b124470737cdd385e",
+        "unchanged": true
+      },
+      {
+        "path": "materials",
+        "qualified_tree": "0402173c387905f1a3a910750edb62f3fb3613a6",
+        "activated_tree": "0402173c387905f1a3a910750edb62f3fb3613a6",
+        "unchanged": true
+      },
+      {
+        "path": "third_party",
+        "qualified_tree": "01a8de3cd15508c37d2949aedf81a6364e2c8b32",
+        "activated_tree": "01a8de3cd15508c37d2949aedf81a6364e2c8b32",
+        "unchanged": true
+      },
+      {
+        "path": "examples",
+        "qualified_tree": "a1a1118e18ebfa579143c4d259a75604e08d6cbc",
+        "activated_tree": "a1a1118e18ebfa579143c4d259a75604e08d6cbc",
+        "unchanged": true
+      }
+    ]
+  },
+  "phase1": {
+    "commit": "2a627a3131be72fcb876acec0d0b848a7e42c3e3",
+    "activated_manifest_git_blob": "9784b984e04eeac2c4d48977c28a73f042eb53bc",
+    "stage": {
+      "id": 15005776720,
+      "run_id": 45579669046,
+      "bytes": 942877571,
+      "sha256": "8621cf2811e14fdda3e98749f84b7d0887228f0c64b91967ae67485627552da9"
+    }
+  },
+  "activation_delta": {
+    "changed_json_paths": [
+      "activation_enabled",
+      "results_commit",
+      "results_tree",
+      "documents",
+      "artifact_classifications.15003384515",
+      "compact_review_notes.A_final_6f_results"
+    ],
+    "git_file_changes": [
+      {
+        "path": ".github/workflows/gip014-goblin-002-passive-seal.yml",
+        "before": null,
+        "after": "a4a0fd12255232331cd1cbb48fa4eeb4769b0595"
+      },
+      {
+        "path": "tools/gip014/passive-seal-manifest.json",
+        "before": null,
+        "after": "d999352b245f42f8837677b121fe868e2f78bed6"
+      },
+      {
+        "path": "tools/gip014/passive_seal.py",
+        "before": null,
+        "after": "765ae16020018ba39e6627b6926183252d43a640"
+      }
+    ],
+    "full_path_scope": "Only activation_enabled, results_commit, results_tree, documents, artifact_classifications.15003384515 and compact_review_notes.A_final_6f_results differ from the reviewed draft. The latter two differ solely by seven-arm to seven-episode wording."
+  },
+  "documents": {
+    "count": 14,
+    "bytes": 1260508,
+    "bindings": [
+      {
+        "path": "docs/research/gip014-goblin-002-decision.md",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "docs/research/gip014-goblin-002.md",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "docs/research/goblin002-exploration-handover.md",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "docs/research/goblin002-gameplay-handover.md",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "docs/research/goblin002-replay-delivery-handover.md",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "tools/gip014/decision-index-002.json",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "tools/gip014/evidence/passive/A-final6f-readout.json",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "tools/gip014/evidence/passive/A-phase1-source-review.json",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "tools/gip014/evidence/passive/B-phase1-source-review.json",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "tools/gip014/evidence/passive/B-phase2-source-review.json",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "tools/gip014/evidence/passive/B-results-scope-review.json",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "tools/gip014/evidence/passive/C-final6f-readout.json",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "tools/gip014/evidence/passive/phase1-job.log",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      },
+      {
+        "path": "tools/gip014/evidence/passive/specialist-b-linux11-actual.json",
+        "git_blob_match": true,
+        "bytes_match": true,
+        "source_tree_type": "blob",
+        "retained_in_activated_tree": true
+      }
+    ],
+    "manifest_records": [
+      {
+        "path": "docs/research/gip014-goblin-002-decision.md",
+        "git_blob": "a04a003bcfc663b766fa40aba7e7855bc0e293c5",
+        "bytes": 46942,
+        "sha256": "2e7af93999d551748a42bf52439bc42d172333688f987fc84ce6fcbae4ffb919"
+      },
+      {
+        "path": "docs/research/gip014-goblin-002.md",
+        "git_blob": "ee693779c61e492dd15c533948bebadbfc199ad1",
+        "bytes": 118227,
+        "sha256": "f31389d52b9ea7ce4b43c1fea01cbd985f5b1f49899ca29a283806f6c79bbee1"
+      },
+      {
+        "path": "docs/research/goblin002-exploration-handover.md",
+        "git_blob": "f1ca0385b86912538a4293144d370170f92ef4ab",
+        "bytes": 61611,
+        "sha256": "c621fb728e81a7ce2b473350261f33514667a9d5480494bccc5763a9bb44adb5"
+      },
+      {
+        "path": "docs/research/goblin002-gameplay-handover.md",
+        "git_blob": "ea179f7e51a025ee0f405af9a166a8ff676cd399",
+        "bytes": 60910,
+        "sha256": "f804bf60f748b29be68b47c4ddd824ce227476f1d0eb4fd7236456b2bb64945d"
+      },
+      {
+        "path": "docs/research/goblin002-replay-delivery-handover.md",
+        "git_blob": "e5aeadc88d8cbf106056e71ddd45edf9dbafc740",
+        "bytes": 38895,
+        "sha256": "9605e54ddf83a8e8517e77548eca2e6219aa4816036b1f63b6de9b0b21b0c90c"
+      },
+      {
+        "path": "tools/gip014/decision-index-002.json",
+        "git_blob": "01bc81474ef7f8182b52a0fd95e0ddb714aea4a4",
+        "bytes": 66508,
+        "sha256": "9f442ed4d0a78fe7ce687235fc65686244fe84be29200f1804014c633308bd4d"
+      },
+      {
+        "path": "tools/gip014/evidence/passive/A-final6f-readout.json",
+        "git_blob": "2cc2e185e1654bb2701224e5fdb459457c653eab",
+        "bytes": 317329,
+        "sha256": "6f8f058e515399e5644aa91b8b27b55149b9e918ae1ae2cc816e59dbd19625db"
+      },
+      {
+        "path": "tools/gip014/evidence/passive/A-phase1-source-review.json",
+        "git_blob": "539e9328a5fac3fb3b3b5085d4c1f75d5b7f89e5",
+        "bytes": 4480,
+        "sha256": "468bd149b5cdff266f06c3ca9217e0910ee91370a9a579e5fd9de13a6db982b9"
+      },
+      {
+        "path": "tools/gip014/evidence/passive/B-phase1-source-review.json",
+        "git_blob": "6037bc1c388b56f6430d1bd4e7ac2c00080d1733",
+        "bytes": 7174,
+        "sha256": "396ebeda5137b7b9eb407aace9f53d8eaa9c316b8444a2a3a52867ada76ee02b"
+      },
+      {
+        "path": "tools/gip014/evidence/passive/B-phase2-source-review.json",
+        "git_blob": "fa6037b3f597d0f1554a9bfe526068ad07d6f57c",
+        "bytes": 7019,
+        "sha256": "f60a88b256a9d2f0d15a96aa041842c85a28bac55fc6148f00b24d8821f7369b"
+      },
+      {
+        "path": "tools/gip014/evidence/passive/B-results-scope-review.json",
+        "git_blob": "0de4741adb531f5557d9c94b7b8bc56e3e8da81e",
+        "bytes": 2635,
+        "sha256": "978909c8bc2213f0f9a80f99af8b693756b753e4ec1cb071a3d5f8ae9f6704ff"
+      },
+      {
+        "path": "tools/gip014/evidence/passive/C-final6f-readout.json",
+        "git_blob": "e809acb4dbfdeace11f64bce60ee749a9bed9a57",
+        "bytes": 23449,
+        "sha256": "adbefd77218c752f4fca9420699b9092a6fd1f1f463e478302117754e0d11487"
+      },
+      {
+        "path": "tools/gip014/evidence/passive/phase1-job.log",
+        "git_blob": "7e99bc3d49a24ee31c9c87872063d664de2d5b33",
+        "bytes": 478721,
+        "sha256": "5e1ac4e5f2ad2af3d4ed95db9237cebf49ba963056ed65dcbceab8dc6c90cc91"
+      },
+      {
+        "path": "tools/gip014/evidence/passive/specialist-b-linux11-actual.json",
+        "git_blob": "097ac6bd740192173792c0d5cfc61bf4a2ae4394",
+        "bytes": 26608,
+        "sha256": "c54fbca0e377d67f6181d2fc2ac4f48cc521ef628a7f1894f401af039ec3780e"
+      }
+    ],
+    "verification_scope": "Each document's exact Git blob and byte count was compared against the complete untruncated RESULTS tree and retained activated tree. Raw document SHA256 fields are pinned by this exact manifest and are verified by the reviewed seal implementation; this review does not independently rehash all14 raw files."
+  },
+  "original_artifacts": {
+    "count": 13,
+    "total_bytes": 661216192,
+    "source_associations": [
+      {
+        "id": 15003384515,
+        "run_id": 45565621408,
+        "source_commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+        "source_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+        "workflow_head": "6f359ce2b24291ee219810773c641d53802fd31d",
+        "driver_source_commit": null,
+        "bytes": 50241858,
+        "sha256": "c5ab54aa45062bf12912e29743058019bc1db38ae59c0a4b234172d6b371fe6e"
+      },
+      {
+        "id": 14990308987,
+        "run_id": 45538643315,
+        "source_commit": "d849be8ef99cd9226cfc3ca0925752e42b691515",
+        "source_tree": "b6da28e8df80247bbfffb968cbe66e99b386959a",
+        "workflow_head": "d849be8ef99cd9226cfc3ca0925752e42b691515",
+        "driver_source_commit": null,
+        "bytes": 60091069,
+        "sha256": "9da70daac1b69235311540debf7c42bd067dc7776cc2c680223f54b5eff1da8d"
+      },
+      {
+        "id": 14994110507,
+        "run_id": 45550580312,
+        "source_commit": "d849be8ef99cd9226cfc3ca0925752e42b691515",
+        "source_tree": "b6da28e8df80247bbfffb968cbe66e99b386959a",
+        "workflow_head": "7029661d1dbe373b97b3da5aaaf175dae153001e",
+        "driver_source_commit": "7029661d1dbe373b97b3da5aaaf175dae153001e",
+        "bytes": 5255383,
+        "sha256": "211322dcb6f91da534420b1694ad6f4ef302f5a6f2e6a82e8cb10fcd1b5d7640"
+      },
+      {
+        "id": 14995732784,
+        "run_id": 45556434887,
+        "source_commit": "070addb0fdae2240f22e663a2299cef739f83c05",
+        "source_tree": "174e9dbf32a5e4014f731008461a310b3a723f37",
+        "workflow_head": "070addb0fdae2240f22e663a2299cef739f83c05",
+        "driver_source_commit": null,
+        "bytes": 2872758,
+        "sha256": "2f2dc54b6c8af392364e915776cdae4f384e3dacc8f8209dc97c2a7beef25fd8"
+      },
+      {
+        "id": 14998227645,
+        "run_id": 45561928752,
+        "source_commit": "6afae9c149b48e6bbcd4a92a50c98d057c0e8067",
+        "source_tree": "8da586b7f06430de95dc38bbe7193927db8174c5",
+        "workflow_head": "6afae9c149b48e6bbcd4a92a50c98d057c0e8067",
+        "driver_source_commit": null,
+        "bytes": 28974336,
+        "sha256": "1222f5a348b111bac784b3c22b957c5571cdf0ad5371ef6906363ba4a02cdfa9"
+      },
+      {
+        "id": 14994352640,
+        "run_id": 45553057659,
+        "source_commit": "f97f694f407a64b9e6577a1e0c98ae3f55e693c7",
+        "source_tree": "da92a40dea95d8ce9334581d10adc18c2de32ac1",
+        "workflow_head": "f97f694f407a64b9e6577a1e0c98ae3f55e693c7",
+        "driver_source_commit": null,
+        "bytes": 2816450,
+        "sha256": "846d8bea66ab406466cfcf659148115a6774f10c10aab58285f0ee8864250f24"
+      },
+      {
+        "id": 14995746214,
+        "run_id": 45554974942,
+        "source_commit": "dcf6581b952a8e5854bbbac258430521e39d121b",
+        "source_tree": "a769f9be44452532e07b3023594d72cb6a8f1f15",
+        "workflow_head": "dcf6581b952a8e5854bbbac258430521e39d121b",
+        "driver_source_commit": null,
+        "bytes": 2872743,
+        "sha256": "4cc4dd7f80c891e1c1ecf0b67af718a70ae44121bf230358e5dd34f166bd3273"
+      },
+      {
+        "id": 14997564894,
+        "run_id": 45561928752,
+        "source_commit": "6afae9c149b48e6bbcd4a92a50c98d057c0e8067",
+        "source_tree": "8da586b7f06430de95dc38bbe7193927db8174c5",
+        "workflow_head": "6afae9c149b48e6bbcd4a92a50c98d057c0e8067",
+        "driver_source_commit": null,
+        "bytes": 55513000,
+        "sha256": "2248d88bb5bfa92b56b72000c45eb1f4594deaa073f58e1ac219d13499b3cc6f"
+      },
+      {
+        "id": 15000115723,
+        "run_id": 45550152509,
+        "source_commit": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
+        "source_tree": "287795a8534c5622ede5d71710714ea467197e79",
+        "workflow_head": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
+        "driver_source_commit": null,
+        "bytes": 75777228,
+        "sha256": "e4548f77291076ea289ec90415789ef24eb1944dff349bc1d73d7f2755e63170"
+      },
+      {
+        "id": 14998773016,
+        "run_id": 45563325767,
+        "source_commit": "4050bc31526558cb99024251d29ec1183c086d6a",
+        "source_tree": "0bdee227e83c26a74f1dabeec79cba486a4a9ef7",
+        "workflow_head": "4050bc31526558cb99024251d29ec1183c086d6a",
+        "driver_source_commit": null,
+        "bytes": 29181299,
+        "sha256": "a12e900a85f61e7ea0794cd9b40e51a84a65604b5ec53a50aad0207285e3c895"
+      },
+      {
+        "id": 15000825524,
+        "run_id": 45565621408,
+        "source_commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+        "source_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+        "workflow_head": "6f359ce2b24291ee219810773c641d53802fd31d",
+        "driver_source_commit": null,
+        "bytes": 201496963,
+        "sha256": "75c3e351e1c9459516c6708508adfdd2b669dc916d40af459c040fdacee67314"
+      },
+      {
+        "id": 14958249728,
+        "run_id": 45474099351,
+        "source_commit": "3e3aa217b49036ac4a87dd57073ad2cbb5a314c8",
+        "source_tree": "3ee2a02e13cde1a1a4ff67321cb7c3d6f9bd1e37",
+        "workflow_head": "3e3aa217b49036ac4a87dd57073ad2cbb5a314c8",
+        "driver_source_commit": null,
+        "bytes": 92570931,
+        "sha256": "3d75ea0add4bb5a690c6c46c021f09f35b8e88e007c87df3107ac6b4a49a5fe3"
+      },
+      {
+        "id": 14959436637,
+        "run_id": 45474099351,
+        "source_commit": "3e3aa217b49036ac4a87dd57073ad2cbb5a314c8",
+        "source_tree": "3ee2a02e13cde1a1a4ff67321cb7c3d6f9bd1e37",
+        "workflow_head": "3e3aa217b49036ac4a87dd57073ad2cbb5a314c8",
+        "driver_source_commit": null,
+        "bytes": 53552174,
+        "sha256": "c7ff1cda1e08750cd884d5b33dc324b7329594394a8d1569d4527479ace51952"
+      }
+    ],
+    "classifications_unchanged_except_memory_wording": true,
+    "historical_reduction_separation": "Artifact14994110507 binds executed historical game d849be8ef99cd9226cfc3ca0925752e42b691515/treeb6da28e8df80247bbfffb968cbe66e99b386959a separately from workflow/driver7029661d1dbe373b97b3da5aaaf175dae153001e.",
+    "historical_statuses": "Original parser, provenance-comparator, unresolved source-proof and campaign-timeout records remain failed/unresolved. Their preservation in a passing passive archive does not reclassify the game executions.",
+    "predecessor_scope": "The original two Windows artifacts retain source3e3aa217 identity. They do not substitute for the six unavailable local Linux tape bodies."
+  },
+  "bounds_and_authority": {
+    "limits_unchanged": {
+      "stage_transfer_seconds": 600,
+      "stage_compressed_bytes": 2147483648,
+      "stage_expanded_bytes": 2147483648,
+      "owned_disk_bytes": 6442450944,
+      "minimum_free_disk_bytes": 2147483648,
+      "worker_seconds": 1200,
+      "worker_memory_mib": 1536,
+      "builder_seconds": 180,
+      "builder_memory_mib": 512
+    },
+    "no_gameplay_or_reader_rerun": true,
+    "library_upload_performed": false,
+    "source_only_review": true,
+    "actual_final_archive_custody_owned_by": "Specialist C and lead; this B record does not replace their actual-byte archive acceptance."
+  },
+  "decision": "No concrete binding or source-separation blocker found. The exact reviewed activation is acceptable for the planned passive-only seal.",
+  "production_gameplay_defect_claimed": false,
+  "scientific_outcomes_changed": false,
+  "whole_environment_survivor_claim": false
+}

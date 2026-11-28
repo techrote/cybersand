@@ -1,0 +1,89 @@
+{
+  "version": 2,
+  "frozen_date": "2026-11-21",
+  "purpose": "Original four Art lifetime questions retained, plus additive native-history durability checks; separate from the frozen historical development set.",
+  "questions": [
+    {
+      "id": "ART-TRAFFIC-001",
+      "query": "Does opening Workbench copy previous Art conversation logs when the Art panel is hidden?",
+      "canonical": [
+        "systems/workbench-art-providers.md"
+      ],
+      "facts": [
+        "Hidden startup reads only the small profile and performs no conversation archive reads or writes.",
+        "Explicit Art opening restores incrementally; the first new event creates an immutable-parent linked segment."
+      ],
+      "sources": [
+        "../godot/scripts/art_batch_panel.gd",
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/scripts/art_provider.gd"
+      ]
+    },
+    {
+      "id": "ART-TRAFFIC-002",
+      "query": "What happens if a saved Art conversation parent segment is missing or a process crashes while appending?",
+      "canonical": [
+        "systems/workbench-art-providers.md"
+      ],
+      "facts": [
+        "Missing or inconsistent chains refuse continuation and preserve the saved pointer; restoring a missing file permits retry.",
+        "Only the newest modern unterminated tail can recover its complete committed prefix; original bytes remain unchanged."
+      ],
+      "sources": [
+        "../godot/scripts/art_traffic_archive.gd",
+        "../godot/scripts/art_provider.gd"
+      ]
+    },
+    {
+      "id": "ART-TRAFFIC-003",
+      "query": "Can I cancel full Art JSONL export, and will it preserve an existing destination on Windows?",
+      "canonical": [
+        "systems/workbench-art-providers.md"
+      ],
+      "facts": [
+        "Stop or Cancel export interrupts bounded work; output is staged privately until native atomic replacement succeeds.",
+        "The byte-exact audit includes all segments and original image offsets; it is not a single-file conversation import format."
+      ],
+      "sources": [
+        "../godot/scripts/art_provider.gd",
+        "../godot/scripts/art_batch_panel.gd",
+        "../godot/native_extension/material_baseline_file.cpp"
+      ]
+    },
+    {
+      "id": "ART-TRAFFIC-004",
+      "query": "What bounds memory when restoring and exporting large Art conversation archives?",
+      "canonical": [
+        "systems/workbench-art-providers.md"
+      ],
+      "facts": [
+        "The reader limits records to 32 MiB, chains to 4096 segments and individual interactive polling input to 1 MiB.",
+        "The editable transcript has matching read/write limits of 16384 turns and 16 MiB of UTF-8 text; full audit export streams without collecting that transcript."
+      ],
+      "sources": [
+        "../godot/scripts/art_traffic_archive.gd",
+        "../godot/scripts/art_provider.gd"
+      ]
+    },
+    {
+      "id": "ART-TRAFFIC-005",
+      "query": "Can confirmed native Undo or Redo results survive an unreadable Art profile or a failed conversation append without duplicate model context?",
+      "canonical": [
+        "systems/workbench-art-providers.md"
+      ],
+      "facts": [
+        "The Workbench captures the small saved-session association without constructing Art or scanning transcript; a later profile outage retains that association, while an unknown source fails explicitly instead of attaching to another session.",
+        "Every associated native completion is atomically journalled before archive append with stable identity and epoch. Raw history and visible conversation commits are tracked separately; the journal is removed only after the visible turn and profile checkpoint commit.",
+        "Validated incremental replay deduplicates exact pending results, including interrupted cleanup, and cleanup does not rewind the latest compacted-context result. Resource refusal is explicit; no unbounded volatile fallback is used."
+      ],
+      "sources": [
+        "../godot/scripts/art_batch_panel.gd",
+        "../godot/scripts/art_provider.gd",
+        "../godot/scripts/shared_workbench.gd",
+        "../godot/tests/test_art_history_durability.gd",
+        "../godot/tests/test_art_history_receipt_identity.gd",
+        "../tools/ci/run_art_history_recovery.py"
+      ]
+    }
+  ]
+}

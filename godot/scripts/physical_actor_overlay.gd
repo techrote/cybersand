@@ -164,10 +164,15 @@ func _draw() -> void:
 		if labelled.has(actor_id) or not actor_labels.has(actor_id): continue
 		labelled[actor_id] = true
 		var label: Dictionary = actor_labels[actor_id]
+		var caption := str(label.text)
+		# Dense sandbox casts keep IDs readable; inspection and the pilot retain
+		# the full model/source label. This changes presentation only.
+		if actor_labels.size() > 16 and not label.selected and not caption.ends_with(" · PILOT"):
+			caption = caption.get_slice(" ",0)
 		var anchor: Vector2 = _point(part.transform.origin) + Vector2(0,-14)
 		if anchor.x < 0 or anchor.x > size.x or anchor.y < 0 or anchor.y > size.y: continue
-		var text_size := font.get_string_size(str(label.text),HORIZONTAL_ALIGNMENT_LEFT,-1,12)
+		var text_size := font.get_string_size(caption,HORIZONTAL_ALIGNMENT_LEFT,-1,12)
 		anchor.x = clampf(anchor.x-text_size.x*0.5,3,maxf(3,size.x-text_size.x-3))
 		draw_rect(Rect2(anchor-Vector2(3,13),text_size+Vector2(6,3)),Color(0.03,0.05,0.08,0.86))
-		draw_string(font,anchor,str(label.text),HORIZONTAL_ALIGNMENT_LEFT,-1,12,label.color)
+		draw_string(font,anchor,caption,HORIZONTAL_ALIGNMENT_LEFT,-1,12,label.color)
 		if label.selected: draw_circle(_point(part.transform.origin),5,label.color,false,1.0,true)

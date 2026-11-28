@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-24",
+  "scope": "Additive WORLD-STEER-BATCH-M3-M5-001 Draft/HOLD questions; no frozen evaluation changes.",
+  "questions": [
+    {
+      "id": "ARCHITECTURE-01",
+      "query": "How do I harvest actual native geometry and safely reuse it as a module?",
+      "canonical": [
+        "operations/world-steer-architecture.md",
+        "systems/native-architectural-modules.md"
+      ],
+      "facts": [
+        "Completed native readback and exact hashes establish observed material geometry.",
+        "Imported flags do not confer current native verification; Empty placement cells are transparent.",
+        "Transforms, role palettes, clearances, protection and destination permissions are independently checked."
+      ],
+      "sources": [
+        "operations/world-steer-architecture.md",
+        "systems/native-architectural-modules.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "ARCHITECTURE-02",
+      "query": "Does GOLDMAPS design retrieval admit original maps or establish model quality?",
+      "canonical": [
+        "systems/architectural-knowledge-and-evaluation.md"
+      ],
+      "facts": [
+        "Twenty-five cards preserve source, policy and evidence identities; source knowledge is not native geometry admission.",
+        "Three complete visual families are excluded for six curated transfer briefs; no blind preference or model quality follows.",
+        "Original refused source maps retain their refusal identities."
+      ],
+      "sources": [
+        "systems/architectural-knowledge-and-evaluation.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "ARCHITECTURE-03",
+      "query": "How do zero-write previews, approval, partial stages and reopen interact with the native World?",
+      "canonical": [
+        "systems/architecture-staged-construction.md",
+        "operations/world-steer-architecture.md"
+      ],
+      "facts": [
+        "The host inspects actual World geometry and calculates footprints, permissions, protection and resource use.",
+        "Approval requires fresh source validation; queued writes need native receipts and readback before completion.",
+        "Stopped prefixes are retained and reopening is review-only; ordinary shared history and World Save remain authoritative."
+      ],
+      "sources": [
+        "systems/architecture-staged-construction.md",
+        "operations/world-steer-architecture.md"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "ARCHITECTURE-04",
+      "query": "What does the architectural evaluator demonstrate and what remains an Art or owner gate?",
+      "canonical": [
+        "operations/world-steer-architecture.md",
+        "systems/architectural-knowledge-and-evaluation.md"
+      ],
+      "facts": [
+        "The offline typed pathway works through existing native execution without a model account.",
+        "Provider transport, conversation UI and model selection remain with the separate Art mission.",
+        "Hosted graphical qualification, physical gameplay acceptance, model quality and human preference are distinct."
+      ],
+      "sources": [
+        "operations/world-steer-architecture.md",
+        "systems/architectural-knowledge-and-evaluation.md"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

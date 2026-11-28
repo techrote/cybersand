@@ -89,8 +89,8 @@ std::int64_t World::transient_ballistic_impulse_y(std::uint16_t body) const noex
 }
 
 void World::reset_ballistic_body_impulses() noexcept {
-    ballistic_body_px_.fill(0);
-    ballistic_body_py_.fill(0);
+    std::fill(ballistic_body_px_.begin(), ballistic_body_px_.end(), std::int64_t{0});
+    std::fill(ballistic_body_py_.begin(), ballistic_body_py_.end(), std::int64_t{0});
 }
 
 void World::reset_ballistic_water() noexcept {

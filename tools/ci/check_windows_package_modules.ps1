@@ -6,7 +6,9 @@ The console executable is a wrapper; inspect the directly launched GUI PID.
 param(
     [Parameter(Mandatory = $true)][string]$Package,
     [Parameter(Mandatory = $true)][string]$Evidence,
-    [switch]$Combined
+    [switch]$Combined,
+    [ValidateSet('candidate-manifest.json','materials-lab-evaluation.json','evaluation-manifest.json')]
+    [Alias('Manifest')][string]$ManifestFile
 )
 
 $ErrorActionPreference = 'Stop'
@@ -101,7 +103,7 @@ try {
         throw 'Module acceptance requires 64-bit PowerShell on Windows'
     }
     $receipt.package = [System.IO.Path]::GetFullPath((Resolve-Path -LiteralPath $Package).ProviderPath)
-    $manifestName = if ($Combined) { 'materials-lab-evaluation.json' } else { 'candidate-manifest.json' }
+    $manifestName = if ($ManifestFile) { $ManifestFile } elseif ($Combined) { 'materials-lab-evaluation.json' } else { 'candidate-manifest.json' }
     $projectRelative = if ($Combined) { 'source/godot' } else { 'godot' }
     $manifest = Get-Content -LiteralPath (Join-Path $receipt.package $manifestName) -Raw | ConvertFrom-Json
     $receipt.source_commit = [string]$manifest.source_commit

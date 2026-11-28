@@ -1,0 +1,8 @@
+{"case": "test_art_owned_transport", "status": "passed", "elapsed_seconds": 2.324943, "checks": 155, "error": ""}
+{"case": "test_art_authoring_proposal", "status": "passed", "elapsed_seconds": 1.219084, "checks": 75, "error": ""}
+{"case": "test_art_creative_cohort", "status": "passed", "elapsed_seconds": 6.896183, "checks": 251, "error": ""}
+{"case": "test_art_collaborative_native", "status": "passed", "elapsed_seconds": 97.817519, "checks": 771, "error": ""}
+{"case": "test_art_collaboration_authority", "status": "passed", "elapsed_seconds": 7.19714, "checks": 39, "error": ""}
+{"case": "test_art_collaboration_session", "status": "passed", "elapsed_seconds": 19.982635, "checks": 184, "error": ""}
+{"case": "test_art_collaboration_workspace", "status": "passed", "elapsed_seconds": 1.670247, "checks": 94, "error": ""}
+ART_COLLABORATIVE_GATES {"status": "passed", "summary": "/tmp/art-collaborative-002-evidence/full-displayed-2743/summary.json"}

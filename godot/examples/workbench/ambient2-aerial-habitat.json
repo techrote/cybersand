@@ -1,0 +1,4533 @@
+{
+	"actors": [
+		{
+			"control": {
+				"ambient": {
+					"version": 2,
+					"id": "cautious_flyer",
+					"name": "Cautious Flyer",
+					"description": "For supported two-axis 4LY rigs. It explores slowly, inspects new Oil, uses observed eight-direction clearance, rests on actual low energy and returns home when its exploration cycle declines.",
+					"seed": 15580,
+					"shared_seed": false,
+					"modules": [
+						{
+							"id": "explore_unfamiliar",
+							"type": "explore_unfamiliar",
+							"enabled": true,
+							"priority": 30,
+							"weight": 0.9,
+							"params": {
+								"pace": 0.32,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"radius": 70,
+								"arrival_radius": 10,
+								"duration": 14,
+								"cooldown_seconds": 1
+							}
+						},
+						{
+							"id": "investigate_material",
+							"type": "investigate_material",
+							"enabled": true,
+							"priority": 42,
+							"weight": 1,
+							"params": {
+								"pace": 0.3,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"material_id": 16,
+								"radius": 64,
+								"standoff": 20,
+								"approach_seconds": 12,
+								"inspect_seconds": 2.5,
+								"habituation_seconds": 12,
+								"cooldown_seconds": 8
+							}
+						},
+						{
+							"id": "seek_home_drive",
+							"type": "seek_home_drive",
+							"enabled": true,
+							"priority": 44,
+							"weight": 1,
+							"params": {
+								"pace": 0.32,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"trigger": 0.35,
+								"arrival_radius": 20,
+								"duration": 35,
+								"rest_seconds": 4,
+								"cooldown_seconds": 8
+							}
+						},
+						{
+							"id": "rest_resource",
+							"type": "rest_resource",
+							"enabled": true,
+							"priority": 62,
+							"weight": 1,
+							"params": {
+								"low_fraction": 0.3,
+								"resume_fraction": 0.75,
+								"maximum_seconds": 12,
+								"cooldown_seconds": 3
+							}
+						},
+						{
+							"id": "maintain_altitude",
+							"type": "maintain_altitude",
+							"enabled": true,
+							"priority": 25,
+							"weight": 0.3,
+							"params": {
+								"pace": 0.22,
+								"effort": 0.7,
+								"offset": 0,
+								"tolerance": 35
+							}
+						},
+						{
+							"id": "observe_actor",
+							"type": "observe_actor",
+							"enabled": true,
+							"priority": 34,
+							"weight": 0.4,
+							"params": {
+								"pace": 0.28,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"radius": 96,
+								"minimum_affinity": 0,
+								"tolerance": 5,
+								"duration": 10,
+								"watch_seconds": 2.5,
+								"cooldown_seconds": 5
+							}
+						},
+						{
+							"id": "steer_obstacles",
+							"type": "steer_obstacles",
+							"enabled": true,
+							"priority": 50,
+							"weight": 1.8,
+							"params": {
+								"pace": 0.42,
+								"effort": 0.7,
+								"clearance": 8,
+								"max_turn_seconds": 1.5
+							}
+						},
+						{
+							"id": "withdraw_obstruction",
+							"type": "withdraw_obstruction",
+							"enabled": true,
+							"priority": 84,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.85,
+								"duration": 2,
+								"quiet_seconds": 1,
+								"cooldown_seconds": 5,
+								"radius": 30
+							}
+						},
+						{
+							"id": "avoid_material",
+							"type": "avoid_material",
+							"enabled": true,
+							"priority": 80,
+							"weight": 1.3,
+							"params": {
+								"pace": 0.55,
+								"effort": 0.85,
+								"material_id": 3,
+								"radius": 64,
+								"enter_distance": 26,
+								"exit_distance": 45
+							}
+						},
+						{
+							"id": "avoid_boundary",
+							"type": "avoid_boundary",
+							"enabled": true,
+							"priority": 90,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.8,
+								"margin": 20,
+								"release_margin": 32,
+								"duration": 1.2
+							}
+						}
+					],
+					"personality": {
+						"enabled": true,
+						"curiosity": 0.55,
+						"persistence": 0.55,
+						"caution": 0.95,
+						"sociability": 0.3,
+						"activity": 0.3,
+						"territoriality": 0.55,
+						"preferred_distance": 48,
+						"failure_tolerance": 2
+					},
+					"drives_enabled": true,
+					"memory": {
+						"enabled": true,
+						"capacity": 64,
+						"interest_capacity": 16,
+						"obstruction_capacity": 16,
+						"cell_size": 24,
+						"lifetime_seconds": 90
+					},
+					"perception": {
+						"spacing_cells": 4,
+						"near_radius_cells": 8,
+						"refine_boundaries": true
+					},
+					"relations": {
+						"tags": [
+							"amber_flock"
+						],
+						"prefer_tags": [
+							"amber_flock"
+						],
+						"avoid_tags": [],
+						"peer_id": -1
+					},
+					"regions": [
+						{
+							"id": "home",
+							"name": "Home 1",
+							"kind": "home",
+							"x": 95,
+							"y": 190,
+							"width": 150,
+							"height": 100
+						},
+						{
+							"id": "interest",
+							"name": "Interest 1",
+							"kind": "interest",
+							"x": 480,
+							"y": 180,
+							"width": 500,
+							"height": 320
+						}
+					]
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:dffa50697ad7a09f9a257a6463e354b1c302f0744901096ff9f883b093090657",
+			"id": 1,
+			"model": "4ly_trainer",
+			"options": {
+				"boost_multiplier": 2,
+				"budget": 20,
+				"inertia_multiplier": 1,
+				"mass_multiplier": 1,
+				"thrust_multiplier": 1,
+				"torque_multiplier": 1
+			},
+			"spawn": [
+				170,
+				240
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"version": 2,
+					"id": "boundary_grazer",
+					"name": "Boundary Grazer",
+					"description": "For supported two-axis 4LY rigs. Follows an actually sampled Oil boundary tangent, remembers interesting patches, and occasionally leaves the edge for a seeded excursion.",
+					"seed": 16578,
+					"shared_seed": false,
+					"modules": [
+						{
+							"id": "follow_material_boundary",
+							"type": "follow_material_boundary",
+							"enabled": true,
+							"priority": 29,
+							"weight": 1.5,
+							"params": {
+								"pace": 0.32,
+								"effort": 0.7,
+								"material_id": 16,
+								"radius": 72,
+								"standoff": 18,
+								"tolerance": 5,
+								"clockwise": true
+							}
+						},
+						{
+							"id": "revisit_interest",
+							"type": "revisit_interest",
+							"enabled": true,
+							"priority": 28,
+							"weight": 0.65,
+							"params": {
+								"pace": 0.3,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"material_id": 16,
+								"radius": 72,
+								"minimum_age": 8,
+								"arrival_radius": 20,
+								"duration": 15,
+								"cooldown_seconds": 10
+							}
+						},
+						{
+							"id": "exploration_destination",
+							"type": "exploration_destination",
+							"enabled": true,
+							"priority": 22,
+							"weight": 0.55,
+							"params": {
+								"pace": 0.28,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"radius": 60,
+								"arrival_radius": 10,
+								"duration": 7,
+								"cooldown_seconds": 9
+							}
+						},
+						{
+							"id": "rest_resource",
+							"type": "rest_resource",
+							"enabled": true,
+							"priority": 62,
+							"weight": 1,
+							"params": {
+								"low_fraction": 0.2,
+								"resume_fraction": 0.65,
+								"maximum_seconds": 12,
+								"cooldown_seconds": 3
+							}
+						},
+						{
+							"id": "steer_obstacles",
+							"type": "steer_obstacles",
+							"enabled": true,
+							"priority": 50,
+							"weight": 1.8,
+							"params": {
+								"pace": 0.42,
+								"effort": 0.7,
+								"clearance": 8,
+								"max_turn_seconds": 1.5
+							}
+						},
+						{
+							"id": "withdraw_obstruction",
+							"type": "withdraw_obstruction",
+							"enabled": true,
+							"priority": 84,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.85,
+								"duration": 2,
+								"quiet_seconds": 1,
+								"cooldown_seconds": 5,
+								"radius": 30
+							}
+						},
+						{
+							"id": "avoid_material",
+							"type": "avoid_material",
+							"enabled": true,
+							"priority": 80,
+							"weight": 1.3,
+							"params": {
+								"pace": 0.55,
+								"effort": 0.85,
+								"material_id": 3,
+								"radius": 64,
+								"enter_distance": 26,
+								"exit_distance": 45
+							}
+						},
+						{
+							"id": "avoid_boundary",
+							"type": "avoid_boundary",
+							"enabled": true,
+							"priority": 90,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.8,
+								"margin": 20,
+								"release_margin": 32,
+								"duration": 1.2
+							}
+						}
+					],
+					"personality": {
+						"enabled": true,
+						"curiosity": 0.65,
+						"persistence": 0.75,
+						"caution": 0.65,
+						"sociability": 0.15,
+						"activity": 0.5,
+						"territoriality": 0.2,
+						"preferred_distance": 32,
+						"failure_tolerance": 4
+					},
+					"drives_enabled": true,
+					"memory": {
+						"enabled": true,
+						"capacity": 64,
+						"interest_capacity": 16,
+						"obstruction_capacity": 16,
+						"cell_size": 24,
+						"lifetime_seconds": 90
+					},
+					"perception": {
+						"spacing_cells": 4,
+						"near_radius_cells": 8,
+						"refine_boundaries": true
+					},
+					"relations": {
+						"tags": [
+							"cyan_flock"
+						],
+						"prefer_tags": [
+							"cyan_flock"
+						],
+						"avoid_tags": [],
+						"peer_id": -1
+					},
+					"regions": [
+						{
+							"id": "home",
+							"name": "Home 2",
+							"kind": "home",
+							"x": 345,
+							"y": 230,
+							"width": 150,
+							"height": 100
+						},
+						{
+							"id": "interest",
+							"name": "Interest 2",
+							"kind": "interest",
+							"x": 480,
+							"y": 180,
+							"width": 500,
+							"height": 320
+						}
+					]
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:9e9a6cbcf6c30c656a9971f6ef63e2723f129038dd371d28ea42fda25714020e",
+			"id": 2,
+			"model": "4ly_drifter",
+			"options": {
+				"boost_multiplier": 2,
+				"budget": 20,
+				"inertia_multiplier": 1,
+				"mass_multiplier": 1,
+				"thrust_multiplier": 1,
+				"torque_multiplier": 1
+			},
+			"spawn": [
+				420,
+				280
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"version": 2,
+					"id": "cautious_flyer",
+					"name": "Cautious Flyer",
+					"description": "For supported two-axis 4LY rigs. It explores slowly, inspects new Oil, uses observed eight-direction clearance, rests on actual low energy and returns home when its exploration cycle declines.",
+					"seed": 15582,
+					"shared_seed": false,
+					"modules": [
+						{
+							"id": "explore_unfamiliar",
+							"type": "explore_unfamiliar",
+							"enabled": true,
+							"priority": 30,
+							"weight": 0.9,
+							"params": {
+								"pace": 0.32,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"radius": 70,
+								"arrival_radius": 10,
+								"duration": 14,
+								"cooldown_seconds": 1
+							}
+						},
+						{
+							"id": "investigate_material",
+							"type": "investigate_material",
+							"enabled": true,
+							"priority": 42,
+							"weight": 1,
+							"params": {
+								"pace": 0.3,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"material_id": 16,
+								"radius": 64,
+								"standoff": 20,
+								"approach_seconds": 12,
+								"inspect_seconds": 2.5,
+								"habituation_seconds": 12,
+								"cooldown_seconds": 8
+							}
+						},
+						{
+							"id": "seek_home_drive",
+							"type": "seek_home_drive",
+							"enabled": true,
+							"priority": 44,
+							"weight": 1,
+							"params": {
+								"pace": 0.32,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"trigger": 0.35,
+								"arrival_radius": 20,
+								"duration": 35,
+								"rest_seconds": 4,
+								"cooldown_seconds": 8
+							}
+						},
+						{
+							"id": "rest_resource",
+							"type": "rest_resource",
+							"enabled": true,
+							"priority": 62,
+							"weight": 1,
+							"params": {
+								"low_fraction": 0.3,
+								"resume_fraction": 0.75,
+								"maximum_seconds": 12,
+								"cooldown_seconds": 3
+							}
+						},
+						{
+							"id": "maintain_altitude",
+							"type": "maintain_altitude",
+							"enabled": true,
+							"priority": 25,
+							"weight": 0.3,
+							"params": {
+								"pace": 0.22,
+								"effort": 0.7,
+								"offset": 0,
+								"tolerance": 35
+							}
+						},
+						{
+							"id": "observe_actor",
+							"type": "observe_actor",
+							"enabled": true,
+							"priority": 34,
+							"weight": 0.4,
+							"params": {
+								"pace": 0.28,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"radius": 96,
+								"minimum_affinity": 0,
+								"tolerance": 5,
+								"duration": 10,
+								"watch_seconds": 2.5,
+								"cooldown_seconds": 5
+							}
+						},
+						{
+							"id": "steer_obstacles",
+							"type": "steer_obstacles",
+							"enabled": true,
+							"priority": 50,
+							"weight": 1.8,
+							"params": {
+								"pace": 0.42,
+								"effort": 0.7,
+								"clearance": 8,
+								"max_turn_seconds": 1.5
+							}
+						},
+						{
+							"id": "withdraw_obstruction",
+							"type": "withdraw_obstruction",
+							"enabled": true,
+							"priority": 84,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.85,
+								"duration": 2,
+								"quiet_seconds": 1,
+								"cooldown_seconds": 5,
+								"radius": 30
+							}
+						},
+						{
+							"id": "avoid_material",
+							"type": "avoid_material",
+							"enabled": true,
+							"priority": 80,
+							"weight": 1.3,
+							"params": {
+								"pace": 0.55,
+								"effort": 0.85,
+								"material_id": 3,
+								"radius": 64,
+								"enter_distance": 26,
+								"exit_distance": 45
+							}
+						},
+						{
+							"id": "avoid_boundary",
+							"type": "avoid_boundary",
+							"enabled": true,
+							"priority": 90,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.8,
+								"margin": 20,
+								"release_margin": 32,
+								"duration": 1.2
+							}
+						}
+					],
+					"personality": {
+						"enabled": true,
+						"curiosity": 0.55,
+						"persistence": 0.55,
+						"caution": 0.95,
+						"sociability": 0.3,
+						"activity": 0.3,
+						"territoriality": 0.55,
+						"preferred_distance": 48,
+						"failure_tolerance": 2
+					},
+					"drives_enabled": true,
+					"memory": {
+						"enabled": true,
+						"capacity": 64,
+						"interest_capacity": 16,
+						"obstruction_capacity": 16,
+						"cell_size": 24,
+						"lifetime_seconds": 90
+					},
+					"perception": {
+						"spacing_cells": 4,
+						"near_radius_cells": 8,
+						"refine_boundaries": true
+					},
+					"relations": {
+						"tags": [
+							"amber_flock"
+						],
+						"prefer_tags": [
+							"amber_flock"
+						],
+						"avoid_tags": [],
+						"peer_id": -1
+					},
+					"regions": [
+						{
+							"id": "home",
+							"name": "Home 3",
+							"kind": "home",
+							"x": 575,
+							"y": 310,
+							"width": 150,
+							"height": 100
+						},
+						{
+							"id": "interest",
+							"name": "Interest 3",
+							"kind": "interest",
+							"x": 480,
+							"y": 180,
+							"width": 500,
+							"height": 320
+						}
+					]
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:dffa50697ad7a09f9a257a6463e354b1c302f0744901096ff9f883b093090657",
+			"id": 3,
+			"model": "4ly_trainer",
+			"options": {
+				"boost_multiplier": 2,
+				"budget": 20,
+				"inertia_multiplier": 1,
+				"mass_multiplier": 1,
+				"thrust_multiplier": 1,
+				"torque_multiplier": 1
+			},
+			"spawn": [
+				650,
+				360
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"version": 2,
+					"id": "boundary_grazer",
+					"name": "Boundary Grazer",
+					"description": "For supported two-axis 4LY rigs. Follows an actually sampled Oil boundary tangent, remembers interesting patches, and occasionally leaves the edge for a seeded excursion.",
+					"seed": 16580,
+					"shared_seed": false,
+					"modules": [
+						{
+							"id": "follow_material_boundary",
+							"type": "follow_material_boundary",
+							"enabled": true,
+							"priority": 29,
+							"weight": 1.5,
+							"params": {
+								"pace": 0.32,
+								"effort": 0.7,
+								"material_id": 16,
+								"radius": 72,
+								"standoff": 18,
+								"tolerance": 5,
+								"clockwise": true
+							}
+						},
+						{
+							"id": "revisit_interest",
+							"type": "revisit_interest",
+							"enabled": true,
+							"priority": 28,
+							"weight": 0.65,
+							"params": {
+								"pace": 0.3,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"material_id": 16,
+								"radius": 72,
+								"minimum_age": 8,
+								"arrival_radius": 20,
+								"duration": 15,
+								"cooldown_seconds": 10
+							}
+						},
+						{
+							"id": "exploration_destination",
+							"type": "exploration_destination",
+							"enabled": true,
+							"priority": 22,
+							"weight": 0.55,
+							"params": {
+								"pace": 0.28,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"radius": 60,
+								"arrival_radius": 10,
+								"duration": 7,
+								"cooldown_seconds": 9
+							}
+						},
+						{
+							"id": "rest_resource",
+							"type": "rest_resource",
+							"enabled": true,
+							"priority": 62,
+							"weight": 1,
+							"params": {
+								"low_fraction": 0.2,
+								"resume_fraction": 0.65,
+								"maximum_seconds": 12,
+								"cooldown_seconds": 3
+							}
+						},
+						{
+							"id": "steer_obstacles",
+							"type": "steer_obstacles",
+							"enabled": true,
+							"priority": 50,
+							"weight": 1.8,
+							"params": {
+								"pace": 0.42,
+								"effort": 0.7,
+								"clearance": 8,
+								"max_turn_seconds": 1.5
+							}
+						},
+						{
+							"id": "withdraw_obstruction",
+							"type": "withdraw_obstruction",
+							"enabled": true,
+							"priority": 84,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.85,
+								"duration": 2,
+								"quiet_seconds": 1,
+								"cooldown_seconds": 5,
+								"radius": 30
+							}
+						},
+						{
+							"id": "avoid_material",
+							"type": "avoid_material",
+							"enabled": true,
+							"priority": 80,
+							"weight": 1.3,
+							"params": {
+								"pace": 0.55,
+								"effort": 0.85,
+								"material_id": 3,
+								"radius": 64,
+								"enter_distance": 26,
+								"exit_distance": 45
+							}
+						},
+						{
+							"id": "avoid_boundary",
+							"type": "avoid_boundary",
+							"enabled": true,
+							"priority": 90,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.8,
+								"margin": 20,
+								"release_margin": 32,
+								"duration": 1.2
+							}
+						}
+					],
+					"personality": {
+						"enabled": true,
+						"curiosity": 0.65,
+						"persistence": 0.75,
+						"caution": 0.65,
+						"sociability": 0.15,
+						"activity": 0.5,
+						"territoriality": 0.2,
+						"preferred_distance": 32,
+						"failure_tolerance": 4
+					},
+					"drives_enabled": true,
+					"memory": {
+						"enabled": true,
+						"capacity": 64,
+						"interest_capacity": 16,
+						"obstruction_capacity": 16,
+						"cell_size": 24,
+						"lifetime_seconds": 90
+					},
+					"perception": {
+						"spacing_cells": 4,
+						"near_radius_cells": 8,
+						"refine_boundaries": true
+					},
+					"relations": {
+						"tags": [
+							"cyan_flock"
+						],
+						"prefer_tags": [
+							"cyan_flock"
+						],
+						"avoid_tags": [],
+						"peer_id": -1
+					},
+					"regions": [
+						{
+							"id": "home",
+							"name": "Home 4",
+							"kind": "home",
+							"x": 805,
+							"y": 130,
+							"width": 150,
+							"height": 100
+						},
+						{
+							"id": "interest",
+							"name": "Interest 4",
+							"kind": "interest",
+							"x": 480,
+							"y": 180,
+							"width": 500,
+							"height": 320
+						}
+					]
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:9e9a6cbcf6c30c656a9971f6ef63e2723f129038dd371d28ea42fda25714020e",
+			"id": 4,
+			"model": "4ly_drifter",
+			"options": {
+				"boost_multiplier": 2,
+				"budget": 20,
+				"inertia_multiplier": 1,
+				"mass_multiplier": 1,
+				"thrust_multiplier": 1,
+				"torque_multiplier": 1
+			},
+			"spawn": [
+				880,
+				180
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"version": 2,
+					"id": "cautious_flyer",
+					"name": "Cautious Flyer",
+					"description": "For supported two-axis 4LY rigs. It explores slowly, inspects new Oil, uses observed eight-direction clearance, rests on actual low energy and returns home when its exploration cycle declines.",
+					"seed": 15584,
+					"shared_seed": false,
+					"modules": [
+						{
+							"id": "explore_unfamiliar",
+							"type": "explore_unfamiliar",
+							"enabled": true,
+							"priority": 30,
+							"weight": 0.9,
+							"params": {
+								"pace": 0.32,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"radius": 70,
+								"arrival_radius": 10,
+								"duration": 14,
+								"cooldown_seconds": 1
+							}
+						},
+						{
+							"id": "investigate_material",
+							"type": "investigate_material",
+							"enabled": true,
+							"priority": 42,
+							"weight": 1,
+							"params": {
+								"pace": 0.3,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"material_id": 16,
+								"radius": 64,
+								"standoff": 20,
+								"approach_seconds": 12,
+								"inspect_seconds": 2.5,
+								"habituation_seconds": 12,
+								"cooldown_seconds": 8
+							}
+						},
+						{
+							"id": "seek_home_drive",
+							"type": "seek_home_drive",
+							"enabled": true,
+							"priority": 44,
+							"weight": 1,
+							"params": {
+								"pace": 0.32,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"trigger": 0.35,
+								"arrival_radius": 20,
+								"duration": 35,
+								"rest_seconds": 4,
+								"cooldown_seconds": 8
+							}
+						},
+						{
+							"id": "rest_resource",
+							"type": "rest_resource",
+							"enabled": true,
+							"priority": 62,
+							"weight": 1,
+							"params": {
+								"low_fraction": 0.3,
+								"resume_fraction": 0.75,
+								"maximum_seconds": 12,
+								"cooldown_seconds": 3
+							}
+						},
+						{
+							"id": "maintain_altitude",
+							"type": "maintain_altitude",
+							"enabled": true,
+							"priority": 25,
+							"weight": 0.3,
+							"params": {
+								"pace": 0.22,
+								"effort": 0.7,
+								"offset": 0,
+								"tolerance": 35
+							}
+						},
+						{
+							"id": "observe_actor",
+							"type": "observe_actor",
+							"enabled": true,
+							"priority": 34,
+							"weight": 0.4,
+							"params": {
+								"pace": 0.28,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"radius": 96,
+								"minimum_affinity": 0,
+								"tolerance": 5,
+								"duration": 10,
+								"watch_seconds": 2.5,
+								"cooldown_seconds": 5
+							}
+						},
+						{
+							"id": "steer_obstacles",
+							"type": "steer_obstacles",
+							"enabled": true,
+							"priority": 50,
+							"weight": 1.8,
+							"params": {
+								"pace": 0.42,
+								"effort": 0.7,
+								"clearance": 8,
+								"max_turn_seconds": 1.5
+							}
+						},
+						{
+							"id": "withdraw_obstruction",
+							"type": "withdraw_obstruction",
+							"enabled": true,
+							"priority": 84,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.85,
+								"duration": 2,
+								"quiet_seconds": 1,
+								"cooldown_seconds": 5,
+								"radius": 30
+							}
+						},
+						{
+							"id": "avoid_material",
+							"type": "avoid_material",
+							"enabled": true,
+							"priority": 80,
+							"weight": 1.3,
+							"params": {
+								"pace": 0.55,
+								"effort": 0.85,
+								"material_id": 3,
+								"radius": 64,
+								"enter_distance": 26,
+								"exit_distance": 45
+							}
+						},
+						{
+							"id": "avoid_boundary",
+							"type": "avoid_boundary",
+							"enabled": true,
+							"priority": 90,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.8,
+								"margin": 20,
+								"release_margin": 32,
+								"duration": 1.2
+							}
+						}
+					],
+					"personality": {
+						"enabled": true,
+						"curiosity": 0.55,
+						"persistence": 0.55,
+						"caution": 0.95,
+						"sociability": 0.3,
+						"activity": 0.3,
+						"territoriality": 0.55,
+						"preferred_distance": 48,
+						"failure_tolerance": 2
+					},
+					"drives_enabled": true,
+					"memory": {
+						"enabled": true,
+						"capacity": 64,
+						"interest_capacity": 16,
+						"obstruction_capacity": 16,
+						"cell_size": 24,
+						"lifetime_seconds": 90
+					},
+					"perception": {
+						"spacing_cells": 4,
+						"near_radius_cells": 8,
+						"refine_boundaries": true
+					},
+					"relations": {
+						"tags": [
+							"amber_flock"
+						],
+						"prefer_tags": [
+							"amber_flock"
+						],
+						"avoid_tags": [],
+						"peer_id": -1
+					},
+					"regions": [
+						{
+							"id": "home",
+							"name": "Home 5",
+							"kind": "home",
+							"x": 1115,
+							"y": 250,
+							"width": 150,
+							"height": 100
+						},
+						{
+							"id": "interest",
+							"name": "Interest 5",
+							"kind": "interest",
+							"x": 480,
+							"y": 180,
+							"width": 500,
+							"height": 320
+						}
+					]
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:dffa50697ad7a09f9a257a6463e354b1c302f0744901096ff9f883b093090657",
+			"id": 5,
+			"model": "4ly_trainer",
+			"options": {
+				"boost_multiplier": 2,
+				"budget": 20,
+				"inertia_multiplier": 1,
+				"mass_multiplier": 1,
+				"thrust_multiplier": 1,
+				"torque_multiplier": 1
+			},
+			"spawn": [
+				1190,
+				300
+			]
+		},
+		{
+			"control": {
+				"ambient": {
+					"version": 2,
+					"id": "boundary_grazer",
+					"name": "Boundary Grazer",
+					"description": "For supported two-axis 4LY rigs. Follows an actually sampled Oil boundary tangent, remembers interesting patches, and occasionally leaves the edge for a seeded excursion.",
+					"seed": 16582,
+					"shared_seed": false,
+					"modules": [
+						{
+							"id": "follow_material_boundary",
+							"type": "follow_material_boundary",
+							"enabled": true,
+							"priority": 29,
+							"weight": 1.5,
+							"params": {
+								"pace": 0.32,
+								"effort": 0.7,
+								"material_id": 16,
+								"radius": 72,
+								"standoff": 18,
+								"tolerance": 5,
+								"clockwise": true
+							}
+						},
+						{
+							"id": "revisit_interest",
+							"type": "revisit_interest",
+							"enabled": true,
+							"priority": 28,
+							"weight": 0.65,
+							"params": {
+								"pace": 0.3,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"material_id": 16,
+								"radius": 72,
+								"minimum_age": 8,
+								"arrival_radius": 20,
+								"duration": 15,
+								"cooldown_seconds": 10
+							}
+						},
+						{
+							"id": "exploration_destination",
+							"type": "exploration_destination",
+							"enabled": true,
+							"priority": 22,
+							"weight": 0.55,
+							"params": {
+								"pace": 0.28,
+								"effort": 0.7,
+								"commit_seconds": 3,
+								"radius": 60,
+								"arrival_radius": 10,
+								"duration": 7,
+								"cooldown_seconds": 9
+							}
+						},
+						{
+							"id": "rest_resource",
+							"type": "rest_resource",
+							"enabled": true,
+							"priority": 62,
+							"weight": 1,
+							"params": {
+								"low_fraction": 0.2,
+								"resume_fraction": 0.65,
+								"maximum_seconds": 12,
+								"cooldown_seconds": 3
+							}
+						},
+						{
+							"id": "steer_obstacles",
+							"type": "steer_obstacles",
+							"enabled": true,
+							"priority": 50,
+							"weight": 1.8,
+							"params": {
+								"pace": 0.42,
+								"effort": 0.7,
+								"clearance": 8,
+								"max_turn_seconds": 1.5
+							}
+						},
+						{
+							"id": "withdraw_obstruction",
+							"type": "withdraw_obstruction",
+							"enabled": true,
+							"priority": 84,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.85,
+								"duration": 2,
+								"quiet_seconds": 1,
+								"cooldown_seconds": 5,
+								"radius": 30
+							}
+						},
+						{
+							"id": "avoid_material",
+							"type": "avoid_material",
+							"enabled": true,
+							"priority": 80,
+							"weight": 1.3,
+							"params": {
+								"pace": 0.55,
+								"effort": 0.85,
+								"material_id": 3,
+								"radius": 64,
+								"enter_distance": 26,
+								"exit_distance": 45
+							}
+						},
+						{
+							"id": "avoid_boundary",
+							"type": "avoid_boundary",
+							"enabled": true,
+							"priority": 90,
+							"weight": 1,
+							"params": {
+								"pace": 0.5,
+								"effort": 0.8,
+								"margin": 20,
+								"release_margin": 32,
+								"duration": 1.2
+							}
+						}
+					],
+					"personality": {
+						"enabled": true,
+						"curiosity": 0.65,
+						"persistence": 0.75,
+						"caution": 0.65,
+						"sociability": 0.15,
+						"activity": 0.5,
+						"territoriality": 0.2,
+						"preferred_distance": 32,
+						"failure_tolerance": 4
+					},
+					"drives_enabled": true,
+					"memory": {
+						"enabled": true,
+						"capacity": 64,
+						"interest_capacity": 16,
+						"obstruction_capacity": 16,
+						"cell_size": 24,
+						"lifetime_seconds": 90
+					},
+					"perception": {
+						"spacing_cells": 4,
+						"near_radius_cells": 8,
+						"refine_boundaries": true
+					},
+					"relations": {
+						"tags": [
+							"cyan_flock"
+						],
+						"prefer_tags": [
+							"cyan_flock"
+						],
+						"avoid_tags": [],
+						"peer_id": -1
+					},
+					"regions": [
+						{
+							"id": "home",
+							"name": "Home 6",
+							"kind": "home",
+							"x": 1285,
+							"y": 470,
+							"width": 150,
+							"height": 100
+						},
+						{
+							"id": "interest",
+							"name": "Interest 6",
+							"kind": "interest",
+							"x": 480,
+							"y": 180,
+							"width": 500,
+							"height": 320
+						}
+					]
+				},
+				"decision_ticks": 6,
+				"enabled": true,
+				"policy": "ambient",
+				"source": "policy",
+				"usable_index": -1,
+				"version": 1
+			},
+			"hash": "wb-physical-v1:9e9a6cbcf6c30c656a9971f6ef63e2723f129038dd371d28ea42fda25714020e",
+			"id": 6,
+			"model": "4ly_drifter",
+			"options": {
+				"boost_multiplier": 2,
+				"budget": 20,
+				"inertia_multiplier": 1,
+				"mass_multiplier": 1,
+				"thrust_multiplier": 1,
+				"torque_multiplier": 1
+			},
+			"spawn": [
+				1360,
+				520
+			]
+		}
+	],
+	"brush": 8,
+	"edits": [
+		[
+			0,
+			692,
+			1536,
+			16,
+			58
+		],
+		[
+			0,
+			692,
+			1536,
+			3,
+			62
+		],
+		[
+			0,
+			32,
+			8,
+			660,
+			58
+		],
+		[
+			1528,
+			32,
+			8,
+			660,
+			58
+		],
+		[
+			20,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			32,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			84,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			96,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			148,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			160,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			212,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			224,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			276,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			288,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			340,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			352,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			404,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			416,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			468,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			480,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			532,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			544,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			596,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			608,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			660,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			672,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			724,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			736,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			788,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			800,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			852,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			864,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			916,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			928,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			980,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			992,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			1044,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			1056,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			1108,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			1120,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			1172,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			1184,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			1236,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			1248,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			1300,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			1312,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			1364,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			1376,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			1428,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			1440,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			1492,
+			708,
+			8,
+			28,
+			62
+		],
+		[
+			1504,
+			712,
+			24,
+			3,
+			79
+		],
+		[
+			8,
+			48,
+			1520,
+			10,
+			62
+		],
+		[
+			38,
+			70,
+			150,
+			8,
+			77
+		],
+		[
+			50,
+			84,
+			126,
+			20,
+			71
+		],
+		[
+			238,
+			70,
+			150,
+			8,
+			79
+		],
+		[
+			250,
+			84,
+			126,
+			20,
+			71
+		],
+		[
+			438,
+			70,
+			150,
+			8,
+			77
+		],
+		[
+			450,
+			84,
+			126,
+			20,
+			71
+		],
+		[
+			638,
+			70,
+			150,
+			8,
+			79
+		],
+		[
+			650,
+			84,
+			126,
+			20,
+			71
+		],
+		[
+			838,
+			70,
+			150,
+			8,
+			77
+		],
+		[
+			850,
+			84,
+			126,
+			20,
+			71
+		],
+		[
+			1038,
+			70,
+			150,
+			8,
+			79
+		],
+		[
+			1050,
+			84,
+			126,
+			20,
+			71
+		],
+		[
+			1238,
+			70,
+			150,
+			8,
+			77
+		],
+		[
+			1250,
+			84,
+			126,
+			20,
+			71
+		],
+		[
+			70,
+			330,
+			220,
+			8,
+			62
+		],
+		[
+			78,
+			338,
+			8,
+			65,
+			68
+		],
+		[
+			274,
+			338,
+			8,
+			65,
+			68
+		],
+		[
+			90,
+			320,
+			180,
+			4,
+			77
+		],
+		[
+			130,
+			323,
+			3,
+			7,
+			62
+		],
+		[
+			183,
+			323,
+			3,
+			7,
+			62
+		],
+		[
+			133,
+			325,
+			50,
+			5,
+			16
+		],
+		[
+			410,
+			480,
+			220,
+			8,
+			62
+		],
+		[
+			418,
+			488,
+			8,
+			65,
+			68
+		],
+		[
+			614,
+			488,
+			8,
+			65,
+			68
+		],
+		[
+			430,
+			470,
+			180,
+			4,
+			77
+		],
+		[
+			470,
+			473,
+			3,
+			7,
+			62
+		],
+		[
+			523,
+			473,
+			3,
+			7,
+			62
+		],
+		[
+			473,
+			475,
+			50,
+			5,
+			16
+		],
+		[
+			760,
+			280,
+			240,
+			8,
+			62
+		],
+		[
+			768,
+			288,
+			8,
+			65,
+			68
+		],
+		[
+			984,
+			288,
+			8,
+			65,
+			68
+		],
+		[
+			780,
+			270,
+			200,
+			4,
+			77
+		],
+		[
+			820,
+			273,
+			3,
+			7,
+			62
+		],
+		[
+			873,
+			273,
+			3,
+			7,
+			62
+		],
+		[
+			823,
+			275,
+			50,
+			5,
+			16
+		],
+		[
+			1130,
+			440,
+			230,
+			8,
+			62
+		],
+		[
+			1138,
+			448,
+			8,
+			65,
+			68
+		],
+		[
+			1344,
+			448,
+			8,
+			65,
+			68
+		],
+		[
+			1150,
+			430,
+			190,
+			4,
+			77
+		],
+		[
+			1190,
+			433,
+			3,
+			7,
+			62
+		],
+		[
+			1243,
+			433,
+			3,
+			7,
+			62
+		],
+		[
+			1193,
+			435,
+			50,
+			5,
+			16
+		],
+		[
+			700,
+			490,
+			18,
+			202,
+			58
+		],
+		[
+			1050,
+			94,
+			18,
+			220,
+			58
+		],
+		[
+			1450,
+			520,
+			24,
+			172,
+			58
+		],
+		[
+			40,
+			620,
+			280,
+			8,
+			62
+		],
+		[
+			1190,
+			620,
+			280,
+			8,
+			62
+		],
+		[
+			600,
+			682,
+			3,
+			10,
+			62
+		],
+		[
+			753,
+			682,
+			3,
+			10,
+			62
+		],
+		[
+			603,
+			684,
+			150,
+			8,
+			3
+		],
+		[
+			8,
+			756,
+			1520,
+			4,
+			58
+		],
+		[
+			10,
+			742,
+			1516,
+			4,
+			68
+		],
+		[
+			28,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			34,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			108,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			114,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			188,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			194,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			268,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			274,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			348,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			354,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			428,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			434,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			508,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			514,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			588,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			594,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			668,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			674,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			748,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			754,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			828,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			834,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			908,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			914,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			988,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			994,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			1068,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			1074,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			1148,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			1154,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			1228,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			1234,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			1308,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			1314,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			1388,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			1394,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			1468,
+			736,
+			4,
+			16,
+			62
+		],
+		[
+			1474,
+			747,
+			26,
+			3,
+			79
+		],
+		[
+			20,
+			110,
+			1480,
+			4,
+			62
+		],
+		[
+			20,
+			130,
+			1480,
+			4,
+			62
+		],
+		[
+			24,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			34,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			41,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			56,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			66,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			73,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			88,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			98,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			105,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			120,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			130,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			137,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			152,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			162,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			169,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			184,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			194,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			201,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			216,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			226,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			233,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			248,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			258,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			265,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			280,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			290,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			297,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			312,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			322,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			329,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			344,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			354,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			361,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			376,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			386,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			393,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			408,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			418,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			425,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			440,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			450,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			457,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			472,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			482,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			489,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			504,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			514,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			521,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			536,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			546,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			553,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			568,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			578,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			585,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			600,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			610,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			617,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			632,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			642,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			649,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			664,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			674,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			681,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			696,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			706,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			713,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			728,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			738,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			745,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			760,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			770,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			777,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			792,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			802,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			809,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			824,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			834,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			841,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			856,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			866,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			873,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			888,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			898,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			905,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			920,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			930,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			937,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			952,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			962,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			969,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			984,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			994,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1001,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1016,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1026,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1033,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1048,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1058,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1065,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1080,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1090,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1097,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1112,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1122,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1129,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1144,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1154,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1161,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1176,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1186,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1193,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1208,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1218,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1225,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1240,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1250,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1257,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1272,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1282,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1289,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1304,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1314,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1321,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1336,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1346,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1353,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1368,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1378,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1385,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1400,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1410,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1417,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1432,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1442,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1449,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			1464,
+			114,
+			4,
+			16,
+			62
+		],
+		[
+			1474,
+			115,
+			4,
+			7,
+			68
+		],
+		[
+			1481,
+			122,
+			4,
+			8,
+			68
+		],
+		[
+			50,
+			140,
+			120,
+			4,
+			68
+		],
+		[
+			64,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			120,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			250,
+			140,
+			120,
+			4,
+			68
+		],
+		[
+			264,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			320,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			450,
+			140,
+			120,
+			4,
+			68
+		],
+		[
+			464,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			520,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			650,
+			140,
+			120,
+			4,
+			68
+		],
+		[
+			664,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			720,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			850,
+			140,
+			120,
+			4,
+			68
+		],
+		[
+			864,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			920,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			1050,
+			140,
+			120,
+			4,
+			68
+		],
+		[
+			1064,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			1120,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			1250,
+			140,
+			120,
+			4,
+			68
+		],
+		[
+			1264,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			1320,
+			144,
+			4,
+			26,
+			68
+		],
+		[
+			94,
+			362,
+			172,
+			30,
+			62
+		],
+		[
+			97,
+			365,
+			166,
+			24,
+			58
+		],
+		[
+			104,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			120,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			136,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			152,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			168,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			184,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			200,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			216,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			232,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			248,
+			370,
+			8,
+			5,
+			77
+		],
+		[
+			104,
+			382,
+			152,
+			3,
+			79
+		],
+		[
+			88,
+			396,
+			184,
+			4,
+			62
+		],
+		[
+			96,
+			404,
+			14,
+			3,
+			79
+		],
+		[
+			128,
+			404,
+			14,
+			3,
+			79
+		],
+		[
+			160,
+			404,
+			14,
+			3,
+			79
+		],
+		[
+			192,
+			404,
+			14,
+			3,
+			79
+		],
+		[
+			224,
+			404,
+			14,
+			3,
+			79
+		],
+		[
+			256,
+			404,
+			14,
+			3,
+			79
+		],
+		[
+			434,
+			512,
+			172,
+			30,
+			62
+		],
+		[
+			437,
+			515,
+			166,
+			24,
+			58
+		],
+		[
+			444,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			460,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			476,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			492,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			508,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			524,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			540,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			556,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			572,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			588,
+			520,
+			8,
+			5,
+			77
+		],
+		[
+			444,
+			532,
+			152,
+			3,
+			79
+		],
+		[
+			428,
+			546,
+			184,
+			4,
+			62
+		],
+		[
+			436,
+			554,
+			14,
+			3,
+			79
+		],
+		[
+			468,
+			554,
+			14,
+			3,
+			79
+		],
+		[
+			500,
+			554,
+			14,
+			3,
+			79
+		],
+		[
+			532,
+			554,
+			14,
+			3,
+			79
+		],
+		[
+			564,
+			554,
+			14,
+			3,
+			79
+		],
+		[
+			596,
+			554,
+			14,
+			3,
+			79
+		],
+		[
+			784,
+			312,
+			192,
+			30,
+			62
+		],
+		[
+			787,
+			315,
+			186,
+			24,
+			58
+		],
+		[
+			794,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			810,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			826,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			842,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			858,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			874,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			890,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			906,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			922,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			938,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			954,
+			320,
+			8,
+			5,
+			77
+		],
+		[
+			794,
+			332,
+			172,
+			3,
+			79
+		],
+		[
+			778,
+			346,
+			204,
+			4,
+			62
+		],
+		[
+			786,
+			354,
+			14,
+			3,
+			79
+		],
+		[
+			818,
+			354,
+			14,
+			3,
+			79
+		],
+		[
+			850,
+			354,
+			14,
+			3,
+			79
+		],
+		[
+			882,
+			354,
+			14,
+			3,
+			79
+		],
+		[
+			914,
+			354,
+			14,
+			3,
+			79
+		],
+		[
+			946,
+			354,
+			14,
+			3,
+			79
+		],
+		[
+			1154,
+			472,
+			182,
+			30,
+			62
+		],
+		[
+			1157,
+			475,
+			176,
+			24,
+			58
+		],
+		[
+			1164,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1180,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1196,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1212,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1228,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1244,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1260,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1276,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1292,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1308,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1324,
+			480,
+			8,
+			5,
+			77
+		],
+		[
+			1164,
+			492,
+			162,
+			3,
+			79
+		],
+		[
+			1148,
+			506,
+			194,
+			4,
+			62
+		],
+		[
+			1156,
+			514,
+			14,
+			3,
+			79
+		],
+		[
+			1188,
+			514,
+			14,
+			3,
+			79
+		],
+		[
+			1220,
+			514,
+			14,
+			3,
+			79
+		],
+		[
+			1252,
+			514,
+			14,
+			3,
+			79
+		],
+		[
+			1284,
+			514,
+			14,
+			3,
+			79
+		],
+		[
+			1316,
+			514,
+			14,
+			3,
+			79
+		],
+		[
+			700,
+			508,
+			18,
+			5,
+			79
+		],
+		[
+			1050,
+			200,
+			18,
+			5,
+			77
+		],
+		[
+			1450,
+			552,
+			24,
+			5,
+			79
+		]
+	],
+	"extent": [
+		1536,
+		768
+	],
+	"fire": false,
+	"liquid_policy": [
+		1279479895,
+		1,
+		1,
+		-2102023270,
+		1854385793,
+		1886533889,
+		84225930,
+		1522979054,
+		582168604,
+		-646713377,
+		-939672877,
+		868616440,
+		1977866421,
+		1930370363,
+		-2119873090,
+		-6981196,
+		870342995,
+		1443932351,
+		-1569267145,
+		11,
+		3,
+		1,
+		0,
+		8,
+		2,
+		0,
+		12,
+		2,
+		0,
+		16,
+		2,
+		0,
+		20,
+		2,
+		0,
+		21,
+		2,
+		0,
+		24,
+		2,
+		0,
+		30,
+		2,
+		0,
+		32,
+		2,
+		0,
+		33,
+		2,
+		0,
+		36,
+		2,
+		0,
+		0,
+		0
+	],
+	"material": 16,
+	"next_id": 7,
+	"normalize": false,
+	"response": "LA-SELECTIVE",
+	"rule_radius": 2,
+	"selected": 1,
+	"source": [],
+	"version": 2,
+	"ambient_authoring": {
+		"version": 1,
+		"profiles": [
+			{
+				"version": 2,
+				"id": "cautious_flyer",
+				"name": "Cautious Flyer",
+				"description": "For supported two-axis 4LY rigs. It explores slowly, inspects new Oil, uses observed eight-direction clearance, rests on actual low energy and returns home when its exploration cycle declines.",
+				"seed": 14080,
+				"shared_seed": false,
+				"modules": [
+					{
+						"id": "explore_unfamiliar",
+						"type": "explore_unfamiliar",
+						"enabled": true,
+						"priority": 30,
+						"weight": 0.9,
+						"params": {
+							"pace": 0.32,
+							"effort": 0.7,
+							"commit_seconds": 3,
+							"radius": 70,
+							"arrival_radius": 10,
+							"duration": 14,
+							"cooldown_seconds": 1
+						}
+					},
+					{
+						"id": "investigate_material",
+						"type": "investigate_material",
+						"enabled": true,
+						"priority": 42,
+						"weight": 1,
+						"params": {
+							"pace": 0.3,
+							"effort": 0.7,
+							"commit_seconds": 3,
+							"material_id": 16,
+							"radius": 64,
+							"standoff": 20,
+							"approach_seconds": 12,
+							"inspect_seconds": 2.5,
+							"habituation_seconds": 12,
+							"cooldown_seconds": 8
+						}
+					},
+					{
+						"id": "seek_home_drive",
+						"type": "seek_home_drive",
+						"enabled": true,
+						"priority": 44,
+						"weight": 1,
+						"params": {
+							"pace": 0.32,
+							"effort": 0.7,
+							"commit_seconds": 3,
+							"trigger": 0.35,
+							"arrival_radius": 20,
+							"duration": 35,
+							"rest_seconds": 4,
+							"cooldown_seconds": 8
+						}
+					},
+					{
+						"id": "rest_resource",
+						"type": "rest_resource",
+						"enabled": true,
+						"priority": 62,
+						"weight": 1,
+						"params": {
+							"low_fraction": 0.3,
+							"resume_fraction": 0.75,
+							"maximum_seconds": 12,
+							"cooldown_seconds": 3
+						}
+					},
+					{
+						"id": "maintain_altitude",
+						"type": "maintain_altitude",
+						"enabled": true,
+						"priority": 25,
+						"weight": 0.3,
+						"params": {
+							"pace": 0.22,
+							"effort": 0.7,
+							"offset": 0,
+							"tolerance": 35
+						}
+					},
+					{
+						"id": "observe_actor",
+						"type": "observe_actor",
+						"enabled": true,
+						"priority": 34,
+						"weight": 0.4,
+						"params": {
+							"pace": 0.28,
+							"effort": 0.7,
+							"commit_seconds": 3,
+							"radius": 96,
+							"minimum_affinity": 0,
+							"tolerance": 5,
+							"duration": 10,
+							"watch_seconds": 2.5,
+							"cooldown_seconds": 5
+						}
+					},
+					{
+						"id": "steer_obstacles",
+						"type": "steer_obstacles",
+						"enabled": true,
+						"priority": 50,
+						"weight": 1.8,
+						"params": {
+							"pace": 0.42,
+							"effort": 0.7,
+							"clearance": 8,
+							"max_turn_seconds": 1.5
+						}
+					},
+					{
+						"id": "withdraw_obstruction",
+						"type": "withdraw_obstruction",
+						"enabled": true,
+						"priority": 84,
+						"weight": 1,
+						"params": {
+							"pace": 0.5,
+							"effort": 0.85,
+							"duration": 2,
+							"quiet_seconds": 1,
+							"cooldown_seconds": 5,
+							"radius": 30
+						}
+					},
+					{
+						"id": "avoid_material",
+						"type": "avoid_material",
+						"enabled": true,
+						"priority": 80,
+						"weight": 1.3,
+						"params": {
+							"pace": 0.55,
+							"effort": 0.85,
+							"material_id": 3,
+							"radius": 64,
+							"enter_distance": 26,
+							"exit_distance": 45
+						}
+					},
+					{
+						"id": "avoid_boundary",
+						"type": "avoid_boundary",
+						"enabled": true,
+						"priority": 90,
+						"weight": 1,
+						"params": {
+							"pace": 0.5,
+							"effort": 0.8,
+							"margin": 20,
+							"release_margin": 32,
+							"duration": 1.2
+						}
+					}
+				],
+				"personality": {
+					"enabled": true,
+					"curiosity": 0.55,
+					"persistence": 0.55,
+					"caution": 0.95,
+					"sociability": 0.3,
+					"activity": 0.3,
+					"territoriality": 0.55,
+					"preferred_distance": 48,
+					"failure_tolerance": 2
+				},
+				"drives_enabled": true,
+				"memory": {
+					"enabled": true,
+					"capacity": 64,
+					"interest_capacity": 16,
+					"obstruction_capacity": 16,
+					"cell_size": 24,
+					"lifetime_seconds": 90
+				},
+				"perception": {
+					"spacing_cells": 4,
+					"near_radius_cells": 8,
+					"refine_boundaries": true
+				},
+				"relations": {
+					"tags": [
+						"flyer"
+					],
+					"prefer_tags": [
+						"flyer"
+					],
+					"avoid_tags": [
+						"hostile"
+					],
+					"peer_id": -1
+				},
+				"regions": []
+			},
+			{
+				"version": 2,
+				"id": "boundary_grazer",
+				"name": "Boundary Grazer",
+				"description": "For supported two-axis 4LY rigs. Follows an actually sampled Oil boundary tangent, remembers interesting patches, and occasionally leaves the edge for a seeded excursion.",
+				"seed": 15077,
+				"shared_seed": false,
+				"modules": [
+					{
+						"id": "follow_material_boundary",
+						"type": "follow_material_boundary",
+						"enabled": true,
+						"priority": 29,
+						"weight": 1.5,
+						"params": {
+							"pace": 0.32,
+							"effort": 0.7,
+							"material_id": 16,
+							"radius": 72,
+							"standoff": 18,
+							"tolerance": 5,
+							"clockwise": true
+						}
+					},
+					{
+						"id": "revisit_interest",
+						"type": "revisit_interest",
+						"enabled": true,
+						"priority": 28,
+						"weight": 0.65,
+						"params": {
+							"pace": 0.3,
+							"effort": 0.7,
+							"commit_seconds": 3,
+							"material_id": 16,
+							"radius": 72,
+							"minimum_age": 8,
+							"arrival_radius": 20,
+							"duration": 15,
+							"cooldown_seconds": 10
+						}
+					},
+					{
+						"id": "exploration_destination",
+						"type": "exploration_destination",
+						"enabled": true,
+						"priority": 22,
+						"weight": 0.55,
+						"params": {
+							"pace": 0.28,
+							"effort": 0.7,
+							"commit_seconds": 3,
+							"radius": 60,
+							"arrival_radius": 10,
+							"duration": 7,
+							"cooldown_seconds": 9
+						}
+					},
+					{
+						"id": "rest_resource",
+						"type": "rest_resource",
+						"enabled": true,
+						"priority": 62,
+						"weight": 1,
+						"params": {
+							"low_fraction": 0.2,
+							"resume_fraction": 0.65,
+							"maximum_seconds": 12,
+							"cooldown_seconds": 3
+						}
+					},
+					{
+						"id": "steer_obstacles",
+						"type": "steer_obstacles",
+						"enabled": true,
+						"priority": 50,
+						"weight": 1.8,
+						"params": {
+							"pace": 0.42,
+							"effort": 0.7,
+							"clearance": 8,
+							"max_turn_seconds": 1.5
+						}
+					},
+					{
+						"id": "withdraw_obstruction",
+						"type": "withdraw_obstruction",
+						"enabled": true,
+						"priority": 84,
+						"weight": 1,
+						"params": {
+							"pace": 0.5,
+							"effort": 0.85,
+							"duration": 2,
+							"quiet_seconds": 1,
+							"cooldown_seconds": 5,
+							"radius": 30
+						}
+					},
+					{
+						"id": "avoid_material",
+						"type": "avoid_material",
+						"enabled": true,
+						"priority": 80,
+						"weight": 1.3,
+						"params": {
+							"pace": 0.55,
+							"effort": 0.85,
+							"material_id": 3,
+							"radius": 64,
+							"enter_distance": 26,
+							"exit_distance": 45
+						}
+					},
+					{
+						"id": "avoid_boundary",
+						"type": "avoid_boundary",
+						"enabled": true,
+						"priority": 90,
+						"weight": 1,
+						"params": {
+							"pace": 0.5,
+							"effort": 0.8,
+							"margin": 20,
+							"release_margin": 32,
+							"duration": 1.2
+						}
+					}
+				],
+				"personality": {
+					"enabled": true,
+					"curiosity": 0.65,
+					"persistence": 0.75,
+					"caution": 0.65,
+					"sociability": 0.15,
+					"activity": 0.5,
+					"territoriality": 0.2,
+					"preferred_distance": 32,
+					"failure_tolerance": 4
+				},
+				"drives_enabled": true,
+				"memory": {
+					"enabled": true,
+					"capacity": 64,
+					"interest_capacity": 16,
+					"obstruction_capacity": 16,
+					"cell_size": 24,
+					"lifetime_seconds": 90
+				},
+				"perception": {
+					"spacing_cells": 4,
+					"near_radius_cells": 8,
+					"refine_boundaries": true
+				},
+				"relations": {
+					"tags": [
+						"grazer"
+					],
+					"prefer_tags": [
+						"grazer"
+					],
+					"avoid_tags": [
+						"hostile"
+					],
+					"peer_id": -1
+				},
+				"regions": []
+			}
+		]
+	}
+}

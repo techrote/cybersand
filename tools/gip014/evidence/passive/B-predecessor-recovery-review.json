@@ -1,0 +1,272 @@
+{
+  "schema": "cybersand-goblin-specialist-B-predecessor-recovery-review-v1",
+  "status": "pass",
+  "scope": "Independent metadata and recorded-custody consistency review, using only two immutable Git blobs. No local transfer, filesystem scan, native/game/replay/analyzer execution or raw ZIP rehash was performed by B.",
+  "original_metadata_git_blob": "3a2dab4d141b26e6db6519f064135e11ca2fd2f7",
+  "reviewed_recovery_record_git_blob": "ba46c0d4fcde350923ee796aa9bd691e1b58e75c",
+  "check_count": 13,
+  "checks": [
+    {
+      "id": "original_metadata_object_identity",
+      "pass": true
+    },
+    {
+      "id": "exact_six_original_native_bodies",
+      "pass": true
+    },
+    {
+      "id": "selected_total20516496",
+      "pass": true
+    },
+    {
+      "id": "six_selected_plus_five_compact_aliases",
+      "pass": true
+    },
+    {
+      "id": "historical_counts_unchanged",
+      "pass": true
+    },
+    {
+      "id": "unattributed_kill_and_missing_random_preserved",
+      "pass": true
+    },
+    {
+      "id": "curiosity_pending_and_retry_preserved",
+      "pass": true
+    },
+    {
+      "id": "new_archive_identity_not_original_zip",
+      "pass": true
+    },
+    {
+      "id": "eleven_member_expansion_accounting",
+      "pass": true
+    },
+    {
+      "id": "recorded_reopen_hash_and_crc_proof",
+      "pass": true
+    },
+    {
+      "id": "bounded_passive_execution_only",
+      "pass": true
+    },
+    {
+      "id": "source1649_only_no_successor_credit",
+      "pass": true
+    },
+    {
+      "id": "only_passive_member_paths",
+      "pass": true
+    }
+  ],
+  "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+  "selected_original_tapes": [
+    {
+      "episode_id": "long-final-1649f086-builder-liquid_channel-s605-b128-a01",
+      "member": "raw/long-final-1649f086-builder-liquid_channel-s605-b128-a01.json",
+      "bytes": 2019365,
+      "sha256": "7f2c86304eeeda19416e9147d284cf67a1f02e9b275e6df5c1bdd855a5f1215c",
+      "original_source_path_matches": true,
+      "canonical_identity_matches": true,
+      "receipt_matches": true
+    },
+    {
+      "episode_id": "long-final-1649f086-control-material_playground-s605-b128-a01",
+      "member": "raw/long-final-1649f086-control-material_playground-s605-b128-a01.json",
+      "bytes": 2801098,
+      "sha256": "895cc02bf7204c08fbe8ab31a88ccf9b7d6bc9bf37547e0adc2a3b9e00b2cf17",
+      "original_source_path_matches": true,
+      "canonical_identity_matches": true,
+      "receipt_matches": true
+    },
+    {
+      "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a01",
+      "member": "raw/long-final-1649f086-curiosity-construction-s605-b256-a01.json",
+      "bytes": 4292958,
+      "sha256": "efc3d14ffc17ddd878c086345482a019646ed0681acefc217dd6a022bbaab0db",
+      "original_source_path_matches": true,
+      "canonical_identity_matches": true,
+      "receipt_matches": true
+    },
+    {
+      "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a02",
+      "member": "raw/long-final-1649f086-curiosity-construction-s605-b256-a02.json",
+      "bytes": 4939620,
+      "sha256": "d17c95d08bdbf11271668117569ddf577fecd6fa6972cff08b0e77f79d51d5ac",
+      "original_source_path_matches": true,
+      "canonical_identity_matches": true,
+      "receipt_matches": true
+    },
+    {
+      "episode_id": "long-final-1649f086-tinkerer-save_reopen-s605-b128-a01",
+      "member": "raw/long-final-1649f086-tinkerer-save_reopen-s605-b128-a01.json",
+      "bytes": 2285794,
+      "sha256": "863582e08a969c85fb2ebf66e81e7a418bf5b1246a6d8fea9fc83a5d8f93c36a",
+      "original_source_path_matches": true,
+      "canonical_identity_matches": true,
+      "receipt_matches": true
+    },
+    {
+      "episode_id": "long-final-1649f086-wanderer-actor_workshop-s605-b128-a01",
+      "member": "raw/long-final-1649f086-wanderer-actor_workshop-s605-b128-a01.json",
+      "bytes": 4177661,
+      "sha256": "72bc21a8f688bff2a6464b27abae23c1169ab2e2be9067345c0c14f6996edbc4",
+      "original_source_path_matches": true,
+      "canonical_identity_matches": true,
+      "receipt_matches": true
+    }
+  ],
+  "known_historical_outcomes": [
+    {
+      "episode_id": "long-final-1649f086-builder-liquid_channel-s605-b128-a01",
+      "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+      "original_process_status": "pass",
+      "original_exit_code": 0,
+      "original_completion_observed": true,
+      "original_elapsed_seconds": 31.895,
+      "original_timeout_seconds": 180,
+      "completed_actions": 128,
+      "terminal": "budget_complete",
+      "original_pending_action": null
+    },
+    {
+      "episode_id": "long-final-1649f086-control-material_playground-s605-b128-a01",
+      "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+      "original_process_status": "pass",
+      "original_exit_code": 0,
+      "original_completion_observed": true,
+      "original_elapsed_seconds": 50.148,
+      "original_timeout_seconds": 180,
+      "completed_actions": 128,
+      "terminal": "budget_complete",
+      "original_pending_action": null
+    },
+    {
+      "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a01",
+      "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+      "original_process_status": "crash",
+      "original_exit_code": -9,
+      "original_completion_observed": false,
+      "original_elapsed_seconds": 95.695,
+      "original_timeout_seconds": 180,
+      "completed_actions": 220,
+      "terminal": "in_progress",
+      "original_pending_action": {
+        "index": 220,
+        "id": "brush",
+        "status": "accepted",
+        "accepted": true
+      }
+    },
+    {
+      "episode_id": "long-final-1649f086-curiosity-construction-s605-b256-a02",
+      "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+      "original_process_status": "pass",
+      "original_exit_code": 0,
+      "original_completion_observed": true,
+      "original_elapsed_seconds": 139.336,
+      "original_timeout_seconds": 180,
+      "completed_actions": 256,
+      "terminal": "budget_complete",
+      "original_pending_action": null
+    },
+    {
+      "episode_id": "long-final-1649f086-random-construction-s605-b256-a01",
+      "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+      "original_process_status": "crash",
+      "original_exit_code": -9,
+      "original_completion_observed": false,
+      "original_elapsed_seconds": 22.021,
+      "original_timeout_seconds": 180,
+      "completed_actions": null,
+      "terminal": null,
+      "original_pending_action": null
+    },
+    {
+      "episode_id": "long-final-1649f086-tinkerer-save_reopen-s605-b128-a01",
+      "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+      "original_process_status": "pass",
+      "original_exit_code": 0,
+      "original_completion_observed": true,
+      "original_elapsed_seconds": 50.372,
+      "original_timeout_seconds": 180,
+      "completed_actions": 128,
+      "terminal": "budget_complete",
+      "original_pending_action": null
+    },
+    {
+      "episode_id": "long-final-1649f086-wanderer-actor_workshop-s605-b128-a01",
+      "source": "1649f086a5795d88d03d19fd161ad549365a3fc4",
+      "original_process_status": "pass",
+      "original_exit_code": 0,
+      "original_completion_observed": true,
+      "original_elapsed_seconds": 58.379,
+      "original_timeout_seconds": 180,
+      "completed_actions": 128,
+      "terminal": "budget_complete",
+      "original_pending_action": null
+    }
+  ],
+  "historical_counts": {
+    "completed_processes": 5,
+    "confirmed_production_defects": 0,
+    "episodes": 7,
+    "episodes_with_raw_tape": 6,
+    "incomplete_processes": 2,
+    "observed_completed_actions": 988,
+    "requested_actions": 1280
+  },
+  "new_supplement": {
+    "bytes": 960187,
+    "crc_check": "pass",
+    "member_count": 11,
+    "path": "/workspace/scratch/799ca57bee9e/goblin002-recovery/predecessor-six-tapes-recovery-v1.zip",
+    "reopened_exact_member_set_and_hashes": true,
+    "sha256": "c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74",
+    "uncompressed_bytes": 20602097
+  },
+  "current_custody_receipt": {
+    "bytes": 5141,
+    "sha256": "d58508c050910f9e7d8c6a9830c34ca708daf550a32194faf525cdcb92962d66"
+  },
+  "new_archive_manifest": {
+    "bytes": 6622,
+    "kind": "current_custody_manifest",
+    "path": "recovery-manifest.json",
+    "sha256": "d6a594bcae4fa8c182e8b99927de64192be45f57387b18b247ce009187518ce4"
+  },
+  "original_archive_disposition": {
+    "bytes": 1343584,
+    "candidate_files_statted": 11,
+    "filters": [
+      "*.zip",
+      "*.zip.xz",
+      "*predecessor*"
+    ],
+    "recovered": false,
+    "search_disposition": "not_found_in_two_scoped_roots",
+    "search_is_global": false,
+    "searched_roots": [
+      "/workspace/scratch/2e25d5a5c00f/evidence",
+      "/workspace/scratch/2e25d5a5c00f/final-delivery"
+    ],
+    "sha256": "75b4f7832ea91718f252a42cd023af27c2e8dfe7487f8eed7f7e93eae68df4cc"
+  },
+  "credit_limits": {
+    "new_gameplay_actions": 0,
+    "new_experiments": 0,
+    "new_transcript_reanalysis": false,
+    "successor_campaign_totals_changed": false,
+    "existing_sealed_archive_changed": false,
+    "exact_previous_zip_recovered": false,
+    "compact_aliases_are_new_episodes": false,
+    "random_a01_completed_actions": null,
+    "unknown_original_kill_cause": true,
+    "old_interrupted_download_cleanup_inferred": false,
+    "b_independent_raw_rehash": false,
+    "actual_supplement_reopen_and_crc_proof": "Recorded by A's bounded hash/copy/reopen receipt; C/root own delivery acceptance."
+  },
+  "recommended_delivery_wording": "After the main evidence archive was sealed, the returned executor exposed six exact original predecessor native tapes. Their20,516,496 bytes match the previously committed byte counts and SHA256 identities. A new960,187-byte supplemental archive preserves those six bodies and current custody records. Five additional compact aliases were verified; the six pretty runner serializations were not reverified. The original1,343,584-byte75b4 archive was not located in the two scoped roots, and this supplement does not claim to reconstruct it. Historical results remain five completed episodes and two unattributed exit-9 outcomes, with988 observed completed actions. Curiosity a01 retains220 completed rows and an accepted pending Brush; Random a01 has no tape and an unknown action count. No new gameplay, replay or analysis is credited. Earlier sealed unavailability statements describe the access state at sealing; this addendum updates availability without altering those records.",
+  "production_gameplay_defect_claimed": false,
+  "whole_environment_survivor_claim": false
+}

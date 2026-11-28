@@ -1,0 +1,37 @@
+{
+  "schema": "swarm006-finisher-replay-wrapper-review/v1",
+  "reviewed_utc": "2026-11-21T20:24:51.404016+00:00",
+  "classification": "Source review and focused tooling tests; full successor campaign pending",
+  "reviewed_files": {
+    "tools/swarm006/replay_finisher.py": "6c3b3b60bba797fec11c843692c6fbac7760331e3c2ab4b7b7d344da4876d107",
+    "tools/swarm006/test_replay_finisher.py": "51f6482f39b43b1a0f246ca999f5e7caafb5a862d47baed8a1f6d352cfa8029b"
+  },
+  "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+  "python": "3.12.14",
+  "test_command": "python3 -m unittest discover -s tools/swarm006 -p test_replay_finisher.py -v",
+  "test_result": "PASS: 4 tests",
+  "source_review": {
+    "separate_revealed_classification": true,
+    "frozen_registration_runner_harness_sha_guards": true,
+    "clean_committed_source_and_actual_binary_receipt": true,
+    "plan_written_before_children": true,
+    "fixed_96_by_20_denominator": true,
+    "90_second_native_child_timeout": true,
+    "at_most_four_independent_child_processes": true,
+    "child_failure_timeout_cancellation_unreaped_and_evidence_errors_cannot_satisfy_A_or_R": true,
+    "no_success_without_complete_apply_and_zero_unresolved": true,
+    "R_requires_qualified_joint_without_claiming_original_FOREIGN_JOINED": true,
+    "full_case_order_retained_after_parallel_completion": true,
+    "unexpected_worker_exceptions_retained_as_failed_rows": true,
+    "source_binary_and_orchestrator_revalidated_after_execution": true,
+    "old480_reference_executions_not_claimed_as_new": true
+  },
+  "pending": {
+    "new_candidate_executions": 1920,
+    "reused_retained_reference_executions": 480,
+    "exact_frozen_successor_source_and_binary": "pending",
+    "full_independent_native_raw_review": "pending",
+    "original_frozen_history_disposition": "unchanged HOLD"
+  },
+  "limitations": "Producer PASS reports execution and custody; independent native material/physical/obligation/parity checks remain separate. No Windows, owner World or physical GPU acceptance."
+}

@@ -2,9 +2,9 @@
 title: Strata Theatre in the Shared Workbench
 status: Current
 document-kind: contract
-scope: Draft opt-in four-plane authored composition, native import and construction, presentation-only atmosphere, ownership and versioned persistence
+scope: Opt-in four-plane authored composition, native import and construction, presentation-only atmosphere, ownership and versioned persistence
 canonical-for: [workbench-strata-composition, workbench-strata-ownership, workbench-strata-persistence]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-28
 related-documents: [strata-authoring.md, strata-environments.md, depth-layers-and-parallax.md, ../architecture/shared-workbench-authoring-data.md, ../operations/strata-workbench-evaluation.md, ../decisions/2026-11-14-owner-authoring-intent.md]
 ---
 
@@ -12,9 +12,9 @@ related-documents: [strata-authoring.md, strata-environments.md, depth-layers-an
 
 ## Scope and disposition
 
-The stacked **STRATA-THEATRE-003 Draft/HOLD** candidate adds [optical presentation and the Strata Optics Lab](strata-optics.md) without changing the four-plane native ownership described here. Its explicit optical edit upgrades an authored document to v3; older documents retain Classic. The following Strata 002 ancestry and evidence remain independently preserved.
+The owner-accepted **STRATA-THEATRE-003** integration adds [optical presentation and the Strata Optics Lab](strata-optics.md) without changing the four-plane native ownership described here. Its explicit optical edit upgrades an authored document to v3; older documents retain Classic. The following Strata 002 ancestry and evidence remain independently preserved. The [combined integration guide](../operations/ramcache-strata-integration.md) owns final-main and evaluator qualification.
 
-**Current successor, Draft/HOLD:** STRATA-THEATRE-002 in
+**Preserved predecessor:** STRATA-THEATRE-002 in
 [PR #776](https://github.com/techrote/cybersand/pull/776) extends the immutable
 [#769 predecessor](https://github.com/techrote/cybersand/pull/769), whose archival
 head is `80623d039aa49bc0c1d84a9206d89812ffa99ea6`. Accepted main
@@ -22,9 +22,10 @@ head is `80623d039aa49bc0c1d84a9206d89812ffa99ea6`. Accepted main
 candidate adds reviewed local PNG/native import, reusable parts and finite
 layered construction, bounded visual atmosphere and five native environments.
 The [native authoring contract](strata-authoring.md) and
-[environment contract](strata-environments.md) define those extensions. The
-owner's brief authorizes implementation and evaluation; default activation,
-Ready promotion, merge and physical owner acceptance remain separate decisions.
+[environment contract](strata-environments.md) define those extensions. On 28 November 2026 the owner accepted optional Strata functionality on physical
+Windows 11/NVIDIA hardware and authorized current-main reconciliation and merge.
+Default activation remains excluded, and final combined-source qualification is
+separate from the owner-tested predecessor.
 
 The **Strata Theatre…** action in ordinary Shared Workbench opens its composition
 panel. The default presentation, camera, simulation worker and render-publication
@@ -198,6 +199,24 @@ reconstruction; no cross-plane material transfer or automatic event forwarding
 is implemented. Native decorative material and animated visual motifs are separate categories.
 Presentation-only haze, steam, rain, dust, beacons and machinery do not claim
 native mass, hazards, physical lighting or transfer into the playable World.
+
+## Persistent-area boundary
+
+Strata and RAMCACHE are available from the same application but use separate
+admitted hosts. The persistent-area host retains one continued Play World and an
+exact authoring envelope. Strata's three static native decorative Worlds and
+CYSSTRAT settings have no supported persistence codec in that profile. The
+ordinary **Strata Theatre…** action visibly refuses there without creating a
+Strata controller; direct controller preparation, load, enable, optics and Save
+also refuse before creating native decorative candidates or modifying the
+acknowledged manifest. Disabling layered presentation is not a way to smuggle a
+retained layered document into that envelope.
+
+Exit through the normal durable **Launcher** action, then open ordinary
+Workbench to author Strata. Ordinary persistent painting, area travel, Save all,
+reopen and recovery retain their original owner and storage contracts. The
+combined boundary regression exercises refusal followed by real native edits,
+area travel, durable Save and fresh-process readback.
 
 ## Versioned authored persistence
 

@@ -1,0 +1,325 @@
+{
+  "applications": {
+    "old": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+    "corrected": "50c6df89528dc9ecdc5316d8c67abf203e192254"
+  },
+  "original_report_sha256": {
+    "old": "241b442f92b4564b844b47c2c0f4d09ec6ddc42c940f6a8322a6b4890d3db466",
+    "corrected": "8099576e84f310ae99a0bc5e0390eed20c3606a7007bc27a8b60281692bf8c47"
+  },
+  "plotter_sha256": "028796ee7eff6cb00fd0d1651aba7b81759ec84453ec9132f9e5b27ac1143615",
+  "home_rest_sample_seconds": [
+    48,
+    49,
+    50,
+    51
+  ],
+  "drive_change_samples48_to51": {
+    "old": -0.014933999999999004,
+    "corrected": 0.269999999999985
+  },
+  "plotted_records": {
+    "old": [
+      {
+        "requested_second": 44,
+        "actual_copied_second": 44.0166666666655,
+        "drive": 0.359515000000018,
+        "distance": 68.14177183541233,
+        "position": [
+          432.890930175781,
+          360.841461181641
+        ],
+        "phase": "approach",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 45,
+        "actual_copied_second": 45.0166666666654,
+        "drive": 0.348115000000019,
+        "distance": 56.690646995710075,
+        "position": [
+          421.361572265625,
+          361.099395751953
+        ],
+        "phase": "approach",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 46,
+        "actual_copied_second": 46.0166666666653,
+        "drive": 0.336715000000019,
+        "distance": 43.98166939006232,
+        "position": [
+          408.689727783203,
+          360.059143066406
+        ],
+        "phase": "approach",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 47,
+        "actual_copied_second": 47.0166666666653,
+        "drive": 0.32531500000002,
+        "distance": 31.27683764620876,
+        "position": [
+          396.027862548828,
+          358.938568115234
+        ],
+        "phase": "approach",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 48,
+        "actual_copied_second": 48.0166666666652,
+        "drive": 0.313915000000021,
+        "distance": 18.367108296512843,
+        "position": [
+          383.144836425781,
+          357.848785400391
+        ],
+        "phase": "home_rest",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 49,
+        "actual_copied_second": 49.0166666666652,
+        "drive": 0.306961000000021,
+        "distance": 16.492072386059345,
+        "position": [
+          381.264495849609,
+          357.730316162109
+        ],
+        "phase": "home_rest",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 50,
+        "actual_copied_second": 50.0166666666651,
+        "drive": 0.302971000000022,
+        "distance": 16.489544288749375,
+        "position": [
+          381.261932373047,
+          357.730316162109
+        ],
+        "phase": "home_rest",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 51,
+        "actual_copied_second": 51.0166666666651,
+        "drive": 0.298981000000022,
+        "distance": 16.489544288749375,
+        "position": [
+          381.261932373047,
+          357.730316162109
+        ],
+        "phase": "home_rest",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 52,
+        "actual_copied_second": 52.016666666665,
+        "drive": 0.294991000000022,
+        "distance": 16.489577522064497,
+        "position": [
+          381.262237548828,
+          357.728698730469
+        ],
+        "phase": "approach",
+        "goal": "explore_unfamiliar",
+        "key": "5"
+      },
+      {
+        "requested_second": 53,
+        "actual_copied_second": 53.0166666666649,
+        "drive": 0.284332000000023,
+        "distance": 24.81950913167554,
+        "position": [
+          389.819488525391,
+          354.968017578125
+        ],
+        "phase": "approach",
+        "goal": "explore_unfamiliar",
+        "key": "5"
+      },
+      {
+        "requested_second": 54,
+        "actual_copied_second": 54.0166666666649,
+        "drive": 0.272932000000023,
+        "distance": 36.68090048137358,
+        "position": [
+          401.583618164062,
+          352.330291748047
+        ],
+        "phase": "approach",
+        "goal": "explore_unfamiliar",
+        "key": "5"
+      }
+    ],
+    "corrected": [
+      {
+        "requested_second": 44,
+        "actual_copied_second": 44.0166666666655,
+        "drive": 0.359515000000018,
+        "distance": 68.14177183541233,
+        "position": [
+          432.890930175781,
+          360.841461181641
+        ],
+        "phase": "approach",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 45,
+        "actual_copied_second": 45.0166666666654,
+        "drive": 0.348115000000019,
+        "distance": 56.690646995710075,
+        "position": [
+          421.361572265625,
+          361.099395751953
+        ],
+        "phase": "approach",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 46,
+        "actual_copied_second": 46.0166666666653,
+        "drive": 0.336715000000019,
+        "distance": 43.98166939006232,
+        "position": [
+          408.689727783203,
+          360.059143066406
+        ],
+        "phase": "approach",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 47,
+        "actual_copied_second": 47.0166666666653,
+        "drive": 0.32531500000002,
+        "distance": 31.27683764620876,
+        "position": [
+          396.027862548828,
+          358.938568115234
+        ],
+        "phase": "approach",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 48,
+        "actual_copied_second": 48.0166666666652,
+        "drive": 0.32405500000002,
+        "distance": 18.367108296512843,
+        "position": [
+          383.144836425781,
+          357.848785400391
+        ],
+        "phase": "home_rest",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 49,
+        "actual_copied_second": 49.0166666666652,
+        "drive": 0.414055000000015,
+        "distance": 16.492072386059345,
+        "position": [
+          381.264495849609,
+          357.730316162109
+        ],
+        "phase": "home_rest",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 50,
+        "actual_copied_second": 50.0166666666651,
+        "drive": 0.504055000000011,
+        "distance": 16.489544288749375,
+        "position": [
+          381.261932373047,
+          357.730316162109
+        ],
+        "phase": "home_rest",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 51,
+        "actual_copied_second": 51.0166666666651,
+        "drive": 0.594055000000005,
+        "distance": 16.489544288749375,
+        "position": [
+          381.261932373047,
+          357.730316162109
+        ],
+        "phase": "home_rest",
+        "goal": "seek_home_drive",
+        "key": "1"
+      },
+      {
+        "requested_second": 52,
+        "actual_copied_second": 52.016666666665,
+        "drive": 0.684055,
+        "distance": 16.489577522064497,
+        "position": [
+          381.262237548828,
+          357.728698730469
+        ],
+        "phase": "approach",
+        "goal": "explore_unfamiliar",
+        "key": "5"
+      },
+      {
+        "requested_second": 53,
+        "actual_copied_second": 53.0166666666649,
+        "drive": 0.673396,
+        "distance": 23.709948854971266,
+        "position": [
+          388.698883056641,
+          354.275695800781
+        ],
+        "phase": "approach",
+        "goal": "explore_unfamiliar",
+        "key": "5"
+      },
+      {
+        "requested_second": 54,
+        "actual_copied_second": 54.0166666666649,
+        "drive": 0.661996000000001,
+        "distance": 33.95823694402767,
+        "position": [
+          398.672485351562,
+          350.603912353516
+        ],
+        "phase": "approach",
+        "goal": "explore_unfamiliar",
+        "key": "5"
+      }
+    ]
+  },
+  "outputs": [
+    {
+      "name": "home-recharge-comparison.png",
+      "bytes": 305054,
+      "sha256": "549e3c2ab33d651f054149fd0d7a3452c9fc4169a1a3f6132384702978452619"
+    },
+    {
+      "name": "home-recharge-comparison.svg",
+      "bytes": 153472,
+      "sha256": "ae0c1133fbb3363ba407874663169748a48d6a723e3b4d5d3a35e0e3d9b8a5c5"
+    }
+  ]
+}

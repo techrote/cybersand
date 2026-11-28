@@ -1,0 +1,29 @@
+{
+  "command": [
+    "python3",
+    "-m",
+    "unittest",
+    "discover",
+    "-s",
+    "tools/ambient",
+    "-p",
+    "test_recovery_probe.py",
+    "-v"
+  ],
+  "console_sha256": "bad17b116d4836e731705d46b3a5f8b6569ef11384ae65442f9fc879d380e4a1",
+  "exit_code": 0,
+  "findings": [
+    "Complete loaded-project inventory now rejects undeclared autoload/helper edits.",
+    "Recorded intention availability and pace gate horizontal heading reversals.",
+    "Original baseline report, console, receipt and custody chain retained and verified.",
+    "Selected programme explicitly cannot qualify the full194episode registry.",
+    "Only stateful module production bytes and its pure regression file differ in current candidate project.",
+    "Full-world progression and engine pins are checked by unchanged original runner functions."
+  ],
+  "reviewed_paths_sha256": {
+    "tools/ambient/probe_recovery.py": "9328ebd7f90b79f2ee42fce865a9caf803d003c0ae2c0ed5a3fbbc8a835dc6c1",
+    "tools/ambient/test_recovery_probe.py": "01c638a2d62c3fb8e08379a02382ea5f3865c211286aa585e8836a1d960c4ef0"
+  },
+  "reviewed_source": "941b79154c890098350725f274b85f26b44f77b0",
+  "scope": "Independent read-only review and9 synthetic integrity checks; zero physical episodes."
+}

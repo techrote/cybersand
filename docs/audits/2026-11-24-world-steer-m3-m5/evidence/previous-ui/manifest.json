@@ -1,0 +1,30 @@
+[
+  {
+    "file": "linux-architecture-module-library-ui.png",
+    "sha256": "3abc8123033ae377cb99544bd9aaa5fb9ce95ccb1e0e4d3688a1e253e85c4fae",
+    "source_commit": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+    "run_id": 45447549238,
+    "classification": "Actual hosted UI capture; retained inspector-framing defect despite automated pass"
+  },
+  {
+    "file": "linux-architecture-native-composition-ui.png",
+    "sha256": "ca046cbe1866a6ee5330dd1519eeb85a593993ac66fc157beb7a924630e8fced",
+    "source_commit": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+    "run_id": 45447549238,
+    "classification": "Actual hosted UI capture; retained inspector-framing defect despite automated pass"
+  },
+  {
+    "file": "windows-architecture-module-library-ui.png",
+    "sha256": "f76079282a90dc8033a8e8ab3dcd07efa0c5c26b966ccb978aab0f87a54dd1b8",
+    "source_commit": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+    "run_id": 45447549238,
+    "classification": "Actual hosted UI capture; retained inspector-framing defect despite automated pass"
+  },
+  {
+    "file": "windows-architecture-native-composition-ui.png",
+    "sha256": "c61fefe86b4401333c188f12f4072b7ddf08901723903609e12356a14d12b975",
+    "source_commit": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+    "run_id": 45447549238,
+    "classification": "Actual hosted UI capture; retained inspector-framing defect despite automated pass"
+  }
+]

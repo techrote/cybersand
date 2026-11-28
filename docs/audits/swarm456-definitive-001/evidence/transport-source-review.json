@@ -1,0 +1,47 @@
+{
+  "accepted_main_unchanged_at_review": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "application_native_scientific_and_q7_fixture_trees_unchanged": true,
+  "exact_five_changed_paths": [
+    ".github/workflows/gdextension.yml",
+    ".github/workflows/play-desktop-packet.yml",
+    "README.md",
+    "docs/audits/swarm456-definitive-001/ordinary-linux-download-correction.json",
+    "docs/audits/swarm456-definitive-001/ordinary-linux-download-correction.md"
+  ],
+  "no_hosted_success_inferred_from_commit_or_dispatch": true,
+  "parent": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+  "precommit_review_sha256": "5bbaf86ff405329f520e53738a25fe7310d5b03134ac5a813f09c7b7432028b9",
+  "preserved_ancestors": [
+    "919134a39d31461947c410c233d59d1965c48414",
+    "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+    "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "5323b837cdcaeab5da14f7ef92b0d3f059cf123d"
+  ],
+  "principal_pr": {
+    "base": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "draft": true,
+    "head": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+    "number": 729,
+    "state": "open"
+  },
+  "qualification_source_retagged": false,
+  "recorded_at_utc": "2026-11-24T19:17:01.250854+00:00",
+  "remaining_gates": [
+    "Fresh affected full ordinary GDE and PLAY at the new source",
+    "Applicable current Docs",
+    "Final canonical decision review",
+    "Physical owner acceptance"
+  ],
+  "remote_original_api_sha256": {
+    "current_main": "88302c2ae3aba7d52adff9f53c72bf072c0d38f5663abbf4ae2a89721fb57d96",
+    "principal_pr": "7a24937df05298a6188b585038c14afd5a5e0777d774720d20b5996bcdd7911e",
+    "transport_commit": "5d9fe8abf2a158ca7741ad25f39b9b8f7bd08b8aa6bb46e522ab22c1ee6b084a"
+  },
+  "result": "PASS exact reviewed transport commit, donor/main ancestry and Draft/HOLD state",
+  "reviewer": "independent_assurance",
+  "schema": 1,
+  "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+  "workflow_and_readme_bytes_equal_precommit_independent_approval": true
+}

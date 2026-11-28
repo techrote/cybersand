@@ -11,6 +11,7 @@ var failures: Array[String] = []
 var checks := 0
 var measurements: Array = []
 var witnesses: Array = []
+var replacement_retirement := {}
 var source_identity: Dictionary = {}
 func sources() -> Dictionary:
 	var out := {}
@@ -149,16 +150,46 @@ func test_native() -> void:
 	capture=await submit({"kind":"capture","region":Rect2i(250,250,1,1)})
 	check(capture.get("status")=="refused" and capture.get("materials").is_empty(),"body mask never masquerades as copied stored Wall")
 	if not await install(512): return
-	check(worker.paint_queue(request({"kind":"edit","cells":rectangle(Rect2i(10,10,256,256),58)})).status=="queued","replacement race queued")
+	var replacing_cells := rectangle(Rect2i(10,10,256,256),58)
+	var retiring_request := request({"kind":"edit","cells":replacing_cells})
+	var retiring_admission: Dictionary = worker.paint_queue(retiring_request)
+	if not check(retiring_admission.status=="queued","replacement race queued"): return
 	var stale_source := request({"kind":"edit","cells":PackedInt32Array([100,100,58])})
 	var replacement := Setup.fresh(PackedInt32Array(wb.applied.liquid_policy),Vector2i(512,512))
 	var started: bool = wb.apply(replacement)
 	if not started: worker.paint_stop()
 	edit=await result()
-	check(edit.get("status") in ["cancelled","invalidated"] and edit.get("applied")==0,"World replacement retires stale edit")
+	# Replacement preparation runs on the main thread while the old owner may
+	# still execute a valid prefix. Its receipt must describe that old World;
+	# isolation requires a clean replacement, not a timing-dependent zero prefix.
+	replacement_retirement = edit.duplicate(true)
+	for key: String in ["cells","before","after"]: replacement_retirement.erase(key)
+	var applied_count := int(edit.get("applied",-1))
+	var terminal := str(edit.get("status",""))
+	check(edit.get("operation_id")==retiring_admission.operation_id
+		and edit.get("generation")==retiring_request.expected_generation
+		and edit.get("backend")=="CyberNativeCellWorld","replacement receipt identifies the retired native operation")
+	check((terminal in ["cancelled","invalidated"] and applied_count==0)
+		or (terminal=="partial" and applied_count>0 and applied_count<65536
+			and edit.get("termination") in ["cancelled","invalidated"])
+		or (terminal=="completed" and applied_count==65536),"retired World reports its truthful terminal prefix")
+	var actual_before: PackedInt32Array = edit.get("before",PackedInt32Array())
+	var actual_after: PackedInt32Array = edit.get("after",PackedInt32Array())
+	check(applied_count>=0 and edit.get("requested_cells")==65536
+		and int(edit.get("checked",-1))>=applied_count and int(edit.get("checked",-1))<=65536
+		and edit.get("changed")==applied_count and actual_before.size()==applied_count
+		and actual_after.size()==applied_count and actual_before.count(0)==applied_count
+		and actual_after.count(58)==applied_count
+		and edit.get("cells",PackedInt32Array())==replacing_cells.slice(0,maxi(0,applied_count)*3),
+		"retired receipt preserves every confirmed old-World cell and count")
 	if not started: check(wb.apply(replacement),"replacement admitted after Stop")
 	check(await wait_for(func()->bool:return not wb.busy() and worker.paint_state().generation>int(stale_source.expected_generation)),"new native World installed")
 	check(worker.paint_queue(stale_source).status=="refused","old source remains invalid after replacement")
+	capture=await submit({"kind":"capture","region":Rect2i(0,0,512,512)})
+	var replacement_cells: PackedInt32Array = capture.get("materials",PackedInt32Array())
+	check(capture.get("status")=="completed" and capture.get("generation")!=retiring_request.expected_generation
+		and replacement_cells.size()==262144 and replacement_cells.count(0)==262144,
+		"entire replacement native World is Empty with no retired edit leakage")
 func run() -> void:
 	source_identity=sources()
 	var configured := int(OS.get_environment("PAINT_TEST_WORKERS"))
@@ -183,5 +214,5 @@ func run() -> void:
 	await process_frame
 	await process_frame
 	check(source_identity==sources(),"tested source and native bytes unchanged during execution")
-	print("PAINT_EDITOR_NATIVE ",JSON.stringify({"checks":checks,"failures":failures,"workers":configured,"measurements":measurements,"native_material_witnesses":witnesses,"witness_sha256":JSON.stringify(witnesses).sha256_text(),"source_identity":source_identity}))
+	print("PAINT_EDITOR_NATIVE ",JSON.stringify({"checks":checks,"failures":failures,"workers":configured,"measurements":measurements,"native_material_witnesses":witnesses,"witness_sha256":JSON.stringify(witnesses).sha256_text(),"source_identity":source_identity,"replacement_retirement":replacement_retirement}))
 	quit(int(not failures.is_empty()))

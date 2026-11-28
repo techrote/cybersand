@@ -55,7 +55,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py > evidence/provider.json
           python3 tools/ci/test_workbench_profile_packaging.py > evidence/package-contract-tests.log 2>&1
           git lfs install --local
-          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so,godot/tools/gentek_reciprocal' --exclude=''
           echo "$RAPIER_SHA256  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so" | sha256sum -c --strict
           sha256sum godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so > evidence/rapier.sha256
       - name: Prepare exact pinned godot-cpp and SCons
@@ -253,7 +253,7 @@ jobs:
           $sha | Set-Content evidence/native-dll-sha256.txt
           if (!(Select-String -Path 'build/wb-art-paint-windows/native-dll.sha256' -Pattern $sha -SimpleMatch)) { throw 'Candidate DLL hash mismatch' }
           git lfs install --local
-          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll,godot/tools/gentek_reciprocal.exe' --exclude=''
           $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
           if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Pinned Rapier DLL mismatch' }
       - name: Fetch and authenticate official pinned Godot Windows 4.7

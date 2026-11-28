@@ -1,0 +1,516 @@
+{
+  "schema": "ambient2-curiosity-independent-readback/v1",
+  "status": "PASS",
+  "source_revision": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "numeric_comparisons": 48,
+  "actual_completed_supplementary_episodes": 6,
+  "qualifies_primary_programme": false,
+  "report_sha256": "f633961b80157c280f79a55375939892a65af81486956863c87805e80b380fbe",
+  "comparison_sha256": "1a68b31afcbc4f4efc54b8a93b0ea8064550d6cf838924592976b0afd076cb19",
+  "reviewer_sha256": "3ddd6807ecb81eac2ef6e46bb87b75daadf1ea753f95d649cbc91d0ed02d835b",
+  "pairs": [
+    {
+      "seed": 605,
+      "primary": {
+        "low": {
+          "investigation_seconds": 0.0,
+          "horizontal_approach_gain_cells": 0.0,
+          "net_x_cells": -30.19306945800801,
+          "x_range_cells": 44.42231750488301
+        },
+        "high": {
+          "investigation_seconds": 4.3,
+          "horizontal_approach_gain_cells": 32.252136230469006,
+          "net_x_cells": -41.29942321777301,
+          "x_range_cells": 75.71310424804702
+        }
+      },
+      "inspection": {
+        "first_seconds": 2.2,
+        "sampled_seconds": 2.1,
+        "x_range_cells": 2.3061676025390057,
+        "centre_path_between_inspection_samples_cells": 5.730165307984604
+      },
+      "late_selected_goal_identities": [
+        "discovery:2",
+        "routine:3"
+      ],
+      "same_goal_competition_example": [
+        {
+          "seconds": 17.0000000000003,
+          "selection": "routine",
+          "goal_key": "3",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1017,
+            "distance": 24.6301078339918,
+            "nearest": [
+              262.5,
+              193.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 0.128333333333318,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.1000000000003,
+          "selection": "routine",
+          "goal_key": "3",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1018,
+            "distance": 26.5136292155504,
+            "nearest": [
+              262.5,
+              192.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 0.116666666666652,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.2000000000003,
+          "selection": "discovery",
+          "goal_key": "2",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1016,
+            "distance": 28.3931917868307,
+            "nearest": [
+              262.5,
+              191.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 1.225,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.3000000000003,
+          "selection": "discovery",
+          "goal_key": "2",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1020,
+            "distance": 28.7086468048772,
+            "nearest": [
+              262.5,
+              191.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 1.21333333333334,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.4000000000003,
+          "selection": "routine",
+          "goal_key": "3",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1020,
+            "distance": 27.1594289799976,
+            "nearest": [
+              262.5,
+              192.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 0.112,
+            "routine": 0.45
+          }
+        }
+      ],
+      "final_interest_entries": [
+        {
+          "exposure_seconds": 5.49999999999977,
+          "first_seen": 0.0,
+          "key": "16:10:7",
+          "last_seen": 25.2999999999998,
+          "last_visit": -1000.0,
+          "material_id": 16,
+          "near": false,
+          "position": [
+            262.5,
+            191.5
+          ],
+          "revision": 2,
+          "visits": 0
+        },
+        {
+          "exposure_seconds": 15.6999999999999,
+          "first_seen": 0.800000000000001,
+          "key": "16:10:8",
+          "last_seen": 25.8999999999998,
+          "last_visit": 2.89999999999999,
+          "material_id": 16,
+          "near": false,
+          "position": [
+            262.5,
+            194.5
+          ],
+          "revision": 2,
+          "visits": 2
+        }
+      ],
+      "explicit_habituated_candidate_samples": 0
+    },
+    {
+      "seed": 1701,
+      "primary": {
+        "low": {
+          "investigation_seconds": 0.0,
+          "horizontal_approach_gain_cells": 0.0,
+          "net_x_cells": -30.19306945800801,
+          "x_range_cells": 44.42231750488301
+        },
+        "high": {
+          "investigation_seconds": 4.3,
+          "horizontal_approach_gain_cells": 32.252136230469006,
+          "net_x_cells": -41.29942321777301,
+          "x_range_cells": 75.71310424804702
+        }
+      },
+      "inspection": {
+        "first_seconds": 2.2,
+        "sampled_seconds": 2.1,
+        "x_range_cells": 2.3061676025390057,
+        "centre_path_between_inspection_samples_cells": 5.730165307984604
+      },
+      "late_selected_goal_identities": [
+        "discovery:2",
+        "routine:3"
+      ],
+      "same_goal_competition_example": [
+        {
+          "seconds": 17.0000000000003,
+          "selection": "routine",
+          "goal_key": "3",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1017,
+            "distance": 24.6301078339918,
+            "nearest": [
+              262.5,
+              193.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 0.128333333333318,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.1000000000003,
+          "selection": "routine",
+          "goal_key": "3",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1018,
+            "distance": 26.5136292155504,
+            "nearest": [
+              262.5,
+              192.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 0.116666666666652,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.2000000000003,
+          "selection": "discovery",
+          "goal_key": "2",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1016,
+            "distance": 28.3931917868307,
+            "nearest": [
+              262.5,
+              191.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 1.225,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.3000000000003,
+          "selection": "discovery",
+          "goal_key": "2",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1020,
+            "distance": 28.7086468048772,
+            "nearest": [
+              262.5,
+              191.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 1.21333333333334,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.4000000000003,
+          "selection": "routine",
+          "goal_key": "3",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1020,
+            "distance": 27.1594289799976,
+            "nearest": [
+              262.5,
+              192.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 0.112,
+            "routine": 0.45
+          }
+        }
+      ],
+      "final_interest_entries": [
+        {
+          "exposure_seconds": 5.49999999999977,
+          "first_seen": 0.0,
+          "key": "16:10:7",
+          "last_seen": 25.2999999999998,
+          "last_visit": -1000.0,
+          "material_id": 16,
+          "near": false,
+          "position": [
+            262.5,
+            191.5
+          ],
+          "revision": 2,
+          "visits": 0
+        },
+        {
+          "exposure_seconds": 15.6999999999999,
+          "first_seen": 0.800000000000001,
+          "key": "16:10:8",
+          "last_seen": 25.8999999999998,
+          "last_visit": 2.89999999999999,
+          "material_id": 16,
+          "near": false,
+          "position": [
+            262.5,
+            194.5
+          ],
+          "revision": 2,
+          "visits": 2
+        }
+      ],
+      "explicit_habituated_candidate_samples": 0
+    },
+    {
+      "seed": 2909,
+      "primary": {
+        "low": {
+          "investigation_seconds": 0.0,
+          "horizontal_approach_gain_cells": 0.0,
+          "net_x_cells": -30.19306945800801,
+          "x_range_cells": 44.42231750488301
+        },
+        "high": {
+          "investigation_seconds": 4.3,
+          "horizontal_approach_gain_cells": 32.252136230469006,
+          "net_x_cells": -41.29942321777301,
+          "x_range_cells": 75.71310424804702
+        }
+      },
+      "inspection": {
+        "first_seconds": 2.2,
+        "sampled_seconds": 2.1,
+        "x_range_cells": 2.3061676025390057,
+        "centre_path_between_inspection_samples_cells": 5.730165307984604
+      },
+      "late_selected_goal_identities": [
+        "discovery:2",
+        "routine:3"
+      ],
+      "same_goal_competition_example": [
+        {
+          "seconds": 17.0000000000003,
+          "selection": "routine",
+          "goal_key": "3",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1017,
+            "distance": 24.6301078339918,
+            "nearest": [
+              262.5,
+              193.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 0.128333333333318,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.1000000000003,
+          "selection": "routine",
+          "goal_key": "3",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1018,
+            "distance": 26.5136292155504,
+            "nearest": [
+              262.5,
+              192.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 0.116666666666652,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.2000000000003,
+          "selection": "discovery",
+          "goal_key": "2",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1016,
+            "distance": 28.3931917868307,
+            "nearest": [
+              262.5,
+              191.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 1.225,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.3000000000003,
+          "selection": "discovery",
+          "goal_key": "2",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1020,
+            "distance": 28.7086468048772,
+            "nearest": [
+              262.5,
+              191.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 1.21333333333334,
+            "routine": 0.45
+          }
+        },
+        {
+          "seconds": 17.4000000000003,
+          "selection": "routine",
+          "goal_key": "3",
+          "policy_oil": {
+            "available": true,
+            "coverage_samples": 1020,
+            "distance": 27.1594289799976,
+            "nearest": [
+              262.5,
+              192.5
+            ],
+            "present": true,
+            "status": "observed"
+          },
+          "candidate_scores": {
+            "discovery": 0.112,
+            "routine": 0.45
+          }
+        }
+      ],
+      "final_interest_entries": [
+        {
+          "exposure_seconds": 5.49999999999977,
+          "first_seen": 0.0,
+          "key": "16:10:7",
+          "last_seen": 25.2999999999998,
+          "last_visit": -1000.0,
+          "material_id": 16,
+          "near": false,
+          "position": [
+            262.5,
+            191.5
+          ],
+          "revision": 2,
+          "visits": 0
+        },
+        {
+          "exposure_seconds": 15.6999999999999,
+          "first_seen": 0.800000000000001,
+          "key": "16:10:8",
+          "last_seen": 25.8999999999998,
+          "last_visit": 2.89999999999999,
+          "material_id": 16,
+          "near": false,
+          "position": [
+            262.5,
+            194.5
+          ],
+          "revision": 2,
+          "visits": 2
+        }
+      ],
+      "explicit_habituated_candidate_samples": 0
+    }
+  ],
+  "position_sequences_identical_across_declared_seeds": {
+    "low": true,
+    "high": true
+  },
+  "position_sequence_sha256": {
+    "low": [
+      "96a841b12189259d4ac85eb2afb65c617708b53500373475f0b8bc5e6d07114f",
+      "96a841b12189259d4ac85eb2afb65c617708b53500373475f0b8bc5e6d07114f",
+      "96a841b12189259d4ac85eb2afb65c617708b53500373475f0b8bc5e6d07114f"
+    ],
+    "high": [
+      "286c0959ddff3960293e0b7016c8489dd64505c09ab86ef2828fe06ea4ed6b70",
+      "286c0959ddff3960293e0b7016c8489dd64505c09ab86ef2828fe06ea4ed6b70",
+      "286c0959ddff3960293e0b7016c8489dd64505c09ab86ef2828fe06ea4ed6b70"
+    ]
+  },
+  "interpretation": "One geometry and deterministic goal competition, repeated in fresh Worlds under three declared seeds. These are not independent stochastic choices, general personality-quality evidence or owner playfeel acceptance."
+}

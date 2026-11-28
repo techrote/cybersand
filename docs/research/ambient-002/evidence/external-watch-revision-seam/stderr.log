@@ -1,0 +1,17 @@
+test_application_revision_rejects_short_alias_and_malformed_values (test_graphical_watch.SustainedReceiptTests.test_application_revision_rejects_short_alias_and_malformed_values) ... ok
+test_changed_authority_and_nonfinite_pose_are_refused (test_graphical_watch.SustainedReceiptTests.test_changed_authority_and_nonfinite_pose_are_refused) ... ok
+test_complete_synthetic_custody_fixture (test_graphical_watch.SustainedReceiptTests.test_complete_synthetic_custody_fixture) ... ok
+test_duplicate_frozen_progress_and_overstated_time_are_refused (test_graphical_watch.SustainedReceiptTests.test_duplicate_frozen_progress_and_overstated_time_are_refused) ... ok
+test_explicit_successor_and_retained_default_are_source_bound (test_graphical_watch.SustainedReceiptTests.test_explicit_successor_and_retained_default_are_source_bound) ... ok
+test_foreign_material_publication_is_refused (test_graphical_watch.SustainedReceiptTests.test_foreign_material_publication_is_refused) ... ok
+test_headless_or_wrong_renderer_is_refused (test_graphical_watch.SustainedReceiptTests.test_headless_or_wrong_renderer_is_refused) ... ok
+test_missing_or_escaped_png_is_refused (test_graphical_watch.SustainedReceiptTests.test_missing_or_escaped_png_is_refused) ... ok
+test_observation_budget_and_empty_decision_are_refused (test_graphical_watch.SustainedReceiptTests.test_observation_budget_and_empty_decision_are_refused) ... ok
+test_short_horizon_or_missing_frame_is_refused (test_graphical_watch.SustainedReceiptTests.test_short_horizon_or_missing_frame_is_refused) ... ok
+test_wrong_application_observer_or_engine_is_refused (test_graphical_watch.SustainedReceiptTests.test_wrong_application_observer_or_engine_is_refused) ... ok
+test_wrong_full_application_revision_is_refused (test_graphical_watch.SustainedReceiptTests.test_wrong_full_application_revision_is_refused) ... ok
+
+----------------------------------------------------------------------
+Ran 12 tests in 0.013s
+
+OK

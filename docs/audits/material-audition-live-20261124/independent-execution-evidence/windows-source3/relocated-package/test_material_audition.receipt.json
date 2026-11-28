@@ -1,0 +1,229 @@
+{
+  "command": [
+    "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\Godot_v4.7-stable_win64_console.exe",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "C:\\Users\\runneradmin\\AppData\\Local\\Temp\\CyberSand Material Audition Relocated t0rq9s3l\\writable evaluation\\source\\godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--max-fps",
+    "30",
+    "--rendering-driver",
+    "opengl3_angle",
+    "--script",
+    "res://tests/test_material_audition.gd"
+  ],
+  "completion": {
+    "checks": 4002,
+    "display": "Windows",
+    "failures": 0,
+    "frames": [
+      {
+        "file": "current-scene-density.png",
+        "height": 689,
+        "name": "current-scene-density",
+        "sha256": "261b5e3a580f5d96b6fed11ade3b51c859e22ba5fec1fea1a886ecebdafd9cf1",
+        "width": 1008
+      },
+      {
+        "file": "density-sorter.png",
+        "height": 900,
+        "name": "density-sorter",
+        "sha256": "151f90db5b850a22d30f51863217c67880cddf4fb3700693b9659c71d230f541",
+        "width": 1600
+      },
+      {
+        "file": "viscosity-channel.png",
+        "height": 900,
+        "name": "viscosity-channel",
+        "sha256": "7ed6abf3ec53cb146d45bca42c868c8885ebb90d685d522ab6b40a7f2f92be3c",
+        "width": 1600
+      },
+      {
+        "file": "reaction-contact.png",
+        "height": 900,
+        "name": "reaction-contact",
+        "sha256": "b70278bdfbe0903da6201455384665f3986509f7d8fa363a1ee36656a1d10a9a",
+        "width": 1600
+      },
+      {
+        "file": "industrial-loop.png",
+        "height": 900,
+        "name": "industrial-loop",
+        "sha256": "2f8d96c597dae5a804d9bd43e6bab06a755934ec8b44ad3a93dd55cc02e5cf84",
+        "width": 1600
+      },
+      {
+        "file": "current-scene-1000x650.png",
+        "height": 650,
+        "name": "current-scene-1000x650",
+        "sha256": "b91f9e9427c601f3389ab8e4ab78f02e1450022caa29dd225960fb890a3ed2e1",
+        "width": 1000
+      },
+      {
+        "file": "current-scene-1280x720.png",
+        "height": 720,
+        "name": "current-scene-1280x720",
+        "sha256": "996b92a3facdab93b1209a324936586cc1584284717f05d2ffec88e8a804b0ed",
+        "width": 1280
+      }
+    ],
+    "godot": "4.7-stable (official)",
+    "native_witnesses": [
+      {
+        "density_1600_sinks": true,
+        "density_3000_sinks": true,
+        "density_500_sinks": false,
+        "kind": "density",
+        "reverted_sinks": true,
+        "ticks": 16,
+        "workers": 1,
+        "world_id": "19"
+      },
+      {
+        "bays": 96,
+        "kind": "viscosity",
+        "material_id": 20,
+        "moved_bays": [
+          96,
+          46,
+          0
+        ],
+        "ticks": 1,
+        "values": [
+          0,
+          128,
+          255
+        ],
+        "workers": 1
+      },
+      {
+        "bays": 96,
+        "completed_brine_pairs": [
+          1,
+          41,
+          96
+        ],
+        "kind": "reaction",
+        "slot": 2,
+        "thresholds": [
+          0,
+          63,
+          255
+        ],
+        "ticks": 4,
+        "witness": "actual stored products; native standalone test independently checks pair event ledger",
+        "workers": 1
+      },
+      {
+        "density_1600_sinks": true,
+        "density_3000_sinks": true,
+        "density_500_sinks": false,
+        "kind": "density",
+        "reverted_sinks": true,
+        "ticks": 16,
+        "workers": 4,
+        "world_id": "49"
+      },
+      {
+        "bays": 96,
+        "kind": "viscosity",
+        "material_id": 20,
+        "moved_bays": [
+          96,
+          46,
+          0
+        ],
+        "ticks": 1,
+        "values": [
+          0,
+          128,
+          255
+        ],
+        "workers": 4
+      },
+      {
+        "bays": 96,
+        "completed_brine_pairs": [
+          1,
+          41,
+          96
+        ],
+        "kind": "reaction",
+        "slot": 2,
+        "thresholds": [
+          0,
+          63,
+          255
+        ],
+        "ticks": 4,
+        "witness": "actual stored products; native standalone test independently checks pair event ledger",
+        "workers": 4
+      },
+      {
+        "backend": "actual native World, synchronous existing worker mailbox; no worker thread in this fixture",
+        "cancelled_before_commit": true,
+        "kind": "owner-adversaries",
+        "replacement_retired_pending": true,
+        "stale_and_session_refused": true
+      },
+      {
+        "authored_rectangles": 43,
+        "extent": [
+          512,
+          512
+        ],
+        "kind": "ordinary-demo",
+        "native_ticks_observed": 43,
+        "scene_id": "density-sorter"
+      },
+      {
+        "authored_rectangles": 54,
+        "extent": [
+          512,
+          512
+        ],
+        "kind": "ordinary-demo",
+        "native_ticks_observed": 32,
+        "scene_id": "viscosity-channel"
+      },
+      {
+        "authored_rectangles": 27,
+        "extent": [
+          512,
+          512
+        ],
+        "kind": "ordinary-demo",
+        "native_ticks_observed": 28,
+        "scene_id": "reaction-contact"
+      },
+      {
+        "authored_rectangles": 82,
+        "extent": [
+          1024,
+          512
+        ],
+        "kind": "ordinary-demo",
+        "native_ticks_observed": 18,
+        "scene_id": "industrial-loop"
+      },
+      {
+        "configuration_revert_preserves_cells": true,
+        "graphical": true,
+        "kind": "ordinary-workbench",
+        "native_apply_while_running": true,
+        "ordinary_paint_save_reopen": true,
+        "original_world_id": "82",
+        "separate_profile_saved_and_reloaded": true
+      }
+    ],
+    "status": "passed"
+  },
+  "elapsed_seconds": 86.42199999999991,
+  "exit_code": 0,
+  "log_sha256": "ecd22d0a9a8fc9e7a744124fe069efd12d328279b9a5fdcf653bc7622b59b369",
+  "process_id": 4380,
+  "status": "passed",
+  "timeout_seconds": 1200
+}

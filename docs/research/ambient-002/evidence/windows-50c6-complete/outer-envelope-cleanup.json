@@ -1,0 +1,6 @@
+{
+  "removed_only": "ambient-002-windows-50c6df89528d-outer.zip",
+  "bytes": 259389255,
+  "sha256": "8be206e40ad48f467d16b8f618a415169f5c80f2456f56b9caca06cf3d472608",
+  "reason": "Redundant outer Actions envelope removed after verified safe extraction, CRC, sidecar, complete streamed inner payload audit and lead confirmation that exact inner ZIP was durably saved. Original metadata remains; complete Windows evidence archive and exact inner ZIP are retained."
+}

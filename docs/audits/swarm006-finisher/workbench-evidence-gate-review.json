@@ -1,0 +1,101 @@
+{
+  "schema": "swarm006-finisher-workbench-scientific-gate-review/v1",
+  "reviewed_utc": "2026-11-21T20:42:28.718209+00:00",
+  "scope": "Independent source and metadata-gate review; Linux/headless development metadata consumption, not Windows qualification or independent physical acceptance.",
+  "reviewed_files": {
+    "tools/swarm006/qualify_workbench.py": "52e69a858ab9857236dbec93acf0023b78f67f0513c7138a985c32e63df178e8",
+    "tools/swarm006/test_qualify_workbench.py": "595daecad702f75d60127930c4cf53edf9d65da668c33ddfa6863106eb12ec03",
+    "godot/tests/support/workbench_reciprocal_inspector_checks.gd": "fc5d552399d4283192b5c213f83806aff371c950afedff5aa7f56a5bf910ea7b"
+  },
+  "test_command": "python3 tools/swarm006/test_qualify_workbench.py",
+  "test_result": "PASS:21 tests",
+  "original_false_positive": "Rehashed native Blocked/0 joints/3 rounds could coexist with reported Complete/8 joints/inspector1round without evidence error.",
+  "corrected_contradiction_errors": [
+    "native report differs from raw status: initial",
+    "native Apply lacks complete evaluated closure: initial",
+    "inspector does not cover the raw native rounds: initial",
+    "native witness differs from raw arrays: initial/joint_count",
+    "native witness differs from raw arrays: initial/obligation_count",
+    "native witness differs from raw arrays: initial/foreign_joined",
+    "native report count differs from raw arrays: initial/joint_count",
+    "native report count differs from raw arrays: initial/obligation_count",
+    "native report differs from raw status: regenerated",
+    "native Apply lacks complete evaluated closure: regenerated",
+    "inspector does not cover the raw native rounds: regenerated",
+    "native witness differs from raw arrays: regenerated/joint_count",
+    "native witness differs from raw arrays: regenerated/obligation_count",
+    "native witness differs from raw arrays: regenerated/foreign_joined",
+    "native report count differs from raw arrays: regenerated/joint_count",
+    "native report count differs from raw arrays: regenerated/obligation_count"
+  ],
+  "actual_development_metadata_comparisons": [
+    {
+      "fixture": "ui-v2-attempt3-swarm006_industrial_off",
+      "stage": "initial",
+      "report": "evaluate",
+      "raw_sha256": "8dc3d04b25304b3041a5cae878aff155a6558abb07f293cb1ba5c34d5ce93598",
+      "report_sha256": "7910530633337a337691c72eba32537d848bb81e1f8b25a35fab7d579e6d5cd9",
+      "platform": "Linux",
+      "display": "headless",
+      "errors": [],
+      "closure": {
+        "closure_evaluated": true,
+        "remaining": 2
+      }
+    },
+    {
+      "fixture": "ui-v2-attempt3-swarm006_industrial_on",
+      "stage": "initial",
+      "report": "evaluate",
+      "raw_sha256": "f8cb8165a50647c5642534a261ee5d12689286002bd4747c4f37baa5b1de6e66",
+      "report_sha256": "3ed4557bce8bb94772360849d5f6cb17e04139acc3bc7a6295e1751dd2c5924d",
+      "platform": "Linux",
+      "display": "headless",
+      "errors": [],
+      "closure": {
+        "closure_evaluated": true,
+        "remaining": 0
+      }
+    },
+    {
+      "fixture": "ui-v2-attempt3-swarm006_industrial_on",
+      "stage": "regenerated",
+      "report": "evaluate",
+      "raw_sha256": "f8cb8165a50647c5642534a261ee5d12689286002bd4747c4f37baa5b1de6e66",
+      "report_sha256": "3ed4557bce8bb94772360849d5f6cb17e04139acc3bc7a6295e1751dd2c5924d",
+      "platform": "Linux",
+      "display": "headless",
+      "errors": [],
+      "closure": {
+        "closure_evaluated": true,
+        "remaining": 0
+      }
+    },
+    {
+      "fixture": "ui-v2-attempt3-swarm006_industrial_on",
+      "stage": "regenerated",
+      "report": "reopen",
+      "raw_sha256": "f8cb8165a50647c5642534a261ee5d12689286002bd4747c4f37baa5b1de6e66",
+      "report_sha256": "720fd0f3e594ab2a01bbebc321839bae513b7696b467b94facde7bb2717d0a96",
+      "platform": "Linux",
+      "display": "headless",
+      "errors": [],
+      "closure": {
+        "closure_evaluated": true,
+        "remaining": 0
+      }
+    }
+  ],
+  "exhausted_serialized_zero": {
+    "closure_evaluated": false,
+    "remaining": null
+  },
+  "inspector_scope": {
+    "Materials": "All native material pixels for final and each provisional view",
+    "cell_picks": "Native material and part provenance for sampled real signal-driven picks",
+    "Joints_and_Unresolved": "Native marker coordinates checked against rendered pixels",
+    "Revisions_and_Clearance": "Final-only enablement and signal-driven non-null rendering; no separate full pixel oracle"
+  },
+  "scientific_claim_limits": "Qualified joint count, array-derived FOREIGN_JOINED, evaluated closure and original connector identity remain different fields. The local ON example has five joints, zero original required connectors and one joined new_assembly export. Physical owner and Windows source/pristine evidence remain pending.",
+  "result": "PASS"
+}

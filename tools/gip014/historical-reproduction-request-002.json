@@ -1,0 +1,18 @@
+{
+  "schema": "cybersand-goblin-fixed-historical-reproduction-request-v1",
+  "mission": "GIP-014-goblin-002",
+  "request": 1,
+  "legacy_source": "d849be8ef99cd9226cfc3ca0925752e42b691515",
+  "legacy_tree": "b6da28e8df80247bbfffb968cbe66e99b386959a",
+  "original_run": 45538643315,
+  "original_artifact": 14990308987,
+  "original_episode": "long-0108-random-construction-s1701-n128/attempt-01",
+  "original_tape_sha256": "050155da6012b4eed736b66d998315dc479914549475bab048a8a65c9ff3fb67",
+  "compressed_tape_sha256": "7686f4ef7abdc9f580bdd626e57bdffda312771eacddc0247fe2c93cea866596",
+  "classification": "test_oracle_defect",
+  "target": "actor_place_position on the admitted Monowheel actor_place at authored256,96; physical root256,97.5",
+  "bounds": "24 probes, two confirmations, 600-second reduction, 900-second owned worker, 3072MiB RSS, 1GiB sampled evidence, 30-minute hosted job",
+  "acceptance": "Preserve exact original failure/action/expected invariant and source/runtime/fixture identity. Reproduction verification must pass; the constant unchanged-invariant unittest must retain precisely the expected assertion failure.",
+  "scope": "One fixed registered case, no commands or arbitrary paths from data. Historical reduction evidence only; no successor qualification, corrective regression pass or production defect claim.",
+  "disposition": "Draft/HOLD"
+}

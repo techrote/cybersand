@@ -1,0 +1,56 @@
+name: SWARM-006 saved-setup exact-crop native comparison (Draft/HOLD)
+on:
+  push:
+    branches: [experiment/gentek-swarm-006-exact-crop-compare]
+  workflow_dispatch:
+permissions:
+  contents: read
+  actions: read
+jobs:
+  paired-native:
+    name: Source-locked 3-style same-crop OFF/ON smoke
+    runs-on: windows-2022
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: swarm006-owner-windows-4e8ff0b01043d9e1bed336559b17e37283094add
+          run-id: 44915299069
+          github-token: ${{ github.token }}
+          path: build/swarm006-owner-artifact
+      - name: Verify sealed evaluator and create an independent non-owner blank fixture
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $inner = @(Get-ChildItem build/swarm006-owner-artifact -File -Filter 'CyberSand-SWARM006-Draft-HOLD-Windows-*.zip')
+          if ($inner.Count -ne 1) { throw 'Expected one sealed owner ZIP' }
+          $sha = (Get-FileHash -LiteralPath $inner[0].FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($sha -ne '56b6bd1f2b3a65300c498604c0d5a90daa014361ded03cbb1bde7065d2c57e8a') { throw "Sealed ZIP mismatch: $sha" }
+          $sidecar = Get-Content -LiteralPath ($inner[0].FullName + '.sha256') -Raw
+          if ($sidecar -notmatch [regex]::Escape($sha) -or $sidecar -notmatch [regex]::Escape($inner[0].Name)) { throw 'Sealed sidecar mismatch' }
+          Expand-Archive -LiteralPath $inner[0].FullName -DestinationPath build/swarm006-extracted -Force
+          New-Item -ItemType Directory -Path build/swarm006-exact-crop -Force | Out-Null
+          @{ version=2; extent=@(2048,2048); normalize=$false; source=@(); actors=@(); edits=@() } |
+            ConvertTo-Json -Depth 5 | Set-Content -LiteralPath build/swarm006-exact-crop/nonowner-blank-synthetic-setup.json -Encoding UTF8
+      - name: Execute twelve real native comparisons on identical saved-crop inputs
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File tools/swarm006/compare_saved_setup.ps1 -Setup build/swarm006-exact-crop/nonowner-blank-synthetic-setup.json -PackageRoot build/swarm006-extracted -CropX 800 -CropY 400 -Width 192 -Height 112 -Seed 605 -Rounds 2 -Swarm005Options both -Output build/swarm006-exact-crop/results
+          if ($LASTEXITCODE -ne 0) { throw "Exact-crop comparison failed: $LASTEXITCODE" }
+          $full = @(Import-Csv build/swarm006-exact-crop/results/all-cases.csv)
+          $pairs = @(Import-Csv build/swarm006-exact-crop/results/paired-results.csv)
+          $manifest = Get-Content build/swarm006-exact-crop/results/comparison-manifest.json -Raw | ConvertFrom-Json
+          if ($full.Count -ne 12 -or $pairs.Count -ne 6 -or $manifest.ContextNonemptyCells -ne 0 -or $manifest.OverlappingSavedStamps -ne 0 -or $manifest.SourceCommit -ne '4e8ff0b01043d9e1bed336559b17e37283094add') { throw 'Incomplete or source-mismatched 12-way comparison' }
+          foreach ($p in $pairs) { if ($p.OffStatus -eq '' -or $p.OnStatus -eq '' -or $p.Style -eq '') { throw 'Missing paired native receipt' } }
+          $pairs | Format-Table -AutoSize | Out-String | Write-Output
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: swarm006-12way-exact-crop-${{ github.sha }}
+          path: build/swarm006-exact-crop/
+          if-no-files-found: warn
+          retention-days: 30

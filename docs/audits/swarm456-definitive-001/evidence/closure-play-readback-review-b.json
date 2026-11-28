@@ -1,0 +1,258 @@
+{
+  "schema": 1,
+  "passed": true,
+  "scope": "Source-exact ordinary PLAY identity/preflight on both original hosted platforms; no engine or physical owner execution",
+  "run_id": 45467888942,
+  "attempt": 1,
+  "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+  "original_jobs": [
+    {
+      "id": 138707577911,
+      "name": "plan",
+      "conclusion": "success",
+      "all_steps_passed": 7
+    },
+    {
+      "id": 138707722649,
+      "name": "windows",
+      "conclusion": "success",
+      "all_steps_passed": 16
+    },
+    {
+      "id": 138707722674,
+      "name": "linux",
+      "conclusion": "success",
+      "all_steps_passed": 16
+    }
+  ],
+  "skipped_job_steps": [],
+  "original_api_sha256": "642c6627fb9a1552e8477a618ab21f33ef3546f66c682f8b849d05ccfec7c007",
+  "platforms": [
+    {
+      "platform": "linux",
+      "artifact_id": 14957190127,
+      "archive_bytes": 11416,
+      "archive_sha256": "2c5dc1e3627130ca80c5a301c32be218a3798c33e007e98b7cf18be1c7157436",
+      "zip_crc_passed": true,
+      "members": 15,
+      "member_sha256": {
+        "contracts-optimized.log": "2c62b217d384d9327511ae70f0778bacd9143c497f77ffdf98c2e6efbf65a459",
+        "create.log": "d4091b7a21b962fecf87ca68fa51aa54717344e3ff7d8a0a678abf6af9904a58",
+        "contracts.log": "e96074f54646f4b909f399f7a1c0456216f346f5ed13056bc927387dd3ecf15e",
+        "lfs-fsck.log": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9",
+        "packet/CHECKLIST.md": "8ac71337d18a9c688af92b589d63fda51fb6913e4b41e737374ab6afc30e2336",
+        "packet/IDENTITY.json": "0c40c87b9d09efc19245f4728e60e9e7f67dc920bc820edcf6d1e2ff0b20d1ab",
+        "packet/MANIFEST.json": "f9561310511ca1cec2bb0d9c2764d9a386363bb5563278315ff90d2dc39d8068",
+        "packet/PRECHECK.json": "41e26e6fddb0e650aa99de0b7c4443ef6a14bca77655b8a86366d304847a2838",
+        "packet/RESULTS.csv": "0cab25af621245984f4a7e9728913a18ba5b36d3b00203007f33ef09227ea850",
+        "packet/launch.sh": "58c2e1c20750dd261a959a326e2a92ded05c02cd6a9b94346ce356fa8115abac",
+        "provider.json": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f",
+        "reverify.log": "19e974c0b1a1cd5f9bc96a5aca6b1f8d2b17133828262ddba72395f4d50e1d37",
+        "source-sha.txt": "cc01163981896e204bfcc40bcf91d4843f62b618b2e59038843b918bb59a5d50",
+        "source-status-after.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source-tree.txt": "d1e9fee1f597553145b7496632de9c12213b20a820c78f0481baf5ba2b1f8b48"
+      },
+      "source": {
+        "commit": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+        "tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81"
+      },
+      "native": {
+        "build_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+        "bytes": 5278840,
+        "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "provenance_path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "provenance_sha256": "2f4356c0c42f06b8365b9fbf3f66939bd8c36a0f112d4c13192e33c6ac074a24",
+        "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+        "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f"
+      },
+      "engine": {
+        "archive": "/home/runner/work/_temp/manual-godot.zip",
+        "archive_algorithm": "sha256",
+        "archive_bytes": 75664355,
+        "archive_digest": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+        "executables": {
+          "Godot_v4.7-stable_linux.x86_64": {
+            "bytes": 144186224,
+            "path": "/home/runner/work/_temp/manual-godot/Godot_v4.7-stable_linux.x86_64",
+            "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+          }
+        },
+        "identity_method": "pinned official archive and matching bytes; no executable probe",
+        "selected_executable": "/home/runner/work/_temp/manual-godot/Godot_v4.7-stable_linux.x86_64",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "engine_and_native_match_prior_independently_reviewed_pins": true,
+      "materialized_runtime_files": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+        "godot/tools/gentek_reciprocal",
+        "godot/tools/gentek_reciprocal.exe"
+      ],
+      "precheck_status": "passed",
+      "contracts": [
+        {
+          "log": "contracts.log",
+          "tests": 17,
+          "passed": true
+        },
+        {
+          "log": "contracts-optimized.log",
+          "tests": 17,
+          "passed": true
+        }
+      ],
+      "original_create_and_host_reverify_passed": true,
+      "final_source_clean": true,
+      "manual_cases": 51,
+      "manual_case_status": "all untested",
+      "engine_or_physical_execution_claimed": false
+    },
+    {
+      "platform": "windows",
+      "artifact_id": 14956165929,
+      "archive_bytes": 11696,
+      "archive_sha256": "2eab5a4b6ff2117453915c32f85a40e06523a4954ba7e06b8c5dc50722b6e36c",
+      "zip_crc_passed": true,
+      "members": 15,
+      "member_sha256": {
+        "create.log": "f9c20dd33b16890dda1f492123bb6010ace9e33cc96d10be7f4e744da518fc72",
+        "contracts.log": "0bde7271239bcce1373542c3b52388694e65cf734123379319bc1a85c3241244",
+        "contracts-optimized.log": "67c7eb852fc09343ce42b29507c8a778f82616973cf915709b7386cf4c9eb7b3",
+        "lfs-fsck.log": "81f6819612dfaf9af7854c05c501e2a69e3852e47f0bfb0a82dfce8f3f6c5db9",
+        "packet/CHECKLIST.md": "4479fcbf59507ee1659f5a5b80a1ebe6bc877e9d504d9119d5573dcd02b01b23",
+        "packet/launch.ps1": "36c33096be4454772031dd039db64e8b6daa5fde184a60b7ce4eae37ddbc04fb",
+        "packet/IDENTITY.json": "cf64347375a19051f90c60ff7c1014a288d3b53987ef80f4f5a133dbaf7b1eae",
+        "packet/MANIFEST.json": "29d2275144dc37aa026140eb5bd1292b24ff40483db860bdfdc833a9d347f140",
+        "packet/PRECHECK.json": "0cf2f81a139c89ef15b158c4b6532a398c94d855af157aaed5eeb1d9fd9a501c",
+        "provider.json": "7d42fa2d0cae64ad3a3b8060fd58f61181609e38202d905c19abcb72f9b0f2e6",
+        "packet/RESULTS.csv": "0cab25af621245984f4a7e9728913a18ba5b36d3b00203007f33ef09227ea850",
+        "reverify.log": "ff2478c0d41c948cd5305b3a8bee2cf59813c4bf46659bf5c575fbdd9dbba02c",
+        "source-sha.txt": "14625c0ca5b8d77989177f9c030bfad050d183141d31d112cc1c9220ed5ffd44",
+        "source-status-after.txt": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+        "source-tree.txt": "fc75c63b00e2a3024b6302954e40a7543beec6d62202969058dca38849a43ef3"
+      },
+      "source": {
+        "commit": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+        "tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81"
+      },
+      "native": {
+        "build_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+        "bytes": 5844992,
+        "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "provenance_path": "godot/addons/cybersand_native/runtime-provenance.json",
+        "provenance_sha256": "05ed3f6a191e16f11188f73c1ee9ea0d6f7a2e3c7e2377a16c91df0374a4927a",
+        "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+        "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f"
+      },
+      "engine": {
+        "archive": "D:\\a\\_temp\\manual-godot.zip",
+        "archive_algorithm": "sha512",
+        "archive_bytes": 83764371,
+        "archive_digest": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+        "executables": {
+          "Godot_v4.7-stable_win64.exe": {
+            "bytes": 178485256,
+            "path": "D:\\a\\_temp\\manual-godot\\Godot_v4.7-stable_win64.exe",
+            "sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+          },
+          "Godot_v4.7-stable_win64_console.exe": {
+            "bytes": 198152,
+            "path": "D:\\a\\_temp\\manual-godot\\Godot_v4.7-stable_win64_console.exe",
+            "sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c"
+          }
+        },
+        "identity_method": "pinned official archive and matching bytes; no executable probe",
+        "selected_executable": "D:\\a\\_temp\\manual-godot\\Godot_v4.7-stable_win64.exe",
+        "version": "4.7.stable.official.5b4e0cb0f"
+      },
+      "engine_and_native_match_prior_independently_reviewed_pins": true,
+      "materialized_runtime_files": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+        "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+        "godot/tools/gentek_reciprocal",
+        "godot/tools/gentek_reciprocal.exe"
+      ],
+      "precheck_status": "passed",
+      "contracts": [
+        {
+          "log": "contracts.log",
+          "tests": 17,
+          "passed": true
+        },
+        {
+          "log": "contracts-optimized.log",
+          "tests": 17,
+          "passed": true
+        }
+      ],
+      "original_create_and_host_reverify_passed": true,
+      "final_source_clean": true,
+      "manual_cases": 51,
+      "manual_case_status": "all untested",
+      "engine_or_physical_execution_claimed": false
+    }
+  ],
+  "actual_linux_download_route": {
+    "url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip",
+    "observed_original_job": 138707722674,
+    "original_log_sha256": "d6465b6b0dfc6a05c87becdf1a9884202933d3e840f99e7e5342de96ff4ad8f5",
+    "official_archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "official_archive_bytes": 75664355,
+    "exact_pinned_archive_and_members_checked_on_original_host": true
+  },
+  "prior_pin_comparison_receipt_sha256": "d4d588c9cfe06f3dc3c79403d83525750ab57676ab82a18f483852e050128be7",
+  "historical_failures_preserved": [
+    {
+      "run": 45464427423,
+      "attempt": 1,
+      "linux_job": 138695600359,
+      "error": "HTTP403 before pinned engine extraction or packet creation"
+    },
+    {
+      "run": 45464427423,
+      "attempt": 2,
+      "linux_job": 138697409154,
+      "error": "HTTP403 before pinned engine extraction or packet creation"
+    }
+  ],
+  "qualified_runtime_and_evaluator_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "limitations": [
+    "Original immutable host-specific packets were rechecked from their downloaded ZIPs and compared to their manifest/source/runtime/engine pins; each original host ran its strict reverify successfully. The local audit does not fabricate the retired original host checkout or engine paths.",
+    "Each platform retains51 entirely untested physical/manual cases. PLAY packet generation is identity-only and executes no Godot process.",
+    "This pass closes PLAY identity/preflight at5fd998. It does not substitute for pending full ordinary GDE/Native or physical Windows11/NVIDIA owner acceptance."
+  ],
+  "material_findings": []
+}

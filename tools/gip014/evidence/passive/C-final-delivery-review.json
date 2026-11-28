@@ -1,0 +1,63 @@
+{
+  "schema": "cybersand-goblin-final-delivery-observation-v1",
+  "status": "small_recovery_supplement_saved_large_archive_provider_link_retained",
+  "supplement": {
+    "filename": "predecessor-six-tapes-recovery-v1.zip",
+    "size_bytes": 960187,
+    "sha256": "c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74",
+    "zip_members": 11,
+    "declared_expanded_bytes": 20602097,
+    "original_raw_tapes": 6,
+    "disposition": "New independently verified recovery supplement; not the missing original historical ZIP",
+    "save_status": "succeeded",
+    "version_number": 0,
+    "local_identity_metadata_applied": true,
+    "body_verification": "All six exact tape-body bytes match previously retained original metadata; A verified copy and reopened member hashes/CRC; C independently verified ZIP SHA/size/safe central-directory closure; B checked13 metadata/custody relationships",
+    "recovery_metadata_blob": "ba46c0d4fcde350923ee796aa9bd691e1b58e75c",
+    "independent_B_review_blob": "a7273bfcdd601940e273ee094317052d594afd58"
+  },
+  "save_process": {
+    "status": "pass",
+    "exit_code": 0,
+    "elapsed_seconds": 8.056,
+    "peak_tree_rss_bytes": 53104640,
+    "surviving_owned_pids": [],
+    "interrupted": false
+  },
+  "limits": {
+    "wall_seconds": 180,
+    "memory_mib": 512,
+    "log_bytes": 16777216
+  },
+  "sealed_archive": {
+    "filename": "CyberSand-goblin-campaign-evidence.zip",
+    "size_bytes": 666742658,
+    "sha256": "0bf98d07e9375c61eaf77869d560b2b9eca08604ed1493a69dab52cbf376f84f",
+    "zip_members": 29,
+    "artifact_id": 15008615196,
+    "run_id": 45582958798,
+    "download_url": "https://github.com/techrote/cybersand/actions/runs/45582958798/artifacts/15008615196",
+    "artifact_expires_at": "2026-12-25T09:12:25Z",
+    "direct_local_delivery": "blocked_before_download",
+    "blocker_record_blob": "a453ef274f363daca19fd0e5e51c48a446482cbf",
+    "connector_artifact_size_limit_bytes": 536870912,
+    "observed_free_bytes": 69832704,
+    "unchanged": true
+  },
+  "qualified_windows_evaluator": {
+    "filename": "CyberSand-goblin-Windows-evaluator.zip",
+    "size_bytes": 95816253,
+    "sha256": "daca112474286798950977909b1be000cd5b75657b231c028d366515836cdc4e",
+    "source_commit": "6f359ce2b24291ee219810773c641d53802fd31d",
+    "existing_saved_item_unchanged": true
+  },
+  "historical_accounting": {
+    "episodes": 7,
+    "completed_processes": 5,
+    "unattributed_sigkill_processes": 2,
+    "observed_completed_actions": 988,
+    "no_tape_for_random256_a01": true,
+    "new_gameplay_credit": false
+  },
+  "scope": "Delivery only; no game, frozen reader, builder, metrics, or existing saved evaluator rerun or modification. Historical sealed metadata records the pre-recovery availability truthfully; this later supplement and delivery record do not rewrite it."
+}

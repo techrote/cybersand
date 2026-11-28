@@ -1,0 +1,110 @@
+{
+  "all_required_families_completed": true,
+  "command_count": 20,
+  "disposition": "PASS",
+  "families": [
+    {
+      "commands": 2,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "asan-ubsan",
+      "native_case_passes": 192,
+      "original_log_sha256": "91dfc3118de7a18e494478da270c2b99328aad0ecb45a7d45316e96ce55ee845",
+      "original_receipt_sha256": "d55cc2baa794a12a99e90b52077e2e1b1e25e54445dfcde057a9af5589a69143",
+      "scientific_output_files": 0
+    },
+    {
+      "commands": 6,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "native-normal",
+      "native_case_passes": 192,
+      "original_log_sha256": "013be8629aaba2e30868f0eed3683e528450290177d6bcec01b7f29cd5afb35a",
+      "original_receipt_sha256": "a1ca359d44f6216011003c8e1a3b0cf99abae6f4181a48f8622ebe4a18b66e99",
+      "scientific_output_files": 0
+    },
+    {
+      "commands": 3,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "soliding-asan",
+      "native_case_passes": 0,
+      "original_log_sha256": "df9e11f33786cf44cfb4a91637057362a68cb6ee6b75906332db6d1d8b36114f",
+      "original_receipt_sha256": "9fc50d7143a1a18a7a884a546d947b5136e247e5e55ca4dbbc49adee917496f9",
+      "scientific_output_files": 0
+    },
+    {
+      "commands": 4,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "soliding-normal",
+      "native_case_passes": 0,
+      "original_log_sha256": "1d3220a998f0b2ba74e03ed8e99c67c404c58f3d3b0683ea15e6748007c1d426",
+      "original_receipt_sha256": "29a74223214f75ad2148583349d38b9506ef33ad7bb8477857d1b0a07720cd12",
+      "scientific_output_files": 2
+    },
+    {
+      "commands": 2,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "tsan",
+      "native_case_passes": 192,
+      "original_log_sha256": "cbaa5751b69472583bfd5f4b782babbc10beeefa85023a0c9fd44b307670a0d9",
+      "original_receipt_sha256": "4da84199b30311bd82e847ffe0a49b2be326ef994a6ea52b7dc9b7200423833b",
+      "scientific_output_files": 0
+    },
+    {
+      "commands": 3,
+      "exit_codes": {
+        "family": 0,
+        "log_capture": 0
+      },
+      "family": "worldgen",
+      "native_case_passes": 0,
+      "original_log_sha256": "03aa6a07751f13b901a3ca3bb96480d8d39586200d7ed11cee683c2d13672cfa",
+      "original_receipt_sha256": "30cc53732faf41fa51b1f81068faddb4a7b356adcb01dbc0f4fd02ab9dddb14a",
+      "scientific_output_files": 324
+    }
+  ],
+  "independent_reducer": {
+    "byte_identical_to_original_hosted_aggregate": true,
+    "errors": [],
+    "path": "tools/ci/verify_native_shards.py",
+    "report_sha256": "460d1303aa2c01de5926bad5d4cdadff7b42c8b7f9a0fc0ec3bb905dda4a5b8a",
+    "returncode": 0,
+    "sha256": "b86278278ff0f83ef189a7889d6d4bb729e7adbd587ee24edd29350f48815ead"
+  },
+  "native_application_runtime_role": "Ordinary postpublication source validation; selected SWARM compiled runtime/evaluator remains Q7 source5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f.",
+  "original_archives": {
+    "api_bound": true,
+    "bytes": 426103,
+    "count": 9,
+    "file_manifest_sha256": "3dd3348ad07f1d9e61d43083ee33126b9ff9c868d7ea2ec7d0d8356033c13f65"
+  },
+  "read_only_scope": "Original source-family execution and full reducer proof; no additional solver run or evidence mutation.",
+  "run_attempt": 1,
+  "run_id": 45459020583,
+  "sanitizer_failure_markers": false,
+  "schema": "independent-complete-native-qualification-review-v1",
+  "skipped_job_classification": [
+    {
+      "job_id": 138676179849,
+      "name": "ready validation scope",
+      "reason": "ready_for_review control is inapplicable to workflow_dispatch; no mandatory suite skipped"
+    }
+  ],
+  "source_checkout": "/dev/shm/swarm456-ordinary/source-2cad3ae2",
+  "source_registry_cases": 192,
+  "source_sha": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+  "source_tree": "05fba8da1b0e52dc2d1a454abcd22a9c9d59c02a"
+}

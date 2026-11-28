@@ -1,0 +1,68 @@
+{
+  "schema": "swarm456-historical73-original-comparison-custody/v1",
+  "reviewer": "closure-independent-assurance-C",
+  "result": "PASS_ATTRIBUTION_RESOLVED",
+  "completed_utc": "2026-11-24T18:54:00.572426+00:00",
+  "finding_resolved": "The final packet 73-history claim now has exact original immutable comparison receipts and source/denominator attribution, distinct from FAIL138 and the four original defective histories.",
+  "evidence_commit": "8a269bf42c0d5ac412bfdb70287194a5164788d8",
+  "actual_historical_scientific_execution_source": "ca63445888d818ed868f71869abb37ae4d00975e",
+  "frozen_a757_source": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+  "corrected_8cf_source": "8cf93e48bc23370c6ef7b835978689ca3aa3e9f8",
+  "donor_final_428_corpus_execution_relabelled": false,
+  "original_a757_to_Ca": {
+    "url": "https://github.com/techrote/cybersand/blob/8a269bf42c0d5ac412bfdb70287194a5164788d8/evidence/swarm006-finisher-428f8420/successor-history-vs-a757-ca634458/complete-history-change-inventory.json",
+    "path": "/workspace/scratch/28827b1ce0c8/audit-independent/seventythree-originals/a757-ca634458-original-change-inventory.json",
+    "sha256": "111321183d77f08d9290607a611131e4a1b4d6923459ca5a02a7c89ae00fefcd",
+    "pairs": 1920,
+    "unchanged": 1847,
+    "changed": 73,
+    "endpoint_changes": 0,
+    "work_metric_changes": 0,
+    "selected_plan_changes": 0,
+    "all_changed_exhausted_non_apply": true,
+    "all_73_original_native_raw_hashes_match_independently_recovered_a757_manifest": true,
+    "manifest_sha256": "495b0e081d5aa9eb9562f38d58304338f8e7c7c5a0937d544391d8bc5c5ff07c",
+    "changed_history_classes": {
+      "already_empty_default_status_and_termination": 40,
+      "copied_nonempty_proposal_replaced_by_empty_failure": 33
+    },
+    "changed_policies": {
+      "recovery@4": 45,
+      "recovery@3": 18,
+      "recovery@2": 1,
+      "recovery+frame_frozen@2": 1,
+      "recovery+reverse@2": 1,
+      "recovery+fixed@2": 7
+    },
+    "outer_reason_changes_exact_four_previously_defective_ids": [
+      "foreign_solid--industrial_gui--s1376230570--recovery--r3",
+      "foreign_solid--industrial_gui--s1376230570--recovery--r4",
+      "foreign_solid--industrial_gui--s1997581108--recovery--r3",
+      "foreign_solid--industrial_gui--s1997581108--recovery--r4"
+    ]
+  },
+  "original_8cf_to_Ca": {
+    "url": "https://github.com/techrote/cybersand/blob/8a269bf42c0d5ac412bfdb70287194a5164788d8/evidence/swarm006-finisher-428f8420/successor-history-vs-8cf-ca634458/complete-history-change-inventory.json",
+    "path": "/workspace/scratch/28827b1ce0c8/audit-independent/seventythree-originals/8cf-ca634458-original-change-inventory.json",
+    "sha256": "b215dacd42de13910e1cb90f84556983477fc2a4ad8d56b0cb7dbcfc9c8854e5",
+    "pairs": 1920,
+    "unchanged": 1920,
+    "changed": 0,
+    "frozen_manifest_independently_recovered_sha256": "efc0cf753c7b97fd42e8a1fddb6ff0a80a11928068e4414418eb4c7cab6d0854"
+  },
+  "original_comparison_reviewer_sha256": "101f818d585fb890e527adccdfeac2e553fa7884f5162ad5dd90e6f67a19d522",
+  "complete_same_1920_case_id_set_joined": true,
+  "original_reports_no_exceptions_and_no_reused_partial_comparisons": true,
+  "all_original_admission_completion_identity_hashes_equal": true,
+  "earlier_8cf_narrative": {
+    "path": "/workspace/scratch/28827b1ce0c8/audit-independent/original-reference-custody/swarm006-science-custody/successor-final-8cf93e48/final-scientific-review.md",
+    "sha256": "509cd0c3249445fd84ff82df2867aebaa44d89f60e5afbcd824066874dfc99a9",
+    "declared_original_a757_8cf_inventory_sha256": "de26da26d4008ef724dc0aa88701fd28754b38cc9b3aa452d4428112c0dcd618",
+    "preserved_historical_comparator_failure": "The earlier 8cf comparator originally retained 1824 comparisons and raised 96 placeholder-assumption assertions; its corrected original report reran only those 96, without native changes. The recovered Ca reports independently compared all1920 afresh."
+  },
+  "scope_limit": "This audit independently reduces and cross-binds the exact original complete comparison inventories. It does not claim a new execution of all raw a757/Ca pairs or a fresh Ca scientific binary rehash. The separately recovered four a757/8cf raw pairs were directly checked earlier.",
+  "new_native_executions": 0,
+  "original_evidence_modified": false,
+  "historical_a757_HOLD_erased": false,
+  "historical_FAIL138_reclassified": false
+}

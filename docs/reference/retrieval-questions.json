@@ -565,7 +565,27 @@
       "sources": [
         "../AGENTS.md::Documentation obligations"
       ]
+    },
+    {
+      "id": "CI-CLOSURE-001",
+      "query": "Which CyberSand CI experiments were selected, what runner capacity is actually known, and what exact-source gates remain for CI engineering closure?",
+      "canonical": [
+        "operations/ci-engineering-closure-001/FINAL-DECISION-PACKET.md"
+      ],
+      "facts": [
+        "The isolated Draft candidate selects only Windows Palette cap three while GDExtension remains eight/eight; accepted production main is unchanged.",
+        "Historical experiment sources and case populations cannot qualify the current tooling candidate.",
+        "The owner-reported forty-slot ceiling is not authenticated account capacity; repository activity is a lower-bound observation.",
+        "The final tooling candidate stays Draft/HOLD until the applicable exact-source Native, GDExtension, Palette and full provenance cohort and owner decisions.",
+        "No active programme publisher or frozen original evidence is rewritten."
+      ],
+      "sources": [
+        "../tools/ci/check_ci_scheduling_policy.py",
+        "../.github/workflows/gdextension.yml",
+        "../.github/workflows/native.yml"
+      ],
+      "revision_sensitive": true
     }
   ],
-  "expectations_reviewed": "2026-09-08: original query wording retained; Q31 expected facts updated for explicit current/M11 gate separation. Metrics are not frozen-answer improvement claims. 2026-10-18 ACT-004: Q10 expected capacity corrected from 16 to 64 for current source. The 32 frozen query IDs and query wording are unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim. 2026-10-19 MAT-002: Q30 expected facts now distinguish separately recorded current Linux execution from what historical sanitizer and Windows results prove. Query IDs and wording remain unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim."
+  "expectations_reviewed": "2026-09-08: original query wording retained; Q31 expected facts updated for explicit current/M11 gate separation. Metrics are not frozen-answer improvement claims. 2026-10-18 ACT-004: Q10 expected capacity corrected from 16 to 64 for current source. The 32 frozen query IDs and query wording are unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim. 2026-10-19 MAT-002: Q30 expected facts now distinguish separately recorded current Linux execution from what historical sanitizer and Windows results prove. Query IDs and wording remain unchanged; this is a disclosed source-fact correction, not a retrieval-quality improvement claim. 2026-11-24 CI-ENGINEERING-CLOSURE-001: one new, explicitly revision-sensitive CI-CLOSURE-001 question is appended; all previous 32 question IDs, wording and facts are unchanged by this mission. Added-question retrieval is reported separately and is not a frozen-suite improvement claim."
 }

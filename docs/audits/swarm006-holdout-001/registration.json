@@ -1,0 +1,609 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-006",
+  "classification": "preregistered_unseen",
+  "registration_id": "SWARM006-HOLDOUT-001",
+  "candidate": {
+    "git_sha": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+    "definition_sha256": "afbae85af2c44f1e539a154fbee622a3ee7533a6caab9ad1f9c5190a8e5803e4",
+    "harness_sha256": "54c176d9da9b47266075a1567afe9c54af7cd09239bbe348de904f01e058ae69",
+    "runner_sha256": "ea4c2161dc80a46a3a3faee6d158b5f23096090a40eac51b184f4b0aabb98868"
+  },
+  "limits": {
+    "frame_work": 2000000,
+    "mosaic_work": 2000000,
+    "solver_work": 4000000,
+    "shared_work": 2000000,
+    "memory_bytes": 16777216,
+    "max_reservations": 8,
+    "max_rounds": 4
+  },
+  "cases": [
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "industrial",
+      "seed": 1091666353
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "industrial",
+      "seed": 2017899489
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "industrial",
+      "seed": 1945717975
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "industrial_gui",
+      "seed": 1348353689
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "industrial_gui",
+      "seed": 2024298178
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "industrial_gui",
+      "seed": 2068507366
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "viaduct_like",
+      "seed": 2014108047
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "viaduct_like",
+      "seed": 1709151752
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "viaduct_like",
+      "seed": 1307486247
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "irregular_megastructure",
+      "seed": 1425150568
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "irregular_megastructure",
+      "seed": 1648852292
+    },
+    {
+      "fixture": "owner_left_right_192x112",
+      "profile": "irregular_megastructure",
+      "seed": 1751743090
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "industrial",
+      "seed": 1533123749
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "industrial",
+      "seed": 1239946833
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "industrial",
+      "seed": 1440659920
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "industrial_gui",
+      "seed": 1755839921
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "industrial_gui",
+      "seed": 1663633069
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "industrial_gui",
+      "seed": 2012185746
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "viaduct_like",
+      "seed": 1722916166
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "viaduct_like",
+      "seed": 1123923034
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "viaduct_like",
+      "seed": 1284292326
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "irregular_megastructure",
+      "seed": 1808986680
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "irregular_megastructure",
+      "seed": 1117206477
+    },
+    {
+      "fixture": "owner_left_right_128x128",
+      "profile": "irregular_megastructure",
+      "seed": 1654935868
+    },
+    {
+      "fixture": "island",
+      "profile": "industrial",
+      "seed": 2062844342
+    },
+    {
+      "fixture": "island",
+      "profile": "industrial",
+      "seed": 1849470453
+    },
+    {
+      "fixture": "island",
+      "profile": "industrial",
+      "seed": 1265218572
+    },
+    {
+      "fixture": "island",
+      "profile": "industrial_gui",
+      "seed": 1335372106
+    },
+    {
+      "fixture": "island",
+      "profile": "industrial_gui",
+      "seed": 1106246814
+    },
+    {
+      "fixture": "island",
+      "profile": "industrial_gui",
+      "seed": 2113567920
+    },
+    {
+      "fixture": "island",
+      "profile": "viaduct_like",
+      "seed": 1739290799
+    },
+    {
+      "fixture": "island",
+      "profile": "viaduct_like",
+      "seed": 2102315902
+    },
+    {
+      "fixture": "island",
+      "profile": "viaduct_like",
+      "seed": 2112184389
+    },
+    {
+      "fixture": "island",
+      "profile": "irregular_megastructure",
+      "seed": 1172315089
+    },
+    {
+      "fixture": "island",
+      "profile": "irregular_megastructure",
+      "seed": 2051131842
+    },
+    {
+      "fixture": "island",
+      "profile": "irregular_megastructure",
+      "seed": 2022120430
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "industrial",
+      "seed": 1193465773
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "industrial",
+      "seed": 1210246191
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "industrial",
+      "seed": 2044667383
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "industrial_gui",
+      "seed": 1101394523
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "industrial_gui",
+      "seed": 1560482321
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "industrial_gui",
+      "seed": 1408695101
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "viaduct_like",
+      "seed": 1534796417
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "viaduct_like",
+      "seed": 1595757452
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "viaduct_like",
+      "seed": 1336795556
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "irregular_megastructure",
+      "seed": 1254609464
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "irregular_megastructure",
+      "seed": 1906091073
+    },
+    {
+      "fixture": "concave_intrusion",
+      "profile": "irregular_megastructure",
+      "seed": 1244105313
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "industrial",
+      "seed": 1195710891
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "industrial",
+      "seed": 1821086913
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "industrial",
+      "seed": 2134677647
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "industrial_gui",
+      "seed": 2042889666
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "industrial_gui",
+      "seed": 1997581108
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "industrial_gui",
+      "seed": 1376230570
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "viaduct_like",
+      "seed": 1330404056
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "viaduct_like",
+      "seed": 1683919605
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "viaduct_like",
+      "seed": 2076736701
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "irregular_megastructure",
+      "seed": 1944155167
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "irregular_megastructure",
+      "seed": 2015160385
+    },
+    {
+      "fixture": "foreign_solid",
+      "profile": "irregular_megastructure",
+      "seed": 1695877559
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "industrial",
+      "seed": 1281790250
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "industrial",
+      "seed": 1869986787
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "industrial",
+      "seed": 1850950734
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "industrial_gui",
+      "seed": 1914589100
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "industrial_gui",
+      "seed": 2144401836
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "industrial_gui",
+      "seed": 1729217120
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "viaduct_like",
+      "seed": 1568355439
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "viaduct_like",
+      "seed": 1954438259
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "viaduct_like",
+      "seed": 1574643062
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "irregular_megastructure",
+      "seed": 1956733346
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "irregular_megastructure",
+      "seed": 1110445127
+    },
+    {
+      "fixture": "protected_corridor",
+      "profile": "irregular_megastructure",
+      "seed": 1763626408
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "industrial",
+      "seed": 1269985919
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "industrial",
+      "seed": 2055553107
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "industrial",
+      "seed": 1375061712
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "industrial_gui",
+      "seed": 1424487342
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "industrial_gui",
+      "seed": 1472480889
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "industrial_gui",
+      "seed": 1203177747
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "viaduct_like",
+      "seed": 1594356394
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "viaduct_like",
+      "seed": 1238628931
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "viaduct_like",
+      "seed": 1991919402
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "irregular_megastructure",
+      "seed": 1719297569
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "irregular_megastructure",
+      "seed": 1423580013
+    },
+    {
+      "fixture": "narrow_neck",
+      "profile": "irregular_megastructure",
+      "seed": 1999660741
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "industrial",
+      "seed": 1951671116
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "industrial",
+      "seed": 1855871054
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "industrial",
+      "seed": 1775805467
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "industrial_gui",
+      "seed": 2000821258
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "industrial_gui",
+      "seed": 1373565261
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "industrial_gui",
+      "seed": 1609068954
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "viaduct_like",
+      "seed": 2140732274
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "viaduct_like",
+      "seed": 1954006258
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "viaduct_like",
+      "seed": 1525889788
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "irregular_megastructure",
+      "seed": 1568894729
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "irregular_megastructure",
+      "seed": 1237826155
+    },
+    {
+      "fixture": "stepped_diagonal",
+      "profile": "irregular_megastructure",
+      "seed": 1599517381
+    }
+  ],
+  "policies": [
+    {
+      "name": "off",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "terminal_only",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "receptor_only",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "both",
+      "rounds": 2,
+      "role": "primary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 0,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 1,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 2,
+      "role": "primary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 3,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery",
+      "rounds": 4,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+no_offers",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+frame_frozen",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+mosaic_frozen",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+hard_only",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+fixed",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+reverse",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+cancel",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+frame_budget",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+mosaic_budget",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+solver_budget",
+      "rounds": 2,
+      "role": "secondary"
+    },
+    {
+      "name": "recovery+memory_budget",
+      "rounds": 2,
+      "role": "secondary"
+    }
+  ],
+  "case_count": 96,
+  "execution_count": 1920,
+  "controls": false,
+  "timeout_seconds": 90
+}

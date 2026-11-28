@@ -1,0 +1,44 @@
+{
+  "status": "PASS within stated quantitative scope",
+  "kind": "independent final-source decision-packet readback",
+  "application_source": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "application_tree": "d9740be7cafb8ac7b7d6eee4a16219989745fd95",
+  "packet": {
+    "path": "docs/research/ambient-002/decision-packet.md",
+    "bytes": 57667,
+    "sha256": "1e6478c683912f2429465a1dbe626269b0ada6257f2692d3fdb483da1996b153"
+  },
+  "evidence": {
+    "original_linux_artifact_id": 14995028842,
+    "original_linux_artifact_sha256": "e96d284ac7e44eea93ff9269461166a09cc40b8a352893cb43dc9975c24bf9ac",
+    "raw_report_sha256": "1cfb085b65c9fbf295294fbf5360d7d8f0ac78f9b95039c384fe416bdc889137",
+    "summary_sha256": "298cc3977a5c318ab8530e983a05ce9c298f17a105a5690fd4bb3018b1938a91",
+    "full_original_chain_audit_sha256": "b3d289d7cd9abbe22754f59f0550c48e39009bbae3fb96e0ebdd95a18a72cdc0",
+    "unrounded_comparison_sha256": "29b573f5a6f624529431fb60b48b16574cdc2ae529b8574bd77ce2e8e4c254cb",
+    "compact_archive_sha256": "3e7c4004182fc539259b9b575527eb0b5490bde651a1ad82fa11b262eb8fe606"
+  },
+  "reviewed_claim_groups": [
+    "Exact 122-World/194-actor registration; 178 subjects and 16 companions; 4,560 World seconds and 6,720 actor seconds; 273,600 native and physical steps; 62,400 accepted and zero rejected commands.",
+    "All eight-policy by three-rig main horizontal-range medians and nine paired ablation contrasts.",
+    "Adverse failure counts, withdrawal times, stalls and sampled eight-cell recovery definitions; blocked-route failures remain at 12.6 seconds, before the new wall at 15 seconds.",
+    "Long-wheel stagnation and current long-flyer ranges of 193.009/168.660 cells, 38/36 stable bins, 22.6/24.0 selected-home seconds and 8.2 home-rest seconds each.",
+    "Current one-versus-two sixteen-cell geometric returns, the older two-versus-one comparison, and the distinct authored twenty-cell home-rest windows; no general intentional-return advantage is asserted.",
+    "Four/eight-actor and departing-peer grouping, initial components versus later membership changes, and the near-stationary random counterexample.",
+    "Catalogue selected-module totals are distinguished from actual watch-phase durations; the descriptive one-subject scope is retained.",
+    "Final production sensor, core, advance, native and Rapier elapsed-call costs; disjoint sensor/core subsets lie inside advance; geometry and host limits remain explicit.",
+    "Final Linux eleven-scene/29-image original custody, actual 1920-by-1080 software-renderer timing ranges, and no physical GPU or monitor acceptance.",
+    "New ordinary Foundry exact copied positions through requested second 52, authored twenty-cell versus fixed sixteen-cell distances, actual drive increase, and physical residual/departure scope.",
+    "The historical 83a host-variance negative remains 23,252/67,200 equal positions and 44/194 complete traces; original a725 thin-patch and curiosity supplements are not relabeled.",
+    "Final Linux raw, summary, artifact and compact-archive byte/SHA identities, and the repaired catalogue-section link."
+  ],
+  "corrections_resolved": [
+    "The obsolete catalogue fragment was changed to the actual heading. No numerical correction was requested for the reviewed final tables."
+  ],
+  "unresolved_issues_within_scope": [],
+  "limits": [
+    "This receipt binds only the exact packet bytes named above; later wording has a different identity.",
+    "Windows/extracted portable byte custody and broader architecture/authoring acceptance retain their own specialist/lead reviews; this receipt does not substitute for them.",
+    "The review adds no runtime executions or independently registered treatment cases.",
+    "Physical owner-hardware playfeel remains unaccepted, and the successor remains Draft/HOLD."
+  ]
+}

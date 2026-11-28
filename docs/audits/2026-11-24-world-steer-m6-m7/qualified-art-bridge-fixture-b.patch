@@ -1,0 +1,34 @@
+--- a/tests/test_architecture_proposal_bridge.gd
++++ b/tests/test_architecture_proposal_bridge.gd
+@@ -13,7 +13,8 @@
+ 	var fixture_calls:=0
+ 	var fixture_cancels: Array=[]
+ 	func send(_provider: String,_endpoint: String,_model: String,_key: String,_prompt: String,_instructions: String,
+-			_tokens: int,_seconds: float,_png: String="",_context: Array=[]) -> String:
++			_tokens: int,_seconds: float,_png: String="",_context: Array=[],_guard: Callable=Callable()) -> String:
++		if _guard.is_valid() and not _guard.call(): return "Fixture dispatch guard refused."
+ 		fixture_calls+=1; serial+=1; active=true
+ 		return ""
+ 	func cancel(reason: String="Human Stop") -> void:
+@@ -38,7 +39,7 @@
+ 		if before_guard.is_valid(): before_guard.call()
+ 		if use_guard and not guard.call(): return {"ok":false,"reason":"Live owner pre-dispatch guard refused."}
+ 		var problem:=provider.send("LM Studio","fixture://never-network","signature-fixture","",
+-			Compiler.canonical(request),"Return a typed architecture proposal only.",128,1.0,"",[])
++			Compiler.canonical(request),"Return a typed architecture proposal only.",128,1.0,"",[],guard if use_guard else Callable())
+ 		if not problem.is_empty(): return {"ok":false,"reason":problem}
+ 		if reused_provider_id>0: provider.serial=reused_provider_id
+ 		captured.append({"provider_id":provider.serial,"request":request.duplicate(true),"callback":callback})
+@@ -227,6 +228,12 @@
+ 	check(not error.is_empty() and accepted.request==null and not accepted.active,"actual accepted Provider rejects an empty model before HTTP")
+ 	accepted.cancel("fixture idle cancel")
+ 	check(accepted.request==null and not accepted.active,"actual accepted cancellation signature is callable without transport")
++	var guard_calls: Array=[]
++	var refusing_guard:=func()->bool:
++		guard_calls.append(true); return false
++	error=accepted.send("LM Studio","fixture://never-network","fixture-no-network","","typed fixture","typed fixture",128,1.0,"",[],refusing_guard)
++	check(not error.is_empty() and guard_calls.size()==1,"qualified Art optional guard rejects before request preparation")
++	check(accepted.request==null and not accepted.active and accepted.secrets.is_empty() and accepted.request_preparation_jobs==0,"qualified Art guard refusal starts no HTTP or preparation worker")
+ 	accepted.free(); owner.provider.free(); workflow.queue_free(); session.queue_free()
+ 	await process_frame
+ 	print("ARCHITECTURE_PROPOSAL_BRIDGE: %d checks, %d failures"%[checks,failures])

@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/tmp/ambient-002/perception/godot",
+    "--script",
+    "res://tests/test_ambient2_episodes.gd"
+  ],
+  "mode": "full",
+  "case_id": "main-pockets-runner-s605-t30-n1-stateful",
+  "source_revision": "83a3db6ffb207761df999abedac77eb1401604a8",
+  "custody_sha256": "628e832ad8d539e6319766c1603fd141ee546ce88cab18f2fe4edda008768235",
+  "timeout_seconds": 1800,
+  "started_utc": "2026-11-25T03:01:03Z",
+  "returncode": 0,
+  "elapsed_seconds": 11.13503384499927,
+  "console_sha256": "e100ed3939d87a4cc9bf37d8e15bd98a6fcd10f7906277188738bcaece1404c7",
+  "report_sha256": "dd01b967e4fdb5ff219c60a735f1d6eefe99ce91fed4a70778ad19caeec4fd66"
+}

@@ -1,0 +1,17 @@
+{
+  "schema": "cybersand-goblin001-storage-request-v1",
+  "repository": "techrote/cybersand",
+  "status": "admitted",
+  "accepted_base": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "source_commit": "12eb302f64d0e468f7a9f851bef57ef8c180633b",
+  "source_tree": "97c62ddfd8a080ff52913f70b695e9c24ca5e445",
+  "case_inventory": [
+    "windows_os_faults",
+    "native_file_transaction",
+    "goblin001_controller",
+    "ordinary_default_off"
+  ],
+  "owner_playfeel_accepted": false,
+  "public_release": false,
+  "qualification_revision": "goblin001-accepted-storage-custody-fixture-environment-005"
+}

@@ -6,10 +6,14 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 ---
 
 # Architectural and simulation invariants
+
+## Opt-in persistent authored areas
+
+The [persistent-area contract](../systems/persistent-authored-areas.md#lifecycle-and-atomic-handoff) retains a frozen live owner until a private target is validated, its completed game time is durable, and native/Main adoption is acknowledged. Native checkpoint bytes, original source identity and edited authoring metadata have separate authority. Failed or stale operations cannot grant new time or silently regenerate a seed; unsupported host dependencies refuse travel. This remains a scoped Draft/HOLD prototype.
 
 Use these stable IDs in reviews and fixtures. **Current** identifies inspected
 scope; **Approved** requires implementation where incomplete. **Planned**,
@@ -204,6 +208,10 @@ listed boundaries; execution evidence remains separately dated.
 | RIG-013 | Current: the cellular owner accounts accepted usable work; only a matching accepted, consumed receipt can apply bounded physical recoil once, and cancellation, expiry, rearm, selection and reset fence stale results |
 | RIG-014 | Current: physical processors must settle and fix their real body before worker admission; rotated nonoverlapping exterior ports preflight complete batches, and blocked outputs consume no input |
 | RIG-015 | Current: bounded per-actor/per-processor history preserves stock, age, cycles and cooldown across pickup, redeployment and selection; an exhausted physical device remains observable and inert until its physical owner retires it |
+| AMBIENT-001 | Opt-in candidate: procedural modules receive copied values and cannot mutate World cells, Rapier objects, body position or velocity; the existing issued-observation/command lease remains authoritative |
+| AMBIENT-002 | Opt-in candidate: missing, stale or unsupported sensing is unavailable; sparse native material-ID samples report the nearest observed cell center, never a guaranteed true-nearest cell or framebuffer colour classification |
+| AMBIENT-003 | Opt-in candidate: completed fixed physics steps advance intention time; pause and UI inspection consume no RNG or timer duration; handoff retires commands and handback resets ephemeral intent |
+| AMBIENT-004 | Opt-in candidate: complete profile validation and owner acknowledgement precede authored Apply; failed or stale drafts preserve the previous valid configuration, and saves contain no live timer, RNG or lease continuation |
 
 ### Physical free-flight invariants
 

@@ -1,0 +1,4 @@
+Construct {task} as a readable side elevation. Establish the large structure before adding detail. Keep floors horizontal and supports vertical. Join intended routes and pipe branches deliberately; leave purposeful empty space and the declared clearance route unobstructed. Attach small details to relevant surfaces. Do not fill space merely to increase painted-cell count. Return only a JSON array of supported drawing operations.
+
+Use the following inspected SANDMAPS reference card for structural intent. The illustration is artistic reference, not native geometry or material truth. Its visible observations and proposed construction are separate. The current request contains the grounded text card and original-image link, not image bytes; do not claim to have inspected that image from this text request.
+{reference_card}

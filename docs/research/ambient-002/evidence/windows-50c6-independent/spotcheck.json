@@ -1,0 +1,136 @@
+{
+  "status": "PASS",
+  "application": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "tree": "d9740be7cafb8ac7b7d6eee4a16219989745fd95",
+  "artifact": {
+    "id": 14995491989,
+    "bytes": 28268700,
+    "sha256": "5d12ce325cc0c3024a7c60e4e303e8fed8ef55a437596def809624c561c1101d",
+    "metadata_scope": "Independently checked through the GitHub Actions artifact API; shared download/CRC/full inventory owned by the authoring lane."
+  },
+  "scope": "Independent read-only spot check of original Windows source and extracted living-engine and mounted-editor executions. Full archive, payload, graphical and launcher audit belongs to the authoring lane. No engine was launched by this reader.",
+  "reader_sha256": "67a34fac68bd6e58fb37338ebc80ca2a8b31c142cfecacabe288a731d041dca1",
+  "cases": [
+    {
+      "scope": "ambient",
+      "case": "living_engine",
+      "checks": 648,
+      "qualification_sha256": "2d4fbdd0ab9b05162dd04303cb06616daaf583b682f0ec02bed1aa8430331fae",
+      "process_sha256": "60212a5cbc55ef952bb4e584e41cfb2f3eee36219d4c9f55e3119f99448825c9",
+      "log_sha256": "e6b6a9c716106d0f0ba3502a7487ee974d9ce609d6b80bf0fb7eec5771bd42b5",
+      "report_sha256": "9dc591949aa126f6deb0c0741a3eb73025df49f8ccf0b8805b41dfc7e4098bc0",
+      "pid": 2052,
+      "command": [
+        "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--script",
+        "res://tests/test_ambient_living_engine.gd",
+        "--",
+        "--ci"
+      ],
+      "terminal_matches_original_report": true,
+      "exit_code": 0,
+      "scope_note": "reconstructed pure copied-value living decisions; zero physical actor episodes"
+    },
+    {
+      "scope": "ambient",
+      "case": "living_editor",
+      "checks": 96,
+      "qualification_sha256": "2d4fbdd0ab9b05162dd04303cb06616daaf583b682f0ec02bed1aa8430331fae",
+      "process_sha256": "d4a13485c065ab4bbdff33b569986c6bbbc416c3a9dc09ddd2bb41bf2491d3e3",
+      "log_sha256": "64edfb7d22d944e9af65b1d49e11d674f5eca99f0ef955792ad93fd1b6d09dac",
+      "report_sha256": "dcf95ff72f34c7e0855358626b73bfaaf0b58dedc1e12fa0faed1256e75d5d55",
+      "pid": 3432,
+      "command": [
+        "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "D:\\a\\cybersand\\cybersand\\godot",
+        "--script",
+        "res://tests/test_ambient_living_editor.gd",
+        "--",
+        "--ci"
+      ],
+      "terminal_matches_original_report": true,
+      "exit_code": 0,
+      "actual_mounted_editor": {
+        "applied_generation": 6,
+        "paused_generation": 4,
+        "playing_generation": 5,
+        "resume_configuration_unchanged": true,
+        "unapplied_configuration_unchanged": true,
+        "unapplied_generation": 5
+      },
+      "display": "headless"
+    },
+    {
+      "scope": "extracted-package",
+      "case": "living_engine",
+      "checks": 648,
+      "qualification_sha256": "12f76c73aae5845abea07664764ac7f3f57998d7846ca216c9b16a41477d4b1e",
+      "process_sha256": "e905552c6b2af3818702a492fabed73e6c7192ae1d3882c284c0bc22a2b30add",
+      "log_sha256": "ffa27cb23029f673963c8edb35b6297b80727fe2b377a85143531752e1787d4d",
+      "report_sha256": "2f4e5883cb6339da7ed2f70408a2ac9e99d7b7bf530622ef4f03364486a6fb27",
+      "pid": 7108,
+      "command": [
+        "D:\\a\\_temp\\ambient owner package\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "D:\\a\\_temp\\ambient owner package\\godot",
+        "--script",
+        "res://tests/test_ambient_living_engine.gd",
+        "--",
+        "--ci"
+      ],
+      "terminal_matches_original_report": true,
+      "exit_code": 0,
+      "scope_note": "reconstructed pure copied-value living decisions; zero physical actor episodes"
+    },
+    {
+      "scope": "extracted-package",
+      "case": "living_editor",
+      "checks": 96,
+      "qualification_sha256": "12f76c73aae5845abea07664764ac7f3f57998d7846ca216c9b16a41477d4b1e",
+      "process_sha256": "4ab06c69dc9451961826c6054edf3873f3feb68cb4258c51fcf167a465f4dc96",
+      "log_sha256": "8911adcaabc9bbc743037fb6a1778dbcb305593f3fc936fa6048792b5cfe3511",
+      "report_sha256": "374da560923d18e7dda44ce61f369f447ff839de2b92467732c04797ff771510",
+      "pid": 548,
+      "command": [
+        "D:\\a\\_temp\\ambient owner package\\Godot_v4.7-stable_win64_console.exe",
+        "--headless",
+        "--path",
+        "D:\\a\\_temp\\ambient owner package\\godot",
+        "--script",
+        "res://tests/test_ambient_living_editor.gd",
+        "--",
+        "--ci"
+      ],
+      "terminal_matches_original_report": true,
+      "exit_code": 0,
+      "actual_mounted_editor": {
+        "applied_generation": 6,
+        "paused_generation": 4,
+        "playing_generation": 5,
+        "resume_configuration_unchanged": true,
+        "unapplied_configuration_unchanged": true,
+        "unapplied_generation": 5
+      },
+      "display": "headless"
+    }
+  ],
+  "complete_source_and_project_inventories_equal_between_source_and_extracted": true,
+  "source_input_count": 1143,
+  "loaded_project_input_count": 855,
+  "declared_engine_and_living_fixture_hashes": {
+    "scripts/ambient/ambient_engine.gd": "a406e33433327229c077dc8cfdb065196c4eecea70a51752c2cc9120adc60ab7",
+    "tests/test_ambient_living_engine.gd": "a48857d610fe2a630e3a5e3ee6fc1f4319847c5809325cdad5c595a72768fee2"
+  },
+  "windows_console_engine_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+  "limits": [
+    "Pure living-core checks add zero physical actor episodes.",
+    "The mounted editor fixtures are headless actual scene/UI/native-owner execution, not manual interaction or physical display acceptance.",
+    "Matching inputs and process/report/terminal identities do not replace the complete portable payload and actual graphical audit."
+  ]
+}

@@ -3,6 +3,8 @@ extends RefCounted
 # A starting construction recipe. Native runtime state and command leases are never serialized.
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const ActorCatalog = preload("res://scripts/workbench_actor_catalog.gd")
+const SandboxCapacity = preload("res://scripts/workbench_sandbox_capacity.gd")
+const AmbientAuthoring = preload("res://scripts/ambient/ambient_authoring.gd")
 const BARREL := "reference_barrel"
 const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
 # The first nine are the powders a 4 x 24 source may emit; later entries are
@@ -10,7 +12,6 @@ const RESPONSES := ["LA-SELECTIVE", "LA", "LA-EVENT-OFF", "RFT"]
 const MATERIALS := [2,14,29,13,19,23,25,26,27,3,58,0,8,16,12,7,9,28]
 const MATERIAL_NAMES := ["Sand","Dust","Rust","Stone","Seed","Salt","Sodium","Gunpowder","Coal","Water","Hard wall","Erase",
 	"Lava","Oil","Acid","Wood","Ice","Metal"]
-const MAX_BODIES := 8
 # Workbench-only construction budget; other MicroScenario starts still
 # enforce 4096. Ordinary/generated JSON manifests retain the 1 MiB budget;
 # GEN-008 standalone baselines use a separately bounded raw material payload.
@@ -485,7 +486,8 @@ static func _integer(value: Variant, low: int, high: int) -> bool:
 	return _number(value,low,high) and floor(value) == value
 
 static func _actor_error(a: Variant, size: Vector2i, response: String) -> String:
-	if not a is Dictionary or not _keys(a,["id","model","hash","spawn","options"] + (["control"] if a.has("control") else [])) \
+	if not a is Dictionary or not _keys(a,["id","model","hash","spawn","options"] + (["control"] if a.has("control") else []) \
+			+ (["spawn_rotation_degrees"] if a.has("spawn_rotation_degrees") else [])) \
 			or not _integer(a.id,1,2147483646) or not a.model is String:
 		return "Invalid actor fields or instance ID."
 	var model := str(a.model)
@@ -498,9 +500,9 @@ static func _actor_error(a: Variant, size: Vector2i, response: String) -> String
 		if not control_error.is_empty(): return control_error
 	if not a.spawn is Array or a.spawn.size() != 2 or not _number(a.spawn[0],0,size.x) or not _number(a.spawn[1],0,size.y):
 		return "Invalid saved spawn."
-	var body_bounds := bounds(model)
-	body_bounds.position += point(a.spawn)
-	if not Rect2(Vector2.ZERO,Vector2(size)).encloses(body_bounds):
+	if not _number(a.get("spawn_rotation_degrees",0.0),-180.0,180.0):
+		return "Saved actor orientation must be finite and between -180 and 180 degrees."
+	if not spawn_inside(model,point(a.spawn),deg_to_rad(float(a.get("spawn_rotation_degrees",0.0))),size):
 		return "Place the whole body inside the canvas."
 	if not _keys(a.options,DEFAULT_OPTIONS.keys()):
 		return "Missing or unknown body settings."
@@ -519,6 +521,19 @@ static func _actor_error(a: Variant, size: Vector2i, response: String) -> String
 	if response == "RFT" and a.options.budget != 20.0:
 		return "RFT requires a budget of 20 on every body."
 	return ""
+
+# Validate every prepared collider, including equipment, at the authored angle.
+# A rotated artwork bounding box is not a substitute for physical geometry.
+static func spawn_inside(model: String, origin: Vector2, angle: float, size: Vector2i) -> bool:
+	var prepared := ActorCatalog.definition(model)
+	for part: Dictionary in prepared.get("parts",[]):
+		var pose := Transform2D(angle + float(part.get("angle",0.0)),origin + Vector2(part.offset).rotated(angle))
+		for rectangle: Dictionary in part.get("collision_rects",[{"center":Vector2.ZERO,"size":part.size}]):
+			for x: float in [-1.0,1.0]:
+				for y: float in [-1.0,1.0]:
+					var corner: Vector2 = pose * (Vector2(rectangle.center) + Vector2(rectangle.size) * Vector2(x,y) * 0.5)
+					if corner.x < 0 or corner.y < 0 or corner.x > size.x or corner.y > size.y: return false
+	return not prepared.is_empty()
 
 static func _material(value: Variant, powders_only := false) -> bool:
 	return _integer(value,0,255) and int(value) in (MATERIALS.slice(0,9) if powders_only else MATERIALS)
@@ -553,7 +568,9 @@ static func _stamp_material(value: Variant) -> bool:
 	return bool(_extra_stamp_materials[id])
 
 static func validate(value: Variant, check_starting_paint: bool = true) -> String:
-	if not value is Dictionary or not _keys(value,ROOT_KEYS + ([EQUIPMENT_KEY] if value.has(EQUIPMENT_KEY) else [])) \
+	if not value is Dictionary or not _keys(value,ROOT_KEYS + ([EQUIPMENT_KEY] if value.has(EQUIPMENT_KEY) else []) \
+			+ (["sandbox_capacity"] if value.has("sandbox_capacity") else []) \
+			+ (["ambient_authoring"] if value.has("ambient_authoring") else [])) \
 			or not _integer(value.version,2,2):
 		return "Unsupported starting setup format."
 	if not value.extent is Array or value.extent.size() != 2:
@@ -566,15 +583,20 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 		return "Invalid response, normalization or fire setting."
 	if not _integer(value.rule_radius,2,3) or not _integer(value.brush,2,24) or not _material(value.material):
 		return "Invalid brush, material or execution radius."
-	if not value.actors is Array or value.actors.size() > MAX_BODIES or not _integer(value.next_id,1,2147483647):
-		return "Up to eight independent bodies fit in the physical session."
+	var capacity_format_error := SandboxCapacity.error(value.get("sandbox_capacity",SandboxCapacity.defaults()))
+	if not capacity_format_error.is_empty(): return capacity_format_error
+	var capacity: Dictionary = value.get("sandbox_capacity",SandboxCapacity.defaults())
+	if not value.actors is Array or not _integer(value.next_id,1,2147483647):
+		return "Invalid actor population or next instance identity."
+	if value.actors.size() > int(capacity.logical_limit):
+		return "Composition has %d actors; the configured logical limit is %d. Increase Sandbox Capacity before adding actors." % [value.actors.size(),int(capacity.logical_limit)]
 	var ids := {}
 	for a: Variant in value.actors:
 		var error := _actor_error(a,size,str(value.response))
 		if not error.is_empty(): return error
 		if ids.has(int(a.id)) or a.id >= value.next_id: return "Duplicate or retired instance ID."
 		ids[int(a.id)] = true
-	var capacity_error := ActorCatalog.capacity_error(value.actors)
+	var capacity_error := ActorCatalog.capacity_error(value.actors,capacity)
 	if not capacity_error.is_empty(): return capacity_error
 	if not _integer(value.selected,0,2147483646) or (value.selected != 0 and not ids.has(int(value.selected))):
 		return "Selected instance does not exist."
@@ -589,6 +611,9 @@ static func validate(value: Variant, check_starting_paint: bool = true) -> Strin
 		return "Invalid liquid policy envelope."
 	for word: Variant in value.liquid_policy:
 		if not _integer(word,-2147483648,2147483647): return "Invalid liquid policy word."
+	if value.has("ambient_authoring"):
+		var library_error: String = AmbientAuthoring.validate(value.ambient_authoring)
+		if not library_error.is_empty(): return "Ambient profile library: " + library_error
 	if value.has(EQUIPMENT_KEY):
 		var equipment_error := Equipment.validate(value[EQUIPMENT_KEY],size)
 		if not equipment_error.is_empty(): return "Liquid equipment: " + equipment_error
@@ -602,6 +627,8 @@ static func physical_definitions(setup: Dictionary) -> Array:
 		var control := ActorCatalog.control_for(actor)
 		result.append({"model":actor.model,"instance_id":int(actor.id),"producer":ActorCatalog.producer_for(str(control.source)),
 			"position":point(actor.spawn),"workbench_options":options,"canvas_extent":extent_of(setup),
+			"spawn_rotation":deg_to_rad(float(actor.get("spawn_rotation_degrees",0.0))),
+			"workbench_capacity":setup.get("sandbox_capacity",SandboxCapacity.defaults()).duplicate(true),
 			"workbench_control":control,"usable_index":int(control.usable_index)})
 	return result
 
@@ -715,6 +742,8 @@ static func canonical_actor_numbers(actor: Dictionary) -> void:
 	if actor.has("control"):
 		for key: String in ["version","decision_ticks","usable_index"]:
 			actor.control[key] = int(actor.control[key])
+		if actor.control.has("ambient"):
+			actor.control.ambient = ActorCatalog.AmbientProfile.canonicalize(actor.control.ambient)
 
 
 static func read_named(label: String) -> Dictionary:
@@ -744,4 +773,6 @@ static func read_named(label: String) -> Dictionary:
 		canonical_actor_numbers(a)
 	if setup_data.has(EQUIPMENT_KEY):
 		setup_data[EQUIPMENT_KEY] = Equipment.canonical(setup_data[EQUIPMENT_KEY])
+	if setup_data.has("ambient_authoring"):
+		setup_data["ambient_authoring"] = AmbientAuthoring.canonicalize(setup_data.ambient_authoring)
 	return {"setup":setup_data}

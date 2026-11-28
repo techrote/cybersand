@@ -1,0 +1,25 @@
+{
+  "files": {
+    "import.log": "ad597c51e409409dde4d9ff5719528016cbf03b613b63196d448b471db4fda22",
+    "import.receipt.json": "89b55d3915ab6e2968662dbf636b3780dfb95d938a4cc50f586d1ca2c1b5dc33",
+    "independent-review.json": "c4055f5f05f5b4e575d2b3a1fd4d45dd34a0b476f1ff0189f6a28245a605755a",
+    "material-audition-candidate.json": "3b794749b3758e9d2dda3a0368a78d46a4c8ca05ed3130a6d74b81e9a6661150",
+    "qualification.json": "020f42070cbd550923bba81cdba151d38e284e6c6f2751ff75fb0884cdfaf807",
+    "review_solver_source2.py": "e899d0329a2e58f9ea1b92a9b7ca0049c9c0a145d67a30c7f460767200619dd6",
+    "run_solver_source2.py": "de3b73a17fcc1a4cc1eb2bcb6a337e8c4fe121209be5a8c893579788d5d1c442",
+    "test_lcb_inertial_adapter.log": "965d5f5d860f0c03a827516fb008e8599666d0937fb691edc0d7c4100d7d2591",
+    "test_lcb_inertial_adapter.receipt.json": "0df148992094f6edaf4788962934c26e186332b485d2a4a1bbdc423336270c50",
+    "test_liquid_policy_worker.log": "c07e6833ca4fb6aa90a64060e8aeb69f6fd8eded9168fb70fdacd6b0c24981d5",
+    "test_liquid_policy_worker.receipt.json": "e8fa9638df01a478bde07484f3099ced64b9d355f077013dc8ea21ed9dce2a43",
+    "test_liquid_solver_policy.log": "8058faf919d2b9e9edfbc95bf67155da2b4754d3367c35797355eb919afc90c5",
+    "test_liquid_solver_policy.receipt.json": "44cb5624e54f7db2b135e81cad6f4398a6861a63721babeebbf666c923bd602b",
+    "test_wave_flow.log": "8ccf4aba07d658a174c4fc92259da71c427ba6aec25695a71c6d7fe07633d6e0",
+    "test_wave_flow.receipt.json": "a35740ebee742cd2b737e0c33b620fba0221d5ab49342366b7715e5bced8db04",
+    "test_workbench_material_baseline.log": "78239aa530dc5985e35934915585ae7a6833aab402b7640a42c200e8524b3863",
+    "test_workbench_material_baseline.receipt.json": "08c6a627a403b5a99d32deca7574ca09e4de1b413f6171ffb9547acd79a7d4fd",
+    "test_workbench_physics_play.log": "5d3ccc464992816668574918f8fae73204fc01f025fc0b6e5af51aad72bb4d5e",
+    "test_workbench_physics_play.receipt.json": "3b67332b4a87410f933347cdaad57496777652ea381f7fd23c346435a6bda7c5",
+    "workbench-physics-readback.json": "28ad303afb9fb881b39489513424c614d1a45a36d343f840d43c366be8bf5ee7"
+  },
+  "scope": "Unmodified original source2 solver process evidence, original failed reduction and separate typed-schema review; redundant isolated user-data logs omitted."
+}

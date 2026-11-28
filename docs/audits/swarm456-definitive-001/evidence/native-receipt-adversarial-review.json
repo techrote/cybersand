@@ -1,0 +1,68 @@
+{
+  "schema": 1,
+  "observed_at": "2026-11-24T16:49:13.248022+00:00",
+  "reviewer": "qualification_publication",
+  "disposition": "APPROVE",
+  "scope": "Independent semantic consumer adversarial review; no product/source qualification claim",
+  "file_sha256": {
+    "tools/swarm45/reduce_evidence.py": "e5cd740d77eb1dd085b6bc5ad1554af0eabcfd8caac3027c386f07b0ec428f47",
+    "tools/swarm45/test_native_receipt_identity.py": "57bd7fefb86ff630aca8086acbf2649af91170a07cedea0adcb89a4c30be58ed",
+    "tools/swarm45/test_reduce_evidence.py": "bc03c02bf79e74a0d19c3b10b7c90950f189087d9cc885ca1c82f5bae88aa4ee",
+    "godot/tests/swarm456_reciprocal_ui.gd": "fe726d8958ce62694443da23a6ee2a3a3cdeb89afcede65f105d480b7a3f7164"
+  },
+  "adversarial_probes": [
+    {
+      "probe": "saved_map_rehashed_sidecar",
+      "refused": true,
+      "reason": "Original saved files differ from Create/fresh-Reopen process witnesses"
+    },
+    {
+      "probe": "sidecar_territory_rehashed_process_witnesses",
+      "refused": true,
+      "reason": "Original saved native receipt differs from the acknowledged transaction, source or map"
+    },
+    {
+      "probe": "collapsed_all_generations",
+      "refused": true,
+      "reason": "Native transaction captures do not form the actual installed generation sequence: first_apply"
+    },
+    {
+      "probe": "source_bool",
+      "refused": true,
+      "reason": "Native transaction lacks its independent source/installed capture: first_apply"
+    },
+    {
+      "probe": "installed_extent_float",
+      "refused": true,
+      "reason": "Native transaction lacks its independent source/installed capture: reapply"
+    },
+    {
+      "probe": "sidecar_count_float_rehashed_process_witnesses",
+      "refused": true,
+      "reason": "Original saved native receipt differs from the acknowledged transaction, source or map"
+    },
+    {
+      "probe": "reopen_saved_hash",
+      "refused": true,
+      "reason": "Original saved files differ from Create/fresh-Reopen process witnesses"
+    },
+    {
+      "probe": "source_runtime_changed",
+      "refused": true,
+      "reason": "Original saved native receipt differs from the acknowledged transaction, source or map"
+    },
+    {
+      "probe": "missing_undo",
+      "refused": true,
+      "reason": "Native receipt lacks the three original transaction witnesses or fresh read-only Reopen"
+    },
+    {
+      "probe": "forged_final_receipt",
+      "refused": true,
+      "reason": "Native receipt schema, semantics or captured source identity differs: reapply"
+    }
+  ],
+  "full2048_three_patch_scan_seconds": 1.977,
+  "original_evidence_modified": false,
+  "qualification_consequence": "Fresh complete Q7 required; Q5/Q6 cannot supply new original process witnesses"
+}

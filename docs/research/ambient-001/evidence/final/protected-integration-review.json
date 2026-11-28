@@ -1,0 +1,506 @@
+{
+  "schema": "ambient-independent-integration-review/v1",
+  "reviewer": "Specialist B; read-only final integration review",
+  "reviewed_utc": "2026-11-24T19:28:46.489703+00:00",
+  "base_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "source_commit": "f80aab91d31ce5e753eb6056d679100d83c7b7e7",
+  "source_tree": "6bafffb712441a5c03dd0b12368ac19cff374a34",
+  "status": "passed; no blocking integration finding",
+  "source_bound_runtime_campaign": "pending independent inspection of frozen Linux reports",
+  "tracked_worktree_clean": true,
+  "generated_import_uid_files_excluded": 593,
+  "write_set": [
+    {
+      "status": "A",
+      "path": ".github/workflows/ambient-001-qualification.yml",
+      "sha256": "c1789d8422aa43ecf5ef8a610295dc50fc11bf6792c7511aabe26f6581a56b5c"
+    },
+    {
+      "status": "M",
+      "path": "docs/README.md",
+      "sha256": "fbd82e773f0103ed444c994bb03b3b119ad2d8ce6f77d5a5268cc181aaea1826"
+    },
+    {
+      "status": "M",
+      "path": "docs/architecture/data-ownership-and-lifetimes.md",
+      "sha256": "4b2df2f0dcb6e2aec0968105bf9b4ba9535385eb39052b450b125efe3fee4cac"
+    },
+    {
+      "status": "A",
+      "path": "docs/operations/ambient-workbench.md",
+      "sha256": "24aec30edf1910b16c2486a6e96911e85ca4d4addba6baeaf5ef6658d924eaa9"
+    },
+    {
+      "status": "M",
+      "path": "docs/operations/configuration-and-capacity-budgets.md",
+      "sha256": "520c1c9af2736176ee39388c8da48b6939c898409307d149d0adb89f2b865a97"
+    },
+    {
+      "status": "M",
+      "path": "docs/operations/local-build-and-validation.md",
+      "sha256": "233c935dc8a2af4f2314462dfc6d69c066262a396cc22c4a5993d8b127d57bfc"
+    },
+    {
+      "status": "M",
+      "path": "docs/reference/interfaces-and-message-contracts.md",
+      "sha256": "c6badafdac5a6a84cbac26bf6a1cd99fcef0a5bfb253b1f3ba0b82b883ace1bf"
+    },
+    {
+      "status": "M",
+      "path": "docs/reference/invariants.md",
+      "sha256": "04871c21975f91fa77643e1178e970330afc55db09ef3d144af50dbeb7a9d36e"
+    },
+    {
+      "status": "M",
+      "path": "docs/reference/retrieval-corpus.json",
+      "sha256": "2b24775bc2a2f76594a0af10006ecc35173440ef83f8634395d56851b915f56d"
+    },
+    {
+      "status": "M",
+      "path": "docs/reference/retrieval-index.md",
+      "sha256": "f0839974d97b03755dc2c671abdca69cf8fd096bcbbdbf4149eee34f49138ed1"
+    },
+    {
+      "status": "A",
+      "path": "docs/reference/retrieval-questions-ambient-001.json",
+      "sha256": "246708f84a72eb8b8e5040c13198eb0184b1fe5d90749ef9cf85c46f64e17049"
+    },
+    {
+      "status": "M",
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "08d197b19024fc95655976f25cd6d75440a40a0c6dbb29ff60971e5b765ec44b"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/authoring-ledger.md",
+      "sha256": "d83c05006d8236ab29844123648aae9796955c8d73a04b8af9134f3e038702f1"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/behaviour-ledger.md",
+      "sha256": "1865c6e94e668ff8e60d35978a6cfdfcb520f8f022103bebb1c8fa0933bafddd"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/evidence/native-motion-comparison.png",
+      "sha256": "f39648b172b9f5d1a1906cd85a513f9c612e527d9b5879a07e383f64caf5d080"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/evidence/native-motion-summary.json",
+      "sha256": "04ee13e62cb9a26707f8c25f9d001844fd2d1ed875e5add89f941ecadef8614d"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/evidence/native-motion-trajectories.csv",
+      "sha256": "1e10fb02a57bba9f64942ed82f171df59062ef11f56e4e2ebbed32d1f74c1af6"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/evidence/perception-summary.json",
+      "sha256": "47514aafdb067aeb98f8713e5e88e483acf1a6c4e5961f82333d7e4f8c60a459"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/evidence/personality-independent-review.json",
+      "sha256": "9fa4a811a36c07b5cf525014121acf75d2b4462dc7cbd2a08064c8988679b8a4"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/evidence/personality-summary.json",
+      "sha256": "40fc7fbdf046f251533766148769e17d5c8bd07d0f8f578ff9b6b50e70502e4e"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/evidence/qualification-custody.json",
+      "sha256": "d423b4056045199ba3cbe30ee8ada0b2eac74165c86f9f87b0a54f836d27015c"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/evidence/reduce_evidence.py",
+      "sha256": "3d0c684904b4739755fa331aeeb0ca549f17fe5af133cc1aa19c3dba40f91c65"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/mission-ledger.md",
+      "sha256": "d3e6fe3e4b4941606b89e70013ea0d7871ac58885c02d918567884ebe41ec227"
+    },
+    {
+      "status": "A",
+      "path": "docs/research/ambient-001/perception-ledger.md",
+      "sha256": "307495227df6c9f6f0d66cc5d3a276241d6dd4df6fb50101bef93e34ad4957a5"
+    },
+    {
+      "status": "A",
+      "path": "docs/systems/ambient-actors.md",
+      "sha256": "2910429e50cc3d3582c8b0f3159a4bd6d170c4594f393b98d91d73ab86ebcadc"
+    },
+    {
+      "status": "M",
+      "path": "docs/systems/workbench-actor-composition.md",
+      "sha256": "d4773561c2b9a4b37c6c69f1b19260121c37530cdf4e711470f3e59283741790"
+    },
+    {
+      "status": "A",
+      "path": "godot/data/ambient/profiles.json",
+      "sha256": "f6b36b8af1b183a8368a8fe2466e1d53797314aca8e7f0c6bf1a197e57163c6f"
+    },
+    {
+      "status": "A",
+      "path": "godot/examples/workbench/ambient-flight.json",
+      "sha256": "78b13cb0cd0056b1932b534324b0b9d01cdaf97625284ab094e7e8097c25ee83"
+    },
+    {
+      "status": "A",
+      "path": "godot/examples/workbench/ambient-industrial-yard.json",
+      "sha256": "9ca23a10248dda6a73c4131887607d95ad5562603a8d0f464a90ea1f89c75198"
+    },
+    {
+      "status": "A",
+      "path": "godot/examples/workbench/ambient-ledge-walkway.json",
+      "sha256": "c481605890d65beab593a00ae078bfd7e6bff24c8b3c5a85c4633c950463c2a7"
+    },
+    {
+      "status": "A",
+      "path": "godot/examples/workbench/ambient-oil-water.json",
+      "sha256": "7d8ee79e6559af5cf6731353498db9bf28724dd1d70fad70b39c1b3da8702dc3"
+    },
+    {
+      "status": "A",
+      "path": "godot/examples/workbench/ambient-settlement.json",
+      "sha256": "542b06f0f2623b64aeb74200392dccd4f5b101ebc46888cf50d8fa0d5904065f"
+    },
+    {
+      "status": "A",
+      "path": "godot/scripts/ambient/ambient_actuator.gd",
+      "sha256": "11c14b1e2eca8e8623ac328e36ebf47d269fab17b329be07a0abfe66080608ef"
+    },
+    {
+      "status": "A",
+      "path": "godot/scripts/ambient/ambient_debug_overlay.gd",
+      "sha256": "33d46d5e64464d9de4c7fb8dbac6b104947085e4e436d3f4318d20ee03b8bb02"
+    },
+    {
+      "status": "A",
+      "path": "godot/scripts/ambient/ambient_engine.gd",
+      "sha256": "4c05449d0390782ab4f2427e3f1d03ca1f8c9fbee8ac54cf132894c7638b6834"
+    },
+    {
+      "status": "A",
+      "path": "godot/scripts/ambient/ambient_examples.gd",
+      "sha256": "61a5bd2f7ce59ec00d259a66b3dd1706389a53fafc99107a3abe700dd2bcc23a"
+    },
+    {
+      "status": "A",
+      "path": "godot/scripts/ambient/ambient_modules.gd",
+      "sha256": "6077e1aff117747c2217a20cd698cda587f9dc47434d8f63e0ee616cac33c2f1"
+    },
+    {
+      "status": "A",
+      "path": "godot/scripts/ambient/ambient_perception.gd",
+      "sha256": "8b76fd57be2eb79efeb316b32e544a42663c80b9aa3dae7f9fc697c03089f624"
+    },
+    {
+      "status": "A",
+      "path": "godot/scripts/ambient/ambient_profile.gd",
+      "sha256": "cd0233dc4863a6acad9ff74feeb871e4766714e68bbac22b11712353a2141157"
+    },
+    {
+      "status": "A",
+      "path": "godot/scripts/ambient/ambient_profile_editor.gd",
+      "sha256": "8de1eb538d771af3f07ef796b6f93d7aa7bed12205f6fc57a2f119fbcb46ba48"
+    },
+    {
+      "status": "M",
+      "path": "godot/scripts/main.gd",
+      "sha256": "bfb601f767d82a9a8fb4a9fb6c0613b8867d6cc0b4fae02094597eacc52b048c"
+    },
+    {
+      "status": "M",
+      "path": "godot/scripts/physical_actor_rig.gd",
+      "sha256": "183fab96f2fd8a33694ff8bad6c2ae074548ce24b6d4a0a908f1b8e38b376ed2"
+    },
+    {
+      "status": "M",
+      "path": "godot/scripts/physical_actor_session.gd",
+      "sha256": "edb16c4fa1c7915baa24f1a7e0f5012584dfdea5272e15b877a1fa9631df48c7"
+    },
+    {
+      "status": "M",
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "d78e1c4a8088440f7e30359c5d38d8e9f2336faa7e3df4baea0074d6227f1901"
+    },
+    {
+      "status": "M",
+      "path": "godot/scripts/workbench_actor_catalog.gd",
+      "sha256": "b24cccf5ee5674103d62399fe8cf92b691daebecd51b74820dd9a70deedd67d7"
+    },
+    {
+      "status": "M",
+      "path": "godot/scripts/workbench_actor_control.gd",
+      "sha256": "342a925a2ba0df06599768879fbb04e9f687dac21c0d72147cb1253b51c0cbff"
+    },
+    {
+      "status": "M",
+      "path": "godot/scripts/workbench_actor_panel.gd",
+      "sha256": "04a8d9fb0311d909aa75a258afc617c85bae3428f2a8491b0609b2e2278c0e95"
+    },
+    {
+      "status": "M",
+      "path": "godot/scripts/workbench_setup.gd",
+      "sha256": "ff4f4d3e05ccf6a60ce6616d5f9e1ede5d4f153b33a3685912a8c9d55642005e"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/capture_ambient_examples.gd",
+      "sha256": "f90d52f988d377b7e34759a2e1047ca816c8582cf376553106b6456ff8996cb3"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_authoring.gd",
+      "sha256": "b311ae610021555d1fa64d6ca1dad8e99b6364205520d941c660a57a2449ed70"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_clock.gd",
+      "sha256": "359a0c95bf10b10c31a8b5f1829fd729fb6d204b7c2079e40b4acbc6ecd8bdac"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_engine.gd",
+      "sha256": "6ff15b391ea9b874750da61240e8d30c4d3dc6e72567c50b873e5f07f883b604"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_examples_native.gd",
+      "sha256": "280e425632d857e2ffc66f91688b461c3abd22d656e2986f973a9788bfb154c1"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_independent.gd",
+      "sha256": "3ee20a3ee1195746ff007597e33e23cb3052c01ec91ef8213eddeb26e3026f9a"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_ledge_geometry.gd",
+      "sha256": "55feedfb3ae2f910d9ba0bd5e9d993382c6500d65e4dccc07e7d3d43f7a50983"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_native_motion.gd",
+      "sha256": "ba8e74256ced23dd99a5e4431cbe572775953b257f98935601b461ea61e062ee"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_perception.gd",
+      "sha256": "6c891605bec20e1d3d964f765b79eed21923e9f1d768e0aa74c79821c8be41fb"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_personalities_native.gd",
+      "sha256": "ff3095cd90955ccc87b0cd398e086c9ca63eeabf8b7c4176860ec56a1ce82f2e"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_profile_editor.gd",
+      "sha256": "60eff81f21882432ccf085a534e2f84149e78ccfbda0813c4a06f75aa722502a"
+    },
+    {
+      "status": "A",
+      "path": "godot/tests/test_ambient_workbench.gd",
+      "sha256": "b7f37191ed8ff9f752dd884a0822deb84b998a20518343108ca3bbaf75b9c6a0"
+    },
+    {
+      "status": "A",
+      "path": "tools/ci/test_ambient_delivery.py",
+      "sha256": "4bd3d8aa3920a66914a0c31b393c89dd941663461f085ece457bcf2b96329196"
+    },
+    {
+      "status": "A",
+      "path": "tools/fixtures/ambient-001-qualification-request.json",
+      "sha256": "dca1bedee75919614d8a3f78a1cfde7ba2c1ed418ea10067f2e49b6da73457ee"
+    },
+    {
+      "status": "A",
+      "path": "tools/package_ambient_evaluator.py",
+      "sha256": "b6a147c9408e3d052b888930d98656fd6a510387a79a21eaf57d76594ec40d8f"
+    },
+    {
+      "status": "A",
+      "path": "tools/qualify_ambient.py",
+      "sha256": "35b9ecac3d6a203c6559a95a4a41380c16cd4d62015054b54da2e373b6e468b1"
+    }
+  ],
+  "existing_gameplay_seams": [
+    "godot/scripts/main.gd",
+    "godot/scripts/physical_actor_rig.gd",
+    "godot/scripts/physical_actor_session.gd",
+    "godot/scripts/shared_workbench.gd",
+    "godot/scripts/workbench_actor_catalog.gd",
+    "godot/scripts/workbench_actor_control.gd",
+    "godot/scripts/workbench_actor_panel.gd",
+    "godot/scripts/workbench_setup.gd"
+  ],
+  "native_inputs": {
+    "files": 205,
+    "bytes": 5320396,
+    "all_byte_identical_to_base": true,
+    "manifest": "/workspace/scratch/befe4151f3cf/ambient-evidence/independent-integration-native-inputs.json",
+    "manifest_sha256": "a030474690154bfe80c1b59f252e0f63e16a67a417baf27c1faa166a3ef44f33"
+  },
+  "protected_implementation_files_unchanged": {
+    "godot/scripts/actor_rig_actuation.gd": "78ba62edbffcf9af9e0f4f1b35831dd29d5ad67bc60e7b2ecbfd78fee59ae251",
+    "godot/scripts/actor_rig_catalog.gd": "5808438bd056686c7f96d4ee81908588a2004b49d4b7c048124a86042ade2944",
+    "godot/scripts/actor_rig_effects.gd": "4f116db47173cb7ae000293541bf8fd5bcd64081dab801775b9624854ce146a4",
+    "godot/scripts/actor_rig_motor.gd": "2a876dcd7e7dd9b9506dd278f81090f1fab011b7bc8006886d2d4d796f6b5c90",
+    "godot/scripts/gcr_flyer_authoring.gd": "f9e5795bc8ef2e4e28856b95949150aca03ccf2bc9b075ec66270606a1a642fd",
+    "godot/scripts/gcr_review_fleet.gd": "344f6fcbc30967ac7591aff03c00e47d8ed87594b7f4a35a28c48a2381c9467a",
+    "godot/scripts/gcr_review_fleet_controller.gd": "016400cd42ae2bde57d793c17635f34e3fd8e652d335fc83bcf9168bdf55d505",
+    "godot/scripts/physical_actor_arena.gd": "39ed6d5afcde4a6096d9a1ff9df28a78fc8007b79723304e3894f2117fef18c2",
+    "godot/scripts/physical_actor_catalog.gd": "a2d9a1d683ed07d344a9205b17c89e9ff0306f2e97723b748a3b2726dc4f02a8",
+    "godot/scripts/physical_actor_effects.gd": "e85b3902d753b207a4d3aea81c77e2034a97bb39e85cb0e263aeddffe8dc34da",
+    "godot/scripts/physical_actor_overlay.gd": "ef7e124bd2678c07467814c29e2ba09190d4669be4ac62be8bd3b5344fdc1be6",
+    "godot/scripts/physical_actor_script.gd": "50eb5f452f28ae6c4d56cc0bded4d01d64eb56a95c2bc8a694f39ebf2f684da1",
+    "godot/scripts/physical_actor_trial.gd": "8f2255cc3eedef597c945d5d7a9b9a50a5937ccd3a21ff3383a4414404ef8ffe",
+    "godot/scripts/physical_flight_controller.gd": "47ce24b4253d8e4f7aee2d79bc329d2589fa416d258125c540a999e0151e7b4d",
+    "godot/scripts/physical_flight_course.gd": "29557a84577fce245fc84c9d5922939bf118404c223dcd0dad42b537e49c2915",
+    "godot/scripts/physical_flight_course_view.gd": "9534d0dd3ca39efd7a86fcdc57e92a83fbb588412d74de4e9e589671a426535a",
+    "godot/scripts/physical_flight_development_scoring.gd": "dc938fcb80a41dc5990662f9428cc871f80d8c488c7582866c5276dbbd73095e",
+    "godot/scripts/physical_flight_episode.gd": "b8b42195c97dcf3b5292f841ff53043db8b7fb486e8b46a35707838a7e75f8d0",
+    "godot/scripts/physical_flight_lab_screen.gd": "110cc086644517b49dffe9c033e952e05c783002fe97db370b8519e5691a1f90",
+    "godot/scripts/physical_flight_observation_adapter.gd": "afa43dad5ed8737961567070bbf04754107547c065ab61cb58c56b2df447d71d",
+    "godot/scripts/physical_flight_profile.gd": "82e9e7f156c29d9baf0fd4c6ac36ff6a130467e4209b7b28d22030554f57a440",
+    "godot/scripts/physical_flight_sealed_suite.gd": "2270b7b9a54a8380d0db9437fa33ffe1331bf5a92070f640db933e46965781f8",
+    "godot/scripts/physical_flight_teacher.gd": "0fb571cfd314a53fc86b3517fb5a8258a77d7215fcbcb43fc7f53519e7e29761",
+    "godot/scripts/physical_usable_course.gd": "4dc9cff392b2a82ceb8f63280f084b56d0ae11bc32020d7ccb4a1636b424f2c5",
+    "godot/scripts/physical_usable_equipment.gd": "5804fbda0a5ba055eae5e0bbecbb18fb2949bc844ed58988560095cde0352deb",
+    "godot/scripts/physical_usable_loadouts.gd": "f09afeabae2aea9abbc033b721bfa3d11f6dcadb110c0079c991d2f908826bcc",
+    "godot/scripts/physical_usable_runtime.gd": "f1bb3377da73df672e24abbe06a84621042c64ced45fa96ec6de01616a3c7b18",
+    "godot/scripts/physical_usable_script.gd": "e21454479b42b1a54e001c02c219d8892101884348ad7aabc9ea4d1e3e58bb19",
+    "godot/scripts/player_acrobat_controller.gd": "9cf4d6a65a9c8d7ee1c94179c53aaaf4e118662b52e4ad9469c78deef3fb04a7",
+    "godot/scripts/player_actor_catalog.gd": "f506c97fcfe6772ffb3a989b422c2d0a5e7ae189f2020bf15826fa4f6a0a7091",
+    "godot/scripts/player_environment_panel.gd": "743aea24cf53d583759fa39fad331804b5e88d017b784920d81f4897f9233115",
+    "godot/scripts/player_environment_profiles.gd": "7c9ee013758d303125da456e1128bbf3a7bbba3d841c65341ba38617d52fbc16",
+    "godot/scripts/player_playground.gd": "20822400c57998f4bef223b19920c551cf7ee0ff3cdb25c6221b0dd9d420b2e8",
+    "godot/scripts/player_playground_course.gd": "1fb66932f1c12f6d6d408afcd0ab42904bd858211a008ff1f8b5a4f81164997d",
+    "godot/scripts/player_playground_input.gd": "6a16650f9f6478a0053bc6b7f463d584fe74d9f6351a9909eaa655429315512c",
+    "godot/scripts/player_playground_overlay.gd": "bc297ae298a80a27c02459be098f9b3b975eb3c90d85564ebe3a67ff50aeee80",
+    "godot/scripts/player_playground_runtime.gd": "77ac953a10e5253e2c9bce4a08291f6ec3de9bf121d975499aa3e5a9685c3eb6",
+    "godot/scripts/player_representation.gd": "4b481c04af45ecf9139cd57d0c5ef3dd9d7579c1ce21addaef99132ff420dc96",
+    "godot/scripts/player_vehicle_controller.gd": "c20ab7420bde632b2d77efe1e17f3bc82910d2b8f07e1612890f05fac624f6d2",
+    "godot/scripts/rapier_physics_bridge.gd": "5785caced314952b70ea52a7a15cd5cc4409a0f44d6fddfe81f9964e91405217",
+    "godot/scripts/rigid_body_coupling.gd": "9882be8764318981aa8a8b4a189379012818984a28cb6a35f3bd5787f85ab724",
+    "godot/scripts/usable_catalog.gd": "e13abf66a92be690bc33f453f54bd04ef1e6af02e297df0b964c4154d78d0f7c",
+    "godot/scripts/usable_overlay.gd": "cd0d7adf024dcdedaf75dff21782ece2ad7070f2d37068ee0eebe6f64307c208",
+    "godot/scripts/usable_runtime.gd": "e50ee634ebd8237f17c72311c225f4e19185ee67f30d360815dfa6c1c3faf05b",
+    "godot/scripts/usable_session.gd": "0b6c3a1903f1469a7ee2a9f94e5f7fcb23687e1d2eeca9dcc79e670926c3bc50",
+    "godot/scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+    "godot/scripts/workbench_reactive_policy.gd": "17097c342757755b469cda3f7c1b310a5de812d21e768488d79ade46fd3a4e6f",
+    "godot/project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+    ".gitattributes": "e21eed6789784df22faff5eec492de22da4d49b3ef80fa3f6298e4f80dbb6812"
+  },
+  "protected_runtime_artifacts": {
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+      "accepted_lfs_oid": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "actual_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+    },
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+      "accepted_lfs_oid": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+      "actual_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e"
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+      "accepted_lfs_oid": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "actual_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+      "accepted_lfs_oid": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    }
+  },
+  "rig_original_implementation_byte_identical_after_removing_single_added_readonly_method": true,
+  "owner_guide_claim_review": [
+    {
+      "claim": "Opt-in existing local policy producer; legacy defaults/producers preserved",
+      "evidence": [
+        "godot/scripts/workbench_actor_catalog.gd::default_control/control_error",
+        "godot/scripts/physical_actor_session.gd::advance",
+        "godot/scripts/workbench_actor_control.gd::next_action"
+      ],
+      "result": "Verified. Ambient requires its explicit policy selector; old default_control is unchanged; external policy remains outside automatic local decisions."
+    },
+    {
+      "claim": "Material sensing radius and resolution",
+      "evidence": [
+        "godot/scripts/ambient/ambient_perception.gd::_materials",
+        "godot/scripts/ambient/ambient_modules.gd::module_specs"
+      ],
+      "result": "Verified integer radius 1–96 world cells, default 50, four-cell globally anchored lattice, inclusive circular cell-centre distance, at most 2401 candidate sites and 8 material IDs. Zero sampled coverage is unavailable; nearest means observed sample."
+    },
+    {
+      "claim": "Native identity and freshness",
+      "evidence": [
+        "godot/scripts/ambient/ambient_perception.gd::ingest_snapshot/_freshness_reason",
+        "godot/scripts/main.gd::_physics_process/consume_worker_snapshot"
+      ],
+      "result": "Verified numeric material publications copied before acknowledgement, no displayed-colour classification. Same-revision bytes remain current; changed revisions have a 12-native-tick age budget with monotonic owner checks."
+    },
+    {
+      "claim": "Capability-aware ground/wheel and strict 4LY actuation",
+      "evidence": [
+        "godot/scripts/ambient/ambient_actuator.gd::capabilities/next_action",
+        "godot/scripts/ambient/ambient_profile_editor.gd"
+      ],
+      "result": "Verified ground/walk/roll eligibility excludes separate player controllers; jump requires the ordinary supported action. 4LY emits only move and has no Effort action; the editor disables that parameter. No movement motor or equipment implementation changed."
+    },
+    {
+      "claim": "Bounded real support probes distinct from walls and canvas boundaries",
+      "evidence": [
+        "godot/scripts/physical_actor_rig.gd::ambient_ledge_observation",
+        "godot/scripts/physical_actor_session.gd::_ambient_environment"
+      ],
+      "result": "Verified per-module exact reach/depth, own-body exclusions and max 32 extra rays. Inside/non-support obstruction and clipped no-hit are unavailable; upward support before a clipped endpoint is valid."
+    },
+    {
+      "claim": "Inspection, authoring and persistence ownership",
+      "evidence": [
+        "godot/scripts/ambient/ambient_profile_editor.gd::apply_draft/refresh_inspection",
+        "godot/scripts/ambient/ambient_debug_overlay.gd",
+        "godot/scripts/main.gd::cancel_playable_course_input",
+        "godot/scripts/workbench_setup.gd::canonical_actor_numbers"
+      ],
+      "result": "Verified copied diagnostics without sampling/authority changes, human-only cancellation on opening authoring, staged validation before replacement, stale profile/session refusal, exact authored configuration persistence and no serialized runtime state."
+    },
+    {
+      "claim": "Pause and handback timing semantics",
+      "evidence": [
+        "godot/scripts/physical_actor_session.gd::complete_step/set_suspended/cancel_input",
+        "godot/scripts/workbench_actor_control.gd::cancel/next_action"
+      ],
+      "result": "Verified actual completed Rapier-step time, pause-preserved ambient timers with revoked leases, and reset private intentions on ordinary authority handback."
+    },
+    {
+      "claim": "Accepted population and scope limits",
+      "evidence": [
+        "godot/scripts/physical_actor_session.gd",
+        "godot/scripts/workbench_actor_catalog.gd",
+        "godot/scripts/workbench_physics_bridge.gd"
+      ],
+      "result": "Verified unchanged eight actors/eight parts/64 response proxies. No new material law, native format, global pathfinder, network inference or larger unaccepted host."
+    }
+  ],
+  "findings": [
+    {
+      "id": "B-DOC-LEDGE-CLIP",
+      "severity": "documentation precision",
+      "disposition": "resolved before frozen commit",
+      "original": "Contract described every canvas-clipped ray as unavailable.",
+      "actual": "Upward support before the clipped endpoint is available; a clipped no-hit is unavailable.",
+      "resolution": "Frozen contract explicitly qualifies clipping without a support hit; product implementation unchanged."
+    }
+  ],
+  "limits": [
+    "Static integration/source review is separate from actual qualification execution.",
+    "Unchanged legacy source does not substitute for the frozen regression cases.",
+    "No graphical Windows/NVIDIA playfeel or subjective ambient believability claim."
+  ]
+}

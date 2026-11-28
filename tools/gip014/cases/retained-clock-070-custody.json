@@ -1,0 +1,33 @@
+{
+  "schema": "cybersand-goblin-observed-case-custody-v1",
+  "mission": "GIP-014-goblin-002",
+  "case_id": "retained-clock-070-original",
+  "classification_after_independent_review": "test_oracle_applicability_defect",
+  "production_gameplay_defect": false,
+  "original_automatic_candidate_classification": "unresolved_observation",
+  "original_evidence_mutated": false,
+  "source_commit": "070addb0fdae2240f22e663a2299cef739f83c05",
+  "source_tree": "174e9dbf32a5e4014f731008461a310b3a723f37",
+  "base_product_source": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
+  "instrumentation": "Pinned read-only atomic source-queue observation plus fixed diagnostic; product/oracle logic unchanged",
+  "run_id": 45556434887,
+  "artifact_id": 14995732784,
+  "artifact_sha256": "2f2dc54b6c8af392364e915776cdae4f384e3dacc8f8209dc97c2a7beef25fd8",
+  "original_tape_bytes": 107553,
+  "original_tape_sha256": "d2e84a85941484e5090d27c56ea5c723722fae10bc4625f3463c67afcb02c914",
+  "committed_gzip_bytes": 11539,
+  "committed_gzip_sha256": "d5da6299fbb1ac372296436700f95799fff724b4d101e735bdfab5b97f17f81e",
+  "automatic_candidate_sha256": "ff835fb875d2764345f6cc28e52af74aa8b7048b2b5b35522b02394e04364d62",
+  "fixture_id": "conservation_cell",
+  "fixture_sha256": "b17aeea8523684dcf3cd3c7e6890aad253b2433a81ef292e514c1aca700202ea",
+  "actions": 5,
+  "completed_actions": 5,
+  "target_step": 4,
+  "target_assertion": "authored_reopen_materials",
+  "acceptance_scope": "Original failure evidence. No automatic reduction or unchanged-invariant production correction is claimed. New-source corrected applicability must be qualified separately.",
+  "independent_review_blobs": {
+    "gameplay": "00cf2ff7900e72c7df38cf6db6945c3929014ac2",
+    "source_queues": "d5025f1b7313951500b609313f621012cc2d3d82",
+    "custody": "c38779145bc4a61797df2d80ce3ba7e7d665b7f7"
+  }
+}

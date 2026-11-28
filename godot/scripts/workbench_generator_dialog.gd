@@ -337,7 +337,12 @@ func _open_architecture() -> void:
 		value.seed = _seed.value
 		if _seed.value == floor(_seed.value): value.seed = int(_seed.value)
 		value.origin = [int(_x.value), int(_y.value)]
-		value.extent = [_extent.get_selected_id(), _extent.get_selected_id()]
+	value.extent = [_extent.get_selected_id(), _extent.get_selected_id()]
+	# Keep the immutable 16x16 native planning grid. A 2048 canvas uses
+	# at least 128-cell zones; old 512/1024 projects keep their exact recipe.
+	var minimum_zone: int = maxi(16, int(value.extent[0]) / 16)
+	if int(value.zone_scale) < minimum_zone:
+		value.zone_scale = minimum_zone
 	_architecture.open_project(value)
 
 func start_architectural(project: Dictionary) -> bool:
@@ -345,8 +350,8 @@ func start_architectural(project: Dictionary) -> bool:
 	if not result.get("ok", false):
 		_fail(str(result.get("error", "Invalid architectural project.")))
 		return false
-	if int(result.project.extent[0]) not in [512, 1024]:
-		_fail("Shared Workbench architectural previews support 512 or 1024 cells per side.")
+	if int(result.project.extent[0]) not in [512, 1024, 2048]:
+		_fail("Shared Workbench architectural previews support 512, 1024 or 2048 cells per side.")
 		return false
 	_architecture_project = result.project.duplicate(true)
 	_architecture_result = result

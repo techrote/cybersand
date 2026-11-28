@@ -3,6 +3,7 @@ extends "res://scripts/rapier_physics_bridge.gd"
 # Each physical part has one response owner; authored actors retain independent
 # stable identity above this bounded body map. Compound proxies own occupancy
 # only, never duplicate inertia, drive, history or impulse authority.
+const Capacity = preload("res://scripts/workbench_sandbox_capacity.gd")
 const MAX_AGE: int = 1
 const MAX_CORNER_TRAVEL: float = 0.5
 const MAX_SESSION: int = 9007199254740991
@@ -32,12 +33,12 @@ func configure_instances(definitions: Array, rigs: Array, epoch: int) -> Error:
 	var owner: MainLoop = Engine.get_main_loop()
 	if owner == null: return ERR_INVALID_DATA
 	var previous_session: int = int(owner.get_meta(SESSION_META,0))
-	if not _initialized or definitions.size() != rigs.size() or rigs.is_empty() or rigs.size() > 8 \
+	if not _initialized or definitions.size() != rigs.size() or rigs.is_empty() or rigs.size() > Capacity.MAX_ACTORS \
 		or _session != 0 or previous_session < 0 or previous_session >= MAX_SESSION: return ERR_INVALID_DATA
 	var first: int = 1
 	var body_index: int = 0
 	# Preserve the original single-body packet identities. Multipart sessions use
-	# private 1..64 body identities; the immutable session/epoch and explicit
+	# private bounded body identities; the immutable session/epoch and explicit
 	# authored mapping disambiguate them from identities in every other session.
 	var legacy_identity: bool = rigs.size() == _body_rids.size()
 	for actor_slot: int in range(rigs.size()):
@@ -50,7 +51,7 @@ func configure_instances(definitions: Array, rigs: Array, epoch: int) -> Error:
 		for part: int in range(rig_bodies.size()):
 			var rectangles: Array = rigs[actor_slot].collision_rects(part)
 			if body_index >= _body_rids.size() or rig_bodies[part].get_rid() != _body_rids[body_index] \
-				or rectangles.is_empty() or rectangles.size() > 8 or first + rectangles.size() - 1 > 64: return ERR_INVALID_DATA
+				or rectangles.is_empty() or rectangles.size() > 8 or first + rectangles.size() - 1 > Capacity.MAX_BODIES: return ERR_INVALID_DATA
 			_members.append({"id":body_index + 1,
 				"instance_id":int(definition.instance_id) if legacy_identity else body_index + 1,
 				"actor_instance_id":int(definition.instance_id), "actor_slot":actor_slot, "part_index":part,

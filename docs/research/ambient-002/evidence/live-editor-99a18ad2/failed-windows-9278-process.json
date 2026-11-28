@@ -1,0 +1,19 @@
+{
+  "command": [
+    "D:\\a\\_temp\\godot-windows\\Godot_v4.7-stable_win64_console.exe",
+    "--headless",
+    "--path",
+    "D:\\a\\cybersand\\cybersand\\godot",
+    "--script",
+    "res://tests/test_ambient_living_editor.gd",
+    "--",
+    "--ci"
+  ],
+  "error": "Godot process failed; inspect D:\\a\\cybersand\\cybersand\\evidence\\ambient\\living_editor\\process.log",
+  "exit_code": 1,
+  "log_sha256": "a2f145d49b3404602b5a26d26c5a4115a59db7e89eacf3e306aafec5a7670b53",
+  "pid": 2832,
+  "seconds": 8.375,
+  "status": "failed",
+  "timeout_seconds": 3940.0
+}

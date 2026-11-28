@@ -1,0 +1,63 @@
+{
+  "disposition": "APPROVE test-only scheduling assertion repair and retention of exact Q7 published/runtime/package identities, conditional on fresh full ordinary gates at the new checkpoint",
+  "findings": [],
+  "independent_focused_tests": {
+    "executed": 12,
+    "passed": 12,
+    "skipped": 0
+  },
+  "input_map_comparisons": {
+    "build_inputs_sha256": {
+      "added": [],
+      "changed": [
+        {
+          "current_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+          "path": "tools/ci/test_godot_job_plan.py",
+          "qualified_sha256": "da834242be0ca2922d46d8c24fa998a88a4b99aa97ff9f714506ba2ec9853cc7"
+        }
+      ],
+      "current_count": 1856,
+      "missing": [],
+      "qualified_count": 1856
+    },
+    "extension_inputs_sha256": {
+      "added": [],
+      "changed": [],
+      "current_count": 106,
+      "missing": [],
+      "qualified_count": 106
+    },
+    "native_definition_inputs_sha256": {
+      "added": [],
+      "changed": [],
+      "current_count": 52,
+      "missing": [],
+      "qualified_count": 52
+    },
+    "source_inputs_sha256": {
+      "added": [],
+      "changed": [],
+      "current_count": 156,
+      "missing": [],
+      "qualified_count": 156
+    }
+  },
+  "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+  "observed_at_utc": "2026-11-24T18:43:43.877162+00:00",
+  "policy_sources": [
+    "docs/operations/local-build-and-validation.md#published-and-development-identity-test-controls",
+    "docs/audits/2026-10-25-lcb003-runtime-publication.md#post-publication-identity-test-correction--2026-10-25"
+  ],
+  "published_runtime_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+  "qualified_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "reasoning": [
+    "The obsolete live-inventory 12-to-24 shard band is replaced by existing policy bounds: at most16cases per shard and at most256matrix jobs, without altering the planner, workflow, execution policy or timeouts.",
+    "The new400case positive regression retains each unique case and all1200second child allowances; the preexisting257heavy-case matrix refusal and all deadline/refusal contracts remain.",
+    "The original1856entry build ledger has exactly one explicit later CI-test difference and no added or removed paths. All156native inputs,106extension inputs and52native-definition inputs remain exact.",
+    "The repository expressly allows later test-only corrections on an already published runtime while preserving original source-bound evidence and rerunning corrected/new-head full CI. This does not reopen or reinterpret the stricter prepublication request-only gate.",
+    "Q7 and its published runtimes/evaluator remain exactly source5e34. No claim is made that Q7 executed the new CI test, and no runtime/manifest/source identity retag or republication is approved.",
+    "The original failed broad GDE run45459025464 remains FAILURE; fresh ordinary gates must establish the corrected checkpoint."
+  ],
+  "reviewed_test_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+  "schema": 1
+}

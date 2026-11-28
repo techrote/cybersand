@@ -169,7 +169,7 @@ func _budgets_and_validation() -> void:
 	_check(int(receipts[0]["attempted_writes"]) <= 64 and int(receipts[0]["reads"]) <= 1024,
 		"effect exceeded read/write bounds")
 	var excess: Array = []
-	for _index: int in range(9): excess.append(_request(2))
+	for _index: int in range(CyberPhysicalActorEffects.MAX_REQUESTS + 1): excess.append(_request(2))
 	_check(effects.apply(world, excess, 1)[0]["reason"] == "request_capacity", "oversized batch admitted")
 	_check(world.calls == 49, "oversized batch partially executed")
 	effects = CyberPhysicalActorEffects.new()
@@ -177,7 +177,7 @@ func _budgets_and_validation() -> void:
 	_check(receipts.size() == 2 and receipts[1]["reason"] == "actor_budget", "one actor consumed two effects per frame")
 
 	for mutation: Dictionary in [
-		{"actor_slot": 8}, {"actor_slot": true}, {"radius": 5}, {"radius": 1.5},
+		{"actor_slot": CyberPhysicalActorEffects.MAX_ACTORS}, {"actor_slot": true}, {"radius": 5}, {"radius": 1.5},
 		{"source": Vector2(NAN, 100)}, {"origin": Vector2(1.0e20, 1.0e20)},
 		{"origin": Vector2(500, 100)}, {"strength": INF}, {"strength": true},
 		{"material": 1}, {"pattern": "arbitrary"}, {"native_write": true},
@@ -189,6 +189,18 @@ func _budgets_and_validation() -> void:
 		receipts = validator.apply(fresh, [request], 1)
 		_check(_changed(receipts) == 0 and fresh.calls == 0 and not receipts[0]["consumed"],
 			"invalid request admitted: " + str(mutation))
+
+	# The expanded owner table must accept its last valid actor while retaining
+	# the same per-actor write budget and replay fence at that index.
+	var highest := _request()
+	highest.actor_slot = CyberPhysicalActorEffects.MAX_ACTORS - 1
+	var highest_world := _world()
+	var highest_effects := CyberPhysicalActorEffects.new()
+	receipts = highest_effects.apply(highest_world, [highest], 1)
+	_check(_changed(receipts) == 13 and highest_world.calls == 13 and receipts[0].consumed,
+		"highest admitted actor cannot apply its bounded physical effect")
+	_check(highest_effects.apply(highest_world, [highest], 1)[0].reason == "sequence" \
+		and highest_world.calls == 13, "highest actor bypassed the replay fence")
 
 
 func _native_adapter_smoke() -> void:

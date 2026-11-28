@@ -1,0 +1,157 @@
+{
+  "actual_native_material_probes": {
+    "dimensions": [
+      2048,
+      2048
+    ],
+    "probes": [
+      {
+        "material": 0,
+        "xy": [
+          130,
+          13
+        ]
+      },
+      {
+        "material": 0,
+        "xy": [
+          100,
+          900
+        ]
+      },
+      {
+        "material": 58,
+        "xy": [
+          1210,
+          210
+        ]
+      },
+      {
+        "material": 58,
+        "xy": [
+          1210,
+          760
+        ]
+      },
+      {
+        "material": 0,
+        "xy": [
+          1000,
+          1000
+        ]
+      }
+    ],
+    "sha256": "dfd43209945e1f652b568529439a6659dbe3cbbf1e68b2cab74e3369a2f275e9"
+  },
+  "actual_native_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+  "actual_original_final_framebuffer_visually_inspected": true,
+  "allowed_materialized_runtime_delta_only": true,
+  "canvas_decoded_identities": {
+    "00-blank": {
+      "decoded_sha256": "769c91dfe49300bb252948e12a4318893db53afcb9aa1c4e1aa762ae97220d1e",
+      "mode": "RGB",
+      "size": [
+        1298,
+        751
+      ]
+    },
+    "01-incremental": {
+      "decoded_sha256": "2989a2dc1ec4a1f626dfc16ac9e04fb102444f4218afd7a0e655e5d9e2caf5cb",
+      "mode": "RGB",
+      "size": [
+        1298,
+        751
+      ]
+    },
+    "02-incremental": {
+      "decoded_sha256": "b637362b8b479691e7d8f5d70bc8c43ca3af071d6dd0e14db9905a0f7a7da681",
+      "mode": "RGB",
+      "size": [
+        1298,
+        751
+      ]
+    },
+    "03-stopped": {
+      "decoded_sha256": "b637362b8b479691e7d8f5d70bc8c43ca3af071d6dd0e14db9905a0f7a7da681",
+      "mode": "RGB",
+      "size": [
+        1298,
+        751
+      ]
+    },
+    "04-after-stop": {
+      "decoded_sha256": "b637362b8b479691e7d8f5d70bc8c43ca3af071d6dd0e14db9905a0f7a7da681",
+      "mode": "RGB",
+      "size": [
+        1298,
+        751
+      ]
+    },
+    "05-local-followup": {
+      "decoded_sha256": "fc6d2ffee871c2ec8f84e1b5e67ec00032b2b78b5c260b2ff7b10c904590df18",
+      "mode": "RGB",
+      "size": [
+        1298,
+        751
+      ]
+    },
+    "06-world-followup": {
+      "decoded_sha256": "532e1eb1803497ebb0f2f121fa68bba6dd83cb63eef804386a59a2ba228782e4",
+      "mode": "RGB",
+      "size": [
+        1298,
+        751
+      ]
+    },
+    "07-final": {
+      "decoded_sha256": "afbcfa49e48aebf95c1422cdbd43dccc40b0427c646426253d810c73618e0459",
+      "mode": "RGB",
+      "size": [
+        1298,
+        751
+      ]
+    }
+  },
+  "captured_provider_requests": 4,
+  "driver_sha256": "cb59a90099c7c7bb95f99d21d0452d784e604a9db88ea04fac9180df8ffd9133",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "fixture_sha256": "8630ac5af5b57ac491f278832decd454344db8f7613eebea92e383ec2be88456",
+  "job_id": 138712125238,
+  "limits": [
+    "Scripted provider fixture; no genuine model inference claimed.",
+    "Original hosted frame peak804ms remains evidence, not physical owner responsiveness acceptance.",
+    "No new application execution performed by this independent reader."
+  ],
+  "log_result_and_check_sequence_exact": true,
+  "original_artifact": {
+    "bytes": 3398497,
+    "id": 14955922847,
+    "sha256": "99bd662ec120332d1dc65aefc353eb6ad555f777442495f46b40dc26ca1db5a1"
+  },
+  "original_checks": 38,
+  "original_frame_sha256": "459428996d7567a8ba2071ac17f6d7429272b79c72343a458bc6cc3e49fef953",
+  "original_log_sha256": "cb6bcf23c6838b281713746d8d2d43040562b332227f98345ef742e35665ce08",
+  "original_result_sha256": "3f242cde21bf7b28120023d41f528a0b8b7c54b9018b10fa82237f470e15de54",
+  "partial_stop_receipt": {
+    "changed": 28544,
+    "checked": 28672,
+    "excluded": 128,
+    "human_admitted": 0,
+    "human_pending": 0,
+    "human_refused": 0,
+    "reason": "Human Stop",
+    "refused": 0,
+    "status": "partial",
+    "unchanged": 0
+  },
+  "reviewed_at": "2026-11-24T19:29:31.523644+00:00",
+  "run_attempt": 1,
+  "run_id": 45467878171,
+  "schema": "independent-final-ordinary-art-graphical-review-v1",
+  "session_only_art_log_matches_retained_traffic": true,
+  "source_sha": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+  "source_tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81",
+  "status": "passed",
+  "top_level_original_manifest_files_verified": 22,
+  "visual_observation": "Ordinary Workbench chrome and native partial top strip plus completed local/world polygon-and-airbrush regions are visible. No opaque result overlay substitutes for geometry."
+}

@@ -149,6 +149,7 @@ func select_material(id: int) -> void:
 func select_tool(tool: String) -> void:
 	var index := TOOLS.find(tool)
 	if index < 0: return
+	if bench != null and bench.get("actor_interaction") != null: bench.actor_interaction.cancel("paint_tool_selected")
 	cancel_preview()
 	_tools.select(index)
 	if bench != null: bench._tool.select(0)
@@ -258,6 +259,7 @@ func finish_agent_history() -> void:
 
 func installed() -> void:
 	cancel_preview()
+	var retired_context := _operation.duplicate(false) if str(_operation.get("kind","")) == "art_context" else {}
 	if not _operation.is_empty():
 		_finish_deferred(_operation.get("job",{}), {"status":"invalidated","reason":"World replaced before human edit completion."})
 		_retired_operation = int(_operation.operation_id)
@@ -270,6 +272,8 @@ func installed() -> void:
 	_save_hold = false
 	invalidate_history("World replaced")
 	if _overlay != null: _overlay.invalidate()
+	if not retired_context.is_empty():
+		_finish_art_context(retired_context,{"status":"invalidated","reason":"World replaced before context capture completed.","materials":PackedInt32Array()})
 
 func flattened() -> void:
 	# Admission guarantees no planner/edit/receipt remains. Retire only the old
@@ -307,6 +311,39 @@ func _source(state: Dictionary) -> Dictionary:
 
 func _current() -> Dictionary:
 	return host.simulation_worker.paint_state() if host != null else {}
+
+# Art borrows this owner's read-only capture slot. It never consumes PAINT's
+# receipt mailbox, and it never obtains a live World reference.
+func art_context_state() -> Dictionary:
+	var state := _current()
+	return {"source":_source(state),"extent":extent(),"paused":host != null and host.paused,
+		"busy":busy() or bool(state.get("busy",true)) or bool(state.get("art_busy",false))
+			or bool(state.get("legacy_busy",false)) or bool(state.get("transition_busy",false))
+			or bool(state.get("flatten_busy",false)),
+		"tool":tool_name(),"material":material_id,"selection":selection,
+		"backend":"CyberNativeCellWorld","max_capture_cells":MAX_CELLS}
+
+func art_context_capture(region: Rect2i, completion: Callable) -> Dictionary:
+	if not completion.is_valid(): return {"ok":false,"error":"A context capture needs its response owner."}
+	if not _queue_capture("art_context",region): return {"ok":false,"error":_message}
+	_operation.completion = completion
+	return {"ok":true,"operation_id":int(_operation.operation_id)}
+
+func art_context_cancel(operation_id: int) -> bool:
+	if str(_operation.get("kind","")) != "art_context" or int(_operation.get("operation_id",-1)) != operation_id:
+		return false
+	_operation.cancel_requested = true
+	host.simulation_worker.paint_stop()
+	return true
+
+func _finish_art_context(operation: Dictionary, receipt: Dictionary) -> void:
+	if str(operation.get("kind","")) != "art_context": return
+	var completion: Callable = operation.get("completion",Callable())
+	if not completion.is_valid(): return
+	var copied := receipt.duplicate(true)
+	copied.source = _source(receipt)
+	copied.extent = extent()
+	completion.call(copied)
 
 func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false, live_brush: bool = false) -> bool:
 	if host == null or bench.applied.is_empty(): return false
@@ -762,6 +799,18 @@ func _receive(receipt: Dictionary) -> void:
 	var operation := _operation
 	_operation = {}
 	var current := _current()
+	if str(operation.get("kind","")) == "art_context":
+		var observed := receipt.duplicate(false)
+		if bool(operation.get("cancel_requested",false)):
+			observed.status = "cancelled"
+			observed.reason = "Context capture cancelled."
+			observed.materials = PackedInt32Array()
+		elif _source(receipt) != _source(current) or int(receipt.get("observed_generation",-1)) != int(current.get("generation",-2)):
+			observed.status = "invalidated"
+			observed.reason = "Native World changed before context capture publication."
+			observed.materials = PackedInt32Array()
+		_finish_art_context(operation,observed)
+		return
 	if int(receipt.generation) != int(current.get("generation",-1)) \
 			or int(receipt.get("observed_generation",-1)) != int(receipt.generation):
 		invalidate_history("Old World result retired")

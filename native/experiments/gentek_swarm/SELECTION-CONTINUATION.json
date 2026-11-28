@@ -1,0 +1,511 @@
+{
+  "schema": 1,
+  "programme": "GENTEK-SWARM-003-CONTINUATION",
+  "status": "FROZEN_BEFORE_FRESH_VALIDATION",
+  "selection_frozen": true,
+  "selected_policy": "native_receiver_eight",
+  "options": {
+    "admission": "compatibility-four",
+    "schedule": "single-preferred",
+    "fallback": "native-core-two",
+    "receivers": "required-original-native",
+    "optional_capacity": 8
+  },
+  "known_execution_identity": "729ed2a282853a3647b001ddd29713a42e726575+dirty-90f2ecfecc11",
+  "known_source_input_fingerprint": "90f2ecfecc115cfe65b9f8a0c83e49ea8b3dd53abb4511fe4a26dfa3519c31b5",
+  "known_binary_sha256": "41c5bd0735e0b1b13ea994c5a69f2ddd5af6bb901728168cc3cb7da5b4bcdc76",
+  "aggregate_gate": {
+    "status": "PASS_COMPLETED_STAGES",
+    "interrupted_parent_result": "RUNNING",
+    "primary_and_native_sanitizer_suites": "PASS",
+    "regression_supplement": "PASS",
+    "independent_closure": "PASS",
+    "scope": "An explicit aggregate of completed stages. It does not relabel the interrupted run, claim clean committed source, or replace final qualification."
+  },
+  "fresh_validation_seeds": [
+    8191,
+    12289
+  ],
+  "fresh_validation_at_selection": "Not executed",
+  "fresh_validation_scope": "Only the frozen selected candidate and registered controls; no fresh E4/E6 comparison and no claim of unseen-seed superiority to them.",
+  "decision": "Highest qualified-contact count on the common-success cohorts among candidates with no completion or required-FRAME regression; smaller capacity breaks a useful-outcome tie.",
+  "eligible_policies": [
+    "native_receiver_eight",
+    "native_receiver_single",
+    "native_receiver_six"
+  ],
+  "common_success_contact_score": {
+    "native_receiver_single": 173,
+    "native_receiver_six": 188,
+    "native_receiver_eight": 189
+  },
+  "known_results": {
+    "primary": {
+      "seeds": [
+        605,
+        1701
+      ],
+      "policy_stats": {
+        "native_receiver_single": {
+          "cases": 36,
+          "statuses": {
+            "complete": 26,
+            "unsat": 10
+          },
+          "joints": 90,
+          "posthoc_cells": 388,
+          "mandatory_unresolved": 68,
+          "active_optional_causal_joints": 33,
+          "active_newly_compatible_joints": 24
+        },
+        "native_receiver_six": {
+          "cases": 36,
+          "statuses": {
+            "complete": 26,
+            "unsat": 10
+          },
+          "joints": 99,
+          "posthoc_cells": 442,
+          "mandatory_unresolved": 68,
+          "active_optional_causal_joints": 36,
+          "active_newly_compatible_joints": 25
+        },
+        "native_receiver_eight": {
+          "cases": 36,
+          "statuses": {
+            "complete": 26,
+            "unsat": 10
+          },
+          "joints": 99,
+          "posthoc_cells": 442,
+          "mandatory_unresolved": 68,
+          "active_optional_causal_joints": 36,
+          "active_newly_compatible_joints": 25
+        }
+      },
+      "common_success_cases": [
+        "concave_intrusion_branching_irregular_1701",
+        "concave_intrusion_branching_irregular_605",
+        "concave_intrusion_dense_cohesive_1701",
+        "concave_intrusion_dense_cohesive_605",
+        "foreign_solid_branching_irregular_1701",
+        "foreign_solid_branching_irregular_605",
+        "foreign_solid_dense_cohesive_1701",
+        "foreign_solid_dense_cohesive_605",
+        "island_branching_irregular_1701",
+        "island_branching_irregular_605",
+        "island_dense_cohesive_1701",
+        "island_dense_cohesive_605",
+        "narrow_neck_branching_irregular_1701",
+        "narrow_neck_branching_irregular_605",
+        "narrow_neck_dense_cohesive_1701",
+        "narrow_neck_dense_cohesive_605",
+        "protected_corridor_branching_irregular_1701",
+        "protected_corridor_branching_irregular_605",
+        "protected_corridor_dense_cohesive_1701",
+        "protected_corridor_dense_cohesive_605",
+        "protected_corridor_sparse_regular_1701",
+        "protected_corridor_sparse_regular_605",
+        "stepped_diagonal_branching_irregular_1701",
+        "stepped_diagonal_branching_irregular_605",
+        "stepped_diagonal_dense_cohesive_1701",
+        "stepped_diagonal_dense_cohesive_605"
+      ],
+      "common_success_cases_sha256": "8cbd166e10d4c9756b1415dcf1bb8aed56dab695a4cae3eda1c6ac395d824215",
+      "common_success_contacts": {
+        "native_receiver_single": 90,
+        "native_receiver_six": 99,
+        "native_receiver_eight": 99
+      },
+      "common_C": {
+        "native_receiver_single": {
+          "cases": 20,
+          "joints": 69,
+          "posthoc_cells": 258,
+          "retained_c_joint_ids": 67,
+          "new_joint_ids_vs_c": 2,
+          "same_final_as_c": 15,
+          "case_list_sha256": "d936244b5c6162cf947f898161122955661d04974f857aaa108f18a6c1899509",
+          "C_contacts": 72
+        },
+        "native_receiver_six": {
+          "cases": 20,
+          "joints": 74,
+          "posthoc_cells": 273,
+          "retained_c_joint_ids": 72,
+          "new_joint_ids_vs_c": 2,
+          "same_final_as_c": 18,
+          "case_list_sha256": "d936244b5c6162cf947f898161122955661d04974f857aaa108f18a6c1899509",
+          "C_contacts": 72
+        },
+        "native_receiver_eight": {
+          "cases": 20,
+          "joints": 74,
+          "posthoc_cells": 273,
+          "retained_c_joint_ids": 72,
+          "new_joint_ids_vs_c": 2,
+          "same_final_as_c": 18,
+          "case_list_sha256": "d936244b5c6162cf947f898161122955661d04974f857aaa108f18a6c1899509",
+          "C_contacts": 72
+        }
+      },
+      "completion_regressions_vs_E4": {
+        "native_receiver_six": [],
+        "native_receiver_eight": []
+      },
+      "required_increases_vs_E4": {
+        "native_receiver_six": [],
+        "native_receiver_eight": []
+      },
+      "historical_equivalence": {
+        "expected_cases": 576,
+        "native_outcome_equivalence_matches": 576,
+        "full_receipt_matches": 180,
+        "reviewed_difference_count": 6981,
+        "unexpected_difference_count": 0
+      }
+    },
+    "regression": {
+      "seeds": [
+        2718,
+        4099
+      ],
+      "policy_stats": {
+        "native_receiver_single": {
+          "cases": 36,
+          "statuses": {
+            "complete": 26,
+            "unsat": 10
+          },
+          "joints": 83,
+          "posthoc_cells": 286,
+          "mandatory_unresolved": 78,
+          "active_optional_causal_joints": 35,
+          "active_newly_compatible_joints": 25
+        },
+        "native_receiver_six": {
+          "cases": 36,
+          "statuses": {
+            "complete": 26,
+            "unsat": 10
+          },
+          "joints": 89,
+          "posthoc_cells": 300,
+          "mandatory_unresolved": 78,
+          "active_optional_causal_joints": 37,
+          "active_newly_compatible_joints": 27
+        },
+        "native_receiver_eight": {
+          "cases": 36,
+          "statuses": {
+            "complete": 26,
+            "unsat": 10
+          },
+          "joints": 90,
+          "posthoc_cells": 300,
+          "mandatory_unresolved": 78,
+          "active_optional_causal_joints": 37,
+          "active_newly_compatible_joints": 27
+        }
+      },
+      "common_success_cases": [
+        "concave_intrusion_branching_irregular_2718",
+        "concave_intrusion_branching_irregular_4099",
+        "concave_intrusion_dense_cohesive_2718",
+        "concave_intrusion_dense_cohesive_4099",
+        "foreign_solid_branching_irregular_2718",
+        "foreign_solid_branching_irregular_4099",
+        "foreign_solid_dense_cohesive_2718",
+        "foreign_solid_dense_cohesive_4099",
+        "island_branching_irregular_2718",
+        "island_branching_irregular_4099",
+        "island_dense_cohesive_2718",
+        "island_dense_cohesive_4099",
+        "narrow_neck_branching_irregular_2718",
+        "narrow_neck_branching_irregular_4099",
+        "narrow_neck_dense_cohesive_2718",
+        "narrow_neck_dense_cohesive_4099",
+        "protected_corridor_branching_irregular_2718",
+        "protected_corridor_branching_irregular_4099",
+        "protected_corridor_dense_cohesive_2718",
+        "protected_corridor_dense_cohesive_4099",
+        "protected_corridor_sparse_regular_2718",
+        "protected_corridor_sparse_regular_4099",
+        "stepped_diagonal_branching_irregular_2718",
+        "stepped_diagonal_branching_irregular_4099",
+        "stepped_diagonal_dense_cohesive_2718",
+        "stepped_diagonal_dense_cohesive_4099"
+      ],
+      "common_success_cases_sha256": "61e088317f3004b4e81dfd445ade07c35c9d5ad60dc553b5d9643b0de6940764",
+      "common_success_contacts": {
+        "native_receiver_single": 83,
+        "native_receiver_six": 89,
+        "native_receiver_eight": 90
+      },
+      "common_C": {
+        "native_receiver_single": {
+          "cases": 22,
+          "joints": 65,
+          "posthoc_cells": 223,
+          "retained_c_joint_ids": 64,
+          "new_joint_ids_vs_c": 1,
+          "same_final_as_c": 18,
+          "case_list_sha256": "cdacf3952a65d4badd3d4deacad91a70341df6da0b1d5abd02fd3f4364474581",
+          "C_contacts": 71
+        },
+        "native_receiver_six": {
+          "cases": 22,
+          "joints": 70,
+          "posthoc_cells": 228,
+          "retained_c_joint_ids": 70,
+          "new_joint_ids_vs_c": 0,
+          "same_final_as_c": 22,
+          "case_list_sha256": "cdacf3952a65d4badd3d4deacad91a70341df6da0b1d5abd02fd3f4364474581",
+          "C_contacts": 71
+        },
+        "native_receiver_eight": {
+          "cases": 22,
+          "joints": 71,
+          "posthoc_cells": 228,
+          "retained_c_joint_ids": 71,
+          "new_joint_ids_vs_c": 0,
+          "same_final_as_c": 22,
+          "case_list_sha256": "cdacf3952a65d4badd3d4deacad91a70341df6da0b1d5abd02fd3f4364474581",
+          "C_contacts": 71
+        }
+      },
+      "completion_regressions_vs_E4": {
+        "native_receiver_six": [],
+        "native_receiver_eight": []
+      },
+      "required_increases_vs_E4": {
+        "native_receiver_six": [],
+        "native_receiver_eight": []
+      },
+      "historical_equivalence": {
+        "expected_cases": 180,
+        "native_outcome_equivalence_matches": 180,
+        "full_receipt_matches": 108,
+        "reviewed_difference_count": 1635,
+        "unexpected_difference_count": 0
+      }
+    }
+  },
+  "selected_contact_changes_vs_E4": [
+    {
+      "cohort": "primary",
+      "case": "concave_intrusion_branching_irregular_1701",
+      "gained_vs_E4": [
+        280363
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "primary",
+      "case": "concave_intrusion_branching_irregular_605",
+      "gained_vs_E4": [
+        545339
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "primary",
+      "case": "concave_intrusion_dense_cohesive_1701",
+      "gained_vs_E4": [
+        280363
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "primary",
+      "case": "concave_intrusion_dense_cohesive_605",
+      "gained_vs_E4": [
+        545587
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "primary",
+      "case": "foreign_solid_dense_cohesive_1701",
+      "gained_vs_E4": [
+        67903795
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "primary",
+      "case": "island_branching_irregular_1701",
+      "gained_vs_E4": [
+        67686221,
+        67686761
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "primary",
+      "case": "island_dense_cohesive_1701",
+      "gained_vs_E4": [
+        67686753
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "primary",
+      "case": "stepped_diagonal_branching_irregular_1701",
+      "gained_vs_E4": [
+        538199
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "regression",
+      "case": "concave_intrusion_dense_cohesive_4099",
+      "gained_vs_E4": [
+        278315
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "regression",
+      "case": "foreign_solid_branching_irregular_2718",
+      "gained_vs_E4": [
+        526971,
+        67672644,
+        67672652
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "regression",
+      "case": "foreign_solid_dense_cohesive_4099",
+      "gained_vs_E4": [
+        9271
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "regression",
+      "case": "island_branching_irregular_2718",
+      "gained_vs_E4": [
+        630621,
+        67686753
+      ],
+      "lost_vs_E4": []
+    },
+    {
+      "cohort": "regression",
+      "case": "island_dense_cohesive_2718",
+      "gained_vs_E4": [
+        630621
+      ],
+      "lost_vs_E4": [
+        67686265
+      ]
+    }
+  ],
+  "E6_E8_contact_differences": [
+    {
+      "cohort": "regression",
+      "case": "foreign_solid_branching_irregular_2718",
+      "E8_gained_vs_E6": [
+        67672652
+      ],
+      "E8_lost_vs_E6": []
+    }
+  ],
+  "E6_E8_equal_hash_cases_out_of_72": {
+    "native_material_sha256": 72,
+    "prejoin_material_sha256": 72,
+    "category_assignment_sha256": 72,
+    "effective_domains_sha256": 72
+  },
+  "interpretation": [
+    "All 72 E6/E8 material, category and effective-domain hashes match. Their one contact-count difference is authorization of existing qualified native material, with no added category response.",
+    "Preserve the recorded loss of one optional contact at the unchanged shared instance bound in island_dense_cohesive_2718. Required FRAME obligations do not improve.",
+    "The prior B 171/C 72 control receipt has its own recorded source identity. Final qualification reruns B 171/C 72 on the exact final source before opening fresh seeds."
+  ],
+  "preselection_controls": {
+    "source": "729ed2a282853a3647b001ddd29713a42e726575+dirty-f88bfd79fa5d",
+    "B_exact_records": 171,
+    "C_exact_records": 72
+  },
+  "independent_audits": {
+    "primary": {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-independent-review/known-v2/primary-audit.json",
+      "sha256": "c0f29e4288eb7184eac0d7deb70599e3818b712cfabec0c7f71df29cdcead628",
+      "records": 468,
+      "checks": 70659568
+    },
+    "regression": {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-independent-review/known-v2/regression-audit.json",
+      "sha256": "a5342f96c12fc0b39d8c4298c7b60a5c4d4a953011e8710bf62f222ec1ca5fcf",
+      "records": 144,
+      "checks": 21745602
+    }
+  },
+  "evidence": [
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-known-v2/primary/resilience_summary.json",
+      "sha256": "77790d97024566edb329c036485e9c48d8355dca3225550b79902237a5ea95f8",
+      "role": "Known cohort aggregate and common-success comparisons"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-known-v2/primary/resilience_rows.json",
+      "sha256": "f3a6029af0ef34da843f8715a0d01e815fbe3dc39adc75a30caa1d2aab5af4c0",
+      "role": "Every known case and contact identity"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-known-v2/primary-historical-comparison.json",
+      "sha256": "7c121acbd0fef5f9b66ce90898ec3fed4937ba4ab4e34f398e90aad559d2014b",
+      "role": "Historical native equivalence with all receipt differences retained"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-known-regression-v2/regression/resilience_summary.json",
+      "sha256": "f8f7c9b0e5c1f54a393026228acd53cbe62a899ca2f161ca2525732036d9f439",
+      "role": "Known cohort aggregate and common-success comparisons"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-known-regression-v2/regression/resilience_rows.json",
+      "sha256": "85c0a3525b56c704e1d6a72a22cb00172d002b4d2020c9e0564bcf540ecdb2c2",
+      "role": "Every known case and contact identity"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-known-regression-v2/regression-historical-comparison.json",
+      "sha256": "bc304e1073889490a8a2a3df6d7fd3f66c069f789f1747f35c8bdf8ab4febb55",
+      "role": "Historical native equivalence with all receipt differences retained"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-known-v2/manifest.json",
+      "sha256": "7d71a8a84000d85ddb459c1168b1813c356c906741012c04198f4f59102fefe2",
+      "role": "Interrupted whole run; only its explicitly completed primary and test stages are used"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-known-regression-v2/manifest.json",
+      "sha256": "b3b87a1b36b35260c20e17f19a7a5d65d7d8d5c1ba6f36c94d524b5069b3d1e1",
+      "role": "Closed PASS regression supplement using the identical frozen source and binary"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/recovery/known-v2-tool-session-interruption.json",
+      "sha256": "34023837fc7429e8e5e95dfed4293d4a001e3d34b2e3d619b630b84ed33c6477",
+      "role": "Preserved tool-session loss and source/binary custody"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-independent-review/known-v2/closure.json",
+      "sha256": "bdfe7956ab743de3105027616c15067d810647399f26288308991250464fd0f0",
+      "role": "Independent closure of these known-source stages; final clean-source qualification remains separate"
+    },
+    {
+      "path": "/workspace/scratch/3459eb4a031f/continuation-selection-controls/manifest.json",
+      "sha256": "f24ef3b9c67239c0699d71c2c487640dab83be1d1c8d3c6a093ed85c96bdb975",
+      "role": "Earlier preselection B171/C72 source; final source controls are independently rerun before fresh validation"
+    }
+  ],
+  "scope": "Draft/HOLD native research; no default promotion, production registration, Workbench integration or merge.",
+  "selected_utc": "2026-11-19T02:06:36.562442+00:00",
+  "source_freeze": {
+    "method": "Commit this decision with the reconstructed source before executing fresh validation. Native and executable input bytes remain those of the reviewed known-v2 fingerprint; only the selection and explanatory documentation are added at freeze.",
+    "known_source_input_fingerprint": "90f2ecfecc115cfe65b9f8a0c83e49ea8b3dd53abb4511fe4a26dfa3519c31b5",
+    "fresh_validation_not_observed": true,
+    "final_gates_before_fresh": "The qualification runner must rebuild and pass frozen B171/C72 and all native/sanitizer suites on the committed source before entering the validation lane."
+  }
+}

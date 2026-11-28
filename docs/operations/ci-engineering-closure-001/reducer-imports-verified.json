@@ -1,0 +1,15 @@
+{
+  "status": "passed",
+  "exact_original_input_modules": [
+    "tools/ci/execution_policy.py",
+    "tools/ci/execution_telemetry.py",
+    "tools/ci/godot_process_monitor.py",
+    "tools/ci/godot_scheduling.py",
+    "tools/ci/godot_timeout_diagnostics.py",
+    "tools/ci/native_candidate_identity.py",
+    "tools/ci/performance_history.py",
+    "tools/ci/physical_progress_watchdog.py",
+    "tools/ci/run_godot_regressions.py"
+  ],
+  "execution_policy_exact": true
+}

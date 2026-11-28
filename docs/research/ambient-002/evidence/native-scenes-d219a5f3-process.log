@@ -1,0 +1,17 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+AMBIENT_LIVING_EXAMPLES_WAIT completed native and physical interval: ambient2-settlement native=191 physical=191
+AMBIENT_LIVING_EXAMPLE ambient2-settlement actors=8 native=240 rapier=240 failures=0
+AMBIENT_LIVING_EXAMPLES_WAIT completed native and physical interval: ambient2-refinery native=226 physical=226
+AMBIENT_LIVING_EXAMPLE ambient2-refinery actors=6 native=240 rapier=240 failures=0
+AMBIENT_LIVING_EXAMPLES_WAIT completed native and physical interval: ambient2-cavern native=139 physical=140
+AMBIENT_LIVING_EXAMPLE ambient2-cavern actors=6 native=240 rapier=240 failures=0
+AMBIENT_LIVING_EXAMPLES_WAIT completed native and physical interval: ambient2-courtyard native=227 physical=227
+AMBIENT_LIVING_EXAMPLE ambient2-courtyard actors=8 native=240 rapier=240 failures=0
+AMBIENT_LIVING_EXAMPLES_WAIT completed native and physical interval: ambient2-floodyard native=174 physical=174
+AMBIENT_LIVING_EXAMPLE ambient2-floodyard actors=6 native=240 rapier=240 failures=0
+AMBIENT_LIVING_EXAMPLES_WAIT completed native and physical interval: ambient2-aerial-habitat native=163 physical=164
+AMBIENT_LIVING_EXAMPLE ambient2-aerial-habitat actors=6 native=240 rapier=240 failures=0
+AMBIENT_LIVING_EXAMPLES checks=210 failures=0 cases=6

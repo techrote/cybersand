@@ -1,0 +1,12 @@
+{
+  "schema": "ramcache-strata-integration-request-v1",
+  "sequence": 1,
+  "mission": "RAMCACHE-STRATA-INTEGRATION-001",
+  "accepted_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "ramcache_head": "af45bfb332f9822780db9304779ff0cdf55661df",
+  "strata_head": "d37fea86dbed2d9ae4b22e59c676d98f525c1ea8",
+  "excluded_objectshard_head": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+  "optional_optics_90_percent_gate": "owner-waived-2026-11-28",
+  "classic_remains_default": true,
+  "purpose": "Qualify the owner-authorized integrated application and exact final-main portable Windows evaluator; retained runtime reuse requires unchanged native inputs and committed artifact identities."
+}

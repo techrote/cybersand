@@ -1,0 +1,92 @@
+{
+  "schema": "cybersand.material-audition.independent-publication-review",
+  "schema_version": 1,
+  "status": "passed",
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+  "publication_commit": "206f14dade78f42b5d8502627bcc19c7093c808e",
+  "publication_tree": "ec47ea7606e1b38f4a19b2352dafc8c12c134d19",
+  "single_parent": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "changed_paths": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "original_run_id": 45465121123,
+  "platforms": {
+    "linux": {
+      "runtime_sha256": "b7afb86202d3a99c4a2c20751819899b362931b78454d1b29c3d7c32888b8f78",
+      "runtime_bytes": 5315056,
+      "manifest_sha256": "262955148ab157196f8760612ee863bb24e09ea59cf8a8878e9ce95cf7e0eea2",
+      "candidate_manifest_sha256": "2809b421ac72ed592feb02035223f5842db84721496cfac3cf6a36c940e482ec",
+      "source_input_count": 108,
+      "build_input_count": 966,
+      "original_receipt_bindings": {
+        "default_equivalence_sha256": {
+          "file": "hosted-source3-linux/evidence/performance/summary.json",
+          "sha256": "f6b2c54f37ec5986b5a303ffc14fe22731f8a45efe8d671c1cd6383d1d267628"
+        },
+        "windows_native_execution_sha256": {
+          "file": "hosted-source3-windows/evidence/windows-native/native-execution.json",
+          "sha256": "84683be15e75fe3217d360820e223a59ac87f52d3a2f3c1e83512602158af605"
+        },
+        "windows_package_execution_sha256": {
+          "file": "hosted-source3-windows/evidence/relocated-package/package-execution.json",
+          "sha256": "38f60c1f3072966b035fc46c67dc1f1974fa144cda53cb8c1872ddcba3568359"
+        },
+        "validation_sha256": {
+          "file": "hosted-source3-linux/evidence/headless/execution.json",
+          "sha256": "8aa19bca62131ac1b4d7d3d12f9a939b9dbf7d1daabb93581c0c323d43285f5a"
+        },
+        "graphical_validation_sha256": {
+          "file": "hosted-source3-linux/evidence/graphical/execution.json",
+          "sha256": "0a19df25f9aa3932bcf5a33f3ea28f79f5b9f6a56c06c80a800551f383d762f4"
+        }
+      }
+    },
+    "windows": {
+      "runtime_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+      "runtime_bytes": 5870592,
+      "manifest_sha256": "3439326daaf8ef49fc2295611ed5eb56ea0c165f40936732f35d63eed41ddb75",
+      "candidate_manifest_sha256": "9b03efa1522ae5a38b9962ca7a7cbd114a61eee80bc1ab9c6e0fe334a5862d3e",
+      "source_input_count": 108,
+      "build_input_count": 966,
+      "original_receipt_bindings": {
+        "default_equivalence_sha256": {
+          "file": "hosted-source3-linux/evidence/performance/summary.json",
+          "sha256": "f6b2c54f37ec5986b5a303ffc14fe22731f8a45efe8d671c1cd6383d1d267628"
+        },
+        "windows_native_execution_sha256": {
+          "file": "hosted-source3-windows/evidence/windows-native/native-execution.json",
+          "sha256": "84683be15e75fe3217d360820e223a59ac87f52d3a2f3c1e83512602158af605"
+        },
+        "windows_package_execution_sha256": {
+          "file": "hosted-source3-windows/evidence/relocated-package/package-execution.json",
+          "sha256": "38f60c1f3072966b035fc46c67dc1f1974fa144cda53cb8c1872ddcba3568359"
+        },
+        "validation_sha256": {
+          "file": "hosted-source3-windows/evidence/windows/execution.json",
+          "sha256": "6f8fed26aed72ae450fd612437f48ff0a6ba18a06c977b812da5a72312171e8d"
+        }
+      }
+    }
+  },
+  "all_1074_manifest_input_digests_verified_against_explicit_source_git_blobs": true,
+  "source_inputs_match_both_original_native_candidates": true,
+  "native_core_identical_to_independently_reviewed_commit": "f66e0949dfd5257bc926adc87988ddd0f4634761",
+  "linux_actual_undefined_symbol_maxima": {
+    "GLIBC": "2.33",
+    "GLIBCXX": "3.4.30",
+    "CXXABI": "1.3.9"
+  },
+  "linux_replace_cold_import_absent": true,
+  "disposition": "Draft/HOLD",
+  "physical_owner_acceptance": "OWNER-PENDING",
+  "limits": [
+    "This review validates publication identity and original evidence bindings; the prior independent Linux and Windows reviews validate process execution.",
+    "The delivered Windows archive was verified by the original Windows execution and publisher; local whole-archive transfer verification remains pending.",
+    "966 build inputs are the retained manifest scope; the immutable candidate manifest separately binds its complete 1508 execution inputs.",
+    "The native core comparison excludes the separately reviewed GDExtension receipt and ABI portability changes."
+  ]
+}

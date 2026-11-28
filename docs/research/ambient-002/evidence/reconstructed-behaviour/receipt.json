@@ -1,0 +1,69 @@
+{
+  "schema": "ambient-002-reconstructed-behaviour-qualification/v1",
+  "source_commit": "f76e29cc87a947a20f9397ecc79ba8a06d2ecbc8",
+  "utc": "2026-11-25T02:41:45.078746+00:00",
+  "platform": "Linux x86_64",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "source_sha256": {
+    "godot/scripts/ambient/ambient_engine.gd": "6a01634bf5913f6e64ead72a19f8e0488717895774ab400221fe740b317c1ec2",
+    "godot/scripts/ambient/ambient_memory.gd": "36d61c69440850a295c85bfb1b855c6ca3e455a34ba3c18f049c26ca98cc4f32",
+    "godot/scripts/ambient/ambient_stateful_modules.gd": "18956efada8100b484e6248505b396c61de2bf93dd7e6850a6f336c6eb8ad401",
+    "godot/scripts/ambient/ambient_modules.gd": "fb085974637fbd51628ad0e17b981c87f26250867453f2576a0d469e44ca59da",
+    "godot/scripts/ambient/ambient_profile.gd": "149979a6cf3d4ae0437c9eecaf5807f9598a9e6d135d9f0d7cfcf1e54c5cd689",
+    "godot/data/ambient/profiles.json": "9b5cfcf22a653f7d76d9c9f205a6222c442ec577e90eabcff8ad9d46f39cfb87",
+    "godot/tests/test_ambient_engine.gd": "b759d833ac39df7be58a1d5c04c169cf5b7c01bc6b922d448bd44f8b8ecb1bb1",
+    "godot/tests/test_ambient_living_engine.gd": "36425cc04e73dc509eb6cfe69abad7746fcb5e669789e433b88cd78a311275e3"
+  },
+  "executions": [
+    {
+      "name": "living",
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_ambient_living_engine.gd"
+      ],
+      "exit_code": 0,
+      "result": {
+        "benchmark": {
+          "actors": 8,
+          "decisions": 960,
+          "elapsed_usec": 309366,
+          "mean_usec": 322.25625,
+          "modules": 11,
+          "profile": "persistent_scavenger",
+          "scope": "pure copied-value decisions, not native or physical progression"
+        },
+        "checks": 567,
+        "engine": "ambient-engine/v2",
+        "failure_labels": [],
+        "failures": 0,
+        "scope": "reconstructed pure copied-value living decisions; zero physical actor episodes"
+      },
+      "log": "living.log",
+      "log_sha256": "f337ce21d49c2e0a846ed0fbc32f19600bba29bf8dac0a11171d176100fdd947"
+    },
+    {
+      "name": "predecessor",
+      "command": [
+        "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "godot",
+        "--script",
+        "res://tests/test_ambient_engine.gd"
+      ],
+      "exit_code": 0,
+      "result": {
+        "checks": 895,
+        "failures": 0,
+        "scope": "pure-data modules and arbitration"
+      },
+      "log": "predecessor.log",
+      "log_sha256": "125b06ffef338b7c9260c800e452cd66c8037c9d63881dfee1536410801528e0"
+    }
+  ],
+  "scope": "Fresh actual pure copied-value tests of reconstructed source; zero physical actor episodes. Earlier lost local passes do not qualify these bytes."
+}

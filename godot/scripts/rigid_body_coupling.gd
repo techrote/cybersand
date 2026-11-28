@@ -4,9 +4,9 @@ extends RefCounted
 # Prototype value-data bridge between scene-tree RigidBody2D nodes and the
 # cellular worker. No Node, RID, PhysicsDirectBodyState2D, or other live Godot
 # physics object crosses the thread boundary.
-# Eight actors with up to eight rectangular Rapier parts; the float ABI stays
-# compatible with the original barrel fixtures.
-const MAX_BODIES: int = 64
+# IDs remain exactly representable in float32. Authored Workbench budgets are
+# independent of this bounded native response scratch ceiling.
+const MAX_BODIES: int = 4096
 const MAX_SAMPLE_SERIAL: int = 16777215
 
 const INPUT_BODY_ID: int = 0

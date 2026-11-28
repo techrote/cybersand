@@ -1,0 +1,32 @@
+{
+  "monowheel": {
+    "case_id": "main-pockets-monowheel-s605-t30-n1-stateful",
+    "console.log_sha256": "5cfd980ee4b87aa57dad87fc5dcabd3ea2b999a03b941a420896353a8216cc7f",
+    "execution.json_sha256": "4562d4c3beb1a5987bca8d37ef66bac65eacaf61ccb4a28ff0a4d4c79857d75c",
+    "report_gzip_bytes": 38176,
+    "report_gzip_sha256": "0d19139fd098429b150d22a36ce4ef0a148169151f3b464f521afbc4bfc63050",
+    "report_raw_bytes": 474778,
+    "report_raw_sha256": "600ad5644aebff633f3adbb26bc557a423c252a5289878841bbf4f49564af310"
+  },
+  "physical_readback_sha256": "d053484a7703306a60c23a4bd67d4899c00877d6497ee80bd4c2ea0bf345cb5a",
+  "read_only_probe_identity": {
+    "console_sha256": "95ec62d1449cc3fec78504124641cfe63d8f9077de0aa3c6026366d4063107eb",
+    "godot/scripts/ambient/ambient_memory.gd": "36d61c69440850a295c85bfb1b855c6ca3e455a34ba3c18f049c26ca98cc4f32",
+    "godot/scripts/ambient/ambient_modules.gd": "fb085974637fbd51628ad0e17b981c87f26250867453f2576a0d469e44ca59da",
+    "godot/scripts/ambient/ambient_profile.gd": "149979a6cf3d4ae0437c9eecaf5807f9598a9e6d135d9f0d7cfcf1e54c5cd689",
+    "godot/scripts/ambient/ambient_stateful_modules.gd": "18956efada8100b484e6248505b396c61de2bf93dd7e6850a6f336c6eb8ad401",
+    "probe_sha256": "4b06df62d8a59f6dd0a3f4e80354542aa8bd8af6fd87f407b621a74d5b362df9",
+    "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "runner": {
+    "case_id": "main-pockets-runner-s605-t30-n1-stateful",
+    "console.log_sha256": "e100ed3939d87a4cc9bf37d8e15bd98a6fcd10f7906277188738bcaece1404c7",
+    "execution.json_sha256": "4e6601319183dd0619507144a1f9788422cb7954179603b356ae4f2a29d74ea2",
+    "report_gzip_bytes": 41273,
+    "report_gzip_sha256": "4f356f3bb82ca504f0cab65ed2f91c2d1a2d23178278507453e50bdbc0f894c6",
+    "report_raw_bytes": 477656,
+    "report_raw_sha256": "dd01b967e4fdb5ff219c60a735f1d6eefe99ce91fed4a70778ad19caeec4fd66"
+  },
+  "scope": "Two completed shards drawn from the ongoing local194 programme; counted once in that programme, not added as extra episodes. No claim that all122 Worlds are complete.",
+  "source_revision": "83a3db6ffb207761df999abedac77eb1401604a8"
+}

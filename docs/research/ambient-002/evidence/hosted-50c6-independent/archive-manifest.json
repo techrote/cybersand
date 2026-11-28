@@ -1,0 +1,11 @@
+{
+  "source_revision": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+  "archive": "original-custody-and-analysis.zip",
+  "archive_bytes": 1875766,
+  "archive_sha256": "3e7c4004182fc539259b9b575527eb0b5490bde651a1ad82fa11b262eb8fe606",
+  "members": 49,
+  "original_full_artifact_sha256": "e96d284ac7e44eea93ff9269461166a09cc40b8a352893cb43dc9975c24bf9ac",
+  "raw_aggregate_bytes": 119622604,
+  "raw_aggregate_sha256": "1cfb085b65c9fbf295294fbf5360d7d8f0ac78f9b95039c384fe416bdc889137",
+  "scope": "Compact original custody, original scientific figures and independently reproduced analysis. The119,622,604-byte raw aggregate and all122 original shards remain in the separately preserved full artifact; they are not duplicated here."
+}

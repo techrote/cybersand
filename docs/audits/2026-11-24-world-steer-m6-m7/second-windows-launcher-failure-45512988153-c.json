@@ -1,0 +1,133 @@
+{
+  "artifact": {
+    "bytes": 24721624,
+    "id": 14979431856,
+    "sha256": "41d3c5882a363a93a77f4d120482d6f43231486dcb786d4cdfc84e1b4b07da64"
+  },
+  "diagnosis": {
+    "cause": "The old @(...ConvertFrom-Json) path filter can contain one nested array under Windows PowerShell5.1, rejecting scalar executable path membership.",
+    "correction_commit": "00f83d8f061aa99f8a263d8c4c20dd15beeeacf9",
+    "local_tests": "26/26 synthetic Python checks; actual Windows self-query remains a separate mandatory gate.",
+    "primary_source": "https://github.com/PowerShell/PowerShell/issues/3424",
+    "status": "PowerShell5.1 path-array enumeration defect confirmed by primary behavior documentation and source review; corrected Windows query still requires actual execution."
+  },
+  "extracted_qualification": {
+    "attempted_processes": 1,
+    "failing_label": "collaborative-pristine-delivered-cmd",
+    "remaining_processes_not_run": 71,
+    "sha256": "a7532fa3ee856c4b48a7e2058abecda490f27740c3529ce2d93a36b620c327b3",
+    "status": "failed"
+  },
+  "format": "cybersand-m67-windows-launcher-failure-review-c-v1",
+  "job_id": 138868384726,
+  "launcher": {
+    "checks": 3,
+    "failure": [
+      "Delivered CMD did not produce a visible Workbench-routed child within 150 seconds"
+    ],
+    "github_cleanup": "The completed GitHub job log later reports orphan Godot GUI PID7388 terminated; this does not itself prove window visibility or launcher-child ownership.",
+    "manifest_sha256": "31583a54a6411216419825bcfb292d602f93a0f07ce163af43663078779c2b05",
+    "passed": false,
+    "permitted_import_changes": 688,
+    "pristine_payload_verified": true,
+    "process_attribution": "No process-poll history or observed_process was retained. Direct-parent and visible-window conditions therefore remain unestablished.",
+    "route_log": "extracted-evaluator/architecture/collaborative/launcher/fresh-userdata/Godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+    "route_log_sha256": "a98167365468a0e10a4b9a52238ae13fc644fe87205bc258c028544d6106b6d4",
+    "route_marker_observed": true,
+    "script_error_observed": false,
+    "sha256": "fb5dcdd9099d1bb438ff4ec22ef9fe4db65dfd66441f6f3582772993a41d2ef5"
+  },
+  "model_calls": 0,
+  "physical_owner_acceptance": "pending",
+  "qualified_owner_archive": "not-published",
+  "run_id": 45512988153,
+  "scope": "Linux and Windows source suites completed at this source. The actual pristine CMD witness failed and prevented every subsequent extracted application case; source PASS is not extracted evaluator or physical owner acceptance.",
+  "source_fresh_reopen": {
+    "attempts": 4,
+    "checks": 66,
+    "failures": [],
+    "sha256": "acd82988ca5c45c9202412b2abdc5cae6e633a975ebd8d611b7348690dd9ab03"
+  },
+  "source_gameplay": {
+    "checks": 126,
+    "failures": [],
+    "native_tick_source": "CyberSimulationWorker.take_latest_snapshot(0).tick_index",
+    "routes": [
+      {
+        "acknowledged_pause_ticks": {
+          "actor": 1105,
+          "native_published": 1106,
+          "native_render_cached": 1106
+        },
+        "actor_ticks": 1105,
+        "command_refusals": 0,
+        "contact_samples": 12,
+        "id": "orbital-fabrication",
+        "left_corridor": false,
+        "native_ticks": 1106,
+        "render_cached_native_ticks": 1104,
+        "status": "completed",
+        "worker_failed": false
+      },
+      {
+        "acknowledged_pause_ticks": {
+          "actor": 1032,
+          "native_published": 1033,
+          "native_render_cached": 1033
+        },
+        "actor_ticks": 1032,
+        "command_refusals": 0,
+        "contact_samples": 12,
+        "id": "terraced-arcology",
+        "left_corridor": false,
+        "native_ticks": 1032,
+        "render_cached_native_ticks": 1029,
+        "status": "completed",
+        "worker_failed": false
+      },
+      {
+        "acknowledged_pause_ticks": {
+          "actor": 1055,
+          "native_published": 1056,
+          "native_render_cached": 1056
+        },
+        "actor_ticks": 1055,
+        "command_refusals": 0,
+        "contact_samples": 12,
+        "id": "monumental-viaduct",
+        "left_corridor": false,
+        "native_ticks": 1055,
+        "render_cached_native_ticks": 1052,
+        "status": "completed",
+        "worker_failed": false
+      },
+      {
+        "acknowledged_pause_ticks": {
+          "actor": 1130,
+          "native_published": 1131,
+          "native_render_cached": 1131
+        },
+        "actor_ticks": 1130,
+        "command_refusals": 0,
+        "contact_samples": 12,
+        "id": "biomechanical-vault",
+        "left_corridor": false,
+        "native_ticks": 1131,
+        "render_cached_native_ticks": 1128,
+        "status": "completed",
+        "worker_failed": false
+      }
+    ],
+    "sha256": "89936e265cd5e26f18bc4bf5519e2de5f0faead466e2aafb4e0b34e3c8255181"
+  },
+  "source_qualification": {
+    "elapsed_seconds": 1652.391,
+    "godot_console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "native_binary_sha256": "028a4c5c3c7d7ec905cb61dd45674f09d9004ac1c584652f6bb4db4f2b9e8df9",
+    "processes": 89,
+    "sha256": "489a8e843b9f7cedb8a0d616e166dd027f150cec22a0174c4670d9a4e8f7e853",
+    "source_files": 299,
+    "status": "passed"
+  },
+  "source_revision": "d948deab5d280adfe1e890bddf85725b2efd59bc"
+}

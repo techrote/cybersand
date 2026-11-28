@@ -1,0 +1,348 @@
+{
+  "schema": "cybersand.world-steer-batch-m3-m5-final-decision.v1",
+  "mission": "WORLD-STEER-BATCH-M3-M5-001",
+  "status": "HOSTED_QUALIFIED_DRAFT_HOLD",
+  "implementation": {
+    "repository": "techrote/cybersand",
+    "pr": 770,
+    "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "source_tree": "ce012a8c6b616ab038d4dc65f4ac1896a6388795",
+    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "foundation_pr": 720,
+    "foundation_commit": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+    "native_source_changed": false,
+    "disposition": "Draft/HOLD",
+    "previous_qualified_candidate": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb"
+  },
+  "qualification": {
+    "run_id": 45454711939,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45454711939",
+    "status": "PASSED",
+    "physical_owner_acceptance": "PENDING",
+    "actual_model_calls": 0,
+    "all_four_jobs": "SUCCESS",
+    "attempt": 1,
+    "application_process_cases": {
+      "linux": {
+        "passed": 47,
+        "total": 47,
+        "elapsed_seconds": 349.788,
+        "report_sha256": "ce6a7699aacde1feed712b60dd7f4ae4aec6b57239a49fa7473e92bd6a5f1ba8"
+      },
+      "windows_source": {
+        "passed": 47,
+        "total": 47,
+        "elapsed_seconds": 382.578,
+        "report_sha256": "79bfb762d1ce3feec9fcf049eae596489d8b4a1c2398394d02b6bb9005a2d977"
+      },
+      "windows_extracted": {
+        "passed": 29,
+        "total": 29,
+        "elapsed_seconds": 207.547,
+        "report_sha256": "818c3a0af9aaea91e80bb4ba1047b7718a3baf9fe23c256d377bc3702f08c41c"
+      }
+    },
+    "graphical_architecture_checks_per_environment": 72,
+    "additional_art_session_logging_run": 45454730839,
+    "additional_art_session_logging_linux_windows": "SUCCESS",
+    "custody_record": "hosted-custody-45454711939.json",
+    "custody_sha256": "f5168650cf4c1cfdfdf1343d7b1f8ffd1198a614176aebb44712df812847e5b0"
+  },
+  "knowledge": {
+    "reference_repo": "techrote/sandmapsreference",
+    "reference_pr": 216,
+    "evidence_commit": "40f196f792e4d9e19bbd57fdafd6a90420fadf32",
+    "archival_packet_commit": "b9535405853a5cd16e4bba968ec7167222861c42",
+    "recovered_maps": 70,
+    "primary_policy_schema_population": 67,
+    "frozen_gold_recommendations": 25,
+    "protected_features": 27,
+    "immutable_feature_states": 76,
+    "comparative_families": 12,
+    "negative_interventions": 5,
+    "gold_astra_arms": 8,
+    "owner_accepted_maps": 0,
+    "indexed_cards": 25,
+    "corpus_sha256": "9153480ea622d5dc6a78543269840af64b3adbef43074af8cf78cfe685d0b057",
+    "family_exclusion": {
+      "excluded_families": [
+        "bioindustrial",
+        "civic",
+        "vessel_dock"
+      ],
+      "development_cases": 3,
+      "transfer_cases": 6,
+      "scope": "Curated deterministic structural analogies; no blind/learned/model quality conclusion.",
+      "development_rank_one_relevant": 3,
+      "transfer_rank_one_relevant": 6,
+      "hosted_replication": "PASS in all three environments"
+    }
+  },
+  "native_features": {
+    "starter_parts": 8,
+    "structural_vocabulary_types": 13,
+    "module_side_limit": 512,
+    "module_document_bytes_limit": 2097152,
+    "library_modules_limit": 128,
+    "library_bytes_limit": 67108864,
+    "stage_count_limit": 32,
+    "stage_region_side_limit": 512,
+    "stage_module_instances_limit": 64,
+    "stage_operations_limit": 2048,
+    "native_changed_cells_limit": 262144,
+    "raster_candidates_limit": 1048576,
+    "required_attachment_lines": "Explicit refusal; future line-matching adapter pending.",
+    "empty_module_cells": "Transparent placement; explicit clearances independently checked.",
+    "native_source_material_write_permission": [
+      "Empty",
+      "Hard wall"
+    ],
+    "imported_evidence": "Historical only; current native observation is never imported from serialized flags.",
+    "session_envelope_limit_bytes": 67108864,
+    "active_records_limit": 256,
+    "imported_history_limit": "Included in total session byte envelope; the 256-new-record cap is not a limit on all imported historical records.",
+    "transformed_observation_scope": "The staged host refreshes the original module\u2019s current-session native-observation flag only for identity orientation, no palette override or thinning, and exact original geometry. Transformed, palette-substituted and thinned placements retain their own stage receipts/readbacks; they do not inherit the original module\u2019s current-session observation flag. Actual identity and mirrored native replay tests passed; all six grid transforms also have independent scalar compilation oracles."
+  },
+  "examples": {
+    "typed_families": [
+      "Assembly hangar",
+      "Interconnected arcology",
+      "Biomechanical arboretum",
+      "Irregular megastructure",
+      "Service and pipework network",
+      "Constructed cavern"
+    ],
+    "module_families": [
+      {
+        "name": "Modular assembly hangar",
+        "placements": 32
+      },
+      {
+        "name": "Modular service stack",
+        "placements": 41
+      },
+      {
+        "name": "Modular transfer viaduct",
+        "placements": 37
+      }
+    ],
+    "orientation": "True orthographic side elevation",
+    "dynamic_playability": "OWNER_PENDING",
+    "completed_stages_per_environment": 27,
+    "native_receipt_chunks_per_environment": 76,
+    "evaluable_native_planes_per_environment": 9,
+    "rendered_native_frames_per_environment": 9,
+    "actual_ui_captures_per_environment": 3,
+    "structural_masks_single_component_per_environment": 9,
+    "structural_mask_scope": "Arboretum structural mask excludes 1600 Seed cells; geometric connectivity is not physical stability or actor access.",
+    "module_placements": {
+      "total": 110,
+      "identity": 105,
+      "mirror_x": 5,
+      "starter_parts_used": 8,
+      "primary_palette_substitution": false,
+      "primary_seeded_thinning": false
+    },
+    "cross_platform_native_planes_identical": true,
+    "cross_platform_pngs_identical": false,
+    "windows_source_extracted_pngs_identical": true,
+    "clearance_violations": 0,
+    "protected_cell_changes": 0
+  },
+  "comparison": {
+    "registration_sha256": "aa25936785d542f74fef1183b0ba394b6224d9aebc5cb0459679c863f7a3e028",
+    "registered_attempts": 30,
+    "families": [
+      "industrial_hangar",
+      "service_network",
+      "organic_cavern"
+    ],
+    "arms": [
+      "hand_typed",
+      "procedural_modules",
+      "random_valid",
+      "reference_guided",
+      "retrieval_guided"
+    ],
+    "seeds": [
+      37901,
+      37917
+    ],
+    "source_qualification_status": "PASS_IN_ALL_THREE_ENVIRONMENTS",
+    "scope": "Offline native methods and contextual diagnostics, not retrieval causal advantage or model inference.",
+    "completed_per_environment": 30,
+    "evaluable_per_environment": 30,
+    "context_aware_passes_per_environment": {
+      "passed": 24,
+      "total": 24
+    },
+    "random_valid_context_passes_per_environment": {
+      "passed": 0,
+      "total": 6
+    },
+    "new_native_cells_per_attempt": 144,
+    "context_aware_arms_byte_identical_within_all_six_blocks": true,
+    "protected_cell_changes": 0,
+    "registered_geometric_route_passes_per_environment": 30,
+    "actual_model_calls": 0,
+    "blinded_preference_study": false,
+    "replication_scope": "Three platform executions of the same 30 registered attempts; not 90 independent trials."
+  },
+  "remaining_gates": [
+    "Separately owned Art conversation/provider integration through the delivered stage adapter.",
+    "Authorized real model-assisted plans and model-dependent evaluation.",
+    "Independent blinded/human architectural preference.",
+    "Physical Windows GPU interaction, actor traversal/playability and owner acceptance.",
+    "Required attachment-line matching adapter, if needed by a later composition.",
+    "Optional M6/M7 orchestration/small-model execution and training remain future scope."
+  ],
+  "authority_separation": [
+    "Source artwork",
+    "Native stored material geometry",
+    "Schema admission",
+    "Native policy admission",
+    "Graphical qualification",
+    "Subjective architectural recommendation",
+    "Physical owner gameplay acceptance"
+  ],
+  "original_custody_record": {
+    "path": "original-custody.json",
+    "sha256": "716c51994c47c2389dabdda65f3396775a781b433a66087646b99bd93b3f8be0"
+  },
+  "archival_commit_policy": "The documentation/evidence archival commit containing this packet is distinct from tested application fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52 (tree ce012a8c6b616ab038d4dc65f4ac1896a6388795). It must not relabel another runtime or implementation as tested.",
+  "previous_m3_m5_campaign": {
+    "run_id": 45447549238,
+    "source_commit": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+    "all_four_jobs": "SUCCESS",
+    "application_process_cases": {
+      "linux": 47,
+      "windows_source": 47,
+      "windows_extracted": 29
+    },
+    "subsequent_visual_defect": "Module and stage inspectors framed the image corner; corrected source calls Fit for new content and adds bounded inspection controls/tests. Native geometry, corpus, experiment and native source unchanged.",
+    "custody_record": "hosted-custody-45447549238.json"
+  },
+  "runtimes": {
+    "godot": "4.7.stable.official.5b4e0cb0f",
+    "linux_native": {
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "bytes": 5253776
+    },
+    "windows_native": {
+      "sha256": "7113128dbbe0bab1a8dd5c86c23699e49fdb45594bf43a7f9b95abb6d322ae16",
+      "bytes": 5820416
+    },
+    "unchanged_native_input_count": 105,
+    "scope": "Native source inputs unchanged from original #720; final source-specific runtime custody separately verified."
+  },
+  "owner_evaluator": {
+    "filename": "CyberSand-Architecture-Workbench-Windows-fe2395c7060d.zip",
+    "bytes": 97970858,
+    "sha256": "d4a91592bad81040e7f6c828bf410196fce141bc9f908bb3efa5daa6edf1a6da",
+    "outer_artifact_id": 14951042272,
+    "manifest_sha256": "d7030eaddfcd8aad118ad2d3928bc12516f155ea19a75b1def2208e83073bd51",
+    "verified_manifest_files": 1330,
+    "regular_files_including_manifest": 1331,
+    "qualified_application_file_identities": 59,
+    "native_input_identities": 105,
+    "embedded_architecture_evidence_files": 204,
+    "embedded_source_qualification_sha256": "79bfb762d1ce3feec9fcf049eae596489d8b4a1c2398394d02b6bb9005a2d977",
+    "extracted_execution_qualification_sha256": "818c3a0af9aaea91e80bb4ba1047b7718a3baf9fe23c256d377bc3702f08c41c",
+    "unsafe_paths_duplicates_case_collisions_symlinks": false,
+    "independent_review_files": [
+      "evidence/reviews/owner-evaluator-custody-a.json",
+      "evidence/reviews/owner-evaluator-custody-root.json"
+    ]
+  },
+  "artifacts": [
+    {
+      "id": 14951941657,
+      "name": "batch-lab-linux-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52-1",
+      "bytes": 11743422,
+      "sha256": "4e0dae64563f765c0d18fd0025d12e94a94722ee074be0e62416b024e19121b1",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14951941657",
+      "independently_downloaded_and_hashed": true
+    },
+    {
+      "id": 14951455759,
+      "name": "batch-lab-windows-build-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52-1",
+      "bytes": 8262,
+      "sha256": "582d3ce4886cefb1267343406be3344dbd6a6cfe95e38580b0e47efd82ccfef6",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14951455759",
+      "independently_downloaded_and_hashed": true
+    },
+    {
+      "id": 14951367035,
+      "name": "batch-lab-windows-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52-1",
+      "bytes": 19519629,
+      "sha256": "6dae899e528fa6e3a7d608d8f7126862623f08ce5209d30df69794d8bc4df6a4",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14951367035",
+      "independently_downloaded_and_hashed": true
+    },
+    {
+      "id": 14951042272,
+      "name": "batch-lab-owner-windows-fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+      "bytes": 96459342,
+      "sha256": "4c72abc1b15b760373af0715738b3db8f96d0433483755b65eb37e083427fe90",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14951042272",
+      "independently_downloaded_and_hashed": true
+    },
+    {
+      "id": 14949014000,
+      "name": "batch-lab-windows-runtime-45454711939",
+      "bytes": 2106709,
+      "sha256": "c17042a700e29fe434941044c38e122f385cc3701c8afc9122ad48be876e2adb",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45454711939/artifacts/14949014000",
+      "independently_downloaded_and_hashed": true
+    }
+  ],
+  "retained_observations": {
+    "schema": "cybersand.qualified-observations-custody.v1",
+    "path": "qualified-observations.zip",
+    "sha256": "75ffd31507ff1fe6b5bea6ee0a08feb9cab9e0026f8a57725176f32f388e94b6",
+    "bytes": 7094094,
+    "payload_files": 675,
+    "uncompressed_payload_bytes": 106394424,
+    "archive_manifest_sha256": "6f9e96b4cab5188fcbdc304be376b1ec135896ccdbf4c8cefb2ca9daf2352cf6",
+    "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+    "source_run": 45454711939,
+    "original_artifacts": [
+      {
+        "id": 14951941657,
+        "sha256": "4e0dae64563f765c0d18fd0025d12e94a94722ee074be0e62416b024e19121b1"
+      },
+      {
+        "id": 14951367035,
+        "sha256": "6dae899e528fa6e3a7d608d8f7126862623f08ce5209d30df69794d8bc4df6a4"
+      },
+      {
+        "id": 14730981459,
+        "sha256": "28218bf88508389423cb2740c21d25d5063ec08961e65167c50a9c648698cdff"
+      },
+      {
+        "id": 14948353086,
+        "sha256": "6d1e25ef1d717f435f04ea639be64e370726fc72b810e7d7029989ce02fc9e1f"
+      },
+      {
+        "id": 14949310056,
+        "sha256": "5541b0269b0e530cbed15a58abd913eb7d38c5c520ed4ebde810686ed359e532"
+      }
+    ]
+  },
+  "independent_reviews": {
+    "manifest": "evidence/reviews/manifest.json",
+    "sha256": "5bd6622b9a10472bb638de7a9170e25c8dcc1e9baec75ad729fbdd9e1dd5aad8",
+    "classification": "Independent post-campaign analyses; these are not original hosted-runner outputs."
+  },
+  "final_native_visual_review": {
+    "path": "hosted-architecture-review-45454711939.json",
+    "sha256": "44adfc737a5168be3f792dc2295b503447bb7db0e0966342f66ce5bbebfa4466"
+  },
+  "exploratory_negative_space": {
+    "report": "exploratory-negative-space-review.json",
+    "sha256": "d2c71c5b514932686657eaf8ac2ba703e418ebe71424d31b0c0f7a65594a86a6",
+    "probe": "5x5 empty square at 25 explicitly declared stage-level clearance centers; unrestricted four-neighbor translation.",
+    "centers_fitting": 25,
+    "scope": "Post-hoc and independently cross-checked; no mutual connectivity requirement, sealed-cavity penalty, new acceptance gate, actor/gravity/spawn semantics or playability conclusion."
+  }
+}

@@ -1,0 +1,70 @@
+{
+  "recorded_at_utc": "2026-11-24 20:07:20 UTC",
+  "qualified_source": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+  "run_id": 45465121123,
+  "attempt": 1,
+  "jobs": [
+    {
+      "id": 138697859429,
+      "name": "Native parity, sanitizers and Linux current-scene audition",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 138697860175,
+      "name": "Pinned Windows native cross-build",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 138702571387,
+      "name": "Windows native, graphical and relocated offline evaluator",
+      "status": "completed",
+      "conclusion": "success"
+    },
+    {
+      "id": 138714972166,
+      "name": "Publish four source-matched candidate runtime paths",
+      "status": "completed",
+      "conclusion": "success"
+    }
+  ],
+  "artifacts": [
+    {
+      "id": 14956377609,
+      "name": "material-audition-owner-windows-5f73b0ae6980ad1eec993ef2ee9b623f874f33a5-45465121123-1",
+      "bytes": 747942823,
+      "sha256": "a620d6f2762d0e52876eb372d107db2ad96296cfef2e87088375b0fc65ba3b29",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45465121123/artifacts/14956377609"
+    },
+    {
+      "id": 14955958252,
+      "name": "material-audition-windows-evidence-5f73b0ae6980ad1eec993ef2ee9b623f874f33a5-45465121123-1",
+      "bytes": 7212984,
+      "sha256": "2a2ac1186bb47720aa711d1960873d35057a26557903fde667242daed8a9f05b",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45465121123/artifacts/14955958252"
+    },
+    {
+      "id": 14955531620,
+      "name": "material-audition-windows-build-logs-5f73b0ae6980ad1eec993ef2ee9b623f874f33a5-45465121123-1",
+      "bytes": 11482,
+      "sha256": "ce9e4875812a031f9dd7c4d4f4a989dd2c3c5b3de945a75dbaad767198eec774",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45465121123/artifacts/14955531620"
+    },
+    {
+      "id": 14955182730,
+      "name": "material-audition-windows-build-5f73b0ae6980ad1eec993ef2ee9b623f874f33a5-45465121123-1",
+      "bytes": 5045182,
+      "sha256": "3669f38142d31b6269bf7450f177b455c3312a36903f5d76c69c3c091a6bbbd6",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45465121123/artifacts/14955182730"
+    },
+    {
+      "id": 14954269023,
+      "name": "material-audition-linux-5f73b0ae6980ad1eec993ef2ee9b623f874f33a5-45465121123-1",
+      "bytes": 4683158,
+      "sha256": "a9cfdc834b9aa8443d41e725e1d3e40a30e3762eba37a6d711ced2f3deb3163c",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45465121123/artifacts/14954269023"
+    }
+  ]
+}

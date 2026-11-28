@@ -1,0 +1,74 @@
+[
+  {
+    "name": "Set up job",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 1
+  },
+  {
+    "name": "Check out the exact frozen host source",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 2
+  },
+  {
+    "name": "Verify provider policy and unchanged retained Windows runtimes",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 3
+  },
+  {
+    "name": "Authenticate pinned Godot and portable Windows dependencies",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 4
+  },
+  {
+    "name": "Execute scoped ambient and existing control regressions",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 5
+  },
+  {
+    "name": "Capture actual Windows ANGLE examples and profile editor",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 6
+  },
+  {
+    "name": "Build source-bound ordinary interactive Workbench evaluator",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 7
+  },
+  {
+    "name": "Pristine extraction, gameplay, save-reopen and ordinary launcher",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 8
+  },
+  {
+    "name": "Retain verified portable Windows evaluator",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 9
+  },
+  {
+    "name": "Retain original source, runtime and execution evidence",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 10
+  },
+  {
+    "name": "Post Check out the exact frozen host source",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 20
+  },
+  {
+    "name": "Complete job",
+    "status": "completed",
+    "conclusion": "success",
+    "number": 21
+  }
+]

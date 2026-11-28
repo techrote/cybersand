@@ -1,0 +1,260 @@
+{
+  "asset": {
+    "browser_download_url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip",
+    "digest": "sha256:0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "id": 451175419,
+    "name": "Godot_v4.7-stable_linux.x86_64.zip",
+    "size": 75664355
+  },
+  "base_source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+  "decision": "APPROVE exact same-byte official download route and exact mission-branch full GDE execution trigger",
+  "execution_route": {
+    "allowed_nonmandatory_skips": [
+      "ready_for_review-only scope classifier on push",
+      "explicit opt-in physical actor stress"
+    ],
+    "authorization": "Owner authorized complete qualification while Draft/HOLD; root approved this exact existing-workflow branch addition.",
+    "exact_added_push_branch": "integration/swarm004-005-006-unified-20261122",
+    "full_required_execution": [
+      "budget/helper job",
+      "Linux source build",
+      "Windows source build",
+      "25 Linux shards",
+      "23 Windows shards",
+      "actual graphical Art smoke",
+      "Linux exact-coverage reducer",
+      "Windows exact-coverage reducer"
+    ],
+    "meaningful_readme_change_satisfies_unchanged_path_filter": true,
+    "unchanged": [
+      "all mandatory job conditions",
+      "case discovery and coverage admission",
+      "all watchdogs and resource ceilings",
+      "download and runtime integrity checks",
+      "Draft PR gating",
+      "optional physical stress policy",
+      "permissions and provider policy",
+      "path filters",
+      "concurrency and cancellation rules"
+    ],
+    "unchanged_workflow_permissions": "contents:read, actions:read, pull-requests:read"
+  },
+  "existing_source_custody_lf_normalization_only": [
+    "tools/swarm006/compare_saved_setup.ps1",
+    "tools/swarm45/prepare_windows.ps1"
+  ],
+  "historical_failures_retained": {
+    "45459025464": "Original stale budget-test failure",
+    "45464427423": "Original PLAY attempts 1 and 2 Linux HTTP403 failures before packet construction",
+    "45464495877": "Original Linux/Art HTTP403 preparation failures before Godot; Windows outcomes remain separately bounded"
+  },
+  "input_inventories": {
+    "build_inputs_sha256": {
+      "added": [],
+      "changed": [
+        {
+          "current_sha256": "294b6903d58a5b03d05cf9e49febd4863649460245b4bdd8c293ad936e82e110",
+          "path": ".github/workflows/gdextension.yml",
+          "qualified_sha256": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516"
+        },
+        {
+          "current_sha256": "624f6c4fd98a5bd4a83c001fba68b570cabc922db3b339e00baa415c198fc9d3",
+          "path": ".github/workflows/play-desktop-packet.yml",
+          "qualified_sha256": "db9a0ea6bcd3ec3d3d404d2b072e98fe89fb522d2e37ec52bc8a1805d2602fbc"
+        },
+        {
+          "current_sha256": "089b85c6424dfec48ccab235fced52007e9c17fcdfb9840672ed7084ef7797bd",
+          "path": "tools/ci/test_godot_job_plan.py",
+          "qualified_sha256": "da834242be0ca2922d46d8c24fa998a88a4b99aa97ff9f714506ba2ec9853cc7"
+        }
+      ],
+      "count": 1856,
+      "removed": []
+    },
+    "extension_inputs_sha256": {
+      "added": [],
+      "changed": [],
+      "count": 106,
+      "removed": []
+    },
+    "native_definition_inputs_sha256": {
+      "added": [],
+      "changed": [],
+      "count": 52,
+      "removed": []
+    },
+    "source_inputs_sha256": {
+      "added": [],
+      "changed": [],
+      "count": 156,
+      "removed": []
+    }
+  },
+  "official_release_api": {
+    "original_sha256": "bdbc6c5e32ded370fabe78ce1439cf58f70cd334371465ea0547aedb9ba52b84",
+    "url": "https://api.github.com/repos/godotengine/godot-builds/releases/tags/4.7-stable"
+  },
+  "original_evidence_or_tracked_source_modified_by_reviewer": false,
+  "owner_package_source_paths_unchanged_by_this_overlay": 1059,
+  "physical_windows11_nvidia_owner_acceptance": "PENDING",
+  "prior_approved_publication_metadata_replacements_from_q7": [
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json"
+  ],
+  "publication_commit": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+  "published_eight_paths": [
+    {
+      "materialized_sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+      "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "unchanged_since_publication": true
+    },
+    {
+      "materialized_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "unchanged_since_publication": true
+    },
+    {
+      "materialized_sha256": "05ed3f6a191e16f11188f73c1ee9ea0d6f7a2e3c7e2377a16c91df0374a4927a",
+      "path": "godot/addons/cybersand_native/runtime-provenance.json",
+      "unchanged_since_publication": true
+    },
+    {
+      "materialized_sha256": "2f4356c0c42f06b8365b9fbf3f66939bd8c36a0f112d4c13192e33c6ac074a24",
+      "path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "unchanged_since_publication": true
+    },
+    {
+      "materialized_sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206",
+      "path": "godot/tools/gentek_reciprocal",
+      "unchanged_since_publication": true
+    },
+    {
+      "materialized_sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d",
+      "path": "godot/tools/gentek_reciprocal.exe",
+      "unchanged_since_publication": true
+    },
+    {
+      "materialized_sha256": "0a55efae0b59eb40749eb9aa4d80d3a52ed73dd017b06e34283a32c4e9f2f470",
+      "path": "godot/tools/swarm004-runtime.linux.json",
+      "unchanged_since_publication": true
+    },
+    {
+      "materialized_sha256": "6d839d6ad535862f10b4dc94b344f0c188401c113d14e9113a3c7a1c15ec8d50",
+      "path": "godot/tools/swarm004-runtime.windows.json",
+      "unchanged_since_publication": true
+    }
+  ],
+  "q7_fixture_producer_consumer_and_workflow_paths_unchanged": 82,
+  "qualification_policy": {
+    "already_completed_native_and_materialization_scope": "Retain exact original runs and source identities; their native inputs, runtime bytes and validation code are unchanged. A further full Native run solely to schedule GDE is not required.",
+    "basis": "Existing documented postpublication source-input distinction, exact unchanged application/native/scientific/owner payload, and fresh execution of affected ordinary workflows. This is not a new prepublication reuse exception.",
+    "existing_policy_review_sha256": "a026fe13c10ef2c36f8f94a8588f4816f18cce9f4aea0159eb85721793b1ba02",
+    "fresh_required": [
+      "Complete GDE on the new exact source",
+      "Ordinary PLAY packet identity on the new exact source",
+      "Applicable current Documentation/provenance"
+    ],
+    "no_new_q7_q8_native_or_scientific_campaign_needed_for_this_exact_overlay": true,
+    "old_q7_metadata_or_execution_source_retagged": false,
+    "pinned_references": [
+      {
+        "path": "docs/operations/ci-execution-and-performance.md",
+        "sha256": "c96944a5f77264da0a4520d092a8f9fbd16d0dc4d277523378687a987b04cffd",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      },
+      {
+        "path": "docs/operations/local-build-and-validation.md",
+        "sha256": "e52154ed1d6144748794ce42d854691aea95a7bee434622ebfc85218d781a33e",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      },
+      {
+        "path": "docs/audits/2026-10-25-lcb003-runtime-publication.md",
+        "sha256": "a65633f0b272205a0dfed7932cc68d1abe03aa4c8a72e244a15f026aba74d850",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      },
+      {
+        "path": "tools/ci/check_swarm_runtime.py",
+        "sha256": "c626f2a0856125326c74fdfdb3b284ed543d391b95ae8518b093f2341f4a5f57",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      },
+      {
+        "path": "tools/ci/check_repository.py",
+        "sha256": "e4ebfd2e6faca4ea9a12785be8afb60a5c5479edcd555ddf436c3081a4302e03",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      },
+      {
+        "path": ".github/workflows/swarm456-qualification.yml",
+        "sha256": "6abb0cbceb313ddb45bce39d42fb5143b7e61e16126379b65ffd88db475dd4db",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      },
+      {
+        "path": "tools/swarm45/runtime_custody.py",
+        "sha256": "3b9fac9f09cae2c51b6bd5d6faece5e87d4ab53e1622221ce59f6a7d3d7a4207",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      },
+      {
+        "path": "tools/swarm45/publish_runtime.py",
+        "sha256": "6f808e5f2dec453cc22596ebb3f88da7e392b39f58d13032d8c1f192474b0201",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      },
+      {
+        "path": "docs/operations/swarm456-unified-mainline.md",
+        "sha256": "ec11ff57257f698e082d98417597157890e71df110300190fe974c211392a1bf",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      },
+      {
+        "path": "docs/operations/swarm45-mainline-integration.md",
+        "sha256": "b62ae338211e6a72afb8b1270d6eae5a4a1590404a08f83a289a28b4cc255b2b",
+        "source_commit": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae"
+      }
+    ],
+    "republish_original_q7_bundle_against_changed_build_inventory": "FORBIDDEN by unchanged existing publisher",
+    "strict_publisher_all_build_input_guard_unchanged": true
+  },
+  "qualified_application_and_runtime_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+  "qualified_campaign_already_uses_exact_official_url": true,
+  "readme": {
+    "added_lines": 19,
+    "all_other_bytes_identical": true,
+    "claims_independently_reviewed": true,
+    "path": "README.md",
+    "review": "Existing qualified evaluator URL and ordinary launcher match original payload. Copy privacy, immediate composition Save/fresh-Reopen, subsequent ordinary authored persistence, default-OFF controls, Draft/HOLD and physical-owner limits are accurate.",
+    "sha256": "207038e860323499c025db1046a54c27fe856510c88713dd9893686f12500908"
+  },
+  "ready_or_merge_authorized": false,
+  "recorded_at_utc": "2026-11-24T19:12:50.392561+00:00",
+  "reviewer": "independent_assurance",
+  "schema": 1,
+  "scientific_compiled_inputs_unchanged": 100,
+  "scope": "Pre-execution review of the final authorized workflow and README overlay; no new hosted success is inferred",
+  "sealed_windows_evaluator": {
+    "artifact_id": 14949325922,
+    "inner_sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522",
+    "manifest_sha256": "d431d254b354bd0f3e07b1a7e8c700ac03202432fdbf6ba18cac09652b62d9da",
+    "outer_sha256": "9db077d7be6ba1173a63f0f869fea88c4c0c844471b504da6cbe972b9b1a47c4",
+    "unchanged": true
+  },
+  "unchanged_lock": {
+    "path": "third_party/godot-runtime.lock.json",
+    "sha256": "38addc53f9c4e64afc024a7ce5dc1bef9c6238148ce6e66dcc63e9ec70d106fe",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "workflow_changes": [
+    {
+      "after_sha256": "294b6903d58a5b03d05cf9e49febd4863649460245b4bdd8c293ad936e82e110",
+      "all_remaining_bytes_identical": true,
+      "before_sha256": "f85126b7daa01f53deee591bcb9f8e1dc2271f192d41a1a515ab4694133ab516",
+      "exact_url_replacements": 1,
+      "only_other_change": "Append one exact mission branch to existing push allowlist",
+      "path": ".github/workflows/gdextension.yml"
+    },
+    {
+      "after_sha256": "624f6c4fd98a5bd4a83c001fba68b570cabc922db3b339e00baa415c198fc9d3",
+      "all_remaining_bytes_identical": true,
+      "before_sha256": "db9a0ea6bcd3ec3d3d404d2b072e98fe89fb522d2e37ec52bc8a1805d2602fbc",
+      "exact_url_replacements": 2,
+      "only_other_change": null,
+      "path": ".github/workflows/play-desktop-packet.yml"
+    }
+  ]
+}

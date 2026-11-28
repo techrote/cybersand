@@ -1,0 +1,68 @@
+{
+  "schema": "art-collaborative-recovered-local-evidence-v1",
+  "source": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+  "tree": "56687bcaa8eb58fbdf1bbeb673d74a40dcc9b634",
+  "disposition": "Draft/HOLD; fresh developer observations, hosted campaign remains pending",
+  "runtime_godot": "4.7.stable.official.5b4e0cb0f",
+  "evidence_boundary": "Only listed freshly recovered files are retained; pre-reset local logs are unavailable. The earlier UI92/1 is a retained assertion defect at0362645, not a passing2743 run.",
+  "observations": {
+    "displayed_native_session": {
+      "checks": 184,
+      "failures": [],
+      "http_requests": 7,
+      "model_calls": 0,
+      "ordinary_completions": 0
+    },
+    "headless_ui": {
+      "checks": 93,
+      "failures": [],
+      "executed_local_commit": "e38a90ddb058323128511a0e333fe2b3a3080960",
+      "executed_tree": "56687bcaa8eb58fbdf1bbeb673d74a40dcc9b634"
+    },
+    "packaging_python": {
+      "tests": 19,
+      "failures": 0,
+      "identity_scope": "Developer check of identical package test files; no standalone source-bound campaign claim"
+    },
+    "retained_ui_negative": {
+      "checks": 92,
+      "failed": 1,
+      "reason": "JSON number domain equality in nested test expectation, fixed without changing production copy behavior"
+    }
+  },
+  "files": {
+    "displayed-session-2743.log": {
+      "sha256": "74b59b01915b45f0cc90014b974c1ab14f82d484c260b47f488f30b3d5dcf029",
+      "bytes": 16079
+    },
+    "recovered-ui-fixed.log": {
+      "sha256": "9501a704fad87a67d9ac23f0c3a13bf2c047676980eea49455525caa78d82290",
+      "bytes": 325
+    },
+    "recovered-ui.log": {
+      "sha256": "b6f4729a2d8dba9eb423c15d401e146e5695df8b111deb892ded83b11701446b",
+      "bytes": 774
+    },
+    "recovered-packaging-unit.log": {
+      "sha256": "fa5d3dcd9fb47c1ba854ccc1c710f96de5fc5d5537bcfd4abb196183dbac35cb",
+      "bytes": 118
+    },
+    "recovered-image-parse.log": {
+      "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "bytes": 221
+    },
+    "displayed-session-complete-audit.jsonl.gz": {
+      "sha256": "85b63f332cc8a23b02b75f98ac4b41c52c1d52ab40efc70a6ff593263aae9712",
+      "bytes": 85839,
+      "uncompressed_sha256": "aefd798c55708b2ae14d2ec1311d29115d68e82d29a68b99bf90c7e2d2adf3c8",
+      "uncompressed_bytes": 607597,
+      "custody": "Lossless gzip of complete original deterministic admitted redacted audit; no real provider or owner content"
+    }
+  },
+  "host": {
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "renderer": "Mesa25.0.7 llvmpipe LLVM19.1.7",
+    "display": "authenticated Xorg dummy over loopback TCP",
+    "note": "Linux software rendering, not physical Windows/NVIDIA acceptance"
+  }
+}

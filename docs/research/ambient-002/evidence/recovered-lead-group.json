@@ -1,0 +1,39 @@
+{
+  "scope": "actual two-family transactional owner regression; World edge probes are synthetic copied envelopes",
+  "source_commit": "5ac2486d00aa51e3c1749d12e9a324a6ca49d1ff",
+  "equivalent_published_commit": "3ff7bf1751d4c2a15727abf9e4bbd0a6c4631cb6",
+  "source_tree": "42d8d5621292c084ca04528ddd79511966536a9a",
+  "status": "passed",
+  "checks": 40,
+  "actual_rapier_steps": 8,
+  "logical_actors": 2,
+  "original_qualification_sha256": "35122b8487a46a6d723f7bf6ca1fa9cde1bf026b48a6eda728d7baf5930a2778",
+  "lossless_gzip_sha256": "a45af3b1ccd136fe534df4be3901dcc77d1fa4ba8559e4a81c9f81e8a7f0f4d1",
+  "input_custody": "passed",
+  "case": {
+    "command": [
+      "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/tmp/ambient-002/source/godot",
+      "--script",
+      "res://tests/test_ambient_group_transaction.gd",
+      "--",
+      "--ci"
+    ],
+    "completion": {
+      "checks": 40,
+      "failures": 0
+    },
+    "exit_code": 0,
+    "log_sha256": "c3b0a474f0174409f75298280c083bc509aefc8dc468d2ccef65a41964e8b180",
+    "name": "living_group",
+    "pid": 803,
+    "process_sha256": "55146503ad4bde76bd73a3a784a996deea13f6c39612438c6189278ec9c0a5f2",
+    "script": "test_ambient_group_transaction",
+    "seconds": 1.072,
+    "status": "passed",
+    "timeout_seconds": 3940.0
+  },
+  "note": "Original process and source custody preserved. Does not qualify native-material episodes, final source, graphical presentation or Windows."
+}

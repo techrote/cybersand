@@ -340,7 +340,11 @@ func provider_completion_fixture() -> bool:
 	var decoded: Dictionary = adapter.decode("OpenAI",response)
 	if not check(decoded.error.is_empty(),"deterministic Responses completion decoded"): return false
 	panel.provider.usage = response.usage
-	panel.provider.finished.emit(1,decoded.text,response,decoded.error)
+	# This is a deterministic completion fixture, not an HTTP request. Bind the
+	# emitted response to its current provider generation just as transport does.
+	var provider_request_id: int = panel.provider.serial + 1
+	panel.provider.serial = provider_request_id
+	panel.provider.finished.emit(provider_request_id,decoded.text,response,decoded.error)
 	if not await until(func() -> bool: return settled() and not panel.log_draw,"fixture provider-to-native completion"): return false
 	check(art.result.status=="completed" and art.result.changed==12,"follow-up fixture confirms eleven wall cells and one erasure")
 	check(await capture(Rect2i(220,70,11,1))==PackedInt32Array([58,58,58,58,58,58,58,58,58,58,58]),
@@ -351,8 +355,9 @@ func provider_completion_fixture() -> bool:
 	# Keep the captured request epoch, then Stop before its delayed completion.
 	panel.request_epoch = worker.art_state().epoch
 	panel.stop_all("Combined fixture late-response fence")
+	check(panel.provider.serial != provider_request_id,"Stop retires the provider response generation")
 	var recorded: Array = bench.applied.edits.duplicate(true)
-	panel.provider.finished.emit(2,'[{"shape":"pixels","points":[[232,70]],"material":58}]',response,"")
+	panel.provider.finished.emit(provider_request_id,'[{"shape":"pixels","points":[[232,70]],"material":58}]',response,"")
 	for i: int in 4: await process_frame
 	check(not art.active and bench.applied.edits==recorded,"late provider completion after Stop cannot enter authored history")
 	check(await capture(Rect2i(232,70,1,1))==PackedInt32Array([0]),"late provider completion performs no native write")
@@ -586,6 +591,7 @@ func author() -> void:
 		"equipment":saved.setup.get("equipment",{}),
 		"prepared_sha256":prepared_sha256,"native_region":Marshalls.raw_to_base64(PackedByteArray(Array(actual))),
 		"provider_model":panel.model.text,"provider_context":panel.context_mode.selected,
+		"provider_archive":panel.provider.log_path,"provider_archive_sha256":FileAccess.get_sha256(panel.provider.log_path),
 		"source_identity":source_identity,"stop_prefix":stopped_prefix,"map_side":map_side,
 		"agent_undo_saved":phases.agent_undo_saved}
 	var file := FileAccess.open(EXPECTED_PATH,FileAccess.WRITE)
@@ -651,10 +657,15 @@ func reopen() -> void:
 		"reopened equipment starts stopped with authored supply, without saved transient effects")
 	check(panel.model.text==expected.provider_model and panel.context_mode.selected==expected.provider_context,
 		"provider model and context settings survive restart")
-	var resumed_prompt := false
-	for turn: Dictionary in panel.conversation:
-		if str(turn.get("content",""))==FOLLOWUP_PROMPT: resumed_prompt=true
-	check(resumed_prompt,"persistent provider conversation resumes the prior fixture instruction")
+	# ART-SESSION-LOG-001 keeps authored geometry and provider preferences while
+	# starting a new conversation. The previous audit remains immutable evidence.
+	check(panel.conversation_loaded and panel.conversation.is_empty(),
+		"fresh process starts an empty Art conversation without restoring prior instructions")
+	check(panel.provider.log_path.is_empty() and panel.provider.parent_log_path.is_empty()
+		and not panel.provider.resume_active,"fresh process does not bind the prior provider audit")
+	check(str(expected.provider_archive).begins_with("user://art-traffic/")
+		and FileAccess.get_sha256(expected.provider_archive)==expected.provider_archive_sha256,
+		"prior provider audit remains byte-identical after authored World reopening")
 	phases.reopen = true
 	bench._set_view(Vector2.ZERO,Vector2i(960,540))
 	bench._brush.value = 0

@@ -1,0 +1,11 @@
+{
+  "command": [
+    "D:\\a\\cybersand\\cybersand\\build\\audition-windows\\test_material_audition.exe"
+  ],
+  "elapsed_seconds": 2.796999999999912,
+  "exit_code": 0,
+  "log_sha256": "a015ac7b3c79693898ad2847ffc3890beedc87c89b520389eb31b19473ebd72e",
+  "process_id": 1076,
+  "status": "passed",
+  "timeout_seconds": 1200
+}

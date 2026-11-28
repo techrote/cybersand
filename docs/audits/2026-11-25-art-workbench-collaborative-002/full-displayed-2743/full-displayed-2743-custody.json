@@ -1,0 +1,76 @@
+{
+  "source": {
+    "commit": "2743f89a0df6f6afcf7484e859c10790d521e74b",
+    "tracked_source_clean": true,
+    "tree": "56687bcaa8eb58fbdf1bbeb673d74a40dcc9b634"
+  },
+  "status": "passed",
+  "platform": "linux",
+  "graphical": true,
+  "cases": [
+    {
+      "name": "test_art_owned_transport",
+      "status": "passed",
+      "checks": 155,
+      "seconds": 2.324943
+    },
+    {
+      "name": "test_art_authoring_proposal",
+      "status": "passed",
+      "checks": 75,
+      "seconds": 1.219084
+    },
+    {
+      "name": "test_art_creative_cohort",
+      "status": "passed",
+      "checks": 251,
+      "seconds": 6.896183
+    },
+    {
+      "name": "test_art_collaborative_native",
+      "status": "passed",
+      "checks": 771,
+      "seconds": 97.817519
+    },
+    {
+      "name": "test_art_collaboration_authority",
+      "status": "passed",
+      "checks": 39,
+      "seconds": 7.19714
+    },
+    {
+      "name": "test_art_collaboration_session",
+      "status": "passed",
+      "checks": 184,
+      "seconds": 19.982635
+    },
+    {
+      "name": "test_art_collaboration_workspace",
+      "status": "passed",
+      "checks": 94,
+      "seconds": 1.670247
+    }
+  ],
+  "archive": {
+    "name": "full-displayed-2743-original-evidence.tar.gz",
+    "bytes": 3138987,
+    "sha256": "18941756cc3073aa317ea7c99dc7986ead497488d0e949c978289ff1eb0f90a1",
+    "scope": "All original runner receipts, process logs, case artifacts, native editable results/framebuffers and complete admitted redacted audit files; excludes disposable renderer shader caches and duplicate Godot internal logs."
+  },
+  "complete_files": 86,
+  "runtime": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "payloads": {
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    },
+    "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d"
+  },
+  "host": {
+    "logical_cpus": 9,
+    "machine": "x86_64",
+    "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "processor": ""
+  }
+}

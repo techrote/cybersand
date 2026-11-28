@@ -1,0 +1,77 @@
+name: GENTEK-WINDOWS-FINAL-B owner kit adversity (HOLD)
+on:
+  push:
+    branches:
+      - qualification/gentek-windows-final-20261122
+    paths:
+      - tools/acceptance/**
+      - tools/package_explore001_candidate.py
+      - docs/operations/gentek80-physical-owner-acceptance.md
+      - .github/workflows/gentek-windows-final-owner-kit.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: gentek-windows-final-b-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  source-and-package-contract:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Syntax and bounded package-stage contract
+        run: |
+          python3 -m py_compile tools/package_explore001_candidate.py tools/acceptance/tests/test_gentek80_owner.py tools/architecture/gentek80_compositions.py
+          python3 - <<'PY'
+          from pathlib import Path
+          s = Path('tools/package_explore001_candidate.py').read_text(encoding='utf8')
+          a = Path('tools/acceptance/gentek80_owner.ps1')
+          assert a.is_file()
+          assert 'tools/acceptance/gentek80_owner.ps1' in s
+          assert 'Verify and Open Workbench.cmd' in s
+          assert '-ExpectedSource {manifest["source_commit"]}' in s
+          assert s.index('Verify and Open Workbench.cmd') < s.index('files = {p.relative_to(args.output)')
+          assert 'Open Workbench.cmd' in s
+          print('PASS: source-pinned checked launcher is inside the complete payload hash inventory')
+          PY
+  windows-offline-adversaries:
+    needs: source-and-package-contract
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Check actual Windows PowerShell 5.1 parser
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          $errors = $null
+          [System.Management.Automation.Language.Parser]::ParseFile(
+            (Resolve-Path 'tools/acceptance/gentek80_owner.ps1').Path,
+            [ref]$null,[ref]$errors) | Out-Null
+          $errors | Format-List | Out-String | Set-Content evidence/parser.txt
+          if ($errors.Count -gt 0) { Get-Content evidence/parser.txt; throw 'PowerShell syntax invalid' }
+          powershell.exe -NoLogo -NoProfile -Command 'Write-Output $PSVersionTable.PSVersion.ToString()' | Tee-Object evidence/windows-powershell-version.txt
+          if ($LASTEXITCODE -ne 0) { throw 'Built-in Windows PowerShell 5.1 not available' }
+      - name: Run actual Windows archival and owner-decision adversaries
+        shell: pwsh
+        run: |
+          python -m unittest discover -s tools/acceptance/tests -p test_gentek80_owner.py -v 2>&1 | Tee-Object evidence/windows-adversaries.log
+          if ($LASTEXITCODE -ne 0) { throw 'Windows admission adversaries failed' }
+          if (-not (Select-String -Path evidence/windows-adversaries.log -Pattern 'Ran 9 tests')) { throw 'Missing Windows test cases' }
+          if (Select-String -Path evidence/windows-adversaries.log -Pattern 'skipped|SKIP') { throw 'Windows admission cases were unexpectedly skipped' }
+      - name: Preserve original hosted Windows outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gentek-windows-final-b-adversaries-${{ github.run_id }}
+          path: evidence/
+          if-no-files-found: warn
+          retention-days: 30

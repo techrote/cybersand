@@ -1,0 +1,71 @@
+{
+  "schema": "ambient-002-live-editor-fence-repair/v1",
+  "source_commit": "99a18ad26a21c427856cb94aba8a6804e91452ca",
+  "source_tree": "3c80d89af7f32d4230700772a933136445325245",
+  "status": "passed",
+  "input_custody": "passed",
+  "platform": "linux",
+  "checks": 96,
+  "failures": [],
+  "live_audition": {
+    "applied_generation": 6,
+    "paused_generation": 4,
+    "playing_generation": 5,
+    "resume_configuration_unchanged": true,
+    "unapplied_configuration_unchanged": true,
+    "unapplied_generation": 5
+  },
+  "actual_case_seconds": 10.324,
+  "original_files": {
+    "import-process.json": {
+      "sha256": "7d70952361b48f9bb9b608ef5007969701f80ccc93f8b721c66a6a006a7acafd",
+      "bytes": 373
+    },
+    "import.log": {
+      "sha256": "2629c7f008ba7c2c2eaf025fe39a24da414287f47d588db2434014f0fd719e61",
+      "bytes": 1932
+    },
+    "process.json": {
+      "sha256": "75c79e5dcb9ce874ae5e1a8ee2a8879519ce121c629b5271d2ddea0ed28c16cf",
+      "bytes": 432
+    },
+    "process.log": {
+      "sha256": "82b14ec30a7b1002335466611b12bff28f8c7129cb97e8381fa73d9a1efe4c78",
+      "bytes": 2756
+    },
+    "report.json": {
+      "sha256": "fe1e21264c01cccffda9e6d92b66170cac81c7b9e97ee547df6bbc24118a3f27",
+      "bytes": 3163
+    },
+    "failed-windows-9278-process.json": {
+      "sha256": "3c9c8a5f6794361d2137b125a737f28edb6cbfcaa76caa7ad4d4244bddf8a972",
+      "bytes": 581
+    },
+    "failed-windows-9278-process.log": {
+      "sha256": "a2f145d49b3404602b5a26d26c5a4115a59db7e89eacf3e306aafec5a7670b53",
+      "bytes": 3047
+    },
+    "failed-windows-9278-report.json": {
+      "sha256": "e7c9a24d1cd76f57b0af54321bfe62818984e558e9cd656fb59b157f2fbe7159",
+      "bytes": 3006
+    }
+  },
+  "qualification_compression": {
+    "path": "qualification.json.gz",
+    "compressed_sha256": "965e6bfe094e582f29fbd6105b7a345ac63cde61f31631cbd1c35e3a7e1a93b9",
+    "compressed_bytes": 103350,
+    "original_sha256": "305a1bb5acc67491766039d82d3a522ecc4f8c37fba99a4c03b802fcaec19cfd",
+    "original_bytes": 250310
+  },
+  "retained_failure": {
+    "source_commit": "9278de5757b29b9df40a089e11a4daef744990f7",
+    "run_url": "https://github.com/techrote/cybersand/actions/runs/45535280983",
+    "windows_artifact_id": 14986952576,
+    "verified_windows_artifact_sha256": "21560969480fda35e0d6142b15ea55621e2e17990608723f4c3696d114655e0a",
+    "checks": 95,
+    "failure": "unapplied live draft cannot change admitted control or authority",
+    "reason": "Fixture compared active generation with pre-Resume paused authority. The existing Resume lifecycle deliberately fences paused leases.",
+    "repair": "Assert Resume fencing and unchanged admitted configuration explicitly, then compare staged isolation with the post-Resume generation. Keep existing Apply/Revert and native/physical progression assertions."
+  },
+  "scope": "Actual mounted editor, native and Rapier owners, staged/live Apply/Revert, bounded library/group authoring, eight default/minimum tab layout cases and normal Save. Headless Linux; no graphical or Windows repair pass claimed."
+}

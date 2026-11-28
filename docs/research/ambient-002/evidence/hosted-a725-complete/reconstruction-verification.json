@@ -1,0 +1,13 @@
+{
+  "status": "PASS",
+  "verified_parts": [
+    "ambient-002-linux-a725.zip.part-01",
+    "ambient-002-linux-a725.zip.part-02",
+    "ambient-002-linux-a725.zip.part-03",
+    "ambient-002-linux-a725.zip.part-04",
+    "ambient-002-linux-a725.zip.part-05"
+  ],
+  "original_bytes": 42774281,
+  "original_sha256": "eac23768f3b18dc95a35554328f700daa8a81fa9920bab39fa7148aca1958e30",
+  "output": null
+}

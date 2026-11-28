@@ -1,0 +1,204 @@
+{
+  "schema": "art-context-scan-independent-review-v1",
+  "status": "passed",
+  "checks": 238,
+  "failures": [],
+  "evidence_commit": "1cd4576ead2a28feada07a36677579b358c6073c",
+  "source": "3f56020b3a0ed59da2a8387788a89ffe342f34d8",
+  "comparison_sha256": "67b3b02688b461054409ec2e00d3eaf29b89e5803dd9247d3ad7d09d1fcd19ac",
+  "execution_sha256": "a63d7b034b22b314f9e3cf152c1b5e76fa555f765e93a182451ab97bb06666e0",
+  "pairs": 40,
+  "candidate_faster_observed_pairs": 40,
+  "rows": [
+    {
+      "id": "industrial_repair:before",
+      "captured_cells": 49152,
+      "observed_nonempty_cells": 3889,
+      "baseline_median_ms": 20.289,
+      "candidate_median_ms": 5.893,
+      "reduction_percent": 70.95470451969047,
+      "ratio": 3.4428983539792974,
+      "baseline_range_ms": [
+        19.287,
+        22.36
+      ],
+      "candidate_range_ms": [
+        5.698,
+        6.544
+      ],
+      "candidate_samples_ms": [
+        5.735,
+        5.725,
+        6.056,
+        5.89,
+        5.913,
+        5.698,
+        5.896,
+        6.544
+      ],
+      "baseline_samples_ms": [
+        20.489,
+        19.92,
+        19.793,
+        20.889,
+        22.36,
+        19.287,
+        20.089,
+        20.953
+      ]
+    },
+    {
+      "id": "stopped_workshop:before",
+      "captured_cells": 98304,
+      "observed_nonempty_cells": 3830,
+      "baseline_median_ms": 39.931,
+      "candidate_median_ms": 10.513,
+      "reduction_percent": 73.67208434549597,
+      "ratio": 3.7982497859792637,
+      "baseline_range_ms": [
+        38.342,
+        41.65
+      ],
+      "candidate_range_ms": [
+        10.004,
+        11.85
+      ],
+      "candidate_samples_ms": [
+        10.239,
+        10.745,
+        10.695,
+        10.331,
+        10.004,
+        10.299,
+        10.781,
+        11.85
+      ],
+      "baseline_samples_ms": [
+        40.465,
+        40.393,
+        39.846,
+        38.922,
+        40.016,
+        38.663,
+        41.65,
+        38.342
+      ]
+    },
+    {
+      "id": "staged_megaframe:before",
+      "captured_cells": 262144,
+      "observed_nonempty_cells": 10220,
+      "baseline_median_ms": 106.629,
+      "candidate_median_ms": 27.551,
+      "reduction_percent": 74.16181339035347,
+      "ratio": 3.8702406446226996,
+      "baseline_range_ms": [
+        104.842,
+        120.543
+      ],
+      "candidate_range_ms": [
+        26.917,
+        30.248
+      ],
+      "candidate_samples_ms": [
+        29.96,
+        29.61,
+        27.48,
+        27.173,
+        27.623,
+        26.917,
+        30.248,
+        26.993
+      ],
+      "baseline_samples_ms": [
+        109.435,
+        106.532,
+        105.164,
+        120.543,
+        104.842,
+        106.454,
+        106.903,
+        106.726
+      ]
+    },
+    {
+      "id": "xeno_vault:before",
+      "captured_cells": 98304,
+      "observed_nonempty_cells": 3830,
+      "baseline_median_ms": 40.35,
+      "candidate_median_ms": 10.634,
+      "reduction_percent": 73.64560099132589,
+      "ratio": 3.7944329509121686,
+      "baseline_range_ms": [
+        38.206,
+        42.98
+      ],
+      "candidate_range_ms": [
+        9.998,
+        10.917
+      ],
+      "candidate_samples_ms": [
+        10.917,
+        10.603,
+        9.998,
+        10.465,
+        10.794,
+        10.555,
+        10.665,
+        10.831
+      ],
+      "baseline_samples_ms": [
+        38.238,
+        42.977,
+        39.582,
+        40.906,
+        38.206,
+        42.98,
+        41.379,
+        39.795
+      ]
+    },
+    {
+      "id": "staged_megaframe:after",
+      "captured_cells": 262144,
+      "observed_nonempty_cells": 106957,
+      "baseline_median_ms": 110.728,
+      "candidate_median_ms": 32.593,
+      "reduction_percent": 70.56480745610867,
+      "ratio": 3.3972938974626454,
+      "baseline_range_ms": [
+        108.461,
+        121.929
+      ],
+      "candidate_range_ms": [
+        31.523,
+        35.451
+      ],
+      "candidate_samples_ms": [
+        32.706,
+        32.481,
+        32.385,
+        31.523,
+        33.28,
+        33.527,
+        35.451,
+        31.577
+      ],
+      "baseline_samples_ms": [
+        111.035,
+        108.815,
+        114.456,
+        108.995,
+        108.461,
+        121.929,
+        110.422,
+        115.646
+      ]
+    }
+  ],
+  "limits": [
+    "Independent source/record reduction, not a new native process or model experiment.",
+    "All source algorithm checks came from the lead-brokered exact pinned script; this reduction verifies identities, phase arithmetic, medians and original input correspondence.",
+    "Actual GUI frame latency and physical owner hardware are not measured."
+  ]
+}

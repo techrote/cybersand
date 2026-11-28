@@ -1,0 +1,29 @@
+{
+  "schema": "cybersand.architecture-ui-framing-review-a.v1",
+  "status": "passed",
+  "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+  "source_tree": "ce012a8c6b616ab038d4dc65f4ac1896a6388795",
+  "run_id": 45454711939,
+  "source_qualification_sha256": "79bfb762d1ce3feec9fcf049eae596489d8b4a1c2398394d02b6bb9005a2d977",
+  "extracted_qualification_sha256": "818c3a0af9aaea91e80bb4ba1047b7718a3baf9fe23c256d377bc3702f08c41c",
+  "extracted_graphical_render_checks": 72,
+  "reviewed_images": [
+    {
+      "file": "windows/extracted-evaluator/architecture/stages/architecture-module-library-ui.png",
+      "sha256": "d2ca8f4c1c51059fafacdec0326f4690fc84fd107750dcf5e355f9a84f0f7023",
+      "visual_observation": "Complete 48x32 return-pipe material-ID geometry is visible with both horizontal arms and right return; Fit and 1:1 controls and navigation hint are present."
+    },
+    {
+      "file": "windows/extracted-evaluator/architecture/stages/architecture-zero-write-preview-ui.png",
+      "sha256": "808e8dd8ba4546bd443ec47d0cd1311d516fce5c548b705e6386ebc41968b226",
+      "visual_observation": "All six mirrored return-pipe projections are visible within the 256x160 framed region. UI explicitly says zero-write projection, 2196 checked/distinct/changed cells, and Approve is still available."
+    },
+    {
+      "file": "windows/extracted-evaluator/architecture/stages/architecture-native-placement-ui.png",
+      "sha256": "d84b70dfa813084c754a736edbc7b024485db1981e1c08ed1462bb0b7357db6a",
+      "visual_observation": "Full single return-pipe projection remains visible in the framed region after native completion. Status and stage say completed; approval preview is retired and actual receipt budget reports 366 checked/changed cells."
+    }
+  ],
+  "finding_closed": "The off-center/cropped Architecture module and fresh stage preview seen in the first source campaign are corrected in all three inspected extracted-evaluator frames.",
+  "scope": "Independent visual inspection of actual retained hosted Windows frames plus source/receipt linkage. It does not establish physical owner use, default GPU behavior, aesthetics or actor playability."
+}

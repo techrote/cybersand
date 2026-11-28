@@ -1,0 +1,23 @@
+{
+  "schema": "cybersand-batch-experiments-v1",
+  "prompt_version": "world-steer-batch-prompts-v1",
+  "tool_contract": "accepted-art-seven-primitives-v1",
+  "variants": ["P0", "P1", "P2", "P3"],
+  "families": {
+    "greebles": {"task": "context-sensitive service panels and industrial surface detail around a biomechanical research bay", "group_id": "dev-panel-bank", "reference_card_id": "techn-0021"},
+    "pipework": {"task": "a connected service-pipe spine with branches and endpoints following terraced subterranean clearances", "group_id": "dev-spine-branches", "reference_card_id": "biome-0004"},
+    "architecture": {"task": "an assembly hangar with a legible structural frame, side galleries and a clear central floor route", "group_id": "dev-assembly-hall", "reference_card_id": "works-0027"}
+  },
+  "default_extent": [128, 128],
+  "allowed_materials": [0, 58],
+  "budget_cells": 65536,
+  "seed_stride": 104729,
+  "controls": ["procedural", "seeded_random"],
+  "matched_design": "Within a seed row: identical source, region, footprint, materials, primitive contract and maximum native candidate-cell budget. Prompt variant changes only prompt content. Each tile executes independently. Controls generate exactly the same operations across P0-P3 for a given seed; they test the execution pipeline, not prompt quality.",
+  "random_control": "Relocates the same rectangular components inside the same footprint with a deterministic host seed. Component sizes/count and maximum native budget are unchanged. Overlap and connectivity may differ; all negative outcomes remain in the denominator.",
+  "reference_delivery": "inspected text card plus immutable original-image link; no image bytes sent by this version",
+  "model_comparison_status": "pending genuine available and explicitly authorized inference; deterministic and transport-fixture results are not model performance",
+  "heldout_manifest": "heldout-v1.json",
+  "heldout_policy": "Reserved structural groups are not exposed by the development example picker, used for template tuning or represented as completed validation. A separate reviewer/owner must execute the held-out cohort after a prompt revision is frozen.",
+  "human_evaluation": "Blinded exports conceal provider, model, prompt variant and seed until votes are committed. Judge recognizability, route usefulness, coherent structure and purposeful detail; automated occupancy and connectivity are diagnostics, not an aesthetic score."
+}

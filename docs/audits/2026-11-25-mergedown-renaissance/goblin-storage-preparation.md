@@ -1,0 +1,7 @@
+# Goblin002 narrow storage repair registration
+
+Prepared successor starts at `21c9a6670e05cfb8b8eeb76d02b03fb75019468f`. A narrow real-OS fixture checkpoint `9f3c479efbf356832a691aa2f9c1dbe947c34d32` changed no production byte and reproduced the inherited false acknowledgement: a valid 1,689-byte transcript fixture was replaced by 128 bytes under RLIMIT_FSIZE while `_write_fixed` returned true. Original raw outputs and byte copies are retained in the before packet.
+
+The repair adopts the exact reviewed ULTIMA whole-file writer (SHA256 d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a), while preserving Goblin002's expanded fixed path allowlist, actual disposable-profile guard, compact JSON, distinct 2 MiB Corpus and 32 MiB Transcript limits, and 512 MiB cumulative archive limit. Budget refusal occurs before staging. The native replacement primitive and runtime inputs are unchanged. Each evidence file is an independent transaction; no power-loss durability claim is made.
+
+Registered qualification: actual storage fault/retry controls and fixed-path/profile refusals; all ten successor output paths and real byte ceilings; the exact donor's 84 deterministic/native transaction boundaries; existing real controller, corpus/laboratory, authored-lineage and AMBIENT integration. Preserve original 300-second case and 240-second import watchdogs, 3072 MiB process limit and existing long-horizon limitations. The narrow runner imports no unrelated diagnostic consumers. Linux execution does not qualify Windows sharing-lock behavior.

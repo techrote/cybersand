@@ -1,0 +1,367 @@
+{
+  "actual_attempts": 30,
+  "arm_summary": [
+    {
+      "arm": "hand_typed",
+      "attempts": 6,
+      "context_assessable": 6,
+      "context_checks_pass": 6,
+      "evaluable": 6,
+      "median_clearance_intrusion_cells": 0.0,
+      "median_unanchored_detail_cells": 0.0,
+      "native_completed": 6
+    },
+    {
+      "arm": "procedural_modules",
+      "attempts": 6,
+      "context_assessable": 6,
+      "context_checks_pass": 6,
+      "evaluable": 6,
+      "median_clearance_intrusion_cells": 0.0,
+      "median_unanchored_detail_cells": 0.0,
+      "native_completed": 6
+    },
+    {
+      "arm": "random_valid",
+      "attempts": 6,
+      "context_assessable": 6,
+      "context_checks_pass": 0,
+      "evaluable": 6,
+      "median_clearance_intrusion_cells": 24.0,
+      "median_unanchored_detail_cells": 144.0,
+      "native_completed": 6
+    },
+    {
+      "arm": "reference_guided",
+      "attempts": 6,
+      "context_assessable": 6,
+      "context_checks_pass": 6,
+      "evaluable": 6,
+      "median_clearance_intrusion_cells": 0.0,
+      "median_unanchored_detail_cells": 0.0,
+      "native_completed": 6
+    },
+    {
+      "arm": "retrieval_guided",
+      "attempts": 6,
+      "context_assessable": 6,
+      "context_checks_pass": 6,
+      "evaluable": 6,
+      "median_clearance_intrusion_cells": 0.0,
+      "median_unanchored_detail_cells": 0.0,
+      "native_completed": 6
+    }
+  ],
+  "claims": {
+    "established": [
+      "All 30 retained native planes and terminal receipts are evaluable and completed.",
+      "All six family-by-seed blocks share source geometry, context and 144 realized new detail cells in each arm.",
+      "Four context-aware paths produce byte-identical geometry within each block.",
+      "Context-specific attachment, zone and clearance diagnostics distinguish all six random controls from the deliberately contextual constructions.",
+      "The three qualified native parts can be retrieved by typed compatibility and applied with exact readback."
+    ],
+    "not_established": [
+      "An architectural-quality or preference advantage of retrieval over hand-authored/procedural/reference-guided construction.",
+      "General retrieval quality from the deliberately typed three-module pool.",
+      "Language-model prompt, inference or model quality; zero calls were made.",
+      "Physical actor traversal, structural stability, functional pipe flow, blind human preference or owner acceptance.",
+      "Qualification of the final integrated source; the final campaign must retain its own exact source/runtime identities."
+    ]
+  },
+  "evaluable_attempts": 30,
+  "evidence_paths": {
+    "independent_reduction": "architecture-comparison/independent-analysis-b.json",
+    "manifest": "architecture-comparison/cases.json"
+  },
+  "human_preference": {
+    "assessed": false,
+    "blind_study": false
+  },
+  "identities": {
+    "base_native_readback_reducer_sha256": "24dadd0c2bfa2a096004a80d0a08d3d48c1d2a84383c39483b65c6f8881c0916",
+    "design_card_file_sha256": "9153480ea622d5dc6a78543269840af64b3adbef43074af8cf78cfe685d0b057",
+    "execution_source_commit": "50ad8265226030b6fc5f6f63936c4c06c6dde5ef",
+    "harness_sha256": "ad289bb2d1283f4b6caf4c83a7b4a7927d3c0b3204f262704583d569e3bca98f",
+    "independent_reducer_sha256": "af04a5a35a842ec611bdbc03af0dc44aed702d55f74fa951c02e102682b74422",
+    "independent_reduction_sha256": "c23d6bc3ba513cea72acb744bf926d6ef9c398b323da26870e461f3e81d3a703",
+    "manifest_sha256": "59e60594c3dd70e938fdac05f20265687568ee62c6b5c912420c48466e7a1e94",
+    "registration_sha256": "aa25936785d542f74fef1183b0ba394b6224d9aebc5cb0459679c863f7a3e028",
+    "runtime": {
+      "bridge_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "godot": "4.7-stable (official)",
+      "platform": "Linux"
+    }
+  },
+  "matched_blocks": [
+    {
+      "all_five_evaluable": true,
+      "evaluable_arms": [
+        "hand_typed",
+        "procedural_modules",
+        "random_valid",
+        "reference_guided",
+        "retrieval_guided"
+      ],
+      "family": "industrial_hangar",
+      "interpretation": "Unequal realized cells or different context must be reported; do not treat this as a controlled detail-quality comparison unless all matching fields pass.",
+      "matched_context": true,
+      "matched_initial_plane": true,
+      "matched_new_detail_cell_budget": true,
+      "new_detail_cells_by_arm": {
+        "hand_typed": 144,
+        "procedural_modules": 144,
+        "random_valid": 144,
+        "reference_guided": 144,
+        "retrieval_guided": 144
+      },
+      "seed": 37901
+    },
+    {
+      "all_five_evaluable": true,
+      "evaluable_arms": [
+        "hand_typed",
+        "procedural_modules",
+        "random_valid",
+        "reference_guided",
+        "retrieval_guided"
+      ],
+      "family": "industrial_hangar",
+      "interpretation": "Unequal realized cells or different context must be reported; do not treat this as a controlled detail-quality comparison unless all matching fields pass.",
+      "matched_context": true,
+      "matched_initial_plane": true,
+      "matched_new_detail_cell_budget": true,
+      "new_detail_cells_by_arm": {
+        "hand_typed": 144,
+        "procedural_modules": 144,
+        "random_valid": 144,
+        "reference_guided": 144,
+        "retrieval_guided": 144
+      },
+      "seed": 37917
+    },
+    {
+      "all_five_evaluable": true,
+      "evaluable_arms": [
+        "hand_typed",
+        "procedural_modules",
+        "random_valid",
+        "reference_guided",
+        "retrieval_guided"
+      ],
+      "family": "organic_cavern",
+      "interpretation": "Unequal realized cells or different context must be reported; do not treat this as a controlled detail-quality comparison unless all matching fields pass.",
+      "matched_context": true,
+      "matched_initial_plane": true,
+      "matched_new_detail_cell_budget": true,
+      "new_detail_cells_by_arm": {
+        "hand_typed": 144,
+        "procedural_modules": 144,
+        "random_valid": 144,
+        "reference_guided": 144,
+        "retrieval_guided": 144
+      },
+      "seed": 37901
+    },
+    {
+      "all_five_evaluable": true,
+      "evaluable_arms": [
+        "hand_typed",
+        "procedural_modules",
+        "random_valid",
+        "reference_guided",
+        "retrieval_guided"
+      ],
+      "family": "organic_cavern",
+      "interpretation": "Unequal realized cells or different context must be reported; do not treat this as a controlled detail-quality comparison unless all matching fields pass.",
+      "matched_context": true,
+      "matched_initial_plane": true,
+      "matched_new_detail_cell_budget": true,
+      "new_detail_cells_by_arm": {
+        "hand_typed": 144,
+        "procedural_modules": 144,
+        "random_valid": 144,
+        "reference_guided": 144,
+        "retrieval_guided": 144
+      },
+      "seed": 37917
+    },
+    {
+      "all_five_evaluable": true,
+      "evaluable_arms": [
+        "hand_typed",
+        "procedural_modules",
+        "random_valid",
+        "reference_guided",
+        "retrieval_guided"
+      ],
+      "family": "service_network",
+      "interpretation": "Unequal realized cells or different context must be reported; do not treat this as a controlled detail-quality comparison unless all matching fields pass.",
+      "matched_context": true,
+      "matched_initial_plane": true,
+      "matched_new_detail_cell_budget": true,
+      "new_detail_cells_by_arm": {
+        "hand_typed": 144,
+        "procedural_modules": 144,
+        "random_valid": 144,
+        "reference_guided": 144,
+        "retrieval_guided": 144
+      },
+      "seed": 37901
+    },
+    {
+      "all_five_evaluable": true,
+      "evaluable_arms": [
+        "hand_typed",
+        "procedural_modules",
+        "random_valid",
+        "reference_guided",
+        "retrieval_guided"
+      ],
+      "family": "service_network",
+      "interpretation": "Unequal realized cells or different context must be reported; do not treat this as a controlled detail-quality comparison unless all matching fields pass.",
+      "matched_context": true,
+      "matched_initial_plane": true,
+      "matched_new_detail_cell_budget": true,
+      "new_detail_cells_by_arm": {
+        "hand_typed": 144,
+        "procedural_modules": 144,
+        "random_valid": 144,
+        "reference_guided": 144,
+        "retrieval_guided": 144
+      },
+      "seed": 37917
+    }
+  ],
+  "missing_registered_cases": [],
+  "model_assisted": {
+    "executed_calls": 0,
+    "qualified": false,
+    "reason": "No authorized model endpoint was used; all registered arms are offline controls.",
+    "reducer_executed_calls": 0
+  },
+  "native_completed_attempts": 30,
+  "native_module_candidate_count": 3,
+  "random_valid_results": [
+    {
+      "contextual_detail_checks_pass": false,
+      "detached_detail_cells": 144,
+      "detail_components": 6,
+      "detail_outside_declared_zones": 144,
+      "family": "industrial_hangar",
+      "new_clearance_intrusion_cells": 24,
+      "new_detail_cells": 144,
+      "protected_changed_cells": 0,
+      "seed": 37901,
+      "square_width_5_route_connected": true,
+      "unanchored_detail_cells": 144
+    },
+    {
+      "contextual_detail_checks_pass": false,
+      "detached_detail_cells": 144,
+      "detail_components": 6,
+      "detail_outside_declared_zones": 144,
+      "family": "industrial_hangar",
+      "new_clearance_intrusion_cells": 24,
+      "new_detail_cells": 144,
+      "protected_changed_cells": 0,
+      "seed": 37917,
+      "square_width_5_route_connected": true,
+      "unanchored_detail_cells": 144
+    },
+    {
+      "contextual_detail_checks_pass": false,
+      "detached_detail_cells": 144,
+      "detail_components": 6,
+      "detail_outside_declared_zones": 144,
+      "family": "service_network",
+      "new_clearance_intrusion_cells": 48,
+      "new_detail_cells": 144,
+      "protected_changed_cells": 0,
+      "seed": 37901,
+      "square_width_5_route_connected": true,
+      "unanchored_detail_cells": 144
+    },
+    {
+      "contextual_detail_checks_pass": false,
+      "detached_detail_cells": 120,
+      "detail_components": 6,
+      "detail_outside_declared_zones": 144,
+      "family": "service_network",
+      "new_clearance_intrusion_cells": 24,
+      "new_detail_cells": 144,
+      "protected_changed_cells": 0,
+      "seed": 37917,
+      "square_width_5_route_connected": true,
+      "unanchored_detail_cells": 144
+    },
+    {
+      "contextual_detail_checks_pass": false,
+      "detached_detail_cells": 144,
+      "detail_components": 6,
+      "detail_outside_declared_zones": 144,
+      "family": "organic_cavern",
+      "new_clearance_intrusion_cells": 0,
+      "new_detail_cells": 144,
+      "protected_changed_cells": 0,
+      "seed": 37901,
+      "square_width_5_route_connected": true,
+      "unanchored_detail_cells": 144
+    },
+    {
+      "contextual_detail_checks_pass": false,
+      "detached_detail_cells": 120,
+      "detail_components": 6,
+      "detail_outside_declared_zones": 144,
+      "family": "organic_cavern",
+      "new_clearance_intrusion_cells": 48,
+      "new_detail_cells": 144,
+      "protected_changed_cells": 0,
+      "seed": 37917,
+      "square_width_5_route_connected": true,
+      "unanchored_detail_cells": 120
+    }
+  ],
+  "registered_attempts": 30,
+  "retrieval_results": [
+    {
+      "context_characters": 8497,
+      "family": "industrial_hangar",
+      "ranked_card_ids": [
+        "goldmaps-pr146",
+        "goldmaps-pr153",
+        "goldmaps-pr159"
+      ],
+      "same_for_both_seeds": true,
+      "selected_module_content_sha256": "bca2ae5efc079938cdbb6227f88f5efb27b51794685d1cb6fccd73213b5f28bc",
+      "selected_module_id": "comparison-industrial-hangar"
+    },
+    {
+      "context_characters": 8486,
+      "family": "service_network",
+      "ranked_card_ids": [
+        "goldmaps-pr136",
+        "goldmaps-pr159",
+        "goldmaps-pr168"
+      ],
+      "same_for_both_seeds": true,
+      "selected_module_content_sha256": "63eabf3b52c11067585e1a46651d89088f40742885848ca38e36dc733a924783",
+      "selected_module_id": "comparison-service-network"
+    },
+    {
+      "context_characters": 8724,
+      "family": "organic_cavern",
+      "ranked_card_ids": [
+        "goldmaps-pr125",
+        "goldmaps-pr130",
+        "goldmaps-pr207"
+      ],
+      "same_for_both_seeds": true,
+      "selected_module_content_sha256": "0cc23b5add78398dbb0d84629860a5aafabb382ad30298de59e83ec8b22a00db",
+      "selected_module_id": "comparison-organic-cavern"
+    }
+  ],
+  "review_date": "2026-11-24",
+  "reviewer": "architectural_retrieval specialist; separate from native comparison harness author",
+  "schema_version": "cybersand.architectural-comparison-independent-review.v1",
+  "status": "development-source evidence; Draft/HOLD"
+}

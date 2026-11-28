@@ -215,9 +215,14 @@ def pristine_state(folder):
     return {name:(Path(folder)/name).exists() for name in ('godot/.godot','userdata')}
 
 
-def command_line(comspec, folder):
+def command_line(comspec, folder, *, persistent=False):
     require('"' not in str(comspec)+str(folder),'Quoted execution path refused')
-    return '"'+str(comspec)+'" /d /s /c ""'+ntpath.join(str(folder),LAUNCHER)+'" '+ARGS+'"'
+    # The historical ordinary command remains byte-for-byte unchanged. The
+    # integrated evaluator also exercises its explicit persistent host under
+    # the same held-process 180-second outer observation bound.
+    launcher='Open Persistent Areas.cmd' if persistent else LAUNCHER
+    arguments=ARGS.replace('--quit-after 180','--quit-after 1800') if persistent else ARGS
+    return '"'+str(comspec)+'" /d /s /c ""'+ntpath.join(str(folder),launcher)+'" '+arguments+'"'
 
 
 def normalized(path):
@@ -301,12 +306,12 @@ def kill_owned_tree(process,reader):
     if process.poll() is None: process.wait(timeout=10)
 
 
-def execute_launcher(folder,output,metrics):
+def execute_launcher(folder,output,metrics,*,persistent=False):
     require(sys.platform=='win32','Actual cold launch requires Windows')
     output.mkdir(parents=True,exist_ok=False)
     comspec=os.environ.get('ComSpec',r'C:\Windows\System32\cmd.exe')
     require(Path(comspec).is_file(),'Missing ordinary Windows CMD executable')
-    command=command_line(comspec,folder)
+    command=command_line(comspec,folder,persistent=persistent)
     env=dict(os.environ,GODOT_SILENCE_ROOT_WARNING='1')
     began=time.monotonic();started_unix=time.time()
     process=None;reader=None;tree=None;timed_out=False;failure=None;cleanup_errors=[]

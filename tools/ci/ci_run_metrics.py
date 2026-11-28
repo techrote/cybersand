@@ -185,7 +185,11 @@ def summarize_evidence(root: Path, *, run_id: int, attempt: int) -> dict:
     result = {"limitation": "Telemetry inventories describe observed execution; original independent coverage verdicts remain authoritative.",
               "file_sha256": {str(path.relative_to(root)).replace("\\", "/"): hashlib.sha256(path.read_bytes()).hexdigest()
                               for path in [plans[0], files[0]]},
-              "tested_sources": sorted({(r["source"].get("commit"), r["source"].get("tree"), r["source"].get("tracked_delta_sha256")) for r in rows}),
+              # Original telemetry may contain both a clean checkout (None)
+              # and a materialized-runtime delta for the same source. Keep both
+              # identities; Python cannot directly order None against a digest.
+              "tested_sources": sorted({(r["source"].get("commit"), r["source"].get("tree"), r["source"].get("tracked_delta_sha256")) for r in rows},
+                                       key=lambda item: (item[0], item[1], item[2] is not None, item[2] or "")),
               "platforms": {}}
     for platform, expected_plan in plan.items():
         expected = [case["name"] for shard in expected_plan["shards"] for case in shard["cases"]]

@@ -1,0 +1,403 @@
+{
+  "authoritative_recovery_manifest_sha256": "1e9d155c4aa5bcf1fdb9c64030a2312944e341d7449a8826b8d96c8810aec8a1",
+  "authority": {
+    "Draft_HOLD": true,
+    "Ready_promotion_authorized": false,
+    "merge_authorized": false,
+    "new_SWARM_research_authorized": false,
+    "production_default_activation_authorized": false
+  },
+  "complete_ordinary_evidence": {
+    "current_Draft_Docs": {
+      "intentional_skips": 1,
+      "passed_steps": 27,
+      "run": 45467889468,
+      "scope": "Draft documentation only; the skipped provenance step is not counted as executed. Earlier full Docs 45464485647 has 28 passed steps/zero skips; current PLAY verifies all 20 materialized paths on both platforms."
+    },
+    "gde": {
+      "art_graphical_checks": 38,
+      "inapplicable_control_jobs": 2,
+      "linux_cases": 344,
+      "linux_shards": 25,
+      "mandatory_case_skips": 0,
+      "missing_or_duplicate_cases": 0,
+      "original_case_and_import_logs": 713,
+      "rendered_cases": 23,
+      "run": 45467878171,
+      "source": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+      "successful_jobs": 55,
+      "windows_cases": 321,
+      "windows_shards": 23
+    },
+    "native": {
+      "commands": 20,
+      "families": 6,
+      "native_cases_per_normal_ASanUBSan_TSan_family": 192,
+      "run": 45464490633,
+      "source": "e4a0a3907e5e1936f41905b8c3db98addb3e6147"
+    },
+    "ordinary_PLAY_packet": {
+      "helper_tests": 68,
+      "jobs_passed": 3,
+      "run": 45467888942,
+      "scope": "Identity and preflight; all 51 manual rows per platform remain untested.",
+      "skips": 0
+    },
+    "retained_PLAY_actual_process_cases": {
+      "life010_binary_readable_pairs": 50,
+      "life010_native_commit_witnesses": 20,
+      "life011_native_receipt_hashes": 160,
+      "nonneutral_physical_samples": 720,
+      "original_adverse_process_controls": 860,
+      "packets": 30
+    }
+  },
+  "decision": "APPROVE_ENGINEERING_COMPLETION_OWNER_ACCEPTANCE_PENDING_DRAFT_HOLD",
+  "delivered_evaluator": {
+    "archive_files": 1094,
+    "bytes": 93903365,
+    "exact_saved_version_byte_equality_verified": true,
+    "filename": "CyberSand-SWARM456-Draft-HOLD-Windows-5e34e0dd89c9.zip",
+    "manifest_sha256": "d431d254b354bd0f3e07b1a7e8c700ac03202432fdbf6ba18cac09652b62d9da",
+    "original_artifact_url": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14949325922",
+    "repacked_or_rebuilt": false,
+    "sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522"
+  },
+  "domains": [
+    {
+      "domain": "Native correctness",
+      "evidence": [
+        "native_source",
+        "native_final",
+        "full_native",
+        "full_gde",
+        "full_gde_second_original_join"
+      ],
+      "finding": "Existing native assembly, source feasibility, guards, reservations, bounded recovery, resource ceilings and default-OFF controls are preserved. No material production solver defect was demonstrated. Source review, Q7 actual material readback and complete ordinary Native/GDE source-bound execution agree.",
+      "status": "PASS within reviewed engineering scope"
+    },
+    {
+      "domain": "Scientific integrity",
+      "evidence": [
+        "science",
+        "native_final"
+      ],
+      "finding": "All 1,920 revealed request/response/envelope cases and 5,760 compressed/raw pairs preserve the original f9-to-Q6-to-Q7 identity-only comparison. All 360 fresh controls match Q5 raw outputs and preserve the original donor comparison. The 82/96 and 81/96 endpoint, 12 exhausted/2 blocked, original 14/96 and 3/96 reference, current versus original refusal distributions, FAIL138, negative comparisons, 96-case denominators, 480 separate historical references and seven frozen registration files remain distinct and unchanged. No new policy, tuning or unseen claim was introduced.",
+      "status": "PASS with explicit executable-retention limit"
+    },
+    {
+      "domain": "Mainline reconciliation",
+      "evidence": [
+        "native_final",
+        "transport_commit_and_ancestry",
+        "test_only_policy",
+        "test_only_source",
+        "transport_source_and_route"
+      ],
+      "finding": "Both frozen donor commits and accepted main 00cdb02f are genuine ancestors. Accepted Art session logging and contemporary accepted behavior are preserved; no unrelated Draft programme was imported. The two ordinary CI overlays retain exact qualified product/scientific/runtime inputs and have separately completed affected gates under the existing documented postpublication policy.",
+      "status": "PASS"
+    },
+    {
+      "domain": "Workbench transactions",
+      "evidence": [
+        "receipt_custody",
+        "owner_execution",
+        "native_final",
+        "ordinary_retained_play"
+      ],
+      "finding": "Q7 original Linux, Windows-source and extracted-package lanes establish 63 real Apply/Undo/reapply transactions with native material-plane, operation, receipt, source-fence and protected-mask joins. Final/provisional inspection, independent controls, recovery OFF/ON, blocked/stale/protected refusal and ordinary editing are exercised. A preview alone never establishes native application.",
+      "status": "PASS"
+    },
+    {
+      "domain": "Persistence and lifecycle",
+      "evidence": [
+        "receipt_custody",
+        "owner_execution",
+        "owner_ergonomics",
+        "ordinary_retained_play"
+      ],
+      "finding": "All 21 Q7 fresh-process Reopens bind original saved map, sidecar and native-evidence hashes, territory and historical read-only receipt state. Busy, Stop/cancel, World replacement and ordinary history behavior are qualified. The shipped acceptance sequence saves and reopens a composition checkpoint before ordinary edits, then tests authored Save/Reopen separately; later legitimate edits may invalidate stale composition metadata.",
+      "status": "PASS"
+    },
+    {
+      "domain": "Security",
+      "evidence": [
+        "publication_final",
+        "publication_tree",
+        "remote_lfs_first",
+        "remote_lfs_corrected",
+        "owner_payload",
+        "owner_execution",
+        "owner_ergonomics",
+        "transport_source_and_route"
+      ],
+      "finding": "The dedicated publisher is authenticated, fenced to the exact branch lease and eight reviewed paths; unchanged tested application source and actual remote LFS bytes are checked. ZIP inventory and Windows-safe member names, pinned engines/dependencies, launch ownership/cleanup and local-only optional evidence collection are reviewed. Private owner maps and private delivery identifiers are excluded from public records. No permission, watchdog or validation relaxation was introduced; no general penetration-test claim is made.",
+      "status": "PASS within inspected delivery and custody scope"
+    },
+    {
+      "domain": "Evidence validation",
+      "evidence": [
+        "public_recovery_manifest",
+        "publication_final",
+        "receipt_negative_reproduction",
+        "receipt_custody",
+        "projection_types",
+        "full_gde_second_original_join",
+        "ordinary_retained_play"
+      ],
+      "finding": "The original Q5 wrapper-versus-engine PID mismatch remains correctly refused. Independently reproduced forged receipt, saved-file, territory and generation-chain gaps received narrow producer/consumer repairs and fresh Q7 execution. Unrelated process reports, wrong source/runtime, missing transactions, substituted logs/files and forged native receipts are refused. Original Q1-Q5, Q6 attempt 1, FAIL138 and subsequent failed ordinary attempts remain unchanged. Complete ordinary case unions, raw logs and source/runtime identities independently join.",
+      "status": "PASS"
+    },
+    {
+      "domain": "Runtime publication",
+      "evidence": [
+        "publication_final",
+        "publication_tree",
+        "remote_lfs_first",
+        "remote_lfs_corrected",
+        "ordinary_windows_candidate",
+        "ordinary_linux_runtime",
+        "ordinary_play_packet"
+      ],
+      "finding": "Publication 5323b837 preserves qualified producer 5e34e0dd, verifies all eight allowed paths and changes seven because the Linux library was already byte-identical. The authenticated publisher uploaded three changed LFS objects. Two fresh full Documentation runs prove all four exact SWARM binaries among 20 materialized paths, and current PLAY prechecks independently preserve those identities. Ordinary rebuilt Windows candidate 60c49a8f remains distinct from qualified/published/evaluator DLL 552f1676; no binary or campaign is retagged.",
+      "status": "PASS"
+    },
+    {
+      "domain": "Windows evaluator integrity",
+      "evidence": [
+        "owner_payload",
+        "owner_execution",
+        "owner_ergonomics",
+        "saved_owner_delivery"
+      ],
+      "finding": "The sealed portable ZIP contains 1,093 manifest payloads plus its manifest, including 1,059 exact Git source entries, qualified Windows native executables, pinned Godot, dependencies, presets, ordinary launcher and guide. Actual pristine extraction, visible responsive graphical Workbench launch and all package transactions/Reopens passed. The exact saved downloadable version was independently materialized and its complete archive hash, size and manifest equal the fully audited original. Hosted software rendering and audio fallback do not qualify physical Windows11/NVIDIA appearance, sound or usability.",
+      "status": "PASS for hosted execution and exact delivered artifact; physical owner acceptance pending"
+    }
+  ],
+  "engineering_qualification": "passed within the exact sources, runtimes and execution scopes recorded below",
+  "evidence_records": {
+    "current_docs_scope": {
+      "bytes": 1760,
+      "record": "pr-docs-45467889468-independent-review.json",
+      "sha256": "fe32afb6adf5823c5a3f55762ae3a19ef6793bafd77434b7f12b590de055a305"
+    },
+    "full_gde": {
+      "bytes": 7163,
+      "record": "final-independent-review.json",
+      "sha256": "cf2dacaae057cb814e797c021c2c4d3a5a667fc3b8f1b82161166fb14df65a95"
+    },
+    "full_gde_second_original_join": {
+      "bytes": 13777,
+      "record": "final-ordinary-union-second-independent-review.json",
+      "sha256": "58dca10f2121dce20f6372d89e526a2155da1a146338695d7edf3b28bd382b86"
+    },
+    "full_native": {
+      "bytes": 5269,
+      "record": "final-independent-review.json",
+      "sha256": "8bd62549c671cc1398dc352e62f4b02383bd01a32ab3d09643606875ab2f5439"
+    },
+    "native_final": {
+      "bytes": 10038,
+      "record": "FINAL-NATIVE-SOURCE-REVIEW-SUPPLEMENT.json",
+      "sha256": "73fbe6f98a042dc9d4eec503f87e00b7f8f999fc76efd9330781ca1d6c51c870"
+    },
+    "native_source": {
+      "bytes": 6792,
+      "record": "FINAL-NATIVE-SOURCE-REVIEW.json",
+      "sha256": "159a34ba7063406b812a19716fa1839e447a20a6750bc39edb8f113c50896f9b"
+    },
+    "ordinary_linux_runtime": {
+      "bytes": 3963,
+      "record": "final-ordinary-linux-runtime-independent-review.json",
+      "sha256": "04458a92b63dbc52fc5076482a2427966011db1a7f91e3b27af9784b209bd017"
+    },
+    "ordinary_play_packet": {
+      "bytes": 5560,
+      "record": "play-45467888942-independent-review.json",
+      "sha256": "b11ec21a90ffb7ec77a58ccab6e664a275fcb1f5ef217bed189561af5118954e"
+    },
+    "ordinary_retained_play": {
+      "bytes": 108621,
+      "record": "final-ordinary-retained-play-independent-review.json",
+      "sha256": "23eddec9a534c2ab0d7bce7d0d76ce8e80ef43e9850099bdf3d61c96870bb008"
+    },
+    "ordinary_windows_candidate": {
+      "bytes": 2941,
+      "record": "final-ordinary-windows-candidate-independent-review.json",
+      "sha256": "1bb29f59b8dbf6a220bae05117e7bfcbd0b339f551d368469e945b6990f1bf61"
+    },
+    "owner_ergonomics": {
+      "bytes": 7113,
+      "record": "q7-owner-acceptance-ergonomics-review.json",
+      "sha256": "c7e47eb9c99a0dc26eecd1193532773f897dabada0ed4a66c402026e8b043a6c"
+    },
+    "owner_execution": {
+      "bytes": 12881,
+      "record": "q7-final-owner-execution-review.json",
+      "sha256": "8af38332b84e53ea811dc2b52dbf7de1cb0c12e8255dc7a5f10d5846c7537dbf"
+    },
+    "owner_payload": {
+      "bytes": 294403,
+      "record": "q7-final-owner-payload-review.json",
+      "sha256": "27c49adec3e2da136bbf3a2e33d578370467ad1b64528347dbc28f7ddb56561b"
+    },
+    "projection_types": {
+      "bytes": 37145,
+      "record": "q7-all-lanes-receipt-projection-type-review.json",
+      "sha256": "f478f38f888935355e8f320ebd307f43e8058f90b64b7c26a6e1d2d18414dd18"
+    },
+    "public_recovery_manifest": {
+      "bytes": 741001,
+      "record": "authoritative-recovery-manifest.public.json",
+      "sha256": "1e9d155c4aa5bcf1fdb9c64030a2312944e341d7449a8826b8d96c8810aec8a1"
+    },
+    "publication_final": {
+      "bytes": 21155,
+      "record": "FINAL-B-ENGINEERING-APPROVAL.json",
+      "sha256": "d3c49c73251c906e0f1d9aa5325be658b8fc2ab902b3bdcde3fc7b734684028b"
+    },
+    "publication_tree": {
+      "bytes": 6035,
+      "record": "q7-published-tree-and-local-materialization-review.json",
+      "sha256": "5f20170b2ac12b4ae2937151a8840a11717c2037b8f7fbf3bf059d641e9eac60"
+    },
+    "receipt_custody": {
+      "bytes": 4320,
+      "record": "RECEIPT-CUSTODY-REVIEW-FINAL.json",
+      "sha256": "973762035662ebdf69a6268751c20f0dbe6eeb6c5812ca0440185f310128c754"
+    },
+    "receipt_negative_reproduction": {
+      "bytes": 1030,
+      "record": "receipt-gap-full-reproduction.json",
+      "sha256": "fde46a097339ef8e3a0269e078c53b2732ad08aff11500dc297501ff133691b6"
+    },
+    "remote_lfs_corrected": {
+      "bytes": 6391,
+      "record": "corrected-full-docs-remote-lfs-independent-review.json",
+      "sha256": "6cfe510cb79400de22417402eec829e67f6dfb15c7d6e693f7a3ee3699e7e036"
+    },
+    "remote_lfs_first": {
+      "bytes": 7036,
+      "record": "q7-published-remote-lfs-materialization-review.json",
+      "sha256": "d0feafeec0d9a38e0a775d014d26fc4dc3e1366938c9551db917e16f079a2a20"
+    },
+    "saved_owner_delivery": {
+      "bytes": 1911,
+      "record": "saved-owner-delivery-independent-review.json",
+      "sha256": "41d0e8c784d60d20106e3bfbcac7a5975fa909943dbed9f7ae5b0c3958d19278"
+    },
+    "science": {
+      "bytes": 39233,
+      "record": "SCIENCE-REVIEW.json",
+      "sha256": "68c6b35617e082fa79c33d4f6ca09c7e2d2c0bafe8547d31fbbe89a1784bc38e"
+    },
+    "test_only_policy": {
+      "bytes": 6358,
+      "record": "postpublication-ci-test-policy-review.json",
+      "sha256": "a026fe13c10ef2c36f8f94a8588f4816f18cce9f4aea0159eb85721793b1ba02"
+    },
+    "test_only_source": {
+      "bytes": 7567,
+      "record": "postpublication-ci-test-source-impact-review.json",
+      "sha256": "a270d4ed983f394256e9d5f9ca4a97cf3aa8ae6c44a0e2766384efd38607c583"
+    },
+    "transport_commit_and_ancestry": {
+      "bytes": 2080,
+      "record": "transport-commit-and-draft-integration-review.json",
+      "sha256": "47e20ae2c40364ec2c538bc35d5862fabac2463b253e2fa4b77d1b72260cf87c"
+    },
+    "transport_source_and_route": {
+      "bytes": 11880,
+      "record": "ordinary-transport-and-route-independent-review.json",
+      "sha256": "5bbaf86ff405329f520e53738a25fe7310d5b03134ac5a813f09c7b7432028b9"
+    }
+  },
+  "historical_outcomes_preserved": {
+    "FAIL138": "failure, with original population and all changed/unchanged classifications preserved",
+    "Q1_through_Q5": "failure",
+    "Q6_attempt1": "failure",
+    "Q6_attempt2": "success at superseded source b1265231, not qualification of the fresh Q7 witnesses",
+    "ordinary_GDE45459025464": "failure: stale live-inventory unit-test bound",
+    "ordinary_GDE45464495877": "failure: Linux/Art pinned-engine transport before execution; original Windows execution remains separately scoped",
+    "ordinary_PLAY45464427423_attempts1_and2": "failure: Linux pinned-engine transport before packet creation"
+  },
+  "identities": {
+    "accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "accepted_main_tree": "06b62d73138028d1f7615b83edc9810491bf6287",
+    "ci_test_correction": "5fd5ab8b34c46d3c275d284559498e65d80be466",
+    "corrected_broad_execution": "e4a0a3907e5e1936f41905b8c3db98addb3e6147",
+    "documentation_checkpoint": "The Git commit containing this packet identifies its documentation revision; it does not retag any original binary or campaign.",
+    "donors": {
+      "715": "919134a39d31461947c410c233d59d1965c48414",
+      "716": "428f842034a1f80d593bcc6bb32af2dd99cd0105"
+    },
+    "first_broad_execution": "2cad3ae2d0fce0eda84701eebdf1ae7cf6c9fcae",
+    "historical_main": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+    "publication": "5323b837cdcaeab5da14f7ef92b0d3f059cf123d",
+    "publication_request": "856e25fd58c375482a5b6d58cb79e6e7eca2784d",
+    "publication_tree": "9c0dcf061051e32194f5845cf024a3d5435d9122",
+    "qualified_application_runtime_evaluator_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+    "qualified_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+    "reviewed_implementation": "4c00aaf1232484275ee0ee6891d31315a465345a",
+    "reviewed_implementation_tree": "a6a7600bc849b65fe7686953d1fdc5314f194bfe",
+    "transport_correction_and_final_affected_execution": "5fd9985eb27919eeefdad959a9970a0eef57d832",
+    "transport_tree": "9c26bbf47b0c4523e8263a391436b8b5e9bcbb81"
+  },
+  "mission": "GENTEK-SWARM-456-DEFINITIVE-001",
+  "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+  "nonblocking_evidence_limits": [
+    "The original revealed-science driver/compiler executable byte payloads are absent. Exact compiled inputs, source/compiler/build/log/custody receipts and original outputs are verified; no direct hash of absent bytes or product-binary substitution is claimed. The separate retained known360 executable was directly rehashed.",
+    "The exact failing API/cause of Q6 attempt1 WinError5 remains undetermined. Subsequent successful original runs do not relabel it.",
+    "All 63 authoritative Q7 native transaction receipts have strict integer fields. Thirty-three redundant terminal/historical projections contain integral floats; no original boolean aliases occur. Redundant numeric equality cannot authorize another transaction, material plane or source fence.",
+    "Hosted Windows renderer/audio evidence is limited to its original software-renderer and Dummy-audio fallback contract.",
+    "The initial offline Linux full-reader attempt refused a mismatched absolute review path. The unchanged reader passed at a pristine checkout with the original hosted pathname. Original evidence and verification code were not changed."
+  ],
+  "open_material_findings": [],
+  "packet": {
+    "embedded_evidence_path_hash_references_verified": 19,
+    "machine_readable": {
+      "bytes": 36512,
+      "filename": "final-decision-packet.json",
+      "sha256": "4426b4eade793f96620e69d45af77970293aaddd42d002cbdc80acb47a27d23d"
+    },
+    "markdown": {
+      "bytes": 40563,
+      "filename": "final-decision-packet.md",
+      "sha256": "e9900b728caa2ac4985c8f45a0346d1ab5a5329296db8e5f3d069459f9716044"
+    },
+    "review_boundary": "These exact packet bytes have been substantively reviewed. A later documentation-only commit and its postcommit documentation checks are recorded by a separate closure receipt; this approval does not predict their result or retag tested source."
+  },
+  "public_disclosure": {
+    "original_evidence_rewritten": false,
+    "private_delivery_file_identifiers_included": false,
+    "private_owner_maps_included": false,
+    "signed_transfer_URLs_included": false
+  },
+  "qualified_runtime_digests": {
+    "linux_cli": {
+      "bytes": 1554128,
+      "sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206"
+    },
+    "linux_library": {
+      "bytes": 5278840,
+      "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+    },
+    "windows_cli": {
+      "bytes": 3283968,
+      "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d"
+    },
+    "windows_library": {
+      "bytes": 5844992,
+      "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205"
+    }
+  },
+  "remaining_owner_gates": [
+    "Physical Windows11/NVIDIA appearance, responsiveness, sound, usability and owner preference.",
+    "Owner operation on a local copy of an original populated authored map, including recovery OFF/ON, valid Apply, composition Save/fresh Reopen before ordinary edits, and ordinary authoring/history/Save/fresh Reopen.",
+    "Private map contents remain local; no upload, compilation or reconstruction from historical packages is required."
+  ],
+  "review_independence": "C implemented the narrow receipt consumer and focused adversarial controls; A independently derived the native contract and reviewed the consumer, B challenged saved-file/territory/fence and negative-Apply behavior, and root independently reviewed and ran real native preflights before fresh Q7. C separately reviewed A/B changes and original science/runtime/package/publication/ordinary evidence. No author self-approval is substituted for those independent reviews.",
+  "reviewed_utc": "2026-11-24T19:55:28.169306+00:00",
+  "reviewer": "Specialist C, independent scientific, evidence, Workbench, publication and delivery assurance",
+  "schema": "swarm456-definitive-terminal-independent-assurance-v1"
+}

@@ -1,0 +1,94 @@
+{
+  "schema": "ambient-002-authoring-recovery-record/v1",
+  "date_utc": "2026-11-25",
+  "evidence_class": "conversation-retained execution observations; not a source-bound qualification receipt",
+  "loss": "Executor restart erased unpublished /tmp Git objects, original local process logs, graphical layout probes and the local 25-input JSON checkpoint. Missing originals are not recreated.",
+  "preserved_hosted": {
+    "source_commit": "35187eda20fcff25a87e1936f84934247ca617e2",
+    "source_tree": "4fed7b1cb209e236cb894364d573a8d462398da2",
+    "run_url": "https://github.com/techrote/cybersand/actions/runs/45530324844",
+    "artifact_id": 14985115658,
+    "artifact_sha256": "cc429610e9246cf4e66a7acd26dba6362e65525021d18bf046945c730483d449",
+    "reported_passed_assertions": {
+      "living_authoring": 238,
+      "mounted_editor": 69,
+      "living_native_examples": 209,
+      "physical_smoke": 5091
+    },
+    "scope": "Preserved hosted earlier source; not a qualification of recovered changes."
+  },
+  "reported_only": [
+    {
+      "reported_local_source": "2a510339cdc248f7ce77075282b3dd5a07387929",
+      "case": "Setup Save/fresh-process Reopen",
+      "checks": [
+        242,
+        249
+      ],
+      "failures": 0,
+      "original_logs_available": false
+    },
+    {
+      "reported_local_source": "89471d4290117b15547b823648d5060c5f2ae469",
+      "case": "Setup Save/fresh-process Reopen including 40 authored AABB checks",
+      "checks": [
+        282,
+        289
+      ],
+      "failures": 0,
+      "original_logs_available": false
+    },
+    {
+      "reported_local_source": "89471d4290117b15547b823648d5060c5f2ae469",
+      "case": "delivery custody fixtures",
+      "tests": 43,
+      "failures": 0,
+      "original_logs_available": false
+    },
+    {
+      "reported_local_source": "efaf8067dc69fbcaae678706052f203f81357f6d",
+      "case": "corrected refinery authored-data fixture",
+      "checks": 278,
+      "failures": 0,
+      "scope": "Executed before this local commit was made; exact original log and source digest checkpoint were lost.",
+      "original_logs_available": false
+    },
+    {
+      "case": "full local Workbench attempt",
+      "exit_code": 137,
+      "disposition": "infrastructure termination; no source pass inferred",
+      "original_logs_available": false
+    }
+  ],
+  "negative_findings": [
+    "Initial v1 upgrades failed six checks because new dictionary dot assignments created StringName keys; strict String-key repair was preserved in hosted source.",
+    "Initial courtyard adjacent actors exceeded copied peer range; groups now begin at 60-cell spacing.",
+    "Enriched flood-yard truss occupied six cells of flyer6's conservative source AABB; spawn and home were moved.",
+    "Initial refinery raised Oil was outside ground material scope; a nearby sealed cabinet replaces it.",
+    "Actual Control layout probes found default-height and minimum-width overflow; preserved hosted source includes repairs."
+  ],
+  "recovered_commits": [
+    {
+      "commit": "65fabf2c35652e6e17cb756f45975e96ea773e9b",
+      "scope": "authoring, live audition, tabs and native observation tests"
+    },
+    {
+      "commit": "8dea37c498b7b896fabff25bee3745c386bbc26e",
+      "scope": "six refined native scene JSONs"
+    },
+    {
+      "commit": "95a1e69c82109f3489260b2a5437999124d905e1",
+      "scope": "29 capture views, draw intervals, strict inventory, package guide inclusion"
+    },
+    {
+      "commit": "48e38b6e5d6db1305fcb770011a766c00a850097",
+      "scope": "sixteen-profile owner walkthrough"
+    }
+  ],
+  "limits": [
+    "No missing raw log, digest or original local Git object has been reconstructed as evidence.",
+    "Recovered source must receive new exact-source qualification.",
+    "Source AABB tests are not physical traversal tests.",
+    "Hosted graphics do not establish physical NVIDIA playfeel."
+  ]
+}

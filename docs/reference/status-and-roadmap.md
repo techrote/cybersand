@@ -4,11 +4,104 @@ status: Current
 document-kind: reference
 scope: Current implementation map, unresolved correctness and policy decisions, and bounded next checkpoints
 canonical-for: [implementation-status, foundational-priorities, open-decisions]
-last-reviewed: 2026-11-21
+last-reviewed: 2026-11-27
 related-documents: [validation-evidence.md, invariants.md, ../operations/documentation-maintenance.md, ../operations/architecture-programme-water-feel-addendum.md, ../operations/microscenarios-programme.md, ../operations/development-claims-remediation-programme.md, ../operations/water-hybrid-pressure-extension-programme.md, ../operations/github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Status and foundational roadmap
+
+## RAMCACHE and Strata owner-accepted integration — 2026-11-28
+
+**Approved integration / implemented candidate:** [RAMCACHE-STRATA-INTEGRATION-001](../operations/ramcache-strata-integration.md) integrates #745 and the complete #776/#785 Strata lineage with accepted main. The owner physically accepted both original evaluators and waived only the optional-optics 90% retention gate. Classic remains default, original failed measurements remain preserved, and persistent-area/Strata composition is explicitly refused. Current-source qualification, actual main merges and the definitive package retain separate evidence in the mission record. ObjectShard M4, PUBPRES development and deferred UX remain outside this mission.
+
+## GEN-006 persistent authored areas
+
+The [owner-accepted RAMCACHE integration #745](https://github.com/techrote/cybersand/pull/745) preserves #725/#734 and implements [native HOT ownership, bounded WARM/COLD caching, explicit asynchronous durability and real destination prefetch](../systems/persistent-area-residency.md). The [November 22 ledger](../audits/2026-11-22-gen006-ramcache.md) separates implementation, exact-source platform qualification, performance targets and the then-pending physical owner acceptance. The 28 November owner decision above supersedes that pending status for the original evaluator. It changes no ordinary production default and does not complete broader GEN-006.
+
+The opt-in [three-area prototype](../systems/persistent-authored-areas.md) implements the owner-authorised #591 milestone with native CYPS2 continuation, separate durable area identities, bounded completed-game-time catch-up and Simulate Ahead. Actor/controller/Rapier and unsupported solver dependencies refuse travel; ordinary Workbench defaults remain unchanged. The [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) retains original evidence; the [combined integration record](../operations/ramcache-strata-integration.md) owns current acceptance and final-source gates. Broader #194 streaming, arbitrary eviction and recipe reconciliation remain Planned.
+
+## Unified SWARM-004/005/006 definitive candidate — 2026-11-24
+
+The existing [PR #729](https://github.com/techrote/cybersand/pull/729) is one consolidated candidate preserving genuine #715/#716 donor histories and accepted main `00cdb02f`, including #727 Art session-only logging. Existing source-feasible reciprocal assembly, bounded recovery, final/provisional inspection, historical read-only authority and normal Workbench behavior remain. Both independent SWARM-005 controls and SWARM-006 recovery remain OFF. No new solver policy, catalogue entry or unrelated Draft programme was imported.
+
+The [canonical decision packet](../audits/swarm456-definitive-001/final-decision-packet.md) and [JSON companion](../audits/swarm456-definitive-001/final-decision-packet.json) identify source, every gate, original evidence and the evaluator. Q7 at `5e34e0dd` passed all seven required jobs, including all 1,920 revealed cases,360 donor controls, actual Linux/Windows native/graphical execution and a pristine extracted Windows evaluator. Actual native captures and independently reconstructed patch receipts close the demonstrated qualification gap; Q5's original console-wrapper/engine mismatch remains a failed campaign.
+
+Guarded publication `5323b837` passed all eight paths (seven changed; Linux library byte-identical), and fresh hosted LFS materialization independently verified all four SWARM binaries. Complete ordinary Native and full Documentation pass at `e4a0a390`; current PLAY identity passes at `5fd9985e`. Final full GDExtension review passes at `5fd9985e` with 344 Linux/321 Windows cases and complete original coverage. The later CI-test and official-download transport corrections leave compiled application/scientific inputs and published/evaluator bytes unchanged; original failed ordinary attempts remain failed.
+
+The [portable Windows owner procedure](../operations/swarm456-owner-acceptance.md) uses one qualified package and a copy of an original populated authored map. Save/fresh-Reopen composition history before later ordinary edits, then separately verify persistence of the edited authored map. Private maps stay local. Physical Windows 11/NVIDIA appearance, sound, responsiveness, usability and owner preference remain **owner-pending**. This mission leaves the candidate **Draft/HOLD** and grants no Ready promotion, merge or default activation.
+
+## Current-scene material audition — 2026-11-24
+
+**Draft/HOLD candidate, PR #768:** the [scene-local contract](../systems/material-audition.md)
+extends the accepted Materials Lab with native-owner profile transactions for
+directional cell density exchange, applicable generic viscosity and eligible
+existing reaction thresholds. The [consumer map](../systems/material-audition-consumers.md)
+separates active solver applicability from descriptor metadata. Named profiles
+remain separate from authored scene saves; Apply does not replace the World.
+The [definitive decision packet](../audits/material-audition-live-20261124/decision-packet.md)
+records passed native, graphical, Linux/Windows and exact extracted-evaluator
+qualification at source `5f73b0ae`, with runtime publication `206f14da`.
+Physical owner acceptance and combined-engine reconciliation remain separate.
+
+## Art storage integration candidate — 2026-11-26
+
+The mergedown's unmerged Art/Architecture source adopts the narrowly reviewed
+closed-file verification repair for exports, new/appended events, preferences
+and retained private receipts. The
+[provider contract](../systems/workbench-art-providers.md#verified-closed-storage-in-the-mergedown-candidate)
+preserves settings-cache isolation, session-only conversation behavior and
+native Architecture authority. Its
+[registered campaign](../audits/2026-11-25-mergedown-renaissance/art-storage-integration-registration.md)
+records exact donor boundaries and the required resulting-source fault and
+authoring tests. ULTIMA remains protected; its unrelated CI and other consumer
+changes are excluded. Windows storage, creative and physical acceptance remain
+separate gates.
+
+## Collaborative Art candidate — 2026-11-25
+
+ART-WORKBENCH-COLLABORATIVE-002 / #780 is a Draft/HOLD successor with one owned
+provider consumer per request, prose discussion, proposal revision, bounded
+native/context disclosure, zero-write preview and finite native construction.
+Each stage has fresh approval and actual readback. The
+[owner guide](../operations/art-workbench-collaborative-evaluation.md) explains
+the controls and limits; the [mission ledger](../audits/2026-11-25-art-workbench-collaborative-002/README.md)
+owns exact source/platform/package outcomes, recovery and retained failures.
+Fixture evidence is separate from genuine model creativity. Architecture
+validation/execution stays with #777; no production default, merge, Ready
+promotion or automatic model dispatch is authorized.
+
+## WORLD-STEER-BATCH-M3-M5-001 — Draft/HOLD, 24 November 2026
+
+The [architectural Workbench successor](../operations/world-steer-architecture.md) reconciles the preserved #720 Batch Lab with accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. It adds native module harvesting/replay, 25 source-bound GOLDMAPS design cards, bounded retrieval, finite staged native construction, six examples and a registered 30-attempt contextual comparison. The [integration ledger](../audits/2026-11-24-world-steer-m3-m5/integration-ledger.md) preserves original campaign custody and successor qualification. Typed offline construction is independently executable; the separate Art successor owns conversational integration. Actual model quality, physical owner acceptance and any M6/M7 training remain unqualified. No merge or Ready promotion is authorized.
+
+## WORLD-STEER-BATCH-001 M0–M2 — Draft/HOLD
+
+The [Native Batch Lab guide](../operations/world-steer-batch-lab.md) owns optional independent native construction, comparative inspection, retained attempts and bounded experiments on the dedicated branch from accepted `846fe0533b3170e7b01f690518da49fc40cc24d1`. Qualification artifacts distinguish actual native/control outcomes, protocol fixtures, pending real model comparisons and physical owner acceptance. The subsequent M3–M5 authorization is scoped above; this original record grants no merge, production default, paid call or schedule.
+## AMBIENT-002 living inhabitants — 25 November 2026
+
+**Successor implementation in progress, Draft/HOLD:** [the living-inhabitant
+contract](../systems/ambient-living-inhabitants.md) extends the retained version-1
+foundation with version-2 stateful profiles, bounded memory and social perception,
+staged profile libraries, atomic group assignment and six native authored scenes.
+The accepted limit remains eight actual logical actors; #762 remains unaccepted.
+No production default, native law, motor or model-service change is introduced.
+The [successor ledger](../research/ambient-002/mission-ledger.md) distinguishes
+source implementation, actual hosted/local tests, physical experiments and final
+portable Windows delivery. Predecessor passes retain their original source scope.
+
+## AMBIENT-001 modular procedural actors — 24 November 2026
+
+**Opt-in implementation candidate, Draft/HOLD:** the
+[ambient actor contract](../systems/ambient-actors.md) and
+[owner guide](../operations/ambient-workbench.md) describe eleven reusable modules,
+six profiles, five ordinary authored scenes and a staged per-actor profile editor.
+The existing policy producer, issued observations, leases, native material
+publications and physical movement mechanisms remain authoritative. Accepted
+population capacity stays eight. The [mission ledger](../research/ambient-001/mission-ledger.md)
+owns exact source/platform qualification, independent findings and remaining
+Windows/visual/owner acceptance. Global pathfinding, arbitrary script execution,
+physical immunity, inferred capabilities and exact physical-state continuation
+are outside this candidate.
 
 ## CI-OPT-003 worldgen showcase execution — 2026-11-21
 
@@ -31,6 +124,54 @@ Compiler/configuration/source identity guards local object reuse; interrupted
 compilations cannot publish partial objects. Full Native and Windows/Linux
 regression admission remains required. The dedicated CI-only PR records exact
 source qualification and controlled timings before any merge or speed claim.
+
+## SWARM-004/005 mainline candidate — 2026-11-21
+
+The [integration runbook](../operations/swarm45-mainline-integration.md) owns current source custody and acceptance. A dedicated main-based branch imports both native/Workbench donors, keeps the visible Experimental dock inactive until explicit use and both SWARM-005 controls OFF, and repairs demonstrated stale-authority and receptor-work accounting defects. Original registered holdouts are already complete with negative primary results; new exact-source regression/platform/publication and owner physical acceptance remain separate. This candidate is Draft/HOLD, not an accepted-main or SWARM-006 baseline claim.
+
+## SWARM-006 integration repair — 2026-11-21
+
+The [dedicated successor](../operations/swarm006-integration-finisher.md) adds
+funded rejected-proposal finalization, clean empty-refusal metadata, exact native
+round inspection and stale-preview invalidation. Its evidence distinguishes the
+frozen historical study from corrected-source revealed replay and binds a newly
+built Windows evaluator to its actual source. The SWARM-004/005 accepted-main
+mapping and subsequent owner acceptance remain explicit gates. No frozen donor,
+ordinary default, Ready state or merge authority changes.
+
+## SWARM-006 feasible reciprocal construction — 2026-11-21
+
+**Experimental implementation, Draft/HOLD:** [#704](https://github.com/techrote/cybersand/issues/704)
+adds prospective connector screening, native receptor/corbel negotiation and
+bounded recovery on verified SWARM-005. The [focused contract](../systems/gentek-negotiated-recovery.md)
+preserves original foreign obligations and authoritative material-path validation.
+Published exact-head qualification, fresh preregistered comparisons and Windows
+owner acceptance have separate gates. No Ready, merge or default promotion is authorized.
+
+## SWARM-004 reciprocal Gentek construction — 2026-11-20
+
+**Draft/HOLD implementation candidate:** [programme #687](https://github.com/techrote/cybersand/issues/687)
+adds a bounded authored parts grammar, reciprocal native geometry proposals and
+an explicitly dependent experimental Shared Workbench path. The [focused contract](../systems/gentek-reciprocal-assembly.md)
+separates native development witnesses, unresolved hard obligations, corpus
+qualification and actual Windows Apply/Undo/Save/reopen acceptance. No production
+default, material/physics change, Viaduct identity change or automatic merge is authorized.
+The [recovered V1 audit and policy freeze](../audits/2026-11-20-swarm004-native-recovery.md)
+selects two-round fixed territory from the completed known corpus: 28 cases with
+both matched causal effects and qualified joints, including six fully applicable
+cases. Shared two-round mode has six and two. Final published-source qualification,
+registered holdouts and Workbench platform acceptance have separate receipts.
+
+## SWARM-004 experimental reciprocal authoring
+
+**Implementation candidate, Draft/HOLD:** the separate FRAMEWEAVER × MOSAIC
+[reciprocal dock and native retained patch](../architecture/experimental-workbench-authoring-patch.md)
+provide bounded native generation, proposal inspection, atomic Apply and inverse
+Undo, with ordinary authored-start persistence. Native composition qualification
+and [actual Windows graphical/package authoring and reopen](../operations/swarm004-workbench-playtest.md)
+remain explicit gates. The candidate preserves accepted main's Water authority,
+material IDs, native world limits, existing catalogue and Art lifetime; no Ready
+promotion, merge or production-default selection is authorized.
 
 ## Floating Oil in Wave Water
 
@@ -65,9 +206,26 @@ failure/no-takeover semantics; the [evaluation guide](../tools/world-art-evaluat
 owns owner usage. Exact-source qualification and independent review are recorded
 in PR #685. Hosted ANGLE is separate from owner Windows/NVIDIA acceptance.
 
-## Shared Workbench actor composition / #589 — 2026-11-20
+## Continuous-play actor sandbox / #737 — 2026-11-22
 
-**Implementation candidate, Draft/HOLD; no merge authorization.** The owner
+**WB-ACTOR-COMPOSE-002R implementation candidate, Draft/HOLD.** The owner's
+22 November follow-up expands the original capacity/manipulation scope. The
+accepted #683 foundation is extended by paused whole-assembly drag/rotation,
+optional grid/fine placement, bounded live per-part physical grabbing, one
+tabbed Configuration window, authored orientation/capacity extensions, and three
+playable starts. Live Brush/Eraser are retained and requalified existing features.
+
+The configurable actor/body/proxy admission keeps ordinary defaults at 8/64/64.
+The allocation ceiling is 4096; runtime qualification is narrower and must be
+reported as actual actor/body/proxy/joint counts, independent native/Rapier
+progression and platform measurements. No actor is automatically deleted or
+disabled for poor frame rate. Existing native/Rapier ownership and prepared
+adoption remain authoritative. Owner Windows/NVIDIA playability and merge
+acceptance remain separate from hosted/headless qualification.
+
+## Accepted Workbench actor composition / #589 — 2026-11-20
+
+**Accepted foundation through PR #683.** The owner
 advanced #589's earlier planning boundary through WB-ACTOR-COMPOSE-001. The
 [composition contract](../systems/workbench-actor-composition.md) exposes 59 existing
 physical model identities through one prepared Workbench session: eight flyers,
@@ -204,13 +362,15 @@ unchanged. Older dated boundaries below retain their historical scope.
 
 ## WB-ART-002 direct drawing — 2026-11-10
 
-**2026-11-20 conversation lifetime candidate:** PR #681 retains Draft/HOLD while
-finishing [lazy restore and immutable linked traffic](../systems/workbench-art-providers.md#lazy-reopening-and-traffic-storage).
-Idle Workbench startup must perform no archive I/O. Explicit Art opening restores
-incrementally; native atomic publication protects session checkpoints and full
-audit exports. Missing or inconsistent histories preserve their saved pointer.
-Source-matched runtime evidence and owner Windows acceptance are separate from
-implementation; the PR ledger records their exact tested identities.
+**Accepted session contract, #727:** every new Workbench game session starts
+with an empty Art conversation and writes one lazy root JSONL. No historical
+conversation is restored. Same-session collaboration survives Art Hide/reopen.
+
+**24 November finisher, Draft/HOLD:** the
+[Art evaluation guide](../operations/art-workbench-final-evaluation.md) owns
+consolidation of #763/#756/#765/#766, provider failure lifecycle, long-history
+responsiveness and physical no-server acceptance. Native/source and runtime
+qualification are separate from the owner's Windows hardware verdict.
 
 **Unmerged integrated candidate, 2026-11-11:** the [PAINT + agent runbook](../operations/wb-art-paint-integrated-candidate.md) records the preserved current #544/#560 heads, generator packaging repair, stored-material readback and one native edit/receipt boundary. The full multi-material PAINT editor and agent providers, conversation/context, scanlines, multiple turns and diagnostics are implemented together. Existing Setup/generated-start formats and PAINT capacity/recovery rules apply. Keep Draft; combined Windows/Linux qualification and owner acceptance remain distinct from earlier separate-branch passes. #531 remains reference only.
 

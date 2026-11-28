@@ -1,0 +1,140 @@
+{
+  "archive": "diagnostic-records.zip",
+  "bytes": 33846,
+  "sha256": "8e65c13c4bcdbc97336298cf1bb32d84fa49459a39657e2fafa4668017e02b7a",
+  "member_count": 26,
+  "members": [
+    {
+      "path": "inventory.json",
+      "bytes": 37095,
+      "sha256": "20ec55257e102598d831bba4322bd44f9b8439207931b1f9cd3ea036c1ef0e8a"
+    },
+    {
+      "path": "remote.gitattributes",
+      "bytes": 1306,
+      "sha256": "e21eed6789784df22faff5eec492de22da4d49b3ef80fa3f6298e4f80dbb6812"
+    },
+    {
+      "path": "remote.gitignore",
+      "bytes": 1400,
+      "sha256": "16cb03ce184c9215f3c2b1e1835abbc452bd206e9c5898e6cc27f3c6f511f685"
+    },
+    {
+      "path": "candidate.nested.gitattributes",
+      "bytes": 493,
+      "sha256": "c917a3b073599024392b1ad76883a48671b64225c46e8ecdd0248a1a280dcc53"
+    },
+    {
+      "path": "initial-inline-reader.py",
+      "bytes": 3368,
+      "sha256": "0b81eefb8598d5f108f7c83e95e98d4c273139d71869c304d627bbf355960cc9"
+    },
+    {
+      "path": "initial-reproduction.json",
+      "bytes": 5213,
+      "sha256": "7b55b62ef41174be65a04ddd94b7fdb154117b5455f690d78f2c8c58bb8b1bc3"
+    },
+    {
+      "path": "initial-commands.json",
+      "bytes": 12709,
+      "sha256": "f2d67b806f2ca22a5833db0e611bf2970bf4d991a01fd7f8d219a5558081b867"
+    },
+    {
+      "path": "initial-reader-failure.json",
+      "bytes": 661,
+      "sha256": "fd065f72270dc9958a455d56eb87ecf7c2fbd9e7a040c4fb3616f3fecbb6b8ce"
+    },
+    {
+      "path": "reproduce-root-attributes.py",
+      "bytes": 6050,
+      "sha256": "c9907cfcfc26bbd4ceb3d4281398e226e9865ef36e3eccd14b6eac7afa6ede06"
+    },
+    {
+      "path": "root-attribute-reproduction.json",
+      "bytes": 15198,
+      "sha256": "38905033166bbae0fc72702392404124de8395bbc490396b00316d317846cb2a"
+    },
+    {
+      "path": "root-attribute-commands-false.json",
+      "bytes": 14875,
+      "sha256": "6f072e134d0f6e2be46f29257e628d6fedd2c00a45d8285b8556897111487c51"
+    },
+    {
+      "path": "root-attribute-commands-true.json",
+      "bytes": 14982,
+      "sha256": "08bb8f6930f9f2aca54cd99557f19c7698bb82e6f5ecac07caf66f33d9b270b7"
+    },
+    {
+      "path": "root-attribute-candidate.patch",
+      "bytes": 1078,
+      "sha256": "7c9400a29fc8c4768d75acaaaed28f53aefe3d44a83da06779dd257ad3b62de0"
+    },
+    {
+      "path": "nested-parent-guard-reader.py",
+      "bytes": 6624,
+      "sha256": "af7bfdf77faddb9370b163e78027871bfe601b3e402a476db67120d5a68b965c"
+    },
+    {
+      "path": "nested-parent-guard-stdout.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "nested-parent-guard-stderr.log",
+      "bytes": 529,
+      "sha256": "9253e7717c277c7f6ed08f42d36054bdb884bbfda446a7f7f7b86cee95d78c7b"
+    },
+    {
+      "path": "nested-parent-guard-execution.json",
+      "bytes": 611,
+      "sha256": "2a20044b58d9a18148108f14a60ededcc5b23deb06f8b0702c78791e36c632cc"
+    },
+    {
+      "path": "nested-parent-guard-commands-false.json",
+      "bytes": 15216,
+      "sha256": "b80d9a8ffa4fba5bcef1b147afc3b8974f07cb7f65754689b4034d32a181bf7e"
+    },
+    {
+      "path": "reproduce_checkout.py",
+      "bytes": 7180,
+      "sha256": "1618186c8ccc572b0c23c50cca67f6ef7dc117b70d4a719b449e4deea31b0f81"
+    },
+    {
+      "path": "reproduction-nested.json",
+      "bytes": 15973,
+      "sha256": "5378ceba3b14cdf7a1585d9d525283150ab5224929924091e53a90a186c33aa6"
+    },
+    {
+      "path": "commands-nested-false.json",
+      "bytes": 15340,
+      "sha256": "406ad220dcf631e6ed2ea99e840575eebfa75418e46b2efbfae1997233aa0377"
+    },
+    {
+      "path": "commands-nested-true.json",
+      "bytes": 15504,
+      "sha256": "be30eb15e71a57b6e2f3e866b8b593388e66c8efa499d6669d951a312bafaa8a"
+    },
+    {
+      "path": "nested-stdout.log",
+      "bytes": 1650,
+      "sha256": "15d61303c77a3102fa338d856d964f7d6488eca621dbfc937244a77b9e058a13"
+    },
+    {
+      "path": "nested-stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "nested-execution.json",
+      "bytes": 611,
+      "sha256": "2efef3d95e43785ccb5c593f101ae0b956a34f82a3967f28e22096faacd20887"
+    },
+    {
+      "path": "candidate-nested-attributes.patch",
+      "bytes": 811,
+      "sha256": "17ae8ef5a1f67b41303f797a5933226e7d48f5efc1e521b3ceb400a597af0536"
+    }
+  ],
+  "no_original_evidence_changed": true,
+  "original_evidence_location": "docs/research/ambient-002/evidence/windows-50c6-complete; exact original Git blob identities appear in reproduction.json"
+}

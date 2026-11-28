@@ -1,0 +1,17 @@
+{
+  "schema": "cybersand.framing-correction-source-review.v1",
+  "status": "passed",
+  "source_commit": "fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52",
+  "source_tree": "ce012a8c6b616ab038d4dc65f4ac1896a6388795",
+  "previous_qualified_source": "1fb4fbb5b1edd6cee16ee9094691f3438f8577eb",
+  "previous_run_id": 45447549238,
+  "corrected_run_id": 45454711939,
+  "changed_files": [
+    ".github/world-steer-batch-request.json",
+    "godot/scripts/batch_lab/architecture_stage_panel.gd",
+    "godot/tests/test_architecture_stage_render.gd"
+  ],
+  "native_inputs_unchanged": 105,
+  "native_geometry_recipes_experiments_unchanged": true,
+  "independent_review_scope": "All six exact grid transforms, native codec and module/stage execution remain unchanged. Two Architecture UI fit calls plus Fit/1:1 controls, viewport-containment/navigation/visible-resize assertions, and pre-approval preview capture reviewed. No new hosted execution pass inferred from source review."
+}

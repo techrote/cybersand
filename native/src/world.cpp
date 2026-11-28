@@ -28,6 +28,7 @@ namespace cybersand {
 namespace {
 
 std::uint16_t quantity_kernel_rule(RuleKernel kernel) noexcept;
+std::uint64_t allocate_material_audition_world_id();
 
 std::atomic<std::uint64_t> next_discovery_incarnation{1};
 
@@ -210,6 +211,9 @@ public:
         for (const auto& mask:participants_)
             count+=static_cast<std::uint32_t>(std::popcount(mask.load(std::memory_order_relaxed)));
         return count;
+    }
+    [[nodiscard]] std::size_t resident_storage_bytes() const noexcept {
+        return sizeof(*this) + workers_.capacity() * sizeof(std::jthread);
     }
 private:
     void stop_and_join() noexcept {
@@ -725,6 +729,7 @@ struct World::TransientObstacleState {
     RectI64 region{};
     std::vector<std::uint16_t> body_ids;
     std::vector<std::size_t> occupied_indices;
+    std::uint16_t body_high_water = 0;
     std::array<std::atomic<std::uint64_t>, kMaximumTransientBodies + 1U> contacts{};
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_x{};
     std::array<std::atomic<std::int64_t>, kMaximumTransientBodies + 1U> impulse_y{};
@@ -737,7 +742,7 @@ struct World::TransientObstacleState {
     std::array<std::atomic<std::uint64_t>, kMaximumTransientBodies + 1U> arrival_count{}, arrival_missing{}, arrival_misaligned{};
 
     void reset_contacts() noexcept {
-        for (std::size_t index = 0; index < contacts.size(); ++index) {
+        for (std::size_t index = 0; index <= body_high_water; ++index) {
             contacts[index].store(0, std::memory_order_relaxed);
             impulse_x[index].store(0, std::memory_order_relaxed);
             impulse_y[index].store(0, std::memory_order_relaxed);
@@ -763,6 +768,7 @@ struct World::TransientObstacleState {
 
 World::World(WorldConfig config)
     : config_(config),
+      material_audition_world_id_(allocate_material_audition_world_id()),
       scheduler_geometry_(config.scheduling_core_size, config.maximum_rule_radius) {
     reset_quantity_ledger();
     config_.water_experiment_policy.validate();
@@ -2440,7 +2446,7 @@ void World::configure_transient_obstacles(RectI64 region, bool reserve_full_occu
         transient_obstacles_->body_ids.assign(required, 0U);
     }
     transient_obstacles_->occupied_indices.reserve(
-        reserve_full_occupancy ? required : std::min<std::size_t>(required, kMaximumTransientBodies * 256U));
+        reserve_full_occupancy ? required : std::min<std::size_t>(required, 64U * 256U));
     (void)witness_discovery_rect(
         region, soliding::ProducerReason::TransientMask, 0);
 }
@@ -2507,6 +2513,7 @@ bool World::set_transient_obstacle(std::int64_t x, std::int64_t y,
     auto& slot = state.body_ids[index];
     if (slot != 0U) return false;
     slot = body_id;
+    state.body_high_water = std::max(state.body_high_water, body_id);
     const auto at = address(x, y);
     invalidate_pressure_input(at.chunk, at.local_x, at.local_y, at.local_x, at.local_y, true);
     state.occupied_indices.push_back(index);
@@ -3088,6 +3095,12 @@ void World::apply_pending_explosions(TickStats& stats) {
 void World::clear() {
     if (physics_totals_ != nullptr) *physics_totals_ = {};
     if (tick_in_progress_) throw std::logic_error("cannot clear during a world tick");
+    // Acquire a fresh token before destructive work. Pending transactions from
+    // the previous scene can never configure this cleared World.
+    const auto new_material_world_id = allocate_material_audition_world_id();
+    material_audition_.reset();
+    material_audition_revision_ = 0;
+    material_audition_world_id_.value = new_material_world_id;
 
     // Retire every observation before destructive World reset begins. reset() is
     // allocation-free; if replacement construction later throws, discovery stays
@@ -3351,7 +3364,7 @@ bool World::try_move(Material material, std::int64_t x, std::int64_t y, std::int
     }
     if (allow_swap && !(config_.physics_diagnostics.disable_powder_exchange_targets &&
         MaterialRules::descriptor(target).state == MaterialState::Powder) &&
-        MaterialRules::can_density_exchange(material, target, target_y - y) &&
+        material_audition_can_density_exchange(material, target, target_y - y) &&
         exchange_permitted(material,target,x,y,target_x,target_y,effects)) {
         move_cell(x, y, target_x, target_y, true, effects);
         return true;
@@ -3724,10 +3737,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             if (try_move(material, x, y, x, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x + direction, y + 1, true, effects)) return true;
             if (try_move(material, x, y, x - direction, y + 1, true, effects)) return true;
-            const auto viscosity = material == Material::Mercury &&
-                config_.physics_diagnostics.mercury_viscosity >= 0
-                ? static_cast<std::uint8_t>(config_.physics_diagnostics.mercury_viscosity)
-                : MaterialRules::descriptor(material).viscosity_index;
+            const auto viscosity = material_audition_effective_viscosity(material);
             const auto mobility = static_cast<std::uint16_t>(256U - viscosity);
             if (deterministic_random(x, y, random_stream) >= mobility) return false;
             if (!lateral_due(material,x,y,effects)) return false;
@@ -3745,7 +3755,7 @@ bool World::update_rule_kernel(RuleKernel kernel, Material source_material,
             const auto target = cursor.visible(target_x, target_y);
             if (!may_pair_react(material, target)) continue;
             const auto reaction =
-                MaterialRules::pair_reaction(material, target, probability_roll);
+                material_audition_pair_reaction(material, target, probability_roll);
             if (!reaction.has_value()) continue;
             const auto& source_definition =
                 MaterialRules::descriptor(reaction->source_product);
@@ -5282,6 +5292,68 @@ std::size_t World::resident_cell_bytes() const noexcept {
     return result;
 }
 
+std::size_t World::current_resident_storage_bytes() const noexcept {
+    // std::unordered_map does not expose node allocation sizes. Count its
+    // stored value and two pointers per node, plus the actual bucket array;
+    // report this as an estimate, never as measured process RSS.
+    std::size_t result = sizeof(*this) + chunks_.bucket_count() * sizeof(void*);
+    result += chunks_.size() * (sizeof(decltype(chunks_)::value_type) + 2 * sizeof(void*));
+    result += chunk_directory_.capacity() * sizeof(Chunk*);
+    result += active_chunk_scratch_.capacity() * sizeof(ChunkCoord);
+    result += active_core_scratch_.capacity() * sizeof(SchedulingCoreCoord);
+    result += pending_explosions_.capacity() * sizeof(ExplosionCommand);
+    result += ballistic_parcels_.capacity() * sizeof(BallisticParcel);
+    result += ballistic_face_chunks_.capacity() * sizeof(ChunkCoord);
+    result += ballistic_face_water_.capacity() * sizeof(std::uint64_t);
+    for (const auto& [coord, chunk] : chunks_) {
+        (void)coord;
+        result += sizeof(Chunk) + chunk->cells.capacity() * sizeof(Chunk::Cell);
+        result += chunk->activity_blocks.capacity() * sizeof(Chunk::ActivityBlock);
+        if (chunk->temperatures)
+            result += sizeof(*chunk->temperatures) + chunk->temperatures->capacity() * sizeof(std::int16_t);
+        if (chunk->granular_arrivals)
+            result += sizeof(*chunk->granular_arrivals) + chunk->granular_arrivals->capacity() * sizeof(std::uint64_t);
+    }
+    if (parallel_) {
+        result += sizeof(ParallelState);
+        result += parallel_->activity_flags.capacity();
+        result += parallel_->activity_deadlines.capacity() * sizeof(std::uint64_t);
+        result += parallel_->results.capacity() * sizeof(ParallelState::JobResult);
+        result += parallel_->physics.capacity() * sizeof(PhysicsJobHistogram);
+        result += parallel_->phase_job_indices.capacity() * sizeof(std::size_t);
+        if (parallel_->pool) result += parallel_->pool->resident_storage_bytes();
+    }
+    if (transient_obstacles_) {
+        result += sizeof(TransientObstacleState);
+        result += transient_obstacles_->body_ids.capacity() * sizeof(std::uint16_t);
+        result += transient_obstacles_->occupied_indices.capacity() * sizeof(std::size_t);
+    }
+    if (physics_totals_) result += sizeof(PhysicsTotals);
+    return result;
+}
+
+std::size_t World::current_resident_reservation_bytes() const noexcept {
+    std::size_t result=current_resident_storage_bytes();
+    const auto cells=static_cast<std::size_t>(config_.chunk_size)*static_cast<std::size_t>(config_.chunk_size);
+    const auto activity_axis=(config_.chunk_size+config_.activity_block_size-1)/config_.activity_block_size;
+    const auto activity=static_cast<std::size_t>(activity_axis)*static_cast<std::size_t>(activity_axis);
+    // Reserve all optional admitted cell arrays even when a particular area's
+    // initial temperature field or granular witness has not allocated them.
+    for (const auto& [coord,chunk]:chunks_) {
+        (void)coord;
+        if (!chunk->temperatures) result+=sizeof(std::vector<std::int16_t>)+cells*sizeof(std::int16_t);
+        if (!chunk->granular_arrivals) result+=sizeof(std::vector<std::uint64_t>)+cells*sizeof(std::uint64_t);
+    }
+    const auto missing=config_.maximum_chunk_count>chunks_.size()?config_.maximum_chunk_count-chunks_.size():0;
+    result+=missing*(sizeof(Chunk)+cells*(sizeof(Chunk::Cell)+sizeof(std::int16_t)+sizeof(std::uint64_t))+
+        activity*sizeof(Chunk::ActivityBlock)+2*sizeof(std::vector<std::uint8_t>)+
+        sizeof(decltype(chunks_)::value_type)+6*sizeof(void*));
+    // Growth headroom for finite-area coordinate/hash indexing and allocator
+    // size rounding is explicit. Thread stacks and host values remain separate.
+    result+=1024U*1024U;
+    return result;
+}
+
 std::uint64_t World::state_hash() const noexcept {
     std::uint64_t hash = 1469598103934665603ULL;
     hash_integer(hash, tick_index_);
@@ -5665,6 +5737,7 @@ void World::copy_rgba(RectI64 region, std::span<std::uint8_t> destination, std::
 
 
 #include "world_quantity.inc"
+#include "world_material_audition.inc"
 #include "world_pressure_cache.inc"
 #include "world_pressure_gas_cache.inc"
 #include "world_pressure.inc"

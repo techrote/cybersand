@@ -1,0 +1,112 @@
+{
+  "status": "PASS",
+  "source_revision": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "external_source": {
+    "source_commit": "31f8ecf8b6d8821740b545e046501f90c86e06f3",
+    "sha256": {
+      "tools/ambient/diagnostics/curiosity_contrast.gd": "cb6eae5981fec8fe5100a767e2730daf868c2d747bd87e066615f3b6eaa7d735",
+      "tools/ambient/diagnostics/run_curiosity_contrast.py": "7db49bc056eec5f5e8902d8be3f92089b6fbfea1c78c25e822358cf98c695abb",
+      "docs/research/ambient-002/curiosity-preregistration.md": "ca358780cd3d5762b14eccff3c610148562785d58fb3bbe8b387fa092c6e2fe4"
+    }
+  },
+  "original_report_sha256": "f633961b80157c280f79a55375939892a65af81486956863c87805e80b380fbe",
+  "comparison_sha256": "1a68b31afcbc4f4efc54b8a93b0ea8064550d6cf838924592976b0afd076cb19",
+  "actual_supplementary_episodes": 6,
+  "qualifies_primary_programme": false,
+  "checked_primary_metric_values": 24,
+  "pairs": [
+    {
+      "seed": 605,
+      "independently_recomputed": {
+        "low": {
+          "investigation_seconds": 0.0,
+          "horizontal_approach_gain_cells": 0.0,
+          "net_x_cells": -30.19306945800801,
+          "x_range_cells": 44.42231750488301,
+          "initial_selected": "routine",
+          "initial_utility": {
+            "discovery": 0.1,
+            "routine": 0.45
+          }
+        },
+        "high": {
+          "investigation_seconds": 4.3,
+          "horizontal_approach_gain_cells": 32.252136230469006,
+          "net_x_cells": -41.29942321777301,
+          "x_range_cells": 75.71310424804702,
+          "initial_selected": "discovery",
+          "initial_utility": {
+            "discovery": 1.4,
+            "routine": 0.45
+          }
+        }
+      }
+    },
+    {
+      "seed": 1701,
+      "independently_recomputed": {
+        "low": {
+          "investigation_seconds": 0.0,
+          "horizontal_approach_gain_cells": 0.0,
+          "net_x_cells": -30.19306945800801,
+          "x_range_cells": 44.42231750488301,
+          "initial_selected": "routine",
+          "initial_utility": {
+            "discovery": 0.1,
+            "routine": 0.45
+          }
+        },
+        "high": {
+          "investigation_seconds": 4.3,
+          "horizontal_approach_gain_cells": 32.252136230469006,
+          "net_x_cells": -41.29942321777301,
+          "x_range_cells": 75.71310424804702,
+          "initial_selected": "discovery",
+          "initial_utility": {
+            "discovery": 1.4,
+            "routine": 0.45
+          }
+        }
+      }
+    },
+    {
+      "seed": 2909,
+      "independently_recomputed": {
+        "low": {
+          "investigation_seconds": 0.0,
+          "horizontal_approach_gain_cells": 0.0,
+          "net_x_cells": -30.19306945800801,
+          "x_range_cells": 44.42231750488301,
+          "initial_selected": "routine",
+          "initial_utility": {
+            "discovery": 0.1,
+            "routine": 0.45
+          }
+        },
+        "high": {
+          "investigation_seconds": 4.3,
+          "horizontal_approach_gain_cells": 32.252136230469006,
+          "net_x_cells": -41.29942321777301,
+          "x_range_cells": 75.71310424804702,
+          "initial_selected": "discovery",
+          "initial_utility": {
+            "discovery": 1.4,
+            "routine": 0.45
+          }
+        }
+      }
+    }
+  ],
+  "infrastructure_failure_retained": {
+    "case_id": "curiosity_contrast-opposed_interest-runner-s2909-t30-n1-high_curiosity",
+    "returncode": -9,
+    "original_execution_receipt_sha256": "0ec920c8baed9917564f08309871c20e6380bf3939dc03a71866483e7c7109a9",
+    "progress": "No report or completion marker; actual physical progress is unestablished."
+  },
+  "interpretation": [
+    "Curiosity 0 versus 1 is the only authored profile change within each matched pair.",
+    "Initial utility changes from discovery 0.1 versus routine 0.45 to discovery 1.4 versus routine 0.45.",
+    "High curiosity first approaches Oil but its net X after 10 seconds is negative because it later returns to the routine; approach gain is closest approach to the fixed initially observed cell.",
+    "Three fresh World seed pairs reproduce one authored competition; this does not establish a population effect or universal curiosity superiority."
+  ]
+}

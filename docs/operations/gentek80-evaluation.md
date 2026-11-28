@@ -62,11 +62,23 @@ selection remains available while filtering; clearing the field restores the
 complete catalogue. Hover over a clipped name to read it in full.
 
 For an individual Gentek, enable one card and give it **100%**. Leave the others
-disabled. Use 512² for a quick study and 1024² for larger compositions. Start with
+disabled. Use 512² for a quick study, 1024² for regular compositions and 2048² for larger authored worlds. A 2048² project requires a style-zone size of at least 128 cells, retaining the native 16×16 / 256-block planning limit. Increasing the map size does not increase solver block count or change the 512/1024 recipe defaults. Start with
 seed **605**, turn automatic tunnels off to inspect the uncut structure, and leave
 doors/windows on. Click **Generate preview**, inspect the completed native map,
 then **Install into workbench**. Installation replaces the current World only
 after confirmation; save valued work before installing another map.
+
+### Qualifying 2048-square authoring
+
+Ready PRs touching the 2048 generator, its native runtime or its fixture run
+the GENTEK-2048 workflow on Linux and Windows. The scoped fixture lives in
+`godot/tests/fixtures/gentek2048_workbench.gd`. Its runner registers two
+graphical processes sharing one isolated profile. The first installs, edits
+and saves both 2048-square maps. The second reopens both and compares their
+native material, recipe, chunk and edit receipts. A standalone invocation
+without a phase cannot perform that test. Use
+`python tools/architecture/qualify_gentek2048.py --godot <Godot-4.7> --out <new-directory>`
+from a clean checkout with the source-matched runtime.
 
 ## Suggested first comparisons
 

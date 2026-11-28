@@ -1,0 +1,65 @@
+{
+  "schema": "art-linux-desktop-observation-v1",
+  "source_commit": "38abfde567215bacf44f929b498ff2d33425987b",
+  "godot": "4.7-stable (official)",
+  "display": "X11",
+  "renderer": "Mesa 25.0.7 llvmpipe LLVM19.1.7; software rendering",
+  "window_size": [
+    1280,
+    720
+  ],
+  "no_listener_preflight": {
+    "address": "127.0.0.1",
+    "port": 1234,
+    "connect_errno": 111,
+    "no_listener_refused": true,
+    "time_unix": 1795537111.8286922
+  },
+  "actions_observed": [
+    "ordinary Send then Art X",
+    "manual brush confirmed1710cells",
+    "Art reopen",
+    "Note Apply and reopen",
+    "Clear draft then Cancel preserves3live turns"
+  ],
+  "send_usec": 16695,
+  "close_usec": 17532,
+  "provider_active_when_x": false,
+  "response_callback_usec": 3062,
+  "transport_result": 2,
+  "http_code": 0,
+  "response_bytes": 0,
+  "frame_groups": {
+    "hidden_idle": {
+      "count": 73,
+      "max_usec": 305622,
+      "mean_usec": 96967.32876712328
+    },
+    "startup": {
+      "count": 12,
+      "max_usec": 4282366,
+      "mean_usec": 527201.1666666666
+    },
+    "visible_idle": {
+      "count": 2992,
+      "max_usec": 461951,
+      "mean_usec": 101101.33355614974
+    },
+    "visible_request": {
+      "count": 2,
+      "max_usec": 104015,
+      "mean_usec": 96121.5
+    }
+  },
+  "teardown_completed": true,
+  "teardown_usec": 469410,
+  "limitations": [
+    "The connection had already failed when the X handler ran. Same-frame active-request X coverage belongs to the separate Godot input fixture.",
+    "Software-rendered idle/startup gaps are reported separately and do not establish physical Windows responsiveness.",
+    "Old polling missed a quick Ctrl+F12 tap;20972c6c event handling is independently qualified by18root/child input assertions."
+  ],
+  "raw_evidence_sha256": {
+    "art-responsiveness.json": "8bf1fc6bbae286bdf83d807b9ee6d861e2d268701d455922aa0ae64185f19236",
+    "loopback-preflight.json": "bcab422a813e149bbb27d92b017f3c71b2c9448d22340f30bd4ced9bd6b62a80"
+  }
+}

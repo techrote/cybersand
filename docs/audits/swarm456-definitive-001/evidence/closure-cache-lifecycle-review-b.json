@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "recorded_utc": "2026-11-24T19:26:41.962149+00:00",
+  "event": "Executor restart removed transient/tmp and/dev/shm content while workspace remained",
+  "exact_restart_time_known": false,
+  "scope": "Local temporary evidence copies only; no GitHub artifact, Library original, source commit, branch or original report was modified by B",
+  "bulk_reverification_or_reexecution_due_only_to_cache_loss": false,
+  "surviving_q7_windows_b_review": {
+    "path": "/workspace/scratch/28827b1ce0c8/mission-evidence/q7-final-independent-review-b.json",
+    "sha256": "a33058f8300b0f90da5a807bfff14fd067c22baa908ba8df57ec00bd6007f28d",
+    "status": "PASS original completed review, unchanged"
+  },
+  "current_durable_reviews": {
+    "postrepair-full-docs-independent-review-b.json": {
+      "path": "/workspace/scratch/28827b1ce0c8/mission-evidence/qualification-b-recovered-20261124/postrepair-full-docs-independent-review-b.json",
+      "bytes": 8042,
+      "sha256": "b99d72d9f2707772871dfe99c1e857215ae9e3b495de66aaac002c2b9cd2cf80"
+    },
+    "posttransport-play-independent-review-b.json": {
+      "path": "/workspace/scratch/28827b1ce0c8/mission-evidence/qualification-b-recovered-20261124/posttransport-play-independent-review-b.json",
+      "bytes": 14023,
+      "sha256": "5f0344511a7f4d6098ca47011c2b344f95f85be891e05e069906fc0e76c3cd27"
+    },
+    "posttransport-actual-overlay-scope-b.json": {
+      "path": "/workspace/scratch/28827b1ce0c8/mission-evidence/qualification-b-recovered-20261124/posttransport-actual-overlay-scope-b.json",
+      "bytes": 3616,
+      "sha256": "d4c480c832506b30d2ffc58c4e34264f1cf299662449f2b783d03b636f5a7cbb"
+    }
+  },
+  "prior_temporary_reviews_with_missing_local_copies": [
+    {
+      "name": "q7-publication-independent-review-b.json",
+      "last_reported_sha256": "54cac9558ce32781b242487d7638bac6166e42ab3d8b297c8ca05a51f794037d",
+      "original_local_path": "/tmp/swarm456-q7-windows/q7-publication-independent-review-b.json",
+      "current_local_status": "Original temporary JSON unavailable after executor restart; prior completed review and hash are recorded in coordination. Independent publication/tree/LFS proofs survive in the definitive team and native-audit."
+    },
+    {
+      "name": "postpublication-ci-test-overlay-scope-b.json",
+      "last_reported_sha256": "f31011006616c31127b4972bf137cb9caa4554c20231820c2f3b4a801d4278be",
+      "original_local_path": "/tmp/swarm456-q7-windows/postpublication-ci-test-overlay-scope-b.json",
+      "current_local_status": "Original temporary JSON unavailable; precise actual committed source scope, blob metadata and existing independent A/root test reviews survive. Current source overlay has a new durable B review."
+    },
+    {
+      "name": "full-documentation-independent-review-b.json",
+      "last_reported_sha256": "42d57eff9b8a64673dc67007afe7e3c83928e454ee0917a8602e31dea8963897",
+      "original_local_path": "/tmp/swarm456-q7-windows/full-documentation-independent-review-b.json",
+      "current_local_status": "Original2cad B temporary JSON unavailable; definitive-team original independent review survives, and newer e4a B full Documentation receipt is exactly recovered."
+    },
+    {
+      "name": "postpublication-play-independent-review-b.json",
+      "last_reported_sha256": "3f875794874a037ef821d4f2de657a4c896a66e1c5df47a9116c10ab5ab9133a",
+      "original_local_path": "/tmp/swarm456-q7-windows/postpublication-play-independent-review-b.json",
+      "current_local_status": "Original2cad B temporary JSON unavailable; definitive-team original review survives. New source5fd998 PLAY receipt and both raw original packet ZIPs are durable in workspace."
+    }
+  ],
+  "recovery_method": "Retained original API/tool-response content was copied unchanged to workspace. Four small original e4a Docs ZIPs were redownloaded and rehashed; the complete e4a review was reconstructed byte-for-byte with the same b99d72 digest. New5fd998 PLAY ZIPs/logs were independently downloaded/reviewed for the first time. Surviving full owner inventory was reused read-only for README mapping instead of downloading the93MB archive.",
+  "sealed_owner_archive_library_file_id": "libfile_52bf61caf6d08191a679ac5c70bb9e90",
+  "sealed_owner_expected_sha256": "d3c815e51064981e3de62ffa249a0dae3c2ce0abcae12d9336f06635d3595522",
+  "library_save_observation": "Parent independently confirmed successful durable save; B did not re-download it in this recovery step.",
+  "recovered_and_new_files": {
+    "posttransport-play-original-api.json": {
+      "bytes": 37674,
+      "sha256": "642c6627fb9a1552e8477a618ab21f33ef3546f66c682f8b849d05ccfec7c007"
+    },
+    "artifact-14957190127.zip": {
+      "bytes": 11416,
+      "sha256": "2c5dc1e3627130ca80c5a301c32be218a3798c33e007e98b7cf18be1c7157436"
+    },
+    "postrepair-full-docs-original-api.json": {
+      "bytes": 37579,
+      "sha256": "3f9247c6148911a13c769120f56698c794e6332e5927f79b7f78fad07b2f6d91"
+    },
+    "posttransport-readme-git-blob-api.json": {
+      "bytes": 32449,
+      "sha256": "e5acd1add694ba9abc0d0a834ef59deac4b5437258558e14dec030c9c469b0fe"
+    },
+    "artifact-14956165929.zip": {
+      "bytes": 11696,
+      "sha256": "2eab5a4b6ff2117453915c32f85a40e06523a4954ba7e06b8c5dc50722b6e36c"
+    },
+    "postrepair-play-attempt1-original-api.json": {
+      "bytes": 37435,
+      "sha256": "f19caf4dd1d7bff030bac7a0966f40e917452ca3533e952b03c879cd6ccd5c82"
+    },
+    "posttransport-play-independent-review-b.json": {
+      "bytes": 14023,
+      "sha256": "5f0344511a7f4d6098ca47011c2b344f95f85be891e05e069906fc0e76c3cd27"
+    },
+    "posttransport-commit5fd998-original-api.json": {
+      "bytes": 66395,
+      "sha256": "c40cc0b917beff11901dce1657a8a89b393604528dc07348dd073c1908f48601"
+    },
+    "posttransport-actual-overlay-scope-b.json": {
+      "bytes": 3616,
+      "sha256": "d4c480c832506b30d2ffc58c4e34264f1cf299662449f2b783d03b636f5a7cbb"
+    },
+    "artifact-14954847875.zip": {
+      "bytes": 1484540,
+      "sha256": "a8e6938598ad5fea0fdc04eb44b46779aa003be7fd169136019e0190c9c5306e"
+    },
+    "postrepair-full-docs-independent-review-b.json": {
+      "bytes": 8042,
+      "sha256": "b99d72d9f2707772871dfe99c1e857215ae9e3b495de66aaac002c2b9cd2cf80"
+    },
+    "postrepair-play-linux-attempt1-original.log": {
+      "bytes": 148673,
+      "sha256": "743ab9360b36dc6853e7aebed31408c5764698d4aa74978f71f7c7855448a0c1"
+    },
+    "postrepair-play-attempt2-original-api.json": {
+      "bytes": 38492,
+      "sha256": "b0ef22fc03b715390743c22f21f7d747f2aaf659a2c180eef24cc3fb6d8a370a"
+    },
+    "posttransport-play-linux-original.log": {
+      "bytes": 153976,
+      "sha256": "d6465b6b0dfc6a05c87becdf1a9884202933d3e840f99e7e5342de96ff4ad8f5"
+    },
+    "artifact-14953202650.zip": {
+      "bytes": 21503,
+      "sha256": "0d4c657d41797c9eae4dd5db4ae01c9e17a9e37c38353df90c752f7102293788"
+    },
+    "postrepair-full-docs-original.log": {
+      "bytes": 288733,
+      "sha256": "f79fe4596d64f8442578220130b940c3f5e8b3f2fa52eb59805facd48083dde4"
+    },
+    "godot47-official-release-original-api.json": {
+      "bytes": 121619,
+      "sha256": "252eb56d0f7e646a6b7612b2fd53befb5e3fc7fb6aaaa282d37fe0557048ad85"
+    },
+    "posttransport-gdextension-git-blob-api.json": {
+      "bytes": 81933,
+      "sha256": "3f82774d6bf28ef8b467ac7d83b52f09298829d4a23d4c8f9acc82188f9c2afe"
+    },
+    "artifact-14954802982.zip": {
+      "bytes": 8461,
+      "sha256": "d3e49ad001c6abfe1d7848a2b90a5a95b1d3dd3e9fdd1ed5b84f13bad1e5a440"
+    },
+    "postrepair-commit5fd-original-api.json": {
+      "bytes": 102089,
+      "sha256": "61263d27e29f7495a9194dfd3e081eda29e91515aabde2d0b6818d1437c2dccd"
+    },
+    "artifact-14953367709.zip": {
+      "bytes": 1413,
+      "sha256": "b9a5410c2b0cf4fb7ac73b2e9945be750e9e5cb33e25933932aa21a1271490a8"
+    },
+    "postrepair-play-linux-attempt2-original.log": {
+      "bytes": 148673,
+      "sha256": "be7071cfa36b8aa0d9054e46cbc035b05f6c1bd67dd7410a36eb99238f216984"
+    },
+    "postrepair-requeste4-original-api.json": {
+      "bytes": 10819,
+      "sha256": "3268c0d5033b819a4965b2e7f294a5840529b65f328e71594da065bc19cdeaee"
+    },
+    "posttransport-play-git-blob-api.json": {
+      "bytes": 33373,
+      "sha256": "3ea2a31b75b71c05b13187985451f6f9796eaf7eb43f17eb4753ecdefd3f0e36"
+    }
+  },
+  "reporting_requirement": "Do not link an unavailable/tmp review as if currently present. Cite the surviving canonical equivalent, current durable B receipt, or explicitly distinguish prior completed verification from current local retention.",
+  "b_missing_owner_observation_recorded_by_utc": "2026-11-24T19:17:36Z"
+}

@@ -409,6 +409,33 @@ class FlattenReceiptAdmission(unittest.TestCase):
                     with self.assertRaises(RuntimeError): subject.verify_flatten_cases(self.directory,"windows",self.native,
                         subject.engine.ROOT/"godot",self.engine_sha)
 
+
+    def test_native_owner_recovery_real_tick_prefix_not_forged_capacity_failure(self):
+        # Actual Linux, Windows source and extracted-package receipts record the
+        # native capacity refusal with the simulation_tick diagnostic prefix.
+        # Keep the original bare reason compatible with historical fixtures.
+        author, reopen = self.records[-2]["completion"], self.records[-1]["completion"]
+
+        def publish(reason):
+            author["failure_reason"] = reopen["failure_reason"] = reason
+            author["failure_snapshot"]["last_tick_error"] = reason
+            for key in ("owner_before_save", "owner_after_save"):
+                author[key]["failure_snapshot"]["last_tick_error"] = reason
+            for row in self.records[-2:]:
+                self.log(row["label"], "FLATTEN_OWNER_FAILURE_RESULT " +
+                         json.dumps(row["completion"]) + "\n")
+            self.save_records()
+
+        publish("simulation_tick failed: active scheduling-core capacity exhausted")
+        self.assertEqual(len(self.verify()), 12)
+        for forged_reason in ("simulation_tick failed: active scheduling-core capacity exhausted: forged",
+                              "another_tick failed: active scheduling-core capacity exhausted",
+                              "simulation_tick failed: pressure component capacity exhausted"):
+            with self.subTest(forged_reason=forged_reason):
+                publish(forged_reason)
+                with self.assertRaisesRegex(RuntimeError, "genuine native capacity failure"):
+                    self.verify()
+
     def test_native_owner_recovery_cannot_be_missing_fake_or_reopen_different_data(self):
         original_records=copy.deepcopy(self.records)
         for mutation in ("missing","wrong-fixture","wrong-source","plane","pre-fault-plane","fake-failure",

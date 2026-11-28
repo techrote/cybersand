@@ -1,0 +1,37 @@
+{
+  "schema_version": 1,
+  "status": "SCOPED_QUANTITATIVE_REVIEW_PASS",
+  "reviewer": "AMBIENT-002 Specialist B: embodied perception and physical programme",
+  "reviewed_at_utc": "2026-11-25T04:34:13.185606+00:00",
+  "application_source": "a7250e15495667b2fcf564cbed1eaa8dea217c45",
+  "packet_path": "docs/research/ambient-002/decision-packet.md",
+  "packet_sha256": "8b5d0187db6d0ee6903384a60cc5e271cc22618f7ce1814c423ab8ba5e4dbac2",
+  "scope": "Manual quantitative readback against the previously completed original-byte scientific audit. This is not a new simulation execution or an approval of the pending sustained graphical section.",
+  "underlying_audit_path": "docs/research/ambient-002/evidence/hosted-a725-independent/receipt-chain-and-science.json",
+  "underlying_audit_sha256": "d24cf63ed7543677c563909dc4ad57ec84e0a29220078c6b0ade700302d7fb26",
+  "original_artifact_sha256": "eac23768f3b18dc95a35554328f700daa8a81fa9920bab39fa7148aca1958e30",
+  "raw_report_sha256": "090394a0a0f7e7a876481c935fcd2245691bf38a30f24f3c602dd5cd92c5b894",
+  "summary_sha256": "80e563bb3349aa4a9f12f11bec118c99fe980e52c522330177147d8e6a272245",
+  "checked_claim_groups": [
+    "122 fresh Worlds, 194 physical actor episodes, 178 subjects and 16 passive companions; shared-World clustering and separate supplementary executions.",
+    "4560 World-simulation seconds, 6720 actor-simulation seconds, 273600 native and physical steps, 62400 accepted commands, zero rejected commands and zero recorded actor-center canvas incidents.",
+    "Eight-policy main horizontal-range table, matched stateful-minus-memory-off median deltas, ground stall reductions, retained held-random/scripted controls, adverse withdrawals and mixed long episodes.",
+    "All sixteen catalogue observations are descriptive single-subject trials; selection-label transitions are not unique goal-instance counts.",
+    "Four- and eight-actor social percentages retain counterexamples and distinguish proximity components from cooperation or stable leadership.",
+    "Actual production sensor/adapter timing and eight-actor advance/native/Rapier table retain elapsed-call scope and exclude double counting; synthetic and repeated-query measurements stay separate.",
+    "Actual native thin-patch proof retains 489 versus 677 reads, near Oil detection, far Water miss, incomplete coverage and zero behavioral episode credit.",
+    "Curiosity-only first-ten-second choice and closest-approach contrast remain distinct from ten-second net displacement; repeated identical trajectories and later grid-boundary switching remain explicit.",
+    "Same-source baseline host comparison retains 23252 of 67200 bit-equal positions, 44 of 194 wholly equal traces and a maximum 118.99-cell rounded difference despite matched initial/source/runtime inputs."
+  ],
+  "measurement_corrections_confirmed": [
+    "Starting occupancy bin is eligible only under the same cumulative 0.5-second rule as other bins.",
+    "Eight-cell recovery within five seconds measures displacement from obstruction entry, horizontal on ground and Euclidean in flight; it does not require a direction away from the wall.",
+    "Blocked-route withdrawal may reuse pre-wall obstruction memory and does not establish learning the new 15-second wall."
+  ],
+  "not_independently_requalified_by_this_review": [
+    "Windows payload/extracted execution and graphical assertions are owned by Specialist C and their original source-bound receipts.",
+    "The sustained three-scene graphical observation was explicitly pending in this reviewed packet; no pass is credited here.",
+    "Later packet edits are not covered by this exact packet hash unless separately checked."
+  ],
+  "remaining_quantitative_objections": []
+}

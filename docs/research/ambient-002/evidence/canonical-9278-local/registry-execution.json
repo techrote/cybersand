@@ -1,0 +1,22 @@
+{
+  "command": [
+    "/tmp/ambient-002/runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/tmp/ambient-002/perception/godot",
+    "--script",
+    "res://tests/test_ambient2_episodes.gd"
+  ],
+  "mode": "registry",
+  "case_id": "",
+  "source_revision": "9278de5757b29b9df40a089e11a4daef744990f7",
+  "custody_sha256": "45c733e85af4ed7418339c44cfd4e689a6a3436b97a971b59aa8c60481cae91c",
+  "timeout_seconds": 1800,
+  "started_utc": "2026-11-25T02:47:16Z",
+  "returncode": 0,
+  "elapsed_seconds": 2.2424584170003072,
+  "console_sha256": "cd595a7cc947525db28428b3ea5ee3e0ec1aa7f0bfa6bb9aac800709da67c770",
+  "report_sha256": "bc878d880fe38b2efdb6b46bb8c75315d2894cf951b1046845e04c85634729d3"
+}

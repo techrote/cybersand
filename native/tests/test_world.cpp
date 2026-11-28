@@ -42,6 +42,12 @@ using cybersand::World;
 using cybersand::WorldConfig;
 using cybersand::WaterExperimentPolicy;
 
+// Windows MSVC tests intentionally construct several Worlds on the stack.
+// The expanded actor/proxy identity budget must not embed large per-body arrays
+// in each World object. Catch a repeat of the 4,097-lane stack regression.
+static_assert(sizeof(World) < 64U * 1024U,
+    "World stack footprint exceeds 64 KiB; heap-own bounded response lanes");
+
 void require(bool condition, std::string_view message) {
     if (!condition) throw std::runtime_error(std::string(message));
 }
@@ -2484,7 +2490,7 @@ void test_physics_masked_source_characterisation() {
 }
 
 void test_articulated_body_identity_capacity() {
-    static_assert(World::kMaximumTransientBodies == 64U);
+    static_assert(World::kMaximumTransientBodies >= 64U);
     std::uint64_t reference_hash = 0;
     for (const auto workers : {1U, 4U}) {
         WorldConfig config;
@@ -2512,7 +2518,7 @@ void test_articulated_body_identity_capacity() {
             }
         }
         require(!world.set_transient_obstacle(2, 2, 0U) &&
-                    !world.set_transient_obstacle(2, 2, 65U),
+                    !world.set_transient_obstacle(2, 2, World::kMaximumTransientBodies + 1U),
                 "out-of-capacity body identity was accepted");
         require(!world.set_transient_obstacle(8, 9, 64U) &&
                     world.transient_obstacle_at(8, 9) == 1U,

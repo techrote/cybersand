@@ -136,18 +136,20 @@ def budgets(platform_name: str, group: str, shard_index: int = 0) -> dict:
                 'internal_readback_seconds': values['godot_metadata_seconds'],
                 'seal_seconds': values['operation_seconds']}
     suite = math.ceil(case_total + imported + sum(metadata.values()) + values['aggregate_headroom_seconds'])
-    # LFS, the official engine ZIP and pinned Python wheels each receive a full
-    # independent dependency allowance; setup and observer join have headroom.
+    # Same-attempt runtime verification/install, the official engine ZIP and
+    # pinned Python wheels each retain a full independent dependency allowance.
+    # The producer owns LFS acquisition; consumers never retry the service.
     dependencies = math.ceil(3 * values['dependency_prepare_seconds'] + values['operation_seconds']
                              + values['terminate_grace_seconds'])
     suite_minutes = math.ceil(suite / 60)
     dependency_minutes = math.ceil(dependencies / 60)
     readback_minutes = math.ceil(values['godot_metadata_seconds'] / 60)
     metadata_minutes = math.ceil(values['operation_seconds'] / 60)
-    # Count the actual rounded outer steps: checkout, Python setup, retained
-    # readback, upload, and a separate hosted scheduling/teardown reserve. The
-    # Windows checkout configuration is one additional bounded metadata step.
-    metadata_steps = 5 if platform_name == 'win32' else 4
+    # Count checkout, Python setup, exact-attempt runtime artifact download,
+    # evidence upload, and a separate hosted scheduling/teardown reserve. The
+    # Windows checkout configuration is one additional bounded metadata step;
+    # independent readback is already counted by readback_minutes below.
+    metadata_steps = 6 if platform_name == 'win32' else 5
     total_minutes = suite_minutes + dependency_minutes + readback_minutes + metadata_steps * metadata_minutes
     minutes = max(math.ceil(values['hosted_job_minutes']), math.ceil(total_minutes / 10) * 10)
     require(minutes <= 360, 'Shader cohort exceeds hosted capacity; split its case inventory without shrinking allowances')

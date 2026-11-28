@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-20",
+  "purpose": "Additive SWARM-004 Workbench scope and native transaction questions; frozen historical evaluations remain unchanged.",
+  "questions": [
+    {
+      "id": "SWARM004-WORKBENCH-001",
+      "query": "How does experimental FRAMEWEAVER MOSAIC reciprocal construction Apply atomically without partial native cell writes, and how does Undo preserve prior authoring history?",
+      "canonical": ["architecture/experimental-workbench-authoring-patch.md"],
+      "facts": [
+        "A paused copied native snapshot binds generation, revision, tick and authoring history before the bounded child generator runs.",
+        "The approved exact-cell patch modifies only private retained tuples; existing native preparation and a single fenced token swap install the successor atomically.",
+        "Shared Workbench adopts the staged history after acknowledgement. Undo uses a fresh capture, exact expected installed IDs and the construction's own receipt and protected set.",
+        "Native can_apply is necessary and cannot be overridden by the UI. Unresolved required sockets remain blocked; native Stone13 retains Powder behavior.",
+        "The adapter does not change accepted production material, Water, physics, renderer or World-size policy."
+      ],
+      "sources": ["../godot/scripts/workbench_reciprocal_panel.gd", "../godot/native_extension/workbench_retained_setup.hpp", "../native/include/cybersand/workbench_authoring_patch.hpp"]
+    },
+    {
+      "id": "SWARM004-WORKBENCH-002",
+      "query": "What does the Windows SWARM004 reciprocal Workbench owner package need to demonstrate, and can saved proposal evidence authorize another Apply?",
+      "canonical": ["operations/swarm004-workbench-playtest.md", "architecture/experimental-workbench-authoring-patch.md"],
+      "facts": [
+        "The candidate remains Draft/HOLD and is opened through a separate lazy experimental dock.",
+        "The exact-source Windows graphical run exercises real Generate, Apply, Undo, ordinary Save, close and a separate process that reopens with exact full-plane native material readback.",
+        "The pristine delivered ZIP is independently exercised, with original screenshots and matching binary/source hashes.",
+        "Bounded saved proposal and revision sidecars are historical evidence only; the ordinary starting map owns native reconstruction and a fresh native generation is required before another Apply.",
+        "Cross-compilation and headless execution alone do not satisfy Windows graphical acceptance."
+      ],
+      "sources": ["../tools/swarm004/qualify_workbench.py", "../godot/tests/swarm45_reciprocal_ui.gd", "../.github/workflows/swarm004-workbench-windows.yml"]
+    }
+  ]
+}

@@ -4,11 +4,42 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-10-31
+last-reviewed: 2026-11-27
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## GEN-006 persistent-area candidate qualification
+
+Use the bounded [persistent-area evaluator](persistent-areas-evaluation.md) and [exact-source qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md). `make persistent-area-test` and `make persistent-area-sanitize` exercise complete native continuation. `tools/ci/run_persistent_areas_qualification.py` runs native bridge, Store/Clock, actual Main, graphical travel and real-process crash/reopen checks. The dedicated Draft/HOLD workflow builds and qualifies source-matched Linux and Windows runtimes and an extracted Windows evaluator; it does not run the unrelated 80-Gentek publication corpus. A local toolchain-drift binary is diagnostic evidence only.
+
+## AMBIENT-001 scoped gameplay qualification
+
+The opt-in [ambient implementation](../systems/ambient-actors.md) reuses the
+retained native and Rapier binaries only when all covered native source inputs
+and binary hashes match their published provenance. Commit the gameplay inputs,
+then run the focused sequential campaign with the repository-pinned Godot 4.7:
+
+```sh
+python3 tools/qualify_ambient.py --godot /absolute/path/to/pinned-godot --output /absolute/path/to/new-ambient-evidence
+```
+
+The runner checks source before and after execution and retains every process
+receipt, log, save/reopen pair and available gameplay report. `--allow-source-delta`
+is an explicitly labelled development run and cannot authorize packaging.
+`--case` supports narrow debugging or extracted-package checks; the package
+builder requires the complete committed-source campaign. Headless native/Rapier
+motion is distinct from rendered or physical Windows/NVIDIA playfeel acceptance.
+
+The [dedicated workflow](../../.github/workflows/ambient-001-qualification.yml)
+uses `windows-2022` and exact retained-runtime verification. It runs only on an
+explicit qualification-request marker change on the mission branch, or manual
+dispatch. It performs no native rebuild, runtime publication or Ready transition.
+The [package tool](../../tools/package_ambient_evaluator.py) records host source
+and original DLL build identity separately, includes ordinary authored examples
+and checksums, and verifies pristine extraction before delivery. Actual results
+and blockers belong to the [mission ledger](../research/ambient-001/mission-ledger.md).
 
 ## Large authored Workbench landscape admission
 
@@ -53,6 +84,48 @@ the ordinary interactive Workbench launcher. Its success is Windows native
 process evidence; physical GPU/display feel and owner acceptance remain separate.
 Neither the workflow nor the packaging tool merges or promotes the Draft PR.
 
+## SWARM-004 native recovery and qualification — 2026-11-20
+
+The [experimental reciprocal contract](../systems/gentek-reciprocal-assembly.md)
+and [dated recovery record](../audits/2026-11-20-swarm004-native-recovery.md)
+separate recovered known evidence from final source qualification. Keep both
+implementation PRs Draft/HOLD. The native grammar, solver, candidate policies
+and registered resource ceilings are unchanged by the recovery reporting fixes.
+
+From a clean committed source, use fresh output directories outside the repo:
+
+```bash
+python3 native/experiments/gentek_swarm/run_reciprocal.py \
+  --out /tmp/swarm004-known-evidence --build /tmp/swarm004-builds \
+  --qualification --sanitize
+```
+
+This rebuilds the focused native suites, repeats them under ASan/UBSan, reproduces
+frozen B171/C72 and E8/hard-only controls, retains every registered known case,
+runs both-direction counterfactual controls and audits/renders the native arrays.
+Leak checking is disabled under the retained host-instrumentation configuration;
+the receipt makes no leak pass claim. No Windows or Godot acceptance is inferred.
+All source inputs, commands, binary hashes and lossless raw evidence remain bound
+to the committed source. An unevaluated final closure is exported as unknown.
+
+Only after the committed source-input fingerprint matches
+`native/experiments/gentek_swarm/SELECTION-RECIPROCAL.json`, open the registered
+holdouts with the already selected policy and same-seed controls:
+
+```bash
+python3 native/experiments/gentek_swarm/run_reciprocal.py \
+  --out /tmp/swarm004-holdout-evidence --build /tmp/swarm004-builds \
+  --lane holdout --selected-policy fixed_territory --qualification --sanitize \
+  --frozen-evidence /tmp/swarm004-known-evidence/frozen-controls/manifest.json
+```
+
+The reused B/C receipt must pass exact-source verification; E8/hard-only is
+reproduced again. Holdout seeds 19457/32771 do not permit parameter or policy
+tuning after opening. Changed source, dirty worktrees and existing nonempty
+evidence directories are refused. Native causal-control work has its own
+remaining-budget counterfactual or full frozen-peer execution and is excluded
+from the candidate's charged work totals.
+
 ## Source-built Windows candidate validation — 2026-11-08
 
 GDExtension Windows shards consume the same-run `native-candidate-windows`
@@ -62,10 +135,48 @@ tree; the Windows runner's explicit `--native-candidate` mode and independent
 coverage reducer verify those bytes. The default retained-runtime mode keeps
 its original committed provenance checks. Candidate manifests do not rewrite
 published provenance or waive `check_repository.py`.
-Candidate download and verification each have a five-minute allowance; only
-Rapier is fetched through LFS in the shard. The complete setup remains within
+Candidate download and verification each have a five-minute allowance. Rapier
+comes from its separate same-attempt producer artifact, with five minutes for
+download and five for committed-pointer and byte verification. The complete setup remains within
 the existing 70-minute reserve. Use **rerun all jobs** when retrying this
 same-run/attempt artifact chain, so producer and consumers share an attempt.
+
+GDExtension and Palette producers use
+[`materialize_lfs.py`](../../tools/ci/materialize_lfs.py) for exact committed LFS
+objects. A single monotonic allowance covers source/pointer admission, setup,
+all download attempts, backoff, byte verification and bounded owned-process
+cleanup. Linux uses its existing 1,200-second dependency allowance. The Windows
+native producer acquires Rapier once within 600 seconds; the Palette plan
+acquires its four exact retained objects once within 1,200 seconds. Ten seconds
+are reserved for owned-process cleanup inside the acquisition allowance.
+No test or native execution timeout changes.
+
+Only the observed Git LFS batch service-timeout response may be retried, at most
+three total attempts (two retries), with two- and four-second backoff.
+Authentication, permanent and unknown errors, exhausted allowance, source movement and wrong materialized
+bytes remain failures. Each original attempt retains its full output, exit,
+elapsed time and log hash beside a source/pointer/actual-byte receipt. Existing
+native, Rapier and downstream qualification checks remain mandatory; successful
+acquisition alone is not runtime qualification.
+
+[`lfs_runtime_artifact.py`](../../tools/ci/lfs_runtime_artifact.py) stages that
+producer's exact bytes and original acquisition logs in a source/run/attempt-bound
+artifact. Each consumer verifies the complete expected object inventory against
+its own committed LFS pointers, the actual bytes, original command receipts and
+sealed logs before installing its explicitly selected platform files. Palette
+requires all four objects even when installing only its platform pair. Consumers
+never fall back to the LFS service, a different attempt, or another runtime.
+Final seal and receipt writes are part of the shared deadline; a late seal is
+retained as failed evidence and cannot authorize execution.
+
+The Windows shard retains its original ten-minute dependency slot as five
+minutes for artifact download and five for verified installation. Palette
+retains its independent dependency clocks and adds the separately budgeted
+artifact-download step. Producer parents explicitly include moved acquisition
+and upload costs; case watchdogs, native inputs and concurrency are unchanged.
+Retry a complete source/attempt chain: GDE's common `ready_scope` ancestor or
+Palette's `plan`, including producers, all consumers and reducers. A failed-only
+consumer retry cannot satisfy same-attempt runtime custody.
 
 The [EXPLORE candidate](explore001-desktop-playtest.md) is assembled by
 `tools/package_explore001_candidate.py` from committed project/profile bytes,

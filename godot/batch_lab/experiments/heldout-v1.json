@@ -1,0 +1,20 @@
+{
+  "schema": "cybersand-batch-heldout-v1",
+  "status": "reserved-unexecuted",
+  "partition_basis": "structural family, not seed",
+  "reference_repository": "techrote/sandmapsreference",
+  "reference_commit": "99a166e7fcae45eb22be1740e9f33f62faccbcc7",
+  "reserved_reference_groups": [
+    {"public_id": "techn-0031", "group": "horizontal_archive_vaults", "sha256": "be97a290869d30c251f17a535805eb5c23471d66ddb64f8a63f6a680220443dc"},
+    {"public_id": "works-0004", "group": "brackwater_liftworks", "sha256": "4026263c18bac144771499aff3cd5a904a7340a5d1c01f9b7a78ad293caabf7c"},
+    {"public_id": "commn-0005", "group": "sunburst_print_courts", "sha256": "a43b98538a14c5dc3f1b25b5a92f7555751aeafc5d55a427a4375709dd37d103"}
+  ],
+  "reference_custody": "Reserved by catalogue metadata only. These original images were not opened or used to author development templates. Hold out every near-duplicate in each named group. Independent curation must confirm task fit before the first frozen final experiment; no reference observations or results are asserted here.",
+  "groups": [
+    {"family": "greebles", "group_id": "final-recessed-cassettes", "task": "Recessed service cassettes around a bent maintenance passage; exclude development panel-bank composition."},
+    {"family": "pipework", "group_id": "final-dual-riser-loop", "task": "Two risers joined into a loop around an obstacle with separately reachable endpoints; exclude development spine-and-branches topology."},
+    {"family": "architecture", "group_id": "final-stacked-courtyards", "task": "Stacked offset courtyards connected through alternating side routes; exclude the development single assembly-hall composition."}
+  ],
+  "seeds": [15485863, 32452843],
+  "usage": "Do not expose these tasks to development prompt revision, example selection or model training. Freeze the candidate prompt and call settings before an independent reviewer executes these cases. This reservation is not evidence of held-out improvement."
+}

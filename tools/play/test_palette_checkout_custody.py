@@ -1,7 +1,10 @@
 #!/usr/bin/env python3
 """Adverse controls for source-bound checkout EOL forms."""
 import hashlib
+import os
 from pathlib import Path
+import subprocess
+import tempfile
 import unittest
 
 import palette_checkout_custody as checkout
@@ -120,6 +123,55 @@ class CheckoutCustodyTests(unittest.TestCase):
         for source in ('docs/evidence/report.log', 'docs/evidence/deep/report.json'):
             with self.subTest(source=source), self.assertRaises(ValueError):
                 self.forms(source, attrs=attrs)
+
+    def test_prompt_attribute_move_preserves_git_scope_and_checkout_bytes(self):
+        # Exercise Git itself: a scoped basename rule must retain the recursive
+        # prompt rule's exact current and future-path behavior without extending
+        # that authority to adjacent files. The custody reader still refuses **.
+        root = Path(__file__).resolve().parents[2]
+        moved_name = 'godot/batch_lab/prompts/.gitattributes'
+        moved = (root / moved_name).read_bytes()
+        paths = [f'godot/batch_lab/prompts/v1/P{i}.txt' for i in range(4)] + [
+            'godot/batch_lab/prompts/direct.txt',
+            'godot/batch_lab/prompts/future/deeper/nested.txt',
+            'godot/batch_lab/prompts/future/deeper/not-a-prompt.bin',
+            'godot/batch_lab/outside.txt', 'godot/other/prompts/outside.txt']
+        inputs = {path: (root / path).read_bytes() if index < 4 else self.canonical
+                  for index, path in enumerate(paths)}
+        env = {name: value for name, value in os.environ.items() if not name.startswith('GIT_CONFIG_')}
+        for autocrlf in ('false', 'true'):
+            outcomes = []
+            for old in (True, False):
+                with tempfile.TemporaryDirectory() as directory:
+                    folder = Path(directory)
+                    def git(*args):
+                        return subprocess.check_output(['git', '-C', str(folder), *args],
+                                                       env=env, stderr=subprocess.PIPE)
+                    git('init', '-q')
+                    git('config', 'core.autocrlf', autocrlf)
+                    git('config', 'core.eol', 'lf')
+                    (folder / '.gitattributes').write_bytes(b'* text=auto\n')
+                    name = 'godot/batch_lab/.gitattributes' if old else moved_name
+                    attribute = folder / name
+                    attribute.parent.mkdir(parents=True)
+                    attribute.write_bytes(b'prompts/**/*.txt text eol=lf\n' if old else moved)
+                    for path in paths:
+                        target = folder / path
+                        target.parent.mkdir(parents=True, exist_ok=True)
+                        target.write_bytes(inputs[path])
+                    git('add', '.')
+                    git('checkout-index', '--force', '--all')
+                    attrs = {path: git('check-attr', '-z', 'text', 'eol', '--', path) for path in paths}
+                    contents = {path: (folder / path).read_bytes() for path in paths}
+                    outcomes.append((attrs, contents))
+                    if not old and autocrlf == 'false':
+                        authority = {'.gitattributes': b'* text=auto\n', moved_name: moved}
+                        for path, data in contents.items():
+                            self.assertIn(digest(data), checkout.allowed_checkout_digests(path, inputs[path], authority))
+            with self.subTest(autocrlf=autocrlf):
+                self.assertEqual(outcomes[0], outcomes[1])
+                for path in paths[:6]:
+                    self.assertEqual(outcomes[1][1][path], inputs[path])
 
 
 if __name__ == '__main__':

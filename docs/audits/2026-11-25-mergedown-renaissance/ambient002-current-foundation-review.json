@@ -1,0 +1,457 @@
+{
+  "schema": "cybersand-ambient002-current-foundation-review-v1",
+  "authority": "historical-non-authoritative engineering qualification",
+  "binding": {
+    "source": "dea2cd5f520771990202e73c016c9ba294f25a2d",
+    "tree": "541de353be66c4571420f52f41e971230b6f3f9e",
+    "parents": [
+      "7c64874553f711121f2f5eeb01b8689e16d38bd3",
+      "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+    ],
+    "core": "7c64874553f711121f2f5eeb01b8689e16d38bd3",
+    "identical_trees": {
+      "godot": "c88e9715207f7dcffd737787eede73d914e3f548",
+      "native": "e6946f5c5d47eddd6118696b124470737cdd385e",
+      "third_party": "01a8de3cd15508c37d2949aedf81a6364e2c8b32",
+      "examples/worldgen": "8c36dbfe7cf396f16110159f8a4ecacfd005cb9d"
+    },
+    "original_ancestors": [
+      "957190050ea6b32b47523234e508c7690a2abba9",
+      "d0af9b6015c27417fddd67f79afdcf656a609571"
+    ],
+    "conditional_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+    "current_candidate": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+    "changed_paths_from_core": [
+      ".github/workflows/gdextension.yml",
+      ".github/workflows/palette-shader-qualification.yml",
+      "docs/audits/2026-11-25-mergedown-renaissance/ambient002-current-foundation-registration.md",
+      "docs/audits/2026-11-25-mergedown-renaissance/ambient002-evidence-manifest.json",
+      "docs/audits/2026-11-25-mergedown-renaissance/ambient002-evidence.zip",
+      "docs/audits/2026-11-25-mergedown-renaissance/ambient002-integration.json",
+      "docs/audits/2026-11-25-mergedown-renaissance/ambient002-integration.md",
+      "docs/audits/2026-11-25-mergedown-renaissance/bounded-lfs-acquisition.md",
+      "docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md",
+      "docs/operations/local-build-and-validation.md",
+      "tools/ci/lfs_runtime_artifact.py",
+      "tools/ci/materialize_lfs.py",
+      "tools/ci/run_windows_godot_regressions.py",
+      "tools/ci/test_lfs_runtime_artifact.py",
+      "tools/ci/test_materialize_lfs.py",
+      "tools/play/palette_qualification_contract.py",
+      "tools/play/run_palette_shader_qualification.py",
+      "tools/play/test_palette_qualification.py"
+    ]
+  },
+  "qualification": {
+    "cases": 4,
+    "completed_utc": "2026-11-26T00:57:24.114199+00:00",
+    "failed": 0,
+    "passed": 4,
+    "scope": "Linux pinned Godot 4.7, source-matched native/Rapier; actual mixed-actor authority, default-OFF and profile editor; headless; no model or owner acceptance",
+    "seconds": 19.83,
+    "source": "dea2cd5f520771990202e73c016c9ba294f25a2d",
+    "source_runtime_project_engine_unchanged": true,
+    "status": "PASS",
+    "tree": "541de353be66c4571420f52f41e971230b6f3f9e"
+  },
+  "assertions": 235,
+  "case_checks": {
+    "test_ambient_default_off_integration": 68,
+    "test_ambient_living_group_integration": 31,
+    "test_ambient_group_transaction": 40,
+    "test_ambient_living_editor": 96
+  },
+  "cases": [
+    {
+      "capture_error": null,
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/cybersand-product/godot",
+        "--script",
+        "res://tests/test_ambient_default_off_integration.gd"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "fail_boolean": false,
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "test_ambient_default_off_integration.log",
+      "log_sha256": "f3bcc76f7cf56a0e83af5b31b06426809fac017013d25fdb6a1538eb323fb515",
+      "name": "test_ambient_default_off_integration",
+      "natural_completion": true,
+      "pid": 135,
+      "qualification_name": "test_ambient_default_off_integration",
+      "receipt_lines": [],
+      "requires_display": false,
+      "resources": {
+        "available": true,
+        "cpu_seconds": 6.25,
+        "peak_rss_bytes": 340217856,
+        "scope": "direct_process_only"
+      },
+      "returncode": 0,
+      "role": "primary",
+      "seconds": 6.44,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "capture_error": null,
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/cybersand-product/godot",
+        "--script",
+        "res://tests/test_ambient_living_group_integration.gd"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "fail_boolean": false,
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "test_ambient_living_group_integration.log",
+      "log_sha256": "cddf316f80545c43bb4a2204ce341b5e832177fe6650d1a61b78d828cb4d75fa",
+      "name": "test_ambient_living_group_integration",
+      "natural_completion": true,
+      "pid": 293,
+      "qualification_name": "test_ambient_living_group_integration",
+      "receipt_lines": [],
+      "requires_display": false,
+      "resources": {
+        "available": true,
+        "cpu_seconds": 5.73,
+        "peak_rss_bytes": null,
+        "scope": "direct_process_only"
+      },
+      "returncode": 0,
+      "role": "primary",
+      "seconds": 5.672,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 3940.0
+    },
+    {
+      "capture_error": null,
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/cybersand-product/godot",
+        "--script",
+        "res://tests/test_ambient_group_transaction.gd"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "fail_boolean": false,
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "test_ambient_group_transaction.log",
+      "log_sha256": "c3b0a474f0174409f75298280c083bc509aefc8dc468d2ccef65a41964e8b180",
+      "name": "test_ambient_group_transaction",
+      "natural_completion": true,
+      "pid": 439,
+      "qualification_name": "test_ambient_group_transaction",
+      "receipt_lines": [],
+      "requires_display": false,
+      "resources": {
+        "available": true,
+        "cpu_seconds": 0.63,
+        "peak_rss_bytes": 176992256,
+        "scope": "direct_process_only"
+      },
+      "returncode": 0,
+      "role": "primary",
+      "seconds": 0.735,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 1200.0
+    },
+    {
+      "capture_error": null,
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/cybersand-product/godot",
+        "--script",
+        "res://tests/test_ambient_living_editor.gd"
+      ],
+      "diagnostic_error": false,
+      "diagnostic_seconds": 0.0,
+      "diagnostics": null,
+      "execution_policy": {
+        "advisories": {
+          "drift_ratio": 1.2,
+          "drift_window": 5,
+          "minimum_baseline_samples": 3,
+          "prominent_ratio": 2.0,
+          "rolling_window": 10,
+          "warning_ratio": 1.5
+        },
+        "path": "godot/tests/support/ci_execution_policy.json",
+        "policy_id": "github-hosted-complete-execution-v1",
+        "scale": 1.0,
+        "schema_version": 1,
+        "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+        "watchdogs": {
+          "aggregate_headroom_seconds": 600.0,
+          "complex_fixture_seconds": 3600.0,
+          "dependency_prepare_seconds": 1200.0,
+          "diagnostic_capture_seconds": 30.0,
+          "godot_import_seconds": 1200.0,
+          "godot_job_minutes": 360.0,
+          "godot_metadata_seconds": 900.0,
+          "godot_setup_seconds": 4200.0,
+          "graphical_case_seconds": 1200.0,
+          "hosted_job_minutes": 180.0,
+          "main_ack_seconds": 600.0,
+          "native_case_seconds": 3600.0,
+          "native_compile_seconds": 3600.0,
+          "native_suite_seconds": 7200.0,
+          "operation_seconds": 300.0,
+          "ordinary_case_seconds": 1200.0,
+          "terminate_grace_seconds": 10.0
+        }
+      },
+      "fail_boolean": false,
+      "last_heartbeat": null,
+      "last_progress": null,
+      "launch_error": null,
+      "log": "test_ambient_living_editor.log",
+      "log_sha256": "67b74a6805426e68bef4bdf0f8558d1b97ad72195b1da1e10b83aebca16ef97a",
+      "name": "test_ambient_living_editor",
+      "natural_completion": true,
+      "pid": 471,
+      "qualification_name": "test_ambient_living_editor",
+      "receipt_lines": [],
+      "requires_display": false,
+      "resources": {
+        "available": true,
+        "cpu_seconds": 7.22,
+        "peak_rss_bytes": 363724800,
+        "scope": "direct_process_only"
+      },
+      "returncode": 0,
+      "role": "primary",
+      "seconds": 6.983,
+      "skip_messages": [],
+      "status": "passed",
+      "timeout_diagnostic_error": null,
+      "timeout_diagnostics": null,
+      "timeout_kind": null,
+      "timeout_seconds": 1200.0
+    }
+  ],
+  "static_checks": [
+    {
+      "name": "planner",
+      "command": [
+        "python",
+        "tools/ci/test_godot_regression_sharding.py"
+      ],
+      "exit_code": 0,
+      "seconds": 1.115
+    },
+    {
+      "name": "docs",
+      "command": [
+        "python",
+        "tools/ci/check_docs.py"
+      ],
+      "exit_code": 0,
+      "seconds": 1.476
+    },
+    {
+      "name": "provider",
+      "command": [
+        "python",
+        "tools/ci/check_ci_provider_policy.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.09
+    },
+    {
+      "name": "repository",
+      "command": [
+        "python",
+        "tools/ci/check_repository.py"
+      ],
+      "exit_code": 0,
+      "seconds": 2.335
+    },
+    {
+      "name": "diff",
+      "command": [
+        "git",
+        "diff",
+        "--check"
+      ],
+      "exit_code": 0,
+      "seconds": 0.009
+    }
+  ],
+  "planner": {
+    "run": 93,
+    "passed": 92,
+    "skipped": 1,
+    "skip_reason": "actual Windows-only process-control case on Linux"
+  },
+  "independent_review": {
+    "reviewer": "Specialist C",
+    "source_equivalence": "confirmed exact parents and empty Godot/native/third_party delta vs independently reviewed7c648; formal four-case proof addendum follows final foundation merge gate",
+    "prior_implementation_approval_preserved": true
+  },
+  "import": {
+    "exit_code": 0,
+    "seconds": 5.015,
+    "strict_diagnostics": [],
+    "reason": "Original orchestration session identifier became unavailable after interruption; preserve its log and repeat only import for a complete observed join.",
+    "prior_log_status": "original orchestration join unavailable after interruption; retained unjoined, not counted as pass"
+  },
+  "packet": {
+    "files": 35,
+    "zip_members": 36,
+    "bytes": 263748,
+    "sha256": "c0e4bc277a5bbdfc5a6b34dca9f14a75e72f46b25ca3a6a8598dba3bc9829fa6",
+    "path": "ambient002-current-foundation-evidence.zip"
+  },
+  "retained_original_evidence_commit": "2627297c2a5ad9c30c87a1c99f11c518bb845031",
+  "owner_evaluator": {
+    "scope": "Frozen original AMBIENT-002 evaluator, not this preparatory mergedown source",
+    "source": "50c6df89528dc9ecdc5316d8c67abf203e192254",
+    "url": "https://github.com/techrote/cybersand/actions/runs/45552786466/artifacts/14995966187",
+    "inner_name": "CyberSand-AMBIENT-002-Windows-50c6df89528d.zip",
+    "bytes": 259734965,
+    "sha256": "54a4dc71c10a6ca77dcc8ba48a1fb5be39cc0e63ae33099b3dd0d452e9c71a5a"
+  },
+  "disposition": "Prepared and targeted-Linux-qualified against immutable26317 candidate; actual accepted-main ancestry join, full resulting-source platform gates and owner acceptance remain",
+  "protected_boundaries": [
+    "eight logical actors",
+    "ordinary default-OFF behavior",
+    "physical/Rapier and input authority",
+    "no Actor Capacity or unrelated feature imports",
+    "no physical owner acceptance invented",
+    "no remote mutation or retarget by this specialist"
+  ]
+}

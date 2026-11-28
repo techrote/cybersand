@@ -1,0 +1,1558 @@
+{
+  "schema": "ambient2-original-local-archive/v1",
+  "source_revision": "83a3db6ffb207761df999abedac77eb1401604a8",
+  "source_tree": "9037dc374a782d60df116e1731a05abacb54a6cf",
+  "complete": true,
+  "campaign_clusters": 122,
+  "actual_actor_episodes": 194,
+  "subject_actor_episodes": 178,
+  "auxiliary_passive_companion_episodes": 16,
+  "world_simulation_seconds": 4560,
+  "actor_simulation_seconds": 6720,
+  "maximum_actual_population": 8,
+  "aggregate_sha256": "e9d31cfd40ba881753294a2e6ff546722312ec3c61fa16802c6d3c6d8b1a6d5b",
+  "runner_receipt_sha256": "b086d48e7d134bacd8288ab3bc70189b66281055497388bef5d6cb0705792333",
+  "created_utc": "2026-11-25T03:29:17.137667+00:00",
+  "interpretation": [
+    "This is the independent local execution of the 122-World, 194-actor registered baseline at the stated source.",
+    "Hosted executions of the same registered case IDs are repeated executions, not additional independent registered experiments.",
+    "The source predates the finite obstacle-steering latch correction and preserves its negative results.",
+    "After approximately 2026-11-25 03:20 UTC, a separate targeted Godot probe ran concurrently; local elapsed call timings after that point are contended.",
+    "Local elapsed invocation times are not OS CPU utilization or clean causal performance comparisons; hosted serial qualification remains the primary performance source.",
+    "Catalogue passive companions are actual auxiliary actors and are not independent personality treatment replicates."
+  ],
+  "files": {
+    "analysis/behaviour-timelines.png": {
+      "sha256": "baa624ffd3ea08ab2f68801ab4c3b5e9153c78051eaa350dcfb0045a045befe2",
+      "bytes": 165415
+    },
+    "analysis/catalogue-timelines.png": {
+      "sha256": "b1066a2492b4a3204c9b8f0d02fbe98d1a84854c884c33824f198ed62be88564",
+      "bytes": 136164
+    },
+    "analysis/catalogue-trajectories.png": {
+      "sha256": "6ed995f80b2079422a9b9f443a25afe364738423a1e434555b39a587fa2d25c0",
+      "bytes": 248658
+    },
+    "analysis/decision-note.md": {
+      "sha256": "69e2bcd00f8043c2bb5222dc56353da9c55813bf38800548353affea70c1a41f",
+      "bytes": 5110
+    },
+    "analysis/episodes.csv": {
+      "sha256": "8b48aba8b9d30f36e48540d6bf99f8e4d91c0f27e914cc85fe3df45d16a4668b",
+      "bytes": 114988
+    },
+    "analysis/matched-trajectories.png": {
+      "sha256": "542ac6f47e46dcd8bdac25b9bb8fef5400a96b58bfdbd31433d7a4a15ea72af9",
+      "bytes": 205399
+    },
+    "analysis/social-trajectories.png": {
+      "sha256": "14fad3a47bb66bfa239614a2c66e304368fb546c59570b089a7b50b137605f02",
+      "bytes": 560017
+    },
+    "analysis/summary.json": {
+      "sha256": "abacd5f372f45f04e86cde6ff8030478a7103fd4fa128497c94bb9bc5afc0959",
+      "bytes": 2383816
+    },
+    "analysis/trajectories.csv": {
+      "sha256": "f8faf2048fe1526af14dfa4ee2378a7ff7ad9c59525d08c5cca978a061369339",
+      "bytes": 16030843
+    },
+    "archive_completed_83a.py": {
+      "sha256": "f0121a471e23d16b427d5e56a02b4c504aeda1cb76ef850f1ec54240e3ae2fa1",
+      "bytes": 4826
+    },
+    "custody.json": {
+      "sha256": "628e832ad8d539e6319766c1603fd141ee546ce88cab18f2fe4edda008768235",
+      "bytes": 250200
+    },
+    "episodes.json": {
+      "sha256": "e9d31cfd40ba881753294a2e6ff546722312ec3c61fa16802c6d3c6d8b1a6d5b",
+      "bytes": 119559367
+    },
+    "local-driver.log": {
+      "sha256": "cb83c8daeeb95b0855745c01267c4e846ba1aa591eb0dce70529c495fb6d07b2",
+      "bytes": 12989
+    },
+    "registration/attempt-001/console.log": {
+      "sha256": "be834d5934249b9096c35f2c0e503d9d327b4fa9ec7b7f389df702b9e1d1999c",
+      "bytes": 347
+    },
+    "registration/attempt-001/execution.json": {
+      "sha256": "9dd0abfee6279e7ffcab33f1e34bb595cc505e5a05e75b606fa44606c39ff2ba",
+      "bytes": 748
+    },
+    "registration/attempt-001/report.json": {
+      "sha256": "fce1a146c4e8b8aab4fabf8c3363f96b746e2fe02df3b0b4a164265d78dd758d",
+      "bytes": 37558
+    },
+    "runner-receipt.json": {
+      "sha256": "b086d48e7d134bacd8288ab3bc70189b66281055497388bef5d6cb0705792333",
+      "bytes": 1699
+    },
+    "shards/adverse-blocked_route-runner-s1701-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "3f003e17a6e94882bff3ffa89014a807ed75f40b2befdd3edfa2f494ca34675d",
+      "bytes": 851
+    },
+    "shards/adverse-blocked_route-runner-s1701-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "4bf04bc8e6f526fa1d0ce036aa108ea230375b83618d5e98d3b6279d81d33a14",
+      "bytes": 795
+    },
+    "shards/adverse-blocked_route-runner-s1701-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "3c9eacc84862b28156764fbd217054c2ecafe375e6de91785018b6501d11256e",
+      "bytes": 475445
+    },
+    "shards/adverse-blocked_route-runner-s1701-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "b50a39e8555b69c6742f4356ea20b88a0f6891889d4f4a22368f365e6877d5ad",
+      "bytes": 848
+    },
+    "shards/adverse-blocked_route-runner-s1701-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "f6d58547443e0f552b69e1dabe74b76e10ad36b368f70c7e95116d067cc15f73",
+      "bytes": 794
+    },
+    "shards/adverse-blocked_route-runner-s1701-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "f7e565ef6010695d28ec11cc14c749bcbc49e38926e49fae36103821f160608b",
+      "bytes": 479904
+    },
+    "shards/adverse-blocked_route-runner-s605-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "c59e3a67363b373709b2281f624b676b64c3daf983cce08b931c1343b43cd110",
+      "bytes": 848
+    },
+    "shards/adverse-blocked_route-runner-s605-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "bec72abbb1a640eb57182c6381e9f4303cd5d1a30a37a3e1e36136324861d729",
+      "bytes": 794
+    },
+    "shards/adverse-blocked_route-runner-s605-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "07a6036b592aa07a479df683b069de4dd9fa58da2d71d0a8a266c58c09a02b6f",
+      "bytes": 475399
+    },
+    "shards/adverse-blocked_route-runner-s605-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "c6bf174ba1cadbf158eff0481a0f9002cf6943822ed71394e1767641f5f4270e",
+      "bytes": 842
+    },
+    "shards/adverse-blocked_route-runner-s605-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "8329f3929064a9597dcbdd534e210787227a3f12505a1dedfecc406afc2a7af8",
+      "bytes": 793
+    },
+    "shards/adverse-blocked_route-runner-s605-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "741c97c2e46bbb53fd21c1fff0baa3c8561571f24e781f963739b70fac8af5b5",
+      "bytes": 479475
+    },
+    "shards/adverse-moved_material-runner-s1701-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "0d2fb63fb0705bcec5c42f6eb63bc6d613682d542b6879f44a17903bda990be7",
+      "bytes": 856
+    },
+    "shards/adverse-moved_material-runner-s1701-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "345dccb70cba8baf09360a91f58064c3a8101c841eb574108d445dd67813f449",
+      "bytes": 796
+    },
+    "shards/adverse-moved_material-runner-s1701-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "036182ce777efef72ba30e3d53d649614f7d39f8547dc8d6fa9a64f4d5abad0a",
+      "bytes": 477847
+    },
+    "shards/adverse-moved_material-runner-s1701-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "3bf1555d732f6dbf111d7a01ecd27991fa950f053cb66c79622bb707a545e332",
+      "bytes": 852
+    },
+    "shards/adverse-moved_material-runner-s1701-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "aecc9739cfbf0a62ac65eb815bfe78f5716d7b907697bc267a34beee1945c602",
+      "bytes": 795
+    },
+    "shards/adverse-moved_material-runner-s1701-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "8c13a4ab028cfe5fccded11b98588feaba0dfee785567f9e360ef002a78144a1",
+      "bytes": 480882
+    },
+    "shards/adverse-moved_material-runner-s605-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "55b4045a618dbab72917a5926f09c4210e66db028f9b9b666e668186314bcfd4",
+      "bytes": 852
+    },
+    "shards/adverse-moved_material-runner-s605-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "8740a12efa390825adb88b427011be6da1b2dd3626f695f4258920f29e144118",
+      "bytes": 795
+    },
+    "shards/adverse-moved_material-runner-s605-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "7c541f41f72d1bcc3246cfdfa524a73c62f498216eef5179d7cc99c85637b512",
+      "bytes": 477838
+    },
+    "shards/adverse-moved_material-runner-s605-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "9a516e42d023a3f7acc4615cc4a761beab16627484470528f6d03741a90d3198",
+      "bytes": 848
+    },
+    "shards/adverse-moved_material-runner-s605-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "c6294e3f19d7afbbbbf39d402ef69b4affa8470501236b25cf37ae09ccb2f636",
+      "bytes": 794
+    },
+    "shards/adverse-moved_material-runner-s605-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "93ffc9faaf25220ffa1f12755d2e6dc36c861f9b47c5689a5f1372e880638721",
+      "bytes": 480876
+    },
+    "shards/adverse-sealed_goal-runner-s1701-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "5e67395b7cc0573f6a52e9beb6f42d442f3a97a3dac366385cd191061403c33d",
+      "bytes": 844
+    },
+    "shards/adverse-sealed_goal-runner-s1701-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "a7f8af57a86880051eca721425ad19c684952ef88f4a40694386a7c3a7c87615",
+      "bytes": 794
+    },
+    "shards/adverse-sealed_goal-runner-s1701-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "e77e9f404bb75fb69224a3ae51c09f33cdf41d975bb604f160e79543422d0c78",
+      "bytes": 477435
+    },
+    "shards/adverse-sealed_goal-runner-s1701-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "0e61a47bc0dd8faf9cf958b6dd9d0af14f66d07777fdad78473397c78839785d",
+      "bytes": 840
+    },
+    "shards/adverse-sealed_goal-runner-s1701-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "b18c54253e56581498018ad385ee6f78160090abcdb02f42c3eca9bc46de9536",
+      "bytes": 792
+    },
+    "shards/adverse-sealed_goal-runner-s1701-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "88d53d9aacc3a2063f1f7861990e2117bef39f1912ebc8e747824474a0a64d21",
+      "bytes": 481015
+    },
+    "shards/adverse-sealed_goal-runner-s605-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "0f5ed199a83ff4b946d3f025e98fe649339333b817c18fc69b3597a134eb67c7",
+      "bytes": 840
+    },
+    "shards/adverse-sealed_goal-runner-s605-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "d75c9bac56315a4340e426ceb226e2278b5b0cae27466c1f4d19c3888238460e",
+      "bytes": 791
+    },
+    "shards/adverse-sealed_goal-runner-s605-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "5c4f6865894d75aeb43097e67e4599339210f6e8b9b6e2354085b945e0216884",
+      "bytes": 477427
+    },
+    "shards/adverse-sealed_goal-runner-s605-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "3b80825a55f5e9293f741878d31ac95956586db5f0f19e6a99e31fb9cefb22eb",
+      "bytes": 836
+    },
+    "shards/adverse-sealed_goal-runner-s605-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "28e84b709ae013d46bcd287691edb912e5156aa5b135ef7f7a7a7f874047e24f",
+      "bytes": 791
+    },
+    "shards/adverse-sealed_goal-runner-s605-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "8209a1e78318ef699751877f069a6afff19801509f77c2545154e113f58a2710",
+      "bytes": 481008
+    },
+    "shards/capacity-courtyard-runner-s1701-t30-n8-legacy/attempt-001/console.log": {
+      "sha256": "6a9af8334b2e84019e1e2d4b61f4c97af24a7b52540e625b29791238430dacf0",
+      "bytes": 829
+    },
+    "shards/capacity-courtyard-runner-s1701-t30-n8-legacy/attempt-001/execution.json": {
+      "sha256": "57ef22d1309583b0826c23c2a25de742423b6454cfcb6f26563f1d2a258720c4",
+      "bytes": 789
+    },
+    "shards/capacity-courtyard-runner-s1701-t30-n8-legacy/attempt-001/report.json": {
+      "sha256": "4e01920bfeb671b2149b3514fabbdfa4b59dc71bc1d385ced311705a6e213d5c",
+      "bytes": 3192651
+    },
+    "shards/capacity-courtyard-runner-s1701-t30-n8-stateful/attempt-001/console.log": {
+      "sha256": "56a5198238531fccef61f1b63bbd52565f460b1cc8985fbe06b4c7ae813be2b8",
+      "bytes": 838
+    },
+    "shards/capacity-courtyard-runner-s1701-t30-n8-stateful/attempt-001/execution.json": {
+      "sha256": "f0e335a3f004ec80ea22cb79ba1a88e3666a1c8e7a35dbdf964a4e1582cf3bf2",
+      "bytes": 791
+    },
+    "shards/capacity-courtyard-runner-s1701-t30-n8-stateful/attempt-001/report.json": {
+      "sha256": "e30435187570cd2d820771199c0be0816b4b517b3ab63ebc05fc70216e6781a2",
+      "bytes": 3317211
+    },
+    "shards/capacity-courtyard-runner-s605-t30-n8-legacy/attempt-001/console.log": {
+      "sha256": "0c94b1bdf8e82ba2d193a1d9e424594642308dd056e323e280d3b0bdf25c5f52",
+      "bytes": 825
+    },
+    "shards/capacity-courtyard-runner-s605-t30-n8-legacy/attempt-001/execution.json": {
+      "sha256": "84f79228a6ed704f26117456bfcb83ed1a4b99883e724f07e5c666bc1913458c",
+      "bytes": 788
+    },
+    "shards/capacity-courtyard-runner-s605-t30-n8-legacy/attempt-001/report.json": {
+      "sha256": "be49a81ba372f64974ec23f7d88a426879b81653100deb74df465287cef38e6c",
+      "bytes": 3196969
+    },
+    "shards/capacity-courtyard-runner-s605-t30-n8-stateful/attempt-001/console.log": {
+      "sha256": "33cd84e7357acc34783bd7cff4ac960c4cc0f5ed0c4ff91a81f0eb5b171845c3",
+      "bytes": 834
+    },
+    "shards/capacity-courtyard-runner-s605-t30-n8-stateful/attempt-001/execution.json": {
+      "sha256": "c1887a5001b58f5814fdd23c0cdc7246ef75f0f01e2209ea5b5a73a67cb904fb",
+      "bytes": 791
+    },
+    "shards/capacity-courtyard-runner-s605-t30-n8-stateful/attempt-001/report.json": {
+      "sha256": "b8cea992f29f0e8105f14c2749981aec1dc208d2fe46e507c89ca8ee18f3af1d",
+      "bytes": 3317664
+    },
+    "shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer/attempt-001/console.log": {
+      "sha256": "9225edfab44b37f155849b5ebbbd6c55386691d042f83530fec98000ab60154a",
+      "bytes": 880
+    },
+    "shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer/attempt-001/execution.json": {
+      "sha256": "72d80870cc4a8be671da57f1949a01566848fdcbdef2dcd00224393bde8ea7b5",
+      "bytes": 801
+    },
+    "shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-boundary_grazer/attempt-001/report.json": {
+      "sha256": "36e67bb55b17b05451c1810ad4b28ee7d1e107aa7d4580967438d5356ca6c385",
+      "bytes": 873627
+    },
+    "shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer/attempt-001/console.log": {
+      "sha256": "90c83c1f4bcdae6de6f541ced16fc2ce228a20dacb3c46aa0273cff199617877",
+      "bytes": 876
+    },
+    "shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer/attempt-001/execution.json": {
+      "sha256": "5e15ed07bfed627b6c7fcb1a103ace439710082c1766526e43999c6688aa55d1",
+      "bytes": 801
+    },
+    "shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-cautious_flyer/attempt-001/report.json": {
+      "sha256": "29099ba4229387ddf73fd52af1ca9fad66318a8b063521ae1196e25ac5ded5b1",
+      "bytes": 876602
+    },
+    "shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer/attempt-001/console.log": {
+      "sha256": "c18882469fbad024c28a800930d63e3c373ea294928d59b1d4060af1c6b0ec05",
+      "bytes": 876
+    },
+    "shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer/attempt-001/execution.json": {
+      "sha256": "06009fbf7138e6e2d788ce19be0ad25cef90820ffd3229593b109ed6f3944374",
+      "bytes": 801
+    },
+    "shards/catalogue-pockets-4ly_trainer-s1701-t30-n2-drifting_flyer/attempt-001/report.json": {
+      "sha256": "fbcaa0304aea4bf2db88a9a479f8f787a9145b8e43f83f38bdaf89d5c23c4bdc",
+      "bytes": 862912
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-curious_surveyor/attempt-001/console.log": {
+      "sha256": "3b07bb6a35e5e4cba7b4840e07b9b0acb0c8d52bc8fee3138402464ab65ef5b6",
+      "bytes": 863
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-curious_surveyor/attempt-001/execution.json": {
+      "sha256": "b4a72363906a77c67574269e01a59219accf3a6c8c20c8d8e9644cab3aec44c0",
+      "bytes": 799
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-curious_surveyor/attempt-001/report.json": {
+      "sha256": "0467a0a47303f47ba91f9b56131bede1c0418b904954201d97410994b924fa1e",
+      "bytes": 851985
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-homebody_keeper/attempt-001/console.log": {
+      "sha256": "51d7e7fb7500e29ecea23f5ae1697d6a696e9b8348ca6274435ac5dd9b2269b9",
+      "bytes": 860
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-homebody_keeper/attempt-001/execution.json": {
+      "sha256": "8b4303850833c770e5c79309cdb852e9b4bdf90833df283876d0ce8c551caebd",
+      "bytes": 798
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-homebody_keeper/attempt-001/report.json": {
+      "sha256": "192054af14e9f3ba31725cef97323de0783c4111f61816ff43d30d5b2611f1c6",
+      "bytes": 870726
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-idle_mechanic/attempt-001/console.log": {
+      "sha256": "603067c9df4291888b3c9decb800e59838d263656d834c8713606fe2552d6690",
+      "bytes": 852
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-idle_mechanic/attempt-001/execution.json": {
+      "sha256": "2651dc6f7344b8bad701fd483e7e1590f6529368811a81f774e21e7d7cf35cfb",
+      "bytes": 796
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-idle_mechanic/attempt-001/report.json": {
+      "sha256": "707257e203667237e537e6ae7737205488e5f0be40468a22747142d37df42320",
+      "bytes": 846356
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-independent_wanderer/attempt-001/console.log": {
+      "sha256": "d6383672134ad379799b3b01f1c94606154d252a5c2a213e036e620481d35a8c",
+      "bytes": 880
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-independent_wanderer/attempt-001/execution.json": {
+      "sha256": "ccb44f9c113d01f4011db2ee0e837a7c0cfd5fc835724d398fedb5723796e21e",
+      "bytes": 803
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-independent_wanderer/attempt-001/report.json": {
+      "sha256": "981645097305b312850596373bfeb86fefe8bb551e3f5e5cb5bc1f5f92340fd2",
+      "bytes": 870219
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-oil_moth/attempt-001/console.log": {
+      "sha256": "946df59d767453690e819945f9b01fda1ad28f07c0d92a71bbe7d40457421111",
+      "bytes": 831
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-oil_moth/attempt-001/execution.json": {
+      "sha256": "df4a26204a603ee1ad9e016f47d8af72ae63c19cc802669423ac5eb96936433c",
+      "bytes": 791
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-oil_moth/attempt-001/report.json": {
+      "sha256": "7911d752e2bbb8622cfb80c7795cb8ec76589d68a00056f0d840deb365155ca6",
+      "bytes": 851318
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger/attempt-001/console.log": {
+      "sha256": "4e81f75259e3403f5618243f8cf0f96059f441b4905f2d7ff8728e7f74527dcf",
+      "bytes": 880
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger/attempt-001/execution.json": {
+      "sha256": "cb7a40c35d1472e20ab78c5f046c5c02689dfe7a10f9fc6e041dc24649e4b22f",
+      "bytes": 803
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-persistent_scavenger/attempt-001/report.json": {
+      "sha256": "e284803df3662a2d41f7bddb6462bd6832f35fc42d47ddde46f93633bf3f4aaa",
+      "bytes": 868370
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-restless_explorer/attempt-001/console.log": {
+      "sha256": "afbad61d6d26df75eb3e6db438302bc29334e5c5b9724a12bcdb67b8ad5811f6",
+      "bytes": 868
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-restless_explorer/attempt-001/execution.json": {
+      "sha256": "0a6529cfc029478356e8700206d961d9e47bd4aa53b03dfa0f49a0f2fbcd65df",
+      "bytes": 800
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-restless_explorer/attempt-001/report.json": {
+      "sha256": "a410541a2b27079ade9f9fa4998cb5c96a106a0e2e3066179fabb388a7685a24",
+      "bytes": 871238
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-routine_patrol/attempt-001/console.log": {
+      "sha256": "bec31c6a89f4d1d84e18cd02816a2ac82709b5de9d71d4333be3edc62641d4dd",
+      "bytes": 856
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-routine_patrol/attempt-001/execution.json": {
+      "sha256": "4ede422039aaf85d6601c58c5c9f352a4d9e29571ce17f17d5d97ecd15ff07f0",
+      "bytes": 797
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-routine_patrol/attempt-001/report.json": {
+      "sha256": "86ad1fd0a6ef9e4160e3bd1d3f0175c124f5b070d2607dc676a287e183dc5aaf",
+      "bytes": 872671
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-shy_crawler/attempt-001/console.log": {
+      "sha256": "3bcfc88a5c457c0349b5daa7af60be2ebd47eb0bb3b348df63b07b4de8ceacaa",
+      "bytes": 844
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-shy_crawler/attempt-001/execution.json": {
+      "sha256": "88041b202c3640004ed1925c06d729cd3f1ad00c5f1a69d78871b84842fc3c8f",
+      "bytes": 794
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-shy_crawler/attempt-001/report.json": {
+      "sha256": "d2b7ba671faf8a84551949dd91648e0f37776fa9ecaaafe33a1dcadbe2a7b45b",
+      "bytes": 855764
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-social_drifter/attempt-001/console.log": {
+      "sha256": "a134926fced2a63fe48e779e783f5dc9124e57924e20d2f540910c856fac9dcd",
+      "bytes": 856
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-social_drifter/attempt-001/execution.json": {
+      "sha256": "d0bfcda07ba7a10de6a53c0e99c0d70127955c8b77ac2f71d78e3836446f2386",
+      "bytes": 797
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-social_drifter/attempt-001/report.json": {
+      "sha256": "d10a7476c0015e10097c8131e6f50ab0569a142d2df4412950ad01fe337b9fc3",
+      "bytes": 859266
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-social_roamer/attempt-001/console.log": {
+      "sha256": "c2bb4328f4ac4d8f535088d180cbfd2995392d0ee02db6fe56db18e5911d853d",
+      "bytes": 852
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-social_roamer/attempt-001/execution.json": {
+      "sha256": "d3a07da47594248b3ee50fcc53d7b2af191eb73e42e9229ffdcc10ca9d3e23e1",
+      "bytes": 796
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-social_roamer/attempt-001/report.json": {
+      "sha256": "bcc0058c9ddcdc4cdd2847aec6dbc701a53822e62729320e7ba36dfb5796200b",
+      "bytes": 848390
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-territorial_watcher/attempt-001/console.log": {
+      "sha256": "56d84677570c89fb5ac9d77ac1948a8ead00cf114992d329cb8ba2302b0ac995",
+      "bytes": 876
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-territorial_watcher/attempt-001/execution.json": {
+      "sha256": "c343bebde08ce0ae55294c8ff189bc6bba382f55645d8bd25265fcf253be5afd",
+      "bytes": 802
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-territorial_watcher/attempt-001/report.json": {
+      "sha256": "220483cc1d1588deda098b2e4b3d0fd18055d14b4ab94d7759c5deab43b99c0e",
+      "bytes": 859346
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-timid_follower/attempt-001/console.log": {
+      "sha256": "22a9de838d0e2a9b0509233466a96e6f67403505b699b3ed178007ece9af6e4c",
+      "bytes": 856
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-timid_follower/attempt-001/execution.json": {
+      "sha256": "decd139a5d28fa36d204acebe1604c53a46370980a322643fc8110db6b6e50c8",
+      "bytes": 797
+    },
+    "shards/catalogue-pockets-runner-s1701-t30-n2-timid_follower/attempt-001/report.json": {
+      "sha256": "3d7430e5eb04d72eea8407a73197fe8120f3c3b5ded3f690b383725c7fc59d69",
+      "bytes": 859667
+    },
+    "shards/departure-peer_departure-runner-s1701-t30-n2-no_social/attempt-001/console.log": {
+      "sha256": "6ba1e7fb59bd00bf85c99a7b1bfcffc4f9c0261b1e8e1a279e258c021dd39d77",
+      "bytes": 864
+    },
+    "shards/departure-peer_departure-runner-s1701-t30-n2-no_social/attempt-001/execution.json": {
+      "sha256": "6d630d3a81900e597bcef5374e37d469594f303acc973678e14d7e95d6d84018",
+      "bytes": 799
+    },
+    "shards/departure-peer_departure-runner-s1701-t30-n2-no_social/attempt-001/report.json": {
+      "sha256": "6ffc50df8c6fe75ef6af4df8f3634adbd1d4cab97562203a04a3a947855df6f9",
+      "bytes": 801109
+    },
+    "shards/departure-peer_departure-runner-s1701-t30-n2-stateful/attempt-001/console.log": {
+      "sha256": "91df1a1131e15a0e71bbcb6c451f75cbea120fafed1a9dc0eea5caa306c9ab98",
+      "bytes": 860
+    },
+    "shards/departure-peer_departure-runner-s1701-t30-n2-stateful/attempt-001/execution.json": {
+      "sha256": "1746dc5e967d748487d28f84abd359e1548a3af77f154408e8a5a01dde8056a8",
+      "bytes": 798
+    },
+    "shards/departure-peer_departure-runner-s1701-t30-n2-stateful/attempt-001/report.json": {
+      "sha256": "66347e18b3632a723a3536ccf5958d121adc951f8826c5b239e5696f4e7a8e47",
+      "bytes": 798736
+    },
+    "shards/departure-peer_departure-runner-s605-t30-n2-no_social/attempt-001/console.log": {
+      "sha256": "58a2cd682138c746a524e9cd38a496041cbd29870eda43bc4356e0315379bdb3",
+      "bytes": 860
+    },
+    "shards/departure-peer_departure-runner-s605-t30-n2-no_social/attempt-001/execution.json": {
+      "sha256": "85ef61a87245c62a0a4d2d5390dc72f0308f6e0d304ddcec8bb581cf22c06f26",
+      "bytes": 798
+    },
+    "shards/departure-peer_departure-runner-s605-t30-n2-no_social/attempt-001/report.json": {
+      "sha256": "c4a5020dc7af68b70bd0fd5b33b64857954238d68c319b89baaf0a61fffb5713",
+      "bytes": 798162
+    },
+    "shards/departure-peer_departure-runner-s605-t30-n2-stateful/attempt-001/console.log": {
+      "sha256": "129554f745cf7c3f70b38fc60ac408c0f7f1d8bdcbe590e2c8b930d6162fe724",
+      "bytes": 856
+    },
+    "shards/departure-peer_departure-runner-s605-t30-n2-stateful/attempt-001/execution.json": {
+      "sha256": "2b2587c1fbb0180dee3da73efb9a784b3425223823557aa0a2a62ebea6707348",
+      "bytes": 797
+    },
+    "shards/departure-peer_departure-runner-s605-t30-n2-stateful/attempt-001/report.json": {
+      "sha256": "408265646e4557370825a9b4de07a8f5aed181aa315cc54963284e586d5ba0aa",
+      "bytes": 797537
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-coarse_only/attempt-001/console.log": {
+      "sha256": "33e1c3f31d06d0cba4a62b89db175509740a524d0c44e054757ff44abe03c017",
+      "bytes": 844
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-coarse_only/attempt-001/execution.json": {
+      "sha256": "88e7ace00afcbb804c0c94f051054f66bd603805b0df60893bec22abd9474131",
+      "bytes": 793
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-coarse_only/attempt-001/report.json": {
+      "sha256": "9ed71ff85ed9384d3f8efbb531c0d32b56d5036967e39bf122ace2aaac8f0be0",
+      "bytes": 484313
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-legacy/attempt-001/console.log": {
+      "sha256": "c1488130c3555114ba2eabaa8f835e1051b833b32039977b990beb6a7632a385",
+      "bytes": 824
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-legacy/attempt-001/execution.json": {
+      "sha256": "aa5ecf3ebf88609a2592ff2d6f3995fe623dab893a747f5ef0cb2139cdfa36e4",
+      "bytes": 788
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-legacy/attempt-001/report.json": {
+      "sha256": "d8e8a0cf4afba723845d790ce34980b770222760a848d0bc242fec06e4b7a791",
+      "bytes": 466648
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "acded79272bd34ea538e5240118bc0996acd7ccd28b1bc16912a49400e0edf2f",
+      "bytes": 836
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "baca5743cdc38ca254f18a6eeafc1ebdfcf0e0f63541c71148e4cac15e81588b",
+      "bytes": 791
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "8d4c24c11e9fd723e65139cdbfe735743133ee4139862a7bc7d0972d1b22d676",
+      "bytes": 480186
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-no_traits/attempt-001/console.log": {
+      "sha256": "228d1d6796b94cf15dc4c92e337e48fa0195ee2a50f52fad7574f082784a91f7",
+      "bytes": 836
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-no_traits/attempt-001/execution.json": {
+      "sha256": "75fc16bb6210fc581d0b49a50bd1e545329a88f0703c393347d907333560075c",
+      "bytes": 791
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-no_traits/attempt-001/report.json": {
+      "sha256": "7c1319cb1c54d4cd82628743a58565e5f54beb895845c89a422cde356b4ef1f0",
+      "bytes": 475258
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-random/attempt-001/console.log": {
+      "sha256": "4f73e6c7c1724b57c98c70d2524b96b18b155819430ccf5a257c13c0acedceb4",
+      "bytes": 824
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-random/attempt-001/execution.json": {
+      "sha256": "fea46a586b37557500e9dd33e30e5f1a2a0fe6a10b06c23101eed74ab2b5ba2f",
+      "bytes": 788
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-random/attempt-001/report.json": {
+      "sha256": "3e1639124b69a7ca8a2833f9b37c4a7a97fddc67aa7ae1dbbc9ee5398ed19133",
+      "bytes": 425630
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-random_hold/attempt-001/console.log": {
+      "sha256": "65a272a13616877af4bf5bdf66d8c8d19773f5264c61077331da074b270d2f20",
+      "bytes": 844
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-random_hold/attempt-001/execution.json": {
+      "sha256": "07cf5574e35c5ed249e47402b0fa3d44fab89722619453c2df61895c982f865a",
+      "bytes": 794
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-random_hold/attempt-001/report.json": {
+      "sha256": "aee852f1cf714109d1e836bc5d8946009d6aa7008f85499c01d352aa0ab7da6c",
+      "bytes": 418776
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-scripted/attempt-001/console.log": {
+      "sha256": "08057a2209212d91df1bab29215dff75a172708ec0d5917b187f281fa444c1a9",
+      "bytes": 831
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-scripted/attempt-001/execution.json": {
+      "sha256": "62c672a36f9f1c2bf0064d3d6cf2fdbc3288f4ffa02531f182f7a786ae9ceded",
+      "bytes": 790
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-scripted/attempt-001/report.json": {
+      "sha256": "d9bcf73801a0d29bdbe95d979ae31c1865029825a7497cde127da1f3ef17832f",
+      "bytes": 430760
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "922bbfb58c66b99bae7ee7c7e0fa72d9f5d069fa8044c0cf29bf989d13b0b911",
+      "bytes": 832
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "79a519fbe312852814c754d7ab28ecd97b8c446e06b8aeea5aea3191c8a2039a",
+      "bytes": 790
+    },
+    "shards/main-pockets-4ly_trainer-s1701-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "984fa7684222b6d7223543af4bf46653c31e71bb70b8b11e2777b370917c41e2",
+      "bytes": 484255
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-coarse_only/attempt-001/console.log": {
+      "sha256": "21b44312b2b795981f8fc30eeb777c9743c60ca838acc05ae42a6c4ba8cda05c",
+      "bytes": 844
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-coarse_only/attempt-001/execution.json": {
+      "sha256": "93a5032eaf29ea2ed424fd6c09c7c5f0d33b564a7ead8078603328576e3db0af",
+      "bytes": 793
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-coarse_only/attempt-001/report.json": {
+      "sha256": "7042096e983675a3753f35139002737f7982acaf0e4b3259ef293b53cfde176c",
+      "bytes": 483497
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-legacy/attempt-001/console.log": {
+      "sha256": "d5d6b9eecc3e7b17d4678fd45a78b1999de0fb25b2ee5e1b8a9d262d2f6fcb84",
+      "bytes": 824
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-legacy/attempt-001/execution.json": {
+      "sha256": "41cfe6e3f828a45b409be9aa704cd36f6d67c651ee36404a5bf659e919ffa099",
+      "bytes": 788
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-legacy/attempt-001/report.json": {
+      "sha256": "de7d02bfa726a3264060b57e3a865c5663bd099ee19f7c9e75a76a1c236545a5",
+      "bytes": 468044
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "7aea0b3b72a2c961d11e87983e2ea4a1ae9e7fa58c0d00bc1ce7f0fc9e77a6bb",
+      "bytes": 836
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "f4334112c2dd6fa87bd42d28c5c10398e80d1c71d8c50932e0838ac17a4adb91",
+      "bytes": 791
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "8493b0eb045f89bd2eedde8df861adfb34a3ad2b4cd6b7d2f7947f4ca3f2735a",
+      "bytes": 480327
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-no_traits/attempt-001/console.log": {
+      "sha256": "253ceb61cd2414b49f37bb777d6da94a3798978574418725b2d455c484c5ba15",
+      "bytes": 836
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-no_traits/attempt-001/execution.json": {
+      "sha256": "45d251bc48e19e39174cf453fada4feb5976cf50a14e0adc059b1b26cb4d4511",
+      "bytes": 791
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-no_traits/attempt-001/report.json": {
+      "sha256": "5bd64a03136edd965ecbc6d3d1994222e6712319aeeb5b4d92d3f5f198775dd4",
+      "bytes": 475108
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-random/attempt-001/console.log": {
+      "sha256": "6f23ff4800f3c275aa6e4766d30629fb10cf9638be78d19294930c40f89015a2",
+      "bytes": 824
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-random/attempt-001/execution.json": {
+      "sha256": "f94490d7dd0bd01646abfe4dfb2ba213713e3bf4c4396032d7a19ebafd864a1d",
+      "bytes": 788
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-random/attempt-001/report.json": {
+      "sha256": "3df6cd40bc8355a37bd3219cb283f199efe6b3fa3a09c284d5d25edce6ccb077",
+      "bytes": 423257
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-random_hold/attempt-001/console.log": {
+      "sha256": "11ac79c091cb90bdf35485940150bb6daaa1768d4fe7fb4f64ef5347dea306e5",
+      "bytes": 844
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-random_hold/attempt-001/execution.json": {
+      "sha256": "0ff420b69507aff78e016e484c30df40c99938a832891b6f6697917bea239f4a",
+      "bytes": 793
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-random_hold/attempt-001/report.json": {
+      "sha256": "5ac55dc3acd2c6f08e447e78aa954744105deecd9e1a8adc3267afc81f5ae87f",
+      "bytes": 426472
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-scripted/attempt-001/console.log": {
+      "sha256": "f45ab37c0c1f4c50edcdb574663f05542ba045dfc8f1a0e67b92e78fd0acf335",
+      "bytes": 832
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-scripted/attempt-001/execution.json": {
+      "sha256": "01d9f08c42e0e6f3f7ac00559836e537c6116c82aed699d98fa23232d3be2035",
+      "bytes": 790
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-scripted/attempt-001/report.json": {
+      "sha256": "a4389fc3732c45d143175bdabdddbb6005a157435d33de8ac5bb7373c584cd5e",
+      "bytes": 430760
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "ce041d2bd3c4d1e7ed1a80a74d669c9efc1547d2f44cbff6ccf6004e5d516731",
+      "bytes": 832
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "a2654c52960c44b12a46728bb9f7fdc48af5e2b0d00b65b8a5fe0b51d643efdf",
+      "bytes": 790
+    },
+    "shards/main-pockets-4ly_trainer-s2909-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "cc777d90fd034c2a25b275b3f1ce913378b21a8953abed329d3bf465f797f25a",
+      "bytes": 484984
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-coarse_only/attempt-001/console.log": {
+      "sha256": "e24b019ebe9b02eb75be00685a47126ad3a532f1b434078f3e6cdc9989fe50db",
+      "bytes": 840
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-coarse_only/attempt-001/execution.json": {
+      "sha256": "1c2e804937d93407fed04d7add6745f9a486ee27350275f23315582628486be3",
+      "bytes": 792
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-coarse_only/attempt-001/report.json": {
+      "sha256": "8b977901a3e1aa5fabb2931fae3a3824a9867fd205a49ae28721ab7011e4208c",
+      "bytes": 477459
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-legacy/attempt-001/console.log": {
+      "sha256": "33e781cee89f5efc14405260c046025fe60457658b958be2f32daaea90420137",
+      "bytes": 820
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-legacy/attempt-001/execution.json": {
+      "sha256": "8089b282a0032c671c34cbd83fddda7604a571d51a5669cf68269125910056aa",
+      "bytes": 787
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-legacy/attempt-001/report.json": {
+      "sha256": "0199c7f23c4599daaa3cd6d29388deac0d0615af0d4b4cefbd5c2f679c7c2274",
+      "bytes": 467469
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "e0f38030a9a20886ac17cbac0512d1779ae61d339b94bf96bf31ed553c31c17f",
+      "bytes": 832
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "582af1a4e6cac68eb933d0109dc7b1048f81bf654fdab4fc49a48fdb417e139e",
+      "bytes": 790
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "ecd1f31a9649c1acaf39961abd7b302c48402be2b52898843a320f1595128459",
+      "bytes": 476811
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-no_traits/attempt-001/console.log": {
+      "sha256": "6269f7fa97ab49cea4110f44e4eca40c8d897e2aef4ac07c6f49c8f44d8ddd31",
+      "bytes": 832
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-no_traits/attempt-001/execution.json": {
+      "sha256": "5d359707d035b8f4861b2ba46b8bd07082a2cd2e140b2d7de586077575833ad5",
+      "bytes": 791
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-no_traits/attempt-001/report.json": {
+      "sha256": "5890d70b010d7767cb5f91fd0dac1db29ec61481d14f2dfe3362410682155648",
+      "bytes": 471944
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-random/attempt-001/console.log": {
+      "sha256": "b0fe590076425fe305a2ab19b734268e1f5e1f04e41c5c77b90444d360bbbd83",
+      "bytes": 820
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-random/attempt-001/execution.json": {
+      "sha256": "800800d7b4f39bee0fed44d5af9453bf7943ea7ba8e37e72793fb402acf96374",
+      "bytes": 787
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-random/attempt-001/report.json": {
+      "sha256": "cb0f78ba44ed0dda5ea31d5a48ed3da02fcb034be7947026ca368e1c1d16d978",
+      "bytes": 431542
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-random_hold/attempt-001/console.log": {
+      "sha256": "17773cfa55cde82e88c7107072aa252695f14f2d0f1759b4160dc1436d9f0c9d",
+      "bytes": 840
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-random_hold/attempt-001/execution.json": {
+      "sha256": "2e4c45a73ee23b894bdd5d13baf00e2eab342e448e570bc49eef001e912e0302",
+      "bytes": 792
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-random_hold/attempt-001/report.json": {
+      "sha256": "56ccce9ee46d1802cd9e7a239158a9a46196b00592bf0ebbdae138b68073de55",
+      "bytes": 412528
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-scripted/attempt-001/console.log": {
+      "sha256": "57e5f4ed6d2106770fe2812c18644c847fb84c26ddc2f0ee9be5ca05c0097ae7",
+      "bytes": 828
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-scripted/attempt-001/execution.json": {
+      "sha256": "47a4218632f6d0a636b7c1a7210f82442d00843f57f51e3dcb18bd1c47df34df",
+      "bytes": 789
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-scripted/attempt-001/report.json": {
+      "sha256": "d2c69c4426227d4e6dfb23ebf520fba29735829175ef9be435a1c7c7402331b3",
+      "bytes": 430753
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "71d9f28c6077ecc3f208aa4aa0a0eb5abe0c756046d9fd0b7ffb1a11da03617a",
+      "bytes": 828
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "cd589fa3374da376044aac1e86c7626800eba84678806dbd154a3ce9c03b7795",
+      "bytes": 789
+    },
+    "shards/main-pockets-4ly_trainer-s605-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "52260205f8726f7d98c437c9ce1e3ee22eb8dd3924d4658e002edf2a7d81b670",
+      "bytes": 477079
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-coarse_only/attempt-001/console.log": {
+      "sha256": "872f2d8fa9bb0186fbee50fdadaeea32f6e64c44c3785702bbba0ed6d2d3ed99",
+      "bytes": 836
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-coarse_only/attempt-001/execution.json": {
+      "sha256": "0fe530f0c0dab4f5cbf8a5e5c8dff54b864478ff35cda76feaa3e8b1c97c9716",
+      "bytes": 790
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-coarse_only/attempt-001/report.json": {
+      "sha256": "382163b4b6d3c1d3128e37eb871769a1290df41887f3ce1013a46bbf8eec2685",
+      "bytes": 473903
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-legacy/attempt-001/console.log": {
+      "sha256": "46ec1e429208325e97242cc595ef99ed9ce77d72a50acd2aff68a378bb7bc94d",
+      "bytes": 816
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-legacy/attempt-001/execution.json": {
+      "sha256": "0a6d497330abca7e773759c62276544a4cbe8a4b61c8843220f4cbe28ab191f3",
+      "bytes": 786
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-legacy/attempt-001/report.json": {
+      "sha256": "ac0815f4e7c136f987d421f252f25c3d74f1edf44f84e91d736e1c135de4a797",
+      "bytes": 456709
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "2f1c728147336f4e9ba120d9362b6dbef95f7e5aad8f4b64fb83ed585972ebe9",
+      "bytes": 828
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "b3d46aefb92c79271ade389b8981a37e8be71a9e5f454edad09265b49b8ec5d7",
+      "bytes": 789
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "b73996cc73c8b1e4df2a244f1eedab861005071d6d4e818226d1cd0a8a132475",
+      "bytes": 469989
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-no_traits/attempt-001/console.log": {
+      "sha256": "c151d8d659e3e4cd697b387d7af409b6042b7fa5ef87a84045f1093f86b62910",
+      "bytes": 828
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-no_traits/attempt-001/execution.json": {
+      "sha256": "fa661ec06e209246abb056f1ebe5a6a4e6706f80dd1473edd7f423fc81c4185d",
+      "bytes": 789
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-no_traits/attempt-001/report.json": {
+      "sha256": "6af1776c184ac1fe0e7af9699f8d60154e1db11d0c9df152091ad7befc736f21",
+      "bytes": 467149
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-random/attempt-001/console.log": {
+      "sha256": "ae454b1450949aac8aebaed12d09919173631a03509daef393489f26d21df32a",
+      "bytes": 816
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-random/attempt-001/execution.json": {
+      "sha256": "24f04c4766bfcfa8202344d6ff98584989bc3b619fee3b102c082a69c022a405",
+      "bytes": 786
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-random/attempt-001/report.json": {
+      "sha256": "6f46cd46d068348dbc79069bca46fc49e6f6118d14e9290a5b9ad23bc7577981",
+      "bytes": 433792
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-random_hold/attempt-001/console.log": {
+      "sha256": "12206f161771daa622833e21f4554ddf59489d2c701624b4e08df32ace43a8d7",
+      "bytes": 836
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-random_hold/attempt-001/execution.json": {
+      "sha256": "66bdeb75c3c03f43e559656bf8d396705abf8a884b43d9d6e5453d185dd0ea18",
+      "bytes": 791
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-random_hold/attempt-001/report.json": {
+      "sha256": "bc1673aa897f396be90cd7cec8c95d9fa4c44b52e9878ef0b90b0f3fc7423a09",
+      "bytes": 418603
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-scripted/attempt-001/console.log": {
+      "sha256": "a3287225cb3ce15c2131bfcf5212a67b999105145f1336f533559dfa5556e4df",
+      "bytes": 824
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-scripted/attempt-001/execution.json": {
+      "sha256": "87a2d3e23cf4a1fe2d1071737b0569cb3589a90e6cc3af771535b1a0201e6a0a",
+      "bytes": 789
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-scripted/attempt-001/report.json": {
+      "sha256": "d152a026e56e5e4cedeb408dae49697d0532b3e5cc3f108058929709116c7350",
+      "bytes": 419847
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "281e70f8df091aaeae019023e60b72f3dc624ae6832ab7e7f49a2f0eee7194b0",
+      "bytes": 824
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "5344d510d5891459b2f473190bbf2e6db3af7335881d90f04ea061e7e2bfd679",
+      "bytes": 788
+    },
+    "shards/main-pockets-monowheel-s1701-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "780fac5804415497521b7e99a7609ec4de08e0986c2acf7af208452fa983d6c6",
+      "bytes": 474566
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-coarse_only/attempt-001/console.log": {
+      "sha256": "303877564e722165b1924e899f2d76bc988695f5bea8a41be42564a6c2e1c567",
+      "bytes": 836
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-coarse_only/attempt-001/execution.json": {
+      "sha256": "c814b304bad1b7f58443450aa96c42fbd651a2279c573828dc659f65d4e31b43",
+      "bytes": 791
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-coarse_only/attempt-001/report.json": {
+      "sha256": "18ced1a1806df7a61442d55949225a265812922c23c45e9720596f04242a7b0b",
+      "bytes": 474664
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-legacy/attempt-001/console.log": {
+      "sha256": "a9c40b79d6c1e596ff3026e8d0872424d41dbd67b43eab8f5a4991201807bff7",
+      "bytes": 815
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-legacy/attempt-001/execution.json": {
+      "sha256": "350e061a1039bcd53c0cd9d4f6cdbd15621943837ea31c8cd88d897c1842fdc6",
+      "bytes": 786
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-legacy/attempt-001/report.json": {
+      "sha256": "91708f28e4df235b43ac2a3719582b7dfe164c1a5eacca2d310b7d350940f02c",
+      "bytes": 456648
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "40c210347c7e21df9bc4b06f918493032c3b25efc82ef6a9d0d6070aa191a29d",
+      "bytes": 828
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "ed1c595d2d1a3620544ef3f5b9b21db2843f67b0a153e5c152d571f50b5d1102",
+      "bytes": 789
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "a964625424af140074a2d0511a39229f27459daed8945cf8bdc79223454a668b",
+      "bytes": 470791
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-no_traits/attempt-001/console.log": {
+      "sha256": "7b9068b557b699b86c66658cf4d6303e485269b03afb43ab1734a35bc33f4135",
+      "bytes": 828
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-no_traits/attempt-001/execution.json": {
+      "sha256": "9657796fed994d8b738dfdb6a24993f1125a0297034a49fe6e390fbff6a82d29",
+      "bytes": 789
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-no_traits/attempt-001/report.json": {
+      "sha256": "1dc16250cb55ac02a78508208943b5d1e5d72b62f59dd2b9786fd71a0232c1dc",
+      "bytes": 467719
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-random/attempt-001/console.log": {
+      "sha256": "433315728376e11d6834c8d98d3f49f5d8facf2db022eacb0aa19b23c2d52d42",
+      "bytes": 815
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-random/attempt-001/execution.json": {
+      "sha256": "62a1060356d7d75740c57e403a6369c89e63733649f7ffdd84be3b4fe0dc9898",
+      "bytes": 787
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-random/attempt-001/report.json": {
+      "sha256": "9cb189f635781e3ba6163d77626f1fc7ba76ca9e4203b629d6bb5b8b388e7f19",
+      "bytes": 426830
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-random_hold/attempt-001/console.log": {
+      "sha256": "0509b60e070f4bf65e2ff1d595dd599d3dbfb7cc44a13505d602019e2b5c71fd",
+      "bytes": 836
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-random_hold/attempt-001/execution.json": {
+      "sha256": "a243099ac5e4e8a6e28eb8bb1375044a1ca83851c20f9476488b46c490c424d4",
+      "bytes": 791
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-random_hold/attempt-001/report.json": {
+      "sha256": "e3f8ba1df668aeb2819cb380bbb617e5eb870de03f7fa80e0bb8bea53dc4f0c8",
+      "bytes": 424106
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-scripted/attempt-001/console.log": {
+      "sha256": "f3529ca2dc0cb91bfc22caf1e754eb868c2c536afc068c20e7313ef3aaeb75f5",
+      "bytes": 824
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-scripted/attempt-001/execution.json": {
+      "sha256": "e7dc7295cf8120ee0bf6f5c0ffa2065af3ed4f52bc2f2e8f4d03d26ea940bd67",
+      "bytes": 788
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-scripted/attempt-001/report.json": {
+      "sha256": "7a67e4f44f82b7eb7a8481e2ccbd811666bf89ab91b050ade3fc2bfec2f23402",
+      "bytes": 419849
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "2495f90410bcc8517cc4be0e923315a45a6aaec65b829ee5f5dbcd23685419c3",
+      "bytes": 824
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "7119f37551d8045806d6a2e9b4df00ad36a72dfff183d15836c4038afc00dfe8",
+      "bytes": 788
+    },
+    "shards/main-pockets-monowheel-s2909-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "d15e42854e20286f3dd9df4b467c251783095225541a5b9c6730f37f1a0623e2",
+      "bytes": 474787
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-coarse_only/attempt-001/console.log": {
+      "sha256": "9e47cb2c33f00a6a5ff64965758b53f8f727cab4504335a59d98b05d749ec2ac",
+      "bytes": 832
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-coarse_only/attempt-001/execution.json": {
+      "sha256": "365a93ff542c31e883210f22e01251563e921e04ec2d71adaa43ab4dab26593f",
+      "bytes": 790
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-coarse_only/attempt-001/report.json": {
+      "sha256": "339aead21f685939c76e95606d8453073d036e2201ae83aa459efe3cbad5751f",
+      "bytes": 475416
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-legacy/attempt-001/console.log": {
+      "sha256": "8a17fa57b8adc645945048dee14f2b01ea304e1716a57a78140ab79a5f163c7a",
+      "bytes": 812
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-legacy/attempt-001/execution.json": {
+      "sha256": "b27d74c28065837850e739f768c874a301aab0267aca896864e7e262e7c64d89",
+      "bytes": 786
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-legacy/attempt-001/report.json": {
+      "sha256": "b9d6f51d42064309d94ad84ccf2f5cd7d8bd5bd7e9a5a411a1f97ad9c50ebb6a",
+      "bytes": 456574
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "999a8d84d1433f2413708b04ed7a51adae285e18db005906a38d92ab7d091dbf",
+      "bytes": 824
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "9866778498856a7b588ca535d5acecf292e1a4892409604223387ddd24f30907",
+      "bytes": 788
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "68ebd0c3b5988ed0c18690910ff021752fcd622877d344f09b945cd38f83e3b0",
+      "bytes": 470783
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-no_traits/attempt-001/console.log": {
+      "sha256": "169dfd9ca225dad20ef61e99e09cd63cb96707bc3257c7b21bee6e329ae7079d",
+      "bytes": 824
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-no_traits/attempt-001/execution.json": {
+      "sha256": "8a9731af25828d6a79410d8c80969dbf5030fc639665ecff95a4e633af350c65",
+      "bytes": 788
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-no_traits/attempt-001/report.json": {
+      "sha256": "3583a029f1cd1385a1e2facbe4e2158b7e13e32b7a715e184d30ce73896b1762",
+      "bytes": 467819
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-random/attempt-001/console.log": {
+      "sha256": "054344a2fafc1bcb74556834ebe7b328692a1c30d772b4cd915235cbc1f3f973",
+      "bytes": 812
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-random/attempt-001/execution.json": {
+      "sha256": "738b2f3091f38cb69d7a05b75bbf3ffce39c9766367aed0af172b80c13d21330",
+      "bytes": 785
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-random/attempt-001/report.json": {
+      "sha256": "fabcf16d0d4e5c19816d0264e9d7bb47085f009ff7ea7831665ecf3b1882076b",
+      "bytes": 433045
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-random_hold/attempt-001/console.log": {
+      "sha256": "7fd4769f3e88e52a2266209c2fdb7dd2d82e5e9228530b094638e98c6bbe393c",
+      "bytes": 832
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-random_hold/attempt-001/execution.json": {
+      "sha256": "39f3b684275c30823801a50f0a7c738e3edc9c4dc03f9ebe69b00aa131ccd31f",
+      "bytes": 790
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-random_hold/attempt-001/report.json": {
+      "sha256": "2c1668ea5c949349d1898fe2ca988068d94e1e5a264e9fae75bd174cf7090b54",
+      "bytes": 422525
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-scripted/attempt-001/console.log": {
+      "sha256": "6016ee12694eb38494ff8f5a94252058e9923a7da53eaae17f1644f9698d8a48",
+      "bytes": 820
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-scripted/attempt-001/execution.json": {
+      "sha256": "d9cc4d226186d29680232320e8e9f7a615dead44935d9beb4eb7bc9581280f43",
+      "bytes": 787
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-scripted/attempt-001/report.json": {
+      "sha256": "b3d8ae2981aad8777d2974cdcebe7d7f0d3e0f82d340143d21184c320f8c7ffd",
+      "bytes": 419840
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "5cfd980ee4b87aa57dad87fc5dcabd3ea2b999a03b941a420896353a8216cc7f",
+      "bytes": 820
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "4562d4c3beb1a5987bca8d37ef66bac65eacaf61ccb4a28ff0a4d4c79857d75c",
+      "bytes": 787
+    },
+    "shards/main-pockets-monowheel-s605-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "600ad5644aebff633f3adbb26bc557a423c252a5289878841bbf4f49564af310",
+      "bytes": 474778
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-coarse_only/attempt-001/console.log": {
+      "sha256": "01edad6178dfb31b83149f4e61d4784796b5fa396f62c1053d920ea34eb51f96",
+      "bytes": 824
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-coarse_only/attempt-001/execution.json": {
+      "sha256": "dec5501d0cdef43427eba517197ec9d30b3ad0e9f25706c29f74f4ec93d2f829",
+      "bytes": 788
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-coarse_only/attempt-001/report.json": {
+      "sha256": "c0adc5cd9187c485889dd12582e3984ca1b6c4e0433d8ce76e839aa0dec47a17",
+      "bytes": 477660
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-legacy/attempt-001/console.log": {
+      "sha256": "f926b73067605d5ab215853c55f5dae2545cc271a00e168b41fc5222565c6942",
+      "bytes": 803
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-legacy/attempt-001/execution.json": {
+      "sha256": "ed2b5585ae77a2f9abebf8812958b0d4a8d6e4ec0d6156254f32ac014639a27a",
+      "bytes": 783
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-legacy/attempt-001/report.json": {
+      "sha256": "0f711e2274d5d9eeee9595879bb6b5903017e6721cb9acbceab430fec3bda35e",
+      "bytes": 458217
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "d9c460445537a2add9bd6637495b6e10d37511ae0e07085570e531fee69055cd",
+      "bytes": 816
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "8e0432406cf3a1241dc84512fb1ffd6ce451563e906b7527a0f7949ae2d9d431",
+      "bytes": 786
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "c87c5afa7078b4b3409025cf470966778696eec2d6030d69a5dcc1b001a32a00",
+      "bytes": 472817
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-no_traits/attempt-001/console.log": {
+      "sha256": "142dad62aa3f8fb371f715ac8946824aeed290c99bc161a07e68ca5cc3c5bab2",
+      "bytes": 816
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-no_traits/attempt-001/execution.json": {
+      "sha256": "132070673e8c19073049a978402220824dbe83e450c913e3bce7e68214d01332",
+      "bytes": 786
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-no_traits/attempt-001/report.json": {
+      "sha256": "9a1fda58682a4d7d8c4914dc2cf491b53fb72d5dff73116676aadba69fc81656",
+      "bytes": 469892
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-random/attempt-001/console.log": {
+      "sha256": "1f86bb0dfc4a48a46c009a6cdfab861d5e49464dab3c2cc776da90be5bb5c2c9",
+      "bytes": 804
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-random/attempt-001/execution.json": {
+      "sha256": "617b46cb5ab43d44a470f43fa29a07117d05f786f45a37871fadb83683ab45ec",
+      "bytes": 784
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-random/attempt-001/report.json": {
+      "sha256": "f70c17af6241e988724a5e6bfda979c91566ab11d6cb52f54754e291645ccc18",
+      "bytes": 423764
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-random_hold/attempt-001/console.log": {
+      "sha256": "0f2f127ad8582b4a67f7c80c2429c723fb0872268e0ad74d1ae0a02d6283a15f",
+      "bytes": 824
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-random_hold/attempt-001/execution.json": {
+      "sha256": "714d256f41dcff2843b920f1a2c686a76a2c1ea7520d90ebf041c2f4cae55700",
+      "bytes": 788
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-random_hold/attempt-001/report.json": {
+      "sha256": "1f920bece9aab07131c4648c0f34cf08715e84413a636d5b71f3211d52d9787e",
+      "bytes": 422216
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-scripted/attempt-001/console.log": {
+      "sha256": "aa8adeeb0f0c5da903d23b16c5049ecccf59fb4f99cd892f5dc770be3e05c765",
+      "bytes": 812
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-scripted/attempt-001/execution.json": {
+      "sha256": "7549f57ee40d0175d5a19f6c5773e2d35440bf0eb043d980220b7a6c8607591b",
+      "bytes": 785
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-scripted/attempt-001/report.json": {
+      "sha256": "455f02d7bf24186e726b51d891b99c9a6d573fa541f3e834597ba90056349574",
+      "bytes": 424145
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "39fe824629036549ad6d7b1835b872cdbeed3dc285242a8fc11af69764369a8c",
+      "bytes": 812
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "c3271500106d921bd9eceab78f0e1dcd514c674a043e099a4506e2a504f53a48",
+      "bytes": 785
+    },
+    "shards/main-pockets-runner-s1701-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "ee849c2929a22abf9c007e07d35207ecb77e73aad40be4e28a55204b7484ecd2",
+      "bytes": 477660
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-coarse_only/attempt-001/console.log": {
+      "sha256": "3f3b3a36fc2de3864e1410fa29e6d7dc17895d0ff80f19bc14868843023acec7",
+      "bytes": 824
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-coarse_only/attempt-001/execution.json": {
+      "sha256": "ef8e231883e596aaf0fc38579f362bb41937b23915876dda3c5a6ca51b2ca0a6",
+      "bytes": 788
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-coarse_only/attempt-001/report.json": {
+      "sha256": "c0c8daf270fbab0fcda4728feca90d5e17b8d222980dcfbf6362d98be7779025",
+      "bytes": 476916
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-legacy/attempt-001/console.log": {
+      "sha256": "c3a573838159a2ea6ef9b6d6d7862de3ba90e8514e706cd47ea85e6d8f5a5df6",
+      "bytes": 804
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-legacy/attempt-001/execution.json": {
+      "sha256": "6ba882496aebec9f06d92bdda3a206cbd9b5398e17d0201ffc54c09bf1047ffd",
+      "bytes": 782
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-legacy/attempt-001/report.json": {
+      "sha256": "47c0f4080e175842ab650af5b99abe871ad019a9113d4b01af3afffe0f95e0dd",
+      "bytes": 458473
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "a5882ad1d3b76fd471ea5d2a5b8ae97d25a07fa164f35ee645755bde42692717",
+      "bytes": 816
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "fb943a50183089bbe050922796549c336c72432b30401293821e720f5d024608",
+      "bytes": 786
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "f67b99e8ad32b41c2ec52d0a56c79642dc2245c02b406e9586159564c52fd5bc",
+      "bytes": 473011
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-no_traits/attempt-001/console.log": {
+      "sha256": "42526569d412f670d7f47f0fa36e26cf535c5aafed7b59d1e5cb4aa68e0f6867",
+      "bytes": 816
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-no_traits/attempt-001/execution.json": {
+      "sha256": "e3f09e4be0cf183fdee3668f0a80c699dc15ac26350c52a6a307bcf1c5a14fa6",
+      "bytes": 786
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-no_traits/attempt-001/report.json": {
+      "sha256": "f766c18715913b58344eaceff4e232c5d0f54138df5cc31cfb5e9d392e4886a0",
+      "bytes": 469179
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-random/attempt-001/console.log": {
+      "sha256": "8429cc852e0d0a56e843d1bf9eecead69b39cd4a4efd5e3aba4308ed19dec46b",
+      "bytes": 804
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-random/attempt-001/execution.json": {
+      "sha256": "4fcedb625ea5e889e0f12f902b99be77f889061e14ac915052cad07176bb4d90",
+      "bytes": 783
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-random/attempt-001/report.json": {
+      "sha256": "69df195a82db93132a02291da2db533e87299fd160ebc9f508e7abc3c0a1d2d3",
+      "bytes": 430063
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-random_hold/attempt-001/console.log": {
+      "sha256": "0fac33f4380851150ee1e64ce8dc73a88c219e6e1656e49541287db1996f459a",
+      "bytes": 824
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-random_hold/attempt-001/execution.json": {
+      "sha256": "c51f8c7e81cd6e57c292607dc65b916316bc2007179cb9106eebf28d88bea92f",
+      "bytes": 788
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-random_hold/attempt-001/report.json": {
+      "sha256": "7d324a0a7681f18623c06bb95320e893b28096695ea3a9c0f82a6d1a70653b71",
+      "bytes": 425812
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-scripted/attempt-001/console.log": {
+      "sha256": "ef2ba02bc87b5a56257571fc700ce58995dde034aa6ac1d5f29d33234e0e0bd5",
+      "bytes": 811
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-scripted/attempt-001/execution.json": {
+      "sha256": "331e7e2ec4f51c6b52b5a59c3eb57cb5a6907e87bf7d79ebbab9e1b37dd7c49e",
+      "bytes": 785
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-scripted/attempt-001/report.json": {
+      "sha256": "093538a775b35f2ef6d7460f7e44133a88e583235678e65f19659ab3bfe9b35f",
+      "bytes": 424145
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "44ba0c3b6348d01cd23011c45eb1a0380cc9cbb26192f08c9e58f22522742771",
+      "bytes": 812
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "b0ab2ff1a7b12c34746d65982d036d23eef0102d2fe812dfdd24c5399297234c",
+      "bytes": 785
+    },
+    "shards/main-pockets-runner-s2909-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "3d51337d599ba9bc88bb1b4ce8869bdeb3d4b3eec6a0cff364db51067458b343",
+      "bytes": 477661
+    },
+    "shards/main-pockets-runner-s605-t30-n1-coarse_only/attempt-001/console.log": {
+      "sha256": "875b570f4eec4d1b696044b5f537ca7556a3ab18da42f28e852882d3a7edcaad",
+      "bytes": 820
+    },
+    "shards/main-pockets-runner-s605-t30-n1-coarse_only/attempt-001/execution.json": {
+      "sha256": "f2766b4efb79b60e7bf9eee28a06919817874d034aaefad05d1cfcb2c8becf68",
+      "bytes": 787
+    },
+    "shards/main-pockets-runner-s605-t30-n1-coarse_only/attempt-001/report.json": {
+      "sha256": "5c5aaf33cda31d457848b1a351dce54189b5e4ba2b5522de19b16d43a833db6d",
+      "bytes": 478039
+    },
+    "shards/main-pockets-runner-s605-t30-n1-legacy/attempt-001/console.log": {
+      "sha256": "ce80dda09b1e3757dfd42ae042aecb01886f2eace2635bd88c340330f2f6b3c5",
+      "bytes": 800
+    },
+    "shards/main-pockets-runner-s605-t30-n1-legacy/attempt-001/execution.json": {
+      "sha256": "cbb127ed37ba321163ec497acb355af344935d4cef96e1bf1abf9e302cbde1c5",
+      "bytes": 782
+    },
+    "shards/main-pockets-runner-s605-t30-n1-legacy/attempt-001/report.json": {
+      "sha256": "b0cd2df6e72d942608f027ff648240f9a1b86ecfa101690c9a4b4f7f0a304318",
+      "bytes": 458476
+    },
+    "shards/main-pockets-runner-s605-t30-n1-no_memory/attempt-001/console.log": {
+      "sha256": "30559ed0ea724959ac4eb883c0e783d79f2df2dd09547cbd6cc350ef3de35c73",
+      "bytes": 812
+    },
+    "shards/main-pockets-runner-s605-t30-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "b6a5a22557720b3019988a76b72110a391f17cad84aad94a1782c700d19dda8b",
+      "bytes": 786
+    },
+    "shards/main-pockets-runner-s605-t30-n1-no_memory/attempt-001/report.json": {
+      "sha256": "e5b97d231706efd5ac2ce364bb599d4e5ce2e8af1e0cd4e859f4aa3db4bc271b",
+      "bytes": 473476
+    },
+    "shards/main-pockets-runner-s605-t30-n1-no_traits/attempt-001/console.log": {
+      "sha256": "094725ef87ac77250d84f2aa8eacb15151ca70d8c3beeb6273b6020591b5a549",
+      "bytes": 812
+    },
+    "shards/main-pockets-runner-s605-t30-n1-no_traits/attempt-001/execution.json": {
+      "sha256": "183def72fc9643f09b716fefe35aed3fae15fddfda68dc595d9e454a6e9821ae",
+      "bytes": 785
+    },
+    "shards/main-pockets-runner-s605-t30-n1-no_traits/attempt-001/report.json": {
+      "sha256": "81c330dc8fcf6cc5b05b7c5e100787b3054de4c13c605e40dda938a172e58bb9",
+      "bytes": 469882
+    },
+    "shards/main-pockets-runner-s605-t30-n1-random/attempt-001/console.log": {
+      "sha256": "21d4b4c07bb673bcc8ec8fbe60d39606046976e8e4234b375036d630d6c38031",
+      "bytes": 800
+    },
+    "shards/main-pockets-runner-s605-t30-n1-random/attempt-001/execution.json": {
+      "sha256": "1512c74133cb8d1500e0de6a0edacd44f10159e9b8a7f7b264d7be1825e992d2",
+      "bytes": 783
+    },
+    "shards/main-pockets-runner-s605-t30-n1-random/attempt-001/report.json": {
+      "sha256": "4ee6789c929439e883727412f533f4aca68e6d07d4683db561916749efc6a5b6",
+      "bytes": 426613
+    },
+    "shards/main-pockets-runner-s605-t30-n1-random_hold/attempt-001/console.log": {
+      "sha256": "45f12752a126c260a124b4d782aa9541b9b4b3ff6cd93f42a36c8130138e9d23",
+      "bytes": 820
+    },
+    "shards/main-pockets-runner-s605-t30-n1-random_hold/attempt-001/execution.json": {
+      "sha256": "b146e3d9284134c08f946a818dac960b0d46fe2d39646846540c4b39807f4d3a",
+      "bytes": 787
+    },
+    "shards/main-pockets-runner-s605-t30-n1-random_hold/attempt-001/report.json": {
+      "sha256": "fdfec5cdfd6c2eacacaea6a36fda99c108510d123831f54cfad5a7e287f0c69e",
+      "bytes": 425042
+    },
+    "shards/main-pockets-runner-s605-t30-n1-scripted/attempt-001/console.log": {
+      "sha256": "5e2ea9c164c1e2b80410d9145cc909a6893805bf3bdfe313409cdb3c89ce2c9d",
+      "bytes": 808
+    },
+    "shards/main-pockets-runner-s605-t30-n1-scripted/attempt-001/execution.json": {
+      "sha256": "3851d6671f464fdfbc7a12052756860ea939f37669f3deea5092f00916f56ea4",
+      "bytes": 784
+    },
+    "shards/main-pockets-runner-s605-t30-n1-scripted/attempt-001/report.json": {
+      "sha256": "9ffe984ba13467399bfb5bdca9b2f5ca181370ece1e8d491ea6e22877e8511bc",
+      "bytes": 424139
+    },
+    "shards/main-pockets-runner-s605-t30-n1-stateful/attempt-001/console.log": {
+      "sha256": "e100ed3939d87a4cc9bf37d8e15bd98a6fcd10f7906277188738bcaece1404c7",
+      "bytes": 808
+    },
+    "shards/main-pockets-runner-s605-t30-n1-stateful/attempt-001/execution.json": {
+      "sha256": "4e6601319183dd0619507144a1f9788422cb7954179603b356ae4f2a29d74ea2",
+      "bytes": 784
+    },
+    "shards/main-pockets-runner-s605-t30-n1-stateful/attempt-001/report.json": {
+      "sha256": "dd01b967e4fdb5ff219c60a735f1d6eefe99ce91fed4a70778ad19caeec4fd66",
+      "bytes": 477656
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-legacy/attempt-001/console.log": {
+      "sha256": "0332fa225fe4db121b5a95eccc4200f1bda3a73c5973115b3a35e093981ab00c",
+      "bytes": 822
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-legacy/attempt-001/execution.json": {
+      "sha256": "5f0d3560ee93ae077849a21c85e1f4ade189defffc739739dd14ab75295a49f7",
+      "bytes": 787
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-legacy/attempt-001/report.json": {
+      "sha256": "c1793b449f2163ff84deb186a55b10c8d512711b4c52a0f38a491d3b6f04c1cf",
+      "bytes": 1617369
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-no_social/attempt-001/console.log": {
+      "sha256": "f2e0e31ee3a8c5c9855c3d25e00073ad12ee33d496b242d11d4b34f481fc5c36",
+      "bytes": 834
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-no_social/attempt-001/execution.json": {
+      "sha256": "f8685cba11f54f5cdd7a56f12c87bddc624eb337e1a321057e7ffd1df12c17bb",
+      "bytes": 791
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-no_social/attempt-001/report.json": {
+      "sha256": "7b6ea0412fed4009a4599b5e4c8778d90eb4ad2120eb8d203a0f2101b7d05c48",
+      "bytes": 1653676
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-random/attempt-001/console.log": {
+      "sha256": "252b595bacef36d3bfd4e0260831521fa83baa461ed73b1a593ebf9a00819fcf",
+      "bytes": 822
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-random/attempt-001/execution.json": {
+      "sha256": "febc2c9251443deb78caa0b5e11e2bfc15ffeffc410689260705e133055763aa",
+      "bytes": 788
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-random/attempt-001/report.json": {
+      "sha256": "9271ab40f0cd1a7866d48237969dc3941100c027dac03a31ddc6aff34ecce658",
+      "bytes": 1480537
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-stateful/attempt-001/console.log": {
+      "sha256": "bc3e70aa51c1c340428550284ce1c50637e87c9a6ae7444a5c783b8f43efcc8a",
+      "bytes": 830
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-stateful/attempt-001/execution.json": {
+      "sha256": "1bbbe47befcfd65f41211e8df42b69113257965bf050a4121421a733573ef3a9",
+      "bytes": 790
+    },
+    "shards/social-courtyard-runner-s1701-t30-n4-stateful/attempt-001/report.json": {
+      "sha256": "6faaf439c668f7e752f35efc0c91ac0345bf8c0195c09afd83c8b8677f18a7e8",
+      "bytes": 1670804
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-legacy/attempt-001/console.log": {
+      "sha256": "f1adfeff14eaa18e4933dcc3fbda15263970c83a03183087ffa1ea40e6d99e84",
+      "bytes": 818
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-legacy/attempt-001/execution.json": {
+      "sha256": "4758ae83694f0d89b24d5f7e5897ab4ab3e05f9ffe69d9a92382423a8e238f04",
+      "bytes": 787
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-legacy/attempt-001/report.json": {
+      "sha256": "1642bcebdeb1f669ffdf8d5e7bddbe2db987fe0f81ad480123d3475799f2b112",
+      "bytes": 1615321
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-no_social/attempt-001/console.log": {
+      "sha256": "8f7a41797281b18b9d627e9f7986e9058126646edbbdf97a7ea49bac1e366795",
+      "bytes": 830
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-no_social/attempt-001/execution.json": {
+      "sha256": "cc718dc9f58deeaac552b5195679d7c0f53a544276cb22b02f4ba8344d42f29d",
+      "bytes": 790
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-no_social/attempt-001/report.json": {
+      "sha256": "bb49b9defc34a7d6ab9409af699f91b7d291bb439d53c471a44aca6f292abe5a",
+      "bytes": 1647452
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-random/attempt-001/console.log": {
+      "sha256": "2abc7831a409fa24a978bc5979bd3f45a75f8b4cd6451dd80a905d7a344d43c5",
+      "bytes": 818
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-random/attempt-001/execution.json": {
+      "sha256": "3a6f63480b577122d1791996904aa88d1d54faa633849e2d3283a186cfb8bd5f",
+      "bytes": 787
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-random/attempt-001/report.json": {
+      "sha256": "ed1c09837c8cd76ad83dfe7178b38495e9fc6b78969a7a48a85d7623caa024f9",
+      "bytes": 1479808
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-stateful/attempt-001/console.log": {
+      "sha256": "ed1d46ad47c63202d303b05f82783ab07ffe0efe5c072916cc9b43565ac7cb88",
+      "bytes": 826
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-stateful/attempt-001/execution.json": {
+      "sha256": "0fb2210ac68d155a2b49c044ebf3485f0de5c559bcf75d4659095cdb7769962c",
+      "bytes": 789
+    },
+    "shards/social-courtyard-runner-s605-t30-n4-stateful/attempt-001/report.json": {
+      "sha256": "a55f5d38d9b6d5111ba8b0d6137ae3d8a0bd63f060b20f8f6b1263c5e64a3368",
+      "bytes": 1676265
+    },
+    "shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/console.log": {
+      "sha256": "bd6350e360f48a52759f7205e40f2bb6ac7fbdddc81fade8340d8d6a915847d7",
+      "bytes": 1183
+    },
+    "shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "dbc0277f8906fca575ef1fbfc5e6305447a370746727cb67427f84f573a4a1e5",
+      "bytes": 798
+    },
+    "shards/sustained-pockets-4ly_trainer-s1701-t120-n1-no_memory/attempt-001/report.json": {
+      "sha256": "3ce87003fcea970fa8b76f96a9e79c1c82d297d856d3b09e023651bf4beab4ca",
+      "bytes": 1753088
+    },
+    "shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/console.log": {
+      "sha256": "0383a842e967e8d05275e767967f7c6faf19833fbd92555a9bc822795782b391",
+      "bytes": 1176
+    },
+    "shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/execution.json": {
+      "sha256": "e9a9ebff2ce94852cb1971a2551902d18f04afc933f21a831a51a5c56e2f4efe",
+      "bytes": 796
+    },
+    "shards/sustained-pockets-4ly_trainer-s1701-t120-n1-stateful/attempt-001/report.json": {
+      "sha256": "739cc20582b9924bc72da9d2407460baae9c22331122ef7e0e77eb060194710c",
+      "bytes": 1757484
+    },
+    "shards/sustained-pockets-monowheel-s1701-t300-n1-no_memory/attempt-001/console.log": {
+      "sha256": "72772719084ba22b53a218c120a0544e605ee250e57eb75b1399e01038c962df",
+      "bytes": 1810
+    },
+    "shards/sustained-pockets-monowheel-s1701-t300-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "79b334195ed04ce12c95804c961fc7922d8ae5b79758a83de6c7aa5d45a4da39",
+      "bytes": 796
+    },
+    "shards/sustained-pockets-monowheel-s1701-t300-n1-no_memory/attempt-001/report.json": {
+      "sha256": "f5f23ec5392639faa830775c7a20fe93572c66ea8766ad47317457a73452c68f",
+      "bytes": 4196557
+    },
+    "shards/sustained-pockets-monowheel-s1701-t300-n1-stateful/attempt-001/console.log": {
+      "sha256": "16c81c6d9e4f89ff1173af2c1d91ec00d782b0bc70221ce14d17d464e1f29b4d",
+      "bytes": 1797
+    },
+    "shards/sustained-pockets-monowheel-s1701-t300-n1-stateful/attempt-001/execution.json": {
+      "sha256": "038c69fa8b4ac916d9d8f9d1c0cdca8a1819600d929c3fc9bb21bb352e70a8a2",
+      "bytes": 794
+    },
+    "shards/sustained-pockets-monowheel-s1701-t300-n1-stateful/attempt-001/report.json": {
+      "sha256": "88312c169fb22e086b387bab96df0557591302e01d299ef4142b44d698042a43",
+      "bytes": 4235740
+    },
+    "shards/sustained-pockets-runner-s1701-t120-n1-no_memory/attempt-001/console.log": {
+      "sha256": "54359851e90435b1de7b618c018d7672a90239ca444c3cd9b673aafc593480d8",
+      "bytes": 1148
+    },
+    "shards/sustained-pockets-runner-s1701-t120-n1-no_memory/attempt-001/execution.json": {
+      "sha256": "eb7c1d7d00248e04606cafd1274adb38f612ed4ccb18a015cee2ea1e62ad9aa4",
+      "bytes": 792
+    },
+    "shards/sustained-pockets-runner-s1701-t120-n1-no_memory/attempt-001/report.json": {
+      "sha256": "e0ed3c8a115987ad6195f44d9d6aed14b99174e56b0dd7dffd83f81e8bad3d6c",
+      "bytes": 1726921
+    },
+    "shards/sustained-pockets-runner-s1701-t120-n1-stateful/attempt-001/console.log": {
+      "sha256": "a1d0df2c10c12313c9c6e710a27c409595dc91f93b34fc52f49d6d81be59eb15",
+      "bytes": 1140
+    },
+    "shards/sustained-pockets-runner-s1701-t120-n1-stateful/attempt-001/execution.json": {
+      "sha256": "560fb544efebfbcd54228588b113f012d988a750ecadc4426cc68493b065fd37",
+      "bytes": 791
+    },
+    "shards/sustained-pockets-runner-s1701-t120-n1-stateful/attempt-001/report.json": {
+      "sha256": "d979647de5245e24170c91836e352a3454ae70bc5df1e82b7fe4ab95f2a769df",
+      "bytes": 1735281
+    }
+  }
+}

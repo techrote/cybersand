@@ -113,6 +113,8 @@ class SourceDriftTests(unittest.TestCase):
         files = {
             "tools/material_catalogue/lab.py": b"candidate_compiler = 1\n",
             "tools/material_catalogue/lab_native_probe.cpp": b"int main() { return 0; }\n",
+            "tools/ci/run_art_local_close.py": b"fixture_response = 1\n",
+            "tools/ci/_architecture_campaign_context.py": b"registered_context = 1\n",
             "materials/catalogue/catalogue.json": b'{"registry_size": 132}\n',
             "materials/catalogue/fixtures/powder.json": b'{"target_id": 132}\n',
         }

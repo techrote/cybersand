@@ -8,7 +8,41 @@ import unittest
 import execution_policy
 import run_godot_regressions as runner
 import verify_linux_godot_shards as subject
+import verify_godot_shard_command as command_proof
 from test_godot_regression_sharding import art_durability_output
+
+
+class PersistentCommandTests(unittest.TestCase):
+    def test_shard_reconstructs_registered_launcher_and_private_profile(self):
+        with tempfile.TemporaryDirectory() as temporary:
+            original = Path(temporary)
+            name = "test_persistent_area_ramcache"
+            profile = "profile-dvcjse8f"
+            (original / (name + "-artifacts") / profile).mkdir(parents=True)
+            case = runner.Case(name, ("--script", "res://test.gd"), 120, 1)
+            for platform, project, shard in (
+                    ("linux", "/source/godot", "/source/build/godot-regressions/shard-10/"),
+                    ("win32", r"D:\a\source\godot", "D:\\a\\source\\build\\godot-regressions\\windows-10\\")):
+                with self.subTest(platform=platform):
+                    sep = "/" if platform == "linux" else "\\"
+                    artifacts = shard + name + "-artifacts"
+                    profile_path = artifacts + sep + profile
+                    flags = ["--", "--persistent-start-paused", "--persistent-test-mode=write",
+                             "--persistent-test-workers=1", "--persistent-profile=" + profile_path,
+                             "--persistent-evidence=" + artifacts,
+                             "--ramcache-hot-samples=2", "--ramcache-warm-samples=2"]
+                    expected = command_proof.shard_case_command("godot", case, platform, project, 10, original)
+                    self.assertEqual(expected[-len(flags):], flags)
+                    self.assertEqual(expected[expected.index("--path") + 1], project)
+                    for bad in [profile_path.replace(profile, "profile-deadbeef"),
+                                profile_path.replace("10", "11"), artifacts + sep + ".." + sep + profile]:
+                        self.assertNotIn("--persistent-profile=" + bad, expected)
+                    launcher = runner.Case("test_persistent_areas_ordinary_launcher", ("--script", "res://launcher.gd"), 120, 1)
+                    self.assertEqual(command_proof.shard_case_command("godot", launcher, platform,
+                        project, 10, original)[-2:], ["--", "--workbench"])
+            (original / (name + "-artifacts") / "profile-deadbeef").mkdir()
+            with self.assertRaisesRegex(ValueError, "profile"):
+                command_proof.shard_case_command("godot", case, "linux", "/source/godot", 10, original)
 
 
 class LinuxCoverageTests(unittest.TestCase):

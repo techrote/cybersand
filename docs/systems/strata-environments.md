@@ -2,17 +2,17 @@
 title: Strata environments and visual atmosphere
 status: Current
 document-kind: contract
-scope: Draft opt-in native layered environment library, reusable parts and bounded presentation-only atmosphere in ordinary Workbench
+scope: Optional native layered environment library, reusable parts and bounded presentation-only atmosphere in ordinary Workbench
 canonical-for: [strata-environment-library, strata-visual-atmosphere]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-28
 related-documents: [strata-workbench.md, depth-layers-and-parallax.md, ../operations/strata-workbench-evaluation.md, ../architecture/shared-workbench-authoring-data.md]
 ---
 
-# Strata environments and visual atmosphere — Draft/HOLD
+# Strata environments and visual atmosphere
 
 This document describes the successor's authored native environment library and bounded visual atmosphere. The ordinary Workbench owns Play, its actors, camera, worker and physical progression. The three decorative native planes remain independently owned, paused and static. The atmosphere renderer creates no World, native material, texture upload, collider or actor.
 
-The implementation remains opt-in. These source descriptions and deterministic recipe checks do not replace the source-bound native, graphical, packaged and physical owner acceptance gates recorded in the mission decision packet.
+The implementation remains optional. The owner accepted Strata 003 on Windows 11 with an NVIDIA TITAN RTX and authorized adoption of its complete predecessor functionality on 28 November 2026. The [combined delivery guide](../operations/ramcache-strata-integration.md) records the resulting integration and its separate qualification. These source descriptions and deterministic recipe checks do not substitute for source-bound native, graphical or packaged evidence.
 
 ## Native environment library
 

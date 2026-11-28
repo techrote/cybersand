@@ -1,0 +1,71 @@
+{
+  "version": 1,
+  "purpose": "Additive AMBIENT-001 candidate retrieval checks; frozen original questions remain unchanged.",
+  "questions": [
+    {
+      "id": "AMBIENT-Q01",
+      "query": "How do I create a Procedural NPC Ambient behaviour profile, assign Oil Moth and save it in ordinary Workbench?",
+      "canonical": [
+        "operations/ambient-workbench.md"
+      ],
+      "facts": [
+        "Configuration → Controllers opens the staged Behaviour profile editor with Apply acknowledgement and Revert.",
+        "Profiles and assignments save through ordinary Setup-v2; ephemeral timers, RNG and command leases restart.",
+        "Ambient is opt-in; accepted population is eight actors."
+      ],
+      "sources": [
+        "../godot/scripts/ambient/ambient_profile_editor.gd",
+        "../godot/scripts/workbench_setup.gd"
+      ]
+    },
+    {
+      "id": "AMBIENT-Q02",
+      "query": "Does a radius50 ambient Oil material sensor find the true nearest native cell or classify framebuffer colours?",
+      "canonical": [
+        "systems/ambient-actors.md"
+      ],
+      "facts": [
+        "Copied native material-ID publication includes stored cells plus native ballistic projection; framebuffer colours are not material identity.",
+        "Inclusive circular Euclidean radius measures actor centre to cell centres on a four-cell sampled grid clipped to canvas.",
+        "Nearest observed sample is approximate; unavailable or stale coverage is not absence."
+      ],
+      "sources": [
+        "../godot/scripts/ambient/ambient_perception.gd"
+      ]
+    },
+    {
+      "id": "AMBIENT-Q03",
+      "query": "How does an ambient ledge retreat persist for ten simulated seconds, pause, rearm and survive human handoff?",
+      "canonical": [
+        "systems/ambient-actors.md",
+        "operations/ambient-workbench.md"
+      ],
+      "facts": [
+        "Ledge and canvas boundary are separate observations.",
+        "Retreat latches original direction once; completed fixed Rapier steps advance time and pause preserves timers.",
+        "Human handoff retires pending authority; handback resets ephemeral intentions."
+      ],
+      "sources": [
+        "../godot/scripts/ambient/ambient_modules.gd",
+        "../godot/scripts/physical_actor_session.gd"
+      ]
+    },
+    {
+      "id": "AMBIENT-Q04",
+      "query": "How can I add a reusable deterministic ambient behaviour module without editing the native owner or movement motors?",
+      "canonical": [
+        "systems/ambient-actors.md"
+      ],
+      "facts": [
+        "Register typed metadata and one pure-data evaluator; profile schema and editor consume common specs.",
+        "Keep private per-instance state and seeded randomness independent of inspection order.",
+        "Require actual observations and capabilities, produce bounded intent, and qualify through independent module and physical adapter tests."
+      ],
+      "sources": [
+        "../godot/scripts/ambient/ambient_modules.gd",
+        "../godot/scripts/ambient/ambient_engine.gd",
+        "../godot/scripts/ambient/ambient_profile.gd"
+      ]
+    }
+  ]
+}

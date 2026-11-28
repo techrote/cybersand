@@ -1,0 +1,34 @@
+{
+  "schema": "cybersand-goblin-root-predecessor-supplement-byte-review-v1",
+  "status": "pass",
+  "date": "2026-11-25",
+  "scope": "Independent bounded local read of the newly created ZIP bytes, custody receipt and central directory. No replay, game, analyzer, original-tape rewrite or global process scan.",
+  "zip": {
+    "bytes": 960187,
+    "sha256": "c34a9f0e1d520c6a45f6bff7073cd2c54e11ea28425ef755ce8f2b2ce6840f74",
+    "member_count": 11,
+    "selected_native_tapes": 6,
+    "selected_native_tape_bytes": 20516496
+  },
+  "receipt": {
+    "bytes": 5141,
+    "sha256": "d58508c050910f9e7d8c6a9830c34ca708daf550a32194faf525cdcb92962d66"
+  },
+  "checks": {
+    "new_zip_identity_matches": true,
+    "custody_receipt_identity_matches": true,
+    "six_selected_raw_members": true,
+    "eleven_total_members": true,
+    "raw_byte_sum_matches": true,
+    "original_metadata_blob_preserved": true,
+    "no_original_zip_reconstruction_claim": true,
+    "historical_outcomes_not_promoted": true
+  },
+  "process": {
+    "exit_code": 0,
+    "cpu_limit_seconds": 20,
+    "address_space_limit_bytes": 268435456
+  },
+  "no_new_gameplay_actions": true,
+  "limits": "The six raw member digests were verified during A's bounded copying/reopening; this root check independently verifies the complete archive hash and inventory, not another gameplay or analysis execution."
+}

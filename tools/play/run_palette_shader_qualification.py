@@ -36,6 +36,7 @@ REQUIRED_APPARATUS = {
     'tools/play/palette_checkout_custody.py', 'tools/play/palette_qualification_contract.py',
     'tools/play/palette_windows_compiler.py', 'tools/play/run_palette_shader_qualification.py',
     'tools/ci/execution_policy.py', 'tools/ci/play_execution_contract.py',
+    'tools/ci/materialize_lfs.py', 'tools/ci/lfs_runtime_artifact.py', 'tools/ci/godot_timeout_diagnostics.py',
     'godot/tests/palette_qualification_context.gd', 'godot/tests/support/ci_execution_policy.gd',
     'godot/tests/support/ci_execution_policy.json',
 }
@@ -565,7 +566,9 @@ def execute(output: Path, source: str, archive: Path, group: str, shard_index: i
     return 0 if report['status'] == 'passed' else 1
 
 
-def prepare_dependencies(output: Path, source: str, archive: Path | None, *, reader_only=False) -> int:
+def prepare_dependencies(output: Path, source: str, archive: Path | None, *, reader_only=False,
+                         lfs_artifact: Path | None = None, run_id: str | None = None,
+                         attempt: int | None = None) -> int:
     """Hosted setup with separate full dependency clocks and retained receipts."""
     output.mkdir(parents=True, exist_ok=False)
     result = {'schema': 'palette-dependency-preparation-v1', 'source_commit': source,
@@ -603,16 +606,39 @@ def prepare_dependencies(output: Path, source: str, archive: Path | None, *, rea
         seconds = c.policy.watchdog_seconds('dependency_prepare_seconds')
         if not reader_only:
             c.require(archive is not None and not archive.exists(), 'Refusing missing/reused engine archive output')
-            setup('lfs-setup', ['git', 'lfs', 'install', '--local'])
+            c.require(lfs_artifact is not None and run_id is not None and attempt is not None,
+                      'Exact same-attempt runtime artifact and workflow identity required')
             if sys.platform == 'linux':
                 for program in ('xvfb-run', 'Xvfb', 'xauth'):
                     c.require(shutil.which(program) is not None, 'Missing hosted graphical prerequisite: ' + program)
                 setup('actual-graphical-packages', ['dpkg-query', '-W', 'xvfb', 'xauth', 'libgl1-mesa-dri', 'libglx-mesa0'])
-                url = json.loads((ROOT / 'third_party/godot-runtime.lock.json').read_text())['editor']['origin_url']
+                # Use the official release asset rather than the redirector (403
+                # on hosted Linux). prepare_engine still verifies the locked
+                # archive size, SHA-256, ZIP integrity and engine version.
+                url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
             else:
                 c.require(sys.platform == 'win32', 'Unregistered hosted shader OS')
                 url = 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
-            command('lfs-materialization', ['git', 'lfs', 'pull', '--include=' + ','.join(sorted(runtime_paths(sys.platform))), '--exclude='], seconds)
+            started = time.monotonic()
+            row = {'label': 'same-attempt-lfs-install', 'allowance_seconds': seconds,
+                   'status': 'failed', 'receipt': 'lfs-install.json'}
+            result['commands'].append(row)
+            try:
+                install_command = [sys.executable, str(ROOT / 'tools/ci/lfs_runtime_artifact.py'),
+                                   'install', '--root', str(ROOT), '--expected-source', source,
+                                   '--run-id', run_id, '--attempt', str(attempt),
+                                   '--artifact', str(lfs_artifact), '--allowance-seconds', str(seconds),
+                                   '--output', str(output / 'lfs-install.json')]
+                for path in sorted(runtime_paths('linux') | runtime_paths('win32')):
+                    install_command.extend(['--available', path])
+                for path in sorted(runtime_paths(sys.platform)):
+                    install_command.extend(['--include', path])
+                row['command'] = install_command
+                subprocess.run(install_command, cwd=ROOT, check=True, timeout=seconds)
+                row['status'] = 'passed'
+            finally:
+                row['seconds'] = time.monotonic() - started
+                c.write(output / 'preparation.json', result)
             command('official-engine-download', ['curl', '--fail', '--location', '--connect-timeout', '60',
                     '--max-time', str(seconds), '--output', str(archive), url],
                     seconds + c.policy.watchdog_seconds('terminate_grace_seconds'))
@@ -640,6 +666,9 @@ def main() -> int:
     parser.add_argument('--plan-json', action='store_true')
     parser.add_argument('--prepare-dependencies', action='store_true')
     parser.add_argument('--prepare-reader', action='store_true')
+    parser.add_argument('--lfs-artifact', type=Path)
+    parser.add_argument('--run-id')
+    parser.add_argument('--attempt', type=int)
     parser.add_argument('--verify-only', action='store_true')
     parser.add_argument('--verify-suite', action='store_true')
     args = parser.parse_args()
@@ -649,7 +678,9 @@ def main() -> int:
     if args.prepare_dependencies or args.prepare_reader:
         return prepare_dependencies(args.output.resolve(), args.expected_source_sha,
                                     args.godot_archive.resolve() if args.godot_archive is not None else None,
-                                    reader_only=args.prepare_reader)
+                                    reader_only=args.prepare_reader,
+                                    lfs_artifact=args.lfs_artifact.resolve() if args.lfs_artifact is not None else None,
+                                    run_id=args.run_id, attempt=args.attempt)
     if args.verify_suite:
         c.require(not args.output.is_symlink(), 'Shader suite directory is a symlink')
         print(json.dumps(verify_suite(args.output.absolute(), args.expected_source_sha), sort_keys=True)); return 0

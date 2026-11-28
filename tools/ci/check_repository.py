@@ -9,6 +9,7 @@ import subprocess
 import time
 from check_docs import check as check_docs
 from execution_policy import watchdog_seconds
+from check_swarm_runtime import ARTIFACTS as SWARM_ARTIFACTS, check as check_swarm_runtime
 
 ROOT = Path(__file__).resolve().parents[2]
 GODOT = "4.7.stable.official.5b4e0cb0f"
@@ -102,9 +103,12 @@ def check(root, require_materialized=False, *, operation_deadline=None):
             errors.append("current godot-cpp dependency differs from the approved pin")
         for manifest_name in ("runtime-provenance.json", "runtime-provenance.linux.json"):
             errors.extend(verify_runtime(root, load("godot/addons/cybersand_native/" + manifest_name)))
-        tracked = subprocess.check_output(["git", "-C", str(root), "ls-files", "godot/addons"], text=True, timeout=remaining()).splitlines()
+        if (root / "godot/scripts/workbench_reciprocal_protocol.gd").is_file():
+            errors.extend(check_swarm_runtime(root, require_materialized)["errors"])
+        tracked = subprocess.check_output(["git", "-C", str(root), "ls-files", "godot/addons", "godot/tools"], text=True, timeout=remaining()).splitlines()
         for relative in tracked:
-            if not (relative.endswith((".dll", ".so", ".dylib", ".wasm")) or ".framework/libgodot_rapier." in relative):
+            if not (relative.endswith((".dll", ".so", ".dylib", ".wasm")) or ".framework/libgodot_rapier." in relative
+                    or relative in SWARM_ARTIFACTS.values()):
                 continue
             committed = subprocess.check_output(["git", "-C", str(root), "show", "HEAD:" + relative], timeout=remaining())
             match = re.fullmatch(rb"version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize ([0-9]+)\n", committed)

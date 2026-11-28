@@ -1,0 +1,31 @@
+{
+  "schema": "cybersand-goblin-fixed-retained-clock-request-v1",
+  "mission": "GIP-014-goblin-002",
+  "request": 3,
+  "base_game_source": "5ee5dffc78d59a721f62be49fd51d24b870556c7",
+  "base_game_tree": "287795a8534c5622ede5d71710714ea467197e79",
+  "hypothesis": "A legal retaining World replacement can reset the native tick to zero while preserving evolved material; tick zero alone may not justify Save/Reopen native material equality.",
+  "programme": "Actor-free conservation_cell: Control Play16, Pause, Save, Reopen; fresh Variant Play16, Pause, offered LA-EVENT-OFF response change, Save, Reopen. Nine prescribed ordinary actions; source-fenced native captures and independently transcribed authored geometry.",
+  "source_guard": "Only the fixed diagnostic entrypoint and exact hash-pinned ten-line read-only GoblinAdapter observation delta may differ from5ee under godot. Actual source records the changed adapter input explicitly; all other product/oracle logic remains unchanged.",
+  "bounds": "120-second fresh import, one90-second game process,3072MiB sampled RSS,16MiB bounded log/report and12-minute hosted job.",
+  "classification": "Unresolved hypothesis until actual native control/variant evidence and independent examination. A diagnostic success is neither production-defect confirmation nor general successor qualification.",
+  "disposition": "Draft/HOLD; no production gameplay or oracle changes in this diagnostic request",
+  "prior_attempt": {
+    "source": "dcf6581b952a8e5854bbbac258430521e39d121b",
+    "run_id": 45554974942,
+    "artifact_id": 14995746214,
+    "classification": "unresolved_observation",
+    "attempted_actions": 9,
+    "completed_actions": 9,
+    "source_absence_boundaries_qualified": 19,
+    "source_absence_boundaries_total": 20,
+    "vanished_pending_command_contents_observed": false
+  },
+  "diagnostic_repair": "Use the queue_evidence embedded in each actual observation: bounded command copy, count, current disarmed receipt, owner generation and paused state copied under the adapter existing worker mutex. Never substitute later callbacks or infer a vanished command. Preserve nine prescribed ordinary actions and material/source fences.",
+  "adapter_observation_delta": {
+    "base_blob": "aef80d5878ce80d298c029cae76a9fb16624fdf4",
+    "base_sha256": "36681265aa48a647f0cc6dfc1d31977604bc9a59cf74b082a7f3beb336bfd64d",
+    "observed_blob": "7f0fa3fbcab7de85350d0ca99154adc615d75cbf",
+    "observed_sha256": "70fe8fe199e123f1ed28fdf9a4539194c4b08c6f595b052097a74c0de5300cfb"
+  }
+}

@@ -6,6 +6,7 @@ const MAX_RECORD_BYTES := 32 * 1024 * 1024
 const MAX_SEGMENTS := 4096
 const MAX_HEADER_BYTES := 2 * 1024 * 1024
 const MAX_CHAIN_HEADER_BYTES := 64 * 1024 * 1024
+const TRAFFIC_DIRECTORIES := ["user://art-traffic","user://batch-lab-traffic"]
 static var _high_bytes := RegEx.create_from_string("[\\x{0080}-\\x{00ff}]")
 var error := ""
 var warning := ""
@@ -24,7 +25,27 @@ var _hash: HashingContext
 var _legacy_ids := {}
 
 static func valid_path(path: String) -> bool:
-	return path.begins_with("user://art-traffic/") and path.get_base_dir() == "user://art-traffic" and path.get_file() not in ["", ".", ".."] and path.get_file().ends_with(".jsonl") and not path.contains("\\") and not path.contains("/./") and not path.contains("/../")
+	return path.get_base_dir() in TRAFFIC_DIRECTORIES and path.get_file() not in ["", ".", ".."] and path.get_file().ends_with(".jsonl") and not path.contains("\\") and not path.contains("/./") and not path.contains("/../")
+
+static func valid_directory(directory: String) -> bool:
+	if directory not in TRAFFIC_DIRECTORIES: return false
+	var actual := canonical_path(directory)
+	var expected := canonical_path("user://").path_join("batch-lab-traffic")
+	if directory=="user://art-traffic":
+		return not actual.is_empty() and actual!=expected and not actual.begins_with(expected+"/")
+	var ordinary := canonical_path("user://art-traffic")
+	return not actual.is_empty() and not ordinary.is_empty() and actual==expected \
+		and actual!=ordinary and not actual.begins_with(ordinary+"/")
+
+static func bound_path(path: String) -> bool:
+	if not valid_path(path) or not valid_directory(path.get_base_dir()): return false
+	var directory := canonical_path(path.get_base_dir())
+	var actual := canonical_path(path)
+	if actual.is_empty() or actual.get_base_dir()!=directory: return false
+	# Batch transport files belong to individual attempts. They cannot alias
+	# another leaf even within the Batch directory. Ordinary same-root reader
+	# aliases retain their established canonical-chain checks.
+	return path.get_base_dir()!="user://batch-lab-traffic" or actual==directory.path_join(path.get_file())
 
 static func integer(value: Variant, minimum: int = 0) -> bool:
 	return (value is int or value is float) and is_finite(float(value)) and value >= minimum and float(value) == floor(float(value)) and float(value) < 9007199254740992.0
@@ -131,6 +152,69 @@ static func atomic_replace(temporary: String, destination: String) -> Dictionary
 		return {"ok":false,"error":"Native runtime lacks atomic file replacement; rebuild the GDExtension."}
 	return bridge.call(&"replace_material_baseline_file", ProjectSettings.globalize_path(temporary).simplify_path(), ProjectSettings.globalize_path(destination).simplify_path())
 
+class ClosedFileVerification extends RefCounted:
+	# The expected digest comes from the buffers actually submitted by the writer.
+	# Verify only after it closes: Godot get_error() misses some buffered failures.
+	# Export callers advance this bounded reader cooperatively and can cancel it.
+	var done := false
+	var error := ""
+	var _file: FileAccess
+	var _hash: HashingContext
+	var _remaining := 0
+	var _expected := ""
+	var _expected_length := 0
+
+	func _init(path: String, offset: int, expected_length: int, expected_sha256: String) -> void:
+		if offset < 0 or expected_length < offset or expected_sha256.length() != 64 or not expected_sha256.is_valid_hex_number(false):
+			_fail("Invalid closed-file verification bounds.")
+			return
+		_file = FileAccess.open(path, FileAccess.READ)
+		if _file == null:
+			_fail("Cannot reopen the closed output for verification.")
+			return
+		if _file.get_length() != expected_length:
+			_fail("The closed output is incomplete; check free space and write permissions.")
+			return
+		_file.seek(offset)
+		if _file.get_position() != offset:
+			_fail("Cannot seek to the submitted output region.")
+			return
+		_remaining = expected_length - offset
+		_expected = expected_sha256
+		_expected_length = expected_length
+		_hash = HashingContext.new()
+		_hash.start(HashingContext.HASH_SHA256)
+
+	func close() -> void:
+		if _file != null: _file.close()
+		_file = null
+
+	func _fail(message: String) -> void:
+		error = message
+		done = true
+		close()
+
+	func step(max_bytes: int = 65536) -> void:
+		if done: return
+		var budget := clampi(max_bytes, 1, 1048576)
+		while budget > 0 and _remaining > 0:
+			var amount := mini(mini(budget, _remaining), 65536)
+			var raw := _file.get_buffer(amount)
+			var state := _file.get_error()
+			if raw.size() != amount or (state != OK and state != ERR_FILE_EOF) or _hash.update(raw) != OK:
+				_fail("Cannot verify the complete closed output.")
+				return
+			budget -= amount
+			_remaining -= amount
+		if _remaining == 0:
+			if _file.get_length() != _expected_length:
+				_fail("The closed output length changed during verification.")
+				return
+			var observed := _hash.finish().hex_encode()
+			close()
+			done = true
+			if observed != _expected: error = "The closed output bytes differ from the submitted data."
+
 static func read_record(file: FileAccess, limit: int = -1) -> Dictionary:
 	var start := file.get_position()
 	var end := file.get_length() if limit < 0 else mini(limit, file.get_length())
@@ -164,6 +248,8 @@ func resolve(latest: String) -> bool:
 	error = ""; warning = ""; segments.clear(); done = false; paused = false; bytes_read = 0; total_bytes = 0
 	_index = -1; _input = null; _parts.clear(); _record_size = 0; _legacy_ids.clear()
 	var current := latest
+	var directory := latest.get_base_dir()
+	if not valid_directory(directory): return fail("Invalid or aliased traffic namespace.")
 	var expected_id := ""
 	var expected_hash := ""
 	var committed_bytes := -1
@@ -173,7 +259,7 @@ func resolve(latest: String) -> bool:
 	var sealed_chain := false
 	var header_bytes := 0
 	for _depth in range(MAX_SEGMENTS):
-		if not valid_path(current): return fail("Invalid saved traffic path: " + current)
+		if not bound_path(current) or current.get_base_dir()!=directory: return fail("Invalid or cross-namespace saved traffic path: " + current)
 		if ancestor_seals.has(current):
 			var seal: Dictionary = ancestor_seals[current]
 			if (not expected_id.is_empty() and expected_id != seal.id) or (not expected_hash.is_empty() and expected_hash != seal.sha256) or (committed_bytes >= 0 and committed_bytes != int(seal.bytes)):
@@ -224,7 +310,7 @@ func resolve(latest: String) -> bool:
 			if not seals is Array or seals.size() > MAX_SEGMENTS: return fail("Malformed legacy ancestor seals: " + current)
 			var local_seals := {}
 			for seal: Variant in seals:
-				if not seal is Dictionary or not seal.get("path") is String or not valid_path(seal.path) or not seal.get("id") is String or seal.id.is_empty() or not integer(seal.get("bytes"), 1) or not seal.get("sha256") is String or seal.sha256.length() != 64 or not seal.sha256.is_valid_hex_number(false):
+				if not seal is Dictionary or not seal.get("path") is String or not bound_path(seal.path) or seal.path.get_base_dir()!=directory or not seal.get("id") is String or seal.id.is_empty() or not integer(seal.get("bytes"), 1) or not seal.get("sha256") is String or seal.sha256.length() != 64 or not seal.sha256.is_valid_hex_number(false):
 					return fail("Malformed legacy ancestor identity: " + current)
 				if local_seals.has(seal.path) or visited.has(canonical_path(seal.path)): return fail("Duplicate or cyclic legacy ancestor seal: " + current)
 				local_seals[seal.path] = true
@@ -243,6 +329,7 @@ func _open_next() -> bool:
 		done = true
 		return true
 	var segment := segments[_index]
+	if not bound_path(str(segment.path)): return fail("Conversation source crossed its traffic namespace during reading.")
 	_input = FileAccess.open(segment.path, FileAccess.READ)
 	if _input == null or _input.get_length() != int(segment.file_bytes) or FileAccess.get_modified_time(segment.path) != int(segment.mtime):
 		return fail("Conversation changed or disappeared during reading: " + str(segment.path))

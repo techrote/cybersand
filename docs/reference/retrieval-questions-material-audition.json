@@ -1,0 +1,28 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-24",
+  "purpose": "Additive current-scene material audition questions; unchanged historical retrieval fixtures.",
+  "questions": [
+    {
+      "id": "MAT-AUDITION-LIVE-001",
+      "query": "Can I change density, viscosity or reactions in the actual current Workbench scene and what does Revert undo?",
+      "canonical": [
+        "systems/material-audition.md",
+        "systems/material-audition-consumers.md"
+      ],
+      "facts": [
+        "The Draft/HOLD implementation extends the existing Materials Lab and applies profiles in the existing World at its native-owner boundary.",
+        "Density is directional cell exchange; viscosity is limited to active generic consumers, and reaction thresholds preserve inclusive roll semantics.",
+        "Revert restores configuration, not moved, reacted or consumed cells.",
+        "Named profiles are saved separately; authored scene saves do not retain the trial and exact physical saves refuse nondefault profiles.",
+        "Unsupported solver assignments, invalid values, stale revisions, retired Worlds and sessions are refused."
+      ],
+      "sources": [
+        "../native/src/world_material_audition.inc",
+        "../godot/native_extension/material_audition_adapter.inc",
+        "../godot/scripts/material_audition_mailbox.gd",
+        "../godot/scripts/material_lab_audition_panel.gd"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,9 @@
+{
+  "schema": "cybersand.material-audition.run-request",
+  "schema_version": 1,
+  "mission": "MAT-AUDITION-LIVE-001",
+  "intent": "qualify-and-publish-source-matched-candidate-runtimes",
+  "disposition": "Draft/HOLD",
+  "canonical_defaults_changed": false,
+  "request_sequence": 3
+}

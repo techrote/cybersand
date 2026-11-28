@@ -44,7 +44,14 @@ env:
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
   RAPIER_WINDOWS_SHA256: b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7
 jobs:
+  swarm004-windows:
+    name: Explicit SWARM-004 manual qualification route
+    if: github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/experiment/gentek-swarm-004-workbench'
+    uses: ./.github/workflows/swarm004-workbench-windows.yml
+    with:
+      source_sha: ${{ github.sha }}
   publisher-guards:
+    if: ${{ !(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/experiment/gentek-swarm-004-workbench') }}
     name: GEN-007 fail-closed four-file publication guards
     runs-on: ubuntu-24.04
     timeout-minutes: 10
@@ -64,7 +71,7 @@ jobs:
     needs: publisher-guards
     # Keep the bounded guards on ordinary PR/main changes. Full pinned builds,
     # graphical replay and packaging are explicit or confined to this campaign.
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/feat/gen007-architectural-generator-ab')
+    if: (github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/experiment/gentek-swarm-004-workbench') || (github.event_name == 'push' && github.ref == 'refs/heads/feat/gen007-architectural-generator-ab')
     name: Linux native GEN-007 and graphical Workbench
     runs-on: ubuntu-24.04
     timeout-minutes: 180
@@ -167,7 +174,7 @@ jobs:
           retention-days: 90
   windows-build:
     needs: publisher-guards
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'push' && github.ref == 'refs/heads/feat/gen007-architectural-generator-ab')
+    if: (github.event_name == 'workflow_dispatch' && github.ref != 'refs/heads/experiment/gentek-swarm-004-workbench') || (github.event_name == 'push' && github.ref == 'refs/heads/feat/gen007-architectural-generator-ab')
     name: Pinned source-matched Windows DLL
     runs-on: ubuntu-24.04
     timeout-minutes: 120
@@ -260,6 +267,7 @@ jobs:
           path: evidence/
           retention-days: 90
   windows:
+    if: ${{ !(github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/experiment/gentek-swarm-004-workbench') }}
     name: Windows graphical owner workflow and packaged re-execution
     needs: windows-build
     runs-on: windows-2022
@@ -291,7 +299,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Native source/runtime custody failed' }
           Copy-Item build/architecture-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/ -Force
           git lfs install --local
-          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll,godot/tools/gentek_reciprocal.exe' --exclude=''
           $rapier = 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'
           if ((Get-FileHash $rapier -Algorithm SHA256).Hash.ToLowerInvariant() -ne $env:RAPIER_WINDOWS_SHA256) { throw 'Rapier pin mismatch' }
           $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'

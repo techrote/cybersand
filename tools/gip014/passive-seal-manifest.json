@@ -1,0 +1,137 @@
+{
+  "schema": "cybersand-goblin-passive-phase2-manifest-v1",
+  "activation_enabled": true,
+  "qualified_source": "6f359ce2b24291ee219810773c641d53802fd31d",
+  "qualified_tree": "a4f389cd3cc1a21dfe3d5566703eb946b66734ed",
+  "phase1_source": "2a627a3131be72fcb876acec0d0b848a7e42c3e3",
+  "stage_artifact": {
+    "id": 15005776720,
+    "run_id": 45579669046,
+    "bytes": 942877571,
+    "sha256": "8621cf2811e14fdda3e98749f84b7d0887228f0c64b91967ae67485627552da9"
+  },
+  "results_commit": "e8df89b48757096428ee6a9d12e55c7e417c10d5",
+  "results_tree": "c5c6f89c377d78843c919101671aff1c2001f6c0",
+  "documents": [
+    {
+      "path": "docs/research/gip014-goblin-002-decision.md",
+      "git_blob": "a04a003bcfc663b766fa40aba7e7855bc0e293c5",
+      "bytes": 46942,
+      "sha256": "2e7af93999d551748a42bf52439bc42d172333688f987fc84ce6fcbae4ffb919"
+    },
+    {
+      "path": "docs/research/gip014-goblin-002.md",
+      "git_blob": "ee693779c61e492dd15c533948bebadbfc199ad1",
+      "bytes": 118227,
+      "sha256": "f31389d52b9ea7ce4b43c1fea01cbd985f5b1f49899ca29a283806f6c79bbee1"
+    },
+    {
+      "path": "docs/research/goblin002-exploration-handover.md",
+      "git_blob": "f1ca0385b86912538a4293144d370170f92ef4ab",
+      "bytes": 61611,
+      "sha256": "c621fb728e81a7ce2b473350261f33514667a9d5480494bccc5763a9bb44adb5"
+    },
+    {
+      "path": "docs/research/goblin002-gameplay-handover.md",
+      "git_blob": "ea179f7e51a025ee0f405af9a166a8ff676cd399",
+      "bytes": 60910,
+      "sha256": "f804bf60f748b29be68b47c4ddd824ce227476f1d0eb4fd7236456b2bb64945d"
+    },
+    {
+      "path": "docs/research/goblin002-replay-delivery-handover.md",
+      "git_blob": "e5aeadc88d8cbf106056e71ddd45edf9dbafc740",
+      "bytes": 38895,
+      "sha256": "9605e54ddf83a8e8517e77548eca2e6219aa4816036b1f63b6de9b0b21b0c90c"
+    },
+    {
+      "path": "tools/gip014/decision-index-002.json",
+      "git_blob": "01bc81474ef7f8182b52a0fd95e0ddb714aea4a4",
+      "bytes": 66508,
+      "sha256": "9f442ed4d0a78fe7ce687235fc65686244fe84be29200f1804014c633308bd4d"
+    },
+    {
+      "path": "tools/gip014/evidence/passive/A-final6f-readout.json",
+      "git_blob": "2cc2e185e1654bb2701224e5fdb459457c653eab",
+      "bytes": 317329,
+      "sha256": "6f8f058e515399e5644aa91b8b27b55149b9e918ae1ae2cc816e59dbd19625db"
+    },
+    {
+      "path": "tools/gip014/evidence/passive/A-phase1-source-review.json",
+      "git_blob": "539e9328a5fac3fb3b3b5085d4c1f75d5b7f89e5",
+      "bytes": 4480,
+      "sha256": "468bd149b5cdff266f06c3ca9217e0910ee91370a9a579e5fd9de13a6db982b9"
+    },
+    {
+      "path": "tools/gip014/evidence/passive/B-phase1-source-review.json",
+      "git_blob": "6037bc1c388b56f6430d1bd4e7ac2c00080d1733",
+      "bytes": 7174,
+      "sha256": "396ebeda5137b7b9eb407aace9f53d8eaa9c316b8444a2a3a52867ada76ee02b"
+    },
+    {
+      "path": "tools/gip014/evidence/passive/B-phase2-source-review.json",
+      "git_blob": "fa6037b3f597d0f1554a9bfe526068ad07d6f57c",
+      "bytes": 7019,
+      "sha256": "f60a88b256a9d2f0d15a96aa041842c85a28bac55fc6148f00b24d8821f7369b"
+    },
+    {
+      "path": "tools/gip014/evidence/passive/B-results-scope-review.json",
+      "git_blob": "0de4741adb531f5557d9c94b7b8bc56e3e8da81e",
+      "bytes": 2635,
+      "sha256": "978909c8bc2213f0f9a80f99af8b693756b753e4ec1cb071a3d5f8ae9f6704ff"
+    },
+    {
+      "path": "tools/gip014/evidence/passive/C-final6f-readout.json",
+      "git_blob": "e809acb4dbfdeace11f64bce60ee749a9bed9a57",
+      "bytes": 23449,
+      "sha256": "adbefd77218c752f4fca9420699b9092a6fd1f1f463e478302117754e0d11487"
+    },
+    {
+      "path": "tools/gip014/evidence/passive/phase1-job.log",
+      "git_blob": "7e99bc3d49a24ee31c9c87872063d664de2d5b33",
+      "bytes": 478721,
+      "sha256": "5e1ac4e5f2ad2af3d4ed95db9237cebf49ba963056ed65dcbceab8dc6c90cc91"
+    },
+    {
+      "path": "tools/gip014/evidence/passive/specialist-b-linux11-actual.json",
+      "git_blob": "097ac6bd740192173792c0d5cfc61bf4a2ae4394",
+      "bytes": 26608,
+      "sha256": "c54fbca0e377d67f6181d2fc2ac4f48cc521ef628a7f1894f401af039ec3780e"
+    }
+  ],
+  "artifact_classifications": {
+    "15003384515": "Exact6f Linux focused, native authored-lineage, graphical, replay, reduction and seven-episode memory evidence. Original long8 job remains failed: four attempted budgets completed and four orderly bounded campaign_timeout outcomes, with2858 observed attempted/2847 completed actions, no failed gameplay assertions and no pending action. No requested512/1024 budget completed; no production defect is inferred.",
+    "14990308987": "historical campaign; 35 episodes stopped at the independently adjudicated monowheel-position test-oracle defect",
+    "14994110507": "actual unchanged-oracle reproduction and bounded 44-to-1 reduction of the historical monowheel test-oracle defect; reproduction passes, unchanged invariant regression correctly fails",
+    "14995732784": "independently confirmed goblin authored-material equality applicability defect; original automatic candidate remains unresolved and unchanged",
+    "14998227645": "confirmed harness defect: standalone authored-lineage test parser failed before any lineage action; prior focused source gates retained; no long or memory outcome",
+    "14994352640": "unresolved diagnostic prerequisite refusal before any action; actual pending queue command contents were not observed, so no Stop identity or gameplay hypothesis result is inferred",
+    "14995746214": "unresolved original diagnostic: nine completed actions and exact old equality failure, but one later queue-proof callback mismatched the actual pending count; strict prerequisite refusal retained",
+    "14997564894": "confirmed test harness parser defect before any authored-lineage action;136 Python controls and eight preceding source groups passed; no new package was built",
+    "15000115723": "Exact5ee full142 experiment after actor-origin oracle repair; all108 matched episodes complete; three long episodes terminate at bounded controller deadlines with no failed assertions. The later material-history oracle repair is a separate source.",
+    "14998773016": "Confirmed native test harness comparison defect: four exact_source checks fail on equivalent integral JSON number representations after20 completed clean actions; original failed process/report retained. No long or memory outcomes.",
+    "15000825524": "Qualified exact6f Windows source, native, graphical, isolated memory, replay, extracted evaluator and sealed-payload execution; original complete raw evidence. Primary sealed ownerZIP remains separate.",
+    "14958249728": "Historical original qualified predecessor Windows artifact, preserved unchanged; not a second active successor evaluator.",
+    "14959436637": "Historical original predecessor Windows execution evidence; distinct from unavailable six local Linux tape bodies."
+  },
+  "compact_review_notes": {
+    "A_original_and_5ee_results": "The exact immutable specialist-A-analysis-v1.zip retains original/5ee results, preregistered metrics and frozen reader closures.",
+    "A_final_6f_results": "Complete already-executed primary and seven-episode memory reports, logs and receipts are in passive-Linux11-actual-reviews.zip. Exact final A human/machine adjudication is included in the pre-seal RESULTS snapshot.",
+    "B_lineage": "Original Windows/source prior reviews remain unchanged in specialist-B-windows11-v2.zip. The actual6f Linux source report is in passive-Linux11-actual-reviews.zip; no native or reader rerun occurred during sealing.",
+    "C_custody": "The exact C review closure is preserved in specialist-C-reviews-v1.zip. Actual6f Linux custody report18667checks/zeroerrors, reportSHA37b91339a5cf53b5dd0c8df0ebedda8d33fc1df717d947fe2065e54c61ce1c95, plus all process/log inputs are in the latest passive review bundle.",
+    "historical_predecessor": "Original Windows qualified and raw artifacts preserved unchanged. Six historical retained local Linux tape bodies are unavailable after host outage; original metadata/digests and unknown local-download status are preserved without reconstruction.",
+    "source_separation": "Qualified runtime6f, historical experiment sources, passive driver2a and exact pre-seal RESULTS documentation are separately identified. No later delivery commit or outer archive digest is included in the pre-seal snapshot."
+  },
+  "limits": {
+    "stage_transfer_seconds": 600,
+    "stage_compressed_bytes": 2147483648,
+    "stage_expanded_bytes": 2147483648,
+    "owned_disk_bytes": 6442450944,
+    "minimum_free_disk_bytes": 2147483648,
+    "worker_seconds": 1200,
+    "worker_memory_mib": 1536,
+    "builder_seconds": 180,
+    "builder_memory_mib": 512
+  },
+  "no_gameplay_or_reader_rerun": true,
+  "library_upload_performed": false
+}

@@ -99,7 +99,19 @@ func _refuse(text: String) -> bool:
 	return false
 
 
+func _host_admits_strata() -> bool:
+	# Persistent profiles serialize one continued Play World and an exact
+	# authoring envelope. Decorative Worlds and CYSSTRAT settings have no
+	# admitted continuation codec there, even while layered presentation is off.
+	if is_instance_valid(wb) and is_instance_valid(wb.host) and wb.host.has_method(&"persistent_operation_allowed"):
+		var reason: String = wb.host.call(&"persistent_operation_allowed", "strata", {})
+		if not reason.is_empty():
+			return _refuse("Strata Theatre requires the ordinary Workbench. Leave the persistent-area profile through Launcher first.")
+	return true
+
+
 func open_panel() -> void:
+	if not _host_admits_strata(): return
 	if wb.applied.is_empty():
 		_refuse("Wait for the ordinary Workbench to finish installing its canvas.")
 		return
@@ -140,6 +152,7 @@ func _refresh_panel() -> void:
 
 
 func _prepare(doc: Dictionary) -> bool:
+	if not _host_admits_strata(): return false
 	if authoring_busy(): return _refuse("Finish or stop the native authoring prefix before replacing its scene.")
 	if not _pending.is_empty() or _apply_serial > 0: return _refuse("A scene replacement is already preparing.")
 	var error := Document.validate(doc)
@@ -225,6 +238,7 @@ func cancel_candidate() -> void:
 
 
 func _ensure_current() -> bool:
+	if not _host_admits_strata(): return false
 	if has_document(): return true
 	if wb.applied.is_empty() or wb.busy(): return _refuse("Wait for the ordinary Workbench owner.")
 	if _document.is_empty(): _document = Document.default_document(Setup.extent_of(wb.applied))
@@ -326,6 +340,7 @@ func play_apply_failed() -> void:
 
 
 func load_document(record: Dictionary) -> bool:
+	if not _host_admits_strata(): return false
 	if wb.busy(): return _refuse("Finish the current Workbench transaction first.")
 	if not record.has_all(["setup","document"]): return _refuse("Incomplete layered document.")
 	var error := Document.validate(record.document)
@@ -341,6 +356,7 @@ func load_document(record: Dictionary) -> bool:
 
 
 func load_demo(id: String) -> bool:
+	if not _host_admits_strata(): return false
 	if wb.busy(): return _refuse("Finish the current Workbench transaction first.")
 	var policy := PackedInt32Array(wb.applied.liquid_policy)
 	var scene: Dictionary = OpticalShowcases.make(id,policy) if id in OpticalShowcases.ids() else Scenes.make(id,policy)
@@ -353,6 +369,7 @@ func load_demo(id: String) -> bool:
 
 
 func save_named(label: String) -> bool:
+	if not _host_admits_strata(): return false
 	if authoring_busy(): return _refuse("Finish or stop native authoring and its readback before saving.")
 	if not _gesture.is_empty() or not _pending.is_empty() or _apply_serial > 0:
 		return _refuse("Finish or cancel the layer gesture/replacement before saving.")

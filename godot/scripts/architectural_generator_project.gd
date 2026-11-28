@@ -291,8 +291,8 @@ static func compile(input: Variant) -> Dictionary:
 		for value: Variant in input[key]:
 			if not _number(value,-1000000,1000000): return _failure(key + " contains an invalid coordinate.")
 	var extent := Vector2i(int(input.extent[0]),int(input.extent[1]))
-	if extent.x != extent.y or extent.x not in [256,512,1024]:
-		return _failure("This prototype supports square 256, 512 or 1024-cell maps.")
+	if extent.x != extent.y or extent.x not in [256,512,1024,2048]:
+		return _failure("Architectural projects support square 256, 512, 1024 or 2048-cell maps; 256 is native-only in Workbench.")
 	if int(input.origin[0]) > 1000000-extent.x or int(input.origin[1]) > 1000000-extent.y:
 		return _failure("The complete source region must fit within ±1,000,000 world cells.")
 	if not _number(input.zone_scale,16,1024): return _failure("Zone scale must be an integer from 16 to 1024 cells.")

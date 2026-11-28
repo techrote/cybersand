@@ -2,9 +2,9 @@
 title: Shared Workbench actor composition
 status: Current
 document-kind: contract
-scope: WB-ACTOR-COMPOSE-001 physical actor catalogue, independent producers, policy adapter and authored control extension
+scope: WB-ACTOR-COMPOSE-002R continuous-play manipulation, configurable physical capacity, independent producers and authored composition
 canonical-for: [workbench-actor-composition, workbench-actor-control]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-22
 related-documents: [physical-actor-rigs.md, actor-rigs.md, physical-free-flight.md, ../architecture/shared-workbench-authoring-data.md, ../architecture/data-ownership-and-lifetimes.md, ../operations/workbench-actor-composition.md]
 ---
 
@@ -12,15 +12,17 @@ related-documents: [physical-actor-rigs.md, actor-rigs.md, physical-free-flight.
 
 ## Implementation and scope
 
-**Draft/HOLD implementation candidate for [#589](https://github.com/techrote/cybersand/issues/589).**
-The owner authorized implementation through WB-ACTOR-COMPOSE-001. Ordinary Shared
-Workbench now admits independently controlled physical actors through its existing
-prepared session, native worker and Rapier bridge. This contract describes the
-candidate source; it does not promote the PR, certify every experimental rig's
-playfeel, or replace the retained scientific apparatus.
+**WB-ACTOR-COMPOSE-002R Draft/HOLD candidate for [#737](https://github.com/techrote/cybersand/issues/737).**
+The accepted [#683](https://github.com/techrote/cybersand/pull/683) supplies the
+59-model catalogue, independent controllers, existing live Brush/Eraser and
+prepared composition owner. The owner's 22 November follow-up authorizes paused
+whole-assembly placement, live physical grabbing and expanded configurable
+capacity. This candidate extends those retained owners. It does not promote
+ordinary defaults, certify owner-machine performance or replace the scientific
+apparatus.
 
 The [owner procedure](../operations/workbench-actor-composition.md) explains the
-Actor Composition panel and Mixed Actor Workshop. Source ownership is divided as
+unified Configuration window and three sandbox examples. Source ownership is divided as
 follows:
 
 | Source | Responsibility |
@@ -32,6 +34,10 @@ follows:
 | [`workbench_actor_control.gd`](../../godot/scripts/workbench_actor_control.gd) | Value-only deterministic decision adapter; no World, node, RID, paint pointer or physics ownership |
 | [`workbench_reactive_policy.gd`](../../godot/scripts/workbench_reactive_policy.gd) | Narrow reuse of Thunderbowl's pure local steering helper for compatible physical policy-fixture actors |
 | [`workbench_physics_bridge.gd`](../../godot/scripts/workbench_physics_bridge.gd) | Actor-to-part-to-native-mask mapping and copied coupling samples in the existing Rapier space |
+| [`workbench_actor_manipulator.gd`](../../godot/scripts/workbench_actor_manipulator.gd) | Session-bound per-part picking, bounded point forces, copied whole-assembly transforms and safe release |
+| [`workbench_actor_interaction.gd`](../../godot/scripts/workbench_actor_interaction.gd) | Exclusive canvas mode, global gesture release, preview, snapping and single prepared placement commit |
+| [`workbench_sandbox_capacity.gd`](../../godot/scripts/workbench_sandbox_capacity.gd) | Versioned logical/body/proxy admission and finite engineering bounds |
+| [`workbench_actor_sandbox.gd`](../../godot/scripts/workbench_actor_sandbox.gd) | Living Mixed Workshop, configurable Barrel Crowd and Mechanical Chaos authored examples |
 | [`main.gd`](../../godot/scripts/main.gd), [`simulation_worker.gd`](../../godot/scripts/simulation_worker.gd) | Existing main-thread physics/native-worker boundary, atomic body/equipment samples, prepared adoption and lifecycle |
 
 The catalogue has 59 model identities: eight existing authored flyers, the
@@ -39,6 +45,12 @@ passive barrel, 46 physical catalogue models including five SetP player rigs,
 and four 4LY assisted-flight profiles. Definitions are returned as new copied
 values. Equipment preparation occurs once; its permanent chassis participates
 in bounds and capacity checks even when the starting item is None.
+
+The [dated local capacity record](../audits/2026-11-22-workbench-actor-sandbox/capacity/README.md)
+binds its exact component source, native binary, 13 real population cases,
+original failures and platform limitations. Final integrated, graphical and
+packaged Windows runs carry separate exact-source receipts; a component matrix
+is not relabeled as execution of a later UI or packaging revision.
 
 ## Capabilities and composition limits
 
@@ -56,12 +68,28 @@ The registry reports each model's mechanisms and original limitations. Admission
 does not add abilities to a model: a ground rig does not gain flight, a flyer
 does not gain a usable mount, and a passive barrel does not acquire a motor.
 
-One composition has at most **eight logical actors**, **eight prepared parts per
-actor**, and **64 actual response bodies / 64 native occupancy proxies**. These
-are separately checked. A flyer can reserve several rectangular proxies for one
+Old starts and ordinary new-world defaults retain **eight logical actors** and
+**64 actual response bodies / 64 native occupancy proxies**. The optional
+versioned `sandbox_capacity` dictionary independently admits numeric
+`logical_limit`, `body_limit` and `proxy_limit` values from 1 through **4096**.
+The supported per-actor prepared topology remains **eight parts**. These are
+separate budgets; a barrel costs its one actual body/proxy, while a multipart
+machine costs all its prepared parts, joints and proxy shapes. A flyer can reserve several rectangular proxies for one
 response body. Each physical part has its own response owner; several proxies
 for a compound hull do not duplicate its inertia or impulse authority. Equipment
 remains a reserved part after release. Dropping it never creates free capacity.
+
+The 4096 ceiling bounds allocated native response/observation workspaces and
+identity-indexed cancellation tables. Native occupancy identities remain within
+their unsigned 16-bit representation; copied response IDs remain exactly
+representable. It is an allocation/engineering ceiling, **not a qualification
+claim for 4096 running actors**. The real native/Rapier matrix exercises 16/32/64
+across passive, mixed and articulated populations, with higher-count experiments
+reported separately. No FPS threshold deletes actors, disables controllers or
+reduces fidelity. A capacity Apply is an explicit prepared-owner transaction and
+cannot reduce a budget below the actual composition. Native registries and
+response scratch admit the same bounded maximum, so UI admission is not a
+cosmetic increase in logical slots.
 
 Validation rejects an unknown or changed definition, unsupported source or item,
 out-of-canvas prepared hull, malformed option, excess slot/part/proxy count or
@@ -129,11 +157,67 @@ replacement and application close retire the affected sessions and observations.
 Reset/replacement/equipment Apply use explicit authored preparation and may
 restart controller and resource state; they are distinct from live handoff.
 
+## Paused placement and live physical grabbing
+
+The existing toolbar tool selector has **Live grab** and **Place / rotate**
+choices. The one Configuration window contains Actors, Controllers, Equipment,
+Physics, Capacity and Diagnostics. Opening it revokes active pointer/human
+commands without pausing independently scheduled actors. Inspection is distinct
+from explicit piloting, and selecting either manipulation mode blocks human
+drive/equipment input while leaving NPC authority local to each actor.
+
+Paused placement captures copied current part transforms, model/instance/run
+identity, assembly origin and geometry. The preview transforms every current
+part around the same origin; it does not prepare native owners on mouse motion.
+Q/E rotate, Shift Q/E use one degree, arrows nudge and Shift arrows use the
+configured fine move distance. Optional grid snapping applies to the assembly
+origin; Shift drag bypasses it. Release or Enter submits one prepared owner.
+Escape, right-click, focus loss, opening Configuration or release outside the
+canvas cancels the preview. All physical corners and conservative native masks
+must remain in bounds. Existing developer hard-terrain overlap semantics remain
+available; overlaps do not gain privileged collision or material deletion.
+
+Commit retains the current articulation of a supported assembly, rotates real
+colliders/joint frames, clears the moved actor's momentum, and updates its
+authored spawn and orientation. Other supported poses and native cells transfer
+through the existing prepared transaction. Controllers/resources may restart.
+The old owner and authored document survive failed preparation. Retained
+transactions explicitly refuse an actor whose equipment has been released,
+fixed or reattached with changed anchors: reconstructing the authored topology
+would change its live joint graph. Explicit Reset/Replace of that actor restores
+the authored graph; removing it also removes the retention requirement. This is
+not a general simulation checkpoint mechanism.
+
+Live grab picks a real part collider and a local point on that body. The session
+applies an implicit damped spring through bounded point forces, accounting for
+translational and rotational response. It never teleports a running body,
+disables collision, changes its producer or replaces the joint graph. Default
+stiffness/damping/maximum force are 160/24/24000; configurable finite ranges are
+5–2400, 0–160 and 10–1000000, with additional bounded acceleration/torque safety.
+Only the grabbed actor's drive decisions/actuators are suppressed. Grab/release
+revoke its old command leases and observations; release resumes its compatible
+source. Other independently scheduled NPC/policy actors keep their own
+generations and schedules. The exclusive Grab/Place input mode neutralizes the
+human pilot's keyboard/equipment input even when another actor is selected;
+returning to Paint/ordinary interaction requires released controls before rearm.
+
+Temporary ownership stores a weak session reference, run/epoch/instance/part
+identity and a local anchor. Each force application resolves and checks the
+current real body. Release outside the canvas, Escape, focus loss, Pause,
+configuration entry, Save/Flatten, actor/world replacement, worker failure and
+session teardown end the force. Fixed/frozen equipment cannot be grabbed. No
+temporary grab state enters the authored document. The preview and spring line
+are presentation only and own no simulation body or native cells.
+
 ## Producer and policy interface
 
 Authored sources are `human`, `scripted`, `policy` and `passive`. `scripted` maps
 to the existing session's `demo` producer. The UI calls it **Scripted NPC**, not
-AI. A policy source additionally chooses `fixture` or `external`. The fixture is
+AI. A policy source additionally chooses `fixture`, `external`, or the opt-in
+AMBIENT-001 `ambient` adapter. The latter appears as **Procedural NPC / Ambient**
+and composes validated modules over copied observations; see the
+[ambient contract](ambient-actors.md) and [owner guide](../operations/ambient-workbench.md).
+It uses the existing issued-observation and leased-command path. The fixture is
 a deterministic local test producer that obtains actual issued observations and
 submits the same leased command envelope as an external caller. Selecting
 External Policy does not start an HTTP service, neural model, SLM or LLM.
@@ -268,6 +352,17 @@ mount. Native refusal retains the old applied arrangement.
 The root remains **Setup-v2**. An actor retains `id`, `model`, `hash`,
 `spawn` and `options`, and may add this strictly validated extension:
 
+The optional actor field `spawn_rotation_degrees` is a finite value in
+`[-180, 180]`, defaulting to zero when absent. It rotates the starting physical
+assembly, not merely its artwork. The optional root `sandbox_capacity` has
+exactly `version: 1`, `logical_limit`, `body_limit` and `proxy_limit`; all limits
+are finite integers in their supported ranges. Missing metadata preserves the
+accepted 8/64/64 admission. Saved larger compositions retain their budget and
+reopen without truncation. JSON numeric text round trips retain authored angle
+precision; private leases, live articulation and momentum remain unsaved.
+
+The existing optional controller object is:
+
 ```json
 "control": {
   "version": 1,
@@ -279,7 +374,11 @@ The root remains **Setup-v2**. An actor retains `id`, `model`, `hash`,
 }
 ```
 
-All six keys are required when the optional block is present; unknown keys,
+All six keys are required when the optional block is present. The ambient
+candidate additionally permits `ambient`, an authored version-1 profile; the
+`ambient` policy adapter requires it. A retained valid profile may remain attached
+during human handoff. No ephemeral timers, RNG state or command authority enter
+the saved profile. Other unknown keys,
 versions, sources, adapters, nonintegral numeric fields, incompatible items and
 out-of-range cadence refuse. `usable_index: -1` means no starting usable.
 Absent control on valid legacy flyers/barrel uses the established human/passive

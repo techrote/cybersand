@@ -8,6 +8,8 @@ const Flight = preload("res://scripts/physical_flight_profile.gd")
 const Teacher = preload("res://scripts/physical_flight_teacher.gd")
 const Fleet = preload("res://scripts/gcr_review_fleet.gd")
 const Reactive = preload("res://scripts/workbench_reactive_policy.gd")
+const AmbientEngine = preload("res://scripts/ambient/ambient_engine.gd")
+const AmbientActuator = preload("res://scripts/ambient/ambient_actuator.gd")
 
 var _model: String = ""
 var _home := Vector2.ZERO
@@ -22,6 +24,14 @@ var _fleet_profile: Dictionary = {}
 var _decisions: int = 0
 var _last_tick: int = -1
 var _last_action: Dictionary = {}
+var _ambient = AmbientEngine.new()
+var _ambient_actuator = AmbientActuator.new()
+var _ambient_configured := false
+var _ambient_active := false
+var _ambient_profile: Dictionary = {}
+var _ambient_context: Dictionary = {}
+var _ambient_last_seconds := -1.0
+var _ambient_environment: Dictionary = {}
 
 
 func configure(model: String, origin: Vector2, actor_slot: int) -> bool:
@@ -36,12 +46,32 @@ func configure(model: String, origin: Vector2, actor_slot: int) -> bool:
 	return _script.configure(StringName(model), origin, actor_slot)
 
 
-func cancel() -> void:
+func configure_ambient(profile: Dictionary, instance_id: int) -> bool:
+	if not _ambient_actuator.configure(_model): return false
+	var context := {"actor_id":instance_id, "home":_home,
+		"capabilities":AmbientActuator.capabilities(_model)}
+	var receipt: Dictionary = _ambient.configure(profile, context)
+	if not bool(receipt.get("ok", false)): return false
+	_ambient_profile = profile.duplicate(true)
+	_ambient_context = context
+	_ambient_configured = true
+	_ambient_last_seconds = -1.0
+	_ambient_environment.clear()
+	return true
+
+
+func cancel(preserve_ambient: bool = false) -> void:
 	_script.cancel()
 	_teacher.reset()
 	_reactive.reset()
 	_reactive_active = false
 	_last_action.clear()
+	_ambient_active = false
+	_ambient_actuator.reset()
+	if not preserve_ambient and _ambient_configured:
+		_ambient.configure(_ambient_profile, _ambient_context)
+		_ambient_last_seconds = -1.0
+		_ambient_environment.clear()
 
 
 func next_action(view: Dictionary, delta: float) -> Dictionary:
@@ -53,6 +83,17 @@ func next_action(view: Dictionary, delta: float) -> Dictionary:
 	if not position is Vector2 or not velocity is Vector2 or not position.is_finite() or not velocity.is_finite(): return {}
 	_decisions += 1
 	_last_tick = int(view.get("tick", -1))
+	_ambient_active = str(view.get("producer", "")) == "policy" and str(view.get("policy_adapter", "")) == "ambient"
+	if _ambient_active:
+		if not _ambient_configured: return {}
+		var seconds: float = float(view.get("simulation_time_seconds", -1.0))
+		if not is_finite(seconds) or seconds < 0.0: return {}
+		var elapsed: float = maxf(0.0, seconds - _ambient_last_seconds) if _ambient_last_seconds >= 0.0 else 0.0
+		_ambient_environment = view.get("ambient_environment", {}).duplicate(true)
+		var intent: Dictionary = _ambient.step(_ambient_environment, elapsed)
+		if bool(intent.get("available", false)): _ambient_last_seconds = seconds
+		_last_action = _ambient_actuator.next_action(intent, view)
+		return _last_action.duplicate(true)
 	_reactive_active = _reactive_supported and str(view.get("producer", "")) == "policy"
 	if _reactive_active:
 		_last_action = _reactive.next_action(view, delta)
@@ -103,6 +144,11 @@ func _fleet_feedback(view: Dictionary) -> Dictionary:
 
 
 func diagnostics() -> Dictionary:
+	if _ambient_configured and (_ambient_active or not _ambient_environment.is_empty()):
+		return {"adapter":"workbench-ambient/v1", "model":_model, "learned":false,
+			"decisions":_decisions, "last_observed_tick":_last_tick,
+			"last_action":_last_action.duplicate(true), "ambient":_ambient.diagnostics(),
+			"environment":_ambient_environment.duplicate(true), "actuator":_ambient_actuator.diagnostics()}
 	return {"adapter":"workbench-local-feedback/v1", "model":_model,
 		"decisions":_decisions, "last_observed_tick":_last_tick,
 		"last_action":_last_action.duplicate(true),

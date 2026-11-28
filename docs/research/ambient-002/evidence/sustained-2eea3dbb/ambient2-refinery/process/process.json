@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/home/runner/work/_temp/ambient-observation-engine/Godot_v4.7-stable_linux.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/home/runner/work/cybersand/cybersand/application/godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--display-driver",
+    "x11",
+    "--script",
+    "/home/runner/work/cybersand/cybersand/observer/tools/ambient/watch_ambient_living.gd"
+  ],
+  "exit_code": 0,
+  "log_sha256": "3ca0f3aea2ca3cb08741e45ffb0f6840f345cf7624fc37dd841af65d3bf258f6",
+  "pid": 4638,
+  "seconds": 662.036,
+  "status": "passed",
+  "timeout_seconds": 1800
+}

@@ -1,0 +1,331 @@
+{
+  "actual_elf_import_maxima": {
+    "CXXABI": "1.3.9",
+    "GLIBC": "2.33",
+    "GLIBCXX": "3.4.30"
+  },
+  "all_inputs_match_explicit_commit": true,
+  "artifact_id": 14954269023,
+  "artifact_sha256": "a9cfdc834b9aa8443d41e725e1d3e40a30e3762eba37a6d711ced2f3deb3163c",
+  "execution_input_count": 1508,
+  "floor_log": "Linux runtime floor passed: GLIBC_2.34 bundle (CyberSand GLIBC_2.33, GLIBCXX_3.4.30, CXXABI_1.3.9; Rapier2D GLIBC_2.34)",
+  "frames": [
+    {
+      "file": "current-scene-density.png",
+      "height": 900,
+      "name": "current-scene-density",
+      "sha256": "0c1c648550cefbc0b4f1973d6d5b28b7cfa11abe0db141d724c21edd8c900c87",
+      "width": 1520
+    },
+    {
+      "file": "density-sorter.png",
+      "height": 900,
+      "name": "density-sorter",
+      "sha256": "3b6d9724099e6fd7e4ec96ffac3eb905dc7c05dba5697ec75b23c37da377bf14",
+      "width": 1600
+    },
+    {
+      "file": "viscosity-channel.png",
+      "height": 900,
+      "name": "viscosity-channel",
+      "sha256": "02a6299f9a952feef1c712f66fe1ef5196891761445674ed7a64a352acafc093",
+      "width": 1600
+    },
+    {
+      "file": "reaction-contact.png",
+      "height": 900,
+      "name": "reaction-contact",
+      "sha256": "dc05453cfb13880de51fe7f22ac0cd15abc72a51ac3bb31b6779accae872cd15",
+      "width": 1600
+    },
+    {
+      "file": "industrial-loop.png",
+      "height": 900,
+      "name": "industrial-loop",
+      "sha256": "18fe88a1afd62da9a4df1a570468b42a66acdfa019c4283eac175d8f9141c1f8",
+      "width": 1600
+    },
+    {
+      "file": "current-scene-1000x650.png",
+      "height": 650,
+      "name": "current-scene-1000x650",
+      "sha256": "bcdcdac4c2744b5270f8477a65b5416559eb63ea8307c7f732a6d8697a7edf0f",
+      "width": 1000
+    },
+    {
+      "file": "current-scene-1280x720.png",
+      "height": 720,
+      "name": "current-scene-1280x720",
+      "sha256": "899e87b8951b36e17a25b3271e040914bb1c92f1ad27961951dd0c8953b1da48",
+      "width": 1280
+    }
+  ],
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "godot_version": "4.7.stable.official.5b4e0cb0f",
+  "graphical_checks": 4002,
+  "graphical_display": "X11",
+  "headless_checks_total": 6000,
+  "headless_counts": {
+    "test_material_audition": 3988,
+    "test_material_audition_authored_scenes": 111,
+    "test_material_audition_layout": 23,
+    "test_material_audition_profile": 45,
+    "test_material_audition_ui_contract": 127,
+    "test_material_lab_catalogue": 1348,
+    "test_material_lab_diagnostics": 193,
+    "test_material_lab_experiment": 141,
+    "test_material_lab_ui": 24
+  },
+  "native_input_count": 108,
+  "native_sha256": "b7afb86202d3a99c4a2c20751819899b362931b78454d1b29c3d7c32888b8f78",
+  "native_suites": [
+    {
+      "actual_contact_slots": 56,
+      "all_high_exceed_low": true,
+      "assertions": 34081851,
+      "log": "native-profile.log",
+      "sanitizer_commands": [],
+      "sha256": "b11901da4f0d3e5d5abdb1615c5a4a4d9ac83b83840653a5cdd35392bb71b67f",
+      "viscosity_families": 7
+    },
+    {
+      "actual_contact_slots": 56,
+      "all_high_exceed_low": true,
+      "assertions": 34081851,
+      "log": "native-profile-sanitized.log",
+      "sanitizer_commands": [
+        "UBSAN_OPTIONS=halt_on_error=1 ./build/test_material_audition_sanitized"
+      ],
+      "sha256": "52092c53d0bf7f08de6c3e5c2414cc0acc98313dd09a4db78f6e466a13e57907",
+      "viscosity_families": 7
+    }
+  ],
+  "overlapping_string_helper_absent": true,
+  "performance": {
+    "accepted_rows": 12,
+    "candidate_rows": 36,
+    "exact_default_equivalence": true,
+    "fields": [
+      "initial_content_hash",
+      "content_hash",
+      "physical_hash",
+      "physical_hash_version",
+      "counts",
+      "moved_cells",
+      "visited_cells",
+      "observed_workers",
+      "ticks"
+    ],
+    "groups": [
+      {
+        "accepted_median_ms": 326.342,
+        "arms": {
+          "default": {
+            "activation_median_ms": 0,
+            "max_ms": 328.328,
+            "median_ms": 327.694,
+            "min_ms": 327.055,
+            "percent_vs_accepted": 0.4142893038591611,
+            "scanned_cells": [
+              0
+            ],
+            "woken_blocks": [
+              0
+            ]
+          },
+          "equivalent": {
+            "activation_median_ms": 0.004003,
+            "max_ms": 327.757,
+            "median_ms": 327.325,
+            "min_ms": 327.16,
+            "percent_vs_accepted": 0.3012177408975969,
+            "scanned_cells": [
+              0
+            ],
+            "woken_blocks": [
+              0
+            ]
+          },
+          "modified": {
+            "activation_median_ms": 0.366595,
+            "max_ms": 362.034,
+            "median_ms": 360.886,
+            "min_ms": 360.56,
+            "percent_vs_accepted": 10.585214284401046,
+            "scanned_cells": [
+              65536
+            ],
+            "woken_blocks": [
+              0
+            ]
+          }
+        },
+        "observed_workers": [
+          1
+        ],
+        "requested_workers": 1,
+        "side": 256
+      },
+      {
+        "accepted_median_ms": 326.045,
+        "arms": {
+          "default": {
+            "activation_median_ms": 0,
+            "max_ms": 328.796,
+            "median_ms": 328.29,
+            "min_ms": 327.897,
+            "percent_vs_accepted": 0.6885552607768908,
+            "scanned_cells": [
+              0
+            ],
+            "woken_blocks": [
+              0
+            ]
+          },
+          "equivalent": {
+            "activation_median_ms": 0.003598,
+            "max_ms": 327.813,
+            "median_ms": 327.328,
+            "min_ms": 327.158,
+            "percent_vs_accepted": 0.3935039641767224,
+            "scanned_cells": [
+              0
+            ],
+            "woken_blocks": [
+              0
+            ]
+          },
+          "modified": {
+            "activation_median_ms": 0.372968,
+            "max_ms": 361.628,
+            "median_ms": 361.619,
+            "min_ms": 361.05,
+            "percent_vs_accepted": 10.91076385161558,
+            "scanned_cells": [
+              65536
+            ],
+            "woken_blocks": [
+              0
+            ]
+          }
+        },
+        "observed_workers": [
+          1
+        ],
+        "requested_workers": 4,
+        "side": 256
+      },
+      {
+        "accepted_median_ms": 5266.17,
+        "arms": {
+          "default": {
+            "activation_median_ms": 0,
+            "max_ms": 5216.73,
+            "median_ms": 5215.04,
+            "min_ms": 5197.19,
+            "percent_vs_accepted": -0.9709143457199421,
+            "scanned_cells": [
+              0
+            ],
+            "woken_blocks": [
+              0
+            ]
+          },
+          "equivalent": {
+            "activation_median_ms": 0.004029,
+            "max_ms": 5216.52,
+            "median_ms": 5199.08,
+            "min_ms": 5192.44,
+            "percent_vs_accepted": -1.2739809007305092,
+            "scanned_cells": [
+              0
+            ],
+            "woken_blocks": [
+              0
+            ]
+          },
+          "modified": {
+            "activation_median_ms": 5.83368,
+            "max_ms": 5723.14,
+            "median_ms": 5722.66,
+            "min_ms": 5716.39,
+            "percent_vs_accepted": 8.668349103807893,
+            "scanned_cells": [
+              1048576
+            ],
+            "woken_blocks": [
+              0
+            ]
+          }
+        },
+        "observed_workers": [
+          1
+        ],
+        "requested_workers": 1,
+        "side": 1024
+      },
+      {
+        "accepted_median_ms": 2391.12,
+        "arms": {
+          "default": {
+            "activation_median_ms": 0,
+            "max_ms": 2431.6,
+            "median_ms": 2427.45,
+            "min_ms": 2425.07,
+            "percent_vs_accepted": 1.5193716751982222,
+            "scanned_cells": [
+              0
+            ],
+            "woken_blocks": [
+              0
+            ]
+          },
+          "equivalent": {
+            "activation_median_ms": 0.003648,
+            "max_ms": 2426.39,
+            "median_ms": 2424.29,
+            "min_ms": 2424.29,
+            "percent_vs_accepted": 1.3872160326541483,
+            "scanned_cells": [
+              0
+            ],
+            "woken_blocks": [
+              0
+            ]
+          },
+          "modified": {
+            "activation_median_ms": 5.75618,
+            "max_ms": 2676.98,
+            "median_ms": 2673.1,
+            "min_ms": 2669.95,
+            "percent_vs_accepted": 11.792800026765704,
+            "scanned_cells": [
+              1048576
+            ],
+            "woken_blocks": [
+              0
+            ]
+          }
+        },
+        "observed_workers": [
+          4
+        ],
+        "requested_workers": 4,
+        "side": 1024
+      }
+    ],
+    "matched_pairs": 24,
+    "modified_actual_effect_all12": true,
+    "timing_status": "advisory; three repeats on hosted hardware, profile changes dynamics/work volume"
+  },
+  "raw_receipts_verified": true,
+  "run_id": 45465121123,
+  "scope_notes": [
+    "Source3 native binary is byte-identical to source2; original final-source receipts were independently verified.",
+    "All127 fake-owner UI and23 layout controls run in final nine-case suite; graphical4002 checks are separate.",
+    "Default/equivalent parity is exact; timings advisory on three-repeat hosted samples; modified dynamics change workload.",
+    "Windows/package/physical owner and concurrent-programme gates are independently reviewed."
+  ],
+  "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+  "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa"
+}

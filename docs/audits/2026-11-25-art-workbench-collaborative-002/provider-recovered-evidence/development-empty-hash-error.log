@@ -1,0 +1,45 @@
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+ART_PUMP_RECOVERED_CHECK actual pinned native audit bridge is loaded true
+ART_PUMP_RECOVERED_CHECK provider construction starts no request or audit true
+ART_PUMP_RECOVERED_CHECK bounded successful owned request admitted true
+ART_PUMP_RECOVERED_CHECK transport remains the nonthreaded cancellable owner true
+ART_PUMP_RECOVERED_CHECK actual HTTPRequest chunk equals this arm true
+ART_PUMP_RECOVERED_CHECK actual transport retains the 16 MiB cap true
+ART_PUMP_RECOVERED_CHECK complete successful owned response arrives true
+ART_PUMP_RECOVERED_CHECK one authoritative owned consumer receives success true
+ART_PUMP_RECOVERED_CHECK complete owned assistant value matches byte count and digest true
+ART_PUMP_RECOVERED_CHECK owned successful response never reaches ordinary paint completion true
+ART_PUMP_RECOVERED_CHECK real transport completed HTTP 200 true
+ART_PUMP_RECOVERED_CHECK real transport response byte count equals server payload true
+ART_PUMP_RECOVERED_CHECK complete admitted audit excludes the synthetic credential true
+ART_PUMP_RECOVERED_CHECK complete assistant audit value matches every expected byte true
+ART_PUMP_RECOVERED_CHECK complete response audit retains its full assistant envelope true
+ART_PUMP_RECOVERED_CHECK real accepted-socket Stop request admitted true
+ART_PUMP_RECOVERED_CHECK loopback server acknowledged the actual socket without response headers true
+ERROR: Condition "len == 0" is true. Returning: FAILED
+   at: update (core/crypto/hashing_context.cpp:54)
+   GDScript backtrace (most recent call first):
+       [0] digest (res://art_transport_pump_recovered.gd:31)
+       [1] completed (res://art_transport_pump_recovered.gd:50)
+       [2] cancel (res://scripts/art_provider.gd:1068)
+       [3] cancel_owned (res://scripts/art_provider.gd:1077)
+       [4] run (res://art_transport_pump_recovered.gd:117)
+       [5] until (res://art_transport_pump_recovered.gd:37)
+ART_PUMP_RECOVERED_CHECK scoped Stop immediately retires the actual transport true
+ART_PUMP_RECOVERED_CHECK scoped Stop has one owned terminal consumer true
+ART_PUMP_RECOVERED_CHECK actual no-headers Stop remains below inherited two-second interaction bound true
+ART_PUMP_RECOVERED_CHECK oversized-response refusal request admitted true
+ERROR: Condition "len == 0" is true. Returning: FAILED
+   at: update (core/crypto/hashing_context.cpp:54)
+   GDScript backtrace (most recent call first):
+       [0] digest (res://art_transport_pump_recovered.gd:31)
+       [1] completed (res://art_transport_pump_recovered.gd:50)
+       [2] _finish_request (res://scripts/art_provider.gd:1174)
+       [3] _publish_response (res://scripts/art_provider.gd:1296)
+       [4] _request_completed (res://scripts/art_provider.gd:1217)
+ART_PUMP_RECOVERED_CHECK oversized HTTP response retires through the owned route true
+ART_PUMP_RECOVERED_CHECK response beyond the unchanged cap is refused true
+ART_PUMP_RECOVERED_CHECK all three requests have exactly one exclusive terminal consumer true
+ART_PUMP_RECOVERED_CHECK final complete audit remains credential-free true
+ART_PUMP_RECOVERED_RESULT {"audit_path":"/tmp/art-pump-recovered-development/fps-60-chunk-64/profile/godot/app_userdata/Art Pump Recovered Fixture/art-traffic/a47914cfd15dc765397e09c0d5e2b347.jsonl","audit_sha256":"4958ba71167446d57e9108cd429bd209260a293fb162d3648b77bbbcb1094f61","checks":25,"chunk_bytes":65536,"failures":[],"fixture_sha256":"95e63c5a9adfb1712fdc0bdd25388e2a80c33b32d6c4354c42190ed8361671db","format":"cybersand-art-pump-recovered-v1","fps":60,"godot":"4.7-stable (official)","model_calls":0,"native_worlds":0,"ordinary_completions":0,"oversize":{"callback_usec":1263,"cancel_usec":0,"dispatch_completed_usec":2937737,"dispatch_usec":1975,"envelope_decode_usec":0,"http_code":200,"json_parse_usec":0,"other_log_usec":0,"outcome":"failure","payload_encode_usec":10,"payload_utf8_encode_usec":0,"projection_redact_usec":39,"provider":"LM Studio","request_call_usec":96,"request_encode_usec":12,"request_log_usec":695,"request_sanitize_usec":243,"request_snapshot_usec":830,"request_utf8_encode_usec":0,"response_bytes":0,"response_encode_usec":12,"response_format_usec":598,"response_log_usec":882,"response_sanitize_usec":141,"response_utf8_encode_usec":0,"response_wait_usec":65423,"response_write_usec":238,"schema":2,"serial":4,"signal_usec":66,"status":"completed","transport_result":7,"transport_wait_usec":63448,"utf8_decode_usec":1},"owned_completions":3,"platform":"Linux","provider_sha256":"210245a0dac634a5b812231dca3b7e4cca265b631726805a4da69412b908ff41","source_revision":"419063f6bff2e0842d8be1d69a1a69eeb613e388","stop_ms":1.2,"success":{"audit":{"assistant_sha256":"63b673968544a3f3bb234b8815455eb665dc945df22b63a4a771cd6a0359047d","bytes":8382609,"response_assistant_sha256":"63b673968544a3f3bb234b8815455eb665dc945df22b63a4a771cd6a0359047d","sha256":"589386d400fa9a6b32f53258b7d1958a964543f5373a9fe7393464b201309e6c"},"complete_callback_ms":2170.446,"completion":{"bytes":4190296,"callback_usec":2581279,"error":"","id":1,"receipt":{"format":"cybersand-art-owned-completion-v1","mode":"discuss","provider_id":1,"request_id":"pump-success","state":"success","usage":{"completion_tokens":1.0,"prompt_tokens":1.0}},"sha256":"63b673968544a3f3bb234b8815455eb665dc945df22b63a4a771cd6a0359047d"},"download_increments":[65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536,65536],"frame_count":128,"maximum_frame_ms":119.388,"maximum_observed_increment":65536,"p95_frame_ms":16.932,"provider_timing":{"assistant_encode_usec":148101,"assistant_redact_usec":202584,"assistant_utf8_encode_usec":13270,"callback_setup_usec":126,"callback_usec":100694,"cancel_usec":0,"dispatch_completed_usec":412994,"dispatch_usec":1780,"envelope_decode_usec":24,"http_code":200,"json_parse_usec":84166,"other_log_usec":15527,"outcome":"success","payload_encode_usec":12,"payload_utf8_encode_usec":0,"projection_redact_usec":1349,"provider":"LM Studio","request_call_usec":426,"request_encode_usec":11,"request_log_usec":106,"request_sanitize_usec":203,"request_snapshot_usec":1002,"request_utf8_encode_usec":0,"response_bytes":4190448,"response_encode_usec":92252,"response_format_usec":49880,"response_log_usec":54577,"response_preparation_async":true,"response_preparation_cancelled":false,"response_preparation_reaped":true,"response_preparation_usec":971907,"response_preparation_wait_usec":983190,"response_sanitize_usec":370693,"response_utf8_encode_usec":7741,"response_wait_usec":1086207,"response_write_usec":4407,"schema":2,"serial":1,"signal_usec":28964,"status":"completed","transport_result":0,"transport_wait_usec":1084427,"utf8_decode_usec":51310},"transport_ms":1084.427}}

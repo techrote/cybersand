@@ -1,0 +1,23 @@
+{
+  "original_archive": "isolated-83a3-complete.zip",
+  "archive_bytes": 20808554,
+  "archive_sha256": "7cbe9d219568f911573a72b3e07a29bfd030e6de40cd07c889e88feb4ce9be7c",
+  "parts": [
+    {
+      "index": 1,
+      "path": "/tmp/ambient-002/evidence/perception/isolated-83a3-complete.zip.part-01",
+      "bytes": 10420224,
+      "sha256": "e925b5178a5713c51460f9268db2c10b88624e61513e82dd40c84424a817f7a3",
+      "git_blob_sha": "84f22398143336aab20b3952bdbd43d93891137e"
+    },
+    {
+      "index": 2,
+      "path": "/tmp/ambient-002/evidence/perception/isolated-83a3-complete.zip.part-02",
+      "bytes": 10388330,
+      "sha256": "27b69f6474e19adc8bb14809624fb0ab2c98c68480e9cbb7fc54cc4ae077c937",
+      "git_blob_sha": "97ae0ab10ff90b5681f19f69a3c69d2506f04570"
+    }
+  ],
+  "reassembly": "Concatenate part-01 then part-02 as bytes, verify archive_sha256, then extract the resulting ZIP. These are split evidence-archive bytes; neither part is a standalone ZIP.",
+  "reason": "The immutable GitHub connector rejects MCP request bodies above16MiB; the original20,808,554-byte ZIP is retained unmodified."
+}

@@ -521,6 +521,43 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'record': 'docs/audits/2026-11-19-wave-oil-lava.md',
   'issue': 679,
   'pr': 679},)
+# MAT-AUDITION-LIVE-001: exact reviewed scene-local consumer overlays and
+# nondefault physical identity / save refusal. Canonical catalogue and frozen
+# lock are unchanged; this does not authorize the concurrent engine branches.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a',
+  'to_lf_sha256': 'c5bd52b8827e5edef262ae2e9df2ec286abb9140d2e7ba6471b40d187e24ef14',
+  'source_commit': 'f66e0949dfd5257bc926adc87988ddd0f4634761',
+  'record': 'docs/audits/material-audition-live-20261124/independent-native-review.md',
+  'issue': 587,
+  'pr': 768},
+ {'path': 'native/src/world_pressure.inc',
+  'from_lf_sha256': 'fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1',
+  'to_lf_sha256': '70c617cea5556bb6121aba3b09af37ee7774fb6c08719dcf60b7042b72566817',
+  'source_commit': 'f66e0949dfd5257bc926adc87988ddd0f4634761',
+  'record': 'docs/audits/material-audition-live-20261124/independent-native-review.md',
+  'issue': 587,
+  'pr': 768},)
+
+
+# Actor Compose on the admitted Material Audition World (original actor record retained).
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': 'c5bd52b8827e5edef262ae2e9df2ec286abb9140d2e7ba6471b40d187e24ef14',
+  'to_lf_sha256': '98254d531ca7ca8f8e76f6d963f15b26b772777dc5633718a92cc637217eb77c',
+  'source_commit': '53b2202408fea7130fd354ae35540880e926ba5e',
+  'record': 'docs/audits/2026-11-27-actor-material-world-transition.md',
+  'issue': 737,
+  'pr': 762},)
+
+
+# RAMCACHE adds read-only resident-size estimates to the Actor/Material World.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '98254d531ca7ca8f8e76f6d963f15b26b772777dc5633718a92cc637217eb77c',
+  'to_lf_sha256': '54a727f6eb0543c2d9cdd868ed0486bf6e68d1b98c03c7a86a260891b49b1c24',
+  'source_commit': '3ad6541a6211f85672789fcf9b8271ab02609d67',
+  'record': 'docs/audits/2026-11-27-persistent-area-world-integration.md',
+  'issue': 591,
+  'pr': 745},)
 
 
 def lf(data: bytes) -> bytes:
