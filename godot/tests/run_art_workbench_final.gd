@@ -2,7 +2,7 @@ extends SceneTree
 ## Real Workbench, real HTTPRequest, real native worker. Input is routed through
 ## embedded Window/Button hit testing; never substitutes close_requested.emit().
 ## The fixture profile and every endpoint are created by the Python loopback runner.
-const Setup = preload("res://scripts/workbench_setup.gd")
+const Setup = preload("res://scripts/workbench_setup.gd")\nconst Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 const CANARY := "art-fixture-private-key::2026-QA"
 const RESPONSE_CHUNK_BYTES := 256*1024
 const MIB_RESPONSE_MODELS := ["fixture-large","fixture-large-error","fixture-large-envelope-error","fixture-malicious-usage"]
@@ -242,7 +242,7 @@ func captured_cell(point: Vector2i) -> int:
 
 
 func fresh_world() -> bool:
-	if not await until(ready,90000): return check(false,"previous native World settles")
+	if not await until(ready,Watchdogs.milliseconds("operation_seconds")): return check(false,"previous native World settles")
 	var data := Setup.fresh(PackedInt32Array(wb.applied.liquid_policy),Vector2i(512,512))
 	data.edits = [[0,500,512,12,58],[210,60,64,16,2]]
 	if not check(wb.apply(data),"ordinary 512-square native Workbench installation queued"): return false
