@@ -59,6 +59,7 @@ FOCUSED = (
     ("test_object_shard_m4_workbench_completion", "objectshard-m4-workbench-completion-v1"),
     ("test_object_shard_m4_material_only_workbench", "objectshard-m4-material-only-workbench-v1"),
     ("test_object_shard_m4_fragment_reabsorption", "objectshard-m4-fragment-reabsorption-v1"),
+    ("test_object_shard_m4_capacity_recovery", "objectshard-m4-capacity-recovery-v1"),
     ("test_object_shard_m4_lifecycle_adverse", "objectshard-m4-lifecycle-adverse-v1"),
     ("test_object_shard_m4_completed_sample", "objectshard-m4-completed-sample-v1"),
     ("test_object_shard_m4_equipment_completion", "objectshard-m4-equipment-completion-v1"),

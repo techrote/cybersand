@@ -35,3 +35,44 @@ Storage compaction, hierarchical transactions and hybrid debris are experiments,
 The current complete retained terrain image supports far camera navigation during a Held physical lease. A future cropped or tiled publication design must explicitly preserve that inspection route. Presentation scaling experiments can measure per-body Sprite2D/texture uploads, atlas or instance batching and smaller material shader programs. Any storage recropping must preserve capture-origin texture coordinates and complete World/session/incarnation identities. Interpolation remains downstream of acknowledged poses and must never acquire native pose authority.
 
 The measured native owner-service span does not yet isolate which occupied/contact traversal dominates. Profile those scans before choosing a cache or representation change. Protected contact-cell edits need a separate occupancy/collision transaction design; the no-op publication repair is not permission to relax that boundary.
+
+
+## OBJECTSHARD-M5-DEBRIS-DEMOTION-001
+
+This is the named successor to M4 merge preparation. It is **not implemented by
+M4**. Its primary objective is to relieve rigid-body slot pressure by allowing
+sufficiently small detached structural fragments to demote, under an explicit
+conservation contract, into dynamic pixel material or another bounded
+lightweight-debris representation.
+
+Reuse and preserve the existing boundaries rather than inventing a parallel
+owner:
+
+- **Fragmentation discovery and admission:** `Coordinator::prepare_next`,
+  `capture_fragment`, Registry fragment preparation/commit, the
+  `split_pending` geometry witness and `BodyView::fragment_deferred` already
+  identify a detached island and distinguish a capacity refusal from material
+  loss.
+- **Ownership transfer:** Registry `commit_fragment`, material/topology
+  revisions, payload/mask/shape digests and the quantity/accounting ledgers
+  already define the exact native inventory handoff that a demotion must either
+  complete atomically or refuse before debit.
+- **Material placement:** the existing World edit/terrain installation and
+  settled reabsorption paths demonstrate source-bound cell placement at an
+  acknowledged owner barrier. A debris representation must specify equivalent
+  destination occupancy, stale-witness rejection and open-system accounting;
+  it must not write directly around the native owner.
+- **Physical retirement:** the reabsorption freeze/World-credit/body-removal
+  sequence, `BodyRetired` / `GeometryInstalled` acknowledgements, Rapier RID
+  removal and Registry retirement already provide the proof pattern for
+  retiring a rigid carrier only after material authority has moved.
+- **Capacity semantics:** retain M4's fixed 16-body limit while evaluating the
+  successor. A deferred split must keep surviving material in its authoritative
+  parent until either a rigid slot or the new, independently qualified debris
+  destination is actually admitted.
+
+M5 should compare rigid retention, pixel-material demotion and any lightweight
+debris carrier with the same inventory ledger, collision/interaction scope,
+recovery behavior, save semantics and Windows throughput evidence. Do not
+translate “small” into an arbitrary size threshold without measurements and an
+explicit fidelity policy.

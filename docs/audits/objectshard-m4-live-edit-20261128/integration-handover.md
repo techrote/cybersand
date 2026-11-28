@@ -10,11 +10,14 @@ related-documents: [../../research/objectshard-m4-workbench.md, ../objectshard-m
 
 # ObjectShard live-edit integration and M5 handover
 
-Application source `ba6d8de45bd4d38717d92bdece7153bff115c0f0` is the frozen
-live-edit candidate. The final delivery record owns its qualification,
-publication and evaluator identities. PR #754 remains Draft/HOLD for physical
-owner evaluation and the subsequent M4 mainline integration mission. The
-positively evaluated reliability predecessor remains independently identifiable.
+Application source `ba6d8de45bd4d38717d92bdece7153bff115c0f0` remains the frozen
+qualified live-edit candidate. Its guarded native publication is
+`302f982943c0e03c30968368da8264cfb3c431ce`, and final evidence HEAD
+`7dc6d53b5e92157e5bfa2e0f52042bbcc2fc0390` retains the original delivery
+record. The owner positively physically evaluated that frozen application.
+PR #754 remains Draft/HOLD while the separately identifiable reconciled source
+is qualified; physical acceptance of the frozen application is not transferred
+to the reconciled source automatically.
 
 ## What material batching changes
 
@@ -66,21 +69,34 @@ simultaneously awake count and renderer callback cadence from native progression
 
 ## Mainline reconciliation
 
-The read-only final-source review fetched accepted main
-`50e3bcb839211eac2abe1e065750cbcba4d36f8c`. The merge base is
-`9920e7a7369f24e2818313c007cc33616c1a6a83`; there are 48 main-only and 194 candidate-only
-commits at that inspection. Five conflicts remain in the shared Workbench,
-feature launcher, canonical handover, roadmap and retrieval index. Automatically
-merged paint-editor and regression-runner code still needs semantic review.
-The exact paths and preview tree are in `final-mainline-review.json`.
+Accepted main `50e3bcb839211eac2abe1e065750cbcba4d36f8c` was reconciled into
+PR #754 by ancestry-preserving merge commit
+`c4e10e3ca629c491f7340c6f383adcc347200fa5`, with frozen evidence HEAD
+`7dc6d53b5e92157e5bfa2e0f52042bbcc2fc0390` and accepted main as its two
+parents. The merge base remains `9920e7a7369f24e2818313c007cc33616c1a6a83`.
+The exact three-way inventory found ten jointly changed files: the root and docs
+readmes, canonical handover, retrieval corpus/index, roadmap, feature launcher,
+shared Workbench, paint editor and regression runner. Each shared file received
+an explicit semantic union rather than a whole-file ours/theirs choice.
 
-Accepted RAMCACHE ancestry is preserved. Accepted Strata and later mainline
-portable-package work need a focused source union, with new combined-source
-native, actual input, renderer and extracted-package qualification. Fetch main
-again at integration time; this snapshot is not a promise that main stops moving.
-Do not treat a clean textual merge, a retained runtime or one lineage's passing
-artifact as qualification of that combined application. No unrestricted mergedown,
-PUBPRES import, Ready promotion or automatic merge occurred in this mission.
+Accepted RAMCACHE, Strata Theatre and portable-evaluator changes are retained.
+Strata remains lazily mounted and ObjectShard remains opt-in. Layered Strata
+authoring and active ObjectShard structural ownership now have an explicit
+mutual-exclusion admission boundary, while ordinary Workbench operation remains
+available with either feature disabled. PUBPRES PR #767 is not imported.
+
+A source-input comparison between the frozen qualified application and the
+reconciled candidate found all 126 native C/C++ inputs and the admitted native
+build-contract files unchanged. The guarded publication identity above is
+therefore retained unless a later corrective commit changes native inputs; no
+new native publication is invented merely to relabel identical inputs. Combined
+GDScript/Workbench/renderer/package qualification is still source-bound and must
+pass independently. The new capacity-recovery regression fills all 16 body slots,
+edits a live carrier into deferred islands, drains the paused receipt boundary,
+frees one physical slot by supported reabsorption and requires deferred
+fragmentation to resume without material loss or duplication. Existing live-tool
+qualification continues to prove complete-erasure retirement. No unrestricted
+mergedown, M5 implementation, Ready promotion or automatic merge is authorized.
 
 ## Next evaluation and future work
 
@@ -90,12 +106,14 @@ owner's Windows 11/Ryzen 5600X/TITAN RTX observations must identify this exact
 archive and renderer. Preserve unsuccessful input attempts as well as the
 native/renderer measurements; the new bounded edit history is designed for that.
 
-After physical owner evaluation, first reconcile M4 with accepted mainline and
-repeat the complete guarded delivery path. Broader sleeping-body scheduling,
-occupied-domain caching, physical acknowledgement batching and alternative
-small-debris representations belong to separately justified M5 work. Native
-geometry remains linear in retained carrier area; low material count alone
-does not prove low traversal cost. Measure before increasing budgets.
+The frozen live-edit application has now received positive physical owner
+evaluation. The reconciled source must still complete the guarded delivery path
+before merger. Broader sleeping-body scheduling, occupied-domain caching,
+physical acknowledgement batching and alternative small-debris representations
+belong to OBJECTSHARD-M5-DEBRIS-DEMOTION-001, not this M4 integration. Native
+geometry remains linear in retained carrier area; low material count alone does
+not prove low traversal cost. Keep the 16-body cap until a separately qualified
+representation changes the capacity model.
 
 Impact, repair, detached-body addition, welding, stress/fatigue, buoyancy and
 live-state persistence remain separate architectural work. The present tools
