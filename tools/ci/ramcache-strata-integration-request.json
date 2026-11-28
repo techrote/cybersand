@@ -1,6 +1,6 @@
 {
   "schema": "ramcache-strata-integration-request-v1",
-  "sequence": 3,
+  "sequence": 4,
   "mission": "RAMCACHE-STRATA-INTEGRATION-001",
   "accepted_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
   "ramcache_head": "af45bfb332f9822780db9304779ff0cdf55661df",
@@ -8,5 +8,5 @@
   "excluded_objectshard_head": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
   "optional_optics_90_percent_gate": "owner-waived-2026-11-28",
   "classic_remains_default": true,
-  "purpose": "Complete source qualification using the original headless mechanical SWARM controller and separate graphical input contexts; retain failed originals, unchanged application/native inputs, full shared coverage and exact final-main portable delivery."
+  "purpose": "Correct only inherited compiler Python-cache staging after the first final-main archive was refused before extraction; retain original failures, unchanged application/native inputs, all six fresh source gates and actual final-main portable launcher, authoring and persistence qualification."
 }

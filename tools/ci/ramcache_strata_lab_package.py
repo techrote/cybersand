@@ -8,6 +8,7 @@ repository; the combined packager owns application, engine and archive custody.
 from __future__ import annotations
 
 import hashlib
+import importlib.util
 import os
 from pathlib import Path, PurePosixPath
 import re
@@ -220,6 +221,30 @@ def dependency_identity(destination: Path, *, execute: bool) -> dict:
             "scope": "offline candidate compilation; published application runtime unchanged"}
 
 
+def _ignore_compiler_python_cache(directory: str, names: list[str]) -> set[str]:
+    """Omit only reproducible embedded-Python caches from the runner's compiler.
+
+    The hosted image already contains GDB's embedded-Python bytecode caches.
+    Keep the corresponding modules and the entire licensed toolchain; an unusual
+    cache entry or a sourceless module must refuse instead of disappearing.
+    """
+    if "__pycache__" not in names:
+        return set()
+    cache = Path(directory) / "__pycache__"
+    require(cache.is_dir() and not cache.is_symlink(),
+            "Compiler Python cache is not a real directory: " + str(cache))
+    for path in cache.iterdir():
+        require(path.is_file() and not path.is_symlink() and path.suffix == ".pyc",
+                "Unexpected compiler Python cache entry: " + str(path))
+        try:
+            source = Path(importlib.util.source_from_cache(str(path)))
+        except ValueError as error:
+            raise RuntimeError("Unrecognized compiler Python cache: " + str(path)) from error
+        require(source.parent == cache.parent and source.is_file() and not source.is_symlink(),
+                "Compiler Python cache lacks its retained module: " + str(path))
+    return {"__pycache__"}
+
+
 def stage_dependencies(destination: Path, *, python_root: Path = Path(sys.base_prefix),
                        git_root: Path = Path(r"C:\Program Files\Git"),
                        compiler_root: Path = Path(r"C:\mingw64")) -> dict:
@@ -228,7 +253,7 @@ def stage_dependencies(destination: Path, *, python_root: Path = Path(sys.base_p
     destination.mkdir(parents=True)
     lab.copy_python(python_root, destination / "python")
     lab.copy_git(git_root, destination / "git")
-    lab.copy_portable_tree(compiler_root, destination / "cxx")
+    lab.copy_portable_tree(compiler_root, destination / "cxx", ignore=_ignore_compiler_python_cache)
     return dependency_identity(destination, execute=True)
 
 

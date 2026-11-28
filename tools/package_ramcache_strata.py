@@ -328,6 +328,9 @@ def build(args):
         for path in sorted(output.rglob("*")):
             if path.is_file():
                 bundle.write(path, path.relative_to(output).as_posix())
+    # A successful build must already satisfy the same pristine-file boundary
+    # that the independently extracted copy will enforce before any launch.
+    inspect_archive(archive_path)
     identity = {"filename": archive_path.name, "bytes": archive_path.stat().st_size, "sha256": sha(archive_path),
                 "manifest_sha256": sha(output / MANIFEST), "source_commit": source["source_commit"],
                 "source_tree": source["source_tree"], "files": len(record["files_sha256"]), "expanded_bytes": total}
@@ -352,7 +355,7 @@ def inspect_archive(archive: Path) -> dict:
             generated = any(part in ("userdata", ".godot", "__pycache__") for part in PurePosixPath(name).parts)
             require(not generated or name in SOURCE_BOOTSTRAP_FILES and
                     data == q.custody.git("show", "HEAD:" + name.removeprefix("source/")),
-                    "Shipped package contains prior generated state or an altered committed bootstrap")
+                    "Shipped package contains prior generated state or an altered committed bootstrap: " + name)
             names[name] = hashlib.sha256(data).hexdigest()
         manifest = json.loads(bundle.read(MANIFEST))
     require(manifest.get("files_sha256") == {k: v for k, v in names.items() if k != MANIFEST},
