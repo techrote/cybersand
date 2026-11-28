@@ -1,0 +1,27 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-11-28T07:02:59.204801+00:00",
+  "corrected_from": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+  "failure_campaign": 46118132005,
+  "failure_job": 140896428770,
+  "correction": "Synchronize portable PowerShell verifier exact nine-scene list and 54 required inputs with Python manifest; preserve all source/native/generator checks. Add non-PowerShell contract parity regression and actual missing-scene refusal.",
+  "source_hash_kind": "SHA-256 canonical LF source bytes",
+  "source_inputs": {
+    "tools/objectshard/verify_workbench_package.ps1": "e3163cda2d0c26d50efd23c741183edae901f8d5b05b40f5145b114de6cabdd4",
+    "tools/objectshard/test_workbench_package_inputs.py": "f81ca56b8e91f192833ff7856c7ef31767a9f8f9630a4947ab7e78beff9b8b3a"
+  },
+  "powershell_version": "7.4.6",
+  "powershell_archive_sha256": "6f6015203c47806c5cc444c19d8ed019695e610fbd948154264bf9ca8e157561",
+  "powershell_archive_source": "https://github.com/PowerShell/PowerShell/releases/download/v7.4.6/powershell-7.4.6-linux-x64.tar.gz",
+  "powershell_release_digest_verified": true,
+  "tests": 86,
+  "skipped": 0,
+  "failures": 0,
+  "elapsed_seconds": 4.279,
+  "command": "PATH=/tmp/cybersand-live-edit/powershell-7.4.6:$PATH python3 -m unittest discover -s tools/objectshard -p test_*.py -v",
+  "log_sha256": "34dd0b99dd9984704c57ef77d5fb150c2d834092fb2f4b04782c16189f49cc8f",
+  "historical_regression_guard": "New portable parity guard was executed against git show ace52bc6:tools/objectshard/verify_workbench_package.ps1 and correctly rejected the old five-scene contract.",
+  "git_diff_check": "PASS",
+  "status": "PASS",
+  "scope": "Local Linux Python contract suite including actual portable PowerShell execution. Not Windows evaluator qualification."
+}

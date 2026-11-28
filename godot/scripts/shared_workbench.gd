@@ -133,6 +133,7 @@ var _status := Label.new()
 var _last_cell := Vector2i(-1,-1)
 var _drag_button := 0
 var _pan := false
+var _object_shard_input_window: Window
 var _stream_was_active := false
 var _saved_view := {}
 var _reload_rollback := {}
@@ -285,6 +286,8 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	host.world_view.gui_input.connect(_world_input)
 	host.world_view.mouse_exited.connect(_cancel_object_shard_pointer)
 	host.world_view.resized.connect(_cancel_object_shard_pointer)
+	_object_shard_input_window = host.get_window()
+	_object_shard_input_window.size_changed.connect(_object_shard_window_resized)
 	var compact := Theme.new()
 	compact.default_font_size = 13
 	theme = compact
@@ -1023,6 +1026,8 @@ func _poll_flatten() -> void:
 		str(_material_baseline.extent),_material_baseline.cells.size()]
 
 func _exit_tree() -> void:
+	if is_instance_valid(_object_shard_input_window) and _object_shard_input_window.size_changed.is_connected(_object_shard_window_resized):
+		_object_shard_input_window.size_changed.disconnect(_object_shard_window_resized)
 	for control: Control in [_erosion_density,_erosion_seed,_erosion_material_only]:
 		if is_instance_valid(control) and control.get_parent()==null: control.free()
 	object_shard_m4_port.retire("WorkbenchExit")
@@ -1922,8 +1927,14 @@ func _input(event: InputEvent) -> void:
 			_drag_button = 0
 	if event is InputEventKey and event.pressed and not event.echo and object_shard_m4_port.enabled:
 		if event.keycode==KEY_ESCAPE:
+			var cancelled_edit: bool = _object_shard_pointer_tool>=0 or _object_shard_slice_committing
 			_cancel_object_shard_pointer("Cancelled")
 			_drag_button = 0
+			if cancelled_edit:
+				# Main also maps an otherwise unhandled Escape to Pause. An edit
+				# cancellation owns this key and must preserve the current clock.
+				get_viewport().set_input_as_handled()
+				return
 		elif event.keycode in [KEY_BRACKETLEFT,KEY_BRACKETRIGHT] and _tool.selected in MOVING_TOOLS:
 			_brush.value = clampi(int(_brush.value)+(-1 if event.keycode==KEY_BRACKETLEFT else 1),0,24)
 			get_viewport().set_input_as_handled()
@@ -2215,6 +2226,14 @@ func _cancel_object_shard_pointer(reason: String = "InputCancelled") -> void:
 	_object_shard_wait_reason = ""
 	_object_shard_slice_committing = false
 	_object_shard_slice_commit_usec = 0
+
+func _object_shard_window_resized() -> void:
+	if not object_shard_m4_port.enabled: return
+	# canvas_items stretch may change physical pixels while the logical
+	# world_view size stays fixed. Retire coordinates captured in that window.
+	_cancel_object_shard_pointer("WindowResized")
+	_drag_button = 0
+	_pan = false
 
 func _object_shard_input_mode(event: InputEvent = null) -> int:
 	if not object_shard_m4_port.enabled: return -1

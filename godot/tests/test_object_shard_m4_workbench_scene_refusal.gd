@@ -49,6 +49,27 @@ func _pointer(button: int, selected: int) -> void:
 	bench._world_input(release)
 
 
+func _expect_unattached_refusal(button: int, selected: int, label: String) -> void:
+	var before: Dictionary = bench.object_shard_edit_diagnostics()
+	_pointer(button, selected)
+	var after: Dictionary = bench.object_shard_edit_diagnostics()
+	# Live editing now reports a readable refusal before attempting the port.
+	# Keep the machine reason and exact admission count independently checked;
+	# a changed sentence must never conceal an ordinary-brush fallback.
+	_expect(bench.message.contains("Structures are not attached yet"),
+		label + ": unavailable owner is visibly explained")
+	_expect(int(after.counts.get("refused", 0)) == int(before.counts.get("refused", 0)) + 1 \
+		and int(after.counts.get("admitted", 0)) == int(before.counts.get("admitted", 0)),
+		label + ": exactly one pre-admission refusal and no admitted action")
+	var matched: bool = false
+	for event: Dictionary in after.recent:
+		if int(event.sequence) <= int(before.sequence): continue
+		if event.kind == "refused" and event.detail.get("outcome") == "OwnerNotAttached" \
+			and int(event.detail.get("tool", -1)) == selected:
+			matched = true
+	_expect(matched, label + ": current diagnostic identifies OwnerNotAttached for the attempted tool")
+
+
 func _run() -> void:
 	_expect("--objectshard-m4-workbench" in OS.get_cmdline_user_args(),
 		"Explicit M4 flag required; production defaults remain untouched")
@@ -68,7 +89,13 @@ func _run() -> void:
 	var initial_world_generation: int = int(host.latest_snapshot.render_world_generation)
 	_expect(bench.CUT_MOVING_TOOL == bench.TOOL_NAMES.size() and bench._tool.get_item_text(5) == "Grab physical part" and bench._tool.get_item_text(6) == "Place / rotate (paused)",
 		"Actor manipulation and structural edits have separate mounted controls")
-	_expect(bench._tool.item_count == bench.TOOL_NAMES.size() + 3, "Three M4-only options exist behind explicit flag")
+	var structural_tools: Dictionary = {7:"Precision cut", 8:"Area ignition", 9:"Settle into canvas",
+		10:"Structural eraser", 11:"Slice", 12:"Weathering", 13:"Drill"}
+	_expect(bench._tool.item_count == bench.TOOL_NAMES.size() + structural_tools.size(),
+		"Seven structural options exist behind the explicit flag")
+	for index: int in structural_tools:
+		_expect(bench._tool.get_item_text(index) == structural_tools[index],
+			"Structural tool label and mounted index agree: " + str(structural_tools[index]))
 	_expect(bench.object_shard_m4_port.enabled and host.object_shard_m4_probe.enabled == ("--objectshard-diagnostics" in OS.get_cmdline_user_args()),
 		"Structures and optional performance recording obey their independent flags")
 	var capability: Dictionary = bench.object_shard_m4_status()
@@ -79,14 +106,10 @@ func _run() -> void:
 	var brush_before: Dictionary = worker.paint_state()
 	_expect(not bool(brush_before.get("legacy_busy", true)),
 		"No ordinary brush is pending at the negative-input checkpoint")
-	_pointer(MOUSE_BUTTON_RIGHT, bench.CUT_MOVING_TOOL)
-	_expect(bench.message.contains("CompetingOrUnattachedWorld"),
-		"Right-click M4 erase visibly refuses rather than invoking ordinary erase")
+	_expect_unattached_refusal(MOUSE_BUTTON_RIGHT, bench.CUT_MOVING_TOOL, "Paused precision erase")
 	_expect(bench.object_shard_m4_port.pending_count() == 0,
 		"Refused moving erase never enters native queue")
-	_pointer(MOUSE_BUTTON_LEFT, bench.IGNITE_MOVING_TOOL)
-	_expect(bench.message.contains("CompetingOrUnattachedWorld"),
-		"Left-click M4 ignite visibly refuses rather than emitting Fire")
+	_expect_unattached_refusal(MOUSE_BUTTON_LEFT, bench.IGNITE_MOVING_TOOL, "Paused area ignition")
 	_expect(bench.object_shard_m4_port.pending_count() == 0,
 		"Refused moving ignition never enters native queue")
 	for frame: int in range(4):
@@ -111,9 +134,8 @@ func _run() -> void:
 		await process_frame
 	_expect(host.latest_snapshot.tick_index > before_live_tick and not worker.has_failed(),
 		"Real ordinary World advances a semantic tick while M4 seam is unavailable")
-	_pointer(MOUSE_BUTTON_RIGHT, bench.CUT_MOVING_TOOL)
-	_expect(bench.message.contains("CompetingOrUnattachedWorld") \
-			and bench.object_shard_m4_port.pending_count() == 0,
+	_expect_unattached_refusal(MOUSE_BUTTON_RIGHT, bench.CUT_MOVING_TOOL, "Running precision erase")
+	_expect(bench.object_shard_m4_port.pending_count() == 0,
 		"Running World refuses moving-cell edit without routing it into terrain")
 	_expect(not worker.paint_state().get("legacy_busy", true),
 		"Running World remains free of reinterpreted moving-cell brush commands")

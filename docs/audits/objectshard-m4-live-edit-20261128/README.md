@@ -17,6 +17,30 @@ section will bind the final application, native producer, guarded publication
 and evaluator identities after those gates complete. A predecessor pass never
 qualifies a later build.
 
+## First hosted campaign and corrective candidate
+
+Application `ace52bc6e9b3b958ed164f3328d02b07cf2d5c50` entered campaign
+[46118132005](https://github.com/techrote/cybersand/actions/runs/46118132005).
+Its 138,280 native sanitizer checks, 192 ordinary World cases and 74 retained
+native budgets passed. All new Linux headless input, tool, stress, creative,
+owner-recipe and disabled-mode cases passed individually. The campaign is
+**not qualified**: a portable verifier mirror and a retained scene-refusal
+test had stale premises; actual Windows rendering also exposed a late-layout
+camera mismatch. The separate immutable Windows preview observation
+[46119197243](https://github.com/techrote/cybersand/actions/runs/46119197243)
+then exposed Escape-to-Pause fallthrough and missing physical-window resize
+cancellation while the logical stretched canvas stayed the same size.
+
+[The corrective review](corrective-review.json) preserves each failure, the
+specific implementation or legitimate premise correction, before/after local
+regressions, independent review and source hashes. No old failing campaign is
+relabelled as a pass. A new exact-source campaign and independent extracted
+Windows evaluator remain required. The [final-source native batch comparison](native-batch-performance-final.json)
+uses matching optimized native paths and unchanged native inputs; its scope
+excludes worker, Rapier, renderer and physical owner timing. The
+[preliminary idle comparison](local-throughput-preflight.json) retains both
+native/toolchain identities and is separate from the final pinned comparison.
+
 ## Baseline and owner evidence
 
 The inspected PR branch was

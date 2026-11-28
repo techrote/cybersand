@@ -31,6 +31,36 @@ func _run() -> void:
 	input = InputFixture.new(self)
 	f = input.f
 	if not await f.open("tower"): await _finish(); return
+	# Dispatch Escape through the full viewport route: direct Workbench method
+	# calls cannot detect accidental fallthrough into Main's pause shortcut.
+	input.select_tool(11,1)
+	input.press(Vector2(140,330))
+	var cancel_serial: int = input.admission_serial()
+	var was_paused: bool = f.host.paused
+	var escape := InputEventKey.new()
+	escape.keycode = KEY_ESCAPE
+	escape.physical_keycode = KEY_ESCAPE
+	escape.pressed = true
+	Input.parse_input_event(escape)
+	escape = escape.duplicate()
+	escape.pressed = false
+	Input.parse_input_event(escape)
+	await process_frame
+	f.expect(f.bench._object_shard_pointer_tool==-1,"viewport Escape cancels the active structural preview")
+	f.expect(f.host.paused==was_paused,"structural Escape cancellation cannot fall through to the ordinary pause shortcut")
+	f.expect(input.admission_serial()==cancel_serial,"Escape does not commit a cancelled slice")
+	input.release()
+	if not await f.pause(): await _finish(); return
+	input.press(Vector2(140,330))
+	var original_window: Vector2i = root.size
+	root.size = original_window+Vector2i(80,40)
+	await process_frame
+	await process_frame
+	f.expect(f.bench._object_shard_pointer_tool==-1 and input.admission_serial()==cancel_serial,
+		"physical Window resize cancels structural intent even when the logical stretched canvas keeps its size")
+	input.release()
+	root.size = original_window
+	await process_frame
 	input.select_tool(0,8)
 	# This is ordinary Paint's right-button Erase, not the old owned-cell mode.
 	var before: int = input.admitted_count()

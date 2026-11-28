@@ -60,9 +60,40 @@ func _view(label: String,origin: Vector2,extent: Vector2i) -> void:
 	observations.append({"label":label,"phase":f.runtime().phase,"user_status":f.bench.object_shard_user_status(),
 		"tick":f.tick(),"publication":f.runtime().visible_observation(),"view":overlay.presentation_observation(),
 		"requested_origin":[expected_origin.x,expected_origin.y],"window_size":[root.size.x,root.size.y],
+		"world_view_size":[f.host.world_view.size.x,f.host.world_view.size.y],
+		"terrain_rect":[rect.position.x,rect.position.y,rect.size.x,rect.size.y],
+		"terrain_shader_origin":[shader_origin.x,shader_origin.y],"terrain_shader_extent":[shader_extent.x,shader_extent.y],
 		"terrain_image_extent":[f.host.image.get_width(),f.host.image.get_height()]})
 	if not output.is_empty() and DisplayServer.get_name() != "headless":
 		f.expect(root.get_texture().get_image().save_png(output.path_join(label+".png"))==OK,label+": actual framebuffer retained")
+
+func _late_layout_resize() -> void:
+	# Container sorting can resize the canvas after every node's _process.
+	# Reproduce that event immediately after the normal view sync, before any
+	# additional process callback can hide a one-draw camera/clip mismatch.
+	var overlay: Control = f.runtime().overlay
+	var previous_size: Vector2 = f.host.world_view.size
+	var publication: Dictionary = f.runtime().visible_observation().duplicate(true)
+	var before_tick: int = f.tick()
+	f.host.world_view.size = previous_size-Vector2(0,1)
+	var uv: Vector4 = f.host.world_shader.get_shader_parameter("view_rect_uv")
+	var origin: Vector2 = f.host.world_shader.get_shader_parameter("camera_origin_px")
+	var extent: Vector2 = f.host.world_shader.get_shader_parameter("view_size_px")
+	var rect := Rect2(Vector2(uv.x,uv.y)*f.host.world_view.size,Vector2(uv.z,uv.w)*f.host.world_view.size)
+	var view: Array = overlay.presentation_observation().view
+	f.expect(view.size()==3 and Rect2(view[2]).is_equal_approx(rect),
+		"late layout resize updates the retained material view before another process callback")
+	f.expect(overlay._content.position.is_equal_approx(rect.position) and overlay._content.size.is_equal_approx(rect.size),
+		"late layout resize synchronizes material clipping with the actual terrain rectangle")
+	var scale: Vector2 = rect.size/extent
+	f.expect(overlay._canvas.transform.is_equal_approx(Transform2D(0.0,scale,0.0,-origin*scale)),
+		"late layout resize synchronizes the retained material canvas transform immediately")
+	f.expect(f.runtime().visible_observation()==publication and f.tick()==before_tick and f.runtime().phase=="Held",
+		"late presentation layout preserves the held native owner, publication and semantic clock")
+	observations.append({"label":"held-immediate-late-layout","phase":f.runtime().phase,"tick":f.tick(),
+		"publication":publication,"world_view_size":[f.host.world_view.size.x,f.host.world_view.size.y],
+		"terrain_rect":[rect.position.x,rect.position.y,rect.size.x,rect.size.y],"view":overlay.presentation_observation()})
+	f.host.world_view.size = previous_size
 
 func _held_lease_1024() -> bool:
 	var authored: Dictionary = Fixture.Scenes.create("tower",PackedInt32Array(f.bench.applied.liquid_policy))
@@ -157,6 +188,7 @@ func _run() -> void:
 	var before_views: int = f.runtime().overlay.view_updates
 	f.runtime()._hold("PresentationFixtureHold")
 	await _view("held-pan-zoom",Vector2(120,220),Vector2i(320,180))
+	_late_layout_resize()
 	root.size = Vector2i(1280,720)
 	await _view("held-resize",Vector2.ZERO,Vector2i(512,512))
 	f.expect(f.runtime().overlay.view_updates>before_views,"Held camera remains responsive without receipt pumping")

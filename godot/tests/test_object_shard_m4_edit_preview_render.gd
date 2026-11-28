@@ -8,6 +8,7 @@ var f: RefCounted
 var output: String = ""
 var captures: Array[Dictionary] = []
 var previews: Array[Dictionary] = []
+var navigation: Array[Dictionary] = []
 var last_pointer := Vector2.ZERO
 var mouse_mask: int = 0
 var rendered_frames: int = 0
@@ -166,6 +167,7 @@ func _start_slice(first: Vector2i, last: Vector2i, radius: int = 1) -> void:
 
 func _slice_preview() -> void:
 	var before: int = f.bench.object_shard_m4_port._next_action
+	var paused_before: bool = f.host.paused
 	await _start_slice(Vector2i(128,310),Vector2i(223,322),1)
 	var line: Line2D = f.host.brush_preview
 	f.expect(line.visible and line.points.size()==51,"slice preview displays both endcaps and the connecting stroke")
@@ -189,6 +191,9 @@ func _slice_preview() -> void:
 	await _frames()
 	f.expect(f.bench._object_shard_pointer_tool==-1 and f.bench.object_shard_m4_port._next_action==before,
 		"actual Escape input cancels slice preview without native admission")
+	f.expect(f.host.paused==paused_before,"Escape cancels the edit without changing the simulation pause state")
+	navigation.append({"kind":"escape","paused_before":paused_before,"paused_after":f.host.paused,
+		"pointer_tool":f.bench._object_shard_pointer_tool,"native_action_serial":f.bench.object_shard_m4_port._next_action})
 
 func _navigation() -> void:
 	var before: int = f.bench.object_shard_m4_port._next_action
@@ -215,10 +220,24 @@ func _navigation() -> void:
 	await _circle("panned-drill",13,9,centre)
 	await _start_slice(centre,centre+Vector2i(12,4))
 	var old_view: Vector2 = f.host.world_view.size
+	var old_window: Vector2i = root.size
+	var old_pixels: Vector2i = root.get_texture().get_image().get_size()
+	var old_screen_transform: Transform2D = root.get_screen_transform()
 	_window_size(Vector2i(1360,860))
 	await _frames()
-	f.expect(f.bench._object_shard_pointer_tool==-1 and not f.host.world_view.size.is_equal_approx(old_view),
-		"real application window resize reflows the canvas and cancels stale preview coordinates")
+	var new_pixels: Vector2i = root.get_texture().get_image().get_size()
+	# The project uses a fixed logical canvas_items coordinate system: a real
+	# OS resize can alter its framebuffer/physical scale without changing any
+	# Control's logical size. The cancellation requirement covers both cases.
+	f.expect(root.size!=old_window and new_pixels!=old_pixels
+		and not root.get_screen_transform().is_equal_approx(old_screen_transform),
+		"real application Window resize changes its framebuffer and physical coordinate transform")
+	f.expect(f.bench._object_shard_pointer_tool==-1,
+		"real application Window resize cancels stale preview coordinates even with a fixed logical canvas")
+	navigation.append({"kind":"window_resize","old_window":old_window,"new_window":root.size,
+		"old_framebuffer":old_pixels,"new_framebuffer":new_pixels,"old_logical_view":old_view,
+		"new_logical_view":f.host.world_view.size,"old_screen_transform":old_screen_transform,
+		"new_screen_transform":root.get_screen_transform(),"pointer_tool":f.bench._object_shard_pointer_tool})
 	_button(MOUSE_BUTTON_LEFT,false)
 	centre = Vector2i(f.host.camera_origin.floor())+f.host.current_view_size/2
 	await _circle("resized-weathering",12,7,centre)
@@ -285,7 +304,10 @@ func _run() -> void:
 	await _finish()
 
 func _finish() -> void:
+	var final_owner: Dictionary = {}
 	if f!=null and f.host!=null:
+		final_owner = {"paused":f.host.paused,"phase":f.runtime().phase,"held_reason":f.runtime().held_reason,
+			"pointer_tool":f.bench._object_shard_pointer_tool,"slice_committing":f.bench._object_shard_slice_committing}
 		_escape()
 		if mouse_mask & MOUSE_BUTTON_MASK_LEFT: _button(MOUSE_BUTTON_LEFT,false)
 		if mouse_mask & MOUSE_BUTTON_MASK_MIDDLE: _button(MOUSE_BUTTON_MIDDLE,false)
@@ -294,6 +316,7 @@ func _finish() -> void:
 	print(JSON.stringify({"schema":"objectshard-m4-edit-preview-render-v1","checks":f.checks,"failures":f.failures,
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"display_driver":DisplayServer.get_name(),
 		"desktop_usable_rect":DisplayServer.screen_get_usable_rect(),"window_position":root.position,"window_size":root.size,
-		"rendered_frames":rendered_frames,"injected_events":injected_events,"previews":previews,"captures":captures,
+		"rendered_frames":rendered_frames,"injected_events":injected_events,"previews":previews,"captures":captures,"navigation":navigation,
+		"final_owner":final_owner,
 		"scope":"production Workbench GUI events, actual warped mouse, camera transforms and framebuffer pixels; no owner hardware performance claim"}))
 	quit(0 if f.failures.is_empty() else 1)

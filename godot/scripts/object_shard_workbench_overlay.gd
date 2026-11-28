@@ -30,6 +30,17 @@ func _ready() -> void:
 	# structural runtime is Held and deliberately no longer pumps receipts.
 	process_priority = 1000
 	_ensure_canvas()
+	# Containers can resize the terrain control after all _process callbacks.
+	# Its normalized shader crop then covers a different pixel rectangle in
+	# this same draw. Follow the Main-thread resize signal before presenting
+	# retained material, including when Held has stopped native publications.
+	if host != null and host.get("world_view") is Control:
+		host.world_view.resized.connect(_sync_view)
+
+func _exit_tree() -> void:
+	if host != null and is_instance_valid(host) and host.get("world_view") is Control \
+			and host.world_view.resized.is_connected(_sync_view):
+		host.world_view.resized.disconnect(_sync_view)
 
 func _ensure_canvas() -> void:
 	if _content != null: return

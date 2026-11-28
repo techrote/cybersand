@@ -20,7 +20,7 @@ if ($manifest.source_commit -notmatch '^[0-9a-f]{40}$' -or $manifest.source_tree
 if ($manifest.entry.scene -ne 'godot/main.tscn' -or $manifest.entry.startup_scene -ne 'godot/feature_launcher.tscn' -or
     $manifest.entry.host -ne 'ordinary-workbench' -or $manifest.entry.rendering_driver -ne 'opengl3_angle' -or
     $manifest.entry.launcher -ne 'Open Workbench.cmd' -or $manifest.entry.opt_in -isnot [bool] -or -not $manifest.entry.opt_in -or
-    ($manifest.entry.scenario_ids -join ',') -ne 'tower,viaduct,timber,mixed,stress' -or
+    ($manifest.entry.scenario_ids -join ',') -ne 'tower,viaduct,timber,mixed,stress,perforated,weathered,editing_yard,owner_tower' -or
     $manifest.ordinary_production_defaults_changed -isnot [bool] -or $manifest.ordinary_production_defaults_changed) {
     throw 'Incomplete ordinary Workbench entry contract'
 }
@@ -39,7 +39,22 @@ $required = @($nativeRelative, $rapierRelative, 'Godot_v4.7-stable_win64.exe', '
     'godot/feature_launcher.tscn', 'godot/scripts/feature_launcher.gd',
     'godot/scripts/main.gd', 'godot/scripts/shared_workbench.gd', 'godot/scripts/simulation_worker.gd',
     'godot/scripts/object_shard_m4_runtime.gd', 'godot/scripts/object_shard_workbench_scenes.gd',
+    'godot/data/objectshard_owner_tower2_authored_start.json',
+    'godot/scripts/object_shard_live_edit_diagnostics.gd',
+    'godot/tests/test_object_shard_live_edit_diagnostics.gd',
+    'godot/tests/test_object_shard_live_edit_contract.gd',
+    'godot/tests/test_object_shard_m4_creative_scenes.gd',
+    'godot/tests/test_object_shard_m4_creative_constructions.gd',
+    'godot/tests/test_object_shard_m4_edit_preview_render.gd',
+    'godot/tests/test_object_shard_m4_disabled_input.gd',
+    'godot/tests/test_object_shard_m4_live_input.gd',
+    'godot/tests/test_object_shard_m4_live_tools.gd',
+    'godot/tests/test_object_shard_m4_live_stress.gd',
+    'godot/tests/test_object_shard_m4_owner_authored.gd',
+    'godot/tests/test_object_shard_m4_visible_footprints.gd',
+    'godot/tests/support/object_shard_m4_live_input_fixture.gd',
     'godot/scripts/object_shard_physics_bridge.gd', 'godot/tests/test_object_shard_m4_workbench_completion.gd',
+    'godot/tests/test_object_shard_physics_bridge.gd', 'godot/tests/test_object_shard_rest_contacts.gd',
     'godot/tests/test_object_shard_m4_material_only_workbench.gd',
     'godot/tests/test_object_shard_m4_fragment_reabsorption.gd',
     'godot/tests/test_object_shard_m4_lifecycle_adverse.gd',

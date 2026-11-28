@@ -1,0 +1,219 @@
+{
+  "schema": "objectshard-live-edit-independent-preview-triage-v1",
+  "application_source": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+  "observer_run": 46119197243,
+  "artifact": 15253052089,
+  "archive_bytes": 5400128,
+  "archive_sha256": "c2c0e079681512fc6840e7363024fdd9c44fbdcd8362b505c80273e6be8b9ed5",
+  "checks": 100,
+  "failures": [
+    "real application window resize reflows the canvas and cancels stale preview coordinates",
+    "preview and navigation qualification preserve a healthy paused material owner"
+  ],
+  "scope": "production Workbench GUI events, actual warped mouse, camera transforms and framebuffer pixels; no owner hardware performance claim",
+  "renderer": "Windows",
+  "rendered_frames": 132,
+  "injected_events": 33,
+  "geometry_and_pixel_checks": [
+    {
+      "label": "structural-eraser",
+      "maximum_error_cells": 1.71661376953125e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    },
+    {
+      "label": "precision-cell",
+      "maximum_error_cells": 1.77919864654541e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    },
+    {
+      "label": "drill-opening",
+      "maximum_error_cells": 2.6702880859375e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    },
+    {
+      "label": "weathering-extent",
+      "maximum_error_cells": 2.09808349609375e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    },
+    {
+      "label": "area-ignition",
+      "maximum_error_cells": 2.00271606445313e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    },
+    {
+      "label": "ordinary-unified-eraser",
+      "maximum_error_cells": 1.71661376953125e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    },
+    {
+      "label": "slice-preview",
+      "maximum_error_cells": 1.60932540893555e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    },
+    {
+      "label": "zoomed-eraser",
+      "maximum_error_cells": 1.33514404296875e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    },
+    {
+      "label": "panned-drill",
+      "maximum_error_cells": 1.52587890625e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    },
+    {
+      "label": "resized-weathering",
+      "maximum_error_cells": 2.00271606445313e-05,
+      "outline_samples": 13,
+      "changed_samples": 13
+    }
+  ],
+  "captures": [
+    {
+      "name": "structural-eraser.png",
+      "sha256": "1e05d5c6f2adfe6b519e2c6acdca53c5a8c22636550a4d63352a94de77d51a14",
+      "bytes": 123824,
+      "size": [
+        1920,
+        1080
+      ],
+      "visually_inspected": false
+    },
+    {
+      "name": "precision-cell.png",
+      "sha256": "565397464be1811ccab7370215f1b32ea2ab8a5b1e4b48df0bfddd4c69aad907",
+      "bytes": 122189,
+      "size": [
+        1920,
+        1080
+      ],
+      "visually_inspected": false
+    },
+    {
+      "name": "drill-opening.png",
+      "sha256": "c1aa3e555e019107110fd42e154935fcc83c2a6ce2c8a5ff367dab8e9d10ffeb",
+      "bytes": 123928,
+      "size": [
+        1920,
+        1080
+      ],
+      "visually_inspected": false
+    },
+    {
+      "name": "weathering-extent.png",
+      "sha256": "19582ed5ccf443f60aa4dd851e48a5b6f6cd628a74eae5f752b8d4464e803d34",
+      "bytes": 124078,
+      "size": [
+        1920,
+        1080
+      ],
+      "visually_inspected": false
+    },
+    {
+      "name": "area-ignition.png",
+      "sha256": "33be33ad8004af2c9703aa02b7dfd4dd5f2827b8356825adb95956f07afcd06f",
+      "bytes": 124196,
+      "size": [
+        1920,
+        1080
+      ],
+      "visually_inspected": false
+    },
+    {
+      "name": "ordinary-unified-eraser.png",
+      "sha256": "ae57d028199ac0e4d7a3dc5992876da790e723822c4adeb98a843e9e0532f0a0",
+      "bytes": 123256,
+      "size": [
+        1920,
+        1080
+      ],
+      "visually_inspected": false
+    },
+    {
+      "name": "slice-preview.png",
+      "sha256": "113fdd1548334e2bc70dc1f6edb831633a963a1f75e6e6105e8e86f28466f22d",
+      "bytes": 124820,
+      "size": [
+        1920,
+        1080
+      ],
+      "visually_inspected": true
+    },
+    {
+      "name": "zoomed-eraser.png",
+      "sha256": "4c09a36090e53cf0493a0db4c324c07275e3e6c8e553ecde578045ecbb4246a1",
+      "bytes": 119855,
+      "size": [
+        1920,
+        1080
+      ],
+      "visually_inspected": false
+    },
+    {
+      "name": "panned-drill.png",
+      "sha256": "fb1a276f2876737f7e3f0c0f3ef321ef1f071a51ba23ed22f4e168fc005c07e0",
+      "bytes": 119167,
+      "size": [
+        1920,
+        1080
+      ],
+      "visually_inspected": false
+    },
+    {
+      "name": "resized-weathering.png",
+      "sha256": "dcbb9c685ffd814aadd101aca247c47818b7e8ab970cebc21359b14855ba60e9",
+      "bytes": 89104,
+      "size": [
+        1360,
+        765
+      ],
+      "visually_inspected": true
+    },
+    {
+      "name": "structures-controls-top.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "bytes": 87704,
+      "size": [
+        740,
+        650
+      ],
+      "visually_inspected": true
+    },
+    {
+      "name": "structures-weathering-controls.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "bytes": 87704,
+      "size": [
+        740,
+        650
+      ],
+      "visually_inspected": false
+    }
+  ],
+  "independent_findings": [
+    {
+      "finding": "Escape cancellation does not consume the key before ordinary Main pause handling",
+      "evidence": "slice-preview actual framebuffer shows Paused; later resized-weathering shows Playing and structures Running. shared_workbench._input cancels KEY_ESCAPE without set_input_as_handled; Main._unhandled_key_input maps KEY_ESCAPE to toggle_pause.",
+      "disposition": "B correcting active-gesture cancellation consumption, while preserving ordinary Escape semantics."
+    },
+    {
+      "finding": "Real window resize does not necessarily resize logical canvas Control under canvas_items stretch",
+      "evidence": "Actual root framebuffer changes1920x1080 to1360x765; recorded world_view remains1880x853. Production only subscribes to Control.resized for cancellation.",
+      "disposition": "B correcting root Window size_changed cancellation and replacing invalid logical-reflow premise with actual window/screen-transform evidence."
+    },
+    {
+      "finding": "Structures controls fit and remain readable",
+      "evidence": "Actual740x650 panel contains all9demo buttons, density31,seed321,material filter and diagnostics controls without horizontal scrolling. Top and weathering captures identical because all controls fit.",
+      "disposition": "No product issue found."
+    }
+  ],
+  "overall": "failed; corrected hosted render execution still required"
+}

@@ -2,6 +2,7 @@
 from pathlib import Path
 import hashlib
 import json
+import re
 import shutil
 import subprocess
 import tempfile
@@ -12,6 +13,20 @@ from package_windows_workbench import launchers
 
 
 class PackageInputTests(unittest.TestCase):
+    def test_portable_verifier_matches_the_manifest_entry_and_required_inputs(self):
+        # Both independently shipped verifiers must admit the same exact entry
+        # and require the same files, even on hosts without a PowerShell runtime.
+        source = Path(__file__).with_name("verify_workbench_package.ps1").read_text()
+        scenarios = re.search(r"\(\$manifest\.entry\.scenario_ids -join ','\) -ne '([^']+)'", source)
+        self.assertIsNotNone(scenarios)
+        self.assertEqual(scenarios.group(1).split(","), ENTRY["scenario_ids"])
+        variables = dict(re.findall(r"^\$(\w+) = '([^']+)'$", source, re.MULTILINE))
+        required = re.search(r"^\$required = @\((.*?)\)\n", source, re.MULTILINE | re.DOTALL)
+        self.assertIsNotNone(required)
+        entries = re.findall(r"'([^']+)'|\$(\w+)", required.group(1))
+        portable_required = {literal or variables[variable] for literal, variable in entries}
+        self.assertEqual(portable_required, REQUIRED)
+
     def test_unlisted_loadable_files_are_refused_even_under_generated_cache(self):
         for name in ("godot/extra.gdextension", "godot/extra.gd", "godot/extra.tscn", "extra.dll", "godot/.godot/extra.dll"):
             with self.subTest(name=name), tempfile.TemporaryDirectory() as directory:
@@ -86,6 +101,9 @@ class PackageInputTests(unittest.TestCase):
             # The synthetic native/engine package is intentionally incomplete.
             # A consistent generator reaches the independent native-runtime check.
             refusal("Unexpected runtime paths")
+            manifest["entry"] = dict(ENTRY, scenario_ids=ENTRY["scenario_ids"][:-1])
+            refusal("Incomplete ordinary Workbench entry contract")
+            manifest["entry"] = ENTRY
             (root / generator).write_bytes(data[::-1])
             inventory[generator] = hashlib.sha256(data[::-1]).hexdigest()
             refusal("Windows reciprocal generator differs")

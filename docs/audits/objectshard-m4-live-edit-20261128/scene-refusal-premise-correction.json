@@ -1,0 +1,42 @@
+{
+  "schema": "objectshard-live-edit-scene-refusal-premise-correction-v1",
+  "base_source": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+  "test_path": "godot/tests/test_object_shard_m4_workbench_scene_refusal.gd",
+  "corrected_script_sha256": "39b3a56416920bab356272ba885afde627f13f19d98144d7a51971e9b8d5e8a7",
+  "original_hosted": {
+    "checks": 22,
+    "failures": 4,
+    "log_sha256": "6c7e11411cd00c44234b07d323e6dae7585337e7c30b983ee46995dc67bd64ee",
+    "artifact": 15253570041,
+    "run": 46118132005
+  },
+  "changed_premises": [
+    "The mandatory creative tools expand the mounted ObjectShard options from3 to7; exact labels and indices now replace the old count.",
+    "Owner preflight now gives an understandable not-attached message and a bounded machine-readable OwnerNotAttached refusal instead of showing the raw CompetingOrUnattachedWorld capability string."
+  ],
+  "retained_invariants": [
+    "No pending native action",
+    "No ordinary brush fallback",
+    "Paused material revision unchanged",
+    "World generation unchanged",
+    "Exactly the original worker and World remain authoritative",
+    "Continuous ordinary World progression survives the refused structural edit",
+    "Explicit retirement invalidates prior port/probe epochs"
+  ],
+  "strengthened_assertions": [
+    "Exact labels at all7structural indices",
+    "Exactly one refused diagnostic increment per attempted action",
+    "No admitted diagnostic increment",
+    "New refused event matches OwnerNotAttached and the attempted tool"
+  ],
+  "corrected_local": {
+    "checks": 36,
+    "failures": 0,
+    "exit_code": 0,
+    "log_sha256": "343797332c5620f4ffd5d5190e04e10ff86135506c8785988c218e32093c5ab9",
+    "log_bytes": 501,
+    "native_sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+    "display": "headless"
+  },
+  "corrected_hosted": "pending"
+}
