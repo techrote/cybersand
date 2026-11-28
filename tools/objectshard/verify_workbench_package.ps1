@@ -132,9 +132,35 @@ $nativeStream = [IO.File]::OpenRead($nativeFile.FullName)
 try {
     if ($nativeStream.ReadByte() -ne 77 -or $nativeStream.ReadByte() -ne 90) { throw 'Native candidate is not a Windows PE runtime' }
 } finally { $nativeStream.Dispose() }
-if ($candidate.source_commit -ne $manifest.source_commit -or $candidate.source_tree -ne $manifest.source_tree -or
-    $candidate.sha256 -ne $manifest.native.sha256) { throw 'Candidate source identity mismatch' }
-if ($candidate.build_commit -ne $manifest.source_commit) { throw 'Candidate build identity mismatch' }
+if ($candidate.sha256 -ne $manifest.native.sha256) { throw 'Candidate binary identity mismatch' }
+$sameSource = ($candidate.source_commit -eq $manifest.source_commit -and
+               $candidate.source_tree -eq $manifest.source_tree -and
+               $candidate.build_commit -eq $manifest.source_commit)
+$reuse = $null
+if (-not $sameSource) {
+    $reuseRelative = 'qualified-candidate-reuse-provenance.json'
+    if ($null -eq $manifest.files_sha256.PSObject.Properties[$reuseRelative]) {
+        throw 'Reused native candidate lacks an inventoried equivalence receipt'
+    }
+    $reusePath = Join-Path $root $reuseRelative
+    if (-not (Test-Path -LiteralPath $reusePath -PathType Leaf)) {
+        throw 'Reused native candidate equivalence receipt is missing'
+    }
+    $reuse = Get-Content -LiteralPath $reusePath -Raw | ConvertFrom-Json
+    if ($reuse.schema_version -ne 1 -or $reuse.kind -ne 'qualified-windows-candidate-input-equivalence' -or
+        $reuse.artifact -ne $nativeRelative -or
+        $reuse.qualified_source_commit -ne $candidate.source_commit -or
+        $candidate.build_commit -ne $candidate.source_commit -or
+        $reuse.current_source_commit -ne $manifest.source_commit -or
+        $reuse.current_source_tree -ne $manifest.source_tree -or
+        $reuse.sha256 -ne $manifest.native.sha256 -or $reuse.size -ne $nativeFile.Length -or
+        ($reuse.qualified_workflow_run -isnot [int] -and $reuse.qualified_workflow_run -isnot [long]) -or
+        $reuse.qualified_workflow_run -le 0 -or
+        ($reuse.qualified_artifact_id -isnot [int] -and $reuse.qualified_artifact_id -isnot [long]) -or
+        $reuse.qualified_artifact_id -le 0) {
+        throw 'Reused native candidate equivalence provenance mismatch'
+    }
+}
 $sourceCount = 0
 foreach ($entry in $manifest.native.source_inputs.PSObject.Properties) {
     $relative = $entry.Name
@@ -149,5 +175,6 @@ foreach ($entry in $manifest.native.source_inputs.PSObject.Properties) {
     $sourceCount += 1
 }
 if ($sourceCount -eq 0 -or @($candidate.source_inputs.PSObject.Properties).Count -ne $sourceCount) { throw 'Incomplete native source ledger' }
+if ($null -ne $reuse -and $reuse.source_input_count -ne $sourceCount) { throw 'Reused native input count mismatch' }
 Write-Host "Workbench package PASS: $count files; source $($manifest.source_commit)"
 Write-Host 'Physical Windows/NVIDIA acceptance is separate from this exact-byte verification.'
