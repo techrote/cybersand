@@ -29,7 +29,7 @@ class PortableLinkerSelectionTests(unittest.TestCase):
 
     def verifier(self, *, proof=None, error=None):
         def verify(root, *, execute=False):
-            self.assertEqual(root, self.root)
+            self.assertTrue(root.samefile(self.root))
             self.assertFalse(execute)
             if error is not None:
                 raise error
@@ -47,7 +47,7 @@ class PortableLinkerSelectionTests(unittest.TestCase):
         verifier = self.verifier()
         with mock.patch.object(lab, "_portable_lld_module", return_value=verifier):
             self.assertEqual(lab.compiler_linker_options(str(self.compiler)), ["-fuse-ld=lld"])
-        verifier.verify.assert_called_once_with(self.root, execute=False)
+        verifier.verify.assert_called_once_with(self.root.resolve(), execute=False)
 
     def test_present_foreign_or_incomplete_marker_fails_without_gnu_fallback(self):
         self.marker.write_text("{}", encoding="utf-8")
@@ -57,7 +57,7 @@ class PortableLinkerSelectionTests(unittest.TestCase):
                     mock.patch.object(lab, "_portable_lld_module", return_value=verifier), \
                     self.assertRaisesRegex(lab.LabError, "failed verification"):
                 lab.compiler_linker_options(str(self.compiler))
-            verifier.verify.assert_called_once_with(self.root, execute=False)
+            verifier.verify.assert_called_once_with(self.root.resolve(), execute=False)
 
     def test_unrecognized_proof_fails_closed(self):
         self.marker.write_text("{}", encoding="utf-8")
