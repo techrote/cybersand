@@ -468,7 +468,6 @@ jobs:
     env:
       JAVA_HOME: ''
       PYTHONDONTWRITEBYTECODE: '1'
-      CYBERSAND_PORTABLE_LLD_ARCHIVE: ${{ runner.temp }}/pubpres-llvm-mingw-20260826-ucrt-x86_64.zip
     outputs:
       inner_sha256: ${{ steps.package.outputs.inner_sha256 }}
       inner_bytes: ${{ steps.package.outputs.inner_bytes }}
@@ -504,6 +503,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Portable delivery integrity/refusal controls failed' }
       - name: Acquire pinned offline GNU-compatible linker input
         run: |
+          $env:CYBERSAND_PORTABLE_LLD_ARCHIVE = Join-Path $env:RUNNER_TEMP 'pubpres-llvm-mingw-20260826-ucrt-x86_64.zip'
+          "CYBERSAND_PORTABLE_LLD_ARCHIVE=$env:CYBERSAND_PORTABLE_LLD_ARCHIVE" | Out-File -Append -Encoding utf8 -FilePath $env:GITHUB_ENV
           curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 300 --silent --show-error --output $env:CYBERSAND_PORTABLE_LLD_ARCHIVE https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-x86_64.zip
           if ($LASTEXITCODE -ne 0) { throw 'Pinned linker archive acquisition failed' }
           $archive = Get-Item -LiteralPath $env:CYBERSAND_PORTABLE_LLD_ARCHIVE
