@@ -1,0 +1,52 @@
+{
+  "artifact_id": 15246929759,
+  "artifact_sha256": "a7825226751144cd9565c91af7822fc4d01bc76dc787783dd39a4c745c754086",
+  "build_input_count": 1378,
+  "cases": [
+    {
+      "checks": null,
+      "log_sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51",
+      "name": "import",
+      "status": "passed"
+    },
+    {
+      "checks": 28,
+      "log_sha256": "876694ddbdbc96fa0390f9ea0065cf7aa9a5eb994dbdce46646ad3b7b782cf22",
+      "name": "test_object_shard_m4_same_world_extension",
+      "status": "passed"
+    },
+    {
+      "checks": 18,
+      "log_sha256": "01be1aed478760bb270ad4544ece33ed8d791f1e58b8ba36d1536660d8a62d7f",
+      "name": "test_object_shard_m4_shared_main_rapier",
+      "status": "passed"
+    },
+    {
+      "checks": 9,
+      "log_sha256": "9d06754f97a3be59199005e665d1a41d2f328c68d1c5298cbce807c61544d55e",
+      "name": "test_object_shard_m4_compact_motion_packets",
+      "status": "passed"
+    }
+  ],
+  "godot": {
+    "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "manifest_sha256": "14857902133f346b04f26832b91ab28798a904b8026fef8a0d76b0b99a5fa9e1",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "runtime": {
+    "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+    "size": 6081432
+  },
+  "schema": "objectshard-m4-linux-independent-producer-review-v1",
+  "scope": "Independent artifact byte and exact-Git-input reconciliation of the producer's actual hosted Linux helper execution; no additional local execution or physical performance acceptance is claimed.",
+  "source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "source_input_count": 126,
+  "source_tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+  "status": "passed",
+  "validation_sha256": "c104cac294af0f138906689bfc91f70f2b13f770f13fcb3796a4ea36a367e80e",
+  "workflow_attempt": 1,
+  "workflow_run": 46103413203
+}

@@ -1,0 +1,27 @@
+{
+  "scope": "Independent root hash and immutable Git-input comparison; Windows full validation and publication remain separate pending gates",
+  "source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "source_tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+  "workflow_run": 46103413203,
+  "native_inputs": 126,
+  "build_inputs": 1378,
+  "unique_git_inputs_checked": 1504,
+  "mismatches": [],
+  "linux_windows_ledgers_equal": true,
+  "binaries": [
+    {
+      "platform": "linux",
+      "bytes": 6081432,
+      "sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4"
+    },
+    {
+      "platform": "windows",
+      "bytes": 7271424,
+      "sha256": "a4b75f118a565fd965109b0b172e5050ae2f46346ef2a4863e8a1a9f363cc503"
+    }
+  ],
+  "linux_producer_artifact": 15246929759,
+  "windows_build_artifact": 15246478994,
+  "linux_producer_status": "validated-development-runtime",
+  "windows_build_status": "built-not-executed"
+}

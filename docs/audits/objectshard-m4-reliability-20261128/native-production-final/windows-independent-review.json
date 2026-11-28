@@ -1,0 +1,45 @@
+{
+  "artifact_bytes": 2715769,
+  "artifact_id": 15248578505,
+  "artifact_sha256": "03612ee2a2ea441da1573d25f4addbac71baf492bd9e4ebb3b3bd854360bd0ed",
+  "build_input_count": 1378,
+  "linux_full_source_and_build_ledgers_identical": true,
+  "manifest_sha256": "ea4ebfd086f660789545867691ff346ab484639a76dfede0f4382547f92df530",
+  "native_input_count": 126,
+  "original_build_manifest_preserved_except_status": true,
+  "runtime": {
+    "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "sha256": "a4b75f118a565fd965109b0b172e5050ae2f46346ef2a4863e8a1a9f363cc503",
+    "size": 7271424
+  },
+  "schema": "objectshard-m4-windows-independent-producer-review-v1",
+  "scope": "Read-only producer artifact/source/hash reconciliation joined to actual target-OS helper receipts. Full source and package graphical qualification are separate receipts; physical-owner acceptance is pending.",
+  "source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "source_tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+  "status": "passed",
+  "validation_cases": [
+    {
+      "log_sha256": "1b3475b1bed81cfb316d94630b0789c237eb7bc5353cea95becb12bc27b89b59",
+      "name": "import",
+      "status": "passed"
+    },
+    {
+      "log_sha256": "abff7c2203ad357886082b2f9e89b79122ee317ecadf563e9157c107e55b0b81",
+      "name": "test_object_shard_m4_same_world_extension",
+      "status": "passed"
+    },
+    {
+      "log_sha256": "10cf4dfe066095e89e757b68eeaba0cd561dfec7253e45bf8082bd9bd955e608",
+      "name": "test_object_shard_m4_shared_main_rapier",
+      "status": "passed"
+    },
+    {
+      "log_sha256": "c890403c31846afc11e76c5a4bc3adef1b8f4db62d76307f1efdcb47dda4d59a",
+      "name": "test_object_shard_m4_compact_motion_packets",
+      "status": "passed"
+    }
+  ],
+  "validation_sha256": "8331ca79b0c7628a2216b5f1bb0e25fc4fd1e2d2ea7e8f0c2856736fb527b05b",
+  "workflow_attempt": 1,
+  "workflow_run": 46103413203
+}

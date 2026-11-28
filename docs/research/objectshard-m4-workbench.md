@@ -10,7 +10,7 @@ related-documents: [objectshard-001.md, objectshard-m3-preflight.md, ../operatio
 
 # ObjectShard M4 ordinary Workbench integration
 
-**Reliability-convergence candidate; PR #754 remains Draft/HOLD.** This contract describes the opt-in ordinary
+**Engineering-qualified reliability-convergence candidate; PR #754 remains Draft/HOLD.** This contract describes the opt-in ordinary
 Workbench implementation. The [28 November evidence](../audits/objectshard-m4-reliability-20261128/presentation-delivery.md)
 records the current candidate's qualification state; the 25 November completion
 below remains historical evidence for its exact source. It does not change accepted-main defaults, grant
@@ -22,6 +22,23 @@ remain independent facilities with their original evidence and limits.
 The current [physics investigation](../audits/objectshard-m4-reliability-20261128/physics.md)
 and [matched throughput evidence](../audits/objectshard-m4-reliability-20261128/throughput.md)
 record their exact source, native runtime and measurement limitations.
+
+## Current engineering qualification — 28 November 2026
+
+Application/build/package source `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`
+passed [campaign 46103413203](https://github.com/techrote/cybersand/actions/runs/46103413203),
+including the native, Linux, Windows, actual renderer and clean portable
+launcher/replay gates. The guarded runtime publication is
+`d5bb74cdc8b3350ea85ba7899e46d6d0038074b8`; its exact parent is the qualified
+source and its only changes are the two native binaries and their manifests.
+The [verified evaluator](https://github.com/techrote/cybersand/actions/runs/46103413203/artifacts/15249152001)
+contains the 96,694,450-byte inner archive identified by SHA-256
+`04308deb50e8044054c624a4adf200a04bc1b7c8034621e0576338b79009d8e7`.
+The [delivery record](../audits/objectshard-m4-reliability-20261128/delivery-record.json)
+binds the complete source/runtime/package tuple and independent reviews.
+Physical owner evaluation, the eight-awake-body throughput objective and later
+Strata/shared Workbench reconciliation remain open; no merge or Ready promotion
+is authorised by these engineering results.
 
 ## Historical completion decision — 25 November 2026
 

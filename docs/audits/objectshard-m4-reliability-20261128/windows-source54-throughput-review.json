@@ -1,0 +1,528 @@
+{
+  "artifact_id": 15247169371,
+  "artifact_sha256": "efcb49f751bb8641cafbdd86338f1e5deadc92e8c9d14974bdc9a393d1e544b5",
+  "artifact_size": 56398014,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46099370014/artifacts/15247169371",
+  "interpretation": {
+    "causal_limit": "These source54 Windows observations are not a matched historical baseline, and differ in runtime/toolchain/platform/host from localLinux experiments. No single causal explanation is established. Existing recording and per-control timing probes are the route for targeted owner-hardware follow-up.",
+    "eight_active_objective": "not reached,89ticks/3.008132s=29.5865 ticks/s; callback-end awake cohort only",
+    "graphical_scope": "actual ANGLE/OpenGL ES3 over Direct3D11 Microsoft Basic Render Driver on hostedWindows; renderer callbacks are not monitorFPS",
+    "headless_one_body_objective": "not reached in these source54 Windows observations, about29.82 ticks/s (50%nominal real-time)",
+    "nominal_tick_seconds": 0.016666666666666666,
+    "sleep_scope": "one naturally sleeping plank1/0, not eight sleeping bodies"
+  },
+  "lanes": {
+    "graphical": {
+      "case_count": 52,
+      "execution_mode_counts": {
+        "headless": 24,
+        "rendered": 28
+      },
+      "focused": [
+        {
+          "checks": 155,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_receipt_scheduling"
+        },
+        {
+          "checks": 108,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_completed_sample"
+        },
+        {
+          "checks": 99,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_equipment_completion"
+        },
+        {
+          "checks": 96,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_actor_clock"
+        }
+      ],
+      "profiles": [
+        {
+          "actual_renderer_log_line": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "checks": 14,
+          "cohorts": {
+            "0/0": {
+              "awake": 0,
+              "callbacks": 64,
+              "owned": 0,
+              "semantic_ticks": 118,
+              "wall_usec": 6064054
+            }
+          },
+          "display_driver": "Windows",
+          "elapsed_usec": 6064086,
+          "execution_mode": "rendered",
+          "failures": [],
+          "name": "m4_throughput_disabled_off_render",
+          "native_pose_acknowledgements": 0,
+          "native_pose_echo_checks": 0,
+          "recording_enabled": false,
+          "renderer_callbacks": 64,
+          "renderer_callbacks_per_second": 10.5539400331724,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 118,
+          "semantic_ticks_per_second": 19.4588269361615,
+          "target_cohort": "0/0",
+          "target_cohort_ticks_per_second": 19.458929620349686,
+          "workload": "disabled"
+        },
+        {
+          "actual_renderer_log_line": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "checks": 45,
+          "cohorts": {
+            "0/0": {
+              "awake": 0,
+              "callbacks": 53,
+              "owned": 0,
+              "semantic_ticks": 133,
+              "wall_usec": 6089668
+            }
+          },
+          "display_driver": "Windows",
+          "elapsed_usec": 6089696,
+          "execution_mode": "rendered",
+          "failures": [],
+          "name": "m4_throughput_empty_off_render",
+          "native_pose_acknowledgements": 0,
+          "native_pose_echo_checks": 0,
+          "recording_enabled": false,
+          "renderer_callbacks": 53,
+          "renderer_callbacks_per_second": 8.70322590815699,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 133,
+          "semantic_ticks_per_second": 21.8401706751864,
+          "target_cohort": "0/0",
+          "target_cohort_ticks_per_second": 21.84027109523869,
+          "workload": "empty"
+        },
+        {
+          "actual_renderer_log_line": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "checks": 112,
+          "cohorts": {
+            "1/1": {
+              "awake": 1,
+              "callbacks": 45,
+              "owned": 1,
+              "semantic_ticks": 100,
+              "wall_usec": 6002856
+            }
+          },
+          "display_driver": "Windows",
+          "elapsed_usec": 6002887,
+          "execution_mode": "rendered",
+          "failures": [],
+          "name": "m4_throughput_tower_off_render",
+          "native_pose_acknowledgements": 401,
+          "native_pose_echo_checks": 401,
+          "recording_enabled": false,
+          "renderer_callbacks": 45,
+          "renderer_callbacks_per_second": 7.49639298557511,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 100,
+          "semantic_ticks_per_second": 16.6586510790558,
+          "target_cohort": "1/1",
+          "target_cohort_ticks_per_second": 16.65873710780335,
+          "workload": "tower"
+        },
+        {
+          "actual_renderer_log_line": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "checks": 345,
+          "cohorts": {
+            "8/8": {
+              "awake": 8,
+              "callbacks": 41,
+              "owned": 8,
+              "semantic_ticks": 79,
+              "wall_usec": 6017646
+            }
+          },
+          "display_driver": "Windows",
+          "elapsed_usec": 6017678,
+          "execution_mode": "rendered",
+          "failures": [],
+          "name": "m4_throughput_stress_off_render",
+          "native_pose_acknowledgements": 2552,
+          "native_pose_echo_checks": 2552,
+          "recording_enabled": false,
+          "renderer_callbacks": 41,
+          "renderer_callbacks_per_second": 6.81325920064184,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 79,
+          "semantic_ticks_per_second": 13.1279872402611,
+          "target_cohort": "8/8",
+          "target_cohort_ticks_per_second": 13.12805705088003,
+          "workload": "stress"
+        },
+        {
+          "actual_renderer_log_line": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "checks": 81,
+          "cohorts": {
+            "1/0": {
+              "awake": 0,
+              "callbacks": 53,
+              "owned": 1,
+              "semantic_ticks": 137,
+              "wall_usec": 6018371
+            }
+          },
+          "display_driver": "Windows",
+          "elapsed_usec": 6018409,
+          "execution_mode": "rendered",
+          "failures": [],
+          "name": "m4_throughput_sleeping_off_render",
+          "native_pose_acknowledgements": 552,
+          "native_pose_echo_checks": 552,
+          "recording_enabled": false,
+          "renderer_callbacks": 53,
+          "renderer_callbacks_per_second": 8.80631409397401,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 137,
+          "semantic_ticks_per_second": 22.7634911485743,
+          "target_cohort": "1/0",
+          "target_cohort_ticks_per_second": 22.763634877278253,
+          "workload": "sleeping"
+        },
+        {
+          "actual_renderer_log_line": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+          "checks": 112,
+          "cohorts": {
+            "1/1": {
+              "awake": 1,
+              "callbacks": 45,
+              "owned": 1,
+              "semantic_ticks": 93,
+              "wall_usec": 6012046
+            }
+          },
+          "display_driver": "Windows",
+          "elapsed_usec": 6012072,
+          "execution_mode": "rendered",
+          "failures": [],
+          "name": "m4_throughput_tower_on_render",
+          "native_pose_acknowledgements": 376,
+          "native_pose_echo_checks": 376,
+          "recording_enabled": true,
+          "renderer_callbacks": 45,
+          "renderer_callbacks_per_second": 7.48494030011617,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 93,
+          "semantic_ticks_per_second": 15.4688766202401,
+          "target_cohort": "1/1",
+          "target_cohort_ticks_per_second": 15.468943517730903,
+          "workload": "tower"
+        }
+      ],
+      "qualification_sha256": "3eed162adc836f611da577c37261390984e6748531fd2f3a6dae8c7da9d58a86",
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "status": "passed"
+    },
+    "headless": {
+      "case_count": 65,
+      "execution_mode_counts": {
+        "headless": 65
+      },
+      "focused": [
+        {
+          "checks": 155,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_receipt_scheduling"
+        },
+        {
+          "checks": 108,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_completed_sample"
+        },
+        {
+          "checks": 99,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_equipment_completion"
+        },
+        {
+          "checks": 96,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_actor_clock"
+        }
+      ],
+      "profiles": [
+        {
+          "checks": 13,
+          "cohorts": {
+            "0/0": {
+              "awake": 0,
+              "callbacks": 362,
+              "owned": 0,
+              "semantic_ticks": 361,
+              "wall_usec": 6016525
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6016543,
+          "execution_mode": "headless",
+          "failures": [],
+          "name": "m4_throughput_disabled_off_headless",
+          "native_pose_acknowledgements": 0,
+          "native_pose_echo_checks": 0,
+          "recording_enabled": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 361,
+          "semantic_ticks_per_second": 60.0012332663458,
+          "target_cohort": "0/0",
+          "target_cohort_ticks_per_second": 60.00141277564707,
+          "workload": "disabled"
+        },
+        {
+          "checks": 44,
+          "cohorts": {
+            "0/0": {
+              "awake": 0,
+              "callbacks": 362,
+              "owned": 0,
+              "semantic_ticks": 299,
+              "wall_usec": 6022544
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6022571,
+          "execution_mode": "headless",
+          "failures": [],
+          "name": "m4_throughput_empty_off_headless",
+          "native_pose_acknowledgements": 0,
+          "native_pose_echo_checks": 0,
+          "recording_enabled": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 299,
+          "semantic_ticks_per_second": 49.6465712068816,
+          "target_cohort": "0/0",
+          "target_cohort_ticks_per_second": 49.64679378016997,
+          "workload": "empty"
+        },
+        {
+          "checks": 111,
+          "cohorts": {
+            "1/1": {
+              "awake": 1,
+              "callbacks": 362,
+              "owned": 1,
+              "semantic_ticks": 179,
+              "wall_usec": 6001843
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6001865,
+          "execution_mode": "headless",
+          "failures": [],
+          "name": "m4_throughput_tower_off_headless",
+          "native_pose_acknowledgements": 716,
+          "native_pose_echo_checks": 716,
+          "recording_enabled": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 179,
+          "semantic_ticks_per_second": 29.8240630204112,
+          "target_cohort": "1/1",
+          "target_cohort_ticks_per_second": 29.82417234172903,
+          "workload": "tower"
+        },
+        {
+          "checks": 344,
+          "cohorts": {
+            "8/3": {
+              "awake": 3,
+              "callbacks": 52,
+              "owned": 8,
+              "semantic_ticks": 26,
+              "wall_usec": 855032
+            },
+            "8/4": {
+              "awake": 4,
+              "callbacks": 122,
+              "owned": 8,
+              "semantic_ticks": 60,
+              "wall_usec": 2036452
+            },
+            "8/5": {
+              "awake": 5,
+              "callbacks": 2,
+              "owned": 8,
+              "semantic_ticks": 1,
+              "wall_usec": 30409
+            },
+            "8/6": {
+              "awake": 6,
+              "callbacks": 2,
+              "owned": 8,
+              "semantic_ticks": 1,
+              "wall_usec": 37991
+            },
+            "8/7": {
+              "awake": 7,
+              "callbacks": 2,
+              "owned": 8,
+              "semantic_ticks": 1,
+              "wall_usec": 32002
+            },
+            "8/8": {
+              "awake": 8,
+              "callbacks": 180,
+              "owned": 8,
+              "semantic_ticks": 89,
+              "wall_usec": 3008132
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6000049,
+          "execution_mode": "headless",
+          "failures": [],
+          "name": "m4_throughput_stress_off_headless",
+          "native_pose_acknowledgements": 5720,
+          "native_pose_echo_checks": 5720,
+          "recording_enabled": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 178,
+          "semantic_ticks_per_second": 29.6664243908675,
+          "target_cohort": "8/8",
+          "target_cohort_ticks_per_second": 29.586467615117954,
+          "workload": "stress"
+        },
+        {
+          "checks": 80,
+          "cohorts": {
+            "1/0": {
+              "awake": 0,
+              "callbacks": 361,
+              "owned": 1,
+              "semantic_ticks": 259,
+              "wall_usec": 6000924
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6000946,
+          "execution_mode": "headless",
+          "failures": [],
+          "name": "m4_throughput_sleeping_off_headless",
+          "native_pose_acknowledgements": 1036,
+          "native_pose_echo_checks": 1036,
+          "recording_enabled": false,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 259,
+          "semantic_ticks_per_second": 43.1598617951236,
+          "target_cohort": "1/0",
+          "target_cohort_ticks_per_second": 43.16002002358304,
+          "workload": "sleeping"
+        },
+        {
+          "checks": 111,
+          "cohorts": {
+            "1/1": {
+              "awake": 1,
+              "callbacks": 362,
+              "owned": 1,
+              "semantic_ticks": 179,
+              "wall_usec": 6002365
+            }
+          },
+          "display_driver": "headless",
+          "elapsed_usec": 6002388,
+          "execution_mode": "headless",
+          "failures": [],
+          "name": "m4_throughput_tower_on_headless",
+          "native_pose_acknowledgements": 716,
+          "native_pose_echo_checks": 716,
+          "recording_enabled": true,
+          "renderer_callbacks": 0,
+          "renderer_callbacks_per_second": 0.0,
+          "rendering_method": "gl_compatibility",
+          "semantic_ticks": 179,
+          "semantic_ticks_per_second": 29.8214643905059,
+          "target_cohort": "1/1",
+          "target_cohort_ticks_per_second": 29.82157866107776,
+          "workload": "tower"
+        }
+      ],
+      "qualification_sha256": "677016a107644d77f745feb8473125dc87dcd082ca913e522b0e7107ebfcf329",
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "status": "passed"
+    },
+    "package-replay": {
+      "case_count": 32,
+      "execution_mode_counts": {
+        "headless": 27,
+        "rendered": 5
+      },
+      "focused": [
+        {
+          "checks": 155,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_receipt_scheduling"
+        },
+        {
+          "checks": 108,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_completed_sample"
+        },
+        {
+          "checks": 99,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_equipment_completion"
+        },
+        {
+          "checks": 96,
+          "failures": [],
+          "mode": "headless",
+          "name": "test_object_shard_m4_actor_clock"
+        }
+      ],
+      "profiles": [],
+      "qualification_sha256": "ff223650bf2547217a8d90db9c5f8cd8464e5cfbcb69edfab83f070575dd2759",
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "status": "passed"
+    }
+  },
+  "schema": "objectshard-m4-windows-independent-throughput-review-v1",
+  "scope": "Supporting exact-source54 hosted Windows evidence only. Overall source54 campaign failed the obsolete native test premise. Final b7 Windows/runtime/package qualification is separate. No historical before/after Windows performance comparison or physical owner acceptance is inferred.",
+  "source_commit": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+  "source_tree": "bea92f2587c68f5e4cfbba299040d62baeb069e7",
+  "workflow_run": 46099370014
+}

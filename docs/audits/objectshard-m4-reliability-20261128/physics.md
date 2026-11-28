@@ -299,3 +299,70 @@ artifact and exact assertions, initial repaired replay (3,688 checks), final
 ACK-identity replay and source hashes are preserved in
 `physics-external-fire-fixture-repair.json`. These focused passes do not replace
 the complete repaired-source hosted qualification.
+
+## Mounted-fixture discovery reconciliation
+
+The repaired hosted source `69cea6f7`, run `46101473408`, passed all **131,759
+native sanitizer checks and 192 ordinary-World cases**. Its retained native
+benchmark also passed 4,276,351 checks and all 74 existing budget limits. The
+next Python qualification-contract stage correctly caught a separate test
+registration omission: the new mounted brush-revision fixture was present in
+the focused qualifier but absent from the ordinary runner's explicit opt-in
+fixture registry. Of 85 Python tests, only that unchanged set-equality
+assertion failed. Full material unittest and native parity stages did not run.
+
+The one-line test-tool repair `e977a6e69` adds that mounted fixture to
+`OBJECTSHARD_WORKBENCH_CASES`, retaining the existing discovery assertion and
+all ordinary opt-out boundaries. Fresh-barrel remains flag-free because it
+includes a Structures-disabled reference. The complete local Python discovery
+has 84 passes and one pre-existing PowerShell-runtime skip; the same unchanged
+PowerShell case passed on hosted `69cea6f7`. The actual complete application
+with the newly injected `--objectshard-m4-workbench` flag passes all **154
+brush-revision checks**, with 677 observed callbacks and zero publication
+coherence mismatch. Production/native inputs are unchanged. The throughput
+specialist independently approved the correction.
+
+`physics-mounted-discovery-repair.json` preserves the failed hosted stage,
+successful native/benchmark receipts, source identities, the local platform
+skip and actual flagged replay. The original hosted job remains failed; the
+complete new source must pass its own material, platform, package and guarded
+publication gates.
+
+## Final independent native qualification
+
+The final native job `140850716159` in run `46103413203` completed successfully
+for application source `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`, tree
+`c7205a87bc9fda757dbcad511dcaacc618a6e73c`. Independent inspection downloaded
+artifact `15246848488`, verified its 137,535,679-byte archive against SHA-256
+`1fd24bbb5cbe3293c09581921887a19eb983d1364516e326136c85bf03b65f35`, and
+compared all 133 captured native-suite input hashes against the exact Git
+source objects: zero mismatches.
+
+| Final gate | Verified result |
+|---|---|
+| ObjectShard ASan/UBSan suites | 131,759 checks, zero failures: storage 8,271; contact 81,255; coordinator 5,980; admission 28,092; external Fire 3,689; chemistry 4,472 |
+| Existing ordinary World | 192 test cases, zero failures |
+| Retained native cost budgets | 4,276,351 checks, all 74 existing limits passed |
+| Python qualification contracts | 85 tests passed, zero skips |
+| Material catalogue regressions | 231 tests passed, zero skips, 590.809 seconds |
+| Compiled material parity | PASS; native/authored/compiled-shadow facts equal |
+| Compatibility, catalogue compiler, CI provider policy | Passed |
+
+The sanitizer compiler is GCC 13.3.0 with AddressSanitizer and
+UndefinedBehaviorSanitizer; LeakSanitizer was disabled and is not claimed.
+The retained native benchmark uses synthetic pose/acknowledgement inputs and
+does not run Rapier or a renderer. Its host was AMD EPYC 7763, differing from
+the preceding Intel Xeon campaign; no cross-host speedup is inferred. The
+material parity report is a compiled metadata comparison, separately scoped
+from the 192 actual ordinary-World tests. The hosted Python result includes
+its available PowerShell case; the earlier local 84-pass/one-skip registry
+replay remains a distinct receipt.
+
+The complete source, tool, per-suite and artifact identities are preserved in
+`physics-native-qualification-final.json`. This closes the required native
+and material gate. The two earlier complete jobs remain failed for their
+recorded fixture/registration reasons. Windows/source/extracted physics
+receipts, guarded runtime publication and physical owner acceptance remain
+separate qualifications. The original barrel observation remains unreproduced;
+the representative supported-rest and protected-contact limitation described
+above are unchanged.

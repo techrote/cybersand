@@ -1,0 +1,44 @@
+{
+  "source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "publication": "d5bb74cdc8b3350ea85ba7899e46d6d0038074b8",
+  "checks": [
+    {
+      "check": "check_repository",
+      "exit_code": 0,
+      "log_sha256": "a0d511647b42a156990ef7c300889d12664350d757ecf890a603dd4b5d413a93",
+      "log_tail": [
+        "    \"Historical M11 integrity is checked separately by check_m11_consistency.py\"",
+        "  ]",
+        "}"
+      ]
+    },
+    {
+      "check": "check_m11_consistency",
+      "exit_code": 0,
+      "log_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "log_tail": [
+        "  \"working_tree_differences\": [],",
+        "  \"errors\": []",
+        "}"
+      ]
+    },
+    {
+      "check": "check_ci_provider_policy",
+      "exit_code": 0,
+      "log_sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f",
+      "log_tail": [
+        "    \"runner_indirection\": \"forbidden\"",
+        "  }",
+        "}"
+      ]
+    },
+    {
+      "check": "check_docs",
+      "exit_code": 0,
+      "log_sha256": "2403ea9b569c16e9a34500b78546b0398e72cacab5fe53cd7986218a05415adf",
+      "errors": [],
+      "warnings": []
+    }
+  ],
+  "package_verification": "Independent root frozen verifier PASS1484files; published DLL equals packaged DLL; see runtime-publication-root-review.json"
+}

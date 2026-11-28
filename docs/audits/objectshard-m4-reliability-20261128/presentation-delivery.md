@@ -10,11 +10,144 @@ related-documents: [../../research/objectshard-m4-workbench.md, ../../operations
 
 # Presentation and evaluator qualification
 
-**Current disposition: corrective implementation in progress; Draft/HOLD.**
+**Current disposition: engineering-qualified Windows evaluator delivered; Qualified Draft/HOLD for physical owner evaluation.**
 This packet records source-bound evidence as it completes. A passing renderer
 fixture is not physical-owner acceptance or qualification of a later native
-build. The final candidate and portable evaluator remain subject to the
-combined campaign and clean extracted execution.
+build. The exact final source passed the combined campaign, clean extracted execution
+and independent archive review. Physical owner acceptance remains pending.
+
+## Definitive final delivery
+
+The [final Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46103413203/artifacts/15249152001)
+is independently verified. Extract the GitHub wrapper, then extract the inner
+`objectshard-workbench-evaluator.zip` and open **Open Workbench.cmd**.
+
+| Identity or gate | Final evidence |
+| --- | --- |
+| Qualified application/build/package | `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`, tree `c7205a87bc9fda757dbcad511dcaacc618a6e73c` |
+| Guarded runtime publication | `d5bb74cdc8b3350ea85ba7899e46d6d0038074b8`, tree `3b74f65f08290813c582309116376b907b5b4ee1`; exact b7 parent and only four admitted runtime/manifest paths |
+| Inner archive | `objectshard-workbench-evaluator.zip`, **96,694,450 bytes**, SHA-256 `04308deb50e8044054c624a4adf200a04bc1b7c8034621e0576338b79009d8e7` |
+| Outer GitHub artifact | `15249152001`, 96,312,417 bytes, SHA-256 `6018f737aa107bec2bd58f4c146f39fbfc3d176556fb62e962e7d80d0f012c42` |
+| Final Windows source | 65 headless cases; 52 graphical-profile cases comprising 28 actually rendered cases and 24 headless helpers; all passed |
+| Clean extracted replay | 32 cases comprising five actually rendered cases and 27 headless helpers; all passed |
+| Actual shipped CMD | Four clean paths: spaces, parentheses, Unicode and nested; all 73-check probes passed, taking 97.562–104.813 seconds each including cold import, preparation and simulation |
+| Independent package proof | 1,484 payload hashes, 126 native inputs, 1,468 execution inputs and 1,179 packaged input locations reconciled; exact guide/launcher bytes, provenance refusals and tamper controls passed |
+| Visible extracted application | Seven full Workbench captures and two ordinary/rotated material swatches inspected; coherent patterns, clipping, Held inspection, Restore and scene replacement |
+
+The [independent archive review](package-final/independent-review.json) and
+[extracted graphical review](package-final/graphical-review.json) bind these
+results to the immutable package and exact source. The final mounted camera
+fixture passed 226 checks with 249 callbacks, 247 positive renderer observations
+and no foreign or incoherent display observation. Its cold material preparation
+took 32.811 seconds on hosted software ANGLE; the synthetic prepared first-body
+capture took 558.957 ms and its replacement 14.979 ms. These are different
+measurements and neither establishes physical monitor FPS or TITAN RTX
+performance. The actual source-to-package Workbench stage ran from 04:44:36 to
+05:01:35 UTC; publication completed at 05:02:38 UTC.
+
+A independently reviewed the [final physics receipts](physics-windows-final.json);
+B independently reviewed the [final Windows modes, cohorts and transaction costs](windows-final-b7-control-timing.json).
+The existing eight-awake-body objective remains open, the original owner barrel
+impulse was not reconstructed, and later Strata/shared Workbench reconciliation
+remains required. The [owner guide](../../operations/objectshard-workbench-playtest.md)
+provides the precise operating route. No merge, Ready promotion or physical
+owner acceptance is implied.
+
+## Current candidate and independent renderer review
+
+The current source is `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`, tree
+`c7205a87bc9fda757dbcad511dcaacc618a6e73c`, in
+[run 46103413203](https://github.com/techrote/cybersand/actions/runs/46103413203).
+The machine-readable [delivery record](delivery-record.json) records actual gate outcomes
+explicitly and separates the earlier [54a attempt](candidate-54a-delivery-record.json)
+and [69c attempt](candidate-69c-delivery-record.json). Their source-specific
+receipts are not adopted or relabelled as current-source qualification.
+
+The 54a native lane stopped on two stale tests for the superseded fixed angular
+limit. Its successor 69c passed all native sanitizer suites and retained budgets,
+then stopped on an ordinary-runner fixture-registry completeness assertion.
+The final successor adds the missing existing brush fixture to that opt-in
+registry. These two repairs change tests/qualification inputs; all 126 native
+production inputs remain identical, with canonical ledger SHA-256
+`92a611767b86f9c96caa159730106089726a16049d82485bbb89635d594a538b`.
+Each source still requires its own full campaign and guarded publication.
+
+The source-matched early Windows native graphical lane in
+[run 46101473408](https://github.com/techrote/cybersand/actions/runs/46101473408)
+passed the actual Workbench camera fixture (226 checks, 273 renderer callbacks)
+and paused brush-revision fixture (159 checks, 224 callbacks), with zero foreign
+or incoherent display observations. Its independent
+[receipt and image audit](native-presentation-candidate69/independent-review.json)
+binds every inspected PNG to artifact
+[15246346712](https://github.com/techrote/cybersand/actions/runs/46101473408/artifacts/15246346712),
+5,803,970 bytes, SHA-256
+`c26052d75d5924fc4caa1499d19955808fe1858e79e105725097f08437d5eb3e`.
+Both the presentation specialist and integration owner inspected the patterned
+tower, clipped pan/zoom, Held mid-lease far pan and retained-view resize. The
+specialist additionally inspected paused resize and Restore before Play.
+
+That run loaded Godot `4.7.stable.official.5b4e0cb0f`, pinned Rapier and DLL
+`849c66f0254717ee95bf797c942a22fe931045c51f46a0b6a142140c969ea417`.
+The independently downloaded build manifest agrees with all 126 source and
+1,378 build inputs in a clean exact-69c checkout. The actual camera case took
+145.795 seconds including cold ordinary rendering and the 31.673-second
+explicit structural material preparation; its brush case took 110.671 seconds.
+These are complete hosted software-renderer fixture times, not frame costs,
+monitor FPS, physical-GPU performance or an exact reconstruction of owner cuts.
+
+The accepted integration baseline remains
+`9920e7a7369f24e2818313c007cc33616c1a6a83`. Strata main
+`18e37259678fbf5097470fff030f5f7f16f52ae6` merged during qualification; its
+actual-main qualification was still running when checked at 03:33 UTC.
+That newer mainline needs subsequent reconciliation. No unfinished Strata
+runtime tuple was imported into this frozen campaign.
+At the principal's 04:54:38 UTC closure recheck, main had advanced to
+`d414774ddc582cbc03d74e119937665368dc3476` through a packaging/compiler-cache
+staging correction. Its combined delivery run and the Strata merge's combined
+delivery run had both failed; separate Native/GDExtension gates passed. The
+accepted baseline therefore remains 9920. The recorded read-only merge preview
+already identifies shared Workbench/launcher and documentation conflicts for
+later reconciliation; this mission does not alter that separate integration.
+
+The final b7 source's early actual native Windows lane now also passes:
+[artifact 15246911075](https://github.com/techrote/cybersand/actions/runs/46103413203/artifacts/15246911075),
+5,815,158 bytes, SHA-256
+`d21f85bc7ea321ff901d64bea8ece434776e8b92a7bf261a8be6dfd4f3bd18cb`.
+Its [complete receipt](native-presentation-final/summary.json) binds loaded DLL
+`a4b75f118a565fd965109b0b172e5050ae2f46346ef2a4863e8a1a9f363cc503`
+to the final source. Camera 226 checks and brush 159 checks pass, with 246/233
+positive renderer callbacks and zero foreign/incoherent observations. Seven
+full Workbench captures were independently inspected, including final scene
+replacement. The actual Workbench material preparation took 48.759 seconds
+on this software-rendered host, after 65.862 seconds of preceding process
+startup; total camera fixture execution was 170.163 seconds. This records the
+real cold admission cost rather than presenting the small subsequent swatch
+capture time as total application startup. Final Windows source and immutable
+archive execution subsequently passed as recorded above.
+
+The final native campaign now passes 131,759 assertions, 192 ordinary World
+tests, 85 Python contracts, 231 material contracts and 74 native budget limits,
+with no hosted skips. A independently verified all 133 captured native-suite
+inputs against the final Git source. The Linux Workbench job also completed.
+Its [validated producer review](native-production-final/linux-independent-review.json)
+binds ELF `059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4`
+to the final source. Its complete 126 native and 1,378 build inputs exactly
+match the Windows build manifest. Final Windows execution and guarded
+publication also passed, with byte-identical published producer manifests.
+
+A recoverable earlier Windows evaluator is now preserved in the
+[54a historical delivery record](candidate-54a-delivery-record.json).
+Its full source matrix passed 65 headless cases and 52 graphical-profile
+cases (28 actually rendered); its clean extracted replay passed 32 cases
+(five actually rendered). All four clean path variants executed the shipped
+`Open Workbench.cmd`, and the independent archive review checked 1,483 payload
+files plus all source/provenance relationships. Four actual extracted
+Workbench images were inspected, including Held far-pan and authored Restore
+before Play. The source matrix took 65 minutes 36 seconds and packaging with
+launcher/replay took 19 minutes 10 seconds. These observed durations guide
+closure planning; they do not guarantee the final source's completion time.
+The 54a native gate failed superseded assertions, so this recoverable package
+does not qualify the final source or waive any gate.
 
 ## Confirmed causes and bounded corrections
 
@@ -202,7 +335,7 @@ Its real-renderer registration uses the existing graphical path; the natural
 than an exploratory 15-second local override. Tick/contact/rest assertions and
 all global watchdog values are unchanged.
 
-## Portable delivery route and remaining gates
+## Portable delivery route and staged evidence
 
 The first explicit preparation smoke, [run 46096195855](https://github.com/techrote/cybersand/actions/runs/46096195855)
 at source `bd97c2599eb86958ee8e8d9c8e6ee5c6935edb9b`, correctly refused readiness
@@ -274,7 +407,7 @@ two failed historical timing assertions on Linux and Windows:
 The subsequent B fixture repairs establish durable attachment/Pause and an
 actual delayed-receipt interval under both Main pumps; they retain the geometry
 and equipment contracts. Source graphical and package steps were skipped in
-that first failed campaign. A new combined run must qualify the final source.
+that first failed campaign. The final b7 campaign above completes that replacement qualification.
 
 The established `[objectshard-m4-publish]` path source-leases the current
 principal branch, builds fresh Linux/Windows native extensions, verifies both
@@ -293,8 +426,8 @@ parentheses, Unicode and nested directories, executes the shipped launcher and
 refuses tampered payloads/ledgers. A separate replay runs tests from the actual
 extracted payload, not the build checkout.
 
-**Pending at this checkpoint:** combined native/Windows qualification, final
-application/native tuple, exact final inner archive bytes/hash, extracted
-launcher/replay results and physical owner evaluation. The [owner guide](../../operations/objectshard-workbench-playtest.md)
-contains the precise eight-check route and visible results. This packet will be
-updated with actual terminal results; no pending result is a passing gate.
+**Final engineering disposition:** the exact-source campaign, guarded native
+publication, independent archive verification and actual extracted launcher/replay
+passed. Physical owner evaluation, the eight-awake-body performance objective
+and later Strata/mainline reconciliation remain open. The [owner guide](../../operations/objectshard-workbench-playtest.md)
+contains the precise eight-check route and visible results.

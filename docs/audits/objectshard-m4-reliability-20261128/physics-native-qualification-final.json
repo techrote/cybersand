@@ -1,0 +1,209 @@
+{
+  "archive_sha256": "1fd24bbb5cbe3293c09581921887a19eb983d1364516e326136c85bf03b65f35",
+  "archive_size": 137535679,
+  "artifact_id": 15246848488,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46103413203/artifacts/15246848488",
+  "benchmark_host": {
+    "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "cpu_model": "AMD EPYC 7763 64-Core Processor",
+    "logical_cpus": 4,
+    "platform": "Linux-7.0.0-1020-azure-x86_64-with-glibc2.39"
+  },
+  "benchmark_scope": "Actual native cost workload with synthetic pose/acknowledgement values. No Rapier, rendered frame or physical monitor performance claim. Native source inputs are unchanged; the benchmark digest includes host CPU/platform, so the final AMD EPYC7763 host differs from the earlier69cea IntelXeon6975P-C run.",
+  "compiler_flags": [
+    "-std=c++20",
+    "-O1",
+    "-g",
+    "-pthread",
+    "-Wall",
+    "-Wextra",
+    "-Wpedantic",
+    "-Werror",
+    "-fsanitize=address,undefined",
+    "-fno-omit-frame-pointer"
+  ],
+  "compiler_version": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0",
+  "file_sha256": {
+    "material-catalogue-check.json": "bc00bbaa8af2e9783c6242fdca6a311bfd422d439248b0952bf8c94199f76acc",
+    "material-compatibility-gate.json": "7bcff308358e610836fa679ed0e7490d971b7ca3baf408abd5b03b6c04f4c1ab",
+    "material-compatibility.log": "fe9801b048553058ac09ff33f09573074adae27b1b795b05efb23c20d08043de",
+    "material-native-parity.json": "6dfceffc0c7fd0a02fe269d51dffb09fe65c397f2a84a79bb63cdd9e9d0cfd7a",
+    "native/summary.json": "49f7e230001b8d4a40eaf3a37f31d6763a6b75630e4a55f087d68946ee435504",
+    "provider-policy.log": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f",
+    "qualification-contracts.log": "029aecb875d1a6e519c77104457c285b2e612bef21b106eaa32e11c7be61f341"
+  },
+  "independent_input_verification": {
+    "captured_input_count": 133,
+    "git_object_source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+    "method": "Each captured source path was read independently from the exact Git commit and SHA256 compared with artifact inputs.json.",
+    "mismatches": []
+  },
+  "job_id": 140850716159,
+  "material_catalogue_unit_tests": {
+    "elapsed_seconds": 590.809,
+    "failures": 0,
+    "skips": 0,
+    "status": "passed",
+    "tests": 231
+  },
+  "material_compatibility_gate": "passed",
+  "material_compiler_gate": "shadow material catalogue matches authored source; production authority unchanged",
+  "material_native_parity": {
+    "compiled_queries": {
+      "appearance_projection_cases": 17170432,
+      "capability_byte_ids": 256,
+      "density_exchange_cases": 327680,
+      "descriptor_byte_ids": 256,
+      "family_membership_cases": 2048,
+      "lateral_rate_cases": 65536,
+      "layer_kind_byte_ids": 256,
+      "pair_roll_cases": 16777216,
+      "pair_wrapper_cases": 16777216,
+      "physics_qualification": false,
+      "status": "PASS",
+      "validity_uint16_inputs": 65536,
+      "viscosity_cases": 16777216,
+      "world_executed": false
+    },
+    "godot_executed": false,
+    "metadata": {
+      "coverage_records": 10,
+      "descriptor_fields_per_slot": 15,
+      "granular_support_ids": 9,
+      "hard_surface_ids": 101,
+      "material_slots": 132,
+      "memberships": 33,
+      "pair_rules": 56,
+      "semantic_families": 7,
+      "specialized_mechanisms": 19,
+      "tuning_passes": 2,
+      "valid_ids": 131
+    },
+    "native_authored_compiled_shadow_facts_equal": true,
+    "physics_qualification": false,
+    "scope": "Native parity for shadow metadata and authenticated constant consumers; no World execution",
+    "source_commit": "0fd4af5987e77db4da3e37c757cf2c0917ae9e15",
+    "status": "PASS",
+    "world_executed": false
+  },
+  "native_sanitizers": {
+    "checks_reported": 131759,
+    "counts_complete": true,
+    "elapsed_seconds": 839.932414668,
+    "failures_reported": 0,
+    "input_digest": "b505bff03fe79fcad8d740d2c275fdb8e6b5558c9aedf5e036efe7d08b563e81",
+    "leak_sanitizer": false,
+    "sanitizers": true,
+    "status": "passed",
+    "test_cases_reported": 192
+  },
+  "native_suites": {
+    "admission": {
+      "binary_sha256": "da07ed8575fd3be74a86a2a9f84b3fb7028cfa1f9197324ff9ee9481d1ba7cbc",
+      "checks": 28092,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed"
+    },
+    "chemistry": {
+      "binary_sha256": "b46e86052d928de7f6d34f44eeb753c15b24a903189bd0c9f39fd2235cf26c5b",
+      "checks": 4472,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed"
+    },
+    "contact": {
+      "binary_sha256": "c0af01c84b3cfb43b26b55f1bdd030776cb7d4dbeceba8b82adb50a9ba00b60c",
+      "checks": 81255,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed"
+    },
+    "coordinator": {
+      "binary_sha256": "c0f27c4cdfd60fb158af2df2e48c3cd179d2347e64246008cbae739272798fe8",
+      "checks": 5980,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed"
+    },
+    "external_fire": {
+      "binary_sha256": "83407a73569f1dffc55af164e2a4ca085cb2d8285a2b4a7c33c12d7ab66798ce",
+      "checks": 3689,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed"
+    },
+    "storage": {
+      "binary_sha256": "a5abc0c675031ebcb7486be6fac0b23df430d2959ececb1162f3da71217c1def",
+      "checks": 8271,
+      "count_unit": "checks",
+      "failures": 0,
+      "status": "passed"
+    },
+    "world": {
+      "binary_sha256": "43ef51e6278b861dbc0fc4a5cd0986f59465f7ea50b155333579120e09e31b2e",
+      "checks": 192,
+      "count_unit": "test_cases",
+      "failures": 0,
+      "status": "passed"
+    }
+  },
+  "parity_identity_note": "The parity report source_commit is its authenticated historical catalogue baseline; actual execution custody is the finalb7d889 workflow/artifact. This static compiled parity is separate from the192 executed ordinary-World test cases.",
+  "preserved_limitations": [
+    "Original physical owner barrel jump remains unreproduced; representative fresh/settled/barrel-compound controls do not reconstruct the unknown original sequence.",
+    "Supported owned Tower rest is directly demonstrated, but protected contact-row WorldWall erasure remains an explicit native refusal; no complete last-contact removal/fall claim.",
+    "Nonfinite or conflicting motion domains, unprovable extreme completed motion, body/resource capacity exhaustion and unsupported combinations still safely refuse.",
+    "Native checks and headless fragment/barrel helpers do not establish rendered or physical-machine performance; actual graphical camera/brush and portable Windows extraction are separate gates.",
+    "Physical owner evaluation and any reconciliation against the newly merged Strata mainline remain outside this native gate."
+  ],
+  "prior_gate_history": [
+    {
+      "reason": "Two obsolete singleton0.201rad refusal assertions; exact failure and repaired tests retained in physics-external-fire-fixture-repair.json.",
+      "run": 46099370014,
+      "source": "54a7719e",
+      "status": "failed"
+    },
+    {
+      "reason": "One mounted-fixture discovery registry omission; exact failed contract and repaired replay retained in physics-mounted-discovery-repair.json.",
+      "run": 46101473408,
+      "source": "69cea6f7",
+      "status": "failed"
+    }
+  ],
+  "provider_policy": {
+    "errors": [],
+    "policy": {
+      "external_provider_config": "forbidden unless policy is explicitly changed",
+      "routine_provider": "GitHub-hosted Actions",
+      "runner_indirection": "forbidden"
+    },
+    "scope": "active CI provider and runner routing",
+    "status": "passed"
+  },
+  "python_qualification_contracts": {
+    "elapsed_seconds": 7.682,
+    "failures": 0,
+    "scope": "Full hosted Linux discovery, including available PowerShell. The earlier local84pass/1skip is a separate registry-repair receipt.",
+    "skips": 0,
+    "status": "passed",
+    "tests": 85
+  },
+  "retained_native_benchmark": {
+    "binary_sha256": "b2f4fec48d448a02cbde55278a9607405819cf32a93b3a0968557dc7470b9012",
+    "budget_qualification": {
+      "failures": [],
+      "limits_checked": 74,
+      "status": "passed"
+    },
+    "checks": 4276351,
+    "failures": 0,
+    "input_digest": "df97297ce3f6db6430645494e9c1a6491ceb0708a02e1ab14a59b7ef9d2f5327",
+    "status": "qualified"
+  },
+  "run_id": 46103413203,
+  "run_url": "https://github.com/techrote/cybersand/actions/runs/46103413203",
+  "schema": "objectshard-m4-final-native-independent-review-v1",
+  "source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "source_tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+  "status": "passed"
+}

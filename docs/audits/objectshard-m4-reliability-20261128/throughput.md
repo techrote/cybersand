@@ -25,8 +25,9 @@ pacing improvement persists without a compiler or binary change:
 These are medians of two observed rates, not confidence intervals. The one-body
 45–60 objective is reached locally. The eight-active objective of at least 30
 remains narrowly unmet; no acceptance waiver or rounded-up pass is implied.
-Enabled-zero and sleeping bodies approach the ordinary reference's callback cap,
-although their native/physical work still has an incremental CPU cost.
+Enabled-zero and the single naturally sleeping plank approach the ordinary
+reference's callback cap, although their native/physical work still has an
+incremental CPU cost. No fully sleeping eight-body cohort was measured.
 
 All results use the same Godot 4.7 executable, Rapier and 60 callback cap on a
 shared AMD EPYC 9V74 host with nine visible logical processors. They measure real
@@ -34,6 +35,12 @@ native semantic ticks and Main-owned Rapier work in **headless** execution. They
 do not measure monitor FPS or establish performance on the owner's Ryzen
 5600X/TITAN RTX. The release runtime and graphical/source/extracted campaigns
 are qualified independently by the integration/release workstream.
+
+The practical consequence of the identical-native local rates is explicit: with
+a fixed 1/60-second physical interval, 56.37 ticks/s is about 94% of real-time,
+while 29.74 ticks/s is about 50%. Eight-active collapse therefore remains visibly
+slower despite the approximately 1.88× improvement. The one-plank sleeping result
+does not remove the full-roster and serial transaction costs of larger populations.
 
 ## Source and runtime provenance
 
@@ -284,3 +291,301 @@ temperature 371 and revision 3→4; identical repaint remained at 4 and advanced
 native time. Actual distant Wood creation and erasure also retained their
 publication/quantity assertions. The compact independent receipt is included in
 `throughput-post-noop-confirmation.json`; no forced render refresh was used.
+
+## Hosted Linux source54 qualification and practical limits
+
+Workflow 46099370014, Linux job 140838073361, completed successfully for exact
+source `54a7719e55be313820ebeb8d36efe6c230c1348c`: **65 headless-matrix cases and all
+52 cases in the graphical-profile lane passed**. The latter lane contains 28
+actual X11-rendered cases and 24 repeated headless helpers, as recorded by their
+individual commands. The supporting artifact is 15246670363, outer SHA-256
+`be0a31fb682173c5099e2f4cb50a458f20e1e773589e605915f72cc6df1004f9`.
+Its sealed pinned-toolchain native SHA-256 is
+`059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4` (6,081,432 bytes).
+The separate production bundle 15245544924 contains exactly those binary bytes,
+and its same-World/Main-Rapier/compact-motion validation passed. These identities
+were checked against both qualification receipts, not inferred from a job label.
+
+| Hosted source54 workload | Headless semantic ticks/s | Xvfb/software semantic ticks/s |
+|---|---:|---:|
+| Structures disabled | 59.88 | 5.02 |
+| Enabled, zero bodies | 60.05 | 20.04 |
+| One awake tower, recording off | 34.00 | 11.97 |
+| One awake tower, recording on | 36.15 | 11.78 |
+| Eight awake bodies | 28.10 | 7.57 |
+| One naturally sleeping plank, 1/0 | 60.12 | 18.19 |
+
+The hosted headless one-body objective is not reached: approximately 34 ticks/s
+corresponds to about 57% nominal real-time, and eight-active 28.10 to about 47%.
+These lower hosted results accompany the faster local paired figures; they are
+not omitted or substituted for them. The headless eight-awake cohort lasted
+3.168 seconds before some bodies slept. The software-rendered eight-awake cohort
+occupied its complete approximately 6.205-second window.
+
+The graphical lane explicitly uses Xvfb, `LIBGL_ALWAYS_SOFTWARE=1`,
+`LP_NUM_THREADS=2` and `GALLIVM_PERF=nopt`. It records only about 4 renderer
+post-draw callbacks/s, including the weak disabled reference. Its visual and
+publication assertions pass, but this is not a responsive physical-GPU
+performance pass or a monitor-FPS measurement. No matched historical graphical
+baseline was collected on this hosted environment, so these differences are not
+attributed to a single implementation, compiler, scheduling or rendering cause.
+
+The complete campaign 54 remains **failed**, because its separate native sanitizer
+job encountered two obsolete singleton angular-refusal assertions. Linux lane
+success does not erase that gate. Application/native/shader production paths are
+identical between 54a, 69cea and b7d889b; their test/CI/documentation changes and actual
+run identities remain distinct. `linux-source54-qualification.json` preserves the
+cohort durations, focused transaction results, provenance reconciliation and
+explicit scope. Later exact-source campaign qualification is tracked separately.
+
+## Second hosted Linux observation, unchanged production
+
+Source `69cea6f7f3484e7b13bd3c01a717ef0c1c64580f`, run 46101473408/Linux job
+140844659296, also passed **65 headless-matrix cases and all 52 cases in the
+graphical-profile lane**, again 28 rendered and 24 repeated headless helpers. Evidence artifact
+15245949136 has SHA-256
+`9f09e307e07d0b1265c5234bce4c20930562ce699a13f46e09e22afc4eed8df0`.
+The separately verified producer artifact 15246995227 contains the same
+`059c5880…` native binary as source54. Every one of its 126 native and 1,378 build
+input hashes was independently compared with the exact source Git blobs, and its
+three native owner helper receipts and log hashes passed reconciliation.
+
+| Hosted source69 workload | Headless semantic ticks/s | Xvfb/software semantic ticks/s |
+|---|---:|---:|
+| Structures disabled | 59.78 | 6.83 |
+| Enabled, zero bodies | 60.00 | 28.65 |
+| One awake tower, recording off | 58.85 | 18.77 |
+| One awake tower, recording on | 57.96 | 19.53 |
+| Eight awake bodies | 30.05 | 12.43 |
+| One naturally sleeping plank, 1/0 | 59.94 | 32.89 |
+
+The headless 8/8 cohort lasted 2.995 seconds; the graphical 8/8 cohort lasted its
+full 6.033-second window. One/tower and sleeping cohorts span their complete
+approximately six-second windows. Every profile retains exact acknowledgement
+and pose-echo equality. Graphical renderer callbacks remained approximately
+4.6–5.3/s for enabled workloads, with 6.99/s for the disabled reference.
+
+These substantially different short hosted observations use identical
+production code and native bytes. They therefore do not establish a further
+implementation gain or identify a single cause for host variability. The
+single headless eight-awake observation just above 30 does not replace the
+interleaved comparisons or turn the provisional physical-performance objective
+into a robust pass. Physical owner evaluation remains necessary.
+
+The overall source69 campaign remains **failed**: native sanitizers, ordinary
+World and benchmark execution passed, but the subsequent Python discovery gate
+found one missing ordinary Workbench opt-in registration for the new brush
+fixture. That one-line test-registration repair is included in source b7; no
+production behavior changed. `linux-source69-qualification.json` preserves this
+disposition and exact observations. `linux-source54-to-b7-inputs.json` separately
+records that all 126 native and five native build-contract inputs from source54
+also match b7. Neither record relabels earlier execution as a final-source pass.
+
+## Final b7 Linux qualification and producer custody
+
+Final application source `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`, tree
+`c7205a87bc9fda757dbcad511dcaacc618a6e73c`, completed Linux job 140850716133 in run
+46103413203, attempt 1. All **65 headless-matrix cases** and **52 graphical-profile
+lane cases** passed. Individual command records establish 28 actual X11-rendered
+cases and 24 repeated headless helpers in the latter lane. Every case completed
+naturally with exit 0 and no launch/diagnostic error or skip. This is final-source
+Linux evidence; complete Windows, extracted-package and guarded-publication
+outcomes are recorded by the release workstream.
+
+Qualification artifact **15246929773** is 25,272,662 bytes, outer SHA-256
+`47a5511628070bebd8fc63209adc1eaacd5a06106342853e58e2828f6ab2767b`.
+Producer artifact **15246929759** is 2,384,016 bytes, outer SHA-256
+`a7825226751144cd9565c91af7822fc4d01bc76dc787783dd39a4c745c754086`.
+Both archives were downloaded independently and their actual digests checked.
+The producer's 6,081,432-byte ELF has SHA-256
+`059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4`, exactly matching
+the sealed runtime used by both final qualification lanes. All 126 native and
+1,378 build-input hashes match the exact b7 Git blobs. Godot/Rapier identities,
+source/tree/run/attempt, native-helper completion and log hashes also reconcile.
+The three focused producer helpers passed 28, 18 and 9 checks respectively.
+
+The Linux runtime manifest SHA-256 is
+`14857902133f346b04f26832b91ab28798a904b8026fef8a0d76b0b99a5fa9e1`; its target
+validation receipt is
+`c104cac294af0f138906689bfc91f70f2b13f770f13fcb3796a4ea36a367e80e`.
+`linux-final-b7-qualification.json` records all identities and case modes, with
+the producer's independent input/log reconciliation embedded. These final bytes
+are retained separately for the integration owner's publication comparison.
+
+| Final b7 workload | Headless target-cohort ticks/s | Xvfb/software target-cohort ticks/s |
+|---|---:|---:|
+| Structures disabled, 0/0 | 59.84 | 6.72 |
+| Enabled, zero bodies, 0/0 | 60.02 | 36.65 |
+| One awake tower, recording off, 1/1 | 59.81 | 19.54 |
+| One awake tower, recording on, 1/1 | 60.08 | 19.55 |
+| Eight awake bodies, 8/8 | 29.83 | 12.81 |
+| One naturally sleeping plank, 1/0 | 59.98 | 38.84 |
+
+The final headless eight-awake cohort is exactly **88 ticks in 2.950026 seconds**
+(29.83025 ticks/s), followed by natural sleeping within the approximately
+six-second whole observation. It corroborates the matched 29.74 result without
+replacing that comparison. It is about 50% nominal real-time and remains below
+the provisional 30 target. The one-awake cohorts last 5.918933 seconds off and
+5.892557 seconds on; those rates use only those cohorts, excluding their short
+sleeping tails. Small rates above 60 reflect finite callback-boundary windows,
+not a claim of sustained simulation faster than its fixed interval.
+
+In the software-rendered lane the awake cohorts span the full windows: tower
+119 ticks in 6.089681 seconds, and eight bodies 78 ticks in 6.090532 seconds.
+Their renderer post-draw callback rates are 4.93/s and 4.60/s. All twelve profiles
+retain exact native acknowledgement/pose-echo equality. These functional and
+presentation passes still do not establish a responsive physical-GPU or owner
+hardware performance pass. No further performance experiment or architectural
+change was made during final qualification.
+
+## Supporting source54 Windows observations
+
+The earlier source54 Windows artifact 15247169371 was independently checked at
+SHA-256 `efcb49f751bb8641cafbdd86338f1e5deadc92e8c9d14974bdc9a393d1e544b5`.
+Its actual native DLL is
+`3d2e35a124f4307993f84751c94a7bba87ea7c1a0ee12c55480bc63357775ecb`, distinct from
+the final b7 producer. The 65 headless-matrix cases, 52 graphical-profile cases
+(28 actually rendered), and 32 extracted-package cases (five actually rendered)
+passed. Source54's separate native test gate failure still prevents treating the
+whole historical campaign as passed. Final b7 Windows evidence is independent.
+
+| Supporting source54 Windows workload | Headless ticks/s | Actual ANGLE ticks/s |
+|---|---:|---:|
+| Structures disabled | 60.00 | 19.46 |
+| Enabled, zero bodies | 49.65 | 21.84 |
+| One awake tower, recording off | 29.82 | 16.66 |
+| One awake tower, recording on | 29.82 | 15.47 |
+| Eight awake bodies | 29.59 | 13.13 |
+| One naturally sleeping plank, 1/0 | 43.16 | 22.76 |
+
+The headless eight-awake cohort is 89 ticks in 3.008132 seconds; its graphical
+counterpart is 79 ticks in 6.017646 seconds. The one-body cohorts occupy the full
+approximately six-second windows. All twelve profiles preserve exact native
+acknowledgement/pose-echo equality. Their actual graphical logs identify
+ANGLE/OpenGL ES 3 over Direct3D 11 using **Microsoft Basic Render Driver**; tower
+and eight-body renderer callback rates are 7.50/s and 6.81/s.
+
+These Windows observations do not meet the one-body 45–60 objective, and the
+headless one-body result is about 50% nominal real-time. They accompany the
+faster Linux/local observations without being hidden or relabelled as a
+physical pass. They are not a matched Windows before/after comparison, so a
+single platform or scheduling cause is not established. A targeted owner-machine
+comparison should use the retained control-queue, native execution, publication
+and arrival probes to locate any remaining Windows pacing cost before another
+implementation change. `windows-source54-throughput-review.json` preserves the
+actual source/runtime, command modes, cohorts and renderer identification.
+
+### Residual Windows coordination cost from existing receipts
+
+The source54 Windows one-tower headless recording identifies a substantial
+remaining serial transaction cost. It completes 179 native ticks in 6.001865 s
+while process callbacks continue at 60.31/s: 2.022 process callbacks per native
+tick. The same window completes 716 motion controls and 179 final controls,
+exactly four motion acknowledgements plus one completion per observed tick.
+
+| Exact-control stage, ms per observed native tick | Tower, recording off | Tower, recording on |
+|---|---:|---:|
+| Admission to worker handler entry | 5.755 | 5.593 |
+| Owner command handler/native service | 5.314 | 5.436 |
+| Full publication where required and receipt copying | 1.550 | 1.569 |
+| Receipt ready to Main observation | 9.750 | 10.002 |
+| Serial control round-trip sum | **22.369** | **22.599** |
+| Queue plus Main delivery, already included above | **15.505** | **15.595** |
+
+These are observed counter-total differences divided by the native ticks from
+the same six-second window, not medians or estimates inferred from FPS. Each
+control's four stages partition its monotonic wall-clock round trip, and Main
+permits one pending serial control at a time. A finite window can end with one
+partial physical interval; the recording-off/on tower samples here both have
+the exact 716/179 completed-control counts and 179 observed native ticks.
+
+The serial round trips alone exceed the 16.667 ms nominal interval. Queue plus
+Main delivery account for approximately 69% of that measured control time.
+Actual Rapier stepping is only 0.421 ms per observed tick off and 0.446 ms on;
+pose-packet capture is 0.226/0.242 ms. The Main 8 ms pump reaches its wall budget
+376/723 polls off and 382/723 on, with **zero operation-cap exhaustions**.
+Its total elapsed time is 21.767/22.092 ms per tick, including waits and contained
+Main work. It is not CPU time and must not be added to the control-round-trip
+sum. Snapshot construction remains three calls per tick and 1.786/1.792 ms per
+tick; those measurements can overlap publication and ordinary owner work.
+
+This establishes a residual coordination/receipt critical path in this hosted
+Windows result, even with inexpensive Rapier work. It does not establish whether
+the wait arises from OS sleep precision, thread wakeup, mutex contention or
+which Main callback observes a ready result. The owner-command service span
+also does not encompass every ordinary semantic World operation, so the balance
+of wall time is not assigned by these summaries. Existing-contract pacing
+should be investigated before a representation redesign; this report does not
+propose increasing the 8 ms budget or relaxing an acknowledgement barrier.
+
+For clarity, the opt-in tower probe's ordinary `receipt_delivery` has a 5.574 ms
+median and 8.112 ms p95 over its bounded recent observations. That field is
+**ordinary snapshot publication age**, distinct from the exact-control delivery
+stage above. Its worker metrics describe only the latest observed snapshot,
+not an interval average. Neither is added to the serial control sums. Differences
+of lifetime maximum counters likewise are not interval maxima and are unused.
+`windows-source54-control-timing.json` preserves the twelve existing profiles'
+counter sums, normalization, callback/cohort support and precise clock scopes.
+Final b7 Windows timing evidence is evaluated separately when available.
+
+## Final b7 Windows receipts and remaining objective misses
+
+Final Windows evidence artifact **15249057392**, run 46103413203/attempt 1,
+contains exact source `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`. Its 56,377,302-byte
+evidence ZIP was independently hashed at
+`dc82660c6b598b118d4020297d494386028727e64aa507b31825debe6918447a`.
+All 65 headless source cases, all 52 graphical-profile cases (28 rendered and
+24 headless), and all 32 extracted-package cases (five rendered and 27 headless)
+passed with natural completion, exit 0 and no diagnostic/launch error or skip.
+The exact DLL in all three lane receipts is
+`a4b75f118a565fd965109b0b172e5050ae2f46346ef2a4863e8a1a9f363cc503`.
+The evaluator archive and its four shipped-CMD launch witnesses have separate
+package identities recorded by the release workstream; this evidence ZIP is not
+the evaluator download.
+
+| Final b7 Windows workload | Headless target-cohort ticks/s | Actual ANGLE target-cohort ticks/s |
+|---|---:|---:|
+| Structures disabled | 60.00 | 17.24 |
+| Enabled, zero bodies | 47.04 | 22.51 |
+| One awake tower, recording off | 29.66 | 15.53 |
+| One awake tower, recording on | 30.47 | 15.62 |
+| Eight awake bodies | 29.12 | 13.08 |
+| One naturally sleeping plank, 1/0 | 42.29 | 23.52 |
+
+The headless eight-awake cohort is **89 ticks in 3.056352 s**, followed by natural
+sleep within its full observation; the graphical cohort spans its full window,
+**80 ticks in 6.116968 s**. Both one-tower cohorts remain 1/1 throughout their
+approximately six-second windows. All twelve profiles have exact acknowledgement
+and pose-echo equality. Every graphical profile log identifies ANGLE/OpenGL ES 3
+over Direct3D 11 on **Microsoft Basic Render Driver**. Tower/off and eight-body
+renderer callbacks are 7.43/s and 7.03/s, not physical monitor FPS.
+
+The final headless one-body 45–60 objective is therefore **not reached on this
+hosted Windows environment**, and the eight-active target remains unmet. Roughly
+30 semantic ticks/s means about half nominal real-time; these costs remain
+practically significant despite the demonstrated local matched improvement.
+Each Windows entry is one short profile, so the modest off/on variation does
+not establish a precise recording overhead. These results neither replace the
+paired Linux comparison nor establish performance on the owner's declared GPU.
+
+Exact b7 control clocks corroborate the source54 residual finding. Tower/off
+completes 712 motion controls plus 178 final controls for 178 native ticks.
+Per tick, queue wait is **5.763 ms**, owner command service **5.268 ms**,
+publication/copy **1.476 ms**, and Main delivery **9.866 ms**: **22.373 ms** in
+serial round trips, of which **15.629 ms** is queue plus Main delivery. The
+recording-on window observes 22.031 ms total and 15.273 ms queue plus delivery
+per native tick, with one completed physical interval still awaiting its native
+tick at the finite-window boundary. Actual Rapier stepping is only **0.397 ms
+per tick** in both profiles. Process callbacks remain 60.32/s off and 60.10/s on.
+The off pump reaches its existing 8 ms budget 375 times in 724 polls and has zero
+operation-cap exhaustions.
+
+This is an existing-contract coordination/receipt bottleneck on the recorded
+Windows workload, not evidence that rigid-body computation needs replacement.
+The precise wakeup, scheduling or contention cause remains unisolated; no OS
+timer claim or late implementation change is made. The four stage definitions
+and non-additive timing cautions above still apply.
+`windows-final-b7-control-timing.json` preserves the actual final lane identities,
+execution modes, all cohorts, counters and renderer lines. The M5 handover gives
+platform-specific pacing investigation priority while retaining the current
+8 ms budget and every ownership, acknowledgement and clock guarantee.

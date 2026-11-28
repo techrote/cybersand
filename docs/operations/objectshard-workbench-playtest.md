@@ -11,6 +11,13 @@ related-documents: [objectshard-m3-preflight-playtest.md, ../research/objectshar
 # Destructible structures in the ordinary Workbench
 
 This guide covers the **28 November reliability-convergence candidate**.
+The [qualified Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46103413203/artifacts/15249152001)
+uses application source `b7d889b925ab3244d10e6fe48f487fbe0dc1ce73`.
+Its inner `objectshard-workbench-evaluator.zip` is **96,694,450 bytes**, SHA-256
+`04308deb50e8044054c624a4adf200a04bc1b7c8034621e0576338b79009d8e7`.
+The actual shipped launcher and 32 clean extracted replay cases passed, followed
+by independent archive verification. The packaged guide retains its exact
+qualified source version; this repository paragraph adds the final download identity.
 PR #754 remains **Draft/HOLD** for physical Windows 11/NVIDIA evaluation. The
 [convergence evidence](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/objectshard-m4-reliability-20261128/presentation-delivery.md)
 separates completed qualification from work still pending; the older successful

@@ -1,0 +1,37 @@
+{
+  "artifact_archive_sha256": "c26052d75d5924fc4caa1499d19955808fe1858e79e105725097f08437d5eb3e",
+  "artifact_id": 15246346712,
+  "findings": [
+    "Detached Wood and Brick retain characteristic terrain patterns",
+    "World ground and independent reference barrel remain coherent in overview",
+    "Pan/zoom clips within the World view and follows the terrain transform",
+    "Held mid-lease can pan outside the originally cropped view and resize while retaining the distant brick marker",
+    "Held reason and Save diagnostics / Restore guidance remain visible",
+    "Paused Restore before Play removes old structural bodies and keeps authored World inspectable"
+  ],
+  "images": {
+    "active-overview.png": "e6624ccb6a65158d23c6a28ebd0674ed04dafffb8c3b1e1731c8be506e93b43b",
+    "active-pan-zoom.png": "ce8763c4dd95becce3b335002b62484593ae489b48f4386ab067310f0d7112c9",
+    "held-lease-far-pan.png": "e9eef353388a4e162627c2ff2199c5fa30e2e8d6d84ac0300687fb973581f5a3",
+    "held-lease-resize.png": "6081b7c87d50d3a3557deea231ad7c428ef3f0792bc24e9f88cc2d7cc9f0f473",
+    "paused-resize.png": "2a5736e1386f6c8ac7a2b89345aad0afbd9b2d044b0a4cce9f45418580b77909",
+    "restored-paused-before-play.png": "410f2412f590e8333a221efc79f333a8b443544aae5a375e0ef18e8082bc8496"
+  },
+  "integration_owner_independent_visual_review": [
+    "active-overview.png",
+    "active-pan-zoom.png",
+    "held-lease-far-pan.png",
+    "held-lease-resize.png"
+  ],
+  "schema": "objectshard-m4-independent-renderer-review-v1",
+  "scope": "Actual Windows ANGLE renderer on hosted runner; independent image inspection and exact native/publication assertions; not physical monitor FPS and not reconstruction of owner original cuts",
+  "source_commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f",
+  "specialist_visual_review": [
+    "active-overview.png",
+    "active-pan-zoom.png",
+    "held-lease-far-pan.png",
+    "held-lease-resize.png",
+    "paused-resize.png",
+    "restored-paused-before-play.png"
+  ]
+}

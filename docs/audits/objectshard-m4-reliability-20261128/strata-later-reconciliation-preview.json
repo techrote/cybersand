@@ -1,0 +1,30 @@
+{
+  "kind": "read-only merge-tree feasibility; no branch/worktree merge performed",
+  "objectshard_source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "later_main": "18e37259678fbf5097470fff030f5f7f16f52ae6",
+  "exit_code": 1,
+  "conflict_paths": [
+    "docs/operations/cybersand-codex-development-handover.md",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/status-and-roadmap.md",
+    "godot/scripts/feature_launcher.gd",
+    "godot/scripts/shared_workbench.gd"
+  ],
+  "messages": [
+    "Auto-merging README.md",
+    "Auto-merging docs/README.md",
+    "Auto-merging docs/operations/cybersand-codex-development-handover.md",
+    "CONFLICT (content): Merge conflict in docs/operations/cybersand-codex-development-handover.md",
+    "Auto-merging docs/reference/retrieval-corpus.json",
+    "Auto-merging docs/reference/retrieval-index.md",
+    "CONFLICT (content): Merge conflict in docs/reference/retrieval-index.md",
+    "Auto-merging docs/reference/status-and-roadmap.md",
+    "CONFLICT (content): Merge conflict in docs/reference/status-and-roadmap.md",
+    "Auto-merging godot/scripts/feature_launcher.gd",
+    "CONFLICT (content): Merge conflict in godot/scripts/feature_launcher.gd",
+    "Auto-merging godot/scripts/shared_workbench.gd",
+    "CONFLICT (content): Merge conflict in godot/scripts/shared_workbench.gd",
+    "Auto-merging tools/ci/run_godot_regressions.py"
+  ],
+  "stderr": ""
+}

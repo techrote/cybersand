@@ -1,0 +1,981 @@
+{
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46099370014/artifacts/15247169371",
+  "disposition": "SUPPORTING historical54 evidence; this is not the finalb7 Windows/source/extracted qualification.",
+  "lab_exchange_scope": "The exact executed379-check Lab fixture unconditionally runs _exchange: actual falling World Sand becomes cargo with conserved inventory/native tuple; external World Water extinguishes the same surviving Wood incarnation and remains World-owned. This is native/Rapier integration, not an additional rendered replay.",
+  "lanes": [
+    {
+      "lane": "headless",
+      "native_input_count": 126,
+      "native_inputs_equal_final_production": true,
+      "physics_cases": [
+        {
+          "checks": 379,
+          "failures": 0,
+          "fixture_sha256": "2ec5ce0345fb40f25eef039fcbfa241734bc9d3242ad4ea6977c67b5bc039a74",
+          "name": "test_object_shard_lab",
+          "original_log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760",
+          "rendered": false,
+          "schema": "objectshard-lab-integration-test-v1"
+        },
+        {
+          "checks": 386,
+          "failures": [],
+          "fixture_sha256": "9f2a07632e53f83718ebb34ec578532347d4be2cbc0d9cd47934a9578c55fe97",
+          "name": "test_object_shard_fragment_motion",
+          "original_log_sha256": "844de5041017cab0c02035858bc184470ebc6bf28de7078d0c3a8d79c007da07",
+          "rendered": false,
+          "schema": "objectshard-fragment-motion-v1"
+        },
+        {
+          "anomalies": [],
+          "checks": 118,
+          "failures": [],
+          "fixture_sha256": "d73157ecae8c887e23bcb2e0c4755a3bc9b6f53c5ee3ff96fe3670f5c3208a24",
+          "maximum_displacement_cells": 0.0,
+          "maximum_upward_speed_cells_s": 0.0,
+          "name": "test_object_shard_m4_remote_barrel",
+          "original_log_sha256": "2eefdf2633d3e65cdc595486594f37f06df8ce54480c98d9d20b8e4e7e8542e7",
+          "rendered": false,
+          "schema": "objectshard-m4-remote-barrel-v1"
+        },
+        {
+          "actual_physical_segments": 2400,
+          "checks": 8471,
+          "failures": [],
+          "fixture_sha256": "5c5716689acc3c88af81f38936bc6c6d663be0d08f0da9c0a312094206925ef9",
+          "name": "test_object_shard_m4_small_fragment_chain",
+          "native_pose_acknowledgements": 2400,
+          "original_log_sha256": "c470acee0aa215914f733283f9ea1aebd5e2e2e23fe0de021ea7b30935cd6788",
+          "physical_cases": [
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.5,
+              "maximum_segment_rotation": 0.232285737991333,
+              "native_instance_id": -9223372008182512154,
+              "peak_angular_velocity": 55.8112716674805
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.6,
+              "maximum_segment_rotation": 0.293247044086456,
+              "native_instance_id": -9223372008098626072,
+              "peak_angular_velocity": 70.5055999755859
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.7,
+              "maximum_segment_rotation": 0.351135730743408,
+              "native_instance_id": -9223372008014739994,
+              "peak_angular_velocity": 84.4896545410156
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.8,
+              "maximum_segment_rotation": 0.356914639472961,
+              "native_instance_id": -9223372007930853912,
+              "peak_angular_velocity": 85.8875274658203
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.9,
+              "maximum_segment_rotation": 0.36427903175354,
+              "native_instance_id": -9223372007846967834,
+              "peak_angular_velocity": 87.6693954467773
+            }
+          ],
+          "rendered": false,
+          "schema": "objectshard-m4-small-fragment-native-chain-v1"
+        },
+        {
+          "actual_physical_segments": 1440,
+          "checks": 6223,
+          "failures": [],
+          "fixture_sha256": "f526c3fad753550ccbbb936cb643960a48b84563ee185e8397dc77e9535dd18d",
+          "name": "test_object_shard_m4_sparse_parent_motion",
+          "native_pose_acknowledgements": 1440,
+          "original_log_sha256": "9efdac4b272b9d1f52f95a03507c4116dcd60447130338b5acb2b84350de4c3f",
+          "physical_cases": [
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_domain": {
+                "com_x": 1.5,
+                "com_y": 1.5,
+                "height": 3,
+                "inertia": 0.166666666666667,
+                "mass": 1.0,
+                "motion_radius": 2.12132034355964,
+                "origin_x": 26.0,
+                "origin_y": 3.0,
+                "rectangles": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "rotation_radius": 4.24264068711929,
+                "width": 3
+              },
+              "initial_horizontal_velocity": 0.5,
+              "maximum_com_motion": 0.971254706382751,
+              "maximum_reference_error": 0.0,
+              "maximum_segment_rotation": 0.232285737991333,
+              "maximum_storage_origin_motion": 0.971254706382751,
+              "native_instance_id": -9223372008182512154,
+              "peak_angular_velocity": 55.8112716674805,
+              "storage_case": "tight"
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_domain": {
+                "com_x": 1.5,
+                "com_y": 1.5,
+                "height": 3,
+                "inertia": 0.166666666666667,
+                "mass": 1.0,
+                "motion_radius": 2.12132034355964,
+                "origin_x": 26.0,
+                "origin_y": 3.0,
+                "rectangles": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "rotation_radius": 4.24264068711929,
+                "width": 28
+              },
+              "initial_horizontal_velocity": 0.5,
+              "maximum_com_motion": 0.971254706382751,
+              "maximum_reference_error": 0.0,
+              "maximum_segment_rotation": 0.232285737991333,
+              "maximum_storage_origin_motion": 0.971254706382751,
+              "native_instance_id": -9223372008098626072,
+              "peak_angular_velocity": 55.8112716674805,
+              "storage_case": "eroded_near"
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_domain": {
+                "com_x": 26.5,
+                "com_y": 1.5,
+                "height": 3,
+                "inertia": 0.166666666666667,
+                "mass": 1.0,
+                "motion_radius": 2.12132034355964,
+                "origin_x": 1.0,
+                "origin_y": 3.0,
+                "rectangles": [
+                  26,
+                  1,
+                  1,
+                  1
+                ],
+                "rotation_radius": 4.24264068711929,
+                "width": 28
+              },
+              "initial_horizontal_velocity": 0.5,
+              "maximum_com_motion": 0.971254706382751,
+              "maximum_reference_error": 6.1154249124229e-05,
+              "maximum_segment_rotation": 0.232285737991333,
+              "maximum_storage_origin_motion": 6.49791097640991,
+              "native_instance_id": -9223372008014739994,
+              "peak_angular_velocity": 55.8112716674805,
+              "storage_case": "eroded_far"
+            }
+          ],
+          "rendered": false,
+          "schema": "objectshard-m4-sparse-parent-motion-v1"
+        },
+        {
+          "checks": 212,
+          "failures": [],
+          "fixture_sha256": "3a85ad15057522810051864f8918be1747ba8dba9a492720e4f19b69f7ad59fa",
+          "name": "test_object_shard_m4_fresh_barrel",
+          "original_log_sha256": "8e5713660e6dfc1b43f4347a7469c802c838a5f26edb94eca85b13d4c4a5b41f",
+          "physical_cases": [
+            {
+              "final_y": 457.000366210938,
+              "initial_y": 432.0,
+              "maximum_upward_speed_cells_s": 1.48393297649818e-08,
+              "mode": "structures_disabled"
+            },
+            {
+              "final_y": 457.0,
+              "initial_y": 432.054992675781,
+              "maximum_upward_speed_cells_s": 0.0,
+              "mode": "pristine"
+            },
+            {
+              "final_y": 457.0,
+              "initial_y": 432.015991210938,
+              "maximum_upward_speed_cells_s": 3.72141384374913e-09,
+              "mode": "cut_before_resume"
+            },
+            {
+              "final_y": 457.0,
+              "initial_y": 432.015991210938,
+              "maximum_upward_speed_cells_s": 0.0,
+              "mode": "cut_after_four_ticks"
+            }
+          ],
+          "rendered": false,
+          "schema": "objectshard-m4-fresh-barrel-v1"
+        },
+        {
+          "checks": 158,
+          "display_coherence": {
+            "between_callback_observations": 821,
+            "draw_observations": 0,
+            "examples": [],
+            "foreign_draw_callbacks": 0,
+            "incoherent_observations": 0,
+            "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+          },
+          "failures": [],
+          "fixture_sha256": "fe4bd1fc375077eda83048e13c872cf5893cbfd14544e13fea259578acc9b38a",
+          "name": "test_object_shard_m4_brush_revision",
+          "original_log_sha256": "87033a6336e1e914105141b6320805bbaf7129e6e3e11a490680b9815025adce",
+          "rendered": false,
+          "schema": "objectshard-m4-brush-revision-v1"
+        },
+        {
+          "checks": 192,
+          "failures": [],
+          "fixture_sha256": "23dcbca4cf1fc0ac9d083ba239513c8780614c2ad0129a8b25e8085a1a366c2a",
+          "name": "test_object_shard_m4_workbench_completion",
+          "original_log_sha256": "af7543f4a2423ee34b229429c7e014714eaeedfe6b531071005cfdaaaf01c82e",
+          "rendered": false,
+          "schema": "objectshard-m4-workbench-completion-v1"
+        },
+        {
+          "checks": 137,
+          "failures": [],
+          "fixture_sha256": "ce2c1f677c31086092f1e686bf6b1636fb77c4ac9cf0cefe58eff124536692c8",
+          "name": "test_object_shard_m4_fragment_reabsorption",
+          "original_log_sha256": "bdcf9f55c5cb15282954424e22da6b838ac7acf46f493cf111db7344dd65015c",
+          "rendered": false,
+          "schema": "objectshard-m4-fragment-reabsorption-v1"
+        },
+        {
+          "checks": 122,
+          "failures": [],
+          "fixture_sha256": "d7d955a68edf71a9b931552ec3032df87795421e9ce976f2a9a81220aa109d03",
+          "name": "test_object_shard_m4_lifecycle_adverse",
+          "original_log_sha256": "90e60a3d1b3165c2605d3aeffba97e40812eadc11a822c29c2c05aa2f9fe7b57",
+          "rendered": false,
+          "schema": "objectshard-m4-lifecycle-adverse-v1"
+        },
+        {
+          "checks": 108,
+          "failures": [],
+          "fixture_sha256": "43e88ce4002e98dbcfa1450b02ebce3073212bc26c1163aba225bf1de50d1272",
+          "name": "test_object_shard_m4_completed_sample",
+          "original_log_sha256": "ec4d7de0a61904adc71e0ddb51237d5445d89bcc8f82c6ba18d355bff1ca722a",
+          "rendered": false,
+          "schema": "objectshard-m4-completed-sample-v1"
+        },
+        {
+          "checks": 99,
+          "failures": [],
+          "fixture_sha256": "5e5b01158128b2e2802a853cdf5a59f7e6b587ed848279dfe8dcd9ad8aa0224a",
+          "name": "test_object_shard_m4_equipment_completion",
+          "original_log_sha256": "da0076b0f065ae0dd41c9417fff3b2e164825f148986987dfd70f485cda38acc",
+          "rendered": false,
+          "schema": "objectshard-m4-equipment-completion-v1"
+        },
+        {
+          "checks": 96,
+          "failures": [],
+          "fixture_sha256": "303ffb1b10966713084d22fa39645a10e39156a5b2abffbd9c13f28d04417681",
+          "name": "test_object_shard_m4_actor_clock",
+          "original_log_sha256": "193728b5b759f51bfd121aec98b9e58fe0056c31aaaf837c48f3f9bf8b2a0a92",
+          "rendered": false,
+          "schema": "objectshard-m4-actor-clock-v1"
+        },
+        {
+          "checks": 233,
+          "failures": [],
+          "fixture_sha256": "787b302391300875338fa60f4ffa262c6c5344bafffe31eb9b617e3776dddcad",
+          "name": "test_object_shard_m4_long_burn",
+          "original_log_sha256": "a5016b2834edeedc4f304bc65971febad3a1b702361e0da9acfd03a30ad2203b",
+          "rendered": false,
+          "schema": "objectshard-m4-long-burn-v1"
+        },
+        {
+          "checks": 1019,
+          "failures": [],
+          "fixture_sha256": "d65f9662da03270a617917ec47ba0e05ce5ef38ea6af08b95c16aac10ff2c9fa",
+          "name": "test_object_shard_m4_lifecycle_fuzz",
+          "original_log_sha256": "82f424cf173918917637279bb09a4af6c6715b6abce3b4163a651e5dc927845e",
+          "rendered": false,
+          "schema": "objectshard-m4-lifecycle-fuzz-v1"
+        }
+      ],
+      "qualification_json_sha256": "677016a107644d77f745feb8473125dc87dcd082ca913e522b0e7107ebfcf329",
+      "source_commit": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+      "source_tree": "bea92f2587c68f5e4cfbba299040d62baeb069e7",
+      "status": "passed",
+      "total_cases": 65,
+      "total_headless": 65,
+      "total_rendered": 0
+    },
+    {
+      "lane": "graphical",
+      "native_input_count": 126,
+      "native_inputs_equal_final_production": true,
+      "physics_cases": [
+        {
+          "checks": 379,
+          "failures": 0,
+          "fixture_sha256": "2ec5ce0345fb40f25eef039fcbfa241734bc9d3242ad4ea6977c67b5bc039a74",
+          "name": "test_object_shard_lab",
+          "original_log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760",
+          "rendered": false,
+          "schema": "objectshard-lab-integration-test-v1"
+        },
+        {
+          "checks": 386,
+          "failures": [],
+          "fixture_sha256": "9f2a07632e53f83718ebb34ec578532347d4be2cbc0d9cd47934a9578c55fe97",
+          "name": "test_object_shard_fragment_motion",
+          "original_log_sha256": "844de5041017cab0c02035858bc184470ebc6bf28de7078d0c3a8d79c007da07",
+          "rendered": false,
+          "schema": "objectshard-fragment-motion-v1"
+        },
+        {
+          "anomalies": [],
+          "checks": 118,
+          "failures": [],
+          "fixture_sha256": "d73157ecae8c887e23bcb2e0c4755a3bc9b6f53c5ee3ff96fe3670f5c3208a24",
+          "maximum_displacement_cells": 0.0,
+          "maximum_upward_speed_cells_s": 0.0,
+          "name": "test_object_shard_m4_remote_barrel",
+          "original_log_sha256": "2eefdf2633d3e65cdc595486594f37f06df8ce54480c98d9d20b8e4e7e8542e7",
+          "rendered": false,
+          "schema": "objectshard-m4-remote-barrel-v1"
+        },
+        {
+          "actual_physical_segments": 2400,
+          "checks": 8471,
+          "failures": [],
+          "fixture_sha256": "5c5716689acc3c88af81f38936bc6c6d663be0d08f0da9c0a312094206925ef9",
+          "name": "test_object_shard_m4_small_fragment_chain",
+          "native_pose_acknowledgements": 2400,
+          "original_log_sha256": "c470acee0aa215914f733283f9ea1aebd5e2e2e23fe0de021ea7b30935cd6788",
+          "physical_cases": [
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.5,
+              "maximum_segment_rotation": 0.232285737991333,
+              "native_instance_id": -9223372008182512154,
+              "peak_angular_velocity": 55.8112716674805
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.6,
+              "maximum_segment_rotation": 0.293247044086456,
+              "native_instance_id": -9223372008098626072,
+              "peak_angular_velocity": 70.5055999755859
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.7,
+              "maximum_segment_rotation": 0.351135730743408,
+              "native_instance_id": -9223372008014739994,
+              "peak_angular_velocity": 84.4896545410156
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.8,
+              "maximum_segment_rotation": 0.356914639472961,
+              "native_instance_id": -9223372007930853912,
+              "peak_angular_velocity": 85.8875274658203
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.9,
+              "maximum_segment_rotation": 0.36427903175354,
+              "native_instance_id": -9223372007846967834,
+              "peak_angular_velocity": 87.6693954467773
+            }
+          ],
+          "rendered": false,
+          "schema": "objectshard-m4-small-fragment-native-chain-v1"
+        },
+        {
+          "actual_physical_segments": 1440,
+          "checks": 6223,
+          "failures": [],
+          "fixture_sha256": "f526c3fad753550ccbbb936cb643960a48b84563ee185e8397dc77e9535dd18d",
+          "name": "test_object_shard_m4_sparse_parent_motion",
+          "native_pose_acknowledgements": 1440,
+          "original_log_sha256": "9efdac4b272b9d1f52f95a03507c4116dcd60447130338b5acb2b84350de4c3f",
+          "physical_cases": [
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_domain": {
+                "com_x": 1.5,
+                "com_y": 1.5,
+                "height": 3,
+                "inertia": 0.166666666666667,
+                "mass": 1.0,
+                "motion_radius": 2.12132034355964,
+                "origin_x": 26.0,
+                "origin_y": 3.0,
+                "rectangles": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "rotation_radius": 4.24264068711929,
+                "width": 3
+              },
+              "initial_horizontal_velocity": 0.5,
+              "maximum_com_motion": 0.971254706382751,
+              "maximum_reference_error": 0.0,
+              "maximum_segment_rotation": 0.232285737991333,
+              "maximum_storage_origin_motion": 0.971254706382751,
+              "native_instance_id": -9223372008182512154,
+              "peak_angular_velocity": 55.8112716674805,
+              "storage_case": "tight"
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_domain": {
+                "com_x": 1.5,
+                "com_y": 1.5,
+                "height": 3,
+                "inertia": 0.166666666666667,
+                "mass": 1.0,
+                "motion_radius": 2.12132034355964,
+                "origin_x": 26.0,
+                "origin_y": 3.0,
+                "rectangles": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "rotation_radius": 4.24264068711929,
+                "width": 28
+              },
+              "initial_horizontal_velocity": 0.5,
+              "maximum_com_motion": 0.971254706382751,
+              "maximum_reference_error": 0.0,
+              "maximum_segment_rotation": 0.232285737991333,
+              "maximum_storage_origin_motion": 0.971254706382751,
+              "native_instance_id": -9223372008098626072,
+              "peak_angular_velocity": 55.8112716674805,
+              "storage_case": "eroded_near"
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_domain": {
+                "com_x": 26.5,
+                "com_y": 1.5,
+                "height": 3,
+                "inertia": 0.166666666666667,
+                "mass": 1.0,
+                "motion_radius": 2.12132034355964,
+                "origin_x": 1.0,
+                "origin_y": 3.0,
+                "rectangles": [
+                  26,
+                  1,
+                  1,
+                  1
+                ],
+                "rotation_radius": 4.24264068711929,
+                "width": 28
+              },
+              "initial_horizontal_velocity": 0.5,
+              "maximum_com_motion": 0.971254706382751,
+              "maximum_reference_error": 6.1154249124229e-05,
+              "maximum_segment_rotation": 0.232285737991333,
+              "maximum_storage_origin_motion": 6.49791097640991,
+              "native_instance_id": -9223372008014739994,
+              "peak_angular_velocity": 55.8112716674805,
+              "storage_case": "eroded_far"
+            }
+          ],
+          "rendered": false,
+          "schema": "objectshard-m4-sparse-parent-motion-v1"
+        },
+        {
+          "checks": 212,
+          "failures": [],
+          "fixture_sha256": "3a85ad15057522810051864f8918be1747ba8dba9a492720e4f19b69f7ad59fa",
+          "name": "test_object_shard_m4_fresh_barrel",
+          "original_log_sha256": "d4e90efd64562e224d032e8d3aba18d9d432aed5413f40d075ddbd0b94a6d450",
+          "physical_cases": [
+            {
+              "final_y": 457.000366210938,
+              "initial_y": 432.0,
+              "maximum_upward_speed_cells_s": 1.48393297649818e-08,
+              "mode": "structures_disabled"
+            },
+            {
+              "final_y": 457.0,
+              "initial_y": 432.015991210938,
+              "maximum_upward_speed_cells_s": 0.0,
+              "mode": "pristine"
+            },
+            {
+              "final_y": 457.0,
+              "initial_y": 432.015991210938,
+              "maximum_upward_speed_cells_s": 3.72141384374913e-09,
+              "mode": "cut_before_resume"
+            },
+            {
+              "final_y": 457.0,
+              "initial_y": 432.015991210938,
+              "maximum_upward_speed_cells_s": 0.0,
+              "mode": "cut_after_four_ticks"
+            }
+          ],
+          "rendered": false,
+          "schema": "objectshard-m4-fresh-barrel-v1"
+        },
+        {
+          "checks": 159,
+          "display_coherence": {
+            "between_callback_observations": 215,
+            "draw_observations": 214,
+            "examples": [],
+            "foreign_draw_callbacks": 0,
+            "incoherent_observations": 0,
+            "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+          },
+          "failures": [],
+          "fixture_sha256": "fe4bd1fc375077eda83048e13c872cf5893cbfd14544e13fea259578acc9b38a",
+          "name": "test_object_shard_m4_brush_revision",
+          "original_log_sha256": "6de1519951578044499c8c54b857a41cdf4b10109cefb8e7d06c5d4bcae483a1",
+          "rendered": true,
+          "schema": "objectshard-m4-brush-revision-v1"
+        },
+        {
+          "checks": 192,
+          "failures": [],
+          "fixture_sha256": "23dcbca4cf1fc0ac9d083ba239513c8780614c2ad0129a8b25e8085a1a366c2a",
+          "name": "test_object_shard_m4_workbench_completion",
+          "original_log_sha256": "ae656c14eda893dd59168b513a451291931b3d6435a4bc0b258444e94d7531a5",
+          "rendered": false,
+          "schema": "objectshard-m4-workbench-completion-v1"
+        },
+        {
+          "checks": 137,
+          "failures": [],
+          "fixture_sha256": "ce2c1f677c31086092f1e686bf6b1636fb77c4ac9cf0cefe58eff124536692c8",
+          "name": "test_object_shard_m4_fragment_reabsorption",
+          "original_log_sha256": "dcc23ee626b8927b32d860d8f963d8dc5011b7143221256cbe22a418d45e769a",
+          "rendered": false,
+          "schema": "objectshard-m4-fragment-reabsorption-v1"
+        },
+        {
+          "checks": 122,
+          "failures": [],
+          "fixture_sha256": "d7d955a68edf71a9b931552ec3032df87795421e9ce976f2a9a81220aa109d03",
+          "name": "test_object_shard_m4_lifecycle_adverse",
+          "original_log_sha256": "352abadded27513c9fe5be810aff7624e57ddd66d6255acd613e17157b75f302",
+          "rendered": false,
+          "schema": "objectshard-m4-lifecycle-adverse-v1"
+        },
+        {
+          "checks": 108,
+          "failures": [],
+          "fixture_sha256": "43e88ce4002e98dbcfa1450b02ebce3073212bc26c1163aba225bf1de50d1272",
+          "name": "test_object_shard_m4_completed_sample",
+          "original_log_sha256": "5d2ce54cc4e5182a43e4e65b3d9b7a558b9896a641b14c80fdda2f9d6bdc191e",
+          "rendered": false,
+          "schema": "objectshard-m4-completed-sample-v1"
+        },
+        {
+          "checks": 99,
+          "failures": [],
+          "fixture_sha256": "5e5b01158128b2e2802a853cdf5a59f7e6b587ed848279dfe8dcd9ad8aa0224a",
+          "name": "test_object_shard_m4_equipment_completion",
+          "original_log_sha256": "0dae026787dade68fbef3057b0e1a2b7a2ea21203ebbf82ee5677e613819549f",
+          "rendered": false,
+          "schema": "objectshard-m4-equipment-completion-v1"
+        },
+        {
+          "checks": 96,
+          "failures": [],
+          "fixture_sha256": "303ffb1b10966713084d22fa39645a10e39156a5b2abffbd9c13f28d04417681",
+          "name": "test_object_shard_m4_actor_clock",
+          "original_log_sha256": "193728b5b759f51bfd121aec98b9e58fe0056c31aaaf837c48f3f9bf8b2a0a92",
+          "rendered": false,
+          "schema": "objectshard-m4-actor-clock-v1"
+        },
+        {
+          "checks": 1019,
+          "failures": [],
+          "fixture_sha256": "d65f9662da03270a617917ec47ba0e05ce5ef38ea6af08b95c16aac10ff2c9fa",
+          "name": "test_object_shard_m4_lifecycle_fuzz",
+          "original_log_sha256": "2077eb8b2f17629f37ceec4152660f7b0b9a3437769d37cbfd8cc768df5cf456",
+          "rendered": false,
+          "schema": "objectshard-m4-lifecycle-fuzz-v1"
+        }
+      ],
+      "qualification_json_sha256": "3eed162adc836f611da577c37261390984e6748531fd2f3a6dae8c7da9d58a86",
+      "source_commit": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+      "source_tree": "bea92f2587c68f5e4cfbba299040d62baeb069e7",
+      "status": "passed",
+      "total_cases": 52,
+      "total_headless": 24,
+      "total_rendered": 28
+    },
+    {
+      "lane": "package-replay",
+      "native_input_count": 126,
+      "native_inputs_equal_final_production": true,
+      "physics_cases": [
+        {
+          "checks": 379,
+          "failures": 0,
+          "fixture_sha256": "2ec5ce0345fb40f25eef039fcbfa241734bc9d3242ad4ea6977c67b5bc039a74",
+          "name": "test_object_shard_lab",
+          "original_log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760",
+          "rendered": false,
+          "schema": "objectshard-lab-integration-test-v1"
+        },
+        {
+          "checks": 386,
+          "failures": [],
+          "fixture_sha256": "9f2a07632e53f83718ebb34ec578532347d4be2cbc0d9cd47934a9578c55fe97",
+          "name": "test_object_shard_fragment_motion",
+          "original_log_sha256": "844de5041017cab0c02035858bc184470ebc6bf28de7078d0c3a8d79c007da07",
+          "rendered": false,
+          "schema": "objectshard-fragment-motion-v1"
+        },
+        {
+          "anomalies": [],
+          "checks": 118,
+          "failures": [],
+          "fixture_sha256": "d73157ecae8c887e23bcb2e0c4755a3bc9b6f53c5ee3ff96fe3670f5c3208a24",
+          "maximum_displacement_cells": 0.0,
+          "maximum_upward_speed_cells_s": 0.0,
+          "name": "test_object_shard_m4_remote_barrel",
+          "original_log_sha256": "2eefdf2633d3e65cdc595486594f37f06df8ce54480c98d9d20b8e4e7e8542e7",
+          "rendered": false,
+          "schema": "objectshard-m4-remote-barrel-v1"
+        },
+        {
+          "actual_physical_segments": 2400,
+          "checks": 8471,
+          "failures": [],
+          "fixture_sha256": "5c5716689acc3c88af81f38936bc6c6d663be0d08f0da9c0a312094206925ef9",
+          "name": "test_object_shard_m4_small_fragment_chain",
+          "native_pose_acknowledgements": 2400,
+          "original_log_sha256": "c470acee0aa215914f733283f9ea1aebd5e2e2e23fe0de021ea7b30935cd6788",
+          "physical_cases": [
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.5,
+              "maximum_segment_rotation": 0.232285737991333,
+              "native_instance_id": -9223372008182512154,
+              "peak_angular_velocity": 55.8112716674805
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.6,
+              "maximum_segment_rotation": 0.293247044086456,
+              "native_instance_id": -9223372008098626072,
+              "peak_angular_velocity": 70.5055999755859
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.7,
+              "maximum_segment_rotation": 0.351135730743408,
+              "native_instance_id": -9223372008014739994,
+              "peak_angular_velocity": 84.4896545410156
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.8,
+              "maximum_segment_rotation": 0.356914639472961,
+              "native_instance_id": -9223372007930853912,
+              "peak_angular_velocity": 85.8875274658203
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_horizontal_velocity": 0.9,
+              "maximum_segment_rotation": 0.36427903175354,
+              "native_instance_id": -9223372007846967834,
+              "peak_angular_velocity": 87.6693954467773
+            }
+          ],
+          "rendered": false,
+          "schema": "objectshard-m4-small-fragment-native-chain-v1"
+        },
+        {
+          "actual_physical_segments": 1440,
+          "checks": 6223,
+          "failures": [],
+          "fixture_sha256": "f526c3fad753550ccbbb936cb643960a48b84563ee185e8397dc77e9535dd18d",
+          "name": "test_object_shard_m4_sparse_parent_motion",
+          "native_pose_acknowledgements": 1440,
+          "original_log_sha256": "9efdac4b272b9d1f52f95a03507c4116dcd60447130338b5acb2b84350de4c3f",
+          "physical_cases": [
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_domain": {
+                "com_x": 1.5,
+                "com_y": 1.5,
+                "height": 3,
+                "inertia": 0.166666666666667,
+                "mass": 1.0,
+                "motion_radius": 2.12132034355964,
+                "origin_x": 26.0,
+                "origin_y": 3.0,
+                "rectangles": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "rotation_radius": 4.24264068711929,
+                "width": 3
+              },
+              "initial_horizontal_velocity": 0.5,
+              "maximum_com_motion": 0.971254706382751,
+              "maximum_reference_error": 0.0,
+              "maximum_segment_rotation": 0.232285737991333,
+              "maximum_storage_origin_motion": 0.971254706382751,
+              "native_instance_id": -9223372008182512154,
+              "peak_angular_velocity": 55.8112716674805,
+              "storage_case": "tight"
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_domain": {
+                "com_x": 1.5,
+                "com_y": 1.5,
+                "height": 3,
+                "inertia": 0.166666666666667,
+                "mass": 1.0,
+                "motion_radius": 2.12132034355964,
+                "origin_x": 26.0,
+                "origin_y": 3.0,
+                "rectangles": [
+                  1,
+                  1,
+                  1,
+                  1
+                ],
+                "rotation_radius": 4.24264068711929,
+                "width": 28
+              },
+              "initial_horizontal_velocity": 0.5,
+              "maximum_com_motion": 0.971254706382751,
+              "maximum_reference_error": 0.0,
+              "maximum_segment_rotation": 0.232285737991333,
+              "maximum_storage_origin_motion": 0.971254706382751,
+              "native_instance_id": -9223372008098626072,
+              "peak_angular_velocity": 55.8112716674805,
+              "storage_case": "eroded_near"
+            },
+            {
+              "completed_native_intervals": 120,
+              "healthy": true,
+              "initial_domain": {
+                "com_x": 26.5,
+                "com_y": 1.5,
+                "height": 3,
+                "inertia": 0.166666666666667,
+                "mass": 1.0,
+                "motion_radius": 2.12132034355964,
+                "origin_x": 1.0,
+                "origin_y": 3.0,
+                "rectangles": [
+                  26,
+                  1,
+                  1,
+                  1
+                ],
+                "rotation_radius": 4.24264068711929,
+                "width": 28
+              },
+              "initial_horizontal_velocity": 0.5,
+              "maximum_com_motion": 0.971254706382751,
+              "maximum_reference_error": 6.1154249124229e-05,
+              "maximum_segment_rotation": 0.232285737991333,
+              "maximum_storage_origin_motion": 6.49791097640991,
+              "native_instance_id": -9223372008014739994,
+              "peak_angular_velocity": 55.8112716674805,
+              "storage_case": "eroded_far"
+            }
+          ],
+          "rendered": false,
+          "schema": "objectshard-m4-sparse-parent-motion-v1"
+        },
+        {
+          "checks": 212,
+          "failures": [],
+          "fixture_sha256": "3a85ad15057522810051864f8918be1747ba8dba9a492720e4f19b69f7ad59fa",
+          "name": "test_object_shard_m4_fresh_barrel",
+          "original_log_sha256": "201b2bf117b1adea8ce78d9eb5a95adb868b70a4721724178f28c5fe400f9c83",
+          "physical_cases": [
+            {
+              "final_y": 457.000366210938,
+              "initial_y": 432.0,
+              "maximum_upward_speed_cells_s": 1.48393297649818e-08,
+              "mode": "structures_disabled"
+            },
+            {
+              "final_y": 457.0,
+              "initial_y": 432.054992675781,
+              "maximum_upward_speed_cells_s": 0.0,
+              "mode": "pristine"
+            },
+            {
+              "final_y": 457.0,
+              "initial_y": 432.054992675781,
+              "maximum_upward_speed_cells_s": 3.72141384374913e-09,
+              "mode": "cut_before_resume"
+            },
+            {
+              "final_y": 457.0,
+              "initial_y": 432.015991210938,
+              "maximum_upward_speed_cells_s": 3.72141384374913e-09,
+              "mode": "cut_after_four_ticks"
+            }
+          ],
+          "rendered": false,
+          "schema": "objectshard-m4-fresh-barrel-v1"
+        },
+        {
+          "checks": 159,
+          "display_coherence": {
+            "between_callback_observations": 223,
+            "draw_observations": 222,
+            "examples": [],
+            "foreign_draw_callbacks": 0,
+            "incoherent_observations": 0,
+            "scope": "actual uploaded World and displayed native shard publication identity at every observed callback; frame_post_draw is renderer submission, not physical monitor presentation"
+          },
+          "failures": [],
+          "fixture_sha256": "fe4bd1fc375077eda83048e13c872cf5893cbfd14544e13fea259578acc9b38a",
+          "name": "test_object_shard_m4_brush_revision",
+          "original_log_sha256": "f3dfd49e61e246571a2fe6ded7cab43695d6c55f96216ba9badf1059be4c9195",
+          "rendered": true,
+          "schema": "objectshard-m4-brush-revision-v1"
+        },
+        {
+          "checks": 192,
+          "failures": [],
+          "fixture_sha256": "23dcbca4cf1fc0ac9d083ba239513c8780614c2ad0129a8b25e8085a1a366c2a",
+          "name": "test_object_shard_m4_workbench_completion",
+          "original_log_sha256": "d5522db81fa3c50b65ce7c22c4897ad0088a3f0df030537f18a4b20bc655a0f6",
+          "rendered": false,
+          "schema": "objectshard-m4-workbench-completion-v1"
+        },
+        {
+          "checks": 137,
+          "failures": [],
+          "fixture_sha256": "ce2c1f677c31086092f1e686bf6b1636fb77c4ac9cf0cefe58eff124536692c8",
+          "name": "test_object_shard_m4_fragment_reabsorption",
+          "original_log_sha256": "668aeb0e0e85e4facb6f1b65ec784fc7a0a0742e9e148ad846b90e0c1fc95b2b",
+          "rendered": false,
+          "schema": "objectshard-m4-fragment-reabsorption-v1"
+        },
+        {
+          "checks": 122,
+          "failures": [],
+          "fixture_sha256": "d7d955a68edf71a9b931552ec3032df87795421e9ce976f2a9a81220aa109d03",
+          "name": "test_object_shard_m4_lifecycle_adverse",
+          "original_log_sha256": "2da1b9bef2964cf1335ebd638724d7671ca877de0c1f765c8a9decf8996d6562",
+          "rendered": false,
+          "schema": "objectshard-m4-lifecycle-adverse-v1"
+        },
+        {
+          "checks": 108,
+          "failures": [],
+          "fixture_sha256": "43e88ce4002e98dbcfa1450b02ebce3073212bc26c1163aba225bf1de50d1272",
+          "name": "test_object_shard_m4_completed_sample",
+          "original_log_sha256": "f2b066b5ec3e43851521946f7844d1d49a10d42e57ed8ab8111c14805c1841fa",
+          "rendered": false,
+          "schema": "objectshard-m4-completed-sample-v1"
+        },
+        {
+          "checks": 99,
+          "failures": [],
+          "fixture_sha256": "5e5b01158128b2e2802a853cdf5a59f7e6b587ed848279dfe8dcd9ad8aa0224a",
+          "name": "test_object_shard_m4_equipment_completion",
+          "original_log_sha256": "e3ee3ffc244eeedfc9e10eddbca932dfa4545b77a7d295cd2afd7bada36a5da2",
+          "rendered": false,
+          "schema": "objectshard-m4-equipment-completion-v1"
+        },
+        {
+          "checks": 96,
+          "failures": [],
+          "fixture_sha256": "303ffb1b10966713084d22fa39645a10e39156a5b2abffbd9c13f28d04417681",
+          "name": "test_object_shard_m4_actor_clock",
+          "original_log_sha256": "8f7ec12865ccca94dcec91e834557ab6aabe005f7511898b40120f7c97a363b5",
+          "rendered": false,
+          "schema": "objectshard-m4-actor-clock-v1"
+        },
+        {
+          "checks": 233,
+          "failures": [],
+          "fixture_sha256": "787b302391300875338fa60f4ffa262c6c5344bafffe31eb9b617e3776dddcad",
+          "name": "test_object_shard_m4_long_burn",
+          "original_log_sha256": "e750525220e3f2ce378a9f9906342e1252b023760dd2c910c7b5ef3b66218577",
+          "rendered": false,
+          "schema": "objectshard-m4-long-burn-v1"
+        },
+        {
+          "checks": 1019,
+          "failures": [],
+          "fixture_sha256": "d65f9662da03270a617917ec47ba0e05ce5ef38ea6af08b95c16aac10ff2c9fa",
+          "name": "test_object_shard_m4_lifecycle_fuzz",
+          "original_log_sha256": "888e0771e8208c78a614db68ae647e376a5bde46be813ab8486ac95085817b3d",
+          "rendered": false,
+          "schema": "objectshard-m4-lifecycle-fuzz-v1"
+        }
+      ],
+      "qualification_json_sha256": "ff223650bf2547217a8d90db9c5f8cd8464e5cfbcb69edfab83f070575dd2759",
+      "source_commit": "54a7719e55be313820ebeb8d36efe6c230c1348c",
+      "source_tree": "bea92f2587c68f5e4cfbba299040d62baeb069e7",
+      "status": "passed",
+      "total_cases": 32,
+      "total_headless": 27,
+      "total_rendered": 5
+    }
+  ],
+  "remaining_scope": [
+    "The original54 overall native gate remains failed for the separately preserved stale singleton angular assertions.",
+    "Helper tests remain headless even within the graphical profile lane; actual brush/camera render witnesses have distinct commands.",
+    "Finalb7 Windows/extracted receipts and guarded publisher remain separate pending gates at review time.",
+    "Original physical-owner barrel event is not reconstructed; representative no-impulse controls passed."
+  ],
+  "review": "Read shared downloaded evidence without another archive download. Independently verified every selected fixture hash against exact54 Git objects, native input equality with finalb7 production, zero returned failures and exact physical-segment/native-ACK counts.",
+  "run_id": 46099370014,
+  "schema": "objectshard-m4-supporting-windows-physics-review-v1",
+  "shared_review_source": "/workspace/scratch/9b78ce6eff8d/evidence/candidate54-15247169371",
+  "windows_artifact_id": 15247169371
+}
