@@ -220,5 +220,95 @@ class InspectionSchedulingProjectionTests(unittest.TestCase):
                 self.project(extra=(path,))
 
 
+class OriginalReaderPlatformTests(unittest.TestCase):
+    """Exercise the real frozen native/Rapier digest boundary on either host."""
+
+    def fixture(self, root, platform, wrong_field=None):
+        import hashlib
+        import json
+        project, folder = root / "project", root / "observations"
+        folder.mkdir(parents=True, exist_ok=True)
+        (project / "tests").mkdir(parents=True, exist_ok=True)
+        (project / "tests/test_workbench_member_presentation.gd").write_text(
+            "# Digest-bound reader unit fixture; no native or graphical execution.\n", encoding="utf-8")
+        native = {"windows": "cybersand_native.windows.x86_64.dll",
+                  "linux": "libcybersand_native.linux.x86_64.so"}
+        rapier = {"windows": "libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "linux": "libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"}
+        payloads = {}
+        for target in ("linux", "windows"):
+            for kind, names in (("cybersand_native", native), ("godot-rapier2d", rapier)):
+                file = project / "addons" / kind / "bin" / names[target]
+                file.parent.mkdir(parents=True, exist_ok=True)
+                raw = (target + ":" + kind).encode("ascii")
+                file.write_bytes(raw)
+                payloads[(target, kind)] = hashlib.sha256(raw).hexdigest()
+        expected = publication._original_qualification.SUPPLEMENTAL["test_workbench_member_presentation"]
+        data = {"checks": expected["exact_checks"], "failures": [], "source_revision": "a" * 40,
+                "schema": expected["schema"], "graphical": True, "process_id": 123,
+                "native_sha256": payloads[(platform, "cybersand_native")],
+                "rapier_sha256": payloads[(platform, "godot-rapier2d")],
+                "observations": []}
+        if wrong_field:
+            data[wrong_field] = "0" * 64
+        raw = json.dumps(data)
+        (folder / "receipt.json").write_text(raw, encoding="utf-8")
+        return ("test_workbench_member_presentation", expected["prefix"] + raw,
+                folder, {"source_commit": "a" * 40}, project)
+
+    def test_actual_platform_paths_reach_the_next_unchanged_semantic_gate(self):
+        import os
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        previous = publication._original_qualification.os
+        host_name = os.name
+        for platform in ("linux", "windows"):
+            with self.subTest(platform=platform), TemporaryDirectory() as where:
+                args = self.fixture(Path(where), platform)
+                # Passing the byte boundary is not a complete gameplay pass:
+                # the deliberately absent 72 observations must still refuse.
+                with self.assertRaisesRegex(ValueError, "Multipart actual owner/member/physical history inventory"):
+                    publication.replay_supplemental_result(platform, *args)
+                self.assertIs(publication._original_qualification.os, previous)
+                self.assertEqual(os.name, host_name)
+
+    def test_wrong_native_or_rapier_bytes_refuse_for_both_target_platforms(self):
+        from pathlib import Path
+        from tempfile import TemporaryDirectory
+        previous = publication._original_qualification.os
+        for platform in ("linux", "windows"):
+            for field in ("native_sha256", "rapier_sha256"):
+                with self.subTest(platform=platform, field=field), TemporaryDirectory() as where:
+                    args = self.fixture(Path(where), platform, field)
+                    with self.assertRaisesRegex(ValueError, "Multipart native or Rapier bytes differ"):
+                        publication.replay_supplemental_result(platform, *args)
+                    self.assertIs(publication._original_qualification.os, previous)
+
+    def test_nested_and_failed_replays_restore_module_binding_without_mutating_os(self):
+        import os
+        from unittest.mock import patch
+        previous = publication._original_qualification.os
+        host_name = os.name
+        observed = []
+
+        def nested():
+            observed.append(publication._original_qualification.os.name)
+            self.assertEqual(os.name, host_name)
+            self.assertIs(publication._original_qualification.os.environ, os.environ)
+            if len(observed) == 1:
+                return publication.replay_supplemental_result("linux")
+            raise RuntimeError("original-reader-refusal")
+
+        with patch.object(publication, "supplemental_result", side_effect=nested):
+            with self.assertRaisesRegex(RuntimeError, "original-reader-refusal"):
+                publication.replay_supplemental_result("windows")
+        self.assertEqual(observed, ["nt", "posix"])
+        self.assertIs(publication._original_qualification.os, previous)
+        self.assertEqual(os.name, host_name)
+        with self.assertRaisesRegex(ValueError, "Unregistered original artifact platform"):
+            publication.replay_supplemental_result("unknown")
+        self.assertIs(publication._original_qualification.os, previous)
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -161,6 +161,32 @@ def acquire(api, artifacts, name, output, run_id, source):
     return api.archive(item, output)
 
 
+def replay_supplemental_result(platform, *args, **kwargs):
+    """Replay an immutable target-OS receipt without changing the host OS.
+
+    The frozen reader selects two native filenames through its own os.name.
+    The caller has authenticated the artifact's platform/source/engine. Bind
+    only that imported module's lookup; pathlib and every other OS consumer
+    retain the real host module. Sequential and nested replays restore exactly
+    the previous binding, including when any original semantic check refuses.
+    """
+    require(platform in ("linux", "windows"), "Unregistered original artifact platform")
+    previous = _original_qualification.os
+    target_name = "nt" if platform == "windows" else "posix"
+
+    class TargetOS:
+        name = target_name
+
+        def __getattr__(self, key):
+            return getattr(previous, key)
+
+    _original_qualification.os = TargetOS()
+    try:
+        return supplemental_result(*args, **kwargs)
+    finally:
+        _original_qualification.os = previous
+
+
 def source_projection(reference):
     require(subprocess.run(["git", "-C", str(ROOT), "merge-base", "--is-ancestor", reference, "HEAD"], check=False).returncode == 0,
             "Original qualified source is not an ancestor")
@@ -267,7 +293,7 @@ def replay_summary(directory, source, platform, focus, native):
                         and final_owner.get("material_refusal") == "",
                         "Original owner/material refusal controls did not execute without fabricated simulation")
         if focus in ("water", "members", "held-placement") and row["test"] != "import":
-            actual = supplemental_result(row["test"], text, folder, proof["source"], project,
+            actual = replay_supplemental_result(platform, row["test"], text, folder, proof["source"], project,
                 engine_sha=ENGINE_SHA256[platform], expected_inline=True, expected_lookahead=0,
                 expected_atomic=False, stock_held=focus == "held-placement")
             require(actual == row["evidence"], "Original graphical reader no longer reproduces its receipt")
@@ -412,6 +438,9 @@ def main():
             folder = output / (platform + "-" + focus)
             name = f"pubpres-mainline-qualified-{platform}-{focus}-{qualified['run']}-{qualified['attempt']}"
             receipt_archive = acquire(api, qualification_artifacts, name, folder, qualified["run"], qualified["source"])
+            print(json.dumps({"event": "original_qualification_replay", "platform": platform, "focus": focus,
+                              "source": qualified["source"], "run": qualified["run"],
+                              "attempt": qualified["attempt"]}), flush=True)
             outcomes[focus] = {"artifact": receipt_archive, "replay": replay_summary(folder, qualified["source"], platform, focus, native)}
         report["platforms"][platform] = {"build_artifact": archive, "runtime": checked, "outcomes": outcomes}
         previous = json.loads((ROOT / common.MANIFEST[platform]).read_bytes())

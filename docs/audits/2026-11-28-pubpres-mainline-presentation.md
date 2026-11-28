@@ -470,3 +470,126 @@ Windows original `held.png` SHA-256:
 (94,358 bytes). These are hosted graphical observations, not physical NVIDIA
 scanout or owner acceptance. The broad contact-history omission retains its
 separate scope above.
+
+## Q4 resulting-source Windows presentation qualification
+
+The final application freeze for this presentation review is
+`ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae`,
+tree `560fb1fb8c2a718b04fa251bfc2971947dcf0b31`.
+Its campaign is [46140937427, attempt 1](https://github.com/techrote/cybersand/actions/runs/46140937427).
+The three-line restoration of the established early-packet absence serial
+does not alter either presentation repair or its witnesses. Both unchanged
+frozen lanes now pass; the earlier two Q3 frozen failures remain in their
+original artifacts.
+
+### Independently inspected actual focused Windows frames
+
+[Windows focused job 140966620329](https://github.com/techrote/cybersand/actions/runs/46140937427/job/140966620329)
+passes its complete ten-process population. The retained Water witness reports
+45 checks and no failures. The continuous Select witness reports 28 checks and
+no failures. The original exported PNG bytes were independently decoded,
+SHA-256 checked, joined to their original receipts, and visually inspected.
+
+The retained Barrel is visible in the real first post-draw observation while
+the deliberately suppressed newest proof is unavailable. In this run the
+actual Rapier count is 2 and the retained proof keeps its original
+step 1, body sample 2, native tick 1, `current_step_sampled_closure`
+identity and `consumed_by_step=false`. Its newer material certificate
+does not claim a new native or physical completion. The explicit expired-clock
+control refuses the endpoint at 100,004 microseconds. These observations retain
+the distinction between an already admitted sampled closure and an actual
+completed-step certificate.
+
+The Select witness begins at authored step 0, uses ordinary Play to reach real
+completed contact at step 4, and pauses on an accepted step-4 presentation.
+Its actual four mouse selections return 4, 0, 0, 4 for the continuous visible
+edge, opaque pixel, foreign owner and restored owner. Both real bridge and
+session counters remain 4 throughout the controls. All three selected owner
+policies read back enabled.
+
+All ten distinct GDScript source hashes named by these two receipts were
+independently recalculated from the exact Q4 committed bytes. Native, Rapier
+and official Godot identities agree with the admitted Windows runtime; this
+remote review did not independently download those binaries again.
+
+| Q4 focused original | Bytes | SHA-256 |
+|---|---:|---|
+| Retained native receipt | 6,642 | `dfaadd061d819457e90ace5e18a7eb1330b02c62c38bff3d16e8c021a1a79399` |
+| Continuous Select receipt | 4,987 | `77be9c438354ba6a0ba916d83349ae275cc43a990147164d1bd2367f21e64bcd` |
+| `held.png` | 91,367 | `03bd8b3cbcbe5db50e9b5d6dcd7e8ec9b51da10ddcbaa4283ed2b7d2875a7cb5` |
+| `continuous-pick.png` | 94,426 | `1948c4d7318de24367846c6710c03d0ac0068bbd47c6cbaa225be3c6a221be09` |
+| [Complete focused artifact 15262385462](https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15262385462) | 17,339,601 | `e9ca6de042116910a30127c5262a367ca0d11a839719e3ab9b2db14b17e845b7` |
+
+### Full original and selected-owner Water scopes
+
+The complete unchanged Water workloads pass in both configurations. Their
+actual Windows raw receipts were inspected independently through the
+[data-only Q4 original-archive inspection](https://github.com/techrote/cybersand/actions/runs/46142878459),
+which authenticates source, tree, run, artifact byte size and digest, checks
+the original ZIP CRC and safe members, retains the complete original archive,
+and prints a bounded projection of the unmodified records. It does not rerun
+the application or substitute a new fixture.
+
+| Actual Q4 Windows observation | Legacy selectors | Selected owner selectors |
+|---|---:|---:|
+| Flight pacing / coupling clock / empty effects | All false | All true |
+| Assertions / failures | 213 / 0 | 213 / 0 |
+| Observed draws | 4,820 | 4,812 |
+| Composed body draws | 16,849 | 16,828 |
+| Withheld body draws | 6 | 3 |
+| Distinct affected manual-step draws | 2 | 1 |
+| Affected body slots | 0, 1, 3 | 0, 1, 3 |
+| Actual physical/manual step at withholding | 131 | 134 |
+| Draw observations at withholding | 4,758–4,759 | 4,752 |
+| Dropped omission records | 0 | 0 |
+| Revalidated retained endpoint observations | 0 | 0 |
+| Actual ordinary mouse controls passed | 5 / 5 | 5 / 5 |
+| Framebuffer visibility/restoration controls passed | 5 / 5 | 5 / 5 |
+| Maximum restoration error | 0 | 0 |
+| Process elapsed seconds | 877.906 | 715.985 |
+| Original process allowance / timed out | 1,800 s / false | 1,800 s / false |
+
+All nine withheld member observations retain the same cause classification:
+the current native response's per-body refusal is `age`, no valid
+coverage certificate is admitted, and the presentation reason is
+`material_in_swept_mask`. Only slot 2 remains visible in these
+particular draws. This is the existing sample/history/physical-step
+`MAX_AGE=1` fence after the registered 280-draw, 2,056-publication
+history-eviction adversary; it is not the separate 100 ms retained-endpoint
+deadline. The repeated Q4 observation confirms that the broad clipped-contact
+residual remains open. Neither the dedicated 45-check witness nor a green
+broad-workload job closes it.
+
+The legacy broad Q4 run also supplies a useful actual reproduction of the
+previous picking boundary: its submerged control selects the Scooper itself,
+slot 3 / authored actor 4, at continuous submitted point
+(349.966735839844, 492.289581298828), against accepted pose
+(349.966766357422, 492.289611816406), angle
+-0.00000064762485862957. The actual Select returns actor 4. The shown/hidden
+framebuffer difference is 0.501960784196854 and restoration error is zero.
+This is additional evidence beyond Q2's adaptive submerged controls. The
+selected-owner Q4 submerged control happens to select the rotated Needle in
+slot 0; it is not relabelled as the Scooper case.
+
+Both Q4 workloads also complete initialized Water, Water refill, fresh
+World/epoch restoration and moving multipart limb visibility/picking. All
+five framebuffer control populations remain present. Their original rendered
+pixel comparisons are preserved in the raw evidence; the independent remote
+visual inspection above specifically viewed the two dedicated focused PNGs.
+
+| Full Q4 original evidence | Bytes | SHA-256 |
+|---|---:|---|
+| [Legacy artifact 15262850489](https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15262850489) | 18,201,490 | `f7dc0e39697e936852dba099032b12a49c3f86023d7b02e0c505ec8210173ca5` |
+| Legacy native receipt | 1,814,041 | `0262753317d16452febadc8f9e6a7067690f8d40dc68768e07256ffb47799580` |
+| Legacy original process record | 627 | `13a543fddccc5e84e38bba29707fb21f3130d817bfcf177a8ad36359bcf4df15` |
+| [Selected artifact 15262630880](https://github.com/techrote/cybersand/actions/runs/46140937427/artifacts/15262630880) | 18,107,127 | `8d23fb3b67d51ff030e556ef331335a1e4e1666b3be471423b12d4baaa7ad44d` |
+| Selected native receipt | 1,748,559 | `2970f76836101b3c521ca94801fc16d48278bafde847f648fee43dcedadf0133` |
+| Selected original process record | 627 | `9805af5f06c24e7da917cf5f2fc6d403a6af043017ba947320aef3250873e5a8` |
+
+The owner route is [2026-11-28-pubpres-mainline-owner-route.md](2026-11-28-pubpres-mainline-owner-route.md).
+It distinguishes automatic bounded owner telemetry from the separate F10
+material-state recorder, retains the exact residual reproduction scope, and
+explains ordinary authored-start save/reopen. None of these hosted results
+constitutes physical TITAN RTX acceptance of the reconciled candidate.
+Publication, extracted-package execution, sustained performance and owner
+authorization remain independently scoped in the final mission ledger.

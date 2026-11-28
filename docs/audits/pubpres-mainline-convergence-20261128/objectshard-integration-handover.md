@@ -105,3 +105,32 @@ transaction owner. See
 The 067 merge preview above predates this narrow subsequent repair; resulting
 source runtime qualification and any later ObjectShard merge must use the final
 mission source identity, not inherit acceptance from this preview.
+
+## Later live ObjectShard branch movement — 28 November, 11:45 UTC
+
+The integration owner refreshed PR #754 and observed live HEAD
+`8064c73270dee2ce1a0d53316aae334136335483`, still open and Draft against the
+accepted main baseline `50e3bcb839211eac2abe1e065750cbcba4d36f8c`.
+The read-only comparison from frozen
+`c4e10e3ca629c491f7340c6f383adcc347200fa5` showed three commits ahead and
+zero behind, changing exactly these six paths:
+
+- `docs/audits/objectshard-m4-live-edit-20261128/integration-handover.md`
+- `docs/audits/objectshard-m4-reliability-20261128/m5-handover.md`
+- `godot/.godot/global_script_class_cache.cfg`
+- `godot/tests/test_object_shard_m4_capacity_recovery.gd`
+- `tools/ci/run_godot_regressions.py`
+- `tools/objectshard/qualify_workbench.py`
+
+That inspected delta contains no shared production runtime changes. It does
+not extend the frozen c4e merge preview into a claim of current-HEAD runtime
+compatibility. No part of this later development, including the M5 handover,
+was absorbed into PUBPRES. The final M4 integration mission must refresh the
+then-current **qualified** ObjectShard source and its physical acceptance
+before using the shared-contract guidance above. Both original branches and
+all frozen preview evidence remain intact; no combined source was built or
+executed by this mission.
+
+The final PUBPRES application and native publication identities are supplied
+by the mission delivery ledger and PR #767. The preview source `0670733`
+is an explicitly narrower historical source-review scope.

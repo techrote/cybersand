@@ -1,10 +1,10 @@
 {
   "schema": "pubpres-mainline-request-v2",
   "phase": "publish",
-  "purpose": "Publish the original source-matched Linux and Windows runtimes only after all twenty-six Q4 qualification gates pass, preserving Draft and physical-owner HOLD",
+  "purpose": "Publish source-matched runtimes after target-platform replay of original Q4 artifacts; preserve the failed host-platform preflight and Draft/HOLD",
   "accepted_main": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
   "owner_reference": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
-  "payload_sha256": "a2c345ee0a9322faa0e6969ed35f10e32270bc3a8c5809f323cee078b09af26f",
+  "payload_sha256": "836cd4b593ca7d9861202f9da62b02ed6f2c7bd5822c1fcae41e1961abfa7af7",
   "runtime_run": 46132881112,
   "runtime_attempt": 1,
   "runtime_source": "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34",
