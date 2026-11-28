@@ -203,7 +203,16 @@ class ReceiptProofTests(unittest.TestCase):
                 "active_code_page_utf8": active}
 
     def _receipt_row(self, languages: tuple[int, ...], *, create_neutral: bool = False) -> dict:
-        sections = [{"name": ".text", "sha256": "code-section"}]
+        sections = [{"index": 0, "name": ".text", "virtual_size": 128,
+                     "virtual_address": 0x1000, "raw_size": 512, "raw_pointer": 0x200,
+                     "characteristics": 0x60000020, "sha256": "code-section"}]
+        headers = {"pe_offset": 0x80,
+                   "coff": {"number_of_sections": 1, "size_of_optional_header": 224},
+                   "optional_header": {"size_of_headers": 0x200},
+                   "data_directories": {"resource": {"rva_or_file_offset": 0, "size": 0}}}
+        nonresource_sections = [{key: sections[0][key] for key in
+                                 ("name", "virtual_size", "virtual_address", "raw_size",
+                                  "characteristics", "sha256")}]
         before_resources = {"id:16/id:1/id:0":
                             {"path": [["id", 16], ["id", 1], ["id", 0]],
                              "bytes": 3, "sha256": "version-resource"}}
@@ -230,15 +239,95 @@ class ReceiptProofTests(unittest.TestCase):
                               "bytes": 0, "original_sha256": None,
                               "output_sha256": output, "changed": True,
                               "active_code_page": "UTF-8", "created_neutral_manifest": True})
-        return {"before_nonresource_sections": sections,
-                "after_nonresource_sections": sections,
-                "nonresource_sections_sha256": candidate._sha_bytes(candidate._canonical(sections)),
+        return {"before_nonresource_sections": nonresource_sections,
+                "after_nonresource_sections": nonresource_sections,
+                "nonresource_sections_sha256": candidate._sha_bytes(candidate._canonical(nonresource_sections)),
                 "pe_checksum_before": 0,
                 "pe_checksum_after_api": 1,
                 "pe_checksum_prepared": 2,
+                "file_size_before": 1024,
+                "file_size_after": 1024,
+                "sections_before": sections,
+                "sections_after": sections,
+                "pe_headers_before": headers,
+                "pe_headers_after": headers,
+                "section_transition": None,
                 "resources_before": before_resources,
                 "resources_after": after_resources,
                 "manifests_before": manifests}
+
+    def _relocated_reloc_row(self, relative: str = "bin/as.exe") -> dict:
+        text = {"index": 0, "name": ".text", "virtual_size": 0x180,
+                "virtual_address": 0x1000, "raw_size": 0x200, "raw_pointer": 0x200,
+                "characteristics": 0x60000020, "sha256": "text-hash"}
+        old_reloc = {"index": 1, "name": ".reloc", "virtual_size": 0x180,
+                     "virtual_address": 0x2000, "raw_size": 0x200, "raw_pointer": 0x400,
+                     "characteristics": 0x42000040, "sha256": "reloc-hash"}
+        new_resource = {"index": 1, "name": ".rsrc", "virtual_size": 520,
+                        "virtual_address": 0x2000, "raw_size": 0x400, "raw_pointer": 0x400,
+                        "characteristics": 0x40000040, "sha256": "rsrc-hash"}
+        new_reloc = {**old_reloc, "index": 2, "virtual_address": 0x3000,
+                     "raw_pointer": 0x800}
+        before_sections = [text, old_reloc]
+        after_sections = [text, new_resource, new_reloc]
+        before_headers = {"pe_offset": 0x80,
+                          "coff": {"machine": 0x8664, "number_of_sections": 2,
+                                   "timestamp": 1, "pointer_to_symbol_table": 0,
+                                   "number_of_symbols": 0, "size_of_optional_header": 240,
+                                   "characteristics": 558},
+                          "optional_header": {"magic": 0x20B, "section_alignment": 0x1000,
+                                              "file_alignment": 0x200, "size_of_headers": 0x200,
+                                              "size_of_initialized_data": 0x200, "size_of_image": 0x3000,
+                                              "checksum": 1, "size_of_code": 0x200,
+                                              "size_of_uninitialized_data": 0},
+                          "data_directories": {"resource": {"rva_or_file_offset": 0, "size": 0},
+                                               "security": {"rva_or_file_offset": 0, "size": 0},
+                                               "base_relocation": {"rva_or_file_offset": 0x2000,
+                                                                   "size": 0x180},
+                                               "import": {"rva_or_file_offset": 0, "size": 0}}}
+        after_headers = {"pe_offset": before_headers["pe_offset"],
+                         "coff": {**before_headers["coff"], "number_of_sections": 3},
+                         "optional_header": {**before_headers["optional_header"],
+                                              "size_of_initialized_data": 0x600,
+                                              "size_of_image": 0x4000, "checksum": 2},
+                         "data_directories": {**before_headers["data_directories"],
+                                              "resource": {"rva_or_file_offset": 0x2000, "size": 520},
+                                              "base_relocation": {"rva_or_file_offset": 0x3000,
+                                                                  "size": 0x180}}}
+        target = {"path": [["id", 24], ["id", 1], ["id", 0]], "bytes": 430,
+                  "sha256": "output-manifest", "codepage": 1252, "reserved": 0,
+                  "active_code_page_utf8": True}
+        before_nonresource = candidate._nonresource_sections_from_receipt(before_sections, before_headers)
+        after_nonresource = candidate._nonresource_sections_from_receipt(after_sections, after_headers)
+        proof = candidate._validate_resource_section_insertion_transition(
+            relative, before_sections, after_sections, before_headers, after_headers,
+            0x600, 0xA00, {}, {"id:24/id:1/id:0": target})
+        payloads = [{"name": text["name"], "old_index": 0, "new_index": 0,
+                     "bytes": text["raw_size"], "sha256": text["sha256"]},
+                    {"name": ".reloc", "old_index": 1, "new_index": 2,
+                     "bytes": old_reloc["raw_size"], "sha256": old_reloc["sha256"]}]
+        proof["byte_preservation"] = {"preexisting_section_payloads": payloads,
+                                      "unmodified_header_bytes_sha256": "a" * 64,
+                                      "preexisting_relocation_header_sha256": "b" * 64,
+                                      "moved_relocation_header_sha256": "c" * 64,
+                                      "new_resource_section_header_sha256": "d" * 64,
+                                      "resource_raw_padding_bytes": 504,
+                                      "resource_raw_padding_sha256": "e" * 64}
+        return {"original_sha256": candidate.CORE_EXECUTABLE_SHA256[relative],
+                "prepared_sha256": "prepared-hash",
+                "pe_checksum_before": 1, "pe_checksum_after_api": 1, "pe_checksum_prepared": 2,
+                "file_size_before": 0x600, "file_size_after": 0xA00,
+                "sections_before": before_sections, "sections_after": after_sections,
+                "pe_headers_before": before_headers, "pe_headers_after": after_headers,
+                "section_transition": proof,
+                "before_nonresource_sections": before_nonresource,
+                "after_nonresource_sections": after_nonresource,
+                "nonresource_sections_sha256": candidate._sha_bytes(candidate._canonical(after_nonresource)),
+                "resources_before": {}, "resources_after": {"id:24/id:1/id:0": target},
+                "manifests_before": [{"resource": target["path"], "sha256": None, "bytes": 0,
+                                      "original_sha256": None, "output_sha256": "output-manifest",
+                                      "changed": True, "active_code_page": "UTF-8",
+                                      "created_neutral_manifest": True}]}
 
     def test_existing_neutral_manifest_and_localized_population_are_preserved(self):
         for languages in ((0,), (0, 1033), (1033,)):
@@ -270,6 +359,38 @@ class ReceiptProofTests(unittest.TestCase):
         row["resources_after"]["id:24/id:1/id:0"]["codepage"] = 1252
         with self.assertRaises(candidate.CompilerMetadataError):
             candidate._validate_receipt_transition("fixture.exe", row)
+
+    def test_exact_relocation_insertion_receipt_and_alias_are_accepted(self):
+        for relative in ("bin/as.exe", "x86_64-w64-mingw32/bin/as.exe"):
+            with self.subTest(relative=relative):
+                candidate._validate_receipt_transition(relative, self._relocated_reloc_row(relative))
+
+    def test_relocation_insertion_exception_rejects_other_tools_and_changed_reloc(self):
+        row = self._relocated_reloc_row()
+        with self.assertRaises(candidate.CompilerMetadataError):
+            candidate._validate_receipt_transition("bin/g++.exe", row)
+        row = self._relocated_reloc_row()
+        row["sections_after"][-1]["sha256"] = "changed-reloc"
+        with self.assertRaises(candidate.CompilerMetadataError):
+            candidate._validate_receipt_transition("bin/as.exe", row)
+
+    def test_relocation_insertion_exception_rejects_header_directory_and_resource_drift(self):
+        mutations = []
+        row = self._relocated_reloc_row()
+        row["pe_headers_after"]["optional_header"]["address_of_entry_point"] = 5
+        mutations.append(row)
+        row = self._relocated_reloc_row()
+        row["pe_headers_after"]["data_directories"]["import"] = {"rva_or_file_offset": 1, "size": 1}
+        mutations.append(row)
+        row = self._relocated_reloc_row()
+        row["sections_after"][-2]["characteristics"] |= 0x80000000
+        mutations.append(row)
+        row = self._relocated_reloc_row()
+        row["resources_after"]["id:16/id:1/id:0"] = {"path": [["id", 16], ["id", 1], ["id", 0]]}
+        mutations.append(row)
+        for row in mutations:
+            with self.subTest(row=row), self.assertRaises(candidate.CompilerMetadataError):
+                candidate._validate_receipt_transition("bin/as.exe", row)
 
 
 if __name__ == "__main__":

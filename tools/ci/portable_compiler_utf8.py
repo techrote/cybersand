@@ -550,6 +550,295 @@ def _section_mismatch_diagnostic(relative: str, before_data: bytes, after_data: 
                 "after_resource_count": len(after["resources"])}}
 
 
+def _align_up(value: int, alignment: int) -> int:
+    _need(type(value) is int and type(alignment) is int and value >= 0 and alignment > 0
+          and alignment & (alignment - 1) == 0,
+          "PE section alignment values are malformed")
+    return (value + alignment - 1) & ~(alignment - 1)
+
+
+def _validate_resource_section_insertion_transition(
+        relative: str, before_sections: list[dict], after_sections: list[dict],
+        before_headers: dict, after_headers: dict, before_file_size: int, after_file_size: int,
+        before_resources: dict, after_resources: dict) -> dict:
+    """Prove only the observed new-.rsrc-before-terminal-.reloc layout change.
+
+    This intentionally accepts only the two registered assembler aliases and
+    one exact structural transition witnessed from the admitted GNU binaries.
+    It is not a general allowance for resource tools to modify other sections.
+    """
+    _need(relative in CORE_EXECUTABLE_SHA256,
+          "Resource-section insertion transition is not registered for this executable")
+    _need(type(before_sections) is list and type(after_sections) is list
+          and len(before_sections) >= 1 and len(after_sections) == len(before_sections) + 1,
+          "Resource-section insertion did not add exactly one PE section")
+    _need(type(before_headers) is dict and type(after_headers) is dict,
+          "Resource-section transition is missing PE header evidence")
+    before_coff, after_coff = before_headers.get("coff"), after_headers.get("coff")
+    before_optional, after_optional = before_headers.get("optional_header"), after_headers.get("optional_header")
+    before_directories, after_directories = before_headers.get("data_directories"), after_headers.get("data_directories")
+    _need(type(before_coff) is dict and type(after_coff) is dict
+          and type(before_optional) is dict and type(after_optional) is dict
+          and type(before_directories) is dict and type(after_directories) is dict,
+          "Resource-section transition has malformed PE header evidence")
+    _need(before_coff.get("number_of_sections") == len(before_sections)
+          and after_coff.get("number_of_sections") == len(after_sections)
+          and after_coff.get("number_of_sections") == before_coff.get("number_of_sections") + 1,
+          "Resource-section transition has inconsistent COFF section counts")
+    _need({key: value for key, value in before_coff.items() if key != "number_of_sections"}
+          == {key: value for key, value in after_coff.items() if key != "number_of_sections"},
+          "Resource-section transition changed unrelated COFF header fields")
+    _need(len(before_sections) >= 2, "Resource-section transition has no pre-existing code section population")
+    _need(all(section.get("name") != ".rsrc" for section in before_sections),
+          "Resource-section transition cannot reuse or replace a pre-existing .rsrc section")
+    old_reloc, new_resource, new_reloc = before_sections[-1], after_sections[-2], after_sections[-1]
+    _need(old_reloc.get("name") == ".reloc" and old_reloc.get("index") == len(before_sections) - 1,
+          "Resource-section transition requires the original .reloc section to be terminal")
+    _need(new_resource.get("name") == ".rsrc" and new_resource.get("index") == len(before_sections) - 1
+          and new_reloc.get("name") == ".reloc" and new_reloc.get("index") == len(after_sections) - 1,
+          "Resource-section transition inserted the new .rsrc section at an unexpected position")
+    _need(after_sections[:-2] == before_sections[:-1],
+          "Resource-section transition changed or reordered a pre-existing non-relocation section")
+    stable_reloc_fields = ("name", "virtual_size", "raw_size", "characteristics", "sha256")
+    _need(all(old_reloc.get(field) == new_reloc.get(field) for field in stable_reloc_fields),
+          "Resource-section transition changed .reloc content or stable section attributes")
+    section_alignment = before_optional.get("section_alignment")
+    file_alignment = before_optional.get("file_alignment")
+    _need(after_optional.get("section_alignment") == section_alignment
+          and after_optional.get("file_alignment") == file_alignment,
+          "Resource-section transition changed PE section or file alignment")
+    _need(all(type(row.get(field)) is int for row, fields in
+              ((old_reloc, ("virtual_address", "virtual_size", "raw_pointer", "raw_size", "characteristics")),
+               (new_resource, ("virtual_address", "virtual_size", "raw_pointer", "raw_size", "characteristics")),
+               (new_reloc, ("virtual_address", "virtual_size", "raw_pointer", "raw_size", "characteristics")))
+              for field in fields),
+          "Resource-section transition has malformed section integer fields")
+    virtual_delta = _align_up(new_resource.get("virtual_size"), section_alignment)
+    raw_size = new_resource.get("raw_size")
+    _need(new_resource.get("virtual_address") == old_reloc.get("virtual_address")
+          and new_resource.get("raw_pointer") == old_reloc.get("raw_pointer")
+          and new_resource.get("virtual_size") > 0
+          and new_resource.get("raw_size") == _align_up(new_resource.get("virtual_size"), file_alignment)
+          and raw_size > 0
+          and new_resource.get("characteristics") == 0x40000040,
+          "Inserted .rsrc section bounds or memory flags are unexpected")
+    _need(virtual_delta == section_alignment
+          and new_reloc.get("virtual_address") == old_reloc.get("virtual_address") + section_alignment
+          and new_reloc.get("raw_pointer") == old_reloc.get("raw_pointer") + raw_size,
+          "Resource-section transition moved .reloc by an unexpected alignment delta")
+    _need(type(before_file_size) is int and type(after_file_size) is int
+          and old_reloc.get("raw_pointer") + old_reloc.get("raw_size") == before_file_size
+          and new_reloc.get("raw_pointer") + new_reloc.get("raw_size") == after_file_size
+          and after_file_size == before_file_size + raw_size,
+          "Resource-section transition contains an overlay or unexpected file-size delta")
+    _need(not before_directories.get("security", {}).get("rva_or_file_offset")
+          and not before_directories.get("security", {}).get("size")
+          and not after_directories.get("security", {}).get("rva_or_file_offset")
+          and not after_directories.get("security", {}).get("size"),
+          "Resource-section transition contains an Authenticode certificate table")
+    _need(before_directories.get("resource") == {"rva_or_file_offset": 0, "size": 0}
+          and after_directories.get("resource") == {
+              "rva_or_file_offset": new_resource.get("virtual_address"),
+              "size": new_resource.get("virtual_size")},
+          "Resource-section transition resource directory does not exactly describe the new .rsrc section")
+    old_base_reloc, new_base_reloc = (before_directories.get("base_relocation"),
+                                      after_directories.get("base_relocation"))
+    _need(type(old_base_reloc) is dict and type(new_base_reloc) is dict
+          and old_base_reloc.get("rva_or_file_offset") == old_reloc.get("virtual_address")
+          and new_base_reloc.get("rva_or_file_offset") == new_reloc.get("virtual_address")
+          and old_base_reloc.get("size") == new_base_reloc.get("size")
+          and 0 < old_base_reloc.get("size", 0) <= old_reloc.get("virtual_size", 0),
+          "Resource-section transition did not preserve the base-relocation directory")
+    _need({key: value for key, value in before_directories.items()
+           if key not in ("resource", "base_relocation")}
+          == {key: value for key, value in after_directories.items()
+              if key not in ("resource", "base_relocation")},
+          "Resource-section transition changed an unrelated PE data directory")
+    allowed_optional = {"size_of_initialized_data", "size_of_image", "checksum"}
+    _need({key: value for key, value in before_optional.items() if key not in allowed_optional}
+          == {key: value for key, value in after_optional.items() if key not in allowed_optional},
+          "Resource-section transition changed unrelated optional-header fields")
+    _need(after_optional.get("size_of_initialized_data")
+          == before_optional.get("size_of_initialized_data") + raw_size
+          and after_optional.get("size_of_image")
+          == before_optional.get("size_of_image") + section_alignment,
+          "Resource-section transition has an unexpected initialized-data or image-size delta")
+    _need(after_optional.get("checksum") is not None
+          and after_optional.get("size_of_headers") == before_optional.get("size_of_headers")
+          and before_headers.get("pe_offset") == after_headers.get("pe_offset"),
+          "Resource-section transition changed PE header placement or omitted checksum evidence")
+    before_table_end = (before_headers["pe_offset"] + 4 + 20 + before_coff["size_of_optional_header"]
+                        + len(before_sections) * 40)
+    after_table_end = (after_headers["pe_offset"] + 4 + 20 + after_coff["size_of_optional_header"]
+                       + len(after_sections) * 40)
+    _need(after_table_end <= after_optional["size_of_headers"]
+          and before_table_end <= before_optional["size_of_headers"],
+          "Resource-section transition exceeds the declared PE header region")
+    _need(before_resources == {}
+          and set(after_resources) == {"id:24/id:1/id:0"}
+          and after_resources["id:24/id:1/id:0"].get("active_code_page_utf8") is True,
+          "Resource-section transition added unexpected resources or omitted the UTF-8 neutral manifest")
+    return {"schema": "cybersand.portable-compiler-utf8-section-transition-v1",
+            "type": "one-new-rsrc-before-terminal-reloc",
+            "binary_relative_path": relative,
+            "source_sha256": CORE_EXECUTABLE_SHA256[relative],
+            "inserted_resource_section": {key: new_resource[key] for key in
+                                           ("index", "name", "virtual_address", "virtual_size",
+                                            "raw_pointer", "raw_size", "characteristics", "sha256")},
+            "moved_relocation_section": {"name": ".reloc", "old_index": old_reloc["index"],
+                                         "new_index": new_reloc["index"],
+                                         "old_rva": old_reloc["virtual_address"],
+                                         "new_rva": new_reloc["virtual_address"],
+                                         "old_raw_pointer": old_reloc["raw_pointer"],
+                                         "new_raw_pointer": new_reloc["raw_pointer"],
+                                         "virtual_size": old_reloc["virtual_size"],
+                                         "raw_size": old_reloc["raw_size"],
+                                         "characteristics": old_reloc["characteristics"],
+                                         "sha256": old_reloc["sha256"]},
+            "section_alignment": section_alignment, "file_alignment": file_alignment,
+            "file_size_before": before_file_size, "file_size_after": after_file_size,
+            "base_relocation_directory_before": old_base_reloc,
+            "base_relocation_directory_after": new_base_reloc,
+            "allowed_header_deltas": ["COFF.NumberOfSections +1",
+                                      "OptionalHeader.SizeOfInitializedData + .rsrc.SizeOfRawData",
+                                      "OptionalHeader.SizeOfImage + SectionAlignment",
+                                      "OptionalHeader.CheckSum recomputed",
+                                      "Resource Table directory added",
+                                      "Base Relocation Table RVA follows intact .reloc"]}
+
+
+def _verify_resource_section_transition_bytes(relative: str, before_data: bytes, after_data: bytes,
+                                              before_sections: list[dict], after_sections: list[dict]) -> list[dict]:
+    """Require every pre-existing section payload, including .reloc, to be byte exact."""
+    old_prefix, new_prefix = before_sections[:-1], after_sections[:-2]
+    records = []
+    for old, new in zip(old_prefix, new_prefix):
+        old_payload = before_data[old["raw_pointer"]:old["raw_pointer"] + old["raw_size"]]
+        new_payload = after_data[new["raw_pointer"]:new["raw_pointer"] + new["raw_size"]]
+        _need(old_payload == new_payload,
+              "Resource-section transition changed pre-existing section bytes: " + old["name"])
+        records.append({"name": old["name"], "old_index": old["index"], "new_index": new["index"],
+                        "bytes": old["raw_size"], "sha256": _sha_bytes(old_payload)})
+    old_reloc, new_reloc = before_sections[-1], after_sections[-1]
+    old_payload = before_data[old_reloc["raw_pointer"]:old_reloc["raw_pointer"] + old_reloc["raw_size"]]
+    new_payload = after_data[new_reloc["raw_pointer"]:new_reloc["raw_pointer"] + new_reloc["raw_size"]]
+    _need(old_payload == new_payload,
+          "Resource-section transition changed the original .reloc payload: " + relative)
+    records.append({"name": old_reloc["name"], "old_index": old_reloc["index"],
+                    "new_index": new_reloc["index"], "bytes": old_reloc["raw_size"],
+                    "sha256": _sha_bytes(old_payload)})
+    return records
+
+
+def _verify_current_resource_transition_byteproof(data: bytes, row: dict, pe: dict) -> None:
+    transition = row["section_transition"]
+    proof = transition["byte_preservation"]
+    before_sections, after_sections = row["sections_before"], row["sections_after"]
+    expected_sections = []
+    for old, new in zip(before_sections[:-1], after_sections[:-2]):
+        expected_sections.append({"name": old["name"], "old_index": old["index"],
+                                  "new_index": new["index"], "bytes": old["raw_size"],
+                                  "sha256": old["sha256"]})
+    old_reloc, new_reloc = before_sections[-1], after_sections[-1]
+    expected_sections.append({"name": old_reloc["name"], "old_index": old_reloc["index"],
+                              "new_index": new_reloc["index"], "bytes": old_reloc["raw_size"],
+                              "sha256": old_reloc["sha256"]})
+    _need(proof.get("preexisting_section_payloads") == expected_sections,
+          "Receipt section-payload transition proof is inconsistent")
+    header_digest = _header_bytes_unchanged_digest(
+        data, row["pe_headers_before"], len(before_sections))
+    _need(header_digest == proof.get("unmodified_header_bytes_sha256"),
+          "Prepared PE header bytes differ from the recorded transition proof")
+    table = (row["pe_headers_after"]["pe_offset"] + 4 + 20
+             + row["pe_headers_after"]["coff"]["size_of_optional_header"])
+    count = len(before_sections)
+    resource_header = data[table + (count - 1) * 40:table + count * 40]
+    relocation_header = data[table + count * 40:table + (count + 1) * 40]
+    _need(_sha_bytes(resource_header) == proof.get("new_resource_section_header_sha256")
+          and _sha_bytes(relocation_header) == proof.get("moved_relocation_header_sha256"),
+          "Prepared inserted section headers differ from the recorded transition proof")
+    resource_section = after_sections[-2]
+    section_bytes = data[resource_section["raw_pointer"]:
+                         resource_section["raw_pointer"] + resource_section["raw_size"]]
+    padding = section_bytes[resource_section["virtual_size"]:]
+    _need(len(padding) == proof.get("resource_raw_padding_bytes")
+          and _sha_bytes(padding) == proof.get("resource_raw_padding_sha256"),
+          "Prepared .rsrc raw padding differs from its recorded section proof")
+
+
+def _header_bytes_unchanged_digest(data: bytes, before_headers: dict,
+                                   before_section_count: int) -> str:
+    """Hash header bytes outside explicit resource-transition edits/section slots."""
+    header_size = before_headers["optional_header"]["size_of_headers"]
+    pe_offset = before_headers["pe_offset"]
+    coff = pe_offset + 4
+    optional = coff + 20
+    optional_size = before_headers["coff"]["size_of_optional_header"]
+    section_table = optional + optional_size
+    directories = optional + (112 if before_headers["optional_header"]["magic"] == 0x20B else 96)
+    _need(header_size <= len(data) and section_table + (before_section_count + 1) * 40 <= header_size,
+          "Resource transition lacks bounded PE header slack for the new section")
+    output = bytearray(data[:header_size])
+    allowed = [(coff + 2, coff + 4),
+               (optional + 8, optional + 12),
+               (optional + 56, optional + 60),
+               (optional + 64, optional + 68),
+               (directories + 2 * 8, directories + 3 * 8),
+               (directories + 5 * 8, directories + 6 * 8),
+               (section_table + (before_section_count - 1) * 40,
+                section_table + before_section_count * 40),
+               (section_table + before_section_count * 40,
+                section_table + (before_section_count + 1) * 40)]
+    for start, end in allowed:
+        _need(0 <= start <= end <= header_size, "Resource transition header mask is outside SizeOfHeaders")
+        output[start:end] = b"\0" * (end - start)
+    return _sha_bytes(bytes(output))
+
+
+def _verify_resource_transition_header_bytes(before_data: bytes, after_data: bytes,
+                                             before_sections: list[dict],
+                                             after_sections: list[dict],
+                                             before_headers: dict, after_headers: dict) -> dict:
+    """Require the section insertion's only unparsed header edits to be its two section records."""
+    old_count = len(before_sections)
+    new_resource = after_sections[-2]
+    old_reloc = before_sections[-1]
+    new_reloc = after_sections[-1]
+    before_table = (before_headers["pe_offset"] + 4 + 20
+                    + before_headers["coff"]["size_of_optional_header"])
+    after_table = (after_headers["pe_offset"] + 4 + 20
+                   + after_headers["coff"]["size_of_optional_header"])
+    _need(before_table == after_table, "Resource transition moved the PE section table")
+    old_reloc_header = before_data[before_table + (old_count - 1) * 40:
+                                   before_table + old_count * 40]
+    new_resource_header = after_data[after_table + (old_count - 1) * 40:
+                                     after_table + old_count * 40]
+    new_reloc_header = after_data[after_table + old_count * 40:
+                                  after_table + (old_count + 1) * 40]
+    _need(len(old_reloc_header) == len(new_resource_header) == len(new_reloc_header) == 40,
+          "Resource transition section-header records are truncated")
+    _need(new_resource_header[:8] == b".rsrc\0\0\0"
+          and new_resource_header[24:36] == b"\0" * 12,
+          "Inserted .rsrc raw section-header reserved fields are unexpected")
+    _need(old_reloc_header[:12] == new_reloc_header[:12]
+          and old_reloc_header[16:20] == new_reloc_header[16:20]
+          and old_reloc_header[24:] == new_reloc_header[24:],
+          "Moved .reloc raw section header changed fields beyond RVA and file pointer")
+    digest_before = _header_bytes_unchanged_digest(before_data, before_headers, old_count)
+    digest_after = _header_bytes_unchanged_digest(after_data, before_headers, old_count)
+    _need(digest_before == digest_after,
+          "Resource transition changed unapproved PE header bytes")
+    resource_raw = after_data[new_resource["raw_pointer"]:
+                              new_resource["raw_pointer"] + new_resource["raw_size"]]
+    raw_padding = resource_raw[new_resource["virtual_size"]:]
+    return {"unmodified_header_bytes_sha256": digest_before,
+            "preexisting_relocation_header_sha256": _sha_bytes(old_reloc_header),
+            "moved_relocation_header_sha256": _sha_bytes(new_reloc_header),
+            "new_resource_section_header_sha256": _sha_bytes(new_resource_header),
+            "resource_raw_padding_bytes": len(raw_padding),
+            "resource_raw_padding_sha256": _sha_bytes(raw_padding)}
+
+
 def inspect_pe(path: Path) -> dict:
     data = path.read_bytes()
     return {"file_sha256": _sha_bytes(data), **_pe_inspect_bytes(data)}
@@ -819,19 +1108,88 @@ def _resource_path_key(path: list[list[object]]) -> str:
     return "/".join(str(part[0]) + ":" + str(part[1]) for part in path)
 
 
+def _resource_section_index_from_receipt(sections: list[dict], headers: dict) -> int | None:
+    resource = headers.get("data_directories", {}).get("resource", {})
+    rva = resource.get("rva_or_file_offset", 0)
+    size = resource.get("size", 0)
+    resource_index = None
+    if rva or size:
+        _need(type(rva) is int and type(size) is int and rva > 0 and size > 0,
+              "Receipt resource directory has incomplete bounds")
+        matches = [section for section in sections
+                   if section.get("virtual_address", -1) <= rva
+                   and rva + size <= section.get("virtual_address", -1)
+                       + max(section.get("virtual_size", 0), section.get("raw_size", 0))]
+        _need(len(matches) == 1, "Receipt resource directory does not identify exactly one section")
+        resource_index = matches[0].get("index")
+    return resource_index
+
+
+def _full_nonresource_sections_from_receipt(sections: list[dict], headers: dict) -> list[dict]:
+    resource_index = _resource_section_index_from_receipt(sections, headers)
+    return [section for section in sections if section.get("index") != resource_index]
+
+
+def _nonresource_sections_from_receipt(sections: list[dict], headers: dict) -> list[dict]:
+    full_sections = _full_nonresource_sections_from_receipt(sections, headers)
+    return [{key: section[key] for key in ("name", "virtual_size", "virtual_address",
+                                            "raw_size", "characteristics", "sha256")}
+            for section in full_sections]
+
+
 def _validate_receipt_transition(relative: str, row: dict) -> None:
     """Validate the claimed before/after invariants without Windows APIs."""
     for field in ("pe_checksum_before", "pe_checksum_after_api", "pe_checksum_prepared"):
         value = row.get(field)
         _need(type(value) is int and 0 <= value <= 0xFFFFFFFF,
               "Receipt PE checksum value is malformed: " + relative)
-    before_sections = row.get("before_nonresource_sections")
-    after_sections = row.get("after_nonresource_sections")
-    _need(type(before_sections) is list and before_sections == after_sections,
-          "Receipt does not prove unchanged non-resource sections: " + relative)
-    section_digest = _sha_bytes(_canonical(before_sections))
+    before_nonresource = row.get("before_nonresource_sections")
+    after_nonresource = row.get("after_nonresource_sections")
+    sections_before, sections_after = row.get("sections_before"), row.get("sections_after")
+    headers_before, headers_after = row.get("pe_headers_before"), row.get("pe_headers_after")
+    file_size_before, file_size_after = row.get("file_size_before"), row.get("file_size_after")
+    _need(type(sections_before) is list and type(sections_after) is list
+          and type(headers_before) is dict and type(headers_after) is dict
+          and type(file_size_before) is int and type(file_size_after) is int,
+          "Receipt omits complete before/after PE section evidence: " + relative)
+    _need(_nonresource_sections_from_receipt(sections_before, headers_before) == before_nonresource
+          and _nonresource_sections_from_receipt(sections_after, headers_after) == after_nonresource,
+          "Receipt non-resource section lists do not match their PE headers: " + relative)
+    before_full_nonresource = _full_nonresource_sections_from_receipt(sections_before, headers_before)
+    after_full_nonresource = _full_nonresource_sections_from_receipt(sections_after, headers_after)
+    transition = row.get("section_transition")
+    if before_full_nonresource == after_full_nonresource:
+        _need(transition is None,
+              "Receipt records an unnecessary section relocation exception: " + relative)
+    else:
+        proof = _validate_resource_section_insertion_transition(
+            relative, sections_before, sections_after, headers_before, headers_after,
+            file_size_before, file_size_after, row.get("resources_before"), row.get("resources_after"))
+        _need(type(transition) is dict, "Receipt omits the required section transition proof: " + relative)
+        byte_proof = transition.get("byte_preservation")
+        recorded_structure = {key: value for key, value in transition.items() if key != "byte_preservation"}
+        _need(recorded_structure == proof and type(byte_proof) is dict
+              and type(byte_proof.get("unmodified_header_bytes_sha256")) is str
+              and len(byte_proof["unmodified_header_bytes_sha256"]) == 64
+              and byte_proof.get("resource_raw_padding_bytes")
+                  == sections_after[-2].get("raw_size") - sections_after[-2].get("virtual_size")
+              and type(byte_proof.get("resource_raw_padding_sha256")) is str
+              and len(byte_proof["resource_raw_padding_sha256"]) == 64,
+              "Receipt section transition byte proof is malformed: " + relative)
+        expected_payloads = []
+        for old, new in zip(sections_before[:-1], sections_after[:-2]):
+            expected_payloads.append({"name": old["name"], "old_index": old["index"],
+                                      "new_index": new["index"], "bytes": old["raw_size"],
+                                      "sha256": old["sha256"]})
+        old_reloc, new_reloc = sections_before[-1], sections_after[-1]
+        expected_payloads.append({"name": old_reloc["name"], "old_index": old_reloc["index"],
+                                  "new_index": new_reloc["index"], "bytes": old_reloc["raw_size"],
+                                  "sha256": old_reloc["sha256"]})
+        _need(byte_proof.get("preexisting_section_payloads") == expected_payloads,
+              "Receipt section-payload proof differs from its before/after sections: " + relative)
+    section_digest = _sha_bytes(_canonical(after_nonresource))
     _need(row.get("nonresource_sections_sha256") == section_digest,
-          "Receipt non-resource section digest is inconsistent: " + relative)
+          "Receipt after non-resource section digest is inconsistent: " + relative)
 
     before_resources, after_resources = row.get("resources_before"), row.get("resources_after")
     _need(type(before_resources) is dict and type(after_resources) is dict,
@@ -944,6 +1302,7 @@ def prepare(root: str | os.PathLike[str]) -> dict:
         path = compiler_root / Path(relative)
         before_data = path.read_bytes()
         before = _pe_inspect_bytes(before_data)
+        before_headers = _pe_header_diagnostics(before_data)
         _need(not before["certificate_table_present"],
               "Refuse to update Authenticode-signed GNU executable: " + relative)
         updates, manifest_record = _manifest_updates(path, before_data, before)
@@ -952,13 +1311,38 @@ def prepare(root: str | os.PathLike[str]) -> dict:
         after_api = _pe_inspect_bytes(path.read_bytes())
         after, prepared_checksum = _restore_resource_data_entry_metadata(path, before, after_api)
         after_data = path.read_bytes()
+        after_headers = _pe_header_diagnostics(after_data)
         _need(not after["certificate_table_present"], "Resource update unexpectedly produced a signed image")
-        if before["nonresource_sections"] != after["nonresource_sections"]:
-            diagnostic = _section_mismatch_diagnostic(
-                relative, before_data, after_data, before, after_api, after)
-            _write_atomic(compiler_root / FAILURE_RECEIPT_NAME, diagnostic)
-            _need(False, "A non-resource PE section changed during metadata update: " + relative
-                  + f"; bounded diagnostics written to {FAILURE_RECEIPT_NAME}")
+        section_transition = None
+        before_full_nonresource = [section for section in before["sections"]
+                                   if section["index"] != before["resource_section_index"]]
+        after_full_nonresource = [section for section in after["sections"]
+                                  if section["index"] != after["resource_section_index"]]
+        if before_full_nonresource != after_full_nonresource:
+            try:
+                section_transition = _validate_resource_section_insertion_transition(
+                    relative, before["sections"], after["sections"], before_headers, after_headers,
+                    len(before_data), len(after_data), before["resources"], after["resources"])
+                payload_proof = _verify_resource_section_transition_bytes(
+                    relative, before_data, after_data, before["sections"], after["sections"])
+                header_proof = _verify_resource_transition_header_bytes(
+                    before_data, after_data, before["sections"], after["sections"],
+                    before_headers, after_headers)
+                section_transition["byte_preservation"] = {
+                    "preexisting_section_payloads": payload_proof,
+                    "unmodified_header_bytes_sha256": header_proof["unmodified_header_bytes_sha256"],
+                    "preexisting_relocation_header_sha256": header_proof["preexisting_relocation_header_sha256"],
+                    "moved_relocation_header_sha256": header_proof["moved_relocation_header_sha256"],
+                    "new_resource_section_header_sha256": header_proof["new_resource_section_header_sha256"],
+                    "resource_raw_padding_bytes": header_proof["resource_raw_padding_bytes"],
+                    "resource_raw_padding_sha256": header_proof["resource_raw_padding_sha256"]}
+            except CompilerMetadataError as error:
+                diagnostic = _section_mismatch_diagnostic(
+                    relative, before_data, after_data, before, after_api, after)
+                _write_atomic(compiler_root / FAILURE_RECEIPT_NAME, diagnostic)
+                raise CompilerMetadataError(
+                    "A non-resource PE section changed during metadata update: " + relative
+                    + f"; bounded diagnostics written to {FAILURE_RECEIPT_NAME}; rejected transition: {error}") from error
         after_payloads = _all_resource_payloads(after_data)
         after_targets = _target_manifest_rows(after)
         _need(bool(after_targets), "Updated compiler has no process manifest resource: " + relative)
@@ -977,6 +1361,13 @@ def prepare(root: str | os.PathLike[str]) -> dict:
                               "pe_checksum_before": before["pe_checksum"],
                               "pe_checksum_after_api": after_api["pe_checksum"],
                               "pe_checksum_prepared": prepared_checksum,
+                              "file_size_before": len(before_data),
+                              "file_size_after": len(after_data),
+                              "sections_before": before["sections"],
+                              "sections_after": after["sections"],
+                              "pe_headers_before": before_headers,
+                              "pe_headers_after": after_headers,
+                              "section_transition": section_transition,
                               "before_nonresource_sections": before["nonresource_sections"],
                               "after_nonresource_sections": after["nonresource_sections"],
                               "nonresource_sections_sha256": after["nonresource_sections_sha256"],
@@ -1029,6 +1420,13 @@ def verify(root: str | os.PathLike[str], receipt: dict | None = None, *, execute
         _need(not pe["certificate_table_present"], "Prepared GNU executable is unexpectedly signed: " + relative)
         _need(current_hashes[relative] == row.get("prepared_sha256"),
               "Prepared GNU executable hash differs from receipt: " + relative)
+        headers = _pe_header_diagnostics(data)
+        _need(len(data) == row.get("file_size_after")
+              and pe["sections"] == row.get("sections_after")
+              and headers == row.get("pe_headers_after"),
+              "Prepared PE section or header inventory differs from receipt: " + relative)
+        if row.get("section_transition") is not None:
+            _verify_current_resource_transition_byteproof(data, row, pe)
         _need(pe["nonresource_sections"] == row.get("after_nonresource_sections")
               and pe["nonresource_sections_sha256"] == row.get("nonresource_sections_sha256"),
               "Prepared non-resource PE section identity differs from receipt: " + relative)

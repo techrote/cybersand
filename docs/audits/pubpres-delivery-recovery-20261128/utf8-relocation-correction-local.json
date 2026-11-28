@@ -1,0 +1,51 @@
+{
+  "date": "2026-11-28",
+  "mission": "PUBPRES-DELIVERY-RECOVERY-001",
+  "source_parent": "f803eacc017dabb415b30d908352e8aff018dee7",
+  "source_local_delta": {
+    "tools/ci/portable_compiler_utf8.py": "ca0044690aaed75c52e252eb37fa869ebc16ad5fe50581fd89336600776723c7",
+    "tools/ci/test_portable_compiler_utf8.py": "918c66311fe19f4245772ae2a08aa92f966dc0a082512b8c93af895904033c0d",
+    "tools/ci/test_ramcache_strata_lab_package.py": "48b3ee7fb92a13c1e2e063ee65d9a13fc5d8f8fa8ea88294aeb737d03ba59217",
+    "tools/pubpres_mainline/portable_authoring.py": "4f28f6cf2e819a7a0f64004659e51c8a926f9922615b5f67f371055fce654a20",
+    ".github/workflows/pubpres-mainline.yml": "ce439cb3a66d2dfc79e56cbe460b9ed883b6c62c413475ac1994d865fd68423a",
+    ".github/workflows/pubpres-portable-authoring-witness.yml": "0b00013b17472ca523f6440e731e1055609fa3235d7e1dc32e57a8b13d2d6f0d"
+  },
+  "change_scope": "Copied authoring compiler PE metadata and its independent preservation proof; package dependency receipt tests and hosted invocation. No production native, Godot application or World authoring backend change.",
+  "local_checks": [
+    {
+      "command": "python -B -m unittest discover -s tools/pubpres_mainline -p test_*.py",
+      "tests": 53,
+      "status": "passed"
+    },
+    {
+      "command": "python -B -m unittest discover -s tools/ci -p test_portable_compiler_utf8.py",
+      "tests": 19,
+      "status": "passed"
+    },
+    {
+      "command": "python -B tools/ci/test_ramcache_strata_lab_package.py DependencyReceiptTests",
+      "tests": 4,
+      "status": "passed"
+    },
+    {
+      "command": "python -B -m unittest discover -s tools/ci -p test_portable_authoring_environment.py",
+      "tests": 1,
+      "status": "passed"
+    },
+    {
+      "command": "python tools/ci/check_ci_provider_policy.py",
+      "status": "passed"
+    },
+    {
+      "command": "git diff --check",
+      "status": "passed"
+    }
+  ],
+  "historical_failure_preserved": "utf8-resource-insertion-diagnostic.json",
+  "independent_review": "pending final integrated review",
+  "focused_hosted_correction": "pending",
+  "complete_extracted_package": "pending",
+  "physical_owner_acceptance": "HOLD",
+  "promotion": "DRAFT_ONLY",
+  "merge_authorized": false
+}

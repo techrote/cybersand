@@ -240,6 +240,17 @@ every successful candidate control still requires the actual complete compiler
 chain. The original core PE population is now inventoried before preparation so
 later refusals retain the other tools' original section/resource identities.
 
+The candidate transformer now admits only that exact structural transition for
+registered original executables: a new read-only `.rsrc` immediately before an
+intact terminal `.reloc`, with a coherent relocation-directory move and bounded
+header deltas. Every preceding section and the entire relocation payload remain
+byte-identical. Preparation records unmodified-header and payload proofs;
+independent verification binds them to the prepared PE, full resource inventory
+and derived hash. All unrelated changes still refuse. The
+[local correction controls](../audits/pubpres-delivery-recovery-20261128/utf8-relocation-correction-local.json)
+provide local evidence only; focused Windows and complete extraction remain
+separate required gates.
+
 ## Owner route and subsequent ObjectShard integration
 
 The [complete Windows owner playtest](../audits/2026-11-28-pubpres-mainline-owner-route.md)
