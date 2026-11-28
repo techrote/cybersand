@@ -464,7 +464,16 @@ foreach ($property in $manifest.files_sha256.PSObject.Properties) {
     if ($name -match '(^/|\\|(^|/)\.\.(/|$)|:)' -or !$name) { throw 'Unsafe manifest path' }
     $path = Join-Path $root $name
     if (!(Test-Path -LiteralPath $path -PathType Leaf)) { throw ('Missing payload: ' + $name) }
-    if ((Get-FileHash -LiteralPath $path -Algorithm SHA256).Hash.ToLowerInvariant() -ne $property.Value) {
+    $hasher = [System.Security.Cryptography.SHA256]::Create()
+    $stream = $null
+    try {
+        $stream = [System.IO.File]::OpenRead($path)
+        $actual = [System.BitConverter]::ToString($hasher.ComputeHash($stream)).Replace('-', '').ToLowerInvariant()
+    } finally {
+        if ($null -ne $stream) { $stream.Dispose() }
+        $hasher.Dispose()
+    }
+    if ($actual -ne $property.Value) {
         throw ('Changed payload: ' + $name)
     }
     $count += 1

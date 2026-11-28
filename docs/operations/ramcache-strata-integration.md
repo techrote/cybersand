@@ -202,6 +202,26 @@ loaded-module and post-execution payload checks. An application or functional
 qualification change requires new source campaigns rather than this bounded
 packaging reuse route.
 
+The [corrective Windows diagnostic](https://github.com/techrote/cybersand/actions/runs/46110191691)
+at `6a07ca01d19ad6b7fc6cf15a055fc5107deab23c` passed actual full ZIP extraction,
+pristine source and bundled-tool verification, ordinary CMD launch, persistent
+CMD normal close and fresh-process reopen, and all original payload hashes after
+execution. Its final shipped PowerShell verifier failed because `Get-FileHash`
+was unavailable in the sanitized environment. That overall diagnostic remains
+failed; its successful prefixes retain their original source identity.
+
+The shipped verifier now streams SHA-256 through .NET with explicit resource
+disposal, retaining the existing path, file-presence, hash and count assertions.
+Actual Windows good, altered and missing-file controls precede packaging, and
+the complete final archive still receives the actual shipped verifier check.
+The diagnostic also observed optional Godot Android-editor debug-keystore
+initialization through the runner's `JAVA_HOME`, as established by the pinned
+engine's [default Java path](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/platform/android/export/export.cpp)
+and [absent-keytool return](https://github.com/godotengine/godot/blob/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/platform/android/export/export_plugin.cpp).
+The final cold desktop check
+clears that variable to establish operation without the hosted Java SDK; the
+owner's CMD and the application remain unchanged.
+
 Hosted Linux software rendering and Windows ANGLE/Microsoft Basic execution
 qualify those environments. Only the original evaluators received the owner's
 physical TITAN RTX evaluation; the new package is not described as physically

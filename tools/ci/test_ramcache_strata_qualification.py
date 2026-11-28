@@ -5,9 +5,11 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import struct
 import subprocess
+import sys
 import tempfile
 import unittest
 from unittest import mock
@@ -512,6 +514,49 @@ class IntegrationControls(unittest.TestCase):
             else:
                 values[3] += "SCRIPT ERROR: actual launch failed\n"
             self.reject(lambda: package.validate_launcher_execution(*values, source))
+
+
+class WindowsVerifierControls(unittest.TestCase):
+    @unittest.skipUnless(sys.platform == "win32", "Requires actual Windows PowerShell and portable environment")
+    def test_actual_shipped_verifier_accepts_pristine_and_refuses_changed_or_missing_files(self):
+        with tempfile.TemporaryDirectory(prefix="ramcache-strata-verifier ") as directory:
+            root = Path(directory)
+            verifier = root / "Verify Package.ps1"
+            verifier.write_text(package.VERIFY_PS1, encoding="utf-8", newline="\n")
+            files = {}
+            for index in range(100):
+                name = "payload/" + str(index).zfill(3) + ".bin"
+                path = root / name
+                path.parent.mkdir(exist_ok=True)
+                data = b"" if index == 0 else bytes((index, 0, 255)) + ("binary fixture " + str(index)).encode()
+                path.write_bytes(data)
+                files[name] = digest(data)
+            files["Verify Package.ps1"] = digest(verifier.read_bytes())
+            manifest = {"schema": "ramcache-strata-workbench-evaluation-v1", "source_commit": "a" * 40,
+                        "files_sha256": files}
+            (root / package.MANIFEST).write_text(json.dumps(manifest), encoding="utf-8")
+            powershell = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32/WindowsPowerShell/v1.0/powershell.exe"
+            self.assertTrue(powershell.is_file(), "Actual Windows PowerShell is required")
+            command = [str(powershell), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(verifier)]
+            environment = package.lab.dependency_environment(root)
+
+            def execute():
+                return subprocess.run(command, cwd=root, env=environment, stdout=subprocess.PIPE,
+                                      stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", timeout=30)
+
+            good = execute()
+            self.assertEqual(good.returncode, 0, good.stdout)
+            self.assertIn("Verified 101 original payload files. Application " + "a" * 40, good.stdout)
+            changed = root / "payload/000.bin"
+            changed.write_bytes(b"changed after the authoritative manifest was sealed")
+            altered = execute()
+            self.assertNotEqual(altered.returncode, 0, altered.stdout)
+            self.assertIn("Changed payload: payload/000.bin", altered.stdout)
+            changed.write_bytes(b"")
+            (root / "payload/001.bin").unlink()
+            missing = execute()
+            self.assertNotEqual(missing.returncode, 0, missing.stdout)
+            self.assertIn("Missing payload: payload/001.bin", missing.stdout)
 
 
 class FixedSourceReuseControls(unittest.TestCase):
