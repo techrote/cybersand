@@ -1046,15 +1046,217 @@
     "archive_upload_completed_at": "2026-11-28T13:12:02Z"
   },
   "extracted": {
-    "status": "running",
+    "status": "failed",
     "run": 46147576269,
     "attempt": 1,
     "job": 140989457908,
     "started_at": "2026-11-28T13:12:13Z",
-    "application_source": "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7",
-    "driver_source": "7378ce8abe1f5cfa59a750b944970ddca70e6a42",
     "actual_execution_started_at": "2026-11-28T13:13:40Z",
-    "last_observed_utc": "2026-11-28 13:35:19 UTC"
+    "completed_at": "2026-11-28T13:59:45Z",
+    "application_source": "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7",
+    "application_tree": "f6b7b8d3d613b70cdcdf3643fb906934b3887173",
+    "driver_source": "7378ce8abe1f5cfa59a750b944970ddca70e6a42",
+    "archive": {
+      "bytes": 1415925691,
+      "sha256": "75e2f9e3b7e92f97d9560844a4ad661c5c659d51a47ef49621a3dd93f7f7a692"
+    },
+    "manifest_sha256": "3384839616bdced47a97c67811b0b31269fd2410d50d146a508aa994466daef6",
+    "installation": "D:\\a\\_temp\\Owner (PUBPRES) Ω\\nested\\CyberSand Workbench",
+    "artifact": {
+      "id": 15265833292,
+      "bytes": 51332561,
+      "sha256": "7b134273b6b22bd79836f20c9c437f374c4ee60513f0e74f3f5f07c04bd5b7d2"
+    },
+    "original_result_record": {
+      "sha256": "d79135850e98a30bfceefa235f09e0b43672b1a3fc483668d9e0d1ee067db501",
+      "bytes": 12217
+    },
+    "error": "ValueError: Actual extracted lab execution failed",
+    "lab_failure": {
+      "stage": "material-lab-author: Build + run comparison",
+      "compiler_error": "collect2.exe: fatal error: cannot find 'ld'",
+      "checks": 44,
+      "failures": 2,
+      "complete": false,
+      "candidate_world_receipt": {},
+      "log": {
+        "sha256": "a35313477a3ddbc3987186396e4216f12dfb0d5262ba8c7ce0e2b3db835ddd7a",
+        "bytes": 7556
+      },
+      "root_cause_scope": "Observed linker-resolution failure. Missing bytes versus compiler search/environment or Unicode/path behavior is not established.",
+      "lab_reopen_executed": false
+    },
+    "cold_launch": {
+      "first_engine_invocation": true,
+      "engine_process_ids": [
+        7832,
+        3048
+      ],
+      "portable_python_pid": 1048,
+      "importer_seconds": 10.5906004,
+      "application_seconds": 86.180923,
+      "source_commit": "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7",
+      "native_sha256": "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8",
+      "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+      "selected_flags": {
+        "flight_pacing": true,
+        "empty_effects": true,
+        "coupling_clock": true
+      }
+    },
+    "persistent_shortcuts": [
+      {
+        "session_id": "41d2a0511c63570c962c7cd75ca8ab43",
+        "active_area": "a",
+        "engine_process_ids": [
+          1140,
+          2408
+        ],
+        "portable_python_pid": 5812,
+        "normal_window_close": {
+          "message": "WM_CLOSE",
+          "posted": true,
+          "visible": true,
+          "pid": 2408
+        }
+      },
+      {
+        "session_id": "41d2a0511c63570c962c7cd75ca8ab43",
+        "active_area": "a",
+        "engine_process_ids": [
+          4568,
+          2964
+        ],
+        "portable_python_pid": 7100,
+        "normal_window_close": {
+          "message": "WM_CLOSE",
+          "posted": true,
+          "visible": true,
+          "pid": 2964
+        }
+      }
+    ],
+    "completed_modes": {
+      "ramcache": {
+        "status": "passed",
+        "cases": [
+          "cache-off-reopen",
+          "cache-off-write",
+          "exit-fault",
+          "import",
+          "ramcache-reopen",
+          "ramcache-write",
+          "test_persistent_area_cache",
+          "test_persistent_area_clock",
+          "test_persistent_area_metadata_bounds",
+          "test_persistent_area_native_bridge",
+          "test_persistent_area_residency_native",
+          "test_persistent_area_writeback"
+        ],
+        "original_report_sha256": "a0472cd8c979adc04845567eacf933b8cf7280031be3fa613ecf2a4ca47dfd53",
+        "record_sha256": "7c068b8536ee51da3c19659a56313911da0e22e90b87ece125c9d1d7f94856e9",
+        "all_original_semantic_readers_replayed": true
+      },
+      "strata": {
+        "status": "passed",
+        "cases": [
+          "boundaries-reopen",
+          "boundaries-write",
+          "import",
+          "optical-motion",
+          "optical-smoke",
+          "preference-install",
+          "preference-reopen",
+          "test_strata2_actor_route",
+          "test_strata2_mounted_failures",
+          "test_strata2_workflow"
+        ],
+        "original_report_sha256": "f98d17a97e2c27708a4f0825ce685135b4954416fe8d48282438509a0f52b3ad",
+        "record_sha256": "069e709bb6dfe2d81845f344a480630d0ec561af8358e2dd1929ca98c0ca8766",
+        "all_original_semantic_readers_replayed": true
+      }
+    },
+    "not_reached": [
+      "portable compiler receipt postvalidation",
+      "runtime module observer",
+      "Collect Results.cmd execution",
+      "Verify Evaluator.cmd execution",
+      "final complete payload post-execution recheck"
+    ],
+    "independent_data_inspections": [
+      {
+        "run": 46152500587,
+        "job": 141001951422,
+        "status": "success",
+        "artifact": {
+          "id": 15266615146,
+          "bytes": 563932,
+          "sha256": "21a2d9cacbe777eee6ee0cdfa72024801226e8ea07462cfac94ef18fe29b8b51"
+        }
+      },
+      {
+        "run": 46152633610,
+        "job": 141002355259,
+        "status": "success",
+        "artifact": {
+          "id": 15266480842,
+          "bytes": 567041,
+          "sha256": "9e58b8e39c47b39fec9b570ea97ab80add95c6222cc954ef5cf1615608e12ce5"
+        }
+      }
+    ],
+    "original_record_inventory": {
+      "mainline-extracted/extracted-verification.json": {
+        "sha256": "d79135850e98a30bfceefa235f09e0b43672b1a3fc483668d9e0d1ee067db501",
+        "bytes": 12217
+      },
+      "mainline-extracted/ramcache/pubpres-mainline-qualification.json": {
+        "sha256": "7c068b8536ee51da3c19659a56313911da0e22e90b87ece125c9d1d7f94856e9",
+        "bytes": 18960
+      },
+      "mainline-extracted/ramcache/original/integration.json": {
+        "sha256": "a0472cd8c979adc04845567eacf933b8cf7280031be3fa613ecf2a4ca47dfd53",
+        "bytes": 529847
+      },
+      "mainline-extracted/strata/pubpres-mainline-qualification.json": {
+        "sha256": "069e709bb6dfe2d81845f344a480630d0ec561af8358e2dd1929ca98c0ca8766",
+        "bytes": 18852
+      },
+      "mainline-extracted/strata/original/integration.json": {
+        "sha256": "f98d17a97e2c27708a4f0825ce685135b4954416fe8d48282438509a0f52b3ad",
+        "bytes": 626582
+      },
+      "mainline-extracted/cold-launch-verification.json": {
+        "sha256": "61a1c2f290d1b60e57691c35e1e1de1ee426560b522535b5ec79cc210629fbc8",
+        "bytes": 9024
+      },
+      "mainline-extracted/persistent-shortcut-verification.json": {
+        "sha256": "1d89745d0858f575725b47843b90821ac77f7162f164610a217477fbf8551d38",
+        "bytes": 11195
+      },
+      "mainline-extracted/lab-runner.log": {
+        "sha256": "f23f75405db587394a048945e2f3aeb4ee15b09e4e9437c8ed303e6a0cce7a65",
+        "bytes": 476
+      },
+      "mainline-extracted/lab/original/integration.json": {
+        "sha256": "aeecc2279a1402bccac9a6d5769206c5b411fc0f00d0afcb207b06b97c3eceb2",
+        "bytes": 443265
+      },
+      "mainline-extracted/lab/original/material-lab-author/process.log": {
+        "sha256": "a35313477a3ddbc3987186396e4216f12dfb0d5262ba8c7ce0e2b3db835ddd7a",
+        "bytes": 7556
+      },
+      "mainline-extracted/lab/pubpres-mainline-qualification.json": {
+        "sha256": "2a40c91a06d22f60e988a7c961f7dec3f2fc631e6a14e65414a03a645e7b9c32",
+        "bytes": 18527
+      }
+    },
+    "independent_data_scope": "Original immutable ZIP/source/driver/inner archive authenticated; completed mode and integration report hashes replayed; exact cold and persistent originals read; original Lab error preserved. Inspectors execute no application and never promote the failed result.",
+    "filetime_precision": "Original Win32 FILETIME values remain exact in their original Python-validated records; this JSON includes only safe PID/session/hash projections.",
+    "full_extracted_acceptance": false,
+    "physical_owner_evaluated": false,
+    "merge_authorized": false
   },
   "owner_evaluated_source": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
   "new_source_physically_owner_evaluated": false,
@@ -1529,7 +1731,7 @@
     },
     "scope": "All18 source/process/log inventories authenticated. Original raw semantic readers replay registered Water/member/held/native-owner and selected3scopes per platform; dedicated mainline checks also execute. Coarse raw_native_and_graphical_readers_replayed remains false for frozen/mainline. Original six feature job attestations are not offline feature reader replays."
   },
-  "observed_utc": "2026-11-28 13:36:17 UTC",
+  "observed_utc": "2026-11-28 14:05:59 UTC",
   "standard_documentation": {
     "run": 46144445451,
     "job": 140977354822,
@@ -1537,7 +1739,7 @@
     "conclusion": "success",
     "provenance_scope": "The standard provenance substep was skipped because the PR is Draft. The separate final delivery check_repository.py actually executed under set -e and passed."
   },
-  "report_status": "All 26 final core gates passed. Original three-source performance, spawn and package failures remain. The isolated complete P/C spawn follow-up and source-exact package passed; actual independent extraction is running. Physical owner acceptance and merge authorization remain absent.",
+  "report_status": "All 26 final core gates and the isolated complete matched spawn cohort passed in their stated scopes. The Windows archive was built and independently verified, but actual extracted qualification FAILED in Materials Lab because collect2 could not find ld. Cold shipped launch, persistent fresh-process reopen, RAMCACHE and Strata passed; later compiler postvalidation, module observer, collector, verifier and final payload recheck were not reached. Original three-source performance failures, physical gaps, visibility residuals and absent owner/merge authorization remain.",
   "q4": {
     "run": 46140937427,
     "attempt": 1,
@@ -2764,7 +2966,7 @@
       }
     ],
     "scope": "Corrected external synthetic pointer test and separate source-explicit workflow; all eight test cases and their original assertions and original app package/extracted code retained.",
-    "status": "package_passed_independent_extraction_running",
+    "status": "package_passed_extracted_execution_failed",
     "original_failed_run": 46144440297,
     "original_failed_job": 140983886467,
     "original_failure_artifact": {
@@ -4364,7 +4566,7 @@
     "Physically evaluate and accept the exact resulting source/package on the owner's target hardware where required; the earlier9f evaluation does not transfer.",
     "Obtain explicit authorization for Ready/mainline promotion and satisfy all applicable currently Draft-skipped GDExtension, Palette and Native C++ scopes.",
     "Reconcile the reviewed isolated spawn reader/projection and Windows synthetic-pointer/workflow corrections into the principal source, then qualify that resulting source exactly; do not silently pretend the frozen65f principal tooling contains them.",
-    "Complete and independently verify source-exact package/extracted execution and actual authored save/fresh-process reopen; pending until actual receipts."
+    "Repair and qualify the shipped portable Materials Lab linker-resolution failure in a newly source-exact Windows package. Repeat the complete independent extracted route, including Lab author/fresh reopen, compiler postvalidation, actual module observer, collector/verifier and final payload check; these downstream scopes were not reached after the original failure."
   ],
   "final_run_artifact_inventory": [
     {
@@ -8034,5 +8236,106 @@
     "root": "Complete Markdown and JSON source/claims review; no unsafe integer values; package step timestamps and Draft-substep wording corrected.",
     "presentation": "Full package custody and projections; 32 Fire fields; 60 selected P/C medians; Water age/shared-budget scope independently matched to originals.",
     "qualification": "Complete original-data readings, all 576 spawn median values, actual step/duration averages, full final Git source inventory and all123-input maps independently checked."
+  },
+  "requested_workload_coverage": {
+    "registration_source": "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7",
+    "registrations": [
+      "tools/pubpres_mainline/performance-registration.json",
+      "tools/pubpres_mainline/spawn-registration.json",
+      "tools/pubpres_mainline/run_sustained.py"
+    ],
+    "balanced_application_cases": [
+      "wave_512_follow",
+      "wave_1024_follow_4",
+      "wave_gameplay_2048_follow"
+    ],
+    "balanced_status": "All three complete cohorts failed; no accepted candidate arm.",
+    "spawn_fire_sustained_scenes": [
+      "wave512",
+      "mixed2048"
+    ],
+    "not_newly_registered_application_scopes": [
+      {
+        "workload": "FreeMass2048",
+        "scope": "No standalone pathological application performance arm newly registered or run."
+      },
+      {
+        "workload": "owner-route Wave2048",
+        "scope": "No separate long-session, spawn or Fire arm qualified; the registered V3 Water2048 comparison is a different explicit scope."
+      }
+    ],
+    "multipart_and_running_authoring": "Actual mounted feature/Water suites and two300-second sessions, with recorded residuals. Package launchers and native semantics tests do not substitute for unexecuted application workloads.",
+    "whole_requested_population_qualified": false
+  },
+  "nearclosure_source_refresh": {
+    "observed_utc": "2026-11-28T13:44:58Z",
+    "accepted_main": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+    "pubpres": {
+      "head": "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    "objectshard": {
+      "head": "47b7d5787b82d2cc480844e17db64a64074e9ec4",
+      "tree": "22951aa2aa55ca8bf7e01bd4ab8397c0019b7fba",
+      "base": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+      "state": "open",
+      "draft": true,
+      "merged": false
+    },
+    "comparison": {
+      "from": "8064c73270dee2ce1a0d53316aae334136335483",
+      "to": "47b7d5787b82d2cc480844e17db64a64074e9ec4",
+      "ahead_by": 16,
+      "behind_by": 0,
+      "files": [
+        {
+          "path": ".github/workflows/objectshard-m4-completion.yml",
+          "status": "modified",
+          "blob": "b1634a5206fe1790edc525ba0ca9b8f6541ea978",
+          "additions": 300,
+          "deletions": 2
+        },
+        {
+          "path": "godot/scripts/shared_workbench.gd",
+          "status": "modified",
+          "blob": "212ef72df617775e2c168f0c42ebd8e502a04de1",
+          "additions": 9,
+          "deletions": 2
+        },
+        {
+          "path": "godot/tests/run_art_workbench_final.gd",
+          "status": "modified",
+          "blob": "a4788a26c5dc1361d6525cf78ade7879ea7b8229",
+          "additions": 2,
+          "deletions": 1
+        },
+        {
+          "path": "godot/tests/test_art_conversation_apply_preparation.gd",
+          "status": "modified",
+          "blob": "7894f5bac5438d0aa16cb622c604d1974e1aff57",
+          "additions": 4,
+          "deletions": 3
+        },
+        {
+          "path": "godot/tests/test_object_shard_m4_capacity_recovery.gd",
+          "status": "modified",
+          "blob": "dda8c2ea45d08930d370f289a4997fc4312e6c3a",
+          "additions": 1,
+          "deletions": 1
+        },
+        {
+          "path": "tools/ci/native_candidate_identity.py",
+          "status": "modified",
+          "blob": "a708f468e20c7cb7535b6f2c7f347d1019a2eb61",
+          "additions": 87,
+          "deletions": 9
+        }
+      ]
+    },
+    "combined_source_executed": false,
+    "foreign_branch_mutated": false,
+    "scope": "Read-only source movement classification. Frozen067/c4e preview remains historical and unqualified as combined execution."
   }
 }
