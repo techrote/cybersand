@@ -1,0 +1,59 @@
+{
+  "schema": "objectshard-m4-reliability-mission-ledger-v1",
+  "mission": "OBJECTSHARD-M4-RELIABILITY-CONVERGENCE-001",
+  "started_utc": "2026-11-28T00:59:30Z",
+  "target_close_utc": "2026-11-28T05:14:30Z",
+  "hard_close_utc": "2026-11-28T05:29:30Z",
+  "disposition": "IN PROGRESS; Draft/HOLD; no merge or Ready authorized",
+  "principal_pr": 754,
+  "integration_branch": "integration/objectshard-m4-mainline-20261122",
+  "initial_head": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+  "owner_evaluator_source": "efe3bc19c68a9b9e292821ef28b735caec538915",
+  "owner_evaluator_run": 45944204842,
+  "owner_evaluator_artifact": 15176676582,
+  "accepted_main_observed": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+  "accepted_main_tree": "91223c4427ef6896140368f7a28ca6c8e7ba75b0",
+  "baseline_note": "RAMCACHE #745 accepted and merged. Strata #785 still in qualification at start; candidate not adopted. Recheck once before combined freeze.",
+  "owners": {
+    "root": "scope, mainline reconciliation, integration ref, review and final decision",
+    "physics": "physics bridge, native motion contract, collision/fragment regressions",
+    "throughput": "runtime/port/worker transaction pacing and matched measurements",
+    "presentation_delivery": "overlay/camera/status, graphical tests, CI, packaging, provenance, owner guide"
+  },
+  "gates": {
+    "03:29:30": "stop speculative enhancements; mandatory defects and operational packaging only",
+    "03:59:30": "freeze substantive architecture; combined qualification underway",
+    "04:59:30": "verified delivery and closure priority"
+  },
+  "findings": [
+    {
+      "area": "motion",
+      "finding": "Fixed 0.20-radian bound duplicated in bridge and native coordinator. Geometry-sensitive correction must preserve sweep budgets and exact native acknowledgement."
+    },
+    {
+      "area": "performance",
+      "finding": "Current head already includes bounded 8 ms/48-operation rendezvous. Investigate actual callback/worker critical path."
+    },
+    {
+      "area": "delivery",
+      "finding": "Historical full campaign approximately 66 minutes; initiate stable combined source early."
+    }
+  ],
+  "qualification": [],
+  "delivery": null,
+  "remaining": [
+    "reproduce/fix fragment halt",
+    "investigate barrel impulse",
+    "measure/improve semantics",
+    "camera/material coherence",
+    "main reconciliation",
+    "combined qualification",
+    "extracted Windows evaluator"
+  ],
+  "main_reconciliation": {
+    "baseline": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+    "source_conflicts": 0,
+    "runtime_choice": "Retain prior PR754 efe3bc19 source-matched binary/manifest pair only as temporary baseline. Changed native candidate must rebuild and replace both OS runtimes plus provenance through guarded source-leased publication. No claim this old pair qualifies new source.",
+    "strata": "not yet merged; do not import candidate"
+  }
+}

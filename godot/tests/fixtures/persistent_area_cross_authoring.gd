@@ -144,6 +144,10 @@ func exercise_reopen() -> void:
 	check(int(original.process_id) != OS.get_process_id() and controller.active_area == "a"
 		and controller.manifest.session_id == original.session_id,
 		"A fresh OS process reopens the same durable session and selected Area A")
-	check(digest(await capture()) == original.projected_sha256 and await native_cell(MARKER) == int(original.marker),
+	var restored := {"process_id": OS.get_process_id(), "session_id": controller.manifest.session_id,
+		"area": controller.active_area, "durable_revision": controller.manifest.revision,
+		"projected_sha256": digest(await capture()), "marker": await native_cell(MARKER)}
+	check(restored.projected_sha256 == original.projected_sha256 and restored.marker == int(original.marker),
 		"Reopened native cells match both the entire Architecture projection and the Art marker")
-	check(int(controller.manifest.revision) >= int(original.durable_revision), "The acknowledged durable revision survives")
+	check(int(restored.durable_revision) >= int(original.durable_revision), "The acknowledged durable revision survives")
+	write_json(output.path_join("cross-authoring-reopen.json"), restored)

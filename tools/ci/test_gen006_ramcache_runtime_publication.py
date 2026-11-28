@@ -115,6 +115,36 @@ def valid_guard_fixture() -> dict:
 
 
 class QualificationGuards(unittest.TestCase):
+    def test_ordinary_water_host_source_and_terminal_are_required(self):
+        from run_persistent_areas_qualification import UNIT_CASES
+        plan = {label: (fixture, marker) for label, fixture, marker in UNIT_CASES[:2]}
+        self.assertEqual(plan, profile.ORDINARY_WATER_HOSTS)
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            report = {"source_inputs_sha256": {}, "files_sha256": {}}
+            rows = {}
+            for pid, (label, (fixture, marker)) in enumerate(plan.items(), 101):
+                log = label + ".log"
+                original = marker + " 17 assertions; 0 failures\n"
+                (directory / log).write_text(original)
+                report["source_inputs_sha256"]["godot/tests/" + fixture] = "a" * 64
+                report["files_sha256"][log] = profile.sha(directory / log)
+                rows[label] = {"log": log, "pid": pid, "status": "passed", "exit_code": 0,
+                               "command": ["godot", "--headless", "--script", "res://tests/" + fixture],
+                               "completion": profile.completion(original, marker)}
+            profile.verify_ordinary_water_hosts(directory, report, rows)
+            for label in rows:
+                with self.subTest(label=label), self.assertRaises(RuntimeError):
+                    profile.verify_ordinary_water_hosts(directory, report, {k: v for k, v in rows.items() if k != label})
+                with self.subTest(label=label), self.assertRaises(RuntimeError):
+                    profile.verify_ordinary_water_hosts(directory, report, rows | {label: rows[label] | {"timed_out": True}})
+                path = directory / rows[label]["log"]
+                original = path.read_text()
+                path.write_text("SCRIPT ERROR: Invalid access to property id\n" + original)
+                with self.assertRaises(RuntimeError):
+                    profile.verify_ordinary_water_hosts(directory, report, rows)
+                path.write_text(original)
+
     def test_cross_authoring_requires_both_original_processes_and_complete_native_write(self):
         with tempfile.TemporaryDirectory() as temporary:
             root = Path(temporary)
@@ -133,12 +163,23 @@ class QualificationGuards(unittest.TestCase):
                 rows[f"ramcache-cross-authoring-{mode}"] = {"log": log, "completion": marker, "pid": pid, "exit_code": 0}
             original = "cross-authoring/cross-authoring.json"
             writer = {"process_id": 111, "art_changed": 180, "art_receipt_count": 1, "architecture_receipts": 1,
-                      "projected_sha256": "a" * 64, "session_id": "b" * 32, "durable_revision": 9}
+                      "projected_sha256": "a" * 64, "session_id": "b" * 32, "durable_revision": 9, "marker": 58}
             (root / original).write_text(json.dumps(writer))
             value["files_sha256"][original] = profile.sha(root / original)
+            restored = "cross-authoring/cross-authoring-reopen.json"
+            reader = {"process_id": 222, "projected_sha256": "a" * 64, "session_id": "b" * 32,
+                      "durable_revision": 11, "marker": 58, "area": "a"}
+            (root / restored).write_text(json.dumps(reader))
+            value["files_sha256"][restored] = profile.sha(root / restored)
             profile.verify_cross_authoring(root, value, rows)
             for changed in ({"process_id": 222}, {"art_changed": 179}, {"architecture_receipts": 0}):
                 (root / original).write_text(json.dumps(writer | changed))
+                with self.subTest(changed=changed), self.assertRaises(RuntimeError):
+                    profile.verify_cross_authoring(root, value, rows)
+            (root / original).write_text(json.dumps(writer))
+            for changed in ({"process_id": 111}, {"projected_sha256": "c" * 64}, {"session_id": "c" * 32},
+                            {"marker": 28}, {"durable_revision": 8}, {"area": "b"}):
+                (root / restored).write_text(json.dumps(reader | changed))
                 with self.subTest(changed=changed), self.assertRaises(RuntimeError):
                     profile.verify_cross_authoring(root, value, rows)
             with self.assertRaises(RuntimeError):
