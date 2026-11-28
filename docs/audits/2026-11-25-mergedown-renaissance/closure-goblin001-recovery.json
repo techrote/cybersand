@@ -1,0 +1,436 @@
+{
+  "schema": 1,
+  "mission": "MERGEDOWN-RENAISSANCE-CLOSURE-001",
+  "observed_at": "2026-11-26T07:55:13.124096+00:00",
+  "accepted_base": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "pr": 786,
+  "fixture_only_original": "9674b43506cb77e4fcb2fbb9b6f67884d7287031",
+  "executed_repair": "0004c95a752ec9030d1d65fe9633f18c29646489",
+  "local_documented_source": "4c6c1be905aa6fb0a407c6029dd7c4a8b7d66b60",
+  "remote_product": "12eb302f64d0e468f7a9f851bef57ef8c180633b",
+  "exact_join_tree": "97c62ddfd8a080ff52913f70b695e9c24ca5e445",
+  "original_failure": {
+    "fault": "real RLIMIT_FSIZE=128 with SIGXFSZ ignored",
+    "previous_bytes": 1699,
+    "observed_bytes": 128,
+    "acknowledged": true,
+    "status": "failure preserved"
+  },
+  "local_results": {
+    "real_os_scenarios": 3,
+    "native_boundary_assertions": 84,
+    "controller_cases": 5,
+    "controller_assertions": 75,
+    "platform": "Linux",
+    "status": "passed"
+  },
+  "production_scope": "Reviewed verified whole-file writer and accepted native replacement only; four output paths, tab-indented representation, actual isolated-profile and document/campaign budgets unchanged; clear stale error only after successful commit",
+  "native_inputs": 105,
+  "rapier_inputs": 4,
+  "native_rebuild": false,
+  "windows_qualification": "45779564107 failed after source/runtime admission and engine import at strict post-import source-cleanliness gate; no Windows product-case pass claimed; exact generated-path investigation in progress",
+  "full_ready_qualification": "actual full Ready campaigns at 7dbb12bbb128f3550b1a1064a8a7b176a3788adb in progress; distinct earlier Draft skips/cancellations retained",
+  "independent_review": "passed: f80b1331/4d8cf388; 3 actual Linux OS cases,84 native checks,75 clean-source controller checks; originals retained",
+  "source_bundle": {
+    "path": "closure-goblin001-original-source.bundle",
+    "bytes": 14933,
+    "sha256": "f06651df35571a06ef14ece4eefa14ea3ac8af7dc26607f50c8df18517a67602",
+    "verification": "The bundle contains this ref:\n4c6c1be905aa6fb0a407c6029dd7c4a8b7d66b60 refs/heads/fix/goblin001-verified-storage-closure\nThe bundle requires this ref:\n67c1413a2a84077b47fa542cf91d2bd6ba5520ee \nThe bundle uses this hash algorithm: sha1\n/workspace/scratch/fce579b12333/cybersand/docs/audits/2026-11-25-mergedown-renaissance/closure-goblin001-original-source.bundle is okay\n"
+  },
+  "evidence_archive": {
+    "path": "closure-goblin001-local-evidence.zip",
+    "bytes": 3058672,
+    "sha256": "41d71f242060ade1c686c67e0dc8492c5fa1e472a3442d660bb89386503f2bb3"
+  },
+  "members": [
+    {
+      "path": "goblin001-before/01-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    {
+      "path": "goblin001-before/01-seed-7.log",
+      "bytes": 541,
+      "sha256": "7fad59f413e76298530bbba9bc801e8dd71e5dbc502c2a5ef9f537ef16546be3"
+    },
+    {
+      "path": "goblin001-before/02-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "7deef6479d971ac07ba90b5c41c777a10049c5f20e5f28e71e6601cc0917a560"
+    },
+    {
+      "path": "goblin001-before/02-seed-8.log",
+      "bytes": 541,
+      "sha256": "7fad59f413e76298530bbba9bc801e8dd71e5dbc502c2a5ef9f537ef16546be3"
+    },
+    {
+      "path": "goblin001-before/03-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    {
+      "path": "goblin001-before/03-seed-7.log",
+      "bytes": 541,
+      "sha256": "7fad59f413e76298530bbba9bc801e8dd71e5dbc502c2a5ef9f537ef16546be3"
+    },
+    {
+      "path": "goblin001-before/04-observed-output.bin",
+      "bytes": 128,
+      "sha256": "e722161e6a32d514ffcd0e8267a3fe0af8e9f04c6afdeb002c8341382d31b395"
+    },
+    {
+      "path": "goblin001-before/04-seed-8.log",
+      "bytes": 541,
+      "sha256": "7fad59f413e76298530bbba9bc801e8dd71e5dbc502c2a5ef9f537ef16546be3"
+    },
+    {
+      "path": "goblin001-before/profile-u0ydaa2s/goblin-profile.json",
+      "bytes": 41,
+      "sha256": "1f86a098df03066a02fbcc290fa0c626cb82952bf7ad23f52924fe93b57b793e"
+    },
+    {
+      "path": "goblin001-before/profile-u0ydaa2s/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+      "bytes": 128,
+      "sha256": "e722161e6a32d514ffcd0e8267a3fe0af8e9f04c6afdeb002c8341382d31b395"
+    },
+    {
+      "path": "goblin001-before/profile-u0ydaa2s/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 128,
+      "sha256": "64fbbc73265baec79739ddf486aa11752635d65f460c60cd7542288969b16898"
+    },
+    {
+      "path": "goblin001-before/profile-u0ydaa2s/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.47.37.log",
+      "bytes": 427,
+      "sha256": "5867c26e22987301451ccb02860ca200a127378596f9637cf80a4d429938454e"
+    },
+    {
+      "path": "goblin001-before/profile-u0ydaa2s/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.47.39.log",
+      "bytes": 427,
+      "sha256": "5867c26e22987301451ccb02860ca200a127378596f9637cf80a4d429938454e"
+    },
+    {
+      "path": "goblin001-before/profile-u0ydaa2s/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.47.40.log",
+      "bytes": 128,
+      "sha256": "64fbbc73265baec79739ddf486aa11752635d65f460c60cd7542288969b16898"
+    },
+    {
+      "path": "goblin001-before/report.json",
+      "bytes": 13099,
+      "sha256": "2fd678868761194915b389ff6ca41ee0328e290c6decc33de0c637ef36718147"
+    },
+    {
+      "path": "goblin001-after/01-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    {
+      "path": "goblin001-after/01-seed-7.log",
+      "bytes": 540,
+      "sha256": "cedbdea8cda030aea9daa477542aec44d9838bce349305a136742c549e58de31"
+    },
+    {
+      "path": "goblin001-after/02-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "7deef6479d971ac07ba90b5c41c777a10049c5f20e5f28e71e6601cc0917a560"
+    },
+    {
+      "path": "goblin001-after/02-seed-8.log",
+      "bytes": 540,
+      "sha256": "cedbdea8cda030aea9daa477542aec44d9838bce349305a136742c549e58de31"
+    },
+    {
+      "path": "goblin001-after/03-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    {
+      "path": "goblin001-after/03-seed-7.log",
+      "bytes": 540,
+      "sha256": "cedbdea8cda030aea9daa477542aec44d9838bce349305a136742c549e58de31"
+    },
+    {
+      "path": "goblin001-after/04-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    {
+      "path": "goblin001-after/04-seed-8.log",
+      "bytes": 670,
+      "sha256": "50a1c351a60f81ddebbaa0f9a2f1919ff9529c63c328cc8b13b06e2ef14e731d"
+    },
+    {
+      "path": "goblin001-after/05-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "7deef6479d971ac07ba90b5c41c777a10049c5f20e5f28e71e6601cc0917a560"
+    },
+    {
+      "path": "goblin001-after/05-seed-8.log",
+      "bytes": 540,
+      "sha256": "cedbdea8cda030aea9daa477542aec44d9838bce349305a136742c549e58de31"
+    },
+    {
+      "path": "goblin001-after/06-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    {
+      "path": "goblin001-after/06-seed-7.log",
+      "bytes": 540,
+      "sha256": "cedbdea8cda030aea9daa477542aec44d9838bce349305a136742c549e58de31"
+    },
+    {
+      "path": "goblin001-after/07-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "254413169ee126bbbd05ad933c1f0cf5a6007fdfbe19592d0774c588c858fe62"
+    },
+    {
+      "path": "goblin001-after/07-seed-8.log",
+      "bytes": 657,
+      "sha256": "63ba3a4ba2e52670283010cbd75bbd8514e99871a1a88eacb19e8bb068d934a3"
+    },
+    {
+      "path": "goblin001-after/08-observed-output.bin",
+      "bytes": 1699,
+      "sha256": "7deef6479d971ac07ba90b5c41c777a10049c5f20e5f28e71e6601cc0917a560"
+    },
+    {
+      "path": "goblin001-after/08-seed-8.log",
+      "bytes": 540,
+      "sha256": "cedbdea8cda030aea9daa477542aec44d9838bce349305a136742c549e58de31"
+    },
+    {
+      "path": "goblin001-after/profile-8hj8qsnd/goblin-profile.json",
+      "bytes": 41,
+      "sha256": "1f86a098df03066a02fbcc290fa0c626cb82952bf7ad23f52924fe93b57b793e"
+    },
+    {
+      "path": "goblin001-after/profile-8hj8qsnd/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+      "bytes": 1699,
+      "sha256": "7deef6479d971ac07ba90b5c41c777a10049c5f20e5f28e71e6601cc0917a560"
+    },
+    {
+      "path": "goblin001-after/profile-8hj8qsnd/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json.partial",
+      "bytes": 38,
+      "sha256": "d929b7e73e0140e2da2771f2af5bcd225dd7910f06e514a268a63d0ff387bd08"
+    },
+    {
+      "path": "goblin001-after/profile-8hj8qsnd/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 426,
+      "sha256": "6f7f1178f1d933d72edf474c07c9325f771f36db1c140dfc25be399f25e0d566"
+    },
+    {
+      "path": "goblin001-after/profile-8hj8qsnd/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.51.02.log",
+      "bytes": 128,
+      "sha256": "64fbbc73265baec79739ddf486aa11752635d65f460c60cd7542288969b16898"
+    },
+    {
+      "path": "goblin001-after/profile-8hj8qsnd/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.51.04.log",
+      "bytes": 426,
+      "sha256": "6f7f1178f1d933d72edf474c07c9325f771f36db1c140dfc25be399f25e0d566"
+    },
+    {
+      "path": "goblin001-after/profile-8hj8qsnd/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.51.05.log",
+      "bytes": 426,
+      "sha256": "6f7f1178f1d933d72edf474c07c9325f771f36db1c140dfc25be399f25e0d566"
+    },
+    {
+      "path": "goblin001-after/profile-8hj8qsnd/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot2026-11-26T07.51.07.log",
+      "bytes": 543,
+      "sha256": "89ca8488593d683a1087b4788b5c2c4e85d107a4a01b531d7a8d7ab1fa8ca8e1"
+    },
+    {
+      "path": "goblin001-after/report.json",
+      "bytes": 25600,
+      "sha256": "02f03b9fbd49017d712145a4ee99cb095059b11a6aab0d51e1e719fb53e9d180"
+    },
+    {
+      "path": "goblin001-native-boundary/performance.jsonl",
+      "bytes": 2699,
+      "sha256": "7305aaf0426d28f7dcc1371eea10c4dae7ff277b63dc9ab3bbe2d0e232c45bf8"
+    },
+    {
+      "path": "goblin001-native-boundary/profile/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/fresh-\u6c34.json",
+      "bytes": 45,
+      "sha256": "7a30ac647c527349f75de836d9c86ea05c2e01c3a36241823d5a36f0a52c5c9f"
+    },
+    {
+      "path": "goblin001-native-boundary/profile/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/named.json",
+      "bytes": 45,
+      "sha256": "7a30ac647c527349f75de836d9c86ea05c2e01c3a36241823d5a36f0a52c5c9f"
+    },
+    {
+      "path": "goblin001-native-boundary/profile/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/named.json.1234567890abcdef1234567890abcdef.tmp",
+      "bytes": 29,
+      "sha256": "bdf782c3c1590a02813ce4799096556035a9bd13642a23a5c5a4c5c212ae0f94"
+    },
+    {
+      "path": "goblin001-native-boundary/profile/godot/app_userdata/Cyber Sand Reference Sandbox/file-transaction-tests/occupied.json/keep.txt",
+      "bytes": 45,
+      "sha256": "a7b43f5baef0767b92b80cebc37ed7b0e06556c757b7b17d303aad8d5089778f"
+    },
+    {
+      "path": "goblin001-native-boundary/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 2675,
+      "sha256": "28e6bd7e5aaf3a9504af89c140779cba1255ed71707dc5fffa1d1486829bed77"
+    },
+    {
+      "path": "goblin001-native-boundary/report.json",
+      "bytes": 2547,
+      "sha256": "c5c9ee1d198ac69c6969142a1e4de95fb5cc84564f07348eff93f8b106494d78"
+    },
+    {
+      "path": "goblin001-native-boundary/test_workbench_file_transaction.log",
+      "bytes": 2789,
+      "sha256": "3aa4ab0653791f31a7324abf0c2048b4c84ad826a8aaa7f5cfbf9c868c87ea7a"
+    },
+    {
+      "path": "goblin001-controller/executed-game-source.zip",
+      "bytes": 2852149,
+      "sha256": "f940b5fef98b112734765335a5c878148668176066992763cf81c17848efac0d"
+    },
+    {
+      "path": "goblin001-controller/goblin_controller-independent-readback.json",
+      "bytes": 753,
+      "sha256": "1ebc6f82e35e64afeafe99a888b6f43fbe5bd9c57185eeee314d50065c39efc8"
+    },
+    {
+      "path": "goblin001-controller/goblin_controller.log",
+      "bytes": 317,
+      "sha256": "32443598a0f175d5de9307f7b54ac2d74d3810917edb92d20f54f51757284d0e"
+    },
+    {
+      "path": "goblin001-controller/import-result.json",
+      "bytes": 460,
+      "sha256": "731773300d5150765ca53a872840105331bf192c9999ac91d4c6c8f9f6e1d90e"
+    },
+    {
+      "path": "goblin001-controller/import.log",
+      "bytes": 46205,
+      "sha256": "8b6f8425a3c9ce66ae2a24a6b0d5149c721a83dd2326b959814799c2f7915179"
+    },
+    {
+      "path": "goblin001-controller/profile/config/godot/editor_settings-4.7.tres",
+      "bytes": 17723,
+      "sha256": "e07d31870e2ce6798407f6474bce337c4e9605885c3278bca9e4da4bf35a3031"
+    },
+    {
+      "path": "goblin001-controller/profile/goblin-profile.json",
+      "bytes": 1413,
+      "sha256": "0b4de4962583880ec091a31c0c98a1b7b6ea4b34e2a782ae528d3aff6402d5a4"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/controller-test.json",
+      "bytes": 473071,
+      "sha256": "de429c4abebcae100146a475365a6a4a0444ca3662f0445dcd2243573c1285cc"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/replay-result.json",
+      "bytes": 516,
+      "sha256": "43b0a5152e07178a22fa249de77cfb379715d03d4e0b3e932523973bb8bc06af"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json",
+      "bytes": 91072,
+      "sha256": "92680ce0ec65bfdd92f24c254dd95dcfb1c9b3ed1005a5ba6343f1d0b93bac87"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-002.json",
+      "bytes": 91170,
+      "sha256": "3f2cac0f9816b9090f3925b00447f21a8626c89dbed0f0703fbfdca0b47e44b8"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-003.json",
+      "bytes": 91704,
+      "sha256": "620736ec5fea1b6d08dda3d90f316f37bae6833cd36a909e519d678154f6c2f5"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-004.json",
+      "bytes": 81489,
+      "sha256": "d093fa5498ad22ed7808632696758958ee3e52c2c741c8d751bbd23dc654b6cd"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-005.json",
+      "bytes": 4189,
+      "sha256": "70efd20091fa18afd99fee51fe663baaf4bc9b63eec56e6ef81fc016c9dcb359"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-storage-contract.json",
+      "bytes": 83,
+      "sha256": "2c3b9cf7eeb09b538aa2671d38a835a733cdf8c34ac3d77bdce3155941c8bd20"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/summary.json",
+      "bytes": 3782,
+      "sha256": "3c2271908fdfe74f4fec324a12365e81dd0fa6accf073ef38fc2d46749822faa"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+      "bytes": 4189,
+      "sha256": "70efd20091fa18afd99fee51fe663baaf4bc9b63eec56e6ef81fc016c9dcb359"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 203,
+      "sha256": "16b2070648054a1a6c8a0c2c6fddd6646283e158201358ac7f5c57f42e32bb83"
+    },
+    {
+      "path": "goblin001-controller/profile-00-goblin_controller/goblin-profile.json",
+      "bytes": 1413,
+      "sha256": "0b4de4962583880ec091a31c0c98a1b7b6ea4b34e2a782ae528d3aff6402d5a4"
+    },
+    {
+      "path": "goblin001-controller/provenance.json",
+      "bytes": 1066,
+      "sha256": "2e7d1ce80bed4beeceac6ac7f69b5b1a0ba935e145d7a9fadf99cdb1b912aadc"
+    },
+    {
+      "path": "goblin001-controller/qualification.json",
+      "bytes": 2633,
+      "sha256": "a9c1b7013bbfd4251e42aae523917ee3942fd4475f9ca9846c592527897f3726"
+    },
+    {
+      "path": "goblin001-controller/source-snapshot.json",
+      "bytes": 113689,
+      "sha256": "58e726cf4fa3cf83fa3dac299a008a6c502107933c4e564bb248eaa6346b7a81"
+    },
+    {
+      "path": "goblin001-controller/transcript.json",
+      "bytes": 4632,
+      "sha256": "30a561f9ac3de7a5294c8dd81ee49d76412b461bc53f2ca8dcb0f4f8416addf0"
+    },
+    {
+      "path": "goblin001-docs.json",
+      "bytes": 470,
+      "sha256": "af5c60756a0ef6ce83aac066e24d13568f1d51b9d22776fe14dd78a1bc2b17c9"
+    },
+    {
+      "path": "goblin001-m11.json",
+      "bytes": 308,
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+    },
+    {
+      "path": "goblin001-repository.json",
+      "bytes": 2546,
+      "sha256": "dfe9854e5996e1fa4e4d8155dd1ed8dada2e1730ce508655960e2dad464d3966"
+    },
+    {
+      "path": "goblin001-retrieval.json",
+      "bytes": 460802,
+      "sha256": "9cc1261d85bea0603897acb41ad99e7874f2ba37b8ac47552fc10ff3cbeb7176"
+    }
+  ],
+  "excluded_reconstructable_cache": [
+    {
+      "path": "goblin001-controller/profile/cache/godot/editor_doc_cache-4.7.res",
+      "bytes": 3268746,
+      "sha256": "c97a6722967695fe14f2bc73639eae8ddd7cf859ec6f8c26acb1241da136d89a",
+      "reason": "derived engine documentation cache, prohibited generated cache; no original source/result/log removed"
+    }
+  ],
+  "local_guard_results": {
+    "docs": "passed after exact pinned companion recovery",
+    "m11": "18records28sourcehashes passed",
+    "repository": "passed;2Linux bytes materialized,16 other platform objects remain pointers locally",
+    "retrieval": "31/33 at5;original2misses retained;not answer correctness"
+  }
+}

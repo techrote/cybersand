@@ -1,0 +1,572 @@
+{
+  "schema": "cybersand-mergedown-independent-review-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at": "2026-11-25T22:57:14.391286+00:00",
+  "pr": 781,
+  "disposition": "APPROVE PREPARED SOURCE AND FOCUSED EVIDENCE; NOT MAINLINE MERGE APPROVAL",
+  "source_commit": "5e7dacc60719a922f141bdd061ad9c45bfcf528b",
+  "source_tree": "06bab8bfe51d6f7050d58773c1657824cc4b500f",
+  "parents": [
+    "36d82cae75e5fd8dad11646663248de8003f5bf9",
+    "950bff73404f2fdaeb09362ec1bba408888a4ba9"
+  ],
+  "unchanged_from_successor_donor": [
+    "godot/goblin",
+    "tools/gip014"
+  ],
+  "no_delta_from_accepted_main": [
+    "godot/scripts",
+    "godot/main.tscn",
+    "godot/project.godot",
+    "native",
+    "godot/native_extension",
+    "godot/addons",
+    "third_party"
+  ],
+  "evidence_review_kind": "Independent source, complete retained-log, source-archive and flat resource-field validation of lead-executed cases; not separate C execution",
+  "case_count": 9,
+  "total_checks": 3696,
+  "batches": [
+    {
+      "batch": "authored_lineage",
+      "source_archive_sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "source_archive_entries_verified": 817,
+      "registered_inputs": 977,
+      "registered_snapshot_sha256": "6e60912e9932f651b5a290e8963e0719eea5a6a82797ab381989ffe63f62bd9b",
+      "report_sha256": "0476bc6780734852dac99e49fc5043c52ec5b17dce57eb331fd09596dd1ef790",
+      "tests": [
+        {
+          "case": "goblin_authored_lineage",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/goblin-successor-5e7d/authored_lineage/project",
+            "--script",
+            "res://goblin/tests/test_authored_lineage.gd"
+          ],
+          "completion_marker": "GOBLIN_AUTHORED_LINEAGE_RESULT ",
+          "completion_observed": true,
+          "diagnostic_errors": [],
+          "diagnostic_prefix_bytes": 537,
+          "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+          "elapsed_seconds": 35.106,
+          "exit_code": 0,
+          "independent_readback": {
+            "errors": [],
+            "independent_failures": [],
+            "unreported_failures": [],
+            "valid": true
+          },
+          "interrupted": false,
+          "log_bytes": 537,
+          "log_limit_bytes": 16777216,
+          "log_sha256": "1a4734e19f6a86dfa8525c0432e7516ec20d4710e2921d457e8e87b000c80516",
+          "memory_limit_mib": 3072,
+          "observed_processes": 3,
+          "peak_tree_rss_bytes": 659460096,
+          "process_exit_status": "pass",
+          "resource_samples": 340,
+          "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+          "status": "pass",
+          "summary": {
+            "action_attempts": {
+              "actor_place": 1,
+              "actor_remove": 1,
+              "actor_reset": 1,
+              "pause": 1,
+              "play": 1,
+              "reopen_layout": 1,
+              "save_layout": 1
+            },
+            "assertions": {
+              "fail": 0,
+              "not_applicable": 1,
+              "pass": 130
+            },
+            "attempted_actions": 7,
+            "classification_counts": {
+              "game_observation": 7
+            },
+            "completed_actions": 7,
+            "completed_adjacent_pairs": {
+              "actor_place -> play": 1,
+              "actor_remove -> save_layout": 1,
+              "actor_reset -> actor_remove": 1,
+              "pause -> actor_reset": 1,
+              "play -> pause": 1,
+              "save_layout -> reopen_layout": 1
+            },
+            "completed_features": {
+              "actor_place": 1,
+              "actor_remove": 1,
+              "actor_reset": 1,
+              "pause": 1,
+              "play": 1,
+              "reopen_layout": 1,
+              "save_layout": 1
+            },
+            "completed_triples": {
+              "actor_place -> play -> pause": 1,
+              "actor_remove -> save_layout -> reopen_layout": 1,
+              "actor_reset -> actor_remove -> save_layout": 1,
+              "pause -> actor_reset -> actor_remove": 1,
+              "play -> pause -> actor_reset": 1
+            },
+            "distinct_completed_features": 7,
+            "duration_usec": 6010166,
+            "failures": [],
+            "status_counts": {
+              "completed": 7
+            },
+            "termination": "budget_complete"
+          },
+          "surviving_owned_pids": [],
+          "timeout_seconds": 300,
+          "transcript_sha256": "9fda09250fe9fbf9d76629fc6b925813c8044c0d04c8fbe9dcede98f33e23408",
+          "independent_terminal_readback": "GOBLIN_AUTHORED_LINEAGE_RESULT {\"actual_actions\":{\"attempted\":20,\"completed\":20},\"check_count\":73,\"checks\":{\"bounded_completion\":true,\"exact_twenty_actions\":true,\"four_native_cases_pass\":true,\"no_failed_checks\":true,\"provenance_comparison_controls\":true},\"failures\":[],\"status\":\"pass\"}",
+          "evidence_kind": "actual_native_application",
+          "raw_log_relative": "authored_lineage/goblin_authored_lineage.log"
+        }
+      ]
+    },
+    {
+      "batch": "baseline",
+      "source_archive_sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "source_archive_entries_verified": 817,
+      "registered_inputs": 977,
+      "registered_snapshot_sha256": "6e60912e9932f651b5a290e8963e0719eea5a6a82797ab381989ffe63f62bd9b",
+      "report_sha256": "53ffaeea08379f0d7441ea8f864bc71d3b728a050743f39b96d60cb309fdb03b",
+      "tests": [
+        {
+          "case": "test_workbench_deferred_paint",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/goblin-successor-5e7d/baseline/project",
+            "--script",
+            "res://tests/test_workbench_deferred_paint.gd"
+          ],
+          "completion_marker": "WB_DEFERRED_PAINT ",
+          "completion_observed": true,
+          "diagnostic_errors": [],
+          "diagnostic_prefix_bytes": 1979,
+          "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+          "elapsed_seconds": 5.474,
+          "exit_code": 0,
+          "interrupted": false,
+          "log_bytes": 1979,
+          "log_limit_bytes": 16777216,
+          "log_sha256": "c6918c8d1d0c4cf441dde8f126a0800619dcd78a46ac58e17a618c788616435a",
+          "memory_limit_mib": 3072,
+          "observed_processes": 1,
+          "peak_tree_rss_bytes": 566951936,
+          "process_exit_status": "pass",
+          "resource_samples": 54,
+          "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+          "status": "pass",
+          "surviving_owned_pids": [],
+          "timeout_seconds": 300,
+          "independent_terminal_readback": "WB_DEFERRED_PAINT {\"checks\":49,\"completed\":true,\"failures\":[],\"outcomes\":[{\"receipt\":{\"after\":[58],\"applied\":1,\"authoring_generation\":1,\"backend\":\"CyberNativeCellWorld\",\"before\":[0],\"cells\":[40,40,58],\"changed\":1,\"checked\":1,\"elapsed_usec\":16777,\"generation\":3,\"kind\":\"edit\",\"maximum_slice_usec\":68,\"observed_generation\":3,\"operation_id\":1,\"reason\":\"\",\"recorded\":true,\"recovery_possible\":true,\"requested_cells\":1,\"revision\":4,\"slices\":2,\"status\":\"completed\",\"termination\":\"completed\",\"tick\":0},\"recorded_edits\":[[40,40,1,1,58]],\"token\":1,\"undo_count\":1},{\"receipt\":{\"applied\":0,\"reason\":\"Both line endpoints must lie within the canvas.\",\"status\":\"refused\"},\"recorded_edits\":[[40,40,1,1,58]],\"token\":2,\"undo_count\":1},{\"receipt\":{\"applied\":0,\"reason\":\"Planning cancelled; no cells queued.\",\"status\":\"cancelled\"},\"recorded_edits\":[[40,40,1,1,58]],\"token\":3,\"undo_count\":1},{\"receipt\":{\"applied\":0,\"reason\":\"Native source changed during planning; draw again.\",\"status\":\"invalidated\"},\"recorded_edits\":[[40,40,1,1,58]],\"token\":4,\"undo_count\":1},{\"receipt\":{\"after\":[],\"applied\":0,\"authoring_generation\":1,\"backend\":\"CyberNativeCellWorld\",\"before\":[],\"cells\":[],\"changed\":0,\"checked\":0,\"elapsed_usec\":30,\"generation\":3,\"kind\":\"edit\",\"maximum_slice_usec\":26,\"observed_generation\":3,\"operation_id\":5,\"reason\":\"Operation intersects protected source cells.\",\"recorded\":true,\"recovery_possible\":true,\"requested_cells\":1,\"revision\":5,\"slices\":1,\"status\":\"refused\",\"termination\":\"refused\",\"tick\":0},\"recorded_edits\":[[40,40,1,1,58]],\"token\":5,\"undo_count\":0},{\"receipt\":{\"applied\":0,\"reason\":\"Workbench closed during human stroke planning.\",\"status\":\"cancelled\"},\"recorded_edits\":[[40,40,1,1,58],[90,90,1,1,58]],\"token\":6,\"undo_count\":1}]}",
+          "evidence_kind": "actual_native_application",
+          "raw_log_relative": "baseline/test_workbench_deferred_paint.log"
+        },
+        {
+          "case": "test_workbench_input",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/goblin-successor-5e7d/baseline/project",
+            "--script",
+            "res://tests/test_workbench_input.gd"
+          ],
+          "completion_marker": "WORKBENCH_INPUT ",
+          "completion_observed": true,
+          "diagnostic_errors": [],
+          "diagnostic_prefix_bytes": 1261,
+          "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+          "elapsed_seconds": 8.028,
+          "exit_code": 0,
+          "interrupted": false,
+          "log_bytes": 1261,
+          "log_limit_bytes": 16777216,
+          "log_sha256": "37e191e06fa78f25f8f82f40e6c64bb4370c6d7d2ac681a39bd18c5a1ce563bb",
+          "memory_limit_mib": 3072,
+          "observed_processes": 2,
+          "peak_tree_rss_bytes": 569286656,
+          "process_exit_status": "pass",
+          "resource_samples": 79,
+          "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+          "status": "pass",
+          "surviving_owned_pids": [],
+          "timeout_seconds": 300,
+          "independent_terminal_readback": "WORKBENCH_INPUT {\"checks\":26,\"failures\":[],\"receipts\":{\"1/main-fire/inserted\":{\"changed_cells\":1,\"epoch\":1,\"instance_id\":1,\"material\":6,\"nozzle\":\"main-fire\",\"point\":\"(239, 228)\",\"reason\":\"\",\"sequence\":31,\"tick\":24},\"1/s-rear/blocked\":{\"changed_cells\":0,\"epoch\":1,\"instance_id\":1,\"material\":26,\"nozzle\":\"s-rear\",\"point\":\"(247, 234)\",\"reason\":\"blocked\",\"sequence\":17,\"tick\":18},\"1/s-rear/inserted\":{\"changed_cells\":1,\"epoch\":1,\"instance_id\":1,\"material\":26,\"nozzle\":\"s-rear\",\"point\":\"(242, 229)\",\"reason\":\"\",\"sequence\":31,\"tick\":24},\"1/side-fire/inserted\":{\"changed_cells\":1,\"epoch\":1,\"instance_id\":1,\"material\":6,\"nozzle\":\"side-fire\",\"point\":\"(218, 213)\",\"reason\":\"\",\"sequence\":37,\"tick\":42},\"2/e-right/inserted\":{\"changed_cells\":1,\"epoch\":2,\"instance_id\":2,\"material\":8,\"nozzle\":\"e-right\",\"point\":\"(329, 232)\",\"reason\":\"\",\"sequence\":17,\"tick\":18},\"2/q-left/blocked\":{\"changed_cells\":0,\"epoch\":2,\"instance_id\":2,\"material\":12,\"nozzle\":\"q-left\",\"point\":\"(321, 230)\",\"reason\":\"blocked\",\"sequence\":17,\"tick\":18}}}",
+          "evidence_kind": "actual_native_application",
+          "raw_log_relative": "baseline/test_workbench_input.log"
+        }
+      ]
+    },
+    {
+      "batch": "discovery",
+      "source_archive_sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "source_archive_entries_verified": 817,
+      "registered_inputs": 977,
+      "registered_snapshot_sha256": "6e60912e9932f651b5a290e8963e0719eea5a6a82797ab381989ffe63f62bd9b",
+      "report_sha256": "86b88dce4a6fd3c19402513ceed9f0ea527960905f4f5dda70aceb0a36dbf8e6",
+      "tests": [
+        {
+          "case": "goblin_exploration",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/goblin-successor-5e7d/discovery/project",
+            "--script",
+            "res://goblin/tests/test_exploration.gd"
+          ],
+          "completion_marker": "GOBLIN_EXPLORATION_UNIT ",
+          "completion_observed": true,
+          "diagnostic_errors": [],
+          "diagnostic_prefix_bytes": 402,
+          "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+          "elapsed_seconds": 2.937,
+          "exit_code": 0,
+          "interrupted": false,
+          "log_bytes": 402,
+          "log_limit_bytes": 16777216,
+          "log_sha256": "704ac50b27a04f0a12a7f315b41f1f24f6df8e18037e0609c7a2f14274ce109a",
+          "memory_limit_mib": 3072,
+          "observed_processes": 1,
+          "peak_tree_rss_bytes": 127995904,
+          "process_exit_status": "pass",
+          "resource_samples": 29,
+          "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+          "status": "pass",
+          "surviving_owned_pids": [],
+          "timeout_seconds": 300,
+          "independent_terminal_readback": "GOBLIN_EXPLORATION_UNIT {\"checks\":172,\"evidence_kind\":\"synthetic_unit_fixtures\",\"failures\":[],\"native_gameplay_evidence\":false,\"personality_count\":16}",
+          "evidence_kind": "synthetic_unit_fixtures",
+          "raw_log_relative": "discovery/goblin_exploration.log"
+        }
+      ]
+    },
+    {
+      "batch": "expanded",
+      "source_archive_sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "source_archive_entries_verified": 817,
+      "registered_inputs": 977,
+      "registered_snapshot_sha256": "6e60912e9932f651b5a290e8963e0719eea5a6a82797ab381989ffe63f62bd9b",
+      "report_sha256": "10c931915c435b20dc783fd0a6705169d3b315e8e03363ebc74f6e01330ab53e",
+      "tests": [
+        {
+          "case": "goblin_expanded",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/goblin-successor-5e7d/expanded/project",
+            "--script",
+            "res://goblin/tests/test_expanded.gd"
+          ],
+          "completion_marker": "GOBLIN_EXPANDED_RESULT ",
+          "completion_observed": true,
+          "diagnostic_errors": [],
+          "diagnostic_prefix_bytes": 16923,
+          "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+          "elapsed_seconds": 80.105,
+          "exit_code": 0,
+          "interrupted": false,
+          "log_bytes": 16923,
+          "log_limit_bytes": 16777216,
+          "log_sha256": "60699db8ca4c6dcfedc31dc124a56684b36744d3ad09141cd1dee620dbe78860",
+          "memory_limit_mib": 3072,
+          "observed_processes": 1,
+          "peak_tree_rss_bytes": 588939264,
+          "process_exit_status": "pass",
+          "resource_samples": 691,
+          "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+          "status": "pass",
+          "surviving_owned_pids": [],
+          "timeout_seconds": 300,
+          "independent_terminal_readback": "GOBLIN_EXPANDED_RESULT {\"checks\":2030,\"completed_actions\":[\"select_tool\",\"brush_radius\",\"select_material\",\"stroke\",\"undo\",\"redo\",\"preview_begin\",\"preview_cancel\",\"interrupt_stroke\",\"camera_pan\",\"camera_zoom\",\"camera_mode\",\"actor_place\",\"actor_select\",\"camera_focus\",\"actor_move\",\"actor_save_spawn\",\"actor_capture_spawn\",\"actor_settings\",\"response_mode\",\"actor_control\",\"actor_pilot\",\"actor_hand_back\",\"actor_release\",\"actor_equipment\",\"camera\",\"source_place\",\"play\",\"actor_actuate\",\"actor_trigger\",\"live_stroke\",\"source_burst\",\"source_stream\",\"pause\",\"actor_replace\",\"actor_remove\",\"restore_start\",\"replace_fixture\",\"actor_reset\"],\"failures\":[],\"records\":86}",
+          "evidence_kind": "actual_native_application",
+          "raw_log_relative": "expanded/goblin_expanded.log"
+        }
+      ]
+    },
+    {
+      "batch": "metamorphic",
+      "source_archive_sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "source_archive_entries_verified": 817,
+      "registered_inputs": 977,
+      "registered_snapshot_sha256": "6e60912e9932f651b5a290e8963e0719eea5a6a82797ab381989ffe63f62bd9b",
+      "report_sha256": "bdd8433e4b11a71efa1929a4540b3d5aa4917bf868c26696b2d3ddef68611ffb",
+      "tests": [
+        {
+          "case": "goblin_metamorphic",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/goblin-successor-5e7d/metamorphic/project",
+            "--script",
+            "res://goblin/tests/test_metamorphic.gd"
+          ],
+          "completion_marker": "GOBLIN_METAMORPHIC_RESULT ",
+          "completion_observed": true,
+          "diagnostic_errors": [],
+          "diagnostic_prefix_bytes": 2939,
+          "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+          "elapsed_seconds": 17.342,
+          "exit_code": 0,
+          "interrupted": false,
+          "log_bytes": 2939,
+          "log_limit_bytes": 16777216,
+          "log_sha256": "e9328d29ce98213d56ec0d5af171d931cb3140a48335980196934a50015e33c6",
+          "memory_limit_mib": 3072,
+          "observed_processes": 3,
+          "peak_tree_rss_bytes": 588460032,
+          "process_exit_status": "pass",
+          "resource_samples": 169,
+          "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+          "status": "pass",
+          "surviving_owned_pids": [],
+          "timeout_seconds": 300,
+          "independent_terminal_readback": "GOBLIN_METAMORPHIC_RESULT {\"checks\":583,\"experiments\":7,\"failures\":[],\"records\":36}",
+          "evidence_kind": "actual_native_application",
+          "raw_log_relative": "metamorphic/goblin_metamorphic.log"
+        }
+      ]
+    },
+    {
+      "batch": "unit",
+      "source_archive_sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "source_archive_entries_verified": 817,
+      "registered_inputs": 977,
+      "registered_snapshot_sha256": "6e60912e9932f651b5a290e8963e0719eea5a6a82797ab381989ffe63f62bd9b",
+      "report_sha256": "82f0a7bbccefbaac9feba0ae3b2545d4bdd43c9bc8da6b479117b5e508d48b3f",
+      "tests": [
+        {
+          "case": "test_goblin_policies",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/goblin-successor-5e7d/unit/project",
+            "--script",
+            "res://tests/test_goblin_policies.gd"
+          ],
+          "completion_marker": "GOBLIN_POLICY_UNIT ",
+          "completion_observed": true,
+          "diagnostic_errors": [],
+          "diagnostic_prefix_bytes": 453,
+          "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+          "elapsed_seconds": 7.504,
+          "exit_code": 0,
+          "interrupted": false,
+          "log_bytes": 453,
+          "log_limit_bytes": 16777216,
+          "log_sha256": "81303678006663428cecfa490ba1a7334e3f736a6e2ea5472312ee4fe7a8aab0",
+          "memory_limit_mib": 3072,
+          "observed_processes": 1,
+          "peak_tree_rss_bytes": 139415552,
+          "process_exit_status": "pass",
+          "resource_samples": 74,
+          "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+          "status": "pass",
+          "surviving_owned_pids": [],
+          "timeout_seconds": 300,
+          "independent_terminal_readback": "GOBLIN_POLICY_UNIT {\"checks\":333,\"evidence_kind\":\"synthetic_unit_fixtures\",\"failures\":[],\"fixture_count\":10,\"native_gameplay_evidence\":false,\"personality_count\":16,\"tested_action_budgets\":[64,128,256]}",
+          "evidence_kind": "synthetic_unit_fixtures",
+          "raw_log_relative": "unit/test_goblin_policies.log"
+        },
+        {
+          "case": "test_goblin_contract",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/goblin-successor-5e7d/unit/project",
+            "--script",
+            "res://tests/test_goblin_contract.gd"
+          ],
+          "completion_marker": "GOBLIN_CONTRACT_RESULT ",
+          "completion_observed": true,
+          "diagnostic_errors": [],
+          "diagnostic_prefix_bytes": 405,
+          "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+          "elapsed_seconds": 5.237,
+          "exit_code": 0,
+          "interrupted": false,
+          "log_bytes": 405,
+          "log_limit_bytes": 16777216,
+          "log_sha256": "50b30f16680ebcc88ec19f7cd124947a82db0f3d8dfc45bdbd360acb4cd55cd9",
+          "memory_limit_mib": 3072,
+          "observed_processes": 1,
+          "peak_tree_rss_bytes": 276586496,
+          "process_exit_status": "pass",
+          "resource_samples": 51,
+          "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+          "status": "pass",
+          "surviving_owned_pids": [],
+          "timeout_seconds": 300,
+          "independent_terminal_readback": "GOBLIN_CONTRACT_RESULT {\"checks\":194,\"deliberately_inconsistent_data\":true,\"evidence_kind\":\"unit_fixture\",\"failures\":[],\"native_gameplay_executed\":false}",
+          "evidence_kind": "synthetic_unit_fixtures",
+          "raw_log_relative": "unit/test_goblin_contract.log"
+        },
+        {
+          "case": "goblin_gameplay_contracts",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/goblin-successor-5e7d/unit/project",
+            "--script",
+            "res://goblin/tests/test_gameplay_contracts.gd"
+          ],
+          "completion_marker": "GOBLIN_GAMEPLAY_CONTRACT_RESULT ",
+          "completion_observed": true,
+          "diagnostic_errors": [],
+          "diagnostic_prefix_bytes": 403,
+          "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+          "elapsed_seconds": 0.507,
+          "exit_code": 0,
+          "interrupted": false,
+          "log_bytes": 403,
+          "log_limit_bytes": 16777216,
+          "log_sha256": "aabc186c392c87f0c35a75e84fbbea1e3d3467a3eefb548faf0a58faef469a88",
+          "memory_limit_mib": 3072,
+          "observed_processes": 1,
+          "peak_tree_rss_bytes": 127844352,
+          "process_exit_status": "pass",
+          "resource_samples": 5,
+          "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+          "status": "pass",
+          "surviving_owned_pids": [],
+          "timeout_seconds": 300,
+          "independent_terminal_readback": "GOBLIN_GAMEPLAY_CONTRACT_RESULT {\"checks\":236,\"classification\":\"deliberately constructed oracle controls\",\"evidence_kind\":\"unit_fixture\",\"failures\":[]}",
+          "evidence_kind": "synthetic_unit_fixtures",
+          "raw_log_relative": "unit/goblin_gameplay_contracts.log"
+        }
+      ]
+    }
+  ],
+  "original_long_programme": {
+    "source": "6f359ce2",
+    "episodes": 8,
+    "attempted_actions": 2858,
+    "completed_actions": 2847,
+    "refusals": 11,
+    "budget_complete": 4,
+    "bounded_timeouts": 4,
+    "no_completed_budgets": [
+      512,
+      1024
+    ],
+    "original_linux_job_status": "failed",
+    "disposition": "unchanged; current focused passes do not supersede original timeout evidence"
+  },
+  "resource_scope": "Owned process tree RSS sampled approximately every100ms. Sampled short-run peaks do not prove long-horizon stability or allocator ceilings.",
+  "remaining_gates": [
+    "Reconcile actual accepted foundation/main source",
+    "Current resulting-source full platform qualification",
+    "Relevant Goblin/AMBIENT actor interactions",
+    "Programme owner acceptance decisions and physical playfeel remain unclaimed"
+  ],
+  "combined_ambient_foundation_review": {
+    "case": {
+      "case": "goblin_ambient_integration",
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-ambient-independent-21c9a667/project",
+        "--script",
+        "res://goblin/tests/test_ambient_integration.gd"
+      ],
+      "completion_marker": "GOBLIN_AMBIENT_INTEGRATION_RESULT ",
+      "completion_observed": true,
+      "diagnostic_errors": [],
+      "diagnostic_prefix_bytes": 347,
+      "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+      "elapsed_seconds": 9.587,
+      "exit_code": 0,
+      "interrupted": false,
+      "log_bytes": 347,
+      "log_limit_bytes": 16777216,
+      "log_sha256": "d1135d3e71c78ff8ced7af2e32eade90891d40bc8de9729526ebd7da8439c5fc",
+      "memory_limit_mib": 3072,
+      "observed_processes": 1,
+      "peak_tree_rss_bytes": 590127104,
+      "process_exit_status": "pass",
+      "resource_samples": 94,
+      "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+      "status": "pass",
+      "surviving_owned_pids": [],
+      "timeout_seconds": 180
+    },
+    "original_failures": [
+      {
+        "classification": "Fixture requested a policy observation after ordinary Pause suspended authority",
+        "diagnostic_errors": [
+          "ERROR: GOBLIN_AMBIENT: ambient owner supplies a source-bound issued observation"
+        ],
+        "directory": "goblin-ambient-d3dd",
+        "elapsed_seconds": 6.373,
+        "log_sha256": "0aa53cc760e2a822939271dbfe68ef56cdcae0a1f06432f215c747375d92d9e9",
+        "source": "d3ddcbd829f0355cc381cdf20344fc9daf6731c6",
+        "status": "test_failure",
+        "tree": "2dd70473ffe36c36ac70e9105af93dc324f1fba1"
+      },
+      {
+        "classification": "Fixture expected synchronous sensor retirement; actual Main performs retirement on its next ordinary process pass",
+        "diagnostic_errors": [
+          "ERROR: GOBLIN_AMBIENT: last ambient producer's pilot handoff retires its native material cache"
+        ],
+        "directory": "goblin-ambient-policy-fix",
+        "elapsed_seconds": 7.899,
+        "log_sha256": "5f43cb7cec17f97e98e0d0203c5e43a6ac4eaffa058aaffd9d3f42227b676ab7",
+        "source": "af5efb579dac7549f0abd900dce28b76fc6dbecc",
+        "status": "test_failure",
+        "tree": "c26170ea503480364e677f9129d8e2ee3e1276dc"
+      }
+    ],
+    "report_sha256": "eea51542bb6537200fe70b1af96c0826c39c6611b6721842806403b452308a33",
+    "runtime_custody_before_after_equal": true,
+    "snapshot_inputs": 1005,
+    "source": "21c9a6670e05cfb8b8eeb76d02b03fb75019468f",
+    "source_archive_sha256": "e3a6ad7b0ba0759528809320b7d972231937c9fc59fadbc657701767f788411f",
+    "tree": "72447242d2088d66c2f7f10ed5fead66a7c15ae0",
+    "verified_archived_source_entries": 845,
+    "integration_check_count": 447,
+    "typed_actions": [
+      "play",
+      "pause",
+      "actor_pilot",
+      "play",
+      "actor_drive",
+      "pause",
+      "actor_hand_back",
+      "play",
+      "pause",
+      "save_layout",
+      "reopen_layout"
+    ],
+    "native_oracle_status_counts": {
+      "pass": 410,
+      "not_applicable": 1
+    },
+    "application_report_sha256": "13c857acc1eb59be0089d1b747b595c6fe7446683ad3c70a184862e8798dfc7f",
+    "reviewer": "Specialist C",
+    "disposition": "APPROVE PREPARED SOURCE AND TEST; CURRENT FULL-PLATFORM AND OWNER GATES REMAIN",
+    "independently_executed": true,
+    "fixture_repairs_change_production": false,
+    "inner_not_applicable": {
+      "id": "authored_reopen_materials",
+      "reason": "Native body protection prevents full capture.",
+      "status": "not_applicable"
+    }
+  }
+}

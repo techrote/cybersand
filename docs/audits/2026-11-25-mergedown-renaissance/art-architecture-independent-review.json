@@ -1,0 +1,576 @@
+{
+  "final_production_review": {
+    "disposition": "APPROVED_SOURCE_AND_FOCUSED_LINUX_RESULT; FULL_PLATFORM_AND_OWNER_GATES_REMAIN",
+    "evidence_directory": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-9d1b1f4b",
+    "executed_source_archive_sha256": "aadb35d2935ee029715f9e89d4d951d8ae587058b4a1349a6846dbed0a447112",
+    "identity": {
+      "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "godot_version": "4.7.stable.official.5b4e0cb0f",
+      "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+      "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+      "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+      "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+      "native_source_input_count": 105,
+      "platform": "linux",
+      "python": "3.12.14",
+      "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+      "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "rapier_source_input_count": 4,
+      "source_commit": "9d1b1f4b54b2aa8145086a05fdeeb15c0866932a",
+      "source_dirty": false,
+      "source_tree": "f33d9121bb02261c7664a97141f2144e92dc3128"
+    },
+    "png_repair_independently_approved_by": "Specialist A",
+    "project_inputs_sha256": "cb31f7a57225fc566ab349f55d03c0c31fd55bdf13c32d2b2646c476c7ae78cd",
+    "report_sha256": "19f24d1097969ce99b9efacddc7c880d2f84ec5161bb9854e0a2df4df38ef5df",
+    "reviewed_followups": [
+      "c33670982c76a092769220bb1f761eb733ef61ad",
+      "9d1b1f4b54b2aa8145086a05fdeeb15c0866932a"
+    ],
+    "source": "9d1b1f4b54b2aa8145086a05fdeeb15c0866932a",
+    "source_unchanged_after_run": true,
+    "tests": [
+      {
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-9d1b1f4b/godot",
+          "--editor",
+          "--quit"
+        ],
+        "completion_lines": [],
+        "diagnostic_error": false,
+        "log_sha256": "e85931bf64fb044e770ddd818be33f9fc36689d5af88da4c20c76db47e7eadc1",
+        "name": "import",
+        "returncode": 0,
+        "seconds": 8.145,
+        "status": "passed",
+        "timeout_seconds": 1200.0
+      },
+      {
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-9d1b1f4b/godot",
+          "--script",
+          "res://tests/test_art_architecture_workbench.gd"
+        ],
+        "completion_lines": [
+          "ART_ARCHITECTURE_WORKBENCH_RESULT {\"actual_http_exchanges\":2,\"checks\":85,\"display\":\"headless\",\"failures\":[],\"godot\":\"4.7-stable (official)\",\"model_calls\":0,\"native_stages\":[{\"changed\":4120,\"checked\":4120,\"result_sha256\":\"04ba424f423fd0509257b0928dea115e841a2259ea48817b44cad2a882c17950\",\"stage\":\"structure\"},{\"changed\":488,\"checked\":488,\"result_sha256\":\"c9e541e15a20036e482b3f4e0092e28dd113b8b786848fb94a778f7fb9487978\",\"stage\":\"services\"},{\"changed\":12,\"checked\":12,\"result_sha256\":\"1b0c004d10992d0ce541e9c52d18b71e5ba84ef4048a83fec1ddbefbb5c36f11\",\"stage\":\"detail\"}],\"ordinary_completions\":0,\"platform\":\"Linux\",\"scope\":\"Actual production host mount, deterministic HTTP and native stage/Undo evidence; physical and creative owner acceptance remain outstanding.\"}"
+        ],
+        "diagnostic_error": false,
+        "log_sha256": "03702012a4a525d7118621835dd3ac35785f46e31ea8b7ed0053028866913bf2",
+        "name": "test_art_architecture_workbench",
+        "returncode": 0,
+        "seconds": 7.735,
+        "status": "passed",
+        "timeout_seconds": 3940.0
+      },
+      {
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-9d1b1f4b/godot",
+          "--script",
+          "res://tests/test_art_request_preparation.gd"
+        ],
+        "completion_lines": [
+          "ART_REQUEST_PREPARATION_RESULT {\"checks\":69,\"failures\":[]}"
+        ],
+        "diagnostic_error": false,
+        "log_sha256": "8ca9331ff5f4621b6eac67d596e68500fb9427cb75d8a3bcda66206346ff8314",
+        "name": "test_art_request_preparation",
+        "returncode": 0,
+        "seconds": 1.425,
+        "status": "passed",
+        "timeout_seconds": 1200.0
+      },
+      {
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-9d1b1f4b/godot",
+          "--script",
+          "res://tests/test_architecture_proposal_bridge.gd"
+        ],
+        "completion_lines": [
+          "ARCHITECTURE_PROPOSAL_BRIDGE: 41 checks, 0 failures"
+        ],
+        "diagnostic_error": false,
+        "log_sha256": "a73644ffa407bde927369798c6df8f2f6497eda4b3e00d2b9f2b23d648c8241b",
+        "name": "test_architecture_proposal_bridge",
+        "returncode": 0,
+        "seconds": 3.857,
+        "status": "passed",
+        "timeout_seconds": 1200.0
+      },
+      {
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-9d1b1f4b/godot",
+          "--script",
+          "res://tests/test_batch_lab_security.gd"
+        ],
+        "completion_lines": [
+          "BATCH_SECURITY_RESULT {\"actual_model_calls\":0,\"checks\":78,\"failures\":[],\"png_structural_refusals\":9,\"requests\":4,\"retained_attempts\":4,\"scope\":\"synthetic credential loopback transport; genuine native writes; categorical PNG corruption fixtures; headless Workbench panel reopen\"}"
+        ],
+        "diagnostic_error": false,
+        "log_sha256": "43070d1ddfd3ac2009a905a6ae8b5b5b85d73a5c7821220a8cee6e0cb7b302bf",
+        "name": "test_batch_lab_security",
+        "returncode": 0,
+        "seconds": 4.448,
+        "status": "passed",
+        "timeout_seconds": 1200.0
+      }
+    ],
+    "tree": "f33d9121bb02261c7664a97141f2144e92dc3128"
+  },
+  "limitations": [
+    "Independent Linux headless proof, not Windows graphics, genuine model quality or physical owner acceptance",
+    "Original #773 near-limit request-preparation frame failure remains recorded separately",
+    "The original narrow Batch qualifier rejects SCRIPT/Parse failures but does not reject generic engine ERROR diagnostics; it was not used to infer this strict pass"
+  ],
+  "mission": "MERGEDOWN-RENAISSANCE-001",
+  "png_repair": {
+    "files": [
+      "godot/scripts/batch_lab/batch_lab_controller.gd",
+      "godot/tests/test_batch_lab_security.gd",
+      "docs/operations/world-steer-batch-lab.md"
+    ],
+    "implementer": "Specialist C / adversarial_qa",
+    "independent_review": {
+      "disposition": "APPROVED",
+      "reviewer": "Specialist A / product_integration",
+      "scope": "Complete bounded PNG framing before authoritative native CRC/compression decoding; original atomic admission and checksum guards retained; nine malformed fixtures recompute stored payload hash"
+    },
+    "no_runner_or_native_change": true,
+    "original_failure": "64/0 assertions but native decoder WARNING and three ERROR diagnostics; generic strict gate correctly fails",
+    "repair_result": "78/0 assertions; strict diagnostics clean; 9 checksum-matched malformed PNG fixtures refused atomically",
+    "source": "77277e50beb6f82be6dd7dff73343e6a74782d49",
+    "tree": "9fbb4f1cf9b06b86b34fa1e6922c2e362625aeaf"
+  },
+  "production_review": {
+    "checks": 85,
+    "disposition": "PRODUCTION_MOUNT_AND_REQUEST_OWNERSHIP_APPROVED; ENDPOINT_AUTHORITY_REPAIR_AND_RESULTING_PLATFORM_QUALIFICATION_PENDING",
+    "genuine_model_creative_acceptance": false,
+    "main_patch": "52c7747904d797922c080575b2b635e1a605f09c",
+    "model_calls": 0,
+    "native_inputs_changed": false,
+    "physical_owner_acceptance": false,
+    "source": "0cae1d4c8d6b4a1d0ca4c251a25ea5b519d4b40d",
+    "tree": "9813db7830f13dc3a42753bedf14f537a91f2466"
+  },
+  "proofs": {
+    "after": {
+      "evidence_directory": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-png-repair-77277e50",
+      "executed_source_archive_sha256": "f381061c32d61eccad7032b673203e58d74ab4504f435fe2955999db6c977f13",
+      "identity": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "77277e50beb6f82be6dd7dff73343e6a74782d49",
+        "source_dirty": false,
+        "source_tree": "9fbb4f1cf9b06b86b34fa1e6922c2e362625aeaf"
+      },
+      "overall_passed": true,
+      "project_inputs_sha256": "f4160e42deb338a4f7304de4e559b803ba3410cc0390eb33b35463e533db2d19",
+      "report_sha256": "35e1c4136fe876a27528a975c0d488a9d63b982cf97d3b3c6d459daab8872010",
+      "source_unchanged_after_run": true,
+      "tests": [
+        {
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-png-repair-77277e50/godot",
+            "--editor",
+            "--quit"
+          ],
+          "completion_lines": [],
+          "diagnostic_error": false,
+          "log_sha256": "e85931bf64fb044e770ddd818be33f9fc36689d5af88da4c20c76db47e7eadc1",
+          "name": "import",
+          "original_log_sha256": "e85931bf64fb044e770ddd818be33f9fc36689d5af88da4c20c76db47e7eadc1",
+          "returncode": 0,
+          "seconds": 7.862,
+          "status": "passed",
+          "timeout_seconds": 1200.0
+        },
+        {
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-png-repair-77277e50/godot",
+            "--script",
+            "res://tests/test_batch_lab_security.gd"
+          ],
+          "completion_lines": [
+            "BATCH_SECURITY_RESULT {\"actual_model_calls\":0,\"checks\":78,\"failures\":[],\"png_structural_refusals\":9,\"requests\":4,\"retained_attempts\":4,\"scope\":\"synthetic credential loopback transport; genuine native writes; categorical PNG corruption fixtures; headless Workbench panel reopen\"}"
+          ],
+          "diagnostic_error": false,
+          "log_sha256": "43070d1ddfd3ac2009a905a6ae8b5b5b85d73a5c7821220a8cee6e0cb7b302bf",
+          "name": "test_batch_lab_security",
+          "original_log_sha256": "43070d1ddfd3ac2009a905a6ae8b5b5b85d73a5c7821220a8cee6e0cb7b302bf",
+          "returncode": 0,
+          "seconds": 4.285,
+          "status": "passed",
+          "timeout_seconds": 1200.0
+        },
+        {
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-png-repair-77277e50/godot",
+            "--script",
+            "res://tests/test_art_request_admission.gd"
+          ],
+          "completion_lines": [
+            "ART_REQUEST_ADMISSION_RESULT {\"checks\":30,\"display\":\"headless\",\"failures\":[]}"
+          ],
+          "diagnostic_error": false,
+          "log_sha256": "40c098bf6ea900ade9886d9e085bb67ac7f82eb641ea3a4ebdc0df5af1704c91",
+          "name": "test_art_request_admission",
+          "original_log_sha256": "40c098bf6ea900ade9886d9e085bb67ac7f82eb641ea3a4ebdc0df5af1704c91",
+          "returncode": 0,
+          "seconds": 5.578,
+          "status": "passed",
+          "timeout_seconds": 1200.0
+        },
+        {
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-png-repair-77277e50/godot",
+            "--script",
+            "res://tests/test_art_request_preparation.gd"
+          ],
+          "completion_lines": [
+            "ART_REQUEST_PREPARATION_RESULT {\"checks\":34,\"failures\":[]}"
+          ],
+          "diagnostic_error": false,
+          "log_sha256": "944ca8830f225589834718cef6ee6d6818d3e00df21faf1bae6d44204da9b991",
+          "name": "test_art_request_preparation",
+          "original_log_sha256": "944ca8830f225589834718cef6ee6d6818d3e00df21faf1bae6d44204da9b991",
+          "returncode": 0,
+          "seconds": 1.036,
+          "status": "passed",
+          "timeout_seconds": 1200.0
+        },
+        {
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-png-repair-77277e50/godot",
+            "--script",
+            "res://tests/test_art_response_preparation.gd"
+          ],
+          "completion_lines": [
+            "ART_RESPONSE_PREPARATION_RESULT {\"checks\":38,\"failures\":[],\"timings\":{\"completed_callback_usec\":25645,\"owner_free_usec\":13606,\"preparation_usec\":644440,\"stop_usec\":4106}}"
+          ],
+          "diagnostic_error": false,
+          "log_sha256": "07fa8fa48028723b64da293dd73980a0208a8ea504713a8a04792c4c83693730",
+          "name": "test_art_response_preparation",
+          "original_log_sha256": "07fa8fa48028723b64da293dd73980a0208a8ea504713a8a04792c4c83693730",
+          "returncode": 0,
+          "seconds": 2.615,
+          "status": "passed",
+          "timeout_seconds": 1200.0
+        },
+        {
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-png-repair-77277e50/godot",
+            "--script",
+            "res://tests/test_batch_lab_namespace.gd"
+          ],
+          "completion_lines": [],
+          "diagnostic_error": false,
+          "log_sha256": "ecb32abdec9d3cebe850918c22191750b01d353c4efc4a720cf9e654352bf962",
+          "name": "test_batch_lab_namespace",
+          "original_log_sha256": "ecb32abdec9d3cebe850918c22191750b01d353c4efc4a720cf9e654352bf962",
+          "returncode": 0,
+          "seconds": 0.366,
+          "status": "passed",
+          "timeout_seconds": 1200.0
+        }
+      ]
+    },
+    "before": {
+      "evidence_directory": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-0cae1d4c",
+      "executed_source_archive_sha256": "73f181b5291343447b1a0c52cfc0daf37475004daa318178a222fe5a744444c0",
+      "identity": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "0cae1d4c8d6b4a1d0ca4c251a25ea5b519d4b40d",
+        "source_dirty": false,
+        "source_tree": "9813db7830f13dc3a42753bedf14f537a91f2466"
+      },
+      "overall_passed": false,
+      "project_inputs_sha256": "2bf37661af62e910ff85eb8056d7b5eb04d67f17ada2feba5bee0efb0905bb32",
+      "report_sha256": "67fcc30e2d0812cb4211551816b0eb33cc7e82ca16351605c125c0a02c2cdd9c",
+      "source_unchanged_after_run": true,
+      "tests": [
+        {
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-0cae1d4c/godot",
+            "--editor",
+            "--quit"
+          ],
+          "completion_lines": [],
+          "diagnostic_error": false,
+          "log_sha256": "e85931bf64fb044e770ddd818be33f9fc36689d5af88da4c20c76db47e7eadc1",
+          "name": "import",
+          "original_log_sha256": "e85931bf64fb044e770ddd818be33f9fc36689d5af88da4c20c76db47e7eadc1",
+          "returncode": 0,
+          "seconds": 7.399,
+          "status": "passed",
+          "timeout_seconds": 1200.0
+        },
+        {
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-0cae1d4c/godot",
+            "--script",
+            "res://tests/test_art_architecture_workbench.gd"
+          ],
+          "completion_lines": [
+            "ART_ARCHITECTURE_WORKBENCH_RESULT {\"actual_http_exchanges\":2,\"checks\":85,\"display\":\"headless\",\"failures\":[],\"godot\":\"4.7-stable (official)\",\"model_calls\":0,\"native_stages\":[{\"changed\":4120,\"checked\":4120,\"result_sha256\":\"04ba424f423fd0509257b0928dea115e841a2259ea48817b44cad2a882c17950\",\"stage\":\"structure\"},{\"changed\":488,\"checked\":488,\"result_sha256\":\"c9e541e15a20036e482b3f4e0092e28dd113b8b786848fb94a778f7fb9487978\",\"stage\":\"services\"},{\"changed\":12,\"checked\":12,\"result_sha256\":\"1b0c004d10992d0ce541e9c52d18b71e5ba84ef4048a83fec1ddbefbb5c36f11\",\"stage\":\"detail\"}],\"ordinary_completions\":0,\"platform\":\"Linux\",\"scope\":\"Actual production host mount, deterministic HTTP and native stage/Undo evidence; physical and creative owner acceptance remain outstanding.\"}"
+          ],
+          "diagnostic_error": false,
+          "log_sha256": "03702012a4a525d7118621835dd3ac35785f46e31ea8b7ed0053028866913bf2",
+          "name": "test_art_architecture_workbench",
+          "original_log_sha256": "03702012a4a525d7118621835dd3ac35785f46e31ea8b7ed0053028866913bf2",
+          "returncode": 0,
+          "seconds": 7.449,
+          "status": "passed",
+          "timeout_seconds": 3940.0
+        },
+        {
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art-architecture-independent-0cae1d4c/godot",
+            "--script",
+            "res://tests/test_batch_lab_security.gd"
+          ],
+          "completion_lines": [
+            "BATCH_SECURITY_RESULT {\"actual_model_calls\":0,\"checks\":64,\"expected_decoder_refusals\":1,\"failures\":[],\"requests\":4,\"retained_attempts\":4,\"scope\":\"synthetic credential loopback transport; genuine native writes; categorical PNG corruption fixtures; headless Workbench panel reopen\"}"
+          ],
+          "diagnostic_error": true,
+          "log_sha256": "a0b99f2c608b0b1eb41732376520141c3fe91e52fa86708e1b790f7eb9d7c8da",
+          "name": "test_batch_lab_security",
+          "original_log_sha256": "a0b99f2c608b0b1eb41732376520141c3fe91e52fa86708e1b790f7eb9d7c8da",
+          "returncode": 0,
+          "seconds": 3.838,
+          "status": "failed",
+          "timeout_seconds": 1200.0
+        }
+      ]
+    }
+  },
+  "reviewer": "Specialist C / adversarial_qa",
+  "schema": "cybersand-art-architecture-independent-review-v1",
+  "current_foundation_reconciliation": {
+    "reviewer": "Specialist C",
+    "source_commit": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+    "source_tree": "4a47ab348e85941349cfdf64222181ef8298d57f",
+    "foundation": "0c1152c21427125066df931cf06a53b7dda0075d",
+    "disposition": "APPROVE PREPARED SOURCE; HEADLESS LOOPBACK SCOPE ONLY",
+    "art_architecture_production_inputs_unchanged_from": "9d1b1f4b54b2aa8145086a05fdeeb15c0866932a",
+    "independent_execution": false,
+    "review_kind": "Independent resulting-source delta and complete lead campaign log/hash/custody readback",
+    "campaigns": [
+      {
+        "campaign": "art-current-97585-qualified",
+        "case_count": 15,
+        "source_commit": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+        "source_tree": "4a47ab348e85941349cfdf64222181ef8298d57f",
+        "source_inputs_count": 1287,
+        "local_delta": [],
+        "source_runtime_engine_project_unchanged": true,
+        "cases": [
+          {
+            "case": "test_ambient_default_off_integration",
+            "status": "passed",
+            "seconds": 7.642,
+            "log_sha256": "d40651eaafc2907c808db4adff177048bfe9031afece5f8c53c898d0cf771edb",
+            "log_relative": "art-current-97585-qualified/test_ambient_default_off_integration/test_ambient_default_off_integration.log"
+          },
+          {
+            "case": "test_art_architecture_workbench",
+            "status": "passed",
+            "seconds": 7.564,
+            "log_sha256": "03702012a4a525d7118621835dd3ac35785f46e31ea8b7ed0053028866913bf2",
+            "log_relative": "art-current-97585-qualified/test_art_architecture_workbench/test_art_architecture_workbench.log"
+          },
+          {
+            "case": "test_art_request_preparation",
+            "status": "passed",
+            "seconds": 1.404,
+            "log_sha256": "8ca9331ff5f4621b6eac67d596e68500fb9427cb75d8a3bcda66206346ff8314",
+            "log_relative": "art-current-97585-qualified/test_art_request_preparation/test_art_request_preparation.log"
+          },
+          {
+            "case": "test_art_request_admission",
+            "status": "passed",
+            "seconds": 6.252,
+            "log_sha256": "40c098bf6ea900ade9886d9e085bb67ac7f82eb641ea3a4ebdc0df5af1704c91",
+            "log_relative": "art-current-97585-qualified/test_art_request_admission/test_art_request_admission.log"
+          },
+          {
+            "case": "test_art_owned_transport",
+            "status": "passed",
+            "seconds": 1.577,
+            "log_sha256": "4f824b83c4f64b0a9166c7cfeb742397c4bfe2f551039ade2635268294555e2b",
+            "log_relative": "art-current-97585-qualified/test_art_owned_transport/test_art_owned_transport.log"
+          },
+          {
+            "case": "test_art_provider_failure_lifecycle",
+            "status": "passed",
+            "seconds": 2.135,
+            "log_sha256": "2007147f0133cc4b3ad5a7781536e4b6583190c4d445ff060d546d8f50aa3aa3",
+            "log_relative": "art-current-97585-qualified/test_art_provider_failure_lifecycle/test_art_provider_failure_lifecycle.log"
+          },
+          {
+            "case": "test_art_response_preparation",
+            "status": "passed",
+            "seconds": 2.621,
+            "log_sha256": "ef07b96d664dfaef067da6edda079e9dfb457688091cd05a4c8f97e6af51ab1a",
+            "log_relative": "art-current-97585-qualified/test_art_response_preparation/test_art_response_preparation.log"
+          },
+          {
+            "case": "test_art_session_log",
+            "status": "passed",
+            "seconds": 6.427,
+            "log_sha256": "a845713d8b5b06c6cd1abea9398cbced70e8c5d0a254eeea507c4c58e9dafe1e",
+            "log_relative": "art-current-97585-qualified/test_art_session_log/test_art_session_log.log"
+          },
+          {
+            "case": "test_art_local_close",
+            "status": "passed",
+            "seconds": 7.384,
+            "log_sha256": "d253a057dbec38688e63dd5b3415c0d61ae2edaa89d4e23ae74d0b4193e79d2c",
+            "log_relative": "art-current-97585-qualified/test_art_local_close/test_art_local_close.log"
+          },
+          {
+            "case": "test_batch_lab_namespace",
+            "status": "passed",
+            "seconds": 0.577,
+            "log_sha256": "ecb32abdec9d3cebe850918c22191750b01d353c4efc4a720cf9e654352bf962",
+            "log_relative": "art-current-97585-qualified/test_batch_lab_namespace/test_batch_lab_namespace.log"
+          },
+          {
+            "case": "test_batch_lab_security",
+            "status": "passed",
+            "seconds": 3.806,
+            "log_sha256": "43070d1ddfd3ac2009a905a6ae8b5b5b85d73a5c7821220a8cee6e0cb7b302bf",
+            "log_relative": "art-current-97585-qualified/test_batch_lab_security/test_batch_lab_security.log"
+          },
+          {
+            "case": "test_architecture_proposal_bridge",
+            "status": "passed",
+            "seconds": 3.547,
+            "log_sha256": "a73644ffa407bde927369798c6df8f2f6497eda4b3e00d2b9f2b23d648c8241b",
+            "log_relative": "art-current-97585-qualified/test_architecture_proposal_bridge/test_architecture_proposal_bridge.log"
+          },
+          {
+            "case": "test_architecture_workflow_controls",
+            "status": "passed",
+            "seconds": 3.816,
+            "log_sha256": "8779f5287be860cab2c12ebf276a4ff90566fe88af6c5ae98ec06e0f685f6794",
+            "log_relative": "art-current-97585-qualified/test_architecture_workflow_controls/test_architecture_workflow_controls.log"
+          },
+          {
+            "case": "combined-author",
+            "status": "passed",
+            "seconds": 16.393,
+            "log_sha256": "caa1b1a66db3e19492dc856863b685db9c23215e31fd324cdbe3c82444f06bb3",
+            "log_relative": "art-current-97585-qualified/combined-author/test_workbench_combined_authoring.log"
+          },
+          {
+            "case": "combined-reopen",
+            "status": "passed",
+            "seconds": 10.531,
+            "log_sha256": "8e7f534a304ce788a64f8f23bce06706317783842d30f099d43e65e9fa28c0f2",
+            "log_relative": "art-current-97585-qualified/combined-reopen/test_workbench_combined_authoring.log"
+          }
+        ]
+      },
+      {
+        "campaign": "art-current-97585-persistence",
+        "case_count": 2,
+        "source_commit": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+        "source_tree": "4a47ab348e85941349cfdf64222181ef8298d57f",
+        "source_inputs_count": 1287,
+        "local_delta": [],
+        "source_runtime_engine_project_unchanged": true,
+        "cases": [
+          {
+            "case": "combined-author",
+            "status": "passed",
+            "seconds": 16.599,
+            "log_sha256": "3eaa572fec89fd704d6fe64bf4c9606f74d462ea8d815c6008544f7d9858d734",
+            "log_relative": "art-current-97585-persistence/combined-author/test_workbench_combined_authoring.log"
+          },
+          {
+            "case": "combined-reopen",
+            "status": "passed",
+            "seconds": 10.444,
+            "log_sha256": "b96ac479b0727d77b9ed60f0c7494b5a86016c6bf22ab6652f6e701883ac7f51",
+            "log_relative": "art-current-97585-persistence/combined-reopen/test_workbench_combined_authoring.log"
+          }
+        ]
+      }
+    ],
+    "main_campaign_assertions": 1104,
+    "main_campaign_seconds": 81.676,
+    "original_failed_harness": "art-current-97585-cases: shared profile violated local-close fresh-profile fixture; original failure retained",
+    "harness_repair": "Restore original per-case profile isolation; no application, oracle or watchdog change",
+    "remaining_gates": [
+      "Current Windows and broader resulting-source qualification",
+      "Original displayed Windows performance evidence remains scoped",
+      "Genuine-model creative evaluation",
+      "Physical owner acceptance"
+    ]
+  }
+}

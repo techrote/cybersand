@@ -1,0 +1,218 @@
+{
+  "completion": {
+    "checks": 61,
+    "elapsed_msec": 10446,
+    "failures": [],
+    "godot": {
+      "build": "official",
+      "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+      "hex": 263936,
+      "major": 4,
+      "minor": 7,
+      "patch": 0,
+      "status": "stable",
+      "string": "4.7-stable (official)",
+      "timestamp": 0
+    },
+    "limits": [
+      "Actual Linux native/Rapier/Workbench integration; Windows combined source and physical owner acceptance remain separate",
+      "No PUBPRES, ObjectShard, SWARM or Actor Capacity implementation included"
+    ],
+    "operation_watchdog_seconds": 300.0,
+    "phases": [
+      {
+        "native_ticks": 24,
+        "perception": {
+          "available": true,
+          "backend": "native-phased",
+          "cache_bytes": 524288,
+          "current_tick": 24,
+          "extent": [
+            512,
+            512
+          ],
+          "ignored_older_publications": 0,
+          "ingest_usec_max": 199,
+          "ingest_usec_total": 580,
+          "ingestions": 25,
+          "maximum_materials": 8,
+          "maximum_radius_cells": 96,
+          "maximum_samples_per_query": 2401,
+          "owner_epoch": 1,
+          "owner_snapshot_serial": 230,
+          "patches": 39,
+          "publication_serial": 27,
+          "queries": 4,
+          "query_samples": 1968,
+          "query_usec_max": 466,
+          "query_usec_total": 1459,
+          "reason": "",
+          "revision": 26,
+          "sample_spacing_cells": 4,
+          "sample_tick": 24,
+          "source_bytes": 543224,
+          "version": "ambient-perception/v1",
+          "world_generation": 2
+        },
+        "phase": "native and Rapier progression with active material configuration",
+        "physical_ticks": 24
+      }
+    ]
+  },
+  "disposition": "APPROVE_PREPARED_SOURCE_INTEGRATION_AND_LOCAL_PROOF; REMAINING_PLATFORM_AND_OWNER_GATES",
+  "evidence": {
+    "case_log_sha256": "0b88e417f7b87ae8b535ce8320a20f3d6615c70d370ea66b6235691ae607dbf8",
+    "directory": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/material-ambient-independent-2e0233f8",
+    "executed_source_archive_sha256": "49650e9d60d381f66ac99b96fcf1f9226962413cab2b6b4f6ca4d51d44055419",
+    "project_inputs_sha256": "43a5d98a1abdcc92ca5a988a72d4cb5bbb2260445c105ffc8468fafd3fe68246",
+    "report_sha256": "694f1d23cd0df4949f54f49cfa686d55ffdc3da01fd206b3e17200ecab1d9a79"
+  },
+  "identity": {
+    "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+    "native_build_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+    "native_provenance_sha256": "262955148ab157196f8760612ee863bb24e09ea59cf8a8878e9ce95cf7e0eea2",
+    "native_sha256": "b7afb86202d3a99c4a2c20751819899b362931b78454d1b29c3d7c32888b8f78",
+    "native_source_input_count": 108,
+    "platform": "linux",
+    "python": "3.12.14",
+    "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+    "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+    "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "rapier_source_input_count": 4,
+    "source_commit": "2e0233f808e6e9c76aac897593bc88d6ca357b95",
+    "source_dirty": false,
+    "source_tree": "0473c322acd96f18eeb557ec4ba027fb7242595e"
+  },
+  "implementer": "Lead",
+  "limits": [
+    "Linux headless source-matched runtime proof only",
+    "Material runtime has108 native inputs and must not be substituted with the105-input accepted-main runtime",
+    "Resulting Windows/native/full-platform qualification remains separate",
+    "Physical owner acceptance is not supplied; no mainline merge approval",
+    "No PUBPRES, ObjectShard, SWARM or Actor Capacity import"
+  ],
+  "native_inputs_or_runtime_different_from_material_donor": false,
+  "original_oracle_failure": {
+    "actual_completion": {
+      "checks": 57,
+      "elapsed_msec": 306567,
+      "failures": [
+        "material demo acknowledgement did not complete within the existing operation watchdog"
+      ],
+      "godot": {
+        "build": "official",
+        "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+        "hex": 263936,
+        "major": 4,
+        "minor": 7,
+        "patch": 0,
+        "status": "stable",
+        "string": "4.7-stable (official)",
+        "timestamp": 0
+      },
+      "limits": [
+        "Actual Linux native/Rapier/Workbench integration; Windows combined source and physical owner acceptance remain separate",
+        "No PUBPRES, ObjectShard, SWARM or Actor Capacity implementation included"
+      ],
+      "phases": [
+        {
+          "native_ticks": 24,
+          "perception": {
+            "available": true,
+            "backend": "native-phased",
+            "cache_bytes": 524288,
+            "current_tick": 24,
+            "extent": [
+              512,
+              512
+            ],
+            "ignored_older_publications": 0,
+            "ingest_usec_max": 472,
+            "ingest_usec_total": 827,
+            "ingestions": 25,
+            "maximum_materials": 8,
+            "maximum_radius_cells": 96,
+            "maximum_samples_per_query": 2401,
+            "owner_epoch": 1,
+            "owner_snapshot_serial": 178,
+            "patches": 39,
+            "publication_serial": 27,
+            "queries": 4,
+            "query_samples": 1968,
+            "query_usec_max": 556,
+            "query_usec_total": 1575,
+            "reason": "",
+            "revision": 26,
+            "sample_spacing_cells": 4,
+            "sample_tick": 24,
+            "source_bytes": 543224,
+            "version": "ambient-perception/v1",
+            "world_generation": 2
+          },
+          "phase": "native and Rapier progression with active material configuration",
+          "physical_ticks": 24
+        }
+      ]
+    },
+    "classification": "DEFECTIVE_TEST_ORACLE: actor-free Material demo required an actor session; corrected to native ordinary installation plus explicit zero actors and null Rapier owner",
+    "original_log_sha256": "bb19f332f308759c35f5019d4b42d831c4fb88899cbb22254c352e00cd2cec17",
+    "source": "1199f64cba5f61c938eb6f98363b244ec4d8cae3",
+    "watchdog_relaxed": false
+  },
+  "preserved_foundation_parent": "9baa59c9630582958a3b38f2931012775c50e46e",
+  "preserved_material_donor": "858ef9e7285fcaa22c9cc1381d0cb0082057a456",
+  "preserved_semantics": [
+    "Eight-actor host limit",
+    "Default-OFF startup has zero Ambient queries/material-cache ingestion",
+    "Actual Lab UI paused and live material configuration transactions",
+    "Sand/Oil density exchange under native authority",
+    "Existing human and Ambient producers, World, worker, Rapier session and all body identities",
+    "Configuration Revert retains cells already moved and does not alter the simulation tick",
+    "Authored actor profile persists while session-only material configuration resets",
+    "Retired World request refusal",
+    "Separate Material and Ambient scene-replacement completion metadata"
+  ],
+  "reviewer": "Specialist C / adversarial_qa",
+  "schema": "cybersand-material-ambient-independent-review-v1",
+  "source": "2e0233f808e6e9c76aac897593bc88d6ca357b95",
+  "source_unchanged_after_run": true,
+  "tests": [
+    {
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/material-ambient-independent-2e0233f8/godot",
+        "--editor",
+        "--quit"
+      ],
+      "diagnostic_error": false,
+      "label": "import",
+      "log_sha256": "d58b3ab83d563d5f30eb95607617a00687f3977022cedda8ee3754399a62cf9e",
+      "returncode": 0,
+      "seconds": 10.101,
+      "status": "passed",
+      "timeout_seconds": 1200.0
+    },
+    {
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/material-ambient-independent-2e0233f8/godot",
+        "--script",
+        "res://tests/test_material_audition_ambient_integration.gd"
+      ],
+      "diagnostic_error": false,
+      "label": "test_material_audition_ambient_integration",
+      "log_sha256": "0b88e417f7b87ae8b535ce8320a20f3d6615c70d370ea66b6235691ae607dbf8",
+      "returncode": 0,
+      "seconds": 12.279,
+      "status": "passed",
+      "timeout_seconds": 3940.0
+    }
+  ],
+  "tree": "0473c322acd96f18eeb557ec4ba027fb7242595e"
+}

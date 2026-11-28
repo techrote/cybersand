@@ -1,0 +1,44 @@
+{
+  "schema": "cybersand-mergedown-recovery-source-registration-v1",
+  "publications": [
+    {
+      "local_source": "ac9eae778aa4a129b56e36f5039cf8f426a89c59",
+      "remote_source": "a4f7cf9b0b9a318b001901dca9ae184a591081ed",
+      "tree": "d3dc51c39971458eaf20c16af561e424b6f7ba5b",
+      "request": "closure-direct-runtime-launcher-recovery-001",
+      "run": 45778120328,
+      "result": "failed actual Goblin CMD before engine; important other package subresults passed"
+    },
+    {
+      "local_code": "45430449df64c83efc514a0a61797c5f9e37d2c9",
+      "local_archive": "5719e2fcc21e7fc7895bbc1c987027c45b26362a",
+      "remote_source": "d3d85373385705ff756b3d42614a89d78f97d1a0",
+      "tree": "bb784565681506a574fc0c6f44ddf205aa348dcc",
+      "request": "closure-stock-windows-shell-autoload-002",
+      "run": 45779742759,
+      "result": "failed new shell test oracle before product checkout"
+    },
+    {
+      "local_code": "fde1a7a1026410bec119438b806002ea1ca2d2be",
+      "local_archive": "c34813cf84871b72537d9eefb7ef94c54df375fb",
+      "remote_source": "cda297c8cb124aeae6b156c907adc6858f603c6f",
+      "tree": "47ed5b16a92e63687e9d95e1069fe2643ce74b1b",
+      "request": "closure-stock-windows-shell-autoload-003",
+      "run": 45780449642,
+      "result": "in progress; real Windows admission controls passed at registration; later results must be read separately"
+    }
+  ],
+  "original_unavailable_source": "2709e8cb6f83cd4d9bf7af5feb91ae0965c2c133",
+  "original_unavailable_policy": "None of these newly constructed narrow corrections is asserted equal to the unavailable original2709.",
+  "bundle": {
+    "path": "mainline-closure-shell003-source.bundle",
+    "sha256": "04bbb26d5d8a2140bd56096123abb7bb68e3e5f7ea332785f561fee618f48cad",
+    "bytes": 424217,
+    "prerequisite": "a4f7cf9b0b9a318b001901dca9ae184a591081ed",
+    "retained_tip": "c34813cf84871b72537d9eefb7ef94c54df375fb"
+  },
+  "product_source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "native_inputs": 105,
+  "rapier_inputs": 4,
+  "owner_playfeel_accepted": false
+}

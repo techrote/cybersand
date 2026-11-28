@@ -1,0 +1,1235 @@
+{
+  "schema": "cybersand-mergedown-independent-failure-triage-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at": "2026-11-26T00:11:17.316716+00:00",
+  "disposition": "HOLD \u2014 repaired source attempt 2 incomplete because of dependency-service failures",
+  "accepted_main": {
+    "source": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+    "workflow_run": 45714897904,
+    "event": "push",
+    "attempt": 1,
+    "status": "failure",
+    "failed_shard_jobs": [
+      139560378897,
+      139560379052
+    ],
+    "reducer_job": 139565758264,
+    "reducer_reason": "expected23 original Windows shard reports, found21",
+    "reducer_artifact": 15069788557,
+    "classification": "Git LFS batch service timeout before Godot; reducer correctly fails missing shards"
+  },
+  "ambient_candidate": {
+    "source": "0c1152c21427125066df931cf06a53b7dda0075d",
+    "tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+    "workflow_run": 45715343854,
+    "event": "pull_request",
+    "attempt": 1,
+    "observed_failed_windows_shards": {
+      "0": 139563141658,
+      "8": 139563141675,
+      "10": 139563141620,
+      "11": 139563141698,
+      "22": 139563143540
+    },
+    "classification": "Git LFS batch service timeout while materializing pinned Windows Rapier, before Godot",
+    "final_job_counts": {
+      "total": 58,
+      "success": 50,
+      "skipped": 2,
+      "failure": 6
+    },
+    "windows_reducer": {
+      "job": 139568180496,
+      "status": "failure",
+      "expected_reports": 24,
+      "actual_reports": 19,
+      "artifact": 15070147945
+    },
+    "linux_reducer": {
+      "job": 139569066199,
+      "status": "success",
+      "cases": 354,
+      "shards": 25,
+      "source_inputs_verified": 41,
+      "actual_execution_source": "b36cb92d0ab908a9303cb3f21f52e88412970f73",
+      "actual_execution_tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+      "artifact": 15070996178
+    }
+  },
+  "palette": {
+    "run": 45715343561,
+    "source": "0c1152c21427125066df931cf06a53b7dda0075d",
+    "attempt1": {
+      "status": "failure",
+      "failed_job": 139560080793,
+      "seconds_before_dependency_failure": 11.494962498,
+      "classification": "Git LFS batch service timeout before Godot"
+    },
+    "attempt2": {
+      "status": "success",
+      "successful_jobs": 8,
+      "cohorts": 6,
+      "process_cases": 19,
+      "reducer_job": 139565783138,
+      "reducer_artifact": 15070122562,
+      "rerun_scope": "plan and all dependents; same-attempt complete original artifacts",
+      "acceptance_contract": "palette-shader-suite-v3 bounded semantics passed; retained v2 finished-image diagnostic remains failed and is not the v3 predicate"
+    }
+  },
+  "preserved_decoded_logs": [
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563141620.log",
+      "sha256": "e779f8b9ec1fa32da731b3d8a644b26b902cc4d1fcccdbf91ccb052bd591135a",
+      "bytes": 131351,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563141658.log",
+      "sha256": "59a8dbf907f85e6110a7fd5cb1be0a198bc24197957dbdc4f29bf1e0462297be",
+      "bytes": 131411,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563141675.log",
+      "sha256": "6f01b87bb8aabef602ba8433b99767c20d0b4e46d3ebd2d5ac25023cc4794e37",
+      "bytes": 131473,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563141698.log",
+      "sha256": "f2e509c95d3c5f1e2fcfaa765b1413a99f4a8d45ba598e856cfe7887ef31921e",
+      "bytes": 131415,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-139563143540.log",
+      "sha256": "49361243246b4b32ad0292b40c3bceab36f094d688f3b8641b5cdbf180922f76",
+      "bytes": 131972,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-palette-attempt1-139560080793.log",
+      "sha256": "1825085b5e62e66333bfac182019cc50ce4a1358bd7fb210f258058255194ad4",
+      "bytes": 137771,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-palette-attempt2-readback-139565783138.log",
+      "sha256": "56156cbaf7b880eb449db1e46a20d90092f47165c6f37338370442b0c08a6a26",
+      "bytes": 151629,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/goblin001-postmerge-gde-attempt1-139560378897.log",
+      "sha256": "dba9e6aa65396cdaf9d460ba4efd49d87a30167cab586da8d7c5c57cd564db27",
+      "bytes": 131014,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/goblin001-postmerge-gde-attempt1-139560379052.log",
+      "sha256": "0daa8fe4da221a4c2c3783853db32c19d9300f990307da40adda38f80392d28b",
+      "bytes": 131014,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/goblin001-postmerge-gde-attempt1-139565758264.log",
+      "sha256": "0db8395c5f562eee2f91bde6ff47be7d69534b0d2bab93c5a7eab4c83a4a2aca",
+      "bytes": 44637,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-reducer-139568180496.log",
+      "sha256": "91c13342d79db751f30f3ba790ab94d2ac094e3235d96f9be65d3292114f09a8",
+      "bytes": 40344,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    },
+    {
+      "path": "qa-artifacts/ambient001-gde-attempt1-linux-readback-139569066199.log",
+      "sha256": "7b9b4fb5317719a5c9c16d123e5a14e8ee19b2944bc2c12892718a165746207e",
+      "bytes": 80925,
+      "encoding": "Decoded UTF-8 text, CRLF normalized to LF"
+    }
+  ],
+  "no_application_failure_observed_in_these_jobs": true,
+  "mandatory_checks_weakened": false,
+  "retry_or_source_mutation_by_reviewer": false,
+  "repaired_candidate_attempt2": {
+    "source": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+    "tree": "c905324fd96214e88a1a7d3327b4cd7cdff693db",
+    "target": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+    "synthetic_merge": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+    "synthetic_parents": [
+      "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6"
+    ],
+    "synthetic_tree_matches": true,
+    "registration_comment": 7178090351,
+    "gde": {
+      "run": 45719650698,
+      "attempt": 2,
+      "status": "failure",
+      "jobs": 58,
+      "success": 50,
+      "skipped": 2,
+      "failure": 6,
+      "scoped_skips": [
+        "ready validation scope",
+        "physical-actor-stress"
+      ],
+      "failed_windows": {
+        "7": 139591678803,
+        "17": 139591678939,
+        "4": 139591678950,
+        "18": 139591680320,
+        "19": 139591680432
+      },
+      "windows_reducer": {
+        "job": 139596780410,
+        "artifact": 15073619935,
+        "expected": 24,
+        "observed": 19,
+        "status": "failure"
+      },
+      "linux_reducer": {
+        "job": 139598038042,
+        "artifact": 15075295117,
+        "case_count": 354,
+        "cases": [
+          "test_play_ui007_overlay_render",
+          "test_semantic_planes_examples",
+          "test_wex001_water_body_baseline",
+          "test_workbench_combined_authoring",
+          "test_workbench_wave",
+          "test_microscenarios",
+          "test_penv001_player_environment",
+          "test_physical_usable_lifecycle",
+          "test_play_life001_stuntbuggy",
+          "test_play_life009_trialsbike",
+          "test_play_ui007_stuntbuggy",
+          "test_semantic_planes_runtime",
+          "test_workbench_deferred_paint",
+          "test_workbench_wave_render",
+          "test_ambient_authoring",
+          "test_art_batch_native_render",
+          "test_building_material_integration",
+          "test_explore001_dialog_render",
+          "test_liquid_comparison_ui",
+          "test_material_lab_catalogue",
+          "test_paint_editor_generated_workbench",
+          "test_physical_flight_lab",
+          "test_play_input011_acrobat",
+          "test_play_life004_stuntbuggy",
+          "test_play_pace001_trialsbike",
+          "test_play_pace002_acrobat",
+          "test_presentation_controls",
+          "test_water_feel_integration",
+          "test_web_demo_setup",
+          "test_workbench_liquid_edges",
+          "test_ambient_clock",
+          "test_art_deferred_manual",
+          "test_cell_world",
+          "test_explore001_dialog_saved_render",
+          "test_liquid_default_demo_preparation",
+          "test_material_lab_diagnostics",
+          "test_paint_editor_history",
+          "test_physical_flight_lab_scene",
+          "test_physics_async",
+          "test_play_input011_arcadelander",
+          "test_play_life004_trialsbike",
+          "test_play_pace002_arcadelander",
+          "test_play_pace004_capture_buffer",
+          "test_rapier_backend_preflight",
+          "test_wex004_decompression",
+          "test_workbench_liquid_equipment",
+          "test_ambient_engine",
+          "test_art_history_durability",
+          "test_ci_execution_policy",
+          "test_explore001_dialog_small_render",
+          "test_liquid_desktop_default_host",
+          "test_material_lab_experiment",
+          "test_paint_editor_native",
+          "test_physical_flight_physics",
+          "test_play_input011_jetbarrel",
+          "test_play_life005_failure_recovery",
+          "test_play_pace002_jetbarrel",
+          "test_play_ui003_lap_clock",
+          "test_rapier_drop_in",
+          "test_workbench_actor_catalog",
+          "test_workbench_live_liquid_edit",
+          "scene",
+          "test_ambient_examples_native",
+          "test_art_history_receipt_identity",
+          "test_coupling_lockstep",
+          "test_explore001_generated_workbench",
+          "test_liquid_feel_census",
+          "test_material_lab_readability",
+          "test_paint_editor_recovery",
+          "test_physical_flight_pilot",
+          "test_play_input011_legacy_pause",
+          "test_play_life007_failed_session_restart",
+          "test_play_pace002_stuntbuggy",
+          "test_play_ui003_physics_cadence",
+          "test_rapier_manual_step",
+          "test_tick_failure_regression",
+          "test_workbench_actor_composition",
+          "test_workbench_material_baseline",
+          "test_ambient_independent",
+          "test_art_lazy_traffic",
+          "test_coupling_lockstep_desktop",
+          "test_experiment_tower",
+          "test_failed_world_status_survives",
+          "test_liquid_host_evidence",
+          "test_material_lab_service",
+          "test_paint_editor_shapes",
+          "test_physical_flight_profile",
+          "test_play_input011_stuntbuggy",
+          "test_play_life008_recovery_navigation",
+          "test_play_pace002_trialsbike",
+          "test_play_ui004_gamepad_events",
+          "test_rem002_body_granular",
+          "test_workbench_actor_composition_native",
+          "test_workbench_physics_play",
+          "test_ambient_ledge_geometry",
+          "test_art_manual_audit",
+          "test_coupling_lockstep_semantics",
+          "test_feature_launch_arguments",
+          "test_liquid_host_web_probe",
+          "test_material_lab_ui",
+          "test_paint_editor_workbench",
+          "test_physical_flight_selection",
+          "test_play_input011_trialsbike",
+          "test_play_life009_acrobat",
+          "test_play_ui005_session_selection",
+          "test_render_patch_handoff_regression",
+          "test_transport_probe",
+          "test_web_rapier",
+          "test_workbench_actor_composition_session",
+          "test_workbench_pilot_ui",
+          "test_actor_rig_actuation",
+          "test_ambient_workbench",
+          "test_art_traffic_panel_safety",
+          "test_depth_dimensions_render",
+          "test_goblin_contract",
+          "test_liquid_prepared_host",
+          "test_liquid_synchronous_water_reference_body",
+          "test_microscenario_reference_pack_ui",
+          "test_physical_actor_effect_cancellation",
+          "test_physics_instrumentation",
+          "test_play_life002_trialsbike",
+          "test_play_life011_acrobat",
+          "test_play_wait001_trialsbike",
+          "test_transport_profiles",
+          "test_workbench_flatten_owner_failure",
+          "test_worldgen_typed",
+          "test_actor_prototype_integration",
+          "test_ambient_native_motion",
+          "test_art_panel_ui",
+          "test_deepworks",
+          "test_feature_launcher",
+          "test_gen007_qualification",
+          "test_liquid_inertial_host",
+          "test_material_lab_workbench_integration",
+          "test_palette_crossfade_render",
+          "test_physical_flight_session",
+          "test_play_life001_acrobat",
+          "test_play_life009_arcadelander",
+          "test_play_ui007_acrobat",
+          "test_render_world_generation",
+          "test_workbench_actor_equipment_extent",
+          "test_workbench_reservoir_lab",
+          "test_actor_prototype_session",
+          "test_ambient_perception",
+          "test_art_provider",
+          "test_deepworks_controller",
+          "test_gameplay_recorder",
+          "test_lcb_pressure_reference",
+          "test_liquid_level_import_host",
+          "test_material_lab_world",
+          "test_palette_shader_compile_bounds",
+          "test_physical_usable_course",
+          "test_play_life001_arcadelander",
+          "test_play_life009_jetbarrel",
+          "test_play_ui007_arcadelander",
+          "test_script_hotpath_native_fill",
+          "test_workbench_boundary_retention",
+          "test_workbench_retained_pressure",
+          "test_actor_prototypes",
+          "test_ambient_personalities_native",
+          "test_art_session_log",
+          "test_deepworks_reactions",
+          "test_gen007_inspection",
+          "test_liquid_level_preparation",
+          "test_material_presentation_render",
+          "test_microscenario_reference_contract",
+          "test_pchar001_player_representations",
+          "test_physical_usable_equipment",
+          "test_play_life001_jetbarrel",
+          "test_play_life009_stuntbuggy",
+          "test_play_ui007_jetbarrel",
+          "test_semantic_depth_render",
+          "test_workbench_canvas",
+          "test_workbench_spray_rearm",
+          "test_interaction_policy",
+          "test_liquid_synchronous_reference_body",
+          "test_native_fire_presentation_regression",
+          "test_physical_actor_session",
+          "test_play_input010_arcadelander",
+          "test_play_life003_trialsbike",
+          "test_play_pace001_acrobat",
+          "test_player_playground_runtime",
+          "test_water_presentation_model",
+          "test_workbench_host_claim_capacity",
+          "test_worldgen_workbench",
+          "test_ambient_default_off_integration",
+          "test_art_traffic_integrity",
+          "test_depth_dimensions",
+          "test_gentek_cathedral_showcase",
+          "test_liquid_policy_worker",
+          "test_microscenario_native_observation",
+          "test_physical_actor_effect_admission",
+          "test_physics_characterisation",
+          "test_play_life002_stuntbuggy",
+          "test_play_life010_trialsbike",
+          "test_play_wait001_stuntbuggy",
+          "test_thunderbowl_controllers",
+          "test_workbench_flatten",
+          "test_worldgen_planes",
+          "profile_scheduler",
+          "test_actor_usables_integration",
+          "test_art_batch_native",
+          "test_blacksite_nine_integration",
+          "test_explore001_dialog_native_render",
+          "test_gen007_reactions",
+          "test_interaction_async",
+          "test_lcb_inertial_adapter",
+          "test_liquid_solver_policy",
+          "test_native_edge_contact_regression",
+          "test_physical_actor_script",
+          "test_play_input010_acrobat",
+          "test_play_life003_stuntbuggy",
+          "test_play_life011_trialsbike",
+          "test_player_playground_course",
+          "test_water_feel_scenarios",
+          "test_workbench_hard_placement",
+          "test_actor_rigs",
+          "test_architectural_project_contract",
+          "test_blacksite_nine",
+          "test_depth_surface_render",
+          "test_gen007_workbench_render",
+          "test_lcb_fixture_manifests",
+          "test_liquid_sampled_preparation",
+          "test_microscenario_workbench_lifecycle",
+          "test_physical_actor_rigs",
+          "test_play_comp002_five_rig_course",
+          "test_play_life003_jetbarrel",
+          "test_play_life011_stuntbuggy",
+          "test_player_material_field",
+          "test_water_experiment_profiles",
+          "test_web_worker_parity",
+          "test_workbench_generator_installed",
+          "test_act004_body_capacity",
+          "test_actor_rig_integration",
+          "test_architectural_generator",
+          "test_art_undo",
+          "test_depth_lab",
+          "test_goblin_policies",
+          "test_liquid_pressure_rapier",
+          "test_liquid_trial_body",
+          "test_microscenario_stress",
+          "test_physical_actor_effects",
+          "test_play_auto001_shared_course",
+          "test_play_life003_acrobat",
+          "test_play_life011_arcadelander",
+          "test_player_acrobat",
+          "test_usable_session",
+          "test_workbench_fleet_session",
+          "test_actor_actuator_session",
+          "test_actor_rig_session",
+          "test_architectural_generator_ui",
+          "test_auto_worker_policy",
+          "test_depth_layer_runtime",
+          "test_hard_surface_incremental_packet",
+          "test_liquid_reference_body_poses",
+          "test_liquid_water_reference_body",
+          "test_microscenario_workbench",
+          "test_physical_actor_integration",
+          "test_play_comp001_existing_host_spike",
+          "test_play_life003_arcadelander",
+          "test_play_life011_jetbarrel",
+          "test_player_acrobat_physics",
+          "test_usables",
+          "test_workbench_generator_discovery",
+          "test_liquid_tower_host",
+          "test_native_render_bridge_regression",
+          "test_physical_actor_trial",
+          "test_play_input010_jetbarrel",
+          "test_play_life004_acrobat",
+          "test_play_pace001_arcadelander",
+          "test_player_vehicle_controls",
+          "test_rem003_player_granular",
+          "test_water_presentation_render",
+          "test_workbench_host_claim_native",
+          "test_worker_benchmark",
+          "test_lcb_physics_contracts",
+          "test_liquid_ordinary_demo_host",
+          "test_material_vapour_pipeline_render",
+          "test_pf_c2048_prepared",
+          "test_physical_usable_script",
+          "test_play_life001_trialsbike",
+          "test_play_life010_acrobat",
+          "test_play_ui007_trialsbike",
+          "test_showcase_backdrop_render",
+          "test_workbench_desktop_interest",
+          "test_workbench_wave_spill",
+          "test_liquid_owner_observation",
+          "test_megablock_project",
+          "test_physical_actor_actuation",
+          "test_physical_flight_teacher_dev_obstacle",
+          "test_physical_usables_admission",
+          "test_play_life002_acrobat",
+          "test_play_life010_arcadelander",
+          "test_play_wait001_acrobat",
+          "test_showcase_tiles",
+          "test_workbench_edit_ordering",
+          "test_world_design_pack_adapter",
+          "test_deepworks_render",
+          "test_gen007_qualification_render",
+          "test_liquid_physical_preparation",
+          "test_material_appearance_lut",
+          "test_microscenario_flood_control",
+          "test_physical_actor_arena",
+          "test_physical_usables_desktop",
+          "test_play_life002_arcadelander",
+          "test_play_life010_jetbarrel",
+          "test_play_wait001_arcadelander",
+          "test_simulation_worker_interest_ownership",
+          "test_workbench_failure_containment",
+          "test_worldgen_fields",
+          "test_blacksite_nine_render",
+          "test_exploratory_actor_selection",
+          "test_explore001_dialog_native_saved_render",
+          "test_lcb_negative_contracts",
+          "test_liquid_water_feel_host",
+          "test_microscenario_controllers",
+          "test_neon_reliquary",
+          "test_physical_flight_gameplay_render",
+          "test_play_input010_stuntbuggy",
+          "test_play_life004_arcadelander",
+          "test_play_pace001_jetbarrel",
+          "test_playval001_selectable_player_fixtures",
+          "test_wave_flow",
+          "test_workbench_input",
+          "profile_native_world",
+          "test_brush_owner_commands",
+          "test_explore001_dialog_native_small_render",
+          "test_lcb_pressure_optimization",
+          "test_material_glow_control",
+          "test_paint_editor_executor",
+          "test_physical_flight_handling",
+          "test_physical_flight_teacher_dev_free",
+          "test_play_input010_trialsbike",
+          "test_play_life004_jetbarrel",
+          "test_play_pace001_stuntbuggy",
+          "test_prepared_physical_owner",
+          "test_water_feel_controller",
+          "test_wave_flow_render",
+          "test_workbench_lcb_salvage",
+          "test_ambient_profile_editor",
+          "test_art_stored_material",
+          "test_depth_compositor",
+          "test_gen007_workbench",
+          "test_lcb_scenario_catalogue",
+          "test_liquid_physical_transaction",
+          "test_microscenario_materials_lab",
+          "test_physical_actor_catalog",
+          "test_physical_usables_runtime",
+          "test_play_life002_jetbarrel",
+          "test_play_life010_stuntbuggy",
+          "test_play_wait001_jetbarrel",
+          "test_thunderbowl_arena",
+          "test_workbench_failure_recovery",
+          "test_worldgen_grammar"
+        ],
+        "execution_policy": {
+          "advisories": {
+            "drift_ratio": 1.2,
+            "drift_window": 5,
+            "minimum_baseline_samples": 3,
+            "prominent_ratio": 2.0,
+            "rolling_window": 10,
+            "warning_ratio": 1.5
+          },
+          "path": "godot/tests/support/ci_execution_policy.json",
+          "policy_id": "github-hosted-complete-execution-v1",
+          "scale": 1.0,
+          "schema_version": 1,
+          "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+          "watchdogs": {
+            "aggregate_headroom_seconds": 600.0,
+            "complex_fixture_seconds": 3600.0,
+            "dependency_prepare_seconds": 1200.0,
+            "diagnostic_capture_seconds": 30.0,
+            "godot_import_seconds": 1200.0,
+            "godot_job_minutes": 360.0,
+            "godot_metadata_seconds": 900.0,
+            "godot_setup_seconds": 4200.0,
+            "graphical_case_seconds": 1200.0,
+            "hosted_job_minutes": 180.0,
+            "main_ack_seconds": 600.0,
+            "native_case_seconds": 3600.0,
+            "native_compile_seconds": 3600.0,
+            "native_suite_seconds": 7200.0,
+            "operation_seconds": 300.0,
+            "ordinary_case_seconds": 1200.0,
+            "terminate_grace_seconds": 10.0
+          }
+        },
+        "originals": [
+          {
+            "path": "linux-godot-shard-0-45719650698-2/godot-regressions/shard-0/timings.json",
+            "sha256": "d84a98ef154cc44770301a21fd18851c5b1639712f1d1b07ded05dd2695f7fe6",
+            "shard_index": 0
+          },
+          {
+            "path": "linux-godot-shard-1-45719650698-2/godot-regressions/shard-1/timings.json",
+            "sha256": "a8a2118d618f4aa4227fdd990f10eae476e63e6f20b727795872815056bb5fe4",
+            "shard_index": 1
+          },
+          {
+            "path": "linux-godot-shard-10-45719650698-2/godot-regressions/shard-10/timings.json",
+            "sha256": "4cc0ecac2cec461a20da6551ae6a333aac6c09a1cf3464e1ea4a11d913a3ef08",
+            "shard_index": 10
+          },
+          {
+            "path": "linux-godot-shard-11-45719650698-2/godot-regressions/shard-11/timings.json",
+            "sha256": "72c92d2d6d3daa80a2252d1b6612800ef553f7e3cb46d2c1a1f5ac87bd288a2d",
+            "shard_index": 11
+          },
+          {
+            "path": "linux-godot-shard-12-45719650698-2/godot-regressions/shard-12/timings.json",
+            "sha256": "1f0b92c66c31bde5918ebeec12e6d8f3f7e899936e4e0169909e35dfb357f33d",
+            "shard_index": 12
+          },
+          {
+            "path": "linux-godot-shard-13-45719650698-2/godot-regressions/shard-13/timings.json",
+            "sha256": "0d58325d418d90ddc42224abf97d07a31e456c089aa3f89611a6f59a1631b06e",
+            "shard_index": 13
+          },
+          {
+            "path": "linux-godot-shard-14-45719650698-2/godot-regressions/shard-14/timings.json",
+            "sha256": "5274815a76d5fc36e661b9d52975a28345f0d51a69a0be59999808658a09031c",
+            "shard_index": 14
+          },
+          {
+            "path": "linux-godot-shard-15-45719650698-2/godot-regressions/shard-15/timings.json",
+            "sha256": "676229b6440c74db5731328721fd5e7bb2347d786f8f6e7391e611bc76331b72",
+            "shard_index": 15
+          },
+          {
+            "path": "linux-godot-shard-16-45719650698-2/godot-regressions/shard-16/timings.json",
+            "sha256": "3af447abba823406c10744c79d83f02d383d39db8a267b2dc4f10d84a6fb52c9",
+            "shard_index": 16
+          },
+          {
+            "path": "linux-godot-shard-17-45719650698-2/godot-regressions/shard-17/timings.json",
+            "sha256": "1f038c96939eebaca47253f054105e3b27987c3fad5371064a905efb44c7d3ef",
+            "shard_index": 17
+          },
+          {
+            "path": "linux-godot-shard-18-45719650698-2/godot-regressions/shard-18/timings.json",
+            "sha256": "12d602479cbb96fccdb0c5108aaf9478499ab7b980cae6d4e60bd376342a15ed",
+            "shard_index": 18
+          },
+          {
+            "path": "linux-godot-shard-19-45719650698-2/godot-regressions/shard-19/timings.json",
+            "sha256": "7f2c0d75c44bd4a8da2016a4927d17dd83c28a14ca8900938c8d07a99b2cfa80",
+            "shard_index": 19
+          },
+          {
+            "path": "linux-godot-shard-2-45719650698-2/godot-regressions/shard-2/timings.json",
+            "sha256": "ccd8f87a7a1e75751dd119396cdbec6e0c0a5363d6409e85686c658c931e7361",
+            "shard_index": 2
+          },
+          {
+            "path": "linux-godot-shard-20-45719650698-2/godot-regressions/shard-20/timings.json",
+            "sha256": "2e5339c2ffcce6c212abd0e48c56d4453d7efa7c7957231ddcbbd5c52b3d98bf",
+            "shard_index": 20
+          },
+          {
+            "path": "linux-godot-shard-21-45719650698-2/godot-regressions/shard-21/timings.json",
+            "sha256": "dbd70ed86855353fc03f144cf5e423c26686f58657f3193d96a51d0f41af4d2d",
+            "shard_index": 21
+          },
+          {
+            "path": "linux-godot-shard-22-45719650698-2/godot-regressions/shard-22/timings.json",
+            "sha256": "670dd3b1d938bb92f2ec5d3334adf9d601da4d27180a7b4bce9ac60cc1d82d1b",
+            "shard_index": 22
+          },
+          {
+            "path": "linux-godot-shard-23-45719650698-2/godot-regressions/shard-23/timings.json",
+            "sha256": "875cb5ffca001f2b7e434bd25a4da82e14ed3100d711a64e560043e527ef3c19",
+            "shard_index": 23
+          },
+          {
+            "path": "linux-godot-shard-24-45719650698-2/godot-regressions/shard-24/timings.json",
+            "sha256": "01619e888e43941245bf57a3c8432b1b7457bce91f6dde1e77e30f2097bfa520",
+            "shard_index": 24
+          },
+          {
+            "path": "linux-godot-shard-3-45719650698-2/godot-regressions/shard-3/timings.json",
+            "sha256": "87be7960682b43abccb1fcdfd4c7fcfedc646817483c2b1b0f9a66c2a6baeb21",
+            "shard_index": 3
+          },
+          {
+            "path": "linux-godot-shard-4-45719650698-2/godot-regressions/shard-4/timings.json",
+            "sha256": "d50de496098769f03e4d4a79f6f13f2903797e003c9555a57f27eca879e286b1",
+            "shard_index": 4
+          },
+          {
+            "path": "linux-godot-shard-5-45719650698-2/godot-regressions/shard-5/timings.json",
+            "sha256": "da0145ae2a5e0c53e979682352b27971a5bb88c27d052f40c29c83953135066a",
+            "shard_index": 5
+          },
+          {
+            "path": "linux-godot-shard-6-45719650698-2/godot-regressions/shard-6/timings.json",
+            "sha256": "5325dc5e344db02fc113da9feeff2c733f58df4b534ceacb638aadd17f9b59ad",
+            "shard_index": 6
+          },
+          {
+            "path": "linux-godot-shard-7-45719650698-2/godot-regressions/shard-7/timings.json",
+            "sha256": "607d7979a5edb5e5f11d100aca264d3219ffc443fd73d56ed62d3e438b7177c6",
+            "shard_index": 7
+          },
+          {
+            "path": "linux-godot-shard-8-45719650698-2/godot-regressions/shard-8/timings.json",
+            "sha256": "878e5e7673f484441a1c67abbd70b84d74347f6f7882aa984eef46d485797484",
+            "shard_index": 8
+          },
+          {
+            "path": "linux-godot-shard-9-45719650698-2/godot-regressions/shard-9/timings.json",
+            "sha256": "7a60279945ad3bb8ab7b32692ca90cb8534f659c3f330b9f214af4c5de1e1d18",
+            "shard_index": 9
+          }
+        ],
+        "run_attempt": "2",
+        "run_id": "45719650698",
+        "schema": "linux-godot-coverage-v1",
+        "shard_count": 25,
+        "source_inputs_verified": 41,
+        "source_sha": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+        "source_tree": "c905324fd96214e88a1a7d3327b4cd7cdff693db",
+        "status": "passed"
+      }
+    },
+    "palette": {
+      "run": 45719650316,
+      "attempt": 2,
+      "status": "failure",
+      "jobs": 8,
+      "success": 6,
+      "failure": 2,
+      "linux_visual_failure": 139590124790,
+      "reducer_failure": 139591675128,
+      "reason": "Linux visual cohort acquisition exhausted three batch-service timeout attempts; reducer correctly refused missing cohort"
+    },
+    "native": {
+      "run": 45719650512,
+      "attempt": 1,
+      "status": "success",
+      "jobs": 9,
+      "success": 8,
+      "scoped_skip": "ready validation scope"
+    },
+    "original_artifacts": [
+      {
+        "artifact_id": 15072914857,
+        "name": "windows-godot-headless-17-45719650698-2",
+        "bytes": 2421,
+        "sha256": "c4eff495180620b1b62244674edad46e97788d0f3d0934f14144b13df7f90b7d",
+        "members": [
+          "acquisition/lfs-pull-2.log",
+          "acquisition/lfs-pull-3.log",
+          "acquisition/lfs-pull-1.log",
+          "acquisition/lfs-setup.log",
+          "acquisition/receipt.json"
+        ],
+        "receipts": [
+          {
+            "allowance_seconds": 600.0,
+            "backoff_seconds": [
+              2.0,
+              4.0
+            ],
+            "cleanup_reserve_seconds": 10.0,
+            "commands": [
+              {
+                "allowance_seconds": 589.969,
+                "command": [
+                  "git",
+                  "lfs",
+                  "install",
+                  "--local"
+                ],
+                "joined": true,
+                "label": "lfs-setup",
+                "log": "lfs-setup.log",
+                "log_bytes": 40,
+                "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+                "pid": 5656,
+                "returncode": 0,
+                "seconds": 0.2969999999999686,
+                "timed_out": false
+              },
+              {
+                "allowance_seconds": 589.672,
+                "command": [
+                  "git",
+                  "lfs",
+                  "pull",
+                  "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "--exclude="
+                ],
+                "joined": true,
+                "label": "lfs-pull-1",
+                "log": "lfs-pull-1.log",
+                "log_bytes": 385,
+                "log_sha256": "a758427a41d8f2d359a19d8f771f2eb8e34c3d2d4292d5438460dfb9016c197c",
+                "pid": 5632,
+                "retryable_service_timeout": true,
+                "returncode": 2,
+                "seconds": 12.703000000000031,
+                "timed_out": false
+              },
+              {
+                "allowance_seconds": 574.969,
+                "command": [
+                  "git",
+                  "lfs",
+                  "pull",
+                  "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "--exclude="
+                ],
+                "joined": true,
+                "label": "lfs-pull-2",
+                "log": "lfs-pull-2.log",
+                "log_bytes": 383,
+                "log_sha256": "365a9ed6d3dc041129517cb1e392ff4a4fe7ae7cbadc66c5152919ea2c2d8980",
+                "pid": 2972,
+                "retryable_service_timeout": true,
+                "returncode": 2,
+                "seconds": 11.452999999999975,
+                "timed_out": false
+              },
+              {
+                "allowance_seconds": 559.5,
+                "command": [
+                  "git",
+                  "lfs",
+                  "pull",
+                  "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "--exclude="
+                ],
+                "joined": true,
+                "label": "lfs-pull-3",
+                "log": "lfs-pull-3.log",
+                "log_bytes": 385,
+                "log_sha256": "cc833caa3b63961d6029358a1992b88ff999f2c80a94991652c0b0941d1b7ce6",
+                "pid": 6076,
+                "retryable_service_timeout": true,
+                "returncode": 2,
+                "seconds": 11.875,
+                "timed_out": false
+              }
+            ],
+            "error": "RuntimeError: Git LFS service timeout persisted through the bounded attempt limit",
+            "max_attempts": 3,
+            "objects": [
+              {
+                "bytes": 9987072,
+                "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+              }
+            ],
+            "retry_scope": "observed Git LFS batch service timeout only",
+            "schema": "cybersand-lfs-acquisition-v1",
+            "seconds": 42.375,
+            "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+            "status": "failed"
+          }
+        ],
+        "errors": [
+          {
+            "path": "acquisition/lfs-pull-2.log",
+            "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T235936.30175.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+          },
+          {
+            "path": "acquisition/lfs-pull-3.log",
+            "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T235952.1944861.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+          },
+          {
+            "path": "acquisition/lfs-pull-1.log",
+            "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T235922.8186744.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+          },
+          {
+            "path": "acquisition/lfs-setup.log",
+            "text": "Updated Git hooks.\nGit LFS initialized.\n"
+          }
+        ]
+      },
+      {
+        "artifact_id": 15074656029,
+        "name": "windows-godot-headless-18-45719650698-2",
+        "bytes": 2420,
+        "sha256": "22a8743a52b56f322f8eeecffb9f4bd921abe87650540f5e52804df4ba5c3ac9",
+        "members": [
+          "acquisition/lfs-pull-1.log",
+          "acquisition/lfs-pull-2.log",
+          "acquisition/lfs-pull-3.log",
+          "acquisition/lfs-setup.log",
+          "acquisition/receipt.json"
+        ],
+        "receipts": [
+          {
+            "allowance_seconds": 600.0,
+            "backoff_seconds": [
+              2.0,
+              4.0
+            ],
+            "cleanup_reserve_seconds": 10.0,
+            "commands": [
+              {
+                "allowance_seconds": 589.953,
+                "command": [
+                  "git",
+                  "lfs",
+                  "install",
+                  "--local"
+                ],
+                "joined": true,
+                "label": "lfs-setup",
+                "log": "lfs-setup.log",
+                "log_bytes": 40,
+                "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+                "pid": 4400,
+                "returncode": 0,
+                "seconds": 0.3120000000000118,
+                "timed_out": false
+              },
+              {
+                "allowance_seconds": 589.6410000000001,
+                "command": [
+                  "git",
+                  "lfs",
+                  "pull",
+                  "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "--exclude="
+                ],
+                "joined": true,
+                "label": "lfs-pull-1",
+                "log": "lfs-pull-1.log",
+                "log_bytes": 385,
+                "log_sha256": "65ac2f40a0f74fcb30d9583a52565b238ab2f0572fc93f87eed14f9cfadb34d8",
+                "pid": 704,
+                "retryable_service_timeout": true,
+                "returncode": 2,
+                "seconds": 12.187999999999988,
+                "timed_out": false
+              },
+              {
+                "allowance_seconds": 575.453,
+                "command": [
+                  "git",
+                  "lfs",
+                  "pull",
+                  "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "--exclude="
+                ],
+                "joined": true,
+                "label": "lfs-pull-2",
+                "log": "lfs-pull-2.log",
+                "log_bytes": 384,
+                "log_sha256": "289d245b977c38bcaf517da49d2d0dd796ab01bce55d8c32b4b7fbaaececa5ad",
+                "pid": 2348,
+                "retryable_service_timeout": true,
+                "returncode": 2,
+                "seconds": 11.406000000000006,
+                "timed_out": false
+              },
+              {
+                "allowance_seconds": 560.047,
+                "command": [
+                  "git",
+                  "lfs",
+                  "pull",
+                  "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "--exclude="
+                ],
+                "joined": true,
+                "label": "lfs-pull-3",
+                "log": "lfs-pull-3.log",
+                "log_bytes": 385,
+                "log_sha256": "0bb453cd2760e13a3e225b7dfe767e3d3eae51670cf92e1402e9e8f0832d64b3",
+                "pid": 4616,
+                "retryable_service_timeout": true,
+                "returncode": 2,
+                "seconds": 11.406000000000006,
+                "timed_out": false
+              }
+            ],
+            "error": "RuntimeError: Git LFS service timeout persisted through the bounded attempt limit",
+            "max_attempts": 3,
+            "objects": [
+              {
+                "bytes": 9987072,
+                "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+              }
+            ],
+            "retry_scope": "observed Git LFS batch service timeout only",
+            "schema": "cybersand-lfs-acquisition-v1",
+            "seconds": 41.35899999999998,
+            "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+            "status": "failed"
+          }
+        ],
+        "errors": [
+          {
+            "path": "acquisition/lfs-pull-1.log",
+            "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261126T000055.7916853.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+          },
+          {
+            "path": "acquisition/lfs-pull-2.log",
+            "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261126T000109.210024.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+          },
+          {
+            "path": "acquisition/lfs-pull-3.log",
+            "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261126T000124.6221102.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+          },
+          {
+            "path": "acquisition/lfs-setup.log",
+            "text": "Updated Git hooks.\nGit LFS initialized.\n"
+          }
+        ]
+      },
+      {
+        "artifact_id": 15074241972,
+        "name": "windows-godot-headless-19-45719650698-2",
+        "bytes": 2426,
+        "sha256": "8ecbcb5be70a8d96e926ed5cf23a149cbd84a235a6a32fdba940aef890819828",
+        "members": [
+          "acquisition/lfs-pull-3.log",
+          "acquisition/lfs-pull-1.log",
+          "acquisition/lfs-pull-2.log",
+          "acquisition/lfs-setup.log",
+          "acquisition/receipt.json"
+        ],
+        "receipts": [
+          {
+            "allowance_seconds": 600.0,
+            "backoff_seconds": [
+              2.0,
+              4.0
+            ],
+            "cleanup_reserve_seconds": 10.0,
+            "commands": [
+              {
+                "allowance_seconds": 589.9689999999999,
+                "command": [
+                  "git",
+                  "lfs",
+                  "install",
+                  "--local"
+                ],
+                "joined": true,
+                "label": "lfs-setup",
+                "log": "lfs-setup.log",
+                "log_bytes": 40,
+                "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+                "pid": 8168,
+                "returncode": 0,
+                "seconds": 0.2810000000000059,
+                "timed_out": false
+              },
+              {
+                "allowance_seconds": 589.6879999999999,
+                "command": [
+                  "git",
+                  "lfs",
+                  "pull",
+                  "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "--exclude="
+                ],
+                "joined": true,
+                "label": "lfs-pull-1",
+                "log": "lfs-pull-1.log",
+                "log_bytes": 385,
+                "log_sha256": "7ec2238a4af2eae58cff3852ef3606c24e9850bf0a515fed3f95caf167224179",
+                "pid": 5212,
+                "retryable_service_timeout": true,
+                "returncode": 2,
+                "seconds": 12.406999999999982,
+                "timed_out": false
+              },
+              {
+                "allowance_seconds": 575.2659999999998,
+                "command": [
+                  "git",
+                  "lfs",
+                  "pull",
+                  "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "--exclude="
+                ],
+                "joined": true,
+                "label": "lfs-pull-2",
+                "log": "lfs-pull-2.log",
+                "log_bytes": 385,
+                "log_sha256": "96db697df758d050331b28abc391ea3f1568ac99d5cf29443ec4fdfdf8c9fef3",
+                "pid": 3756,
+                "retryable_service_timeout": true,
+                "returncode": 2,
+                "seconds": 11.375,
+                "timed_out": false
+              },
+              {
+                "allowance_seconds": 559.8909999999998,
+                "command": [
+                  "git",
+                  "lfs",
+                  "pull",
+                  "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                  "--exclude="
+                ],
+                "joined": true,
+                "label": "lfs-pull-3",
+                "log": "lfs-pull-3.log",
+                "log_bytes": 385,
+                "log_sha256": "2ef54a799e1b9f4f3dd4521b8d69132993738265df080c0e01e716d273a5d6c7",
+                "pid": 3852,
+                "retryable_service_timeout": true,
+                "returncode": 2,
+                "seconds": 11.343999999999994,
+                "timed_out": false
+              }
+            ],
+            "error": "RuntimeError: Git LFS service timeout persisted through the bounded attempt limit",
+            "max_attempts": 3,
+            "objects": [
+              {
+                "bytes": 9987072,
+                "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+                "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+              }
+            ],
+            "retry_scope": "observed Git LFS batch service timeout only",
+            "schema": "cybersand-lfs-acquisition-v1",
+            "seconds": 41.45300000000003,
+            "source_commit": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+            "status": "failed"
+          }
+        ],
+        "errors": [
+          {
+            "path": "acquisition/lfs-pull-3.log",
+            "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261126T000125.8853983.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+          },
+          {
+            "path": "acquisition/lfs-pull-1.log",
+            "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261126T000057.1381887.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+          },
+          {
+            "path": "acquisition/lfs-pull-2.log",
+            "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261126T000110.5211491.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+          },
+          {
+            "path": "acquisition/lfs-setup.log",
+            "text": "Updated Git hooks.\nGit LFS initialized.\n"
+          }
+        ]
+      },
+      {
+        "artifact_id": 15073619935,
+        "name": "windows-coverage-45719650698-2",
+        "bytes": 455,
+        "sha256": "bea093c7fcd4e9c010ad71dc64cd24e3c0c2a9ced1fcb2e40a94987e5ebe286e",
+        "members": [
+          "windows-coverage-verification.log"
+        ],
+        "receipts": [],
+        "errors": [
+          {
+            "path": "windows-coverage-verification.log",
+            "text": "Traceback (most recent call last):\n  File \"/home/runner/work/cybersand/cybersand/tools/ci/verify_windows_godot_shards.py\", line 395, in <module>\n    main()\n  File \"/home/runner/work/cybersand/cybersand/tools/ci/verify_windows_godot_shards.py\", line 384, in main\n    result = verify(args.root, args.source_sha, args.run_id,\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/cybersand/cybersand/tools/ci/verify_windows_godot_shards.py\", line 244, in verify\n    require(len(manifests) == shard_count,\n  File \"/home/runner/work/cybersand/cybersand/tools/ci/verify_windows_godot_shards.py\", line 23, in require\n    raise ValueError(message)\nValueError: expected 24 original Windows shard reports, found 19\n"
+          }
+        ]
+      }
+    ],
+    "win7_custody_note": "B retained exact artifact 15073624078: two service timeouts followed by HTTP 503, correctly treated as non-admissible retry. C independently read job terminal but does not substitute it for the original receipt.",
+    "classification": "Five Windows shard failures and one Palette cohort failure occurred before Godot. No product-test result exists for those failed acquisition jobs. All actual test results and incomplete reducers retain their original conclusions.",
+    "reviewer_mutated_source_or_retried": false,
+    "decoded_logs": [
+      {
+        "job_id": 139591678803,
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready120-attempt2-139591678803.log",
+        "bytes": 132193,
+        "sha256": "28494f2b87dc8922f2ed886d66a2572bf8c3dbbdf9fd0340a859d94a0b36a837",
+        "encoding": "connector-decoded text; LF normalized"
+      },
+      {
+        "job_id": 139591678939,
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready120-attempt2-139591678939.log",
+        "bytes": 132395,
+        "sha256": "1bf8e2fcf1400e884ea43b73b0975110262568a9af22eac8b6c3a50dbd8e67a3",
+        "encoding": "connector-decoded text; LF normalized"
+      },
+      {
+        "job_id": 139591678950,
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready120-attempt2-139591678950.log",
+        "bytes": 133170,
+        "sha256": "68b3d162d2774b6016f2ffe71621bc76737dd74000f2a8083cda4030f281f717",
+        "encoding": "connector-decoded text; LF normalized"
+      },
+      {
+        "job_id": 139591680320,
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready120-attempt2-139591680320.log",
+        "bytes": 133138,
+        "sha256": "91c46f94d350d7d77f361da583d68ec5f28afb1c321bcfa9947b223e8eaab360",
+        "encoding": "connector-decoded text; LF normalized"
+      },
+      {
+        "job_id": 139591680432,
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready120-attempt2-139591680432.log",
+        "bytes": 132271,
+        "sha256": "f49b1f084c09cd3fbe42697700871a5a5b68211115e69690948f8227b1923e23",
+        "encoding": "connector-decoded text; LF normalized"
+      },
+      {
+        "job_id": 139590124790,
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready120-attempt2-139590124790.log",
+        "bytes": 136567,
+        "sha256": "0352042056765811e4ddce6258ec2caddff3a69b0dc94fd2b6a794e93f750837",
+        "encoding": "connector-decoded text; LF normalized"
+      },
+      {
+        "job_id": 139591675128,
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready120-attempt2-139591675128.log",
+        "bytes": 147423,
+        "sha256": "2263a22e03a1fca801b2e6460eeee9f1f27bcdbb5ac519d1a1863e253799e191",
+        "encoding": "connector-decoded text; LF normalized"
+      },
+      {
+        "job_id": 139596780410,
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready120-attempt2-139596780410.log",
+        "bytes": 44675,
+        "sha256": "89486c7e7b0ecd49912565ea15abd9f9d89ee1c00ff31c4297edcdfcdc28a462",
+        "encoding": "connector-decoded text; LF normalized"
+      },
+      {
+        "job_id": 139598038042,
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/ambient001-ready120-attempt2-139598038042.log",
+        "bytes": 80925,
+        "sha256": "0894c6781e743b7526ba073c79c0aa88b2eb780c60c3ebf5a6c132a3241145c9",
+        "encoding": "connector-decoded text; LF normalized"
+      }
+    ]
+  }
+}

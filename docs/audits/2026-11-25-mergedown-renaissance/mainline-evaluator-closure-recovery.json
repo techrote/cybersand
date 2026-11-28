@@ -1,0 +1,50 @@
+{
+  "schema": "cybersand-mainline-evaluator-recovery-v1",
+  "recovery_date": "2026-11-26",
+  "prior_remote_harness": "a3cddc4703ecea7abdfe2db55d1de5ef79874447",
+  "original_registered_local_harness": "2709e8cb6f83cd4d9bf7af5feb91ae0965c2c133",
+  "original_local_harness_recovered": false,
+  "original_local_harness_unavailability": [
+    "GitHub commits API 422: No commit found for SHA",
+    "git upload-pack: not our ref",
+    "All six retained Git bundles inspected; none contains evaluator2709",
+    "No previous mergedown workspace found in current scratch"
+  ],
+  "latest_delivery_run": {
+    "id": 45736060739,
+    "status": "completed",
+    "conclusion": "failure",
+    "job_id": 139629497132,
+    "artifact_id": 15078088926
+  },
+  "original_successful_substeps": [
+    "request admission",
+    "accepted product checkout",
+    "accepted ancestry and retained native/Rapier custody",
+    "pinned engine and dependency admission",
+    "1190 constituent file hashes verified"
+  ],
+  "original_failure": "AttributeError: module 'qualify_ambient' has no attribute 'windows'",
+  "source_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "source_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "new_source_kind": "New narrow recovery correction of persisted adapter; not recovered2709 and no asserted tree equivalence",
+  "corrections": [
+    "Load run_windows_godot_regressions directly from admitted product and preserve source-owned import verification",
+    "Reconcile actual delivered Workbench proof options with final receipt verification"
+  ],
+  "unchanged": [
+    "accepted product source",
+    "all original23 refusal/custody controls including orig_filename guards",
+    "source/runtime identities",
+    "20420-second complete budget",
+    "actual Windows package gates",
+    "experimental default OFF",
+    "owner physical acceptance HOLD"
+  ],
+  "added_controls": [
+    "real assembly reaches source-owned runtime verifier and propagates refusal",
+    "finalizer consumes actual PowerShell proof options and refuses altered options or missing graphical evidence"
+  ],
+  "actual_windows_execution": "not yet executed for recovery source",
+  "original_failure_log": "raw/mainline-evaluator-closure-recovery/windows-original-helper-api-log.json.gz"
+}

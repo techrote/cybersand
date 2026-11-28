@@ -1,0 +1,32 @@
+{
+  "allowance_seconds": 300,
+  "attempt": 1,
+  "available": [
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+  ],
+  "installed": [
+    {
+      "bytes": 5253776,
+      "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+    },
+    {
+      "bytes": 117275416,
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+    }
+  ],
+  "manifest_sha256": "9ad7799847e053ce728ceff3d559a21e6b4012971cb41018f4e5d3b29dad1ba0",
+  "run_id": "1",
+  "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+  "seconds": 0.8078263540010084,
+  "selected": [
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+  ],
+  "source_commit": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+  "status": "passed"
+}

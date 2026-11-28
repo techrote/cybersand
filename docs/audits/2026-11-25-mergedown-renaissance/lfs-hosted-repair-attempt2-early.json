@@ -1,0 +1,207 @@
+{
+  "schema": "mergedown-lfs-hosted-attempt2-early-failures-v1",
+  "recorded_utc": "2026-11-25T23:58:20.670521+00:00",
+  "candidate_source": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+  "candidate_tree": "c905324fd96214e88a1a7d3327b4cd7cdff693db",
+  "gde_checkout": {
+    "sha": "247d290a5bcbb6cc72c93b66e8b65530860e879a",
+    "tree": "c905324fd96214e88a1a7d3327b4cd7cdff693db",
+    "parents": [
+      "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6"
+    ],
+    "verification": "GitHub Git commit API independently read in this lane"
+  },
+  "runs": [
+    {
+      "run_id": 45719650698,
+      "attempt": 2,
+      "status_at_readback": "in_progress",
+      "failures": [
+        {
+          "job_id": 139591678803,
+          "shard": 7,
+          "cause": "two batch service timeouts then HTTP503; last non-admissible failure preserved"
+        },
+        {
+          "job_id": 139591678950,
+          "shard": 4,
+          "cause": "three batch service timeouts exhausted bounded limit"
+        }
+      ]
+    },
+    {
+      "run_id": 45719650316,
+      "attempt": 2,
+      "status_at_readback": "completed",
+      "conclusion": "failure",
+      "failed_jobs": [
+        139590124790,
+        139591675128
+      ],
+      "cause": "Linux visual0 LFS batch service timeout; missing cohort reducer correctly failed"
+    }
+  ],
+  "disposition": "Original failures retained. No application assertion or helper correctness defect found; all owned processes joined. This packet is early triage, not complete attempt-2 qualification. Both GDE producer builds passed. No retry/source change performed by this lane.",
+  "original_artifacts": [
+    {
+      "id": 15073557532,
+      "node_id": "MDg6QXJ0aWZhY3QxNTA3MzU1NzUzMg==",
+      "name": "palette-shader-cohort-linux-visual-0-45719650316-2",
+      "size_in_bytes": 5288,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15073557532",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15073557532/zip",
+      "expired": false,
+      "digest": "sha256:727b614e41de1c045c8dc32f8dfe09020264272ec11b4c27811dda0ae229e383",
+      "created_at": "2026-11-25T23:51:09Z",
+      "updated_at": "2026-11-25T23:51:09Z",
+      "expires_at": "2026-12-25T23:51:08Z",
+      "workflow_run": {
+        "id": 45719650316,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feature/ambient-001-20261124",
+        "head_sha": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6"
+      },
+      "archive_sha256": "727b614e41de1c045c8dc32f8dfe09020264272ec11b4c27811dda0ae229e383",
+      "original_text_entries": [
+        {
+          "path": "dependencies/lfs/lfs-pull-1.log",
+          "sha256": "20e05a34fcbfbfcccc0bd5df2220b5bfe7fc2afb9733211bad8b83d55791d43c",
+          "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to '/home/runner/work/cybersand/cybersand/.git/lfs/logs/20261125T235039.89394203.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+        },
+        {
+          "path": "dependencies/lfs/lfs-pull-2.log",
+          "sha256": "318230cdb1fe40fc1dfcd497ddbae912e2fddd0951e6b1bf318b43e4c02ce4fc",
+          "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to '/home/runner/work/cybersand/cybersand/.git/lfs/logs/20261125T235053.063564823.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+        },
+        {
+          "path": "dependencies/lfs/lfs-pull-3.log",
+          "sha256": "ee75f719f5f1750af60093072aeed7ec47e2030bea9639e84316bec22c4c75a2",
+          "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to '/home/runner/work/cybersand/cybersand/.git/lfs/logs/20261125T235108.213184141.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+        },
+        {
+          "path": "dependencies/lfs/lfs-setup.log",
+          "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+          "text": "Updated Git hooks.\nGit LFS initialized.\n"
+        },
+        {
+          "path": "dependencies/lfs/receipt.json",
+          "sha256": "35511b27cb19ef5e8767ca76c08cfbb49b10aa5fcdc940abcd4c138d903328a2",
+          "text": "{\n  \"allowance_seconds\": 1200.0,\n  \"backoff_seconds\": [\n    2.0,\n    4.0\n  ],\n  \"cleanup_reserve_seconds\": 10.0,\n  \"commands\": [\n    {\n      \"allowance_seconds\": 1189.995495636,\n      \"command\": [\n        \"git\",\n        \"lfs\",\n        \"install\",\n        \"--local\"\n      ],\n      \"joined\": true,\n      \"label\": \"lfs-setup\",\n      \"log\": \"lfs-setup.log\",\n      \"log_bytes\": 40,\n      \"log_sha256\": \"4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875\",\n      \"pid\": 2276,\n      \"returncode\": 0,\n      \"seconds\": 0.03164402399998778,\n      \"timed_out\": false\n    },\n    {\n      \"allowance_seconds\": 1189.963485794,\n      \"command\": [\n        \"git\",\n        \"lfs\",\n        \"pull\",\n        \"--include=godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n        \"--exclude=\"\n      ],\n      \"joined\": true,\n      \"label\": \"lfs-pull-1\",\n      \"log\": \"lfs-pull-1.log\",\n      \"log_bytes\": 399,\n      \"log_sha256\": \"20e05a34fcbfbfcccc0bd5df2220b5bfe7fc2afb9733211bad8b83d55791d43c\",\n      \"pid\": 2306,\n      \"retryable_service_timeout\": true,\n      \"returncode\": 2,\n      \"seconds\": 12.843416485999995,\n      \"timed_out\": false\n    },\n    {\n      \"allowance_seconds\": 1175.118541088,\n      \"command\": [\n        \"git\",\n        \"lfs\",\n        \"pull\",\n        \"--include=godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n        \"--exclude=\"\n      ],\n      \"joined\": true,\n      \"label\": \"lfs-pull-2\",\n      \"log\": \"lfs-pull-2.log\",\n      \"log_bytes\": 400,\n      \"log_sha256\": \"318230cdb1fe40fc1dfcd497ddbae912e2fddd0951e6b1bf318b43e4c02ce4fc\",\n      \"pid\": 2337,\n      \"retryable_service_timeout\": true,\n      \"returncode\": 2,\n      \"seconds\": 11.142743230999997,\n      \"timed_out\": false\n    },\n    {\n      \"allowance_seconds\": 1159.974282484,\n      \"command\": [\n        \"git\",\n        \"lfs\",\n        \"pull\",\n        \"--include=godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n        \"--exclude=\"\n      ],\n      \"joined\": true,\n      \"label\": \"lfs-pull-3\",\n      \"log\": \"lfs-pull-3.log\",\n      \"log_bytes\": 400,\n      \"log_sha256\": \"ee75f719f5f1750af60093072aeed7ec47e2030bea9639e84316bec22c4c75a2\",\n      \"pid\": 2370,\n      \"retryable_service_timeout\": true,\n      \"returncode\": 2,\n      \"seconds\": 11.142189503000012,\n      \"timed_out\": false\n    }\n  ],\n  \"error\": \"RuntimeError: Git LFS service timeout persisted through the bounded attempt limit\",\n  \"max_attempts\": 3,\n  \"objects\": [\n    {\n      \"bytes\": 5253776,\n      \"path\": \"godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so\",\n      \"sha256\": \"a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7\"\n    },\n    {\n      \"bytes\": 117275416,\n      \"path\": \"godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so\",\n      \"sha256\": \"566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a\"\n    }\n  ],\n  \"retry_scope\": \"observed Git LFS batch service timeout only\",\n  \"schema\": \"cybersand-lfs-acquisition-v1\",\n  \"seconds\": 41.16867653,\n  \"source_commit\": \"120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6\",\n  \"status\": \"failed\"\n}\n"
+        },
+        {
+          "path": "dependencies/preparation.json",
+          "sha256": "335f78171d6360b78bfa52d65e8f02d7c8ed75d6e40133970785ee79ea56460a",
+          "text": "{\n  \"commands\": [\n    {\n      \"allowance_seconds\": 299.998618561,\n      \"command\": [\n        \"dpkg-query\",\n        \"-W\",\n        \"xvfb\",\n        \"xauth\",\n        \"libgl1-mesa-dri\",\n        \"libglx-mesa0\"\n      ],\n      \"label\": \"actual-graphical-packages\",\n      \"seconds\": 0.06431458900000564,\n      \"status\": \"passed\"\n    },\n    {\n      \"allowance_seconds\": 1200.0,\n      \"label\": \"lfs-materialization\",\n      \"receipt\": \"lfs/receipt.json\",\n      \"seconds\": 41.16915494099999,\n      \"status\": \"failed\"\n    }\n  ],\n  \"error\": \"RuntimeError: Git LFS service timeout persisted through the bounded attempt limit\",\n  \"execution_policy\": {\n    \"advisories\": {\n      \"drift_ratio\": 1.2,\n      \"drift_window\": 5,\n      \"minimum_baseline_samples\": 3,\n      \"prominent_ratio\": 2.0,\n      \"rolling_window\": 10,\n      \"warning_ratio\": 1.5\n    },\n    \"path\": \"godot/tests/support/ci_execution_policy.json\",\n    \"policy_id\": \"github-hosted-complete-execution-v1\",\n    \"scale\": 1.0,\n    \"schema_version\": 1,\n    \"sha256\": \"9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc\",\n    \"watchdogs\": {\n      \"aggregate_headroom_seconds\": 600.0,\n      \"complex_fixture_seconds\": 3600.0,\n      \"dependency_prepare_seconds\": 1200.0,\n      \"diagnostic_capture_seconds\": 30.0,\n      \"godot_import_seconds\": 1200.0,\n      \"godot_job_minutes\": 360.0,\n      \"godot_metadata_seconds\": 900.0,\n      \"godot_setup_seconds\": 4200.0,\n      \"graphical_case_seconds\": 1200.0,\n      \"hosted_job_minutes\": 180.0,\n      \"main_ack_seconds\": 600.0,\n      \"native_case_seconds\": 3600.0,\n      \"native_compile_seconds\": 3600.0,\n      \"native_suite_seconds\": 7200.0,\n      \"operation_seconds\": 300.0,\n      \"ordinary_case_seconds\": 1200.0,\n      \"terminate_grace_seconds\": 10.0\n    }\n  },\n  \"observed_source\": \"120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6\",\n  \"schema\": \"palette-dependency-preparation-v1\",\n  \"source_commit\": \"120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6\",\n  \"status\": \"failed\"\n}\n"
+        },
+        {
+          "path": "dependencies.log",
+          "sha256": "6d984b861b5a38cbdacd796eb70e54da13fb5f5c9702c31eafe0720948853c3f",
+          "text": "libgl1-mesa-dri:amd64\t25.2.8-0ubuntu0.24.04.4\nlibglx-mesa0:amd64\t25.2.8-0ubuntu0.24.04.4\nxauth\t1:1.1.2-1build1\nxvfb\t2:21.1.12-1ubuntu1.9\n{\"commands\": [{\"allowance_seconds\": 299.998618561, \"command\": [\"dpkg-query\", \"-W\", \"xvfb\", \"xauth\", \"libgl1-mesa-dri\", \"libglx-mesa0\"], \"label\": \"actual-graphical-packages\", \"seconds\": 0.06431458900000564, \"status\": \"passed\"}, {\"allowance_seconds\": 1200.0, \"label\": \"lfs-materialization\", \"receipt\": \"lfs/receipt.json\", \"seconds\": 41.16915494099999, \"status\": \"failed\"}], \"error\": \"RuntimeError: Git LFS service timeout persisted through the bounded attempt limit\", \"execution_policy\": {\"advisories\": {\"drift_ratio\": 1.2, \"drift_window\": 5, \"minimum_baseline_samples\": 3, \"prominent_ratio\": 2.0, \"rolling_window\": 10, \"warning_ratio\": 1.5}, \"path\": \"godot/tests/support/ci_execution_policy.json\", \"policy_id\": \"github-hosted-complete-execution-v1\", \"scale\": 1.0, \"schema_version\": 1, \"sha256\": \"9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc\", \"watchdogs\": {\"aggregate_headroom_seconds\": 600.0, \"complex_fixture_seconds\": 3600.0, \"dependency_prepare_seconds\": 1200.0, \"diagnostic_capture_seconds\": 30.0, \"godot_import_seconds\": 1200.0, \"godot_job_minutes\": 360.0, \"godot_metadata_seconds\": 900.0, \"godot_setup_seconds\": 4200.0, \"graphical_case_seconds\": 1200.0, \"hosted_job_minutes\": 180.0, \"main_ack_seconds\": 600.0, \"native_case_seconds\": 3600.0, \"native_compile_seconds\": 3600.0, \"native_suite_seconds\": 7200.0, \"operation_seconds\": 300.0, \"ordinary_case_seconds\": 1200.0, \"terminate_grace_seconds\": 10.0}}, \"observed_source\": \"120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6\", \"schema\": \"palette-dependency-preparation-v1\", \"source_commit\": \"120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6\", \"status\": \"failed\"}\n"
+        },
+        {
+          "path": "offline-readback.log",
+          "sha256": "368e2eec6b2b6221a6d7631a9a7e3bc2f848dd57126151021785988727a18c0a",
+          "text": "Traceback (most recent call last):\n  File \"/home/runner/work/cybersand/cybersand/tools/play/run_palette_shader_qualification.py\", line 61, in metadata_budget\n    yield\n  File \"/home/runner/work/cybersand/cybersand/tools/play/run_palette_shader_qualification.py\", line 311, in verify_directory\n    return _verify_directory(directory, source, sealed=sealed)\n           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/cybersand/cybersand/tools/play/run_palette_shader_qualification.py\", line 317, in _verify_directory\n    inventory = json.loads(c.file(directory, 'manifest.json').read_text())\n                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/cybersand/cybersand/tools/play/palette_qualification_contract.py\", line 77, in file\n    require(path.is_file() and path.resolve().is_relative_to(directory.resolve()), 'Missing shader artifact: ' + name)\n  File \"/home/runner/work/cybersand/cybersand/tools/play/palette_qualification_contract.py\", line 56, in require\n    raise ValueError(message)\nValueError: Missing shader artifact: manifest.json\n\nThe above exception was the direct cause of the following exception:\n\nTraceback (most recent call last):\n  File \"/home/runner/work/cybersand/cybersand/tools/play/run_palette_shader_qualification.py\", line 678, in <module>\n    raise SystemExit(main())\n                     ^^^^^^\n  File \"/home/runner/work/cybersand/cybersand/tools/play/run_palette_shader_qualification.py\", line 671, in main\n    value = verify_directory(args.output.absolute(), args.expected_source_sha)\n            ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/runner/work/cybersand/cybersand/tools/play/run_palette_shader_qualification.py\", line 310, in verify_directory\n    with metadata_budget('complete retained cohort readback', c.policy.watchdog_seconds('godot_metadata_seconds')):\n         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/opt/hostedtoolcache/Python/3.12.16/x64/lib/python3.12/contextlib.py\", line 158, in __exit__\n    self.gen.throw(value)\n  File \"/home/runner/work/cybersand/cybersand/tools/play/run_palette_shader_qualification.py\", line 64, in metadata_budget\n    raise RuntimeError(label + ': ' + str(error)) from error\nRuntimeError: complete retained cohort readback: Missing shader artifact: manifest.json\n"
+        }
+      ]
+    },
+    {
+      "id": 15073624078,
+      "node_id": "MDg6QXJ0aWZhY3QxNTA3MzYyNDA3OA==",
+      "name": "windows-godot-headless-7-45719650698-2",
+      "size_in_bytes": 2398,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15073624078",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15073624078/zip",
+      "expired": false,
+      "digest": "sha256:6c9c586c30238873eaf4a650251d09e1e92a1ac485be145d195f54e98c99d162",
+      "created_at": "2026-11-25T23:54:58Z",
+      "updated_at": "2026-11-25T23:54:58Z",
+      "expires_at": "2026-12-25T23:54:57Z",
+      "workflow_run": {
+        "id": 45719650698,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feature/ambient-001-20261124",
+        "head_sha": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6"
+      },
+      "archive_sha256": "6c9c586c30238873eaf4a650251d09e1e92a1ac485be145d195f54e98c99d162",
+      "original_text_entries": [
+        {
+          "path": "acquisition/lfs-pull-3.log",
+          "sha256": "43595f73d20668c1d173aa275daf2f414efff3b870ff8a45dabf00b242a5b837",
+          "text": "batch response: Fatal error: Server error https://github.com/techrote/cybersand.git/info/lfs/objects/batch from HTTP 503\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T235457.1244915.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+        },
+        {
+          "path": "acquisition/lfs-pull-2.log",
+          "sha256": "e67444a69c6b6b3fa8708c18644fcf597c65048ec3e5207322498c461aa9fd44",
+          "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T235445.3164189.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+        },
+        {
+          "path": "acquisition/lfs-pull-1.log",
+          "sha256": "421424be6b165be66de3245bb7b2c4ac757aa48ada179937d50edd464eb7d29c",
+          "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T235431.0416069.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+        },
+        {
+          "path": "acquisition/lfs-setup.log",
+          "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+          "text": "Updated Git hooks.\nGit LFS initialized.\n"
+        },
+        {
+          "path": "acquisition/receipt.json",
+          "sha256": "c83d9b4b8207706e78ca770365a83df3cebb28a9728d795787aaa40f017a6eb6",
+          "text": "{\r\n  \"allowance_seconds\": 600.0,\r\n  \"backoff_seconds\": [\r\n    2.0,\r\n    4.0\r\n  ],\r\n  \"cleanup_reserve_seconds\": 10.0,\r\n  \"commands\": [\r\n    {\r\n      \"allowance_seconds\": 589.9529999999999,\r\n      \"command\": [\r\n        \"git\",\r\n        \"lfs\",\r\n        \"install\",\r\n        \"--local\"\r\n      ],\r\n      \"joined\": true,\r\n      \"label\": \"lfs-setup\",\r\n      \"log\": \"lfs-setup.log\",\r\n      \"log_bytes\": 40,\r\n      \"log_sha256\": \"4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875\",\r\n      \"pid\": 7628,\r\n      \"returncode\": 0,\r\n      \"seconds\": 0.2339999999999236,\r\n      \"timed_out\": false\r\n    },\r\n    {\r\n      \"allowance_seconds\": 589.7189999999999,\r\n      \"command\": [\r\n        \"git\",\r\n        \"lfs\",\r\n        \"pull\",\r\n        \"--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\r\n        \"--exclude=\"\r\n      ],\r\n      \"joined\": true,\r\n      \"label\": \"lfs-pull-1\",\r\n      \"log\": \"lfs-pull-1.log\",\r\n      \"log_bytes\": 385,\r\n      \"log_sha256\": \"421424be6b165be66de3245bb7b2c4ac757aa48ada179937d50edd464eb7d29c\",\r\n      \"pid\": 7624,\r\n      \"retryable_service_timeout\": true,\r\n      \"returncode\": 2,\r\n      \"seconds\": 17.047000000000025,\r\n      \"timed_out\": false\r\n    },\r\n    {\r\n      \"allowance_seconds\": 570.656,\r\n      \"command\": [\r\n        \"git\",\r\n        \"lfs\",\r\n        \"pull\",\r\n        \"--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\r\n        \"--exclude=\"\r\n      ],\r\n      \"joined\": true,\r\n      \"label\": \"lfs-pull-2\",\r\n      \"log\": \"lfs-pull-2.log\",\r\n      \"log_bytes\": 385,\r\n      \"log_sha256\": \"e67444a69c6b6b3fa8708c18644fcf597c65048ec3e5207322498c461aa9fd44\",\r\n      \"pid\": 2376,\r\n      \"retryable_service_timeout\": true,\r\n      \"returncode\": 2,\r\n      \"seconds\": 12.2650000000001,\r\n      \"timed_out\": false\r\n    },\r\n    {\r\n      \"allowance_seconds\": 554.3909999999998,\r\n      \"command\": [\r\n        \"git\",\r\n        \"lfs\",\r\n        \"pull\",\r\n        \"--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\r\n        \"--exclude=\"\r\n      ],\r\n      \"joined\": true,\r\n      \"label\": \"lfs-pull-3\",\r\n      \"log\": \"lfs-pull-3.log\",\r\n      \"log_bytes\": 337,\r\n      \"log_sha256\": \"43595f73d20668c1d173aa275daf2f414efff3b870ff8a45dabf00b242a5b837\",\r\n      \"pid\": 1088,\r\n      \"retryable_service_timeout\": false,\r\n      \"returncode\": 2,\r\n      \"seconds\": 7.796999999999912,\r\n      \"timed_out\": false\r\n    }\r\n  ],\r\n  \"error\": \"RuntimeError: Git LFS acquisition failed without an admissible retry; see retained original log\",\r\n  \"max_attempts\": 3,\r\n  \"objects\": [\r\n    {\r\n      \"bytes\": 9987072,\r\n      \"path\": \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\r\n      \"sha256\": \"b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7\"\r\n    }\r\n  ],\r\n  \"retry_scope\": \"observed Git LFS batch service timeout only\",\r\n  \"schema\": \"cybersand-lfs-acquisition-v1\",\r\n  \"seconds\": 43.40599999999995,\r\n  \"source_commit\": \"247d290a5bcbb6cc72c93b66e8b65530860e879a\",\r\n  \"status\": \"failed\"\r\n}\r\n"
+        }
+      ]
+    },
+    {
+      "id": 15074111917,
+      "node_id": "MDg6QXJ0aWZhY3QxNTA3NDExMTkxNw==",
+      "name": "windows-godot-headless-4-45719650698-2",
+      "size_in_bytes": 2423,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15074111917",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15074111917/zip",
+      "expired": false,
+      "digest": "sha256:0ef7e43e11ee30abb407f7b46d54898b9239a6e7e02245a38a9f9eae787c5fa7",
+      "created_at": "2026-11-25T23:55:14Z",
+      "updated_at": "2026-11-25T23:55:14Z",
+      "expires_at": "2026-12-25T23:55:13Z",
+      "workflow_run": {
+        "id": 45719650698,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feature/ambient-001-20261124",
+        "head_sha": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6"
+      },
+      "archive_sha256": "0ef7e43e11ee30abb407f7b46d54898b9239a6e7e02245a38a9f9eae787c5fa7",
+      "original_text_entries": [
+        {
+          "path": "acquisition/lfs-pull-1.log",
+          "sha256": "21edb2c6600781f02b7940a84a118ebf0552738bbffcd2d868da516d1dabe789",
+          "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T235438.5666561.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+        },
+        {
+          "path": "acquisition/lfs-pull-2.log",
+          "sha256": "9e26efc24cb052ba7b638b978030beb29055d5fa2e38db0ceb8fa0b9264e1eb7",
+          "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T235452.206449.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+        },
+        {
+          "path": "acquisition/lfs-pull-3.log",
+          "sha256": "a34d1194110ca447f7a6dc74cdebdf90cd22af3fd2de1ef1905144f656a545f8",
+          "text": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to 'D:\\a\\cybersand\\cybersand\\.git\\lfs\\logs\\20261125T235513.4151858.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n"
+        },
+        {
+          "path": "acquisition/lfs-setup.log",
+          "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+          "text": "Updated Git hooks.\nGit LFS initialized.\n"
+        },
+        {
+          "path": "acquisition/receipt.json",
+          "sha256": "9bc85305a5ef9b932be308191108a8f58cfc46a899a26ce977ca5bd75910ddd2",
+          "text": "{\r\n  \"allowance_seconds\": 600.0,\r\n  \"backoff_seconds\": [\r\n    2.0,\r\n    4.0\r\n  ],\r\n  \"cleanup_reserve_seconds\": 10.0,\r\n  \"commands\": [\r\n    {\r\n      \"allowance_seconds\": 589.953,\r\n      \"command\": [\r\n        \"git\",\r\n        \"lfs\",\r\n        \"install\",\r\n        \"--local\"\r\n      ],\r\n      \"joined\": true,\r\n      \"label\": \"lfs-setup\",\r\n      \"log\": \"lfs-setup.log\",\r\n      \"log_bytes\": 40,\r\n      \"log_sha256\": \"4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875\",\r\n      \"pid\": 1284,\r\n      \"returncode\": 0,\r\n      \"seconds\": 0.3429999999999893,\r\n      \"timed_out\": false\r\n    },\r\n    {\r\n      \"allowance_seconds\": 589.61,\r\n      \"command\": [\r\n        \"git\",\r\n        \"lfs\",\r\n        \"pull\",\r\n        \"--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\r\n        \"--exclude=\"\r\n      ],\r\n      \"joined\": true,\r\n      \"label\": \"lfs-pull-1\",\r\n      \"log\": \"lfs-pull-1.log\",\r\n      \"log_bytes\": 385,\r\n      \"log_sha256\": \"21edb2c6600781f02b7940a84a118ebf0552738bbffcd2d868da516d1dabe789\",\r\n      \"pid\": 7208,\r\n      \"retryable_service_timeout\": true,\r\n      \"returncode\": 2,\r\n      \"seconds\": 11.65700000000001,\r\n      \"timed_out\": false\r\n    },\r\n    {\r\n      \"allowance_seconds\": 575.953,\r\n      \"command\": [\r\n        \"git\",\r\n        \"lfs\",\r\n        \"pull\",\r\n        \"--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\r\n        \"--exclude=\"\r\n      ],\r\n      \"joined\": true,\r\n      \"label\": \"lfs-pull-2\",\r\n      \"log\": \"lfs-pull-2.log\",\r\n      \"log_bytes\": 384,\r\n      \"log_sha256\": \"9e26efc24cb052ba7b638b978030beb29055d5fa2e38db0ceb8fa0b9264e1eb7\",\r\n      \"pid\": 5752,\r\n      \"retryable_service_timeout\": true,\r\n      \"returncode\": 2,\r\n      \"seconds\": 11.625,\r\n      \"timed_out\": false\r\n    },\r\n    {\r\n      \"allowance_seconds\": 560.313,\r\n      \"command\": [\r\n        \"git\",\r\n        \"lfs\",\r\n        \"pull\",\r\n        \"--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\r\n        \"--exclude=\"\r\n      ],\r\n      \"joined\": true,\r\n      \"label\": \"lfs-pull-3\",\r\n      \"log\": \"lfs-pull-3.log\",\r\n      \"log_bytes\": 385,\r\n      \"log_sha256\": \"a34d1194110ca447f7a6dc74cdebdf90cd22af3fd2de1ef1905144f656a545f8\",\r\n      \"pid\": 7428,\r\n      \"retryable_service_timeout\": true,\r\n      \"returncode\": 2,\r\n      \"seconds\": 17.187999999999988,\r\n      \"timed_out\": false\r\n    }\r\n  ],\r\n  \"error\": \"RuntimeError: Git LFS service timeout persisted through the bounded attempt limit\",\r\n  \"max_attempts\": 3,\r\n  \"objects\": [\r\n    {\r\n      \"bytes\": 9987072,\r\n      \"path\": \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\r\n      \"sha256\": \"b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7\"\r\n    }\r\n  ],\r\n  \"retry_scope\": \"observed Git LFS batch service timeout only\",\r\n  \"schema\": \"cybersand-lfs-acquisition-v1\",\r\n  \"seconds\": 46.87499999999997,\r\n  \"source_commit\": \"247d290a5bcbb6cc72c93b66e8b65530860e879a\",\r\n  \"status\": \"failed\"\r\n}\r\n"
+        }
+      ]
+    }
+  ]
+}

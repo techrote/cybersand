@@ -1,0 +1,945 @@
+{
+  "changed_files": [
+    "godot/tests/test_art_session_log.gd",
+    "godot/tests/test_workbench_combined_authoring.gd",
+    "tools/ci/run_art_local_close.py",
+    "tools/ci/run_godot_regressions.py",
+    "tools/ci/run_windows_godot_regressions.py",
+    "tools/ci/test_godot_regression_sharding.py",
+    "tools/ci/test_windows_godot_regressions.py"
+  ],
+  "implementer": "Specialist C",
+  "independent_approval": {
+    "reviewed_commits": [
+      "23fd85d9d9d8af14b81822ca942b3274079e8595",
+      "83fbf6de58db8a3a09f15029625a0502b8be7017"
+    ],
+    "reviewer": "Specialist A / product_integration",
+    "scope": "Fixture serial, existing-profile delta, empty session reopen, original loopback fixture; strict diagnostics and native assertions preserved",
+    "status": "APPROVED"
+  },
+  "initial_repair": "23fd85d9d9d8af14b81822ca942b3274079e8595",
+  "notes": [
+    "First local staged combined test omitted repository-relative examples and failed discovery; complete examples restored before attributing the three native assertions to the stale fixture",
+    "Original failing source, native library, all strict diagnostics and timeouts were preserved",
+    "No test removed, no generic stderr exception added, no production serial guard weakened",
+    "Disk-full staging attempt executed no game test and remains INCOMPLETE rather than a source failure"
+  ],
+  "original_ready_source": "1c2d084cba2e44e455f6ffe7d269007519829102",
+  "python_checks": {
+    "sharding_passed": 93,
+    "sharding_skipped": 1,
+    "skip_reason": "actual Windows process/thread observation unavailable on Linux",
+    "windows_harness_passed": 22
+  },
+  "remaining": [
+    "A production asynchronous invalid-URL admission must eliminate genuine engine diagnostics while preserving explicit failed request receipts",
+    "Actual reconciled Art/Architecture resulting source needs independent review and applicable qualification",
+    "Physical Windows/NVIDIA and genuine-model creative owner acceptance remain outstanding"
+  ],
+  "repaired_source": "83fbf6de58db8a3a09f15029625a0502b8be7017",
+  "repaired_tree": "2f9fe125363d09c436c29e52de7bf2c46d360160",
+  "schema": "cybersand-mergedown-art-regression-recovery-v1",
+  "scope": "RUNNER_AND_TESTS_ONLY_NO_PRODUCTION_OR_NATIVE_CHANGE",
+  "source_bound_execution": {
+    "first_repair": {
+      "identity": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "23fd85d9d9d8af14b81822ca942b3274079e8595",
+        "source_dirty": false,
+        "source_tree": "5e75c73a7874dea68c8355a965b399696d39ebdb"
+      },
+      "passed": false,
+      "scope": "Exact-source local regression proof of Art fixture fixes; independent review pending",
+      "source_unchanged_after_run": true,
+      "tests": [
+        {
+          "failed": false,
+          "label": "import",
+          "record": {
+            "capture_error": null,
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-fixture-repair-23fd85d9-r3/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "diagnostic_error": false,
+            "diagnostic_seconds": 0.0,
+            "diagnostics": null,
+            "execution_policy": {
+              "advisories": {
+                "drift_ratio": 1.2,
+                "drift_window": 5,
+                "minimum_baseline_samples": 3,
+                "prominent_ratio": 2.0,
+                "rolling_window": 10,
+                "warning_ratio": 1.5
+              },
+              "path": "godot/tests/support/ci_execution_policy.json",
+              "policy_id": "github-hosted-complete-execution-v1",
+              "scale": 1.0,
+              "schema_version": 1,
+              "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+              "watchdogs": {
+                "aggregate_headroom_seconds": 600.0,
+                "complex_fixture_seconds": 3600.0,
+                "dependency_prepare_seconds": 1200.0,
+                "diagnostic_capture_seconds": 30.0,
+                "godot_import_seconds": 1200.0,
+                "godot_job_minutes": 360.0,
+                "godot_metadata_seconds": 900.0,
+                "godot_setup_seconds": 4200.0,
+                "graphical_case_seconds": 1200.0,
+                "hosted_job_minutes": 180.0,
+                "main_ack_seconds": 600.0,
+                "native_case_seconds": 3600.0,
+                "native_compile_seconds": 3600.0,
+                "native_suite_seconds": 7200.0,
+                "operation_seconds": 300.0,
+                "ordinary_case_seconds": 1200.0,
+                "terminate_grace_seconds": 10.0
+              }
+            },
+            "last_heartbeat": null,
+            "last_progress": null,
+            "launch_error": null,
+            "log": "import.log",
+            "log_sha256": "db0f2d206bb7f5cdb6cbb0ccc4603452938d904f69253237d2226a8cb08b8457",
+            "name": "import",
+            "natural_completion": true,
+            "pid": 20,
+            "requires_display": false,
+            "resources": {
+              "available": true,
+              "cpu_seconds": 6.58,
+              "peak_rss_bytes": 793772032,
+              "scope": "direct_process_only"
+            },
+            "returncode": 0,
+            "role": "targeted-case",
+            "seconds": 7.166,
+            "skip_messages": [],
+            "status": "passed",
+            "timeout_diagnostic_error": null,
+            "timeout_diagnostics": null,
+            "timeout_kind": null,
+            "timeout_seconds": 1200
+          }
+        },
+        {
+          "failed": false,
+          "label": "local-close-with-runner-fixture",
+          "record": {
+            "capture_error": null,
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-fixture-repair-23fd85d9-r3/godot",
+              "--script",
+              "res://tests/test_art_local_close.gd"
+            ],
+            "diagnostic_error": false,
+            "diagnostic_seconds": 0.0,
+            "diagnostics": null,
+            "execution_policy": {
+              "advisories": {
+                "drift_ratio": 1.2,
+                "drift_window": 5,
+                "minimum_baseline_samples": 3,
+                "prominent_ratio": 2.0,
+                "rolling_window": 10,
+                "warning_ratio": 1.5
+              },
+              "path": "godot/tests/support/ci_execution_policy.json",
+              "policy_id": "github-hosted-complete-execution-v1",
+              "scale": 1.0,
+              "schema_version": 1,
+              "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+              "watchdogs": {
+                "aggregate_headroom_seconds": 600.0,
+                "complex_fixture_seconds": 3600.0,
+                "dependency_prepare_seconds": 1200.0,
+                "diagnostic_capture_seconds": 30.0,
+                "godot_import_seconds": 1200.0,
+                "godot_job_minutes": 360.0,
+                "godot_metadata_seconds": 900.0,
+                "godot_setup_seconds": 4200.0,
+                "graphical_case_seconds": 1200.0,
+                "hosted_job_minutes": 180.0,
+                "main_ack_seconds": 600.0,
+                "native_case_seconds": 3600.0,
+                "native_compile_seconds": 3600.0,
+                "native_suite_seconds": 7200.0,
+                "operation_seconds": 300.0,
+                "ordinary_case_seconds": 1200.0,
+                "terminate_grace_seconds": 10.0
+              }
+            },
+            "last_heartbeat": null,
+            "last_progress": null,
+            "launch_error": null,
+            "log": "test_art_local_close.log",
+            "log_sha256": "0cce4b929722dc353e31597c2bc6c9a08ad7cdd337cf2285f1675e0028b39010",
+            "name": "test_art_local_close",
+            "natural_completion": true,
+            "pid": 789,
+            "requires_display": false,
+            "resources": {
+              "available": true,
+              "cpu_seconds": 4.06,
+              "peak_rss_bytes": 528510976,
+              "scope": "direct_process_only"
+            },
+            "returncode": 0,
+            "role": "targeted-case",
+            "seconds": 6.313,
+            "skip_messages": [],
+            "status": "passed",
+            "timeout_diagnostic_error": null,
+            "timeout_diagnostics": null,
+            "timeout_kind": null,
+            "timeout_seconds": 1200.0
+          }
+        },
+        {
+          "failed": false,
+          "label": "session-existing-archive",
+          "record": {
+            "capture_error": null,
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-fixture-repair-23fd85d9-r3/godot",
+              "--script",
+              "res://tests/test_art_session_log.gd"
+            ],
+            "diagnostic_error": false,
+            "diagnostic_seconds": 0.0,
+            "diagnostics": null,
+            "execution_policy": {
+              "advisories": {
+                "drift_ratio": 1.2,
+                "drift_window": 5,
+                "minimum_baseline_samples": 3,
+                "prominent_ratio": 2.0,
+                "rolling_window": 10,
+                "warning_ratio": 1.5
+              },
+              "path": "godot/tests/support/ci_execution_policy.json",
+              "policy_id": "github-hosted-complete-execution-v1",
+              "scale": 1.0,
+              "schema_version": 1,
+              "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+              "watchdogs": {
+                "aggregate_headroom_seconds": 600.0,
+                "complex_fixture_seconds": 3600.0,
+                "dependency_prepare_seconds": 1200.0,
+                "diagnostic_capture_seconds": 30.0,
+                "godot_import_seconds": 1200.0,
+                "godot_job_minutes": 360.0,
+                "godot_metadata_seconds": 900.0,
+                "godot_setup_seconds": 4200.0,
+                "graphical_case_seconds": 1200.0,
+                "hosted_job_minutes": 180.0,
+                "main_ack_seconds": 600.0,
+                "native_case_seconds": 3600.0,
+                "native_compile_seconds": 3600.0,
+                "native_suite_seconds": 7200.0,
+                "operation_seconds": 300.0,
+                "ordinary_case_seconds": 1200.0,
+                "terminate_grace_seconds": 10.0
+              }
+            },
+            "last_heartbeat": null,
+            "last_progress": null,
+            "launch_error": null,
+            "log": "test_art_session_log.log",
+            "log_sha256": "f004b1aee67f42e198821e503dcb921c80bad92d9c58a726de8f8740a7028fb3",
+            "name": "test_art_session_log",
+            "natural_completion": true,
+            "pid": 982,
+            "requires_display": false,
+            "resources": {
+              "available": true,
+              "cpu_seconds": 4.54,
+              "peak_rss_bytes": null,
+              "scope": "direct_process_only"
+            },
+            "returncode": 0,
+            "role": "targeted-case",
+            "seconds": 4.738,
+            "skip_messages": [],
+            "status": "passed",
+            "timeout_diagnostic_error": null,
+            "timeout_diagnostics": null,
+            "timeout_kind": null,
+            "timeout_seconds": 1200.0
+          }
+        },
+        {
+          "failed": false,
+          "label": "combined-author",
+          "record": {
+            "capture_error": null,
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-fixture-repair-23fd85d9-r3/godot",
+              "--script",
+              "res://tests/test_workbench_combined_authoring.gd"
+            ],
+            "diagnostic_error": false,
+            "diagnostic_seconds": 0.0,
+            "diagnostics": null,
+            "execution_policy": {
+              "advisories": {
+                "drift_ratio": 1.2,
+                "drift_window": 5,
+                "minimum_baseline_samples": 3,
+                "prominent_ratio": 2.0,
+                "rolling_window": 10,
+                "warning_ratio": 1.5
+              },
+              "path": "godot/tests/support/ci_execution_policy.json",
+              "policy_id": "github-hosted-complete-execution-v1",
+              "scale": 1.0,
+              "schema_version": 1,
+              "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+              "watchdogs": {
+                "aggregate_headroom_seconds": 600.0,
+                "complex_fixture_seconds": 3600.0,
+                "dependency_prepare_seconds": 1200.0,
+                "diagnostic_capture_seconds": 30.0,
+                "godot_import_seconds": 1200.0,
+                "godot_job_minutes": 360.0,
+                "godot_metadata_seconds": 900.0,
+                "godot_setup_seconds": 4200.0,
+                "graphical_case_seconds": 1200.0,
+                "hosted_job_minutes": 180.0,
+                "main_ack_seconds": 600.0,
+                "native_case_seconds": 3600.0,
+                "native_compile_seconds": 3600.0,
+                "native_suite_seconds": 7200.0,
+                "operation_seconds": 300.0,
+                "ordinary_case_seconds": 1200.0,
+                "terminate_grace_seconds": 10.0
+              }
+            },
+            "last_heartbeat": null,
+            "last_progress": null,
+            "launch_error": null,
+            "log": "test_workbench_combined_authoring.log",
+            "log_sha256": "3b4e94cb7c9cfdcaf7dbcdb72c047aba580ca1c006b4789df018576715dcaa86",
+            "name": "test_workbench_combined_authoring",
+            "natural_completion": true,
+            "pid": 1338,
+            "requires_display": false,
+            "resources": {
+              "available": true,
+              "cpu_seconds": 12.41,
+              "peak_rss_bytes": 594079744,
+              "scope": "direct_process_only"
+            },
+            "returncode": 0,
+            "role": "targeted-case",
+            "seconds": 15.348,
+            "skip_messages": [],
+            "status": "passed",
+            "timeout_diagnostic_error": null,
+            "timeout_diagnostics": null,
+            "timeout_kind": null,
+            "timeout_seconds": 1200.0
+          }
+        },
+        {
+          "failed": true,
+          "label": "combined-reopen",
+          "record": {
+            "capture_error": null,
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-fixture-repair-23fd85d9-r3/godot",
+              "--script",
+              "res://tests/test_workbench_combined_authoring.gd"
+            ],
+            "diagnostic_error": true,
+            "diagnostic_seconds": 0.0,
+            "diagnostics": null,
+            "execution_policy": {
+              "advisories": {
+                "drift_ratio": 1.2,
+                "drift_window": 5,
+                "minimum_baseline_samples": 3,
+                "prominent_ratio": 2.0,
+                "rolling_window": 10,
+                "warning_ratio": 1.5
+              },
+              "path": "godot/tests/support/ci_execution_policy.json",
+              "policy_id": "github-hosted-complete-execution-v1",
+              "scale": 1.0,
+              "schema_version": 1,
+              "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+              "watchdogs": {
+                "aggregate_headroom_seconds": 600.0,
+                "complex_fixture_seconds": 3600.0,
+                "dependency_prepare_seconds": 1200.0,
+                "diagnostic_capture_seconds": 30.0,
+                "godot_import_seconds": 1200.0,
+                "godot_job_minutes": 360.0,
+                "godot_metadata_seconds": 900.0,
+                "godot_setup_seconds": 4200.0,
+                "graphical_case_seconds": 1200.0,
+                "hosted_job_minutes": 180.0,
+                "main_ack_seconds": 600.0,
+                "native_case_seconds": 3600.0,
+                "native_compile_seconds": 3600.0,
+                "native_suite_seconds": 7200.0,
+                "operation_seconds": 300.0,
+                "ordinary_case_seconds": 1200.0,
+                "terminate_grace_seconds": 10.0
+              }
+            },
+            "last_heartbeat": null,
+            "last_progress": null,
+            "launch_error": null,
+            "log": "test_workbench_combined_authoring.log",
+            "log_sha256": "da5307ede35969f195ea7481065b41f86b0e8423d5fc57b4c0eb1c843754caef",
+            "name": "test_workbench_combined_authoring",
+            "natural_completion": true,
+            "pid": 1567,
+            "requires_display": false,
+            "resources": {
+              "available": true,
+              "cpu_seconds": 9.4,
+              "peak_rss_bytes": null,
+              "scope": "direct_process_only"
+            },
+            "returncode": 1,
+            "role": "targeted-case",
+            "seconds": 9.606,
+            "skip_messages": [],
+            "status": "failed",
+            "timeout_diagnostic_error": null,
+            "timeout_diagnostics": null,
+            "timeout_kind": null,
+            "timeout_seconds": 1200.0
+          }
+        }
+      ]
+    },
+    "session_only_reopen_repair": {
+      "identity": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "83fbf6de58db8a3a09f15029625a0502b8be7017",
+        "source_dirty": false,
+        "source_tree": "2f9fe125363d09c436c29e52de7bf2c46d360160"
+      },
+      "passed": true,
+      "scope": "Exact-source local regression proof of Art fixture fixes; independent review pending",
+      "source_unchanged_after_run": true,
+      "tests": [
+        {
+          "failed": false,
+          "label": "import",
+          "record": {
+            "capture_error": null,
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-fixture-repair-83fbf6de/godot",
+              "--editor",
+              "--import",
+              "--quit"
+            ],
+            "diagnostic_error": false,
+            "diagnostic_seconds": 0.0,
+            "diagnostics": null,
+            "execution_policy": {
+              "advisories": {
+                "drift_ratio": 1.2,
+                "drift_window": 5,
+                "minimum_baseline_samples": 3,
+                "prominent_ratio": 2.0,
+                "rolling_window": 10,
+                "warning_ratio": 1.5
+              },
+              "path": "godot/tests/support/ci_execution_policy.json",
+              "policy_id": "github-hosted-complete-execution-v1",
+              "scale": 1.0,
+              "schema_version": 1,
+              "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+              "watchdogs": {
+                "aggregate_headroom_seconds": 600.0,
+                "complex_fixture_seconds": 3600.0,
+                "dependency_prepare_seconds": 1200.0,
+                "diagnostic_capture_seconds": 30.0,
+                "godot_import_seconds": 1200.0,
+                "godot_job_minutes": 360.0,
+                "godot_metadata_seconds": 900.0,
+                "godot_setup_seconds": 4200.0,
+                "graphical_case_seconds": 1200.0,
+                "hosted_job_minutes": 180.0,
+                "main_ack_seconds": 600.0,
+                "native_case_seconds": 3600.0,
+                "native_compile_seconds": 3600.0,
+                "native_suite_seconds": 7200.0,
+                "operation_seconds": 300.0,
+                "ordinary_case_seconds": 1200.0,
+                "terminate_grace_seconds": 10.0
+              }
+            },
+            "last_heartbeat": null,
+            "last_progress": null,
+            "launch_error": null,
+            "log": "import.log",
+            "log_sha256": "db0f2d206bb7f5cdb6cbb0ccc4603452938d904f69253237d2226a8cb08b8457",
+            "name": "import",
+            "natural_completion": true,
+            "pid": 21,
+            "requires_display": false,
+            "resources": {
+              "available": true,
+              "cpu_seconds": 6.48,
+              "peak_rss_bytes": 793788416,
+              "scope": "direct_process_only"
+            },
+            "returncode": 0,
+            "role": "targeted-case",
+            "seconds": 7.133,
+            "skip_messages": [],
+            "status": "passed",
+            "timeout_diagnostic_error": null,
+            "timeout_diagnostics": null,
+            "timeout_kind": null,
+            "timeout_seconds": 1200
+          }
+        },
+        {
+          "failed": false,
+          "label": "combined-author",
+          "record": {
+            "capture_error": null,
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-fixture-repair-83fbf6de/godot",
+              "--script",
+              "res://tests/test_workbench_combined_authoring.gd"
+            ],
+            "diagnostic_error": false,
+            "diagnostic_seconds": 0.0,
+            "diagnostics": null,
+            "execution_policy": {
+              "advisories": {
+                "drift_ratio": 1.2,
+                "drift_window": 5,
+                "minimum_baseline_samples": 3,
+                "prominent_ratio": 2.0,
+                "rolling_window": 10,
+                "warning_ratio": 1.5
+              },
+              "path": "godot/tests/support/ci_execution_policy.json",
+              "policy_id": "github-hosted-complete-execution-v1",
+              "scale": 1.0,
+              "schema_version": 1,
+              "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+              "watchdogs": {
+                "aggregate_headroom_seconds": 600.0,
+                "complex_fixture_seconds": 3600.0,
+                "dependency_prepare_seconds": 1200.0,
+                "diagnostic_capture_seconds": 30.0,
+                "godot_import_seconds": 1200.0,
+                "godot_job_minutes": 360.0,
+                "godot_metadata_seconds": 900.0,
+                "godot_setup_seconds": 4200.0,
+                "graphical_case_seconds": 1200.0,
+                "hosted_job_minutes": 180.0,
+                "main_ack_seconds": 600.0,
+                "native_case_seconds": 3600.0,
+                "native_compile_seconds": 3600.0,
+                "native_suite_seconds": 7200.0,
+                "operation_seconds": 300.0,
+                "ordinary_case_seconds": 1200.0,
+                "terminate_grace_seconds": 10.0
+              }
+            },
+            "last_heartbeat": null,
+            "last_progress": null,
+            "launch_error": null,
+            "log": "test_workbench_combined_authoring.log",
+            "log_sha256": "fcdd40cf111895306babc84b35720e023b625d7602ea1c4045c598e2fb774ec4",
+            "name": "test_workbench_combined_authoring",
+            "natural_completion": true,
+            "pid": 789,
+            "requires_display": false,
+            "resources": {
+              "available": true,
+              "cpu_seconds": 14.24,
+              "peak_rss_bytes": 594886656,
+              "scope": "direct_process_only"
+            },
+            "returncode": 0,
+            "role": "targeted-case",
+            "seconds": 17.114,
+            "skip_messages": [],
+            "status": "passed",
+            "timeout_diagnostic_error": null,
+            "timeout_diagnostics": null,
+            "timeout_kind": null,
+            "timeout_seconds": 1200.0
+          }
+        },
+        {
+          "failed": false,
+          "label": "combined-reopen",
+          "record": {
+            "capture_error": null,
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-fixture-repair-83fbf6de/godot",
+              "--script",
+              "res://tests/test_workbench_combined_authoring.gd"
+            ],
+            "diagnostic_error": false,
+            "diagnostic_seconds": 0.0,
+            "diagnostics": null,
+            "execution_policy": {
+              "advisories": {
+                "drift_ratio": 1.2,
+                "drift_window": 5,
+                "minimum_baseline_samples": 3,
+                "prominent_ratio": 2.0,
+                "rolling_window": 10,
+                "warning_ratio": 1.5
+              },
+              "path": "godot/tests/support/ci_execution_policy.json",
+              "policy_id": "github-hosted-complete-execution-v1",
+              "scale": 1.0,
+              "schema_version": 1,
+              "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+              "watchdogs": {
+                "aggregate_headroom_seconds": 600.0,
+                "complex_fixture_seconds": 3600.0,
+                "dependency_prepare_seconds": 1200.0,
+                "diagnostic_capture_seconds": 30.0,
+                "godot_import_seconds": 1200.0,
+                "godot_job_minutes": 360.0,
+                "godot_metadata_seconds": 900.0,
+                "godot_setup_seconds": 4200.0,
+                "graphical_case_seconds": 1200.0,
+                "hosted_job_minutes": 180.0,
+                "main_ack_seconds": 600.0,
+                "native_case_seconds": 3600.0,
+                "native_compile_seconds": 3600.0,
+                "native_suite_seconds": 7200.0,
+                "operation_seconds": 300.0,
+                "ordinary_case_seconds": 1200.0,
+                "terminate_grace_seconds": 10.0
+              }
+            },
+            "last_heartbeat": null,
+            "last_progress": null,
+            "launch_error": null,
+            "log": "test_workbench_combined_authoring.log",
+            "log_sha256": "0e0125f8882f5f08d3d9e153e6627ee30ff381427e7ee1930990188e7c50276c",
+            "name": "test_workbench_combined_authoring",
+            "natural_completion": true,
+            "pid": 1018,
+            "requires_display": false,
+            "resources": {
+              "available": true,
+              "cpu_seconds": 10.78,
+              "peak_rss_bytes": null,
+              "scope": "direct_process_only"
+            },
+            "returncode": 0,
+            "role": "targeted-case",
+            "seconds": 10.971,
+            "skip_messages": [],
+            "status": "passed",
+            "timeout_diagnostic_error": null,
+            "timeout_diagnostics": null,
+            "timeout_kind": null,
+            "timeout_seconds": 1200.0
+          }
+        }
+      ]
+    },
+    "unmodified_combined_with_all_examples": {
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-inherited-cases/project",
+        "--script",
+        "res://tests/test_workbench_combined_authoring.gd"
+      ],
+      "diagnostic_errors": [
+        "ERROR: WB_COMBINED_AUTHORING follow-up fixture confirms eleven wall cells and one erasure",
+        "ERROR: WB_COMBINED_AUTHORING provider fixture line exists in native grid",
+        "ERROR: WB_COMBINED_AUTHORING provider fixture erased the requested stored Wall"
+      ],
+      "elapsed_seconds": 16.218,
+      "exit_code": 1,
+      "log_sha256": "bec0f45e01f0d37ee0097598caabc517456721eb0e9974a26a649aeacfa6a70d",
+      "status": "test_failure",
+      "timeout_seconds": 3940
+    },
+    "unmodified_local_close_missing_runner_fixture": {
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-inherited-cases/project",
+        "--script",
+        "res://tests/test_art_local_close.gd"
+      ],
+      "diagnostic_errors": [
+        "ERROR: test uses a local fixture endpoint",
+        "ERROR: Error parsing URL: '/chat/completions'.",
+        "ERROR: 404-hidden-0 started exactly one local request",
+        "ERROR: 404-hidden-0 X/Hide does not silently cancel the model request",
+        "ERROR: 404-hidden-0 returns a terminal HTTP receipt",
+        "ERROR: 404-hidden-0 invalid model has explicit HTTP failure",
+        "ERROR: Error parsing URL: '/chat/completions'.",
+        "ERROR: 404-hidden-1 started exactly one local request",
+        "ERROR: 404-hidden-1 X/Hide does not silently cancel the model request",
+        "ERROR: 404-hidden-1 returns a terminal HTTP receipt",
+        "ERROR: 404-hidden-1 invalid model has explicit HTTP failure",
+        "ERROR: Error parsing URL: '/chat/completions'.",
+        "ERROR: 404-hidden-2 started exactly one local request",
+        "ERROR: 404-hidden-2 X/Hide does not silently cancel the model request",
+        "ERROR: 404-hidden-2 returns a terminal HTTP receipt",
+        "ERROR: 404-hidden-2 invalid model has explicit HTTP failure",
+        "ERROR: Error parsing URL: '/chat/completions'.",
+        "ERROR: 404-open started exactly one local request",
+        "ERROR: 404-open returns a terminal HTTP receipt",
+        "ERROR: 404-open invalid model has explicit HTTP failure",
+        "ERROR: Error parsing URL: '/chat/completions'.",
+        "ERROR: 404-delayed-hidden started exactly one local request",
+        "ERROR: 404-delayed-hidden X/Hide does not silently cancel the model request",
+        "ERROR: 404-delayed-hidden returns a terminal HTTP receipt",
+        "ERROR: 404-delayed-hidden invalid model has explicit HTTP failure",
+        "ERROR: Error parsing URL: '/chat/completions'.",
+        "ERROR: 404-reopened started exactly one local request",
+        "ERROR: 404-reopened X/Hide does not silently cancel the model request",
+        "ERROR: 404-reopened returns a terminal HTTP receipt",
+        "ERROR: 404-reopened invalid model has explicit HTTP failure",
+        "ERROR: Error parsing URL: '/chat/completions'.",
+        "ERROR: stop-before-close started exactly one local request",
+        "ERROR: stop-before-close Stop fences the old response",
+        "ERROR: Error parsing URL: '/chat/completions'.",
+        "ERROR: valid-hidden started exactly one local request",
+        "ERROR: valid-hidden X/Hide does not silently cancel the model request",
+        "ERROR: valid-hidden returns a terminal HTTP receipt",
+        "ERROR: valid-hidden valid model response does not enter failure state"
+      ],
+      "elapsed_seconds": 6.5,
+      "exit_code": 1,
+      "log_sha256": "20876b3c85cec93a2a9c4a9e09a395acd0a502a1c8189540533d437562a5c992",
+      "status": "test_failure",
+      "timeout_seconds": 1200
+    },
+    "unmodified_session_log_with_prior_archive": {
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-inherited-cases/project",
+        "--script",
+        "res://tests/test_art_session_log.gd"
+      ],
+      "diagnostic_errors": [
+        "ERROR: idle Art creates no new file"
+      ],
+      "elapsed_seconds": 5.922,
+      "exit_code": 1,
+      "log_sha256": "1dd6f5965ffabbf8bb31e365433b6098c2cb6c7afbb17de48b851de46c844d9c",
+      "status": "test_failure",
+      "timeout_seconds": 1200
+    },
+    "unmodified_successor": {
+      "identity": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+        "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+        "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+        "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+        "native_source_input_count": 105,
+        "platform": "linux",
+        "python": "3.12.14",
+        "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+        "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "rapier_source_input_count": 4,
+        "source_commit": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+        "source_dirty": false,
+        "source_tree": "464c60288d5461d61578b000ae68ac029cffb5bd"
+      },
+      "import": {
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-inherited-cases/project",
+          "--editor",
+          "--import",
+          "--quit"
+        ],
+        "diagnostic_errors": [],
+        "elapsed_seconds": 7.4,
+        "exit_code": 0,
+        "log_sha256": "db0f2d206bb7f5cdb6cbb0ccc4603452938d904f69253237d2226a8cb08b8457",
+        "status": "pass",
+        "timeout_seconds": 1200
+      },
+      "passed": false,
+      "scope": "Independent rerun of inherited failed Ready cases on untouched #780; no owner acceptance",
+      "source_unchanged_after_run": true,
+      "tests": [
+        {
+          "case": "test_art_request_preparation",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-inherited-cases/project",
+            "--script",
+            "res://tests/test_art_request_preparation.gd"
+          ],
+          "diagnostic_errors": [
+            "ERROR: Invalid URL scheme: 'invalid://'."
+          ],
+          "elapsed_seconds": 0.767,
+          "exit_code": 0,
+          "log_sha256": "a877ab80fb77da215d2f6ca20c233c81d3e699fde925e6cdd254bf34d6dd822f",
+          "status": "diagnostic_failure",
+          "timeout_seconds": 1200
+        },
+        {
+          "case": "test_art_request_admission",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-inherited-cases/project",
+            "--script",
+            "res://tests/test_art_request_admission.gd"
+          ],
+          "diagnostic_errors": [
+            "ERROR: Invalid URL scheme: 'invalid-fixture://'."
+          ],
+          "elapsed_seconds": 5.581,
+          "exit_code": 0,
+          "log_sha256": "07ba4fa70ee93569f862f491610dc4c44c4b7f0801e1370f878b8f68f2459b6d",
+          "status": "diagnostic_failure",
+          "timeout_seconds": 1200
+        },
+        {
+          "case": "test_art_session_log",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-inherited-cases/project",
+            "--script",
+            "res://tests/test_art_session_log.gd"
+          ],
+          "diagnostic_errors": [],
+          "elapsed_seconds": 5.781,
+          "exit_code": 0,
+          "log_sha256": "20859b6bc7f2541e6de4c052a0314c70654b45c1fd8cbb2ac9c823f4fe2ed1af",
+          "status": "pass",
+          "timeout_seconds": 1200
+        },
+        {
+          "case": "test_workbench_combined_authoring",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/art780-inherited-cases/project",
+            "--script",
+            "res://tests/test_workbench_combined_authoring.gd"
+          ],
+          "diagnostic_errors": [
+            "ERROR: WB_COMBINED_AUTHORING installed generator dropdown contains real profiles",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: discovery",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: generation",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: manual",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: leases",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: agent",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: provider_fixture",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: late_response",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: human_after_agent",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: stop",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: agent_undo_saved",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: simulation_equipment",
+            "ERROR: WB_COMBINED_AUTHORING mandatory combined author phase executed: save",
+            "ERROR: WB_COMBINED_AUTHORING complete combined authoring flow reached Save"
+          ],
+          "elapsed_seconds": 4.942,
+          "exit_code": 1,
+          "log_sha256": "a0e8218d0b79fbf11b6668d7e33701a76028393a4ee68f83dd044643d8b14e4b",
+          "status": "test_failure",
+          "timeout_seconds": 3940
+        }
+      ]
+    }
+  },
+  "unmodified_successor": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "unresolved_performance": {
+    "artifact_sha256": "a424e3a5c354291576f81bf77f07e0074253492a2964b64de7896e1acc4d8fde",
+    "case_max_frame_gap_usec": {
+      "near-limit-full-context-no-listener": 3860552,
+      "outgoing-cpu-hide-reopen": 230761,
+      "outgoing-cpu-stop-close": 377631,
+      "outgoing-cpu-visible": 225403
+    },
+    "checks": 125,
+    "failures": [
+      "near-limit-full-context-no-listener no multi-second frame gap in this environment"
+    ],
+    "original_artifact": 14981748735,
+    "report_sha256": "ac0bde728ff05bdd78c8d49ed091b2c32ad75a625da9c6298805e1168de11775",
+    "status": "ORIGINAL_FAILURE_PRESERVED_NOT_RESOLVED_BY_FIXTURE_REPAIR"
+  }
+}

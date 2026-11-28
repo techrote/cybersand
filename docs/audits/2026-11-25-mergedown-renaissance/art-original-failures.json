@@ -1,0 +1,157 @@
+{
+  "source": "1c2d084cba2e44e455f6ffe7d269007519829102",
+  "run_id": 45522038886,
+  "attempt": 1,
+  "jobs": [
+    {
+      "job_id": 138897931326,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45522038886/job/138897931326",
+      "findings": [
+        "2026-11-25T01:09:15.1861422Z ERROR: WB_COMBINED_AUTHORING follow-up fixture confirms eleven wall cells and one erasure",
+        "2026-11-25T01:09:15.1868482Z ERROR: WB_COMBINED_AUTHORING provider fixture line exists in native grid",
+        "2026-11-25T01:09:15.1874691Z ERROR: WB_COMBINED_AUTHORING provider fixture erased the requested stored Wall",
+        "2026-11-25T01:09:15.1921533Z test_workbench_combined_authoring failed; elapsed=16.550s; exit=1; log=D:\\a\\cybersand\\cybersand\\build\\godot-regressions\\windows-3\\test_workbench_combined_authoring.log; snapshot=None"
+      ]
+    },
+    {
+      "job_id": 138897931478,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45522038886/job/138897931478",
+      "findings": [
+        "2026-11-25T01:14:32.9318314Z ERROR: Invalid URL scheme: 'invalid-fixture://'.",
+        "2026-11-25T01:14:32.9325608Z test_art_request_admission failed; elapsed=8.347s; exit=0; log=D:\\a\\cybersand\\cybersand\\build\\godot-regressions\\windows-14\\test_art_request_admission.log; snapshot=None"
+      ]
+    },
+    {
+      "job_id": 138897931501,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45522038886/job/138897931501",
+      "findings": [
+        "2026-11-25T01:14:38.1004747Z ERROR: Invalid URL scheme: 'invalid://'.",
+        "2026-11-25T01:14:38.1014278Z test_art_request_preparation failed; elapsed=1.048s; exit=0; log=D:\\a\\cybersand\\cybersand\\build\\godot-regressions\\windows-15\\test_art_request_preparation.log; snapshot=None"
+      ]
+    },
+    {
+      "job_id": 138897933374,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45522038886/job/138897933374",
+      "findings": [
+        "2026-11-25T01:19:03.4243168Z ERROR: idle Art creates no new file",
+        "2026-11-25T01:19:03.4262739Z test_art_session_log failed; elapsed=5.203s; exit=1; log=D:\\a\\cybersand\\cybersand\\build\\godot-regressions\\windows-18\\test_art_session_log.log; snapshot=None"
+      ]
+    },
+    {
+      "job_id": 138897933737,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45522038886/job/138897933737",
+      "findings": [
+        "2026-11-25T01:20:40.3106979Z ERROR: test uses a local fixture endpoint",
+        "2026-11-25T01:20:40.3109810Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:40.3113085Z ERROR: 404-hidden-0 started exactly one local request",
+        "2026-11-25T01:20:40.3115240Z ERROR: 404-hidden-0 X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:40.3117819Z ERROR: 404-hidden-0 returns a terminal HTTP receipt",
+        "2026-11-25T01:20:40.3119854Z ERROR: 404-hidden-0 invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:40.3122327Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:40.3124842Z ERROR: 404-hidden-1 started exactly one local request",
+        "2026-11-25T01:20:40.3127067Z ERROR: 404-hidden-1 X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:40.3129863Z ERROR: 404-hidden-1 returns a terminal HTTP receipt",
+        "2026-11-25T01:20:40.3132019Z ERROR: 404-hidden-1 invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:40.3134501Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:40.3137063Z ERROR: 404-hidden-2 started exactly one local request",
+        "2026-11-25T01:20:40.3139455Z ERROR: 404-hidden-2 X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:40.3142068Z ERROR: 404-hidden-2 returns a terminal HTTP receipt",
+        "2026-11-25T01:20:40.3144224Z ERROR: 404-hidden-2 invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:40.3146808Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:40.3149370Z ERROR: 404-open started exactly one local request",
+        "2026-11-25T01:20:40.3151760Z ERROR: 404-open returns a terminal HTTP receipt",
+        "2026-11-25T01:20:40.3153830Z ERROR: 404-open invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:40.3156264Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:40.3158923Z ERROR: 404-delayed-hidden started exactly one local request",
+        "2026-11-25T01:20:40.3161173Z ERROR: 404-delayed-hidden X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:40.3163733Z ERROR: 404-delayed-hidden returns a terminal HTTP receipt",
+        "2026-11-25T01:20:40.3165815Z ERROR: 404-delayed-hidden invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:40.3168514Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:40.3171145Z ERROR: 404-reopened started exactly one local request",
+        "2026-11-25T01:20:40.3173320Z ERROR: 404-reopened X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:40.3176252Z ERROR: 404-reopened returns a terminal HTTP receipt",
+        "2026-11-25T01:20:40.3178314Z ERROR: 404-reopened invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:40.3180970Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:40.3183662Z ERROR: stop-before-close started exactly one local request",
+        "2026-11-25T01:20:40.3186694Z ERROR: stop-before-close Stop fences the old response",
+        "2026-11-25T01:20:40.3192822Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:40.3195490Z ERROR: valid-hidden started exactly one local request",
+        "2026-11-25T01:20:40.3197689Z ERROR: valid-hidden X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:40.3200274Z ERROR: valid-hidden returns a terminal HTTP receipt",
+        "2026-11-25T01:20:40.3202423Z ERROR: valid-hidden valid model response does not enter failure state",
+        "2026-11-25T01:20:40.3259309Z test_art_local_close failed; elapsed=8.551s; exit=1; log=D:\\a\\cybersand\\cybersand\\build\\godot-regressions\\windows-22\\test_art_local_close.log; snapshot=None"
+      ]
+    },
+    {
+      "job_id": 138900507867,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45522038886/job/138900507867",
+      "findings": [
+        "2026-11-25T01:17:42.9010336Z ERROR: Invalid URL scheme: 'invalid://'.",
+        "2026-11-25T01:17:42.9015204Z test_art_request_preparation failed; elapsed=0.635s; exit=0; log=build/godot-regressions/shard-13/test_art_request_preparation.log; snapshot=None"
+      ]
+    },
+    {
+      "job_id": 138900507869,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45522038886/job/138900507869",
+      "findings": [
+        "2026-11-25T01:18:18.6124315Z ERROR: Invalid URL scheme: 'invalid-fixture://'.",
+        "2026-11-25T01:18:18.6132445Z test_art_request_admission failed; elapsed=3.983s; exit=0; log=build/godot-regressions/shard-12/test_art_request_admission.log; snapshot=None"
+      ]
+    },
+    {
+      "job_id": 138900507903,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45522038886/job/138900507903",
+      "findings": [
+        "2026-11-25T01:19:32.2456232Z ERROR: WB_COMBINED_AUTHORING follow-up fixture confirms eleven wall cells and one erasure",
+        "2026-11-25T01:19:32.2459462Z ERROR: WB_COMBINED_AUTHORING provider fixture line exists in native grid",
+        "2026-11-25T01:19:32.2461699Z ERROR: WB_COMBINED_AUTHORING provider fixture erased the requested stored Wall",
+        "2026-11-25T01:19:32.2478341Z test_workbench_combined_authoring failed; elapsed=12.744s; exit=1; log=build/godot-regressions/shard-14/test_workbench_combined_authoring.log; snapshot=None"
+      ]
+    },
+    {
+      "job_id": 138900508105,
+      "url": "https://github.com/techrote/cybersand/actions/runs/45522038886/job/138900508105",
+      "findings": [
+        "2026-11-25T01:20:21.2549757Z ERROR: test uses a local fixture endpoint",
+        "2026-11-25T01:20:21.2551868Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:21.2554318Z ERROR: 404-hidden-0 started exactly one local request",
+        "2026-11-25T01:20:21.2556334Z ERROR: 404-hidden-0 X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:21.2558815Z ERROR: 404-hidden-0 returns a terminal HTTP receipt",
+        "2026-11-25T01:20:21.2560909Z ERROR: 404-hidden-0 invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:21.2563270Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:21.2565728Z ERROR: 404-hidden-1 started exactly one local request",
+        "2026-11-25T01:20:21.2567682Z ERROR: 404-hidden-1 X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:21.2569938Z ERROR: 404-hidden-1 returns a terminal HTTP receipt",
+        "2026-11-25T01:20:21.2572080Z ERROR: 404-hidden-1 invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:21.2574407Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:21.2576918Z ERROR: 404-hidden-2 started exactly one local request",
+        "2026-11-25T01:20:21.2578908Z ERROR: 404-hidden-2 X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:21.2581287Z ERROR: 404-hidden-2 returns a terminal HTTP receipt",
+        "2026-11-25T01:20:21.2583226Z ERROR: 404-hidden-2 invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:21.2585631Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:21.2588181Z ERROR: 404-open started exactly one local request",
+        "2026-11-25T01:20:21.2590496Z ERROR: 404-open returns a terminal HTTP receipt",
+        "2026-11-25T01:20:21.2592556Z ERROR: 404-open invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:21.2594826Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:21.2597512Z ERROR: 404-delayed-hidden started exactly one local request",
+        "2026-11-25T01:20:21.2599585Z ERROR: 404-delayed-hidden X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:21.2602137Z ERROR: 404-delayed-hidden returns a terminal HTTP receipt",
+        "2026-11-25T01:20:21.2604290Z ERROR: 404-delayed-hidden invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:21.2606714Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:21.2609114Z ERROR: 404-reopened started exactly one local request",
+        "2026-11-25T01:20:21.2611272Z ERROR: 404-reopened X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:21.2614028Z ERROR: 404-reopened returns a terminal HTTP receipt",
+        "2026-11-25T01:20:21.2616006Z ERROR: 404-reopened invalid model has explicit HTTP failure",
+        "2026-11-25T01:20:21.2618445Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:21.2621078Z ERROR: stop-before-close started exactly one local request",
+        "2026-11-25T01:20:21.2623844Z ERROR: stop-before-close Stop fences the old response",
+        "2026-11-25T01:20:21.2629423Z ERROR: Error parsing URL: '/chat/completions'.",
+        "2026-11-25T01:20:21.2631959Z ERROR: valid-hidden started exactly one local request",
+        "2026-11-25T01:20:21.2633951Z ERROR: valid-hidden X/Hide does not silently cancel the model request",
+        "2026-11-25T01:20:21.2636291Z ERROR: valid-hidden returns a terminal HTTP receipt",
+        "2026-11-25T01:20:21.2638316Z ERROR: valid-hidden valid model response does not enter failure state",
+        "2026-11-25T01:20:21.2679710Z test_art_local_close failed; elapsed=4.076s; exit=1; log=build/godot-regressions/shard-16/test_art_local_close.log; snapshot=None"
+      ]
+    }
+  ]
+}

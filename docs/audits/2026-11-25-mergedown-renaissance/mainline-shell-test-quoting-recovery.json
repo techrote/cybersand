@@ -1,0 +1,25 @@
+{
+  "schema": "cybersand-mainline-windows-admission-recovery-v1",
+  "failed_run": 45779742759,
+  "failed_job": 139772017907,
+  "failed_harness": "d3d85373385705ff756b3d42614a89d78f97d1a0",
+  "request_revision": "closure-stock-windows-shell-autoload-002",
+  "classification": "test-oracle quoting defect before product checkout",
+  "evidence_file": "mainline-closure-run45779742759-job139772017907.log.gz",
+  "observations": {
+    "nonwindows_admission_controls": "25 passed",
+    "windows_control": "Neither original nor corrected CMD executed; cmd.exe treated backslash-quotes from Python list2cmdline as literal command text",
+    "product_checkout": "not executed",
+    "package_qualification": "not executed"
+  },
+  "correction": {
+    "local_source": "fde1a7a1026410bec119438b806002ea1ca2d2be",
+    "tree": "5cc5b8e3fb90b0d0fcff3ad1df3928acf90b5a83",
+    "changes": "Use raw cmd.exe /d /s /c outer quoting in Windows admission control. Delivered launcher and product remain unchanged.",
+    "review": "Specialist C independently reviewed exact diff and reran25 Linux controls,1 Windows-only skip; approved fresh actual Windows execution"
+  },
+  "source_policy": {
+    "accepted_product": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+    "owner_playfeel_accepted": false
+  }
+}

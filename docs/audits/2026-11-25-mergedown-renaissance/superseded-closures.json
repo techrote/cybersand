@@ -1,0 +1,38 @@
+{
+  "mission": "MERGEDOWN-RENAISSANCE-001",
+  "closed": [
+    {
+      "pr": 720,
+      "successor": 777,
+      "source": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "next": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "note": "Original M0–M2 native campaign 44962406023, 75-attempt comparison and evaluator remain at their original source; the M3–M5 and M6–M7 successors preserve this implementation and its negative/partial outcomes.",
+      "comment_id": 7175722536,
+      "state": "closed",
+      "closed_at": "2026-11-25T21:55:55Z"
+    },
+    {
+      "pr": 770,
+      "successor": 777,
+      "source": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "next": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "note": "Qualified M3–M5 application fe2395c7060dae736dc2e5dc8d1e4e050b2d2e52, campaign 45454711939, evaluator artifact14951042272, comparison limitations and zero-genuine-inference result remain unchanged. #777 is the authoritative richer Architecture continuation; current Art integration is being reconciled separately.",
+      "comment_id": 7175723822,
+      "state": "closed",
+      "closed_at": "2026-11-25T21:55:59Z"
+    },
+    {
+      "pr": 769,
+      "successor": 776,
+      "source": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+      "next": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+      "note": "Original qualified application d365f78190af0e006ee9998a17b453f04f31b3ae, campaign45457176340 and original Windows evaluator remain unchanged. The successor's five missed45-second scene-admission targets and physical/creative owner gates remain open; closure of this predecessor does not waive them.",
+      "comment_id": 7175724997,
+      "state": "closed",
+      "closed_at": "2026-11-25T21:56:02Z"
+    }
+  ],
+  "branches_deleted": false,
+  "physical_owner_gates_waived": false
+}
+

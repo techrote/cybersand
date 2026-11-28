@@ -1,0 +1,297 @@
+name: Mergedown accepted-main Windows evaluator
+
+# A single explicit request admits one frozen accepted-main checkpoint.
+# Full source correctness remains the separate Ready Native/GDE campaign.
+on:
+  push:
+    branches: [integration/mergedown-renaissance-001]
+    paths: ['tools/fixtures/mergedown-mainline-windows-request.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: mergedown-mainline-windows-${{ github.ref }}
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  CYBERSAND_CI_WATCHDOG_SCALE: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  source_tape:
+    name: Exact accepted-source Goblin002 replay tape
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/mergedown-renaissance-001'
+    runs-on: windows-2022
+    # Separate complete envelope: setup4200 + metadata900 + import240 +
+    # campaign180 + source/owned-cleanup120 + retention600 =6240seconds.
+    timeout-minutes: 120
+    outputs:
+      source_commit: ${{ steps.request.outputs.source_commit }}
+    steps:
+      - name: Check out exact request harness
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: harness
+          persist-credentials: false
+      - name: Read immutable accepted-source request
+        id: request
+        shell: pwsh
+        run: |
+          python harness/tools/ci/mainline_evaluator.py read-request --request harness/tools/fixtures/mergedown-mainline-windows-request.json --github-output $env:GITHUB_OUTPUT
+          if ($LASTEXITCODE -ne 0) { throw 'Source tape request refused' }
+      - name: Check out requested accepted product
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ steps.request.outputs.source_commit }}
+          path: product
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Admit source and acquire its exact runtime and pinned engine
+        shell: pwsh
+        working-directory: product
+        run: |
+          $proof = Join-Path $env:RUNNER_TEMP 'accepted-main-source-tape'
+          New-Item -ItemType Directory $proof | Out-Null
+          $env:MAINLINE_SOURCE_TAPE = $proof
+          'MAINLINE_SOURCE_TAPE=' + $proof | Out-File -Append -FilePath $env:GITHUB_ENV
+          python ../harness/tools/ci/mainline_evaluator.py admit --request ../harness/tools/fixtures/mergedown-mainline-windows-request.json --product . --harness ../harness --output (Join-Path $proof 'admission.json')
+          if ($LASTEXITCODE -ne 0) { throw 'Actual accepted source admission failed' }
+          python -m pip install --requirement tools/gip014/requirements.txt --disable-pip-version-check
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Goblin process-ownership dependency installation failed' }
+          python tools/ci/materialize_lfs.py --root . --include 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --expected-source '${{ steps.request.outputs.source_commit }}' --output (Join-Path $proof 'lfs-acquisition') --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Source tape runtime acquisition refused' }
+          $archive = Join-Path $env:RUNNER_TEMP 'source-tape-godot.zip'
+          curl.exe --fail --location --connect-timeout 20 --max-time 1200 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned source-tape Godot acquisition failed' }
+          $env:SOURCE_TAPE_GODOT_ARCHIVE = $archive
+          @'
+          import json, os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          binary, record = prepare_godot(pathlib.Path(os.environ['SOURCE_TAPE_GODOT_ARCHIVE']))
+          pathlib.Path(os.environ['MAINLINE_SOURCE_TAPE'], 'godot-archive.json').write_text(json.dumps(record, indent=2)+'\n', encoding='utf-8')
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as output:
+              output.write('SOURCE_TAPE_GODOT=' + str(binary) + '\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Source tape engine identity failed' }
+      - name: Execute one source-matched 64-action native control tape
+        shell: pwsh
+        working-directory: product
+        run: |
+          python tools/gip014/run_goblin.py --godot $env:SOURCE_TAPE_GODOT --out (Join-Path $env:MAINLINE_SOURCE_TAPE 'control-64') --fixture actor_workshop --policy CONTROL --seed 13 --budget 64 --case campaign --timeout-seconds 180
+          if ($LASTEXITCODE -ne 0) { throw 'Actual final-source control tape failed; do not build a substituted evaluator' }
+          # Preserve the complete original runner output. The builder otherwise
+          # sees its formatted observer copy and native compact bytes as two
+          # distinct tapes. Stage exactly one unchanged native transcript.
+          @'
+          import hashlib, json, os, pathlib, shutil
+          proof = pathlib.Path(os.environ['MAINLINE_SOURCE_TAPE'])
+          native = [p for p in (proof / 'control-64/profile').rglob('transcript.json') if p.parent.name == 'goblin']
+          if len(native) != 1 or native[0].is_symlink():
+              raise RuntimeError('Expected one actual native control transcript')
+          tape = json.loads(native[0].read_text(encoding='utf-8'))
+          admission = json.loads((proof / 'admission.json').read_text(encoding='utf-8'))
+          header, summary = tape['header'], tape['summary']
+          if (header['provenance']['source_commit'] != admission['source_commit'] or header['provenance']['source_dirty'] is not False or header['fixture_id'] != 'actor_workshop' or header['policy'] != 'CONTROL' or header['budget'] != 64 or summary['attempted_actions'] != 64 or summary['termination'] != 'budget_complete' or summary['failures']):
+              raise RuntimeError('Native tape does not prove the admitted64-action control')
+          selected = proof / 'replay-input/control-64/transcript.json'
+          selected.parent.mkdir(parents=True)
+          shutil.copyfile(native[0], selected)
+          digest = hashlib.sha256(native[0].read_bytes()).hexdigest()
+          if hashlib.sha256(selected.read_bytes()).hexdigest() != digest:
+              raise RuntimeError('Selected tape bytes changed')
+          (proof / 'source-tape-selection.json').write_text(json.dumps({'original': str(native[0].relative_to(proof)), 'selected': str(selected.relative_to(proof)), 'sha256': digest, 'source_commit': admission['source_commit']}, indent=2)+'\n', encoding='utf-8')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Exact native tape selection failed' }
+      - name: Retain original source tape outcome
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: accepted-main-source-tape-${{ steps.request.outputs.source_commit }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/accepted-main-source-tape
+          if-no-files-found: error
+          retention-days: 90
+
+  windows:
+    name: Accepted source and explicit extracted Windows package proof
+    needs: source_tape
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/mergedown-renaissance-001'
+    runs-on: windows-2022
+    # Canonical source discovery and policy derive21290seconds, covering every
+    # complete registered watchdog including the3940-second default-OFF case,
+    # metadata, owned cleanup, final custody and evidence. Admission refuses
+    # changed helpers or a future policy that no longer fits this parent.
+    timeout-minutes: 360
+    steps:
+      - name: Check out the immutable request harness separately
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          path: harness
+          persist-credentials: false
+
+      - name: Resolve the explicit accepted-main request
+        id: request
+        shell: pwsh
+        run: |
+          python harness/tools/ci/test_mainline_evaluator.py
+          if ($LASTEXITCODE -ne 0) { throw 'Delivery refusal tests failed' }
+          python harness/tools/ci/mainline_evaluator.py read-request --request harness/tools/fixtures/mergedown-mainline-windows-request.json --github-output $env:GITHUB_OUTPUT
+          if ($LASTEXITCODE -ne 0) { throw 'Accepted-main source request is not admitted' }
+
+      - name: Check out only the requested accepted product source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ steps.request.outputs.source_commit }}
+          path: product
+          fetch-depth: 0
+          persist-credentials: false
+
+      - name: Admit accepted ancestry, complete budgets and unchanged retained runtime bytes
+        shell: pwsh
+        working-directory: product
+        run: |
+          $evidence = Join-Path $env:RUNNER_TEMP 'mergedown-mainline-evidence'
+          New-Item -ItemType Directory $evidence | Out-Null
+          'MAINLINE_EVIDENCE=' + $evidence | Out-File -Append -FilePath $env:GITHUB_ENV
+          python ../harness/tools/ci/mainline_evaluator.py admit --request ../harness/tools/fixtures/mergedown-mainline-windows-request.json --product . --harness ../harness --output (Join-Path $evidence 'admission.json')
+          if ($LASTEXITCODE -ne 0) { throw 'Source, ancestry, proof-helper identity or complete budget admission failed' }
+          python tools/ci/check_ci_provider_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'Product provider policy failed' }
+          python ../harness/tools/ci/check_ci_provider_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'Harness provider policy failed' }
+          python tools/ci/materialize_lfs.py --root . --include 'godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll' --include 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --expected-source '${{ steps.request.outputs.source_commit }}' --output (Join-Path $evidence 'lfs-acquisition') --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Source-pinned retained runtime acquisition failed; inspect original attempt logs' }
+          $env:DELIVERY_RUNTIME_RECEIPT = Join-Path $evidence 'retained-runtime.json'
+          @'
+          import json, os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import verify_retained_runtime
+          result = verify_retained_runtime(pathlib.Path.cwd())
+          if len(result['native_source_inputs']) != 105:
+              raise RuntimeError('Changed native input contract requires a separately reconciled build')
+          pathlib.Path(os.environ['DELIVERY_RUNTIME_RECEIPT']).write_text(json.dumps(result, indent=2)+'\n', encoding='utf-8')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Exact retained native/Rapier custody failed; no substitute DLL is permitted' }
+
+      - name: Download only this run's exact source tape
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: accepted-main-source-tape-${{ needs.source_tape.outputs.source_commit }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/mergedown-mainline-evidence/source-tape
+
+      - name: Authenticate pinned engine, notices and portable Windows dependencies
+        shell: pwsh
+        working-directory: product
+        run: |
+          $dependencies = Join-Path $env:MAINLINE_EVIDENCE 'dependencies'
+          New-Item -ItemType Directory $dependencies | Out-Null
+          $archive = Join-Path $dependencies 'godot-windows.zip'
+          curl.exe --fail --location --connect-timeout 20 --max-time 1200 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot acquisition failed' }
+          $env:MAINLINE_GODOT_ARCHIVE = $archive
+          @'
+          import json, os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          binary, record = prepare_godot(pathlib.Path(os.environ['MAINLINE_GODOT_ARCHIVE']))
+          pathlib.Path(os.environ['MAINLINE_EVIDENCE'], 'godot-archive.json').write_text(json.dumps(record, indent=2)+'\n', encoding='utf-8')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot archive or version verification failed' }
+          foreach ($name in @('LICENSE.txt', 'COPYRIGHT.txt')) {
+            curl.exe --fail --location --connect-timeout 20 --max-time 120 --output (Join-Path $dependencies $name) "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notice acquisition failed' }
+          }
+          $runtimeLicense = Join-Path $dependencies 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $dependencies 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe --fail --location --connect-timeout 20 --max-time 120 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime notice acquisition failed' }
+          curl.exe --fail --location --connect-timeout 20 --max-time 120 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution notice acquisition failed' }
+          $vc = Join-Path $env:MAINLINE_EVIDENCE 'vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'Established portable VC staging failed' }
+          'MAINLINE_GODOT_ARCHIVE=' + $archive | Out-File -Append -FilePath $env:GITHUB_ENV
+          'MAINLINE_DEPENDENCIES=' + $dependencies | Out-File -Append -FilePath $env:GITHUB_ENV
+          'MAINLINE_VC=' + $vc | Out-File -Append -FilePath $env:GITHUB_ENV
+
+      - name: Build unchanged common product payload and truthful mainline envelope
+        shell: pwsh
+        working-directory: product
+        run: |
+          $goblinZip = Join-Path $env:MAINLINE_EVIDENCE 'CyberSand-goblin.zip'
+          python tools/gip014/package_evaluator.py --godot-archive $env:MAINLINE_GODOT_ARCHIVE --engine-notices $env:MAINLINE_DEPENDENCIES --vc-runtime $env:MAINLINE_VC --campaign-evidence (Join-Path $env:MAINLINE_EVIDENCE 'source-tape/replay-input') --out $goblinZip
+          if ($LASTEXITCODE -ne 0) { throw 'Unchanged source-bound payload builder failed' }
+          $source = (Get-Content -Raw (Join-Path $env:MAINLINE_EVIDENCE 'admission.json') | ConvertFrom-Json).source_commit
+          $delivery = Join-Path $env:RUNNER_TEMP 'mergedown-delivery'
+          $archive = Join-Path $delivery "CyberSand-Accepted-Main-Windows-$($source.Substring(0,12)).zip"
+          python ../harness/tools/ci/mainline_evaluator.py assemble --product . --admission (Join-Path $env:MAINLINE_EVIDENCE 'admission.json') --goblin-archive $goblinZip --output (Join-Path $env:MAINLINE_EVIDENCE 'pristine-mainline') --archive $archive
+          if ($LASTEXITCODE -ne 0) { throw 'Exact source/runtime join or ordinary mainline envelope failed' }
+          'MAINLINE_ARCHIVE=' + $archive | Out-File -Append -FilePath $env:GITHUB_ENV
+          'MAINLINE_DELIVERY=' + $delivery | Out-File -Append -FilePath $env:GITHUB_ENV
+
+      - name: Execute explicit pristine default-OFF and actual five-example graphics proof
+        shell: pwsh
+        working-directory: product
+        run: |
+          $extracted = Join-Path $env:RUNNER_TEMP 'CyberSand accepted main owner package'
+          Expand-Archive -LiteralPath $env:MAINLINE_ARCHIVE -DestinationPath $extracted
+          python ../harness/tools/ci/mainline_evaluator.py verify $extracted --pristine
+          if ($LASTEXITCODE -ne 0) { throw 'Final pristine ZIP identity failed' }
+          $console = Join-Path $extracted 'workbench/Godot_v4.7-stable_win64_console.exe'
+          $project = Join-Path $extracted 'workbench/godot'
+          python ../harness/tools/ci/mainline_evaluator.py qualify-default-off --product . --project $project --godot $console --output (Join-Path $env:MAINLINE_EVIDENCE 'extracted-default-off')
+          if ($LASTEXITCODE -ne 0) { throw 'Exact promoted default-OFF isolation and control-handoff proof failed' }
+          python tools/qualify_ambient.py --godot $console --project $project --capture --output (Join-Path $env:MAINLINE_EVIDENCE 'extracted-graphics')
+          if ($LASTEXITCODE -ne 0) { throw 'Declared five-example Windows ANGLE capture failed' }
+          'MAINLINE_EXTRACTED=' + $extracted | Out-File -Append -FilePath $env:GITHUB_ENV
+
+      - name: Execute both delivered CMDs and original Goblin gameplay/save-reopen/graphics proof
+        id: delivered_proof
+        shell: pwsh
+        working-directory: product
+        run: |
+          & ../harness/tools/ci/verify_mainline_launchers.ps1 -Package $env:MAINLINE_EXTRACTED -Output (Join-Path $env:MAINLINE_EVIDENCE 'launchers')
+          if ($LASTEXITCODE -ne 0) { throw 'Delivered top-level launcher proof failed' }
+          python ../harness/tools/ci/mainline_evaluator.py finalize --product . --extracted $env:MAINLINE_EXTRACTED --archive $env:MAINLINE_ARCHIVE --launchers (Join-Path $env:MAINLINE_EVIDENCE 'launchers/launcher-proof.json') --default-off (Join-Path $env:MAINLINE_EVIDENCE 'extracted-default-off') --graphical (Join-Path $env:MAINLINE_EVIDENCE 'extracted-graphics') --output (Join-Path $env:MAINLINE_DELIVERY 'delivery-receipt.json')
+          if ($LASTEXITCODE -ne 0) { throw 'Final package/source/attempt/receipt custody failed' }
+
+      - name: Retain qualified accepted-main interactive download
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: cybersand-accepted-main-windows-${{ steps.request.outputs.source_commit }}
+          path: ${{ env.MAINLINE_DELIVERY }}
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Retain original evidence even when qualification fails
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: mergedown-mainline-windows-evidence-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mergedown-mainline-evidence/admission.json
+            ${{ runner.temp }}/mergedown-mainline-evidence/retained-runtime.json
+            ${{ runner.temp }}/mergedown-mainline-evidence/lfs-acquisition/**
+            ${{ runner.temp }}/mergedown-mainline-evidence/godot-archive.json
+            ${{ runner.temp }}/mergedown-mainline-evidence/extracted-default-off/**
+            ${{ runner.temp }}/mergedown-mainline-evidence/extracted-graphics/**
+            ${{ runner.temp }}/mergedown-mainline-evidence/launchers/**
+            ${{ runner.temp }}/CyberSand accepted main owner package/workbench/test-output/**
+          if-no-files-found: warn
+          retention-days: 90
+
+      # Mutually exclusive with a successful delivery path: preserve the same
+      # already-constructed bytes for diagnosis, without an owner download claim.
+      - name: Preserve constructed archive when delivery fails
+        if: failure() && steps.delivered_proof.outcome != 'success' && env.MAINLINE_DELIVERY != ''
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: unqualified-mainline-candidate-${{ github.sha }}-attempt-${{ github.run_attempt }}
+          path: ${{ env.MAINLINE_DELIVERY }}
+          if-no-files-found: warn
+          retention-days: 90

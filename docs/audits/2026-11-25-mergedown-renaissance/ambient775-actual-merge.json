@@ -1,0 +1,24 @@
+{
+  "pr": 775,
+  "candidate": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+  "tested_preview": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+  "qualified_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "previous_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+  "merge_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "resulting_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "method": "merge",
+  "parents": [
+    "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+    "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+  ],
+  "decision_comment": 7179373402,
+  "merged_at": "2026-11-26T01:02:44Z",
+  "observed_at": "2026-11-26 01:02:48 UTC",
+  "physical_owner_acceptance": "pending",
+  "default_ambient_behavior": "off",
+  "result": {
+    "sha": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+    "merged": true,
+    "message": "Pull Request successfully merged"
+  }
+}

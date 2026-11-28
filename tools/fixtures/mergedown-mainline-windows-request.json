@@ -1,0 +1,19 @@
+{
+  "schema": "cybersand-accepted-main-evaluator-request-v1",
+  "repository": "techrote/cybersand",
+  "mission": "MERGEDOWN-RENAISSANCE-001",
+  "status": "admitted",
+  "source_commit": "b178f10ae993a4e23fca76c8ed54423530073a45",
+  "source_tree": "8d28f4a8b41956739aebee6761c66fc838d11f9c",
+  "accepted_main_at_request": "b178f10ae993a4e23fca76c8ed54423530073a45",
+  "required_foundations": {
+    "goblin_001": "d4484bd5b488cb419bfaa94f1e69be8128734405",
+    "ambient_001": "d0af9b6015c27417fddd67f79afdcf656a609571"
+  },
+  "native_source_input_count": 105,
+  "rapier_source_input_count": 4,
+  "owner_playfeel_accepted": false,
+  "public_release": false,
+  "purpose": "Build and execute one frozen accepted-main checkpoint after sequential recovery of #786, #779, #781 and combined #780/#777; physical owner acceptance remains pending.",
+  "qualification_revision": "accepted-main-successors-windows-20261127-001"
+}

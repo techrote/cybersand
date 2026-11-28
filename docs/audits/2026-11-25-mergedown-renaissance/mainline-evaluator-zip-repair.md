@@ -1,0 +1,7 @@
+# Mainline evaluator Windows archive-name repair
+
+The first actual Windows run45733961954 at harnessc58a9b1b failed one of21 refusal controls before checking out the product. No package or runtime qualification occurred. The backslash fixture was normalized into a valid forward-slash name by Python on Windows. Independent stdlib review also found that archive reading preserves the raw name in `orig_filename` while normalizing `filename`; the original extraction and final archive readback trusted only the latter. NUL truncation shares that boundary.
+
+The repair preserves exact adversarial filename bytes when constructing fixtures, asserts their original metadata, and checks original versus normalized identity plus original path safety in both extraction and final archive verification. Directory records receive the same original-name validation. All21 original controls remain and two targeted controls cover the normalization boundary. The new controls produce three expected failures against the original module (Windows separator behavior is simulated through the actual stdlib path on Linux); all23 pass against the correction. This simulation is separate from the forthcoming actual Windows run.
+
+Product67c1413a2a84077b47fa542cf91d2bd6ba5520ee, runtime selection, full execution budgets, payload recipe and physical owner gates are unchanged. The original Windows log response, old module, negative controls and corrected controls are retained with exact hashes. The request revision explicitly admits a fresh harness campaign; the failed run remains failed.

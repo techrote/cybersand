@@ -1,0 +1,503 @@
+{
+  "source": "0da970283d076ae4660a9d93efd0e5180d313247",
+  "tree": "209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88",
+  "base": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+  "same_tree_as_original_independent_review": true,
+  "disposition": "APPROVE_MERGE",
+  "scope": "Qualified CI/tooling only; preserve ancestry; no native publication",
+  "owner_comments_refreshed": true,
+  "ready": true,
+  "mergeable": true,
+  "workflows": [
+    {
+      "id": 45706972873,
+      "attempt": 1,
+      "name": "Native",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 139531337387,
+          "name": "ready validation scope",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531502491,
+          "name": "Native evidence and provider policy",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531957325,
+          "name": "Native family / worldgen",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531957344,
+          "name": "Native family / soliding-asan",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531957345,
+          "name": "Native family / native-normal",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531957390,
+          "name": "Native family / tsan",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531957425,
+          "name": "Native family / asan-ubsan",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531957428,
+          "name": "Native family / soliding-normal",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139542421108,
+          "name": "native",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        }
+      ]
+    },
+    {
+      "id": 45706973071,
+      "attempt": 1,
+      "name": "GDE",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 139531422169,
+          "name": "ready validation scope",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531422199,
+          "name": "physical-actor-stress",
+          "conclusion": "skipped",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531486156,
+          "name": "complete execution budgets",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531486170,
+          "name": "linux build x86_64",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531486479,
+          "name": "windows x86_64",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457241,
+          "name": "windows headless regression shard 5",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457344,
+          "name": "windows headless regression shard 0",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457358,
+          "name": "windows headless regression shard 7",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457371,
+          "name": "windows headless regression shard 6",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457393,
+          "name": "windows headless regression shard 8",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457402,
+          "name": "windows headless regression shard 3",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457438,
+          "name": "windows headless regression shard 17",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457440,
+          "name": "windows headless regression shard 10",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457447,
+          "name": "windows headless regression shard 14",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457470,
+          "name": "windows headless regression shard 4",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457471,
+          "name": "windows headless regression shard 13",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457472,
+          "name": "windows headless regression shard 9",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457482,
+          "name": "windows headless regression shard 11",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457496,
+          "name": "windows headless regression shard 16",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457521,
+          "name": "windows headless regression shard 2",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457526,
+          "name": "windows headless regression shard 1",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457549,
+          "name": "windows headless regression shard 15",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534457555,
+          "name": "windows headless regression shard 12",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534459716,
+          "name": "windows headless regression shard 19",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534459739,
+          "name": "windows headless regression shard 18",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534459890,
+          "name": "windows headless regression shard 21",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534459901,
+          "name": "windows headless regression shard 22",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139534459909,
+          "name": "windows headless regression shard 20",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536557813,
+          "name": "art workbench graphical smoke",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558450,
+          "name": "linux regression shard 3",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558488,
+          "name": "linux regression shard 0",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558489,
+          "name": "linux regression shard 6",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558510,
+          "name": "linux regression shard 15",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558515,
+          "name": "linux regression shard 11",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558518,
+          "name": "linux regression shard 5",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558520,
+          "name": "linux regression shard 10",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558526,
+          "name": "linux regression shard 14",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558528,
+          "name": "linux regression shard 2",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558533,
+          "name": "linux regression shard 17",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558542,
+          "name": "linux regression shard 8",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558544,
+          "name": "linux regression shard 16",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558552,
+          "name": "linux regression shard 4",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558557,
+          "name": "linux regression shard 9",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558574,
+          "name": "linux regression shard 1",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558590,
+          "name": "linux regression shard 13",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558661,
+          "name": "linux regression shard 12",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536558692,
+          "name": "linux regression shard 7",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536560409,
+          "name": "linux regression shard 18",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536560422,
+          "name": "linux regression shard 19",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536560614,
+          "name": "linux regression shard 20",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536560699,
+          "name": "linux regression shard 22",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536560730,
+          "name": "linux regression shard 23",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139536560772,
+          "name": "linux regression shard 21",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139541744334,
+          "name": "windows sharded execution coverage",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139541869853,
+          "name": "linux x86_64",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139541869891,
+          "name": "retained execution and physical timing history",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        }
+      ],
+      "windows_cases": 317,
+      "windows_shards": 23,
+      "windows_hashed_logs": 340,
+      "linux_cases": 340,
+      "linux_shards": 24,
+      "scoped_job_skip": "physical-actor-stress",
+      "nonzero_shard_watchdog_step_skips": "Controls run once on shard zero; all actual shard test steps pass"
+    },
+    {
+      "id": 45706972995,
+      "attempt": 1,
+      "name": "Palette",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 139531336694,
+          "name": "plan",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531603263,
+          "name": "linux (linux, visual, 0, 2, 320, 213, 66, 12764, 3910, 15, 300, 240, 41, 300, 300, 300, 300, 300,...",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531603291,
+          "name": "windows (win32, visual, 1, 2, 290, 179, 66, 10683, 3910, 15, 300, 240, 41, 300, 300, 300, 300, 30...",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531603300,
+          "name": "linux (linux, visual, 1, 2, 320, 213, 66, 12764, 3910, 15, 300, 240, 41, 300, 300, 300, 300, 300,...",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531603355,
+          "name": "windows (win32, main-cache, 0, 1, 350, 235, 66, 14082, 3910, 15, 300, 240, 41, 300, 300, 300, 300...",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531603382,
+          "name": "windows (win32, visual, 0, 2, 320, 213, 66, 12764, 3910, 15, 300, 240, 41, 300, 300, 300, 300, 30...",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139531603417,
+          "name": "linux (linux, main-cache, 0, 1, 340, 235, 66, 14082, 3910, 15, 300, 240, 41, 300, 300, 300, 300, ...",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        },
+        {
+          "id": 139533739722,
+          "name": "readback",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        }
+      ]
+    },
+    {
+      "id": 45706973052,
+      "attempt": 1,
+      "name": "Documentation",
+      "conclusion": "success",
+      "jobs": [
+        {
+          "id": 139531369660,
+          "name": "consistency",
+          "conclusion": "success",
+          "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247"
+        }
+      ]
+    },
+    {
+      "id": 45706972977,
+      "attempt": 1,
+      "name": "Native source advisory",
+      "conclusion": "success"
+    }
+  ],
+  "prior_draft_results": "Cancelled and skipped predecessor admission cohort is preserved, not counted as qualification."
+}

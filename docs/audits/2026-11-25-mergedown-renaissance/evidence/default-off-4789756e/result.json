@@ -1,0 +1,22 @@
+{
+  "checks": 68,
+  "command": [
+    "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/2e90cf7b4aa3/cybersand-product/godot",
+    "--script",
+    "res://tests/test_ambient_default_off_integration.gd",
+    "--",
+    "--ci"
+  ],
+  "exit_code": 0,
+  "failures": [],
+  "input_custody": "passed",
+  "log_sha256": "be131ba79cfd753f8cfe58f723f94731d0972ae9ecb4b12fcd72a4b8b12d7870",
+  "pid": 23,
+  "seconds": 6.439,
+  "source_commit": "4789756ec6e9b0bb4808733fe4c0e7f5dfa3752c",
+  "status": "passed",
+  "timeout_seconds": 3940.0
+}

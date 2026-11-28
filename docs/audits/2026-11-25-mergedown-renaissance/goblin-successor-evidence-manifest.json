@@ -1,0 +1,653 @@
+{
+  "schema": 1,
+  "archive": "goblin-successor-evidence.tar.xz",
+  "bytes": 5803300,
+  "sha256": "7d21dfbd677d25b06b795fc42df667f81b731319e7541436d2a987935f9556f9",
+  "scope": "Original lead Goblin002 targeted qualification, three exact-source ambient integration attempts including test-development failures, raw action records, sampled process-tree telemetry and deduplicated byte-identical executed-source archives. No long-horizon or Windows acceptance claim.",
+  "first_source": "5e7dacc60719a922f141bdd061ad9c45bfcf528b",
+  "ambient_source": "21c9a6670e05cfb8b8eeb76d02b03fb75019468f",
+  "ambient_tree": "72447242d2088d66c2f7f10ed5fead66a7c15ae0",
+  "source_archive_aliases": [
+    {
+      "original_path": "goblin-successor-5e7d/authored_lineage/executed-game-source.zip",
+      "retained_path": "source-archives/494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045.zip",
+      "sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "bytes": 2827493
+    },
+    {
+      "original_path": "goblin-successor-5e7d/baseline/executed-game-source.zip",
+      "retained_path": "source-archives/494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045.zip",
+      "sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "bytes": 2827493
+    },
+    {
+      "original_path": "goblin-successor-5e7d/discovery/executed-game-source.zip",
+      "retained_path": "source-archives/494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045.zip",
+      "sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "bytes": 2827493
+    },
+    {
+      "original_path": "goblin-successor-5e7d/expanded/executed-game-source.zip",
+      "retained_path": "source-archives/494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045.zip",
+      "sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "bytes": 2827493
+    },
+    {
+      "original_path": "goblin-successor-5e7d/metamorphic/executed-game-source.zip",
+      "retained_path": "source-archives/494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045.zip",
+      "sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "bytes": 2827493
+    },
+    {
+      "original_path": "goblin-successor-5e7d/unit/executed-game-source.zip",
+      "retained_path": "source-archives/494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045.zip",
+      "sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045",
+      "bytes": 2827493
+    },
+    {
+      "original_path": "goblin-ambient-d3dd/executed-game-source.zip",
+      "retained_path": "source-archives/21f5e77e21ee50b5f2951271a5ad2cc6c51f9ba76022d09e9c1657a28cf7eeef.zip",
+      "sha256": "21f5e77e21ee50b5f2951271a5ad2cc6c51f9ba76022d09e9c1657a28cf7eeef",
+      "bytes": 2943726
+    },
+    {
+      "original_path": "goblin-ambient-policy-fix/executed-game-source.zip",
+      "retained_path": "source-archives/61d66812f1c9251c7aa1e63915516d3e34a4d34324e015e6297975c1b7332290.zip",
+      "sha256": "61d66812f1c9251c7aa1e63915516d3e34a4d34324e015e6297975c1b7332290",
+      "bytes": 2943770
+    },
+    {
+      "original_path": "goblin-ambient-owner-ack/executed-game-source.zip",
+      "retained_path": "source-archives/e3a6ad7b0ba0759528809320b7d972231937c9fc59fadbc657701767f788411f.zip",
+      "sha256": "e3a6ad7b0ba0759528809320b7d972231937c9fc59fadbc657701767f788411f",
+      "bytes": 2943913
+    }
+  ],
+  "files": [
+    {
+      "path": "source-archives/494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045.zip",
+      "bytes": 2827493,
+      "sha256": "494559db8336bbcf287b0dc8adbc79fd57c491b5b7a1478a41ebda28c9dad045"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/goblin_authored_lineage-independent-readback.json",
+      "bytes": 1615,
+      "sha256": "39c09cddf9251631cd5efd1992a317090e9d41b1d02a95ce3c133be21e045c47"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/goblin_authored_lineage.log",
+      "bytes": 537,
+      "sha256": "1a4734e19f6a86dfa8525c0432e7516ec20d4710e2921d457e8e87b000c80516"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/import-result.json",
+      "bytes": 987,
+      "sha256": "ad4a2dd216b1c6b4d391738f892de956f779a1afce4b4e95d46e9edaa1fc666f"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/import.log",
+      "bytes": 45771,
+      "sha256": "9eab355d43757c8bc81e328c914e95732ca5b64d4450b2eb2f7054b1c5721cef"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/authored-lineage-test.json",
+      "bytes": 646802,
+      "sha256": "352454a020898bc6c73a6e96abdb6fbb7e74ed51fc4ec71bc5d5fd82da6ebff4"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/corpus.json",
+      "bytes": 26291,
+      "sha256": "265c4e6859d2c5d58b62e19ccdb599e4df0b446d6d3a2d21b7659f29bc9208b3"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/findings.json",
+      "bytes": 12574,
+      "sha256": "afbaa2262c70d86135bf4949220606243b469c50614efda5e6474f03d5d11b62"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-001.json",
+      "bytes": 82637,
+      "sha256": "83cc2489a289389bd6f7d2b346072da3f570096fa2eab154af34935464f13ed8"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-002.json",
+      "bytes": 134461,
+      "sha256": "cb228d564ebd66fe00036444a5dd99f55d5bd0ed37412b6e5f45d1b9468a58d1"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-003.json",
+      "bytes": 166023,
+      "sha256": "f850f8792028a364fdf3eb7f1539d0436e0d6e9ee3c56c5ba803c8b3ce0cf70e"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/run-004.json",
+      "bytes": 237258,
+      "sha256": "9fda09250fe9fbf9d76629fc6b925813c8044c0d04c8fbe9dcede98f33e23408"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/summary.json",
+      "bytes": 7534,
+      "sha256": "9e92998aa8b8e31a575d31b23e569a176569eb6b05b3796e7721ec8b7976827f"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+      "bytes": 237258,
+      "sha256": "9fda09250fe9fbf9d76629fc6b925813c8044c0d04c8fbe9dcede98f33e23408"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 393,
+      "sha256": "5acc4a861c72ad02e8bd8a584b0f52b6850744eb17dcb2ab091e7a0c8e6ce366"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/data/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-goblin-layout.json",
+      "bytes": 637,
+      "sha256": "6cc2a404440f17fdb7f22fe3721a0eb2fce660ff09e911d0637d618511fe437d"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/profile-00-goblin_authored_lineage/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/provenance.json",
+      "bytes": 1772,
+      "sha256": "b9853889769c473a22525cabf29eb856b3bf3c2a4541542f76f0f1557a17680f"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/qualification.json",
+      "bytes": 4920,
+      "sha256": "0476bc6780734852dac99e49fc5043c52ec5b17dce57eb331fd09596dd1ef790"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/source-snapshot.json",
+      "bytes": 112635,
+      "sha256": "69d66c9302fb13a4cd01cd3892783dec4105fe186a37b1cf7fc8ac28c09a7e42"
+    },
+    {
+      "path": "goblin-successor-5e7d/authored_lineage/transcript.json",
+      "bytes": 738808,
+      "sha256": "5d6d54223cdfdcefe1e24da00b5d6de263b4789f6ce572453d0a3b5c845aa69b"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/import-result.json",
+      "bytes": 979,
+      "sha256": "14e2ec170ff979f8e491291ce3e7af89278042458e0afdf0a1976c1f6c679839"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/import.log",
+      "bytes": 45771,
+      "sha256": "9eab355d43757c8bc81e328c914e95732ca5b64d4450b2eb2f7054b1c5721cef"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/profile/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/profile-00-test_workbench_deferred_paint/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1835,
+      "sha256": "791205fa816fe593fa203e6512ccae6aa626d9d0f123ba5843aa22031f8ba1de"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/profile-00-test_workbench_deferred_paint/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/profile-01-test_workbench_input/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 1117,
+      "sha256": "2f01a6c74bb312bbe0e350be1bdc71690f8e9b600062cd411f077cedd2c7f0c6"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/profile-01-test_workbench_input/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/provenance.json",
+      "bytes": 1772,
+      "sha256": "b9853889769c473a22525cabf29eb856b3bf3c2a4541542f76f0f1557a17680f"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/qualification.json",
+      "bytes": 4336,
+      "sha256": "53ffaeea08379f0d7441ea8f864bc71d3b728a050743f39b96d60cb309fdb03b"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/source-snapshot.json",
+      "bytes": 112635,
+      "sha256": "69d66c9302fb13a4cd01cd3892783dec4105fe186a37b1cf7fc8ac28c09a7e42"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/test_workbench_deferred_paint.log",
+      "bytes": 1979,
+      "sha256": "c6918c8d1d0c4cf441dde8f126a0800619dcd78a46ac58e17a618c788616435a"
+    },
+    {
+      "path": "goblin-successor-5e7d/baseline/test_workbench_input.log",
+      "bytes": 1261,
+      "sha256": "37e191e06fa78f25f8f82f40e6c64bb4370c6d7d2ac681a39bd18c5a1ce563bb"
+    },
+    {
+      "path": "goblin-successor-5e7d/discovery/goblin_exploration.log",
+      "bytes": 402,
+      "sha256": "704ac50b27a04f0a12a7f315b41f1f24f6df8e18037e0609c7a2f14274ce109a"
+    },
+    {
+      "path": "goblin-successor-5e7d/discovery/import-result.json",
+      "bytes": 980,
+      "sha256": "15370cd5b92fd6c3b862c03bfac20ca01db4defc445a6560f29b4c802af4b688"
+    },
+    {
+      "path": "goblin-successor-5e7d/discovery/import.log",
+      "bytes": 45771,
+      "sha256": "9eab355d43757c8bc81e328c914e95732ca5b64d4450b2eb2f7054b1c5721cef"
+    },
+    {
+      "path": "goblin-successor-5e7d/discovery/profile/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/discovery/profile-00-goblin_exploration/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 258,
+      "sha256": "4f9f1fb66f093a70f3ba54616922589c9d26c31b8229f9b3145a1e9f1e146e07"
+    },
+    {
+      "path": "goblin-successor-5e7d/discovery/profile-00-goblin_exploration/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/discovery/provenance.json",
+      "bytes": 1772,
+      "sha256": "b9853889769c473a22525cabf29eb856b3bf3c2a4541542f76f0f1557a17680f"
+    },
+    {
+      "path": "goblin-successor-5e7d/discovery/qualification.json",
+      "bytes": 3119,
+      "sha256": "86b88dce4a6fd3c19402513ceed9f0ea527960905f4f5dda70aceb0a36dbf8e6"
+    },
+    {
+      "path": "goblin-successor-5e7d/discovery/source-snapshot.json",
+      "bytes": 112635,
+      "sha256": "69d66c9302fb13a4cd01cd3892783dec4105fe186a37b1cf7fc8ac28c09a7e42"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/goblin_expanded.log",
+      "bytes": 16923,
+      "sha256": "60699db8ca4c6dcfedc31dc124a56684b36744d3ad09141cd1dee620dbe78860"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/import-result.json",
+      "bytes": 979,
+      "sha256": "a270e42a7df192282e98c975a2e8fb6fc3339088d077e349b3658880a6b5491c"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/import.log",
+      "bytes": 45771,
+      "sha256": "9eab355d43757c8bc81e328c914e95732ca5b64d4450b2eb2f7054b1c5721cef"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/profile/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/profile-00-goblin_expanded/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/expanded-test.json",
+      "bytes": 5831077,
+      "sha256": "8479f1795ba8062cafe016c7a39b369643760cd0bc8778631d6650a7121aaae8"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/profile-00-goblin_expanded/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 16779,
+      "sha256": "a89608c21aa695dfa72921d3fae92de8af229ca2bfbc2d9840024422648003c9"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/profile-00-goblin_expanded/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/provenance.json",
+      "bytes": 1772,
+      "sha256": "b9853889769c473a22525cabf29eb856b3bf3c2a4541542f76f0f1557a17680f"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/qualification.json",
+      "bytes": 3117,
+      "sha256": "10c931915c435b20dc783fd0a6705169d3b315e8e03363ebc74f6e01330ab53e"
+    },
+    {
+      "path": "goblin-successor-5e7d/expanded/source-snapshot.json",
+      "bytes": 112635,
+      "sha256": "69d66c9302fb13a4cd01cd3892783dec4105fe186a37b1cf7fc8ac28c09a7e42"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/goblin_metamorphic.log",
+      "bytes": 2939,
+      "sha256": "e9328d29ce98213d56ec0d5af171d931cb3140a48335980196934a50015e33c6"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/import-result.json",
+      "bytes": 983,
+      "sha256": "f20ab38c8458a6b393dba14569b5d4a5f557b06e8fa174efb34c11c11218e723"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/import.log",
+      "bytes": 45771,
+      "sha256": "9eab355d43757c8bc81e328c914e95732ca5b64d4450b2eb2f7054b1c5721cef"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/profile/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/profile-00-goblin_metamorphic/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/metamorphic-test.json",
+      "bytes": 1246815,
+      "sha256": "344789a21e2bd9749dede7264941b2dcffd93b25056c0da90a7a3943125e6e2b"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/profile-00-goblin_metamorphic/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 2795,
+      "sha256": "7536502e01f8f1dd7cc3c62409900bb3a568a6663b34a3fa5e96a5ecb1082026"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/profile-00-goblin_metamorphic/data/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-goblin-layout.json",
+      "bytes": 753,
+      "sha256": "b0228f726d6c049cea37bc7b83e777e4769d845591fa0f2ef7684dd314f61277"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/profile-00-goblin_metamorphic/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/provenance.json",
+      "bytes": 1772,
+      "sha256": "b9853889769c473a22525cabf29eb856b3bf3c2a4541542f76f0f1557a17680f"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/qualification.json",
+      "bytes": 3127,
+      "sha256": "bdd8433e4b11a71efa1929a4540b3d5aa4917bf868c26696b2d3ddef68611ffb"
+    },
+    {
+      "path": "goblin-successor-5e7d/metamorphic/source-snapshot.json",
+      "bytes": 112635,
+      "sha256": "69d66c9302fb13a4cd01cd3892783dec4105fe186a37b1cf7fc8ac28c09a7e42"
+    },
+    {
+      "path": "goblin-successor-5e7d/qualification.json",
+      "bytes": 1908,
+      "sha256": "d77a8fa30ba2b086893e050310683765c011bac22d3ad34b534cfbb679f371eb"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/goblin_gameplay_contracts.log",
+      "bytes": 403,
+      "sha256": "aabc186c392c87f0c35a75e84fbbea1e3d3467a3eefb548faf0a58faef469a88"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/import-result.json",
+      "bytes": 975,
+      "sha256": "9eb263f7d74706ed8ba01b6a3b849656924ec93c450ba7ae9ca6bdced694f03b"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/import.log",
+      "bytes": 45771,
+      "sha256": "9eab355d43757c8bc81e328c914e95732ca5b64d4450b2eb2f7054b1c5721cef"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/profile/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/profile-00-test_goblin_policies/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 309,
+      "sha256": "c9a46127db6aa3a18818cd8d8908a53f0649e3703d12c596899b32e6e6c31092"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/profile-00-test_goblin_policies/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/profile-01-test_goblin_contract/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 261,
+      "sha256": "b793aba1329788c7aeaac658c1f14aae97db2cb662b50a96cf04e2543045d045"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/profile-01-test_goblin_contract/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/profile-02-goblin_gameplay_contracts/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 259,
+      "sha256": "70294f6308bdaa7a23f3da0e1338f6d5bc22108c302bfda3b3e0f3352d3f9a42"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/profile-02-goblin_gameplay_contracts/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "bf621fe7240f729826735e91d015b39bfc201b73c83289d61e02ae75bf97a316"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/provenance.json",
+      "bytes": 1772,
+      "sha256": "b9853889769c473a22525cabf29eb856b3bf3c2a4541542f76f0f1557a17680f"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/qualification.json",
+      "bytes": 5543,
+      "sha256": "82f0a7bbccefbaac9feba0ae3b2545d4bdd43c9bc8da6b479117b5e508d48b3f"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/source-snapshot.json",
+      "bytes": 112635,
+      "sha256": "69d66c9302fb13a4cd01cd3892783dec4105fe186a37b1cf7fc8ac28c09a7e42"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/test_goblin_contract.log",
+      "bytes": 405,
+      "sha256": "50b30f16680ebcc88ec19f7cd124947a82db0f3d8dfc45bdbd360acb4cd55cd9"
+    },
+    {
+      "path": "goblin-successor-5e7d/unit/test_goblin_policies.log",
+      "bytes": 453,
+      "sha256": "81303678006663428cecfa490ba1a7334e3f736a6e2ea5472312ee4fe7a8aab0"
+    },
+    {
+      "path": "source-archives/21f5e77e21ee50b5f2951271a5ad2cc6c51f9ba76022d09e9c1657a28cf7eeef.zip",
+      "bytes": 2943726,
+      "sha256": "21f5e77e21ee50b5f2951271a5ad2cc6c51f9ba76022d09e9c1657a28cf7eeef"
+    },
+    {
+      "path": "goblin-ambient-d3dd/goblin_ambient_integration.log",
+      "bytes": 929,
+      "sha256": "0aa53cc760e2a822939271dbfe68ef56cdcae0a1f06432f215c747375d92d9e9"
+    },
+    {
+      "path": "goblin-ambient-d3dd/import-result.json",
+      "bytes": 968,
+      "sha256": "ed520550e0be958817078b2d7a37ba7fde4576522d609763fbfc1359f0c4c11d"
+    },
+    {
+      "path": "goblin-ambient-d3dd/import.log",
+      "bytes": 47047,
+      "sha256": "64fd7e4992ba5a4c52bf62b184666f065a8d963dabfc598539a99e9bdf874200"
+    },
+    {
+      "path": "goblin-ambient-d3dd/profile/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "6b97e51e4bdb6b29a0c1154f3361bfaf34c81c1979fbb2471a054276106e1161"
+    },
+    {
+      "path": "goblin-ambient-d3dd/profile-00-goblin_ambient_integration/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/ambient-integration.json",
+      "bytes": 150423,
+      "sha256": "2721b9a2409de02465581606dbd7e8e88a4d791aa8309b549347d6c881092e4d"
+    },
+    {
+      "path": "goblin-ambient-d3dd/profile-00-goblin_ambient_integration/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 777,
+      "sha256": "d76382ccce70d7f8960fe2fc4ccfd21b26b3eb87a2cc9b03955edb64938f75bc"
+    },
+    {
+      "path": "goblin-ambient-d3dd/profile-00-goblin_ambient_integration/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "6b97e51e4bdb6b29a0c1154f3361bfaf34c81c1979fbb2471a054276106e1161"
+    },
+    {
+      "path": "goblin-ambient-d3dd/provenance.json",
+      "bytes": 1772,
+      "sha256": "4682bdce800304c8a385b6cc83fff59a3bff60c539a9aea92cb826b5afa752ba"
+    },
+    {
+      "path": "goblin-ambient-d3dd/qualification.json",
+      "bytes": 3246,
+      "sha256": "d33146327e6c3f6e67585dcb633b8f6432ea9a0091d83968ecfbc733ea9b93c3"
+    },
+    {
+      "path": "goblin-ambient-d3dd/source-snapshot.json",
+      "bytes": 115777,
+      "sha256": "9dd155afe269a74efa174643d7c46b4706c278b483084c766c722ba9da31e52d"
+    },
+    {
+      "path": "source-archives/61d66812f1c9251c7aa1e63915516d3e34a4d34324e015e6297975c1b7332290.zip",
+      "bytes": 2943770,
+      "sha256": "61d66812f1c9251c7aa1e63915516d3e34a4d34324e015e6297975c1b7332290"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/goblin_ambient_integration.log",
+      "bytes": 962,
+      "sha256": "5f43cb7cec17f97e98e0d0203c5e43a6ac4eaffa058aaffd9d3f42227b676ab7"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/import-result.json",
+      "bytes": 974,
+      "sha256": "8dd2db8d41424b682f785746d925c7e3063ba0da4fee58cd5ea8f1ba02d5bca3"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/import.log",
+      "bytes": 47047,
+      "sha256": "64fd7e4992ba5a4c52bf62b184666f065a8d963dabfc598539a99e9bdf874200"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/profile/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "413631ed35e83a0c9408f6612a53cfa4ff75837b6b373aa2dfc97b193873e56f"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/profile-00-goblin_ambient_integration/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/ambient-integration.json",
+      "bytes": 1036741,
+      "sha256": "450922a654a8504c978eb094d797a552f9b53a3fdfa55253fb16e78bdeebf693"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/profile-00-goblin_ambient_integration/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 810,
+      "sha256": "229eec2c3e67c2b181934c563c9f529ee1d9b06ae77d6989bcea28b3eb884958"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/profile-00-goblin_ambient_integration/data/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-goblin-layout.json",
+      "bytes": 2218,
+      "sha256": "63205ba0b07165d1b071115cf97478a74ea8ea04294eb2fa4207b70bd453571e"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/profile-00-goblin_ambient_integration/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "413631ed35e83a0c9408f6612a53cfa4ff75837b6b373aa2dfc97b193873e56f"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/provenance.json",
+      "bytes": 1772,
+      "sha256": "924d3bbbfd0fe83be090ca12eff59dae8f19ebdf207997086e38d9c9bbd2b9f0"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/qualification.json",
+      "bytes": 3267,
+      "sha256": "ee1666036c6a10c3a151eec5b5d33cdc8c5bd7e3840a265837fa35118bbf7f3e"
+    },
+    {
+      "path": "goblin-ambient-policy-fix/source-snapshot.json",
+      "bytes": 115777,
+      "sha256": "59d667504f71cc54296f0c6218ba68655b366516156d9e6df33ab74846edfcd1"
+    },
+    {
+      "path": "source-archives/e3a6ad7b0ba0759528809320b7d972231937c9fc59fadbc657701767f788411f.zip",
+      "bytes": 2943913,
+      "sha256": "e3a6ad7b0ba0759528809320b7d972231937c9fc59fadbc657701767f788411f"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/goblin_ambient_integration.log",
+      "bytes": 347,
+      "sha256": "727d5db1daffe9a8ed07a889441a7285a710273ec72c5a28732581326a4175cc"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/import-result.json",
+      "bytes": 973,
+      "sha256": "dcd48a69b87fc9145b060e9f826f640b15d61ead83e83fb65e25cd205c6d4b89"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/import.log",
+      "bytes": 47047,
+      "sha256": "64fd7e4992ba5a4c52bf62b184666f065a8d963dabfc598539a99e9bdf874200"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/profile/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "cc38a204a1e28d992cb015a8b385d470da77ad11385ab0df13e60d4e0b95ef44"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/profile-00-goblin_ambient_integration/data/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/ambient-integration.json",
+      "bytes": 1036141,
+      "sha256": "5b24be545051f4ed696fe35043294df36b606625d5b09cf3afb1db82fcabc156"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/profile-00-goblin_ambient_integration/data/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log",
+      "bytes": 203,
+      "sha256": "8a7fab6e4a9f5d05b1df70becc26b31017e3fae813910a8f541a9fc0c21dcd09"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/profile-00-goblin_ambient_integration/data/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/setup-goblin-layout.json",
+      "bytes": 2218,
+      "sha256": "63205ba0b07165d1b071115cf97478a74ea8ea04294eb2fa4207b70bd453571e"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/profile-00-goblin_ambient_integration/goblin-profile.json",
+      "bytes": 2143,
+      "sha256": "cc38a204a1e28d992cb015a8b385d470da77ad11385ab0df13e60d4e0b95ef44"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/provenance.json",
+      "bytes": 1772,
+      "sha256": "76194e51dbca3d3ec9ada50090ed857c0ec37582855239f9279816c32a98bc22"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/qualification.json",
+      "bytes": 3138,
+      "sha256": "290592d0a291e9b55db78a982c4a52d35bcafe73a43cf6bf4ae77749761a7b58"
+    },
+    {
+      "path": "goblin-ambient-owner-ack/source-snapshot.json",
+      "bytes": 115777,
+      "sha256": "8583d52e146fe89f2c97c39c313fb9fdebe02a159f13dc3521c7754047d4f258"
+    },
+    {
+      "path": "python/goblin-successor-python-native-parity.log",
+      "bytes": 1793,
+      "sha256": "d80e778a7b18d0b23cd7ab15af604e1ccea7be94729ff51af19513441415a01b"
+    },
+    {
+      "path": "python/goblin-successor-python-tests.log",
+      "bytes": 355,
+      "sha256": "cc43de535fed7b6776c8403f45a566349b50382e729119780ae977a5b4298eaa"
+    }
+  ]
+}

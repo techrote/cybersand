@@ -1,0 +1,2765 @@
+{
+  "observed_at": "2026-11-25T21:54:06.105186+00:00",
+  "pull_requests": [
+    {
+      "number": 784,
+      "title": "MERGEDOWN-RENAISSANCE-001: source-pinned integration ledger and coordinated mainline consolidation",
+      "head": "integration/mergedown-renaissance-001",
+      "head_sha": "5e4e76a195ffa45b583b297561a3a60d34411735",
+      "base": "main",
+      "base_sha": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "draft": true,
+      "updated_at": "2026-11-25T21:51:41Z"
+    },
+    {
+      "number": 783,
+      "title": "DOCS-RENAISSANCE-ULTIMA-001: failure-safe authoring, trusted retrieval and compact knowledge custody",
+      "head": "docs/docs-renaissance-ultima-001",
+      "head_sha": "bfa40c84964b10b8bc15b2d836ce93d389f20836",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-25T21:40:05Z"
+    },
+    {
+      "number": 782,
+      "title": "Draft/HOLD: observe Art Windows startup phases over frozen bcc application",
+      "head": "art/collaborative-002-startup-windows",
+      "head_sha": "60a0db0206a6e7ef24b97d44e7cc1db60918dbca",
+      "base": "art/collaborative-002",
+      "base_sha": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "draft": true,
+      "updated_at": "2026-11-25T05:32:35Z"
+    },
+    {
+      "number": 781,
+      "title": "Draft/HOLD: GIP-014 goblin 002 persistent gameplay discovery laboratory",
+      "head": "experiment/gip014-goblin-002-20261125",
+      "head_sha": "36d82cae75e5fd8dad11646663248de8003f5bf9",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-25T09:45:48Z"
+    },
+    {
+      "number": 780,
+      "title": "[Draft/HOLD] ART-WORKBENCH-COLLABORATIVE-002 \u2014 Conversational native world authoring",
+      "head": "art/collaborative-002",
+      "head_sha": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-25T06:57:53Z"
+    },
+    {
+      "number": 779,
+      "title": "Draft/HOLD: AMBIENT-002 living inhabitants, spatial memory and settlements",
+      "head": "feature/ambient-002-living-inhabitants-20261125",
+      "head_sha": "957190050ea6b32b47523234e508c7690a2abba9",
+      "base": "feature/ambient-001-20261124",
+      "base_sha": "d0af9b6015c27417fddd67f79afdcf656a609571",
+      "draft": true,
+      "updated_at": "2026-11-25T06:55:40Z"
+    },
+    {
+      "number": 778,
+      "title": "[Draft/HOLD] CI-READY-RECOVERY-001 \u2014 exact Godot asset and scalable regression planning",
+      "head": "ci/ready-foundation-repair-20261125",
+      "head_sha": "585520e7e62b67ce8c4c86605b08e1f8cc920bba",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-25T21:43:35Z"
+    },
+    {
+      "number": 777,
+      "title": "[Draft/HOLD] WORLD-STEER M6\u2013M7 \u2014 Collaborative native architecture, rich parts and bounded delegation",
+      "head": "feat/world-steer-collaborative-architecture-20261124",
+      "head_sha": "4cc400cea6be7cb338f15bc6a6a2b28b44143b71",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-25T06:55:38Z"
+    },
+    {
+      "number": 776,
+      "title": "STRATA-THEATRE-002: layered native authoring and environmental atmosphere \u2014 Draft/HOLD",
+      "head": "feat/strata-theatre-002-20261124",
+      "head_sha": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-25T01:18:57Z"
+    },
+    {
+      "number": 775,
+      "title": "Draft/HOLD: AMBIENT-001 modular procedural actors and native perception",
+      "head": "feature/ambient-001-20261124",
+      "head_sha": "d0af9b6015c27417fddd67f79afdcf656a609571",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": false,
+      "updated_at": "2026-11-25T00:57:10Z"
+    },
+    {
+      "number": 774,
+      "title": "DOCS-RENAISSANCE-001: completed documentation and qualification [Draft/HOLD]",
+      "head": "docs/docs-renaissance-001",
+      "head_sha": "20170bd6259498c3d2774ab274567febb043fc1d",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-25T20:33:47Z"
+    },
+    {
+      "number": 773,
+      "title": "[Draft/HOLD] ART-WORKBENCH-FINAL-001 \u2014 Art Workbench finisher",
+      "head": "art/workbench-final-001",
+      "head_sha": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": false,
+      "updated_at": "2026-11-25T00:57:13Z"
+    },
+    {
+      "number": 772,
+      "title": "Draft/HOLD: GIP-014 goblin real-game playtesting",
+      "head": "experiment/gip014-goblin-gameplay-20261124",
+      "head_sha": "d4484bd5b488cb419bfaa94f1e69be8128734405",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": false,
+      "updated_at": "2026-11-25T00:57:12Z"
+    },
+    {
+      "number": 771,
+      "title": "CI closure + Ready recovery: coordinated campaigns and runtime custody",
+      "head": "codex/ci-engineering-closure-001",
+      "head_sha": "0da970283d076ae4660a9d93efd0e5180d313247",
+      "base": "main",
+      "base_sha": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "draft": false,
+      "updated_at": "2026-11-25T21:45:21Z"
+    },
+    {
+      "number": 770,
+      "title": "[Draft/HOLD] WORLD-STEER-BATCH M3\u2013M5: native modules, GOLDMAPS retrieval and staged architecture",
+      "head": "feat/world-steer-m3-m5-20261124",
+      "head_sha": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-24T20:15:09Z"
+    },
+    {
+      "number": 769,
+      "title": "[Draft/HOLD] STRATA-THEATRE-WORKBENCH-001: editable four-plane composition",
+      "head": "feat/strata-theatre-workbench-001-20261124",
+      "head_sha": "80623d039aa49bc0c1d84a9206d89812ffa99ea6",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-24T19:11:49Z"
+    },
+    {
+      "number": 768,
+      "title": "MAT-AUDITION-LIVE-001: current-scene native material audition",
+      "head": "mat/audition-live-001",
+      "head_sha": "858ef9e7285fcaa22c9cc1381d0cb0082057a456",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-24T20:37:10Z"
+    },
+    {
+      "number": 767,
+      "title": "[Draft/HOLD] PUBPRES FINAL: physical progression recovery and playable Workbench qualification",
+      "head": "codex/pubpres-playability-final-001-20261124",
+      "head_sha": "a3de36ced3ae42a8c0d0a2d1ec8a2f3aa9b20fda",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-25T21:40:06Z"
+    },
+    {
+      "number": 766,
+      "title": "[Draft/HOLD] ART-INVALID-MODEL-CLOSE-744: bound failed HTTP path and hidden Art UI work",
+      "head": "fix/art-invalid-model-close-latency-744-20261123",
+      "head_sha": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-23T03:36:15Z"
+    },
+    {
+      "number": 765,
+      "title": "[Draft/HOLD] ART-LOCAL-CLOSE-744: absent LM Studio server / Art-close timing probe",
+      "head": "investigation/art-local-close-744-20261123",
+      "head_sha": "cb88ab25d6dbdc8b459431d0189332bb7d37188a",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-23T07:56:50Z"
+    },
+    {
+      "number": 763,
+      "title": "[Draft/HOLD] WB-ART-UI-APPLY-001: bound conversation editor and keep Apply visible (#713)",
+      "head": "fix/art-conversation-bounded-713-20261123",
+      "head_sha": "2d63bba23932feb2c051c11df9d0775c24ea451d",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-23T03:04:52Z"
+    },
+    {
+      "number": 762,
+      "title": "[Draft/HOLD] ACTOR-COMPOSE-FINAL-001: integrated pilot, stack and Windows acceptance",
+      "head": "integration/actor-compose-final-001-20261123",
+      "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-23T05:42:17Z"
+    },
+    {
+      "number": 760,
+      "title": "[Draft/HOLD] ACTOR-PILOT-759: restore keyboard drive with idle Grab/Place and preserve active manipulation",
+      "head": "fix/actor-compose-pilot-input-759",
+      "head_sha": "d5b2def695e64d8ab0c79fcc986a9d5ae250c75d",
+      "base": "recovery/actor-compose-002r-final-20261122",
+      "base_sha": "a85b3a5655e7f711ce27fbfc8fee7819332006f0",
+      "draft": true,
+      "updated_at": "2026-11-22T21:45:11Z"
+    },
+    {
+      "number": 757,
+      "title": "[DRAFT/HOLD] PUBPRES-COMPLETION-001 \u2014 integrated Workbench physical progression and presentation repair",
+      "head": "codex/pubpres-completion-001-20261122",
+      "head_sha": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-23T03:37:44Z"
+    },
+    {
+      "number": 756,
+      "title": "[Draft/HOLD] WB-ART-MODEL-ROSTER-001: refresh NVIDIA and LM Studio presets (#750)",
+      "head": "fix/wb-art-model-roster-750-20261122",
+      "head_sha": "8093a782a13a078ad6fa4fc9fdf11b969cbbf52f",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": false,
+      "updated_at": "2026-11-22T21:12:52Z"
+    },
+    {
+      "number": 755,
+      "title": "[Draft/HOLD] ACTOR-STACK-001: heap-bound World impulse lanes after Windows stack overflow",
+      "head": "fix/actor-world-stack-bound-20261122",
+      "head_sha": "3bd0bc572e070103588e3dae49a8abc78cce4b40",
+      "base": "recovery/actor-compose-002r-final-20261122",
+      "base_sha": "0bbff997cf47ae524f76d9a167d840c73b87e45f",
+      "draft": true,
+      "updated_at": "2026-11-22T20:43:13Z"
+    },
+    {
+      "number": 754,
+      "title": "ObjectShard M4: qualified ordinary Workbench and Windows evaluator (Draft / owner hold)",
+      "head": "integration/objectshard-m4-mainline-20261122",
+      "head_sha": "75865127fee19c56dacb0ae80307f438dd866cd1",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-25T06:55:41Z"
+    },
+    {
+      "number": 753,
+      "title": "[Draft/HOLD] GEN-006 pinned-runtime OS process-death supplement \u2014 original qualified DLL/SO",
+      "head": "exp/gen006-ramcache-pinned-death-001-20261122",
+      "head_sha": "89f62ff0f312163ff566d80ac709c44aec567e59",
+      "base": "exp/gen006-ramcache-001-20261122",
+      "base_sha": "ececa31e4337571ab672a4818c28f9d7d0e4d3ec",
+      "draft": true,
+      "updated_at": "2026-11-22T21:02:22Z"
+    },
+    {
+      "number": 752,
+      "title": "[Draft/HOLD] OBJECTSHARD-M4-WORKBENCH-001 \u2014 fail-closed same-World Workbench seam, latency and tests",
+      "head": "experiment/objectshard-m4-workbench-seam-20261122",
+      "head_sha": "351c5a78ebf7a6f71650ecc6b092ef36123badbe",
+      "base": "experiment/objectshard-m3-preflight-continuous-20261122",
+      "base_sha": "febfad1b0b1ee93dac8d5b5a76f145b9ab80ad0a",
+      "draft": true,
+      "updated_at": "2026-11-22T20:50:43Z"
+    },
+    {
+      "number": 751,
+      "title": "OBJECTSHARD-M4-NATIVE-001: owner-local versioned mutable body gate (HOLD)",
+      "head": "experiment/objectshard-m4-native-seam-20261122",
+      "head_sha": "a06537555002c12ffde231bfa051575a64bc16ca",
+      "base": "experiment/objectshard-m3-preflight-continuous-20261122",
+      "base_sha": "febfad1b0b1ee93dac8d5b5a76f145b9ab80ad0a",
+      "draft": true,
+      "updated_at": "2026-11-22T20:50:41Z"
+    },
+    {
+      "number": 749,
+      "title": "[Draft/HOLD] GIP-013: deterministic Gremlin contract-model PoC with optional Sprocket",
+      "head": "experiment/gip013-gremlin-20261122",
+      "head_sha": "a6fce059fa5620fcf4adb60cb9d2e7ed79050401",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-22T20:31:46Z"
+    },
+    {
+      "number": 748,
+      "title": "[Draft/HOLD] ACTOR-RECOVERY final: reconcile Art main + acknowledged Apply",
+      "head": "recovery/actor-compose-002r-final-20261122",
+      "head_sha": "30a4c3032fbbc0feb4b31b66bcfa64632ea3d84a",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-22T23:05:48Z"
+    },
+    {
+      "number": 747,
+      "title": "[Draft/HOLD] ACTOR-RECOVERY-B: retain staged Apply state until owner acknowledgement",
+      "head": "fix/actor-compose-002r-apply-ack",
+      "head_sha": "7eaf117d33bca8bb87a979c8df32193a76ada3aa",
+      "base": "experiment/wb-actor-compose-002r-20261122",
+      "base_sha": "3f21688be4bc8a11d9ba008a72b9aeab910bfbde",
+      "draft": true,
+      "updated_at": "2026-11-22T20:14:25Z"
+    },
+    {
+      "number": 746,
+      "title": "[Draft/HOLD] ACTOR-RECOVERY-A: reconcile Actor Compose #742 with accepted Art logging",
+      "head": "recovery/actor-compose-002r-mainline",
+      "head_sha": "81933f534cdb968ba2ed31d372a9f20fa8a3536f",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-22T20:11:02Z"
+    },
+    {
+      "number": 745,
+      "title": "[Draft/HOLD] GEN-006 RAMCACHE finisher \u2014 accepted-main integration and lifecycle qualification",
+      "head": "exp/gen006-ramcache-finisher-001-20261122",
+      "head_sha": "47e4fee8aa50ef007cdd9769841712edb5be40b5",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-23T03:25:49Z"
+    },
+    {
+      "number": 742,
+      "title": "[Draft/HOLD] WB-ACTOR-COMPOSE-002R: continuous-play actor sandbox (#737)",
+      "head": "experiment/wb-actor-compose-002r-20261122",
+      "head_sha": "3f21688be4bc8a11d9ba008a72b9aeab910bfbde",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": true,
+      "updated_at": "2026-11-22T20:27:56Z"
+    },
+    {
+      "number": 741,
+      "title": "[DRAFT / HOLD] OBJECTSHARD-M3-PREFLIGHT-001 \u2014 Continuous-Play Workbench Integration and Source-Matched Windows Evaluator",
+      "head": "experiment/objectshard-m3-preflight-continuous-20261122",
+      "head_sha": "febfad1b0b1ee93dac8d5b5a76f145b9ab80ad0a",
+      "base": "experiment/objectshard-001r-20261122",
+      "base_sha": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "draft": true,
+      "updated_at": "2026-11-22T19:57:59Z"
+    },
+    {
+      "number": 740,
+      "title": "[DRAFT / HOLD] PUBPRES-PLAYABILITY-003 \u2014 Physical progression recovery and playable Workbench",
+      "head": "experiment/pubpres-playability-003",
+      "head_sha": "adedb2761bad6cce91002ffe50c50c39b5f63645",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": true,
+      "updated_at": "2026-11-22T06:23:36Z"
+    },
+    {
+      "number": 739,
+      "title": "CI-OPT-004 C \u2014 compare Windows 18 / Linux 14 regression runners [MERGE HOLD]",
+      "head": "ci/ci-opt-004-gde-win18-linux14-20261122",
+      "head_sha": "bfbbb86877746e5ed0c2f609274b1ce7b03b0990",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": false,
+      "updated_at": "2026-11-22T05:20:44Z"
+    },
+    {
+      "number": 738,
+      "title": "[DRAFT / HOLD] OBJECTSHARD-001R \u2014 playability and stability finisher",
+      "head": "experiment/objectshard-001r-20261122",
+      "head_sha": "44abd754d014a44078a41792d2d46967a9b8cf30",
+      "base": "experiment/objectshard-001-m2-20261122",
+      "base_sha": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "draft": true,
+      "updated_at": "2026-11-22T05:30:09Z"
+    },
+    {
+      "number": 735,
+      "title": "CI-OPT-004 B \u2014 try 16 concurrent Linux and Windows shards [MERGE HOLD]",
+      "head": "ci/ci-opt-004-gde-fanout-16-20261122",
+      "head_sha": "d170da41fb66cc4a6e23f73343c1f059592ecb63",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": false,
+      "updated_at": "2026-11-22T04:25:25Z"
+    },
+    {
+      "number": 734,
+      "title": "GEN-006 RAM cache: native hot residency, asynchronous durability and predictive preparation [HOLD]",
+      "head": "exp/gen006-ramcache-001-20261122",
+      "head_sha": "ececa31e4337571ab672a4818c28f9d7d0e4d3ec",
+      "base": "exp/gen006-persistent-areas-001-20261121",
+      "base_sha": "d0d043f4740ffed5f0dbb4120e437458d7a9bd57",
+      "draft": true,
+      "updated_at": "2026-11-22T19:40:39Z"
+    },
+    {
+      "number": 733,
+      "title": "[DRAFT/HOLD] CI-RAMFIRST-002 \u2014 mount tmpfs before checkout; four paired Linux shards \u00d7 3+3",
+      "head": "ci/ramfirst-four-shards-20261122",
+      "head_sha": "ffc4d1a65b7f1ce85a840948f250ebb330b5f33d",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": true,
+      "updated_at": "2026-11-22T02:34:43Z"
+    },
+    {
+      "number": 732,
+      "title": "[DRAFT/HOLD] CI-RAMDISK-001 \u2014 4 Linux Godot shards \u00d7 3 stock + 3 full-workspace tmpfs",
+      "head": "ci/ramdisk-four-shards-20261122",
+      "head_sha": "a7a8c90bc1c876d8d6e667b580dda7ae34a2486c",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": true,
+      "updated_at": "2026-11-22T02:26:39Z"
+    },
+    {
+      "number": 731,
+      "title": "CI-OPT-004 \u2014 raise GDExtension regression fan-out from 8 to 12 per platform [MERGE HOLD]",
+      "head": "ci/ci-opt-004-gde-fanout-12-20261122",
+      "head_sha": "9fe3f0963b67facd9b6139e9272b296968f20b6e",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": false,
+      "updated_at": "2026-11-22T02:10:04Z"
+    },
+    {
+      "number": 730,
+      "title": "[DRAFT / HOLD] OBJECTSHARD-001 M2 \u2014 real exchange and source-bound Windows Lab",
+      "head": "experiment/objectshard-001-m2-20261122",
+      "head_sha": "dc4282e5f5f9b886315e8450613740d265f5fbc3",
+      "base": "experiment/objectshard-001-m1-20261122",
+      "base_sha": "1b85782a15565bad7e4dae28755b17d630daaf46",
+      "draft": true,
+      "updated_at": "2026-11-22T03:50:30Z"
+    },
+    {
+      "number": 729,
+      "title": "SWARM-004/005/006: consolidated reciprocal Workbench integration (Draft/HOLD)",
+      "head": "integration/swarm004-005-006-unified-20261122",
+      "head_sha": "acc5dc1ca1a4ce0a3b1579d555102f797b2c55cc",
+      "base": "main",
+      "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "draft": true,
+      "updated_at": "2026-11-24T21:03:03Z"
+    },
+    {
+      "number": 728,
+      "title": "[DRAFT / HOLD] OBJECTSHARD-001 M1 \u2014 continuing native chemistry and mutable bodies",
+      "head": "experiment/objectshard-001-m1-20261122",
+      "head_sha": "1b85782a15565bad7e4dae28755b17d630daaf46",
+      "base": "experiment/objectshard-001-m0-20261122",
+      "base_sha": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+      "draft": true,
+      "updated_at": "2026-11-22T03:50:28Z"
+    },
+    {
+      "number": 726,
+      "title": "[DRAFT / HOLD] OBJECTSHARD-001 M0 \u2014 compact ownership and real Rapier handoff",
+      "head": "experiment/objectshard-001-m0-20261122",
+      "head_sha": "28fa42a5ad05d49fee96d1bba7252aaf36abf331",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": true,
+      "updated_at": "2026-11-22T03:50:27Z"
+    },
+    {
+      "number": 725,
+      "title": "[Draft/HOLD] GEN-006: persistent authored areas with bounded native catch-up",
+      "head": "exp/gen006-persistent-areas-001-20261121",
+      "head_sha": "d0d043f4740ffed5f0dbb4120e437458d7a9bd57",
+      "base": "main",
+      "base_sha": "662df51cd8409a52332fa7ef15d06d8ab8945aed",
+      "draft": true,
+      "updated_at": "2026-11-22T00:53:06Z"
+    },
+    {
+      "number": 724,
+      "title": "[DRAFT/HOLD] EQUIP-RECOVERY-001: recover BS-001 native ballistic transport and U33\u2013U45",
+      "head": "recovery/equip-bs001-20261121",
+      "head_sha": "b73476657a3fb4adccb8f19e578afd15c69cd7e3",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "draft": true,
+      "updated_at": "2026-11-21T23:58:32Z"
+    },
+    {
+      "number": 721,
+      "title": "CI-OPT-003 A \u2014 overlap independent worldgen compiler tails",
+      "head": "ci/ci-opt-003-native-acceleration-20261121",
+      "head_sha": "506dfc8c343c5d24fe26e89a9542cf985c52853e",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "draft": true,
+      "updated_at": "2026-11-21T23:35:32Z"
+    },
+    {
+      "number": 720,
+      "title": "[Draft/HOLD] WORLD-STEER-BATCH M0\u2013M2 \u2014 Native Workbench Batch Lab",
+      "head": "feat/world-steer-batch-001-20261121",
+      "head_sha": "76fcf209e0cda5820aa64e104bfae732075ae7c3",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "draft": true,
+      "updated_at": "2026-11-24T18:47:33Z"
+    },
+    {
+      "number": 719,
+      "title": "[Draft/HOLD] PUBPRES-PLAYABILITY-001: source-matched playable-progression recovery",
+      "head": "experiment/pubpres-playability-001",
+      "head_sha": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "draft": true,
+      "updated_at": "2026-11-22T03:20:24Z"
+    },
+    {
+      "number": 718,
+      "title": "[DRAFT / HOLD] CI-OPT-002 B \u2014 worldgen split; timing benefit not established",
+      "head": "ci/ci-opt-002-worldgen-split-20261121",
+      "head_sha": "65aa1382a49bb01571177b4639f27b64f5dcb66d",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "draft": true,
+      "updated_at": "2026-11-21T21:46:05Z"
+    },
+    {
+      "number": 716,
+      "title": "[DRAFT / HOLD] GENTEK-SWARM-006 integration finisher \u2014 repaired recovery and Workbench successor",
+      "head": "integration/gentek-swarm-006-finisher-20261121",
+      "head_sha": "428f842034a1f80d593bcc6bb32af2dd99cd0105",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "draft": true,
+      "updated_at": "2026-11-22T00:58:25Z"
+    },
+    {
+      "number": 715,
+      "title": "[DRAFT / HOLD] SWARM-004/005 \u2014 reciprocal Workbench mainline integration",
+      "head": "integration/swarm004-005-mainline-20261121",
+      "head_sha": "919134a39d31461947c410c233d59d1965c48414",
+      "base": "main",
+      "base_sha": "846fe0533b3170e7b01f690518da49fc40cc24d1",
+      "draft": true,
+      "updated_at": "2026-11-21T23:16:26Z"
+    },
+    {
+      "number": 711,
+      "title": "[DRAFT/HOLD] PAINT-END2END-002 physical NVIDIA owner evaluator",
+      "head": "exp/paint-end2end-002-owner-windows",
+      "head_sha": "6fa5e58cf1e902738890041dc130a5bf0a47ed08",
+      "base": "exp/paint-end2end-002-bounded-burst",
+      "base_sha": "ed9b49272f9b7a950c9c6a1b4d0ac13fa3b6c4b3",
+      "draft": true,
+      "updated_at": "2026-11-21T19:16:55Z"
+    },
+    {
+      "number": 710,
+      "title": "SWARM-006 Draft/HOLD \u2014 restore Final composition Joints/Unresolved inspector layers",
+      "head": "experiment/gentek-swarm-006-final-round-inspector-fix",
+      "head_sha": "8fad90c78c7c0edb111a27fb21b69f94eadb629a",
+      "base": "experiment/gentek-swarm-006-workbench-recovery",
+      "base_sha": "4e8ff0b01043d9e1bed336559b17e37283094add",
+      "draft": true,
+      "updated_at": "2026-11-21T17:07:19Z"
+    },
+    {
+      "number": 709,
+      "title": "SWARM-006 Draft/HOLD \u2014 exact same-crop OFF/ON comparison from owner saved setup",
+      "head": "experiment/gentek-swarm-006-exact-crop-compare",
+      "head_sha": "9daceee82b5f06b1c32867a1f274f4bebf9f91ff",
+      "base": "experiment/gentek-swarm-006-workbench-recovery",
+      "base_sha": "4e8ff0b01043d9e1bed336559b17e37283094add",
+      "draft": true,
+      "updated_at": "2026-11-21T16:46:06Z"
+    },
+    {
+      "number": 708,
+      "title": "[DRAFT / HOLD] CI-OPT-002 \u2014 explicit Gentek publication, early provenance preflight and measured CI audit",
+      "head": "ci/ci-opt-002-finisher-20261121",
+      "head_sha": "11e23b392b63dfb15ea0916c90ca8d9361d3406b",
+      "base": "integration/gentek80-water-conflict-reconcile",
+      "base_sha": "16dd1e225ed974789c8b1fbc46718a06b1f61fc8",
+      "draft": true,
+      "updated_at": "2026-11-21T21:45:58Z"
+    },
+    {
+      "number": 707,
+      "title": "GENTEK-SWARM-006: Workbench recovery and source-matched Windows evaluator [Draft/HOLD]",
+      "head": "experiment/gentek-swarm-006-workbench-recovery",
+      "head_sha": "4e8ff0b01043d9e1bed336559b17e37283094add",
+      "base": "experiment/gentek-swarm-005-workbench-closure",
+      "base_sha": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+      "draft": true,
+      "updated_at": "2026-11-21T15:56:28Z"
+    },
+    {
+      "number": 705,
+      "title": "GENTEK-SWARM-006: feasible native connectors and bounded reciprocal recovery [Draft/HOLD]",
+      "head": "experiment/gentek-swarm-006-native-recovery",
+      "head_sha": "a757ed4f0aa1c4ebfb1b235c657fbd3741c1c94d",
+      "base": "experiment/gentek-swarm-005-native-closure",
+      "base_sha": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+      "draft": true,
+      "updated_at": "2026-11-21T12:53:33Z"
+    },
+    {
+      "number": 703,
+      "title": "[DRAFT/HOLD] PAINT-END2END-002 \u2014 opt-in bounded worker burst + CPU/wait profile",
+      "head": "exp/paint-end2end-002-bounded-burst",
+      "head_sha": "ed9b49272f9b7a950c9c6a1b4d0ac13fa3b6c4b3",
+      "base": "main",
+      "base_sha": "69209acaffb34ebe18c45e19290b5976b7fb2c82",
+      "draft": true,
+      "updated_at": "2026-11-21T19:15:49Z"
+    },
+    {
+      "number": 701,
+      "title": "TOOLING: portable Windows friend playtest ZIP from qualified main",
+      "head": "tooling/friend-playtest-win64",
+      "head_sha": "2cf96371a00192c72bfcda1cb3dacea44cb00d42",
+      "base": "main",
+      "base_sha": "f7e056c9b8791106e22f2d1c295043783d8a9701",
+      "draft": true,
+      "updated_at": "2026-11-21T09:38:27Z"
+    },
+    {
+      "number": 700,
+      "title": "SWARM-005 Draft/HOLD \u2014 register V3 owner guide in documentation corpus",
+      "head": "experiment/gentek-swarm-005-doc-gate",
+      "head_sha": "580ff82f285b7aeda8fb4a2a0d034425f0d0401d",
+      "base": "experiment/gentek-swarm-005-workbench-closure",
+      "base_sha": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+      "draft": true,
+      "updated_at": "2026-11-21T02:21:21Z"
+    },
+    {
+      "number": 699,
+      "title": "[DRAFT/HOLD] SCRIPT-HOTPATH-LATENCY-001 \u2014 real capture\u2192apply\u2192display fill latency",
+      "head": "exp/script-hotpath-end-to-end-latency-001",
+      "head_sha": "a7563aa638e636f52ca42c06b3b54ae6e5b2947c",
+      "base": "main",
+      "base_sha": "f7e056c9b8791106e22f2d1c295043783d8a9701",
+      "draft": true,
+      "updated_at": "2026-11-21T10:08:23Z"
+    },
+    {
+      "number": 697,
+      "title": "GENTEK-SWARM-005: experimental Workbench V3 native closure controls (Draft/HOLD)",
+      "head": "experiment/gentek-swarm-005-workbench-closure",
+      "head_sha": "8ec6d3c62197f3ef4088d79e4aa2910f5eaa36f7",
+      "base": "experiment/gentek-swarm-004-workbench",
+      "base_sha": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
+      "draft": true,
+      "updated_at": "2026-11-21T02:10:58Z"
+    },
+    {
+      "number": 696,
+      "title": "GENTEK-SWARM-005: bounded native connector closure and source feasibility (Draft/HOLD)",
+      "head": "experiment/gentek-swarm-005-native-closure",
+      "head_sha": "c178feeb39899fd155b7deb9d5bde3f50ee28548",
+      "base": "experiment/gentek-swarm-004-reciprocal-assembly",
+      "base_sha": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+      "draft": true,
+      "updated_at": "2026-11-21T02:16:48Z"
+    },
+    {
+      "number": 693,
+      "title": "[DRAFT/HOLD] GENTEK-SWARM-004 \u2014 experimental Workbench composition",
+      "head": "experiment/gentek-swarm-004-workbench",
+      "head_sha": "16a11ef2d25f03d58b229f4bba3f88009ebe1154",
+      "base": "experiment/gentek-swarm-004-reciprocal-assembly",
+      "base_sha": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+      "draft": true,
+      "updated_at": "2026-11-21T00:16:22Z"
+    },
+    {
+      "number": 692,
+      "title": "GENTEK-SWARM-004: reciprocal native assembly \u2014 Draft/HOLD",
+      "head": "experiment/gentek-swarm-004-reciprocal-assembly",
+      "head_sha": "2c4b8061ef5315de6a31df933e9f84c31865284e",
+      "base": "experiment/gentek-swarm-003-negotiation-resilience",
+      "base_sha": "cd0de74b83a66b5408668f81c82d854db45479ce",
+      "draft": true,
+      "updated_at": "2026-11-21T00:16:52Z"
+    },
+    {
+      "number": 688,
+      "title": "[DRAFT / HOLD] GENTEK-2048-SQUARE-001 \u2014 bounded 2048\u00b2 architectural Workbench",
+      "head": "feature/gentek-2048-square-001",
+      "head_sha": "4cbd94927fda1a4437616ea5df439d8f6d4c711d",
+      "base": "integration/gentek-80-001",
+      "base_sha": "87148d66e816f3fd4033e8227a7d310652e2812a",
+      "draft": false,
+      "updated_at": "2026-11-21T10:43:27Z"
+    },
+    {
+      "number": 686,
+      "title": "[DRAFT / HOLD] GENTEK-SWARM-003 \u2014 reconstructed resilience and bounded contact retention",
+      "head": "experiment/gentek-swarm-003-negotiation-resilience",
+      "head_sha": "cd0de74b83a66b5408668f81c82d854db45479ce",
+      "base": "experiment/gentek-swarm-002-negotiated-boundary",
+      "base_sha": "5bf7b4b90616130577744e39c9fbc9c0376c52b2",
+      "draft": false,
+      "updated_at": "2026-11-20T20:32:17Z"
+    },
+    {
+      "number": 682,
+      "title": "[DRAFT/HOLD] PUBPRES-INTEGRATION-001 \u2014 Workbench publication, progression and presentation",
+      "head": "codex/pubpres-integration-001",
+      "head_sha": "4302ba2058c1bdac1c3fc54540c078dfc9147573",
+      "base": "main",
+      "base_sha": "69209acaffb34ebe18c45e19290b5976b7fb2c82",
+      "draft": true,
+      "updated_at": "2026-11-22T19:39:54Z"
+    },
+    {
+      "number": 674,
+      "title": "[DRAFT / HOLD] GENTEK-SWARM-CORPUS-100 \u2014 curated evidence and Workbench bridge selection",
+      "head": "experiment/gentek-swarm-001-corpus-100-evidence",
+      "head_sha": "121dbc2f246e456a5256b57071ae66c56d39f332",
+      "base": "experiment/gentek-swarm-001-corpus-100",
+      "base_sha": "1836859820118322ad55924c5469ce39b69618dc",
+      "draft": false,
+      "updated_at": "2026-11-20T20:49:03Z"
+    },
+    {
+      "number": 673,
+      "title": "[DRAFT / HOLD] GENTEK-SWARM-001-CORPUS-100 \u2014 corrected foundation + 100-example campaign",
+      "head": "experiment/gentek-swarm-001-corpus-100",
+      "head_sha": "521cf47e8bc08cf25b3263e9ef95120b7f3de0fe",
+      "base": "integration/gentek-showcases-001",
+      "base_sha": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "draft": true,
+      "updated_at": "2026-11-22T21:28:32Z"
+    },
+    {
+      "number": 671,
+      "title": "[DRAFT / HOLD] GENTEK-SHOWCASE-INTEGRATION-001 \u2014 eight advanced showcases, 80 Genteks",
+      "head": "integration/gentek-showcases-001",
+      "head_sha": "eb786d97a769f4fed9f5d52bb0b50dd60f0ee16f",
+      "base": "experiment/gentek-classic-001-20261115",
+      "base_sha": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "updated_at": "2026-11-22T20:42:21Z"
+    },
+    {
+      "number": 670,
+      "title": "[DRAFT / HOLD] GENTEK-SHOWCASE-SUSPENDED-001 \u2014 Suspended Arcology",
+      "head": "experiment/gentek-showcase-suspended-001",
+      "head_sha": "01425a9a1aab6e01b88266a58b8b738ded38a28e",
+      "base": "experiment/gentek-classic-001-20261115",
+      "base_sha": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "updated_at": "2026-11-16T23:10:14Z"
+    },
+    {
+      "number": 669,
+      "title": "[DRAFT / HOLD] GENTEK-SHOWCASE-INTERLOCK-001 \u2014 Interlock Brutalism",
+      "head": "experiment/gentek-showcase-interlock-001",
+      "head_sha": "ca8aba9c638d1c63d79bd3335a55f9ca55d81d49",
+      "base": "experiment/gentek-classic-001-20261115",
+      "base_sha": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "updated_at": "2026-11-16T23:10:12Z"
+    },
+    {
+      "number": 668,
+      "title": "[DRAFT / HOLD] GENTEK-SHOWCASE-ROSEWORK-001 \u2014 Rosework Gatehouse",
+      "head": "experiment/gentek-showcase-rosework-001",
+      "head_sha": "b01c300ac64993693e8b66f1b523e3f9dfa3baf1",
+      "base": "experiment/gentek-classic-001-20261115",
+      "base_sha": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "updated_at": "2026-11-16T23:20:41Z"
+    },
+    {
+      "number": 667,
+      "title": "[DRAFT / HOLD] GENTEK-SHOWCASE-INTERLACED-001 \u2014 Interlaced Viaduct",
+      "head": "experiment/gentek-showcase-interlaced-001",
+      "head_sha": "965729b5b2773587d0c40e836b8f2848b1026e8b",
+      "base": "experiment/gentek-classic-001-20261115",
+      "base_sha": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "updated_at": "2026-11-17T22:08:18Z"
+    },
+    {
+      "number": 666,
+      "title": "[DRAFT / HOLD] GENTEK-SHOWCASE-METABOLIST-001 \u2014 Metabolist Spine",
+      "head": "experiment/gentek-showcase-metabolist-001",
+      "head_sha": "ef42af3d2f4210b1b53cfdc0e7d7bf77ff863304",
+      "base": "experiment/gentek-classic-001-20261115",
+      "base_sha": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "updated_at": "2026-11-16T23:10:07Z"
+    },
+    {
+      "number": 664,
+      "title": "[DRAFT / HOLD] GENTEK-SHOWCASE-CATHEDRAL-001 \u2014 hierarchical Cathedral Megaframe",
+      "head": "experiment/gentek-showcase-cathedral-001",
+      "head_sha": "f99583cde1db2abd8384cc89eb7bda3151bbe726",
+      "base": "experiment/gentek-classic-001-20261115",
+      "base_sha": "615828b28337f85e4663e03ba479616db4ddf764",
+      "draft": true,
+      "updated_at": "2026-11-16T22:48:42Z"
+    },
+    {
+      "number": 662,
+      "title": "[DRAFT / HOLD] GENTEK-SWARM-002 \u2014 preplanned FRAMEWEAVER \u2194 MOSAIC boundaries",
+      "head": "experiment/gentek-swarm-002-negotiated-boundary",
+      "head_sha": "5bf7b4b90616130577744e39c9fbc9c0376c52b2",
+      "base": "experiment/gentek-swarm-001-20261115",
+      "base_sha": "345ecc3ef939523f247b3eb192aa7502bd4d83ca",
+      "draft": true,
+      "updated_at": "2026-11-16T23:38:09Z"
+    },
+    {
+      "number": 651,
+      "title": "perf(render): opt-in sparse material publication with compact dense fallback (#577)",
+      "head": "perf/render-upload-577-finisher-20261116",
+      "head_sha": "839f70ff8cf2d6dd7466580e31ed897a4b6e3983",
+      "base": "main",
+      "base_sha": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+      "draft": true,
+      "updated_at": "2026-11-17T20:43:06Z"
+    },
+    {
+      "number": 628,
+      "title": "[DRAFT/HOLD] PRESENTATION-TIME-001: bounded presentation timeline and Windows evaluation",
+      "head": "fix/presentation-time-001-20261115",
+      "head_sha": "e8818048391e1560aaa973392e0de655b6dd46c4",
+      "base": "main",
+      "base_sha": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+      "draft": true,
+      "updated_at": "2026-11-19T01:55:41Z"
+    },
+    {
+      "number": 627,
+      "title": "DRIV3R Body Lab: four-slot worm preflight and native budget truth [Draft/HOLD]",
+      "head": "research/570-wormbrain-body-lab",
+      "head_sha": "fa80b3d51b75416c0fe5e857c1781292b1a739b1",
+      "base": "research/570-wormbrain-native-pilot",
+      "base_sha": "b4079e74207d7a70992c48ebd70e9c7b2016f463",
+      "draft": true,
+      "updated_at": "2026-11-16T01:31:38Z"
+    },
+    {
+      "number": 625,
+      "title": "[DRAFT / RESEARCH] GENTEK-SWARM-001 \u2014 three self-assembling architecture proofs",
+      "head": "experiment/gentek-swarm-001-20261115",
+      "head_sha": "345ecc3ef939523f247b3eb192aa7502bd4d83ca",
+      "base": "main",
+      "base_sha": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+      "draft": true,
+      "updated_at": "2026-11-16T22:54:10Z"
+    },
+    {
+      "number": 624,
+      "title": "[DRAFT / HOLD] GENTEK-CLASSIC-001 \u2014 72 compact architectural samplers",
+      "head": "experiment/gentek-classic-001-20261115",
+      "head_sha": "e27ff75758ef51c7b7c8b4d8a7093343cc2ecede",
+      "base": "main",
+      "base_sha": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+      "draft": true,
+      "updated_at": "2026-11-19T02:00:44Z"
+    },
+    {
+      "number": 613,
+      "title": "WORM-001 W0: deterministic legal-action steerer and native-independent gallery",
+      "head": "research/612-worm-common",
+      "head_sha": "e338952b59600e6310bd01176556d558d02094ff",
+      "base": "codex/agent-painter-foundation-568",
+      "base_sha": "11ba1f1915362d3d127edfbe37fe9e30c57eb8b9",
+      "draft": true,
+      "updated_at": "2026-11-16T00:53:25Z"
+    },
+    {
+      "number": 611,
+      "title": "DRIV3R-WORM-001: real d1-2B Q8 line-steering worm, native PAINT and GIF traces (Draft/HOLD)",
+      "head": "research/570-wormbrain-native-pilot",
+      "head_sha": "b4079e74207d7a70992c48ebd70e9c7b2016f463",
+      "base": "research/570-m5-forced-recovery-controls",
+      "base_sha": "d7507bfc807a5627607f73fecb0a4862ee5ba8ad",
+      "draft": true,
+      "updated_at": "2026-11-15T07:56:07Z"
+    },
+    {
+      "number": 610,
+      "title": "DRIV3R M5: forced-recovery challenge and matched offline control cohort (Draft/HOLD)",
+      "head": "research/570-m5-forced-recovery-controls",
+      "head_sha": "d7507bfc807a5627607f73fecb0a4862ee5ba8ad",
+      "base": "research/570-m4-a1a2a3-native",
+      "base_sha": "ad48cdba21d8b83fe5bb83caed68d4cb0ce1ca1b",
+      "draft": true,
+      "updated_at": "2026-11-15T04:31:11Z"
+    },
+    {
+      "number": 609,
+      "title": "[DRAFT/HOLD] PHYSICS-FREEZE-REMEDIATION-002 \u2014 Workbench publication and native/Rapier progression",
+      "head": "diagnostics/engine-lab-pose-trace-20261115",
+      "head_sha": "5a36ce49404ed7dc8a9e5815593d250ab990615a",
+      "base": "main",
+      "base_sha": "018bd09503d7f079ddac52e225c2f7daf8d678bf",
+      "draft": true,
+      "updated_at": "2026-11-17T20:44:17Z"
+    },
+    {
+      "number": 608,
+      "title": "DRIV3R M4: parallel A1/A2/A3 36-decision native Q8 guided-coverage comparison",
+      "head": "research/570-m4-a1a2a3-native",
+      "head_sha": "ad48cdba21d8b83fe5bb83caed68d4cb0ce1ca1b",
+      "base": "research/570-m3-model-short",
+      "base_sha": "abc49d4d676061298b39349af11eaa4ae534cee1",
+      "draft": true,
+      "updated_at": "2026-11-15T00:44:32Z"
+    },
+    {
+      "number": 607,
+      "title": "DRIV3R M3-Q8-SHORT: first resident model-selected native Workbench decision gate",
+      "head": "research/570-m3-model-short",
+      "head_sha": "abc49d4d676061298b39349af11eaa4ae534cee1",
+      "base": "research/570-d-m3-history-short",
+      "base_sha": "98320dab1e248820576c30dd6da5591d2e6ad9a4",
+      "draft": true,
+      "updated_at": "2026-11-15T00:07:58Z"
+    },
+    {
+      "number": 606,
+      "title": "ENGINE-LAB-001: live Pixel/Rapier/render/ACK/FPS tuning panel and actual-clock benchmarks",
+      "head": "feature/engine-lab-controls-20261114",
+      "head_sha": "2632422aa67ee9acdc347089cd54c36e518c713a",
+      "base": "codex/pr566-mask-coherent-flyer-20261114",
+      "base_sha": "9628729af052b417aa8a64e56f7e7bcdf4f2e876",
+      "draft": true,
+      "updated_at": "2026-11-15T01:29:39Z"
+    },
+    {
+      "number": 604,
+      "title": "ENG-LAB-001 Phase B: matched real Needle / four-Water-family clock campaign [Draft/HOLD]",
+      "head": "research/eng-lab-001-water-family-matched",
+      "head_sha": "2e6d507148e2732affa64d09834091477c90ddf8",
+      "base": "research/eng-lab-001-passive-benchmark",
+      "base_sha": "4ae1f82a7ec5c156e3d931af14c543cd53deda6d",
+      "draft": true,
+      "updated_at": "2026-11-14T23:17:49Z"
+    },
+    {
+      "number": 603,
+      "title": "D-M3 History: real Workbench Undo + branch relocation, gated short native decisions",
+      "head": "research/570-d-m3-history-short",
+      "head_sha": "98320dab1e248820576c30dd6da5591d2e6ad9a4",
+      "base": "research/570-d-m3-native-smoke",
+      "base_sha": "012e77001b30823836360ea09f16a674cdfdca13",
+      "draft": true,
+      "updated_at": "2026-11-14T19:28:40Z"
+    },
+    {
+      "number": 602,
+      "title": "ENG-LAB-001 Phase A: passive clock telemetry and no-input Workbench benchmark [Draft/HOLD]",
+      "head": "research/eng-lab-001-passive-benchmark",
+      "head_sha": "4ae1f82a7ec5c156e3d931af14c543cd53deda6d",
+      "base": "main",
+      "base_sha": "278415ff517708b4387362b0d449331451f1476e",
+      "draft": true,
+      "updated_at": "2026-11-14T18:28:14Z"
+    },
+    {
+      "number": 601,
+      "title": "D-M3: bounded real native Workbench observe\u2192paint\u2192brush-up recover qualification",
+      "head": "research/570-d-m3-native-smoke",
+      "head_sha": "012e77001b30823836360ea09f16a674cdfdca13",
+      "base": "research/570-d-m2-preflight",
+      "base_sha": "9f09a1b11634a03e56b748887d93b7fb8e96601d",
+      "draft": true,
+      "updated_at": "2026-11-14T18:26:29Z"
+    },
+    {
+      "number": 595,
+      "title": "D-1A: deterministic offline 36-decision spatial-control fixtures and baselines",
+      "head": "research/570-d1a-long-horizon",
+      "head_sha": "67830366ede2790fe3abb00f2dada75e80ce79ee",
+      "base": "research/570-d-common-interfaces-v1",
+      "base_sha": "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6",
+      "draft": true,
+      "updated_at": "2026-11-16T00:56:11Z"
+    },
+    {
+      "number": 594,
+      "title": "D-COMMON-001: freeze candidate for DRIV3R observation/guidance/action/reversal/provenance v1",
+      "head": "research/570-d-common-interfaces-v1",
+      "head_sha": "8fa90de6be209ed0b7bd125039e6ec8b332fb1a6",
+      "base": "research/570-driv3r-stage-a",
+      "base_sha": "6067ea31adb8f3dfc76867676fc504078f5e9526",
+      "draft": true,
+      "updated_at": "2026-11-14T17:46:55Z"
+    },
+    {
+      "number": 593,
+      "title": "PR566-FLYER-COHERENCE: guarded live pose when swept native mask is material-clear",
+      "head": "codex/pr566-mask-coherent-flyer-20261114",
+      "head_sha": "9628729af052b417aa8a64e56f7e7bcdf4f2e876",
+      "base": "codex/native-pixel-scrolling-20261113",
+      "base_sha": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+      "draft": true,
+      "updated_at": "2026-11-14T23:06:18Z"
+    },
+    {
+      "number": 585,
+      "title": "RENDER-ACK-002: opt-in ACK-paced native snapshots (stacked research / HOLD)",
+      "head": "research/render-ack-pacing-002",
+      "head_sha": "1a7e8db74b0fc124d2332b3a49af70c166ea05b3",
+      "base": "research/render-ack-feedback-001",
+      "base_sha": "10fb4ed5e8b0b3e0028697e4dedf1f4e48fa8ba2",
+      "draft": true,
+      "updated_at": "2026-11-14T15:23:51Z"
+    },
+    {
+      "number": 583,
+      "title": "RENDER-ACK-001: trace native patch backlog, ACK latency and full-refresh causes",
+      "head": "research/render-ack-feedback-001",
+      "head_sha": "10fb4ed5e8b0b3e0028697e4dedf1f4e48fa8ba2",
+      "base": "main",
+      "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+      "draft": true,
+      "updated_at": "2026-11-14T05:14:54Z"
+    },
+    {
+      "number": 580,
+      "title": "S1-2B-DRIV3R \u2014 qualified Stage A+B; Stage C graphical native research (Draft/HOLD)",
+      "head": "research/570-driv3r-stage-a",
+      "head_sha": "6067ea31adb8f3dfc76867676fc504078f5e9526",
+      "base": "codex/agent-painter-foundation-568",
+      "base_sha": "2a565df45efc568eb96a2166e0b77f299e289625",
+      "draft": true,
+      "updated_at": "2026-11-14T11:00:37Z"
+    },
+    {
+      "number": 578,
+      "title": "RENDER-UPLOAD-001: opt-in incremental texture publication research",
+      "head": "research/render-upload-001",
+      "head_sha": "3eccbdf11ecf054389e246db99eeefa332a506e7",
+      "base": "main",
+      "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+      "draft": true,
+      "updated_at": "2026-11-14T01:06:51Z"
+    },
+    {
+      "number": 569,
+      "title": "Agent painter: shared three-family native and CPU training foundation (#568)",
+      "head": "codex/agent-painter-foundation-568",
+      "head_sha": "11ba1f1915362d3d127edfbe37fe9e30c57eb8b9",
+      "base": "main",
+      "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+      "draft": true,
+      "updated_at": "2026-11-14T21:03:55Z"
+    },
+    {
+      "number": 567,
+      "title": "WB-ART-SLM-001: executable pattern compiler, native corpus and model bootstrap",
+      "head": "codex/wb-art-slm-001",
+      "head_sha": "bac120981fdd9aecaab0dc8368c421fa390cc269",
+      "base": "main",
+      "base_sha": "63f8b1ba6559906fe85f3ad0269aa296e4141d67",
+      "draft": true,
+      "updated_at": "2026-11-13T13:12:32Z"
+    },
+    {
+      "number": 566,
+      "title": "Native display-pixel camera scrolling with aligned Workbench tools",
+      "head": "codex/native-pixel-scrolling-20261113",
+      "head_sha": "214de85adef2aaabc8e26de8612a3bf27cc1a081",
+      "base": "main",
+      "base_sha": "ac0d9fb944cb5a81369d03c0c3bc5eab50ab6742",
+      "draft": true,
+      "updated_at": "2026-11-14T11:05:01Z"
+    },
+    {
+      "number": 557,
+      "title": "docs: AGENT-PAINT-001 exploratory model-authoring evidence and canvas fixture",
+      "head": "docs/agent-paint-001-evidence-20261109",
+      "head_sha": "722b8afbd9a7a732f0ee5c38c817163a39facc9b",
+      "base": "main",
+      "base_sha": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+      "draft": true,
+      "updated_at": "2026-11-09T23:27:42Z"
+    },
+    {
+      "number": 556,
+      "title": "research(B2): conservative two-phase region invalidation and falsification oracle",
+      "head": "research/b2-region-invalidation-20261109",
+      "head_sha": "47931f30a33f9e8072deb7f29f95d52b935e425f",
+      "base": "main",
+      "base_sha": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+      "draft": true,
+      "updated_at": "2026-11-10T08:57:30Z"
+    },
+    {
+      "number": 555,
+      "title": "research(B3): source-typed solver handoff model, conservation proof and adversarial oracle",
+      "head": "research/b3-handoff-proof-20261109",
+      "head_sha": "108898983bf0485d0f5d462cedfae5a96ee42c15",
+      "base": "main",
+      "base_sha": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+      "draft": true,
+      "updated_at": "2026-11-10T07:43:27Z"
+    },
+    {
+      "number": 554,
+      "title": "research(B4): independent source-matched HS-PKT ABBA reduction and evidence gate",
+      "head": "research/b4-hs470-independent-abba-20261109",
+      "head_sha": "fbf7ed6ab734ecbe11deb60da5eb31330fe144ab",
+      "base": "main",
+      "base_sha": "d4b18e7f06839b35c8f6a66195206da0f33c5fa3",
+      "draft": true,
+      "updated_at": "2026-11-10T15:47:08Z"
+    },
+    {
+      "number": 552,
+      "title": "[DRAFT] WB-API provider-neutral Responses/NVIDIA/Ollama agent over native #547",
+      "head": "feature/wb-api-agent-provider-neutral-20261108",
+      "head_sha": "be7b5d472333a43b47d95cce43158c3948a17ccd",
+      "base": "feature/wb-remote-codespaces-iteration-20261108",
+      "base_sha": "2b6b8f4ae7da631a81d7393ed01c7940f54bfe93",
+      "draft": true,
+      "updated_at": "2026-11-09T00:14:42Z"
+    },
+    {
+      "number": 551,
+      "title": "[DRAFT] WB-REMOTE MCP: private ChatGPT tool adapter and native acceptance harness",
+      "head": "feature/wb-remote-mcp-chat-adapter-20261108",
+      "head_sha": "f45cd5e49260b712cf420c6c2b02c2efe117dcd6",
+      "base": "feature/wb-remote-codespaces-iteration-20261108",
+      "base_sha": "2b6b8f4ae7da631a81d7393ed01c7940f54bfe93",
+      "draft": true,
+      "updated_at": "2026-11-08T20:04:32Z"
+    },
+    {
+      "number": 550,
+      "title": "[DRAFT] INTEGRATION PAINT-001: register bounded-shapes doc in retrieval corpus",
+      "head": "integration/paint001-corpus-registration-20261108",
+      "head_sha": "9e4a25596e4c810d037ffb5f54f9bd98c108e7eb",
+      "base": "feat/paint001-shape-planner-20261108",
+      "base_sha": "c9b5084e0276f0b5036d02db835973f04bb6f51f",
+      "draft": true,
+      "updated_at": "2026-11-14T23:31:55Z"
+    },
+    {
+      "number": 547,
+      "title": "[DRAFT] WB-REMOTE Codespaces: authenticated persistent agent iteration",
+      "head": "feature/wb-remote-codespaces-iteration-20261108",
+      "head_sha": "2b6b8f4ae7da631a81d7393ed01c7940f54bfe93",
+      "base": "feature/wb-remote-file-bridge-20261108",
+      "base_sha": "b7c6204625dad14fdf15430f7872d9841cf92afd",
+      "draft": true,
+      "updated_at": "2026-11-08T20:35:04Z"
+    },
+    {
+      "number": 545,
+      "title": "[DRAFT] WB-REMOTE-001: host-authorized JSONL control of real Godot/native workbench",
+      "head": "feature/wb-remote-file-bridge-20261108",
+      "head_sha": "b7c6204625dad14fdf15430f7872d9841cf92afd",
+      "base": "codex/wb-agent-528-panel-openai-20261107",
+      "base_sha": "3cb6792abb904f912790ef077affa12570804250",
+      "draft": true,
+      "updated_at": "2026-11-08T18:36:49Z"
+    },
+    {
+      "number": 540,
+      "title": "[DRAFT][TEST-ONLY] Physics gameplay: source-matched 1/4-worker participation and pacing",
+      "head": "qualification/physics-worker-1v4-20261107",
+      "head_sha": "0a9481c93ad89986bd9f65e219bc51e2bfd01028",
+      "base": "qualification/current-main-gameplay-acceptance-20261106",
+      "base_sha": "296476c077e6974227efab0f9c3710f4457929fa",
+      "draft": true,
+      "updated_at": "2026-11-07T22:10:44Z"
+    },
+    {
+      "number": 536,
+      "title": "[DRAFT] MAP-AUTO-03 #500: source-pinned three-lane real-Godot pilot with structural quality gate",
+      "head": "feat/map-auto03-three-lane-pilot-20261107",
+      "head_sha": "e1f4dcade2531ebe542a764b34a4f2c158b25d7d",
+      "base": "main",
+      "base_sha": "662ed4d88c08070dbb6f313931146a23e3631471",
+      "draft": true,
+      "updated_at": "2026-11-07T18:12:40Z"
+    },
+    {
+      "number": 534,
+      "title": "docs: record owner physics convergence and gameplay-first product sequence",
+      "head": "docs/owner-priority-reset-20261107",
+      "head_sha": "62422e83a40ab571c3b920accf2d0579d79a6c12",
+      "base": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417",
+      "draft": false,
+      "updated_at": "2026-11-08T03:44:57Z"
+    },
+    {
+      "number": 533,
+      "title": "perf(pf): certify stable gas compartments during global topology churn (#201)",
+      "head": "agent/pf201-selective-gas-cache-20261107",
+      "head_sha": "fa1b2e398acb1986158cb1652b49c935227416ca",
+      "base": "main",
+      "base_sha": "dea4e53dd71d6e0af71775593fdc9197a7633e3e",
+      "draft": true,
+      "updated_at": "2026-11-14T23:27:49Z"
+    },
+    {
+      "number": 532,
+      "title": "perf(pf): sparsify authoritative gas relabel work in active gameplay",
+      "head": "sol/pf-gas-selective-bootstrap-20261107",
+      "head_sha": "dce10ccefc395e598aaf2338ccbf58a210b239f8",
+      "base": "main",
+      "base_sha": "81bbd5ff5cf366159e2b8a630609359c13560080",
+      "draft": true,
+      "updated_at": "2026-11-07T17:03:20Z"
+    },
+    {
+      "number": 531,
+      "title": "[DRAFT] WB-AGENT #525/#528: provider-neutral shared authoring workbench",
+      "head": "codex/wb-agent-528-panel-openai-20261107",
+      "head_sha": "4282332e5bda324062764412848e98981b47c1c7",
+      "base": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417",
+      "draft": true,
+      "updated_at": "2026-11-10T00:23:13Z"
+    },
+    {
+      "number": 530,
+      "title": "[DRAFT] WB-AGENT #527: native Sand-hopper control, bounded Step and Stop",
+      "head": "feat/wb-agent-527-sand-hopper-native-control-20261107",
+      "head_sha": "f55ca2b044b0130fd503864c2b82fc1e6bcae8a9",
+      "base": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417",
+      "draft": true,
+      "updated_at": "2026-11-08T11:06:58Z"
+    },
+    {
+      "number": 529,
+      "title": "[DRAFT] WB-AGENT #526: authoritative native/host observe\u2013prepare\u2013apply",
+      "head": "feature/wb-agent-authoring-foundation-526-20261107",
+      "head_sha": "8f07084aeb4c8fbda5caf371ad791848c120fedf",
+      "base": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417",
+      "draft": true,
+      "updated_at": "2026-11-08T05:45:02Z"
+    },
+    {
+      "number": 523,
+      "title": "GEN-006: actual native signed-seam dynamic continuation and fenced full-World staging",
+      "head": "experiment/gen006-native-dynamic-fullworld-20261107",
+      "head_sha": "61a534a90b6fac539c8196788458831023b247f8",
+      "base": "main",
+      "base_sha": "81bbd5ff5cf366159e2b8a630609359c13560080",
+      "draft": true,
+      "updated_at": "2026-11-07T21:42:03Z"
+    },
+    {
+      "number": 521,
+      "title": "[EXPERIMENT] PF504 final real 2048\u00d71024 gas CPU, worker and physics qualification",
+      "head": "test/pf504-fullsize-cpu-physics-20261107",
+      "head_sha": "3710c894242b263b28720d27e95f3ef37a9a48ff",
+      "base": "codex/pf504-real-workbench-stress-20261107",
+      "base_sha": "2668234933902b0b9e8d962f9f40038338bd6683",
+      "draft": true,
+      "updated_at": "2026-11-14T23:25:47Z"
+    },
+    {
+      "number": 520,
+      "title": "[EXPERIMENT] PF504 gas-stage process CPU attribution on real workbench stress-canvas",
+      "head": "codex/pf504-stress-gas-cpu-20261107",
+      "head_sha": "58eeb688bf511eb77969822f53f0b23911102707",
+      "base": "codex/pf504-real-workbench-stress-20261107",
+      "base_sha": "2668234933902b0b9e8d962f9f40038338bd6683",
+      "draft": true,
+      "updated_at": "2026-11-14T23:25:30Z"
+    },
+    {
+      "number": 519,
+      "title": "experiment(workbench): cut outcomes and reusable physics findings \u2014 benched",
+      "head": "codex/workbench-rectangle-core-20261107",
+      "head_sha": "6d768ce3169bc708c816f5c193957b44571adb1d",
+      "base": "codex/workbench-small-cut-debris-20261107",
+      "base_sha": "53d642b8b0c7b773318ed1660a657d38e9ec6800",
+      "draft": true,
+      "updated_at": "2026-11-07T11:56:33Z"
+    },
+    {
+      "number": 518,
+      "title": "[DRAFT] GEN-006 G6J1 bounded durable edit journal and crash-restart fixture",
+      "head": "experiment/gen006-storage-journal-20261107",
+      "head_sha": "35919475a8c924a6924d37b9fee4bd5b9ff0cc09",
+      "base": "main",
+      "base_sha": "d3c24e88c7633b2457cd7635af9c887d97a74c2b",
+      "draft": true,
+      "updated_at": "2026-11-07T14:02:37Z"
+    },
+    {
+      "number": 517,
+      "title": "chore: prune default-branch Web trigger and correct stale navigation authority",
+      "head": "chore/repository-housekeeping-20261107",
+      "head_sha": "ac1c94785f3fe32dc7e75b7deec202adf9ba37d1",
+      "base": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417",
+      "draft": true,
+      "updated_at": "2026-11-07T23:47:21Z"
+    },
+    {
+      "number": 515,
+      "title": "[EXPERIMENT] PF504 real 2048\u00d71024 workbench stress-canvas source-matched B-C-C-B",
+      "head": "codex/pf504-real-workbench-stress-20261107",
+      "head_sha": "2668234933902b0b9e8d962f9f40038338bd6683",
+      "base": "codex/pf-gas-exact-hotpath-20261107",
+      "base_sha": "9933c74403d83652ad9928070234767b09a7b1d3",
+      "draft": true,
+      "updated_at": "2026-11-14T23:26:11Z"
+    },
+    {
+      "number": 514,
+      "title": "GEN-006 support: real accepted-main physics parity and shared-World re-admission gate",
+      "head": "qa/gen006-shared-world-parity-readmission-20261107",
+      "head_sha": "1126dc5fdbadb74eaa82f91f16f7af99c9065ddc",
+      "base": "feat/gen006-shared-world-pristine-release-20261107",
+      "base_sha": "7b366c201fd521a7b9bfc21fe7a9b2485f456828",
+      "draft": true,
+      "updated_at": "2026-11-07T11:12:18Z"
+    },
+    {
+      "number": 513,
+      "title": "GEN-006: real NVIDIA Windows playtest and bounded IPC read repair (human pending)",
+      "head": "qa/gen006-windows-desktop-playtest-20261107",
+      "head_sha": "22f2724d6c237125016378d5f5a08c82e281524b",
+      "base": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "base_sha": "d6c4b09005b2e0ced9052c0a4591fdac128d039e",
+      "draft": true,
+      "updated_at": "2026-11-07T10:33:22Z"
+    },
+    {
+      "number": 512,
+      "title": "GEN-006: shared-World G6KC1 static checkpoint, durable generation-fenced eviction and restart",
+      "head": "feat/gen006-shared-world-pristine-release-20261107",
+      "head_sha": "af5ab47e210bac53d70b51e923588a4ad630aea9",
+      "base": "main",
+      "base_sha": "81bbd5ff5cf366159e2b8a630609359c13560080",
+      "draft": true,
+      "updated_at": "2026-11-07T13:27:40Z"
+    },
+    {
+      "number": 511,
+      "title": "GEN-006 support: actual Godot framebuffer acceptance of simulation pin and recovery",
+      "head": "qa/gen006-visible-pin-recovery-20261107",
+      "head_sha": "d93597e5909d2ac0fd481181d2c015838e8badb8",
+      "base": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "base_sha": "5d04639f922d9e67240cdf8106656547c187be0a",
+      "draft": true,
+      "updated_at": "2026-11-07T12:23:52Z"
+    },
+    {
+      "number": 510,
+      "title": "experiment(workbench): small brick debris, material visuals and responsive cuts",
+      "head": "codex/workbench-small-cut-debris-20261107",
+      "head_sha": "53d642b8b0c7b773318ed1660a657d38e9ec6800",
+      "base": "codex/sol-workbench-law-20261106",
+      "base_sha": "b140265d1a2ef2fd76787f8048dbcc5e9fa545ac",
+      "draft": true,
+      "updated_at": "2026-11-07T05:44:05Z"
+    },
+    {
+      "number": 509,
+      "title": "PLAY-WIN-CRASH: qualify retained #117991-patched Godot as independent Windows runtime candidate (no pin change)",
+      "head": "qualification/godot117991-production-candidate-20261107",
+      "head_sha": "1e27aa66a8385fb0d12288dfd3b9d9b73ea8eb49",
+      "base": "main",
+      "base_sha": "24a8bbe8ccf0d17196ebbab580b924930a964584",
+      "draft": true,
+      "updated_at": "2026-11-07T03:24:03Z"
+    },
+    {
+      "number": 507,
+      "title": "GEN-006 support: real native surface tick crash versus durable Empty-intent control",
+      "head": "qa/gen006-surface-crash-ownership-loss-20261107",
+      "head_sha": "18443d473213aabdc68963121fa42bad417fe968",
+      "base": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "base_sha": "7f87204a405df13468385f7b4127792789ffcac3",
+      "draft": true,
+      "updated_at": "2026-11-07T03:44:47Z"
+    },
+    {
+      "number": 506,
+      "title": "[DRAFT] MAP-AUTO-01 #498: unattended Godot atlas capture (PNG + manifest)",
+      "head": "claude/godot-atlas-unattended-render-af7b88",
+      "head_sha": "7b960b5eac5b7a4ed159ade97b1093a1b623ac19",
+      "base": "tools/world-art-interactive-preview-20261107",
+      "base_sha": "a3f469eb4d91bf3c0c41134f684d439e5e7fff2c",
+      "draft": true,
+      "updated_at": "2026-11-07T03:51:33Z"
+    },
+    {
+      "number": 505,
+      "title": "test(perf): source-matched PF gas acceptance screen on complete factorial foundation",
+      "head": "perf/pf-gas-acceptance-20261107",
+      "head_sha": "305c9c522fe5ae1241b8efe69856548f12f37cea",
+      "base": "perf/water-factorial-stress-20261107",
+      "base_sha": "b62eb26a867c08e9933d507a4699bb02be7c10d1",
+      "draft": true,
+      "updated_at": "2026-11-14T23:26:21Z"
+    },
+    {
+      "number": 493,
+      "title": "test(perf): exhaustive matched 360-configuration Water stress factorial, three repeats",
+      "head": "perf/water-factorial-stress-20261107",
+      "head_sha": "b62eb26a867c08e9933d507a4699bb02be7c10d1",
+      "base": "main",
+      "base_sha": "dea4e53dd71d6e0af71775593fdc9197a7633e3e",
+      "draft": true,
+      "updated_at": "2026-11-14T23:26:53Z"
+    },
+    {
+      "number": 490,
+      "title": "GEN-006 support: reproduce chunk rebind and qualify a no-ABI restore guard",
+      "head": "qa/gen006-native-record-coordinate-binding-20261107",
+      "head_sha": "1ba23f233e2a18a54381d91f4a7f2c2142d953f7",
+      "base": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "base_sha": "15f06644001790ed751fe2754be59ff453bdab9c",
+      "draft": true,
+      "updated_at": "2026-11-07T01:09:39Z"
+    },
+    {
+      "number": 488,
+      "title": "test(perf): representative stress-canvas PF/ballistic/splash Windows qualification",
+      "head": "perf/stress-canvas-pf-ballistic-splash-20261107",
+      "head_sha": "65398578facf68dfb6d1228e3f5cf7f1e221a078",
+      "base": "main",
+      "base_sha": "4c2c97323d862afdd3ec6730017127cc8e4ec05c",
+      "draft": true,
+      "updated_at": "2026-11-07T01:01:08Z"
+    },
+    {
+      "number": 487,
+      "title": "[DRAFT] Interactive Godot World Art Preview \u2014 production RG8 shaders, live reload and export",
+      "head": "tools/world-art-interactive-preview-20261107",
+      "head_sha": "a3f469eb4d91bf3c0c41134f684d439e5e7fff2c",
+      "base": "main",
+      "base_sha": "4c2c97323d862afdd3ec6730017127cc8e4ec05c",
+      "draft": true,
+      "updated_at": "2026-11-07T01:33:50Z"
+    },
+    {
+      "number": 486,
+      "title": "GEN-006: persistent opt-in native streaming + Godot visual demo (sharded Worlds prototype)",
+      "head": "feat/gen006-native-streaming-vertical-slice-20261107",
+      "head_sha": "43dc378593050cb7de67389e62d3c672243e3de4",
+      "base": "main",
+      "base_sha": "81bbd5ff5cf366159e2b8a630609359c13560080",
+      "draft": true,
+      "updated_at": "2026-11-07T13:59:52Z"
+    },
+    {
+      "number": 484,
+      "title": "[DRAFT][AUTOMATED ACCEPT] Current-main integrated gameplay acceptance package",
+      "head": "qualification/current-main-gameplay-acceptance-20261106",
+      "head_sha": "296476c077e6974227efab0f9c3710f4457929fa",
+      "base": "main",
+      "base_sha": "1f82dac1cebc9b38a319153354e4bcc774289417",
+      "draft": true,
+      "updated_at": "2026-11-07T20:32:18Z"
+    },
+    {
+      "number": 480,
+      "title": "IN-TOOLS #361: current-main gameplay implementation successor",
+      "head": "feat/in-tools-361-implementation-20261106",
+      "head_sha": "22abca9bee82aca984f92501442e9323d9c4e588",
+      "base": "main",
+      "base_sha": "7e2c2fd1aa2759590d63d5dfb53ce9e4c0a76e4b",
+      "draft": true,
+      "updated_at": "2026-11-07T20:42:41Z"
+    },
+    {
+      "number": 479,
+      "title": "fix(capture): R1-D Linux process visibility and reserved no-clobber claim archives",
+      "head": "tools/world-design-capture-final-r1d-visibility-archive-repair-20261106",
+      "head_sha": "cae8333a49232aee84e06bf92893bf09c11f1e7d",
+      "base": "tools/world-design-capture-live-owner-repair-20261106",
+      "base_sha": "14d879ee9a300c659c0b8211a86921018c0e80c1",
+      "draft": true,
+      "updated_at": "2026-11-06T22:51:31Z"
+    },
+    {
+      "number": 478,
+      "title": "[DRAFT] Capture R1-D recovery identity: PID namespace and process generation",
+      "head": "tools/world-design-capture-identity-fencing-20261106",
+      "head_sha": "8116c6245757c3dceb3b38af01da2e29c9c82448",
+      "base": "tools/world-design-capture-live-owner-repair-20261106",
+      "base_sha": "14d879ee9a300c659c0b8211a86921018c0e80c1",
+      "draft": true,
+      "updated_at": "2026-11-06T23:44:37Z"
+    },
+    {
+      "number": 476,
+      "title": "[Draft / NO-GO] Bounded per-run PressureFlow head repair and differential qualification",
+      "head": "codex/pf-run-head-repair-20261106",
+      "head_sha": "5d8ab2ef09530c19c6013e21667a57725771a0a1",
+      "base": "claude/water-ballistic-hybrid",
+      "base_sha": "4a80af2a891332176a3912a235582d77d076a185",
+      "draft": true,
+      "updated_at": "2026-11-14T23:27:39Z"
+    },
+    {
+      "number": 475,
+      "title": "[Draft research] PressureFlow C1024/C2048/C4096 native gas-capacity qualification",
+      "head": "research/pf-gas-capacity-native-20261106-gpt6-2120",
+      "head_sha": "5c207762a424cc3c7507c74f500403ef48b9e362",
+      "base": "main",
+      "base_sha": "dea4e53dd71d6e0af71775593fdc9197a7633e3e",
+      "draft": true,
+      "updated_at": "2026-11-14T23:31:32Z"
+    },
+    {
+      "number": 472,
+      "title": "[EXPERIMENTAL] PF cached run-head repair with bounded dirty-Y preflight",
+      "head": "sol6/pf-run-head-repair-20261106-2100",
+      "head_sha": "18d40ca9e18e133b78f85323f53103e018c58a7d",
+      "base": "claude/water-ballistic-hybrid",
+      "base_sha": "4a80af2a891332176a3912a235582d77d076a185",
+      "draft": true,
+      "updated_at": "2026-11-14T23:27:04Z"
+    },
+    {
+      "number": 469,
+      "title": "[DRAFT] Repair R1-D: reject live-owner claim recovery and verify on both OSes",
+      "head": "tools/world-design-capture-live-owner-repair-20261106",
+      "head_sha": "14d879ee9a300c659c0b8211a86921018c0e80c1",
+      "base": "tools/world-design-capture-final-repair-independent-20261106",
+      "base_sha": "e9dc1da27ca18e8efa964209fcd2de4d9546a255",
+      "draft": true,
+      "updated_at": "2026-11-06T22:51:27Z"
+    },
+    {
+      "number": 468,
+      "title": "[DRAFT / NO MERGE] Independent real-process live-claim recovery adversary",
+      "head": "tools/world-design-capture-live-claim-probe-20261106",
+      "head_sha": "bcccfe806af9cfd504479ed5f16d82c49310efb6",
+      "base": "tools/world-design-capture-final-repair-independent-20261106",
+      "base_sha": "e9dc1da27ca18e8efa964209fcd2de4d9546a255",
+      "draft": true,
+      "updated_at": "2026-11-06T20:07:15Z"
+    },
+    {
+      "number": 467,
+      "title": "Repair: harden final capture claim release and alias containment",
+      "head": "tools/world-design-capture-final-repair-independent-20261106",
+      "head_sha": "e9dc1da27ca18e8efa964209fcd2de4d9546a255",
+      "base": "tools/world-design-capture-repair-r1-r5-20261106",
+      "base_sha": "282ed9dd13a9d17607650ca17d9ddb494ae62863",
+      "draft": true,
+      "updated_at": "2026-11-06T20:49:58Z"
+    },
+    {
+      "number": 466,
+      "title": "feat(workbench): release cut structures and fix normal-brush admission",
+      "head": "codex/sol-workbench-law-20261106",
+      "head_sha": "b140265d1a2ef2fd76787f8048dbcc5e9fa545ac",
+      "base": "codex/sol-contact-gravity-order-20261106",
+      "base_sha": "cba3c0de35c4fae410b2fa16fa821524308c1ce8",
+      "draft": true,
+      "updated_at": "2026-11-07T03:06:26Z"
+    },
+    {
+      "number": 463,
+      "title": "evidence(sol): bearing-gate diagnostic on #461 \u2014 inconclusive (not for merge)",
+      "head": "claude/sol-bearing-gate-diagnostic-20261106",
+      "head_sha": "29c3c0107ded12abe6f57b9a5feaee4931e6fbf8",
+      "base": "codex/sol-contact-gravity-order-20261106",
+      "base_sha": "cba3c0de35c4fae410b2fa16fa821524308c1ce8",
+      "draft": true,
+      "updated_at": "2026-11-06T17:45:17Z"
+    },
+    {
+      "number": 462,
+      "title": "Repair: world-design capture R1\u2013R4, N1 and source provenance (dependent Draft)",
+      "head": "tools/world-design-capture-repair-r1-r5-20261106",
+      "head_sha": "282ed9dd13a9d17607650ca17d9ddb494ae62863",
+      "base": "tools/world-design-godot-capture-20261105",
+      "base_sha": "cff6c7f947147a250e5a5c3bb9d46b0df39b376c",
+      "draft": true,
+      "updated_at": "2026-11-06T20:49:56Z"
+    },
+    {
+      "number": 461,
+      "title": "experiment(sol): qualify contact/gravity ordering on cut structures",
+      "head": "codex/sol-contact-gravity-order-20261106",
+      "head_sha": "cba3c0de35c4fae410b2fa16fa821524308c1ce8",
+      "base": "codex/sol-structure-cut-20261106",
+      "base_sha": "61924a9788f507620706dfa19d28dc12d819156b",
+      "draft": true,
+      "updated_at": "2026-11-06T17:44:04Z"
+    },
+    {
+      "number": 460,
+      "title": "fix(sol): initialize aggregate mass before the first impulse",
+      "head": "codex/sol-structure-cut-20261106",
+      "head_sha": "61924a9788f507620706dfa19d28dc12d819156b",
+      "base": "fix/sol347-facade-refusal-20261104-095628",
+      "base_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+      "draft": true,
+      "updated_at": "2026-11-06T10:50:19Z"
+    },
+    {
+      "number": 459,
+      "title": "GEN-006: native CYPS whole-World snapshot scope and exclusive-owner latency probe (experimental)",
+      "head": "experiment/gen006-native-cyps-scaling-20261106",
+      "head_sha": "cb17c05ccadd87bc15b46dc2a7455e71c356ee34",
+      "base": "main",
+      "base_sha": "06522e300dcf91efbab0ac8f4f4370af72cf2029",
+      "draft": true,
+      "updated_at": "2026-11-07T00:15:52Z"
+    },
+    {
+      "number": 458,
+      "title": "GEN-006: Windows/Linux checkpoint lifetime probes \u2014 reader lease and staged-writer GC (experimental)",
+      "head": "experiment/gen006-windows-reader-lease-20261106",
+      "head_sha": "9f51e8edabe327ff7e0936fbcf35b358c2b02439",
+      "base": "main",
+      "base_sha": "06522e300dcf91efbab0ac8f4f4370af72cf2029",
+      "draft": true,
+      "updated_at": "2026-11-06T05:08:02Z"
+    },
+    {
+      "number": 457,
+      "title": "Tooling: shared Godot world-design pack capture adapter (requires graphical qualification)",
+      "head": "tools/world-design-godot-capture-20261105",
+      "head_sha": "cff6c7f947147a250e5a5c3bb9d46b0df39b376c",
+      "base": "main",
+      "base_sha": "06522e300dcf91efbab0ac8f4f4370af72cf2029",
+      "draft": true,
+      "updated_at": "2026-11-06T01:25:01Z"
+    },
+    {
+      "number": 456,
+      "title": "INV-004: classify Rapier bridge wall time by calling-thread CPU time",
+      "head": "perf/inv154-space-step-threadtime-20261105",
+      "head_sha": "df3985e389e0a5f6ea18b1eefea231aefae21689",
+      "base": "perf/inv154-physics-stage-abba-20261105",
+      "base_sha": "2e937ee37532b06d46fa49205ff2e51c1a9baa2e",
+      "draft": true,
+      "updated_at": "2026-11-07T00:40:40Z"
+    },
+    {
+      "number": 455,
+      "title": "SOL safety: compose dependent input/bin/derived guards",
+      "head": "sol/safety-composition-20261105",
+      "head_sha": "d959fdba821d0e259ae41402dd52c9a38b878446",
+      "base": "codex/sol-active-normal-live-20261105",
+      "base_sha": "275ce1ee692739b35f400adcf9532f7e89284cfb",
+      "draft": true,
+      "updated_at": "2026-11-05T21:18:30Z"
+    },
+    {
+      "number": 454,
+      "title": "World design: consolidate 15 collections into one high-detail atlas refinement [design-only]",
+      "head": "design/world-atlas-015-refinement-20261105",
+      "head_sha": "c4aab63eed538a25687c66d368b0801d2d2e04d0",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-07T04:39:19Z"
+    },
+    {
+      "number": 452,
+      "title": "SOL: reject copied Bin means outside tangent extrema (A01)",
+      "head": "sol/bin-mean-range-guard-20261105",
+      "head_sha": "14b0f1d0c9a30d4ccd919b3dad91f46031912e39",
+      "base": "sol/live-bin-domain-guard-20261105",
+      "base_sha": "3eb07e6616798dda49083858e5549aec4c8d0cd7",
+      "draft": true,
+      "updated_at": "2026-11-05T18:46:39Z"
+    },
+    {
+      "number": 450,
+      "title": "SOL experiment: bound active-normal mixed-face closing per face (value-only) -slop",
+      "head": "sol/mixed-face-envelope-probe-20261105",
+      "head_sha": "5b0f0744a35d0d2dd0acbf6990254b46bf584b27",
+      "base": "codex/sol-active-normal-live-20261105",
+      "base_sha": "275ce1ee692739b35f400adcf9532f7e89284cfb",
+      "draft": true,
+      "updated_at": "2026-11-05T19:26:02Z"
+    },
+    {
+      "number": 449,
+      "title": "INV-004: source-matched Windows physics session/Rapier stage timing ABBA",
+      "head": "perf/inv154-physics-stage-abba-20261105",
+      "head_sha": "2e937ee37532b06d46fa49205ff2e51c1a9baa2e",
+      "base": "perf/inv154-physics-wrapper-attribution-20261105",
+      "base_sha": "e2b4dd0f97d03af1a3f50ededb246d824350d942",
+      "draft": true,
+      "updated_at": "2026-11-05T23:37:27Z"
+    },
+    {
+      "number": 448,
+      "title": "GEN-006: test native private-staged all-or-none semantic bundle control -slop",
+      "head": "experiment/gen006-native-private-stage-20261105",
+      "head_sha": "fe212c4ddc19234f869ddbbbf9a890b877136935",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T19:26:00Z"
+    },
+    {
+      "number": 444,
+      "title": "SOL: cleanly refuse unrepresentable derived contact geometry",
+      "head": "sol/live-derived-geometry-refusal-20261105",
+      "head_sha": "79f791fb484d738592a629bb8c0457e9ffa40df5",
+      "base": "sol/live-bin-domain-guard-20261105",
+      "base_sha": "3eb07e6616798dda49083858e5549aec4c8d0cd7",
+      "draft": true,
+      "updated_at": "2026-11-05T17:30:15Z"
+    },
+    {
+      "number": 442,
+      "title": "GEN-006: actual native cross-chunk semantic bundle partial-admission control -slop",
+      "head": "experiment/gen006-native-bundle-partial-admission-20261105",
+      "head_sha": "8edfed45a2c78c3bfc5327440bc2f3d1fd312108",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T19:25:55Z"
+    },
+    {
+      "number": 441,
+      "title": "SOL: refuse malformed live copied contact bins before impulse arithmetic",
+      "head": "sol/live-bin-domain-guard-20261105",
+      "head_sha": "3eb07e6616798dda49083858e5549aec4c8d0cd7",
+      "base": "sol/live-active-normal-body-domain-guard-20261105",
+      "base_sha": "bbbc423344ca1d72764557ddacba690b75ea04d7",
+      "draft": true,
+      "updated_at": "2026-11-05T18:45:07Z"
+    },
+    {
+      "number": 438,
+      "title": "SOL #433: actual Windows/MSVC source-locked red-green and valid-path parity -slop",
+      "head": "sol/433-msvc-redgreen-host-20261105",
+      "head_sha": "a6dbc6a555c709cb2ce5fb84f9f4256e13f2ac93",
+      "base": "sol/live-active-normal-body-domain-guard-20261105",
+      "base_sha": "bbbc423344ca1d72764557ddacba690b75ea04d7",
+      "draft": true,
+      "updated_at": "2026-11-05T19:28:54Z"
+    },
+    {
+      "number": 435,
+      "title": "GEN-006: native selective checkpoint domain and owner-pin refusal probe",
+      "head": "experiment/gen006-selective-domain-refusal-20261105",
+      "head_sha": "d6d9c6b8a1249fa109145e74066b799a6a8a9aca",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T12:14:21Z"
+    },
+    {
+      "number": 433,
+      "title": "SOL live active-normal: refuse invalid rigid-body inputs before contact",
+      "head": "sol/live-active-normal-body-domain-guard-20261105",
+      "head_sha": "bbbc423344ca1d72764557ddacba690b75ea04d7",
+      "base": "codex/sol-active-normal-live-20261105",
+      "base_sha": "dfc2833eab5b8e3f81e2f2798b0066562ed41e0b",
+      "draft": true,
+      "updated_at": "2026-11-05T14:47:06Z"
+    },
+    {
+      "number": 432,
+      "title": "REC-001: hosted Windows recorder OFF/ON path cost and real encoding evidence (experimental)",
+      "head": "tools/rec001-windows-recorder-cost-probe-20261105",
+      "head_sha": "cc2fdbcc23f7df3524ac24952823a31715c89b4e",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T16:46:25Z"
+    },
+    {
+      "number": 429,
+      "title": "Reject clipping-only mixed-body repair and qualify Rapier gravity/damping",
+      "head": "codex/sol-active-normal-live-20261105",
+      "head_sha": "67f93a28bc05fc3b90beec9ea32e60f0864af642",
+      "base": "codex/sol-normal-active-20261105",
+      "base_sha": "4cd9ca193176e315f8e81316e2221b275cdccbde",
+      "draft": true,
+      "updated_at": "2026-11-05T22:35:33Z"
+    },
+    {
+      "number": 426,
+      "title": "GEN-006: real native generator session-fence and cancelled demand admission probe",
+      "head": "experiment/gen006-native-demand-fence-20261105",
+      "head_sha": "c71092480ff535aa8c7d16b966829188d3e8fafa",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T16:22:11Z"
+    },
+    {
+      "number": 424,
+      "title": "REC-001: observed-event bookmark index for retained gameplay recordings (experimental)",
+      "head": "tools/rec001-observation-bookmarks-20261105",
+      "head_sha": "e7f2b6f4adf2355e6e6541d6d7e73745da64211f",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T18:50:58Z"
+    },
+    {
+      "number": 423,
+      "title": "SOL: expose opt-in passivity fallback provenance and qualify one million contacts -slop",
+      "head": "sol/active-normal-fallback-provenance-20261105",
+      "head_sha": "bd15df28ef8bf94d0cb65c7ad705769db3ff66b9",
+      "base": "sol/active-normal-passivity-fallback-20261105",
+      "base_sha": "15a78545498fb0a179cebb57680aac48cc773122",
+      "draft": true,
+      "updated_at": "2026-11-05T19:23:28Z"
+    },
+    {
+      "number": 422,
+      "title": "GEN-006: native material-only rehydration negative control and actual 1/4-worker continuation",
+      "head": "experiment/gen006-native-material-only-20261105",
+      "head_sha": "6a21a04c2fce6e5db05c59dcf188dd266131accb",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T09:23:20Z"
+    },
+    {
+      "number": 421,
+      "title": "SOL active-normal candidate: bounded value refinement with unchanged capacity controls",
+      "head": "codex/sol-normal-active-20261105",
+      "head_sha": "4cd9ca193176e315f8e81316e2221b275cdccbde",
+      "base": "codex/sol-response-cost-20261105",
+      "base_sha": "3e0bf637c9f2cdb660bd55cf8bc33d2da779e4f9",
+      "draft": true,
+      "updated_at": "2026-11-05T09:20:15Z"
+    },
+    {
+      "number": 419,
+      "title": "REC-001: bounded offline v2 gameplay evidence comparison viewer",
+      "head": "tools/rec001-offline-comparison-20261105",
+      "head_sha": "980c3df0a136feeea41a297b67587f8efd4899c7",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T17:53:39Z"
+    },
+    {
+      "number": 418,
+      "title": "SOL/GCR: passivity-safe fallback for opt-in active-normal normalization -slop",
+      "head": "sol/active-normal-passivity-fallback-20261105",
+      "head_sha": "15a78545498fb0a179cebb57680aac48cc773122",
+      "base": "experiment/sol-active-normal-weight-20261105",
+      "base_sha": "95d7bf1e3b5a7125d257717f11874b023bb23b77",
+      "draft": true,
+      "updated_at": "2026-11-05T19:23:26Z"
+    },
+    {
+      "number": 417,
+      "title": "INV-004: source-pinned MicroScenario frame-copy cost discriminator (diagnostic) -slop",
+      "head": "perf/inv154-microscenario-frame-copy-probe-20261105",
+      "head_sha": "6d9b56bfdf677d749b6b345f284412fcf4a4f941",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T19:23:24Z"
+    },
+    {
+      "number": 416,
+      "title": "SOL chamber cost: isolate response generation from observation with 24 matched pairs",
+      "head": "codex/sol-response-cost-20261105",
+      "head_sha": "3e0bf637c9f2cdb660bd55cf8bc33d2da779e4f9",
+      "base": "codex/sol-chamber-yielding-20261105",
+      "base_sha": "b424032b925fd890421d3e94ed0524988445b5fb",
+      "draft": true,
+      "updated_at": "2026-11-05T08:18:31Z"
+    },
+    {
+      "number": 415,
+      "title": "GEN-006: experimental durable save/ACK fault and eviction refusal fixture -slop",
+      "head": "experiment/gen006-save-ack-fault-20261105",
+      "head_sha": "d6312b8430158a4cdf8d602c9eacdd0da4ee8b28",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T19:23:13Z"
+    },
+    {
+      "number": 413,
+      "title": "SOL/GCR: opt-in opposing-normal support normalization (bounded experiment) -slop",
+      "head": "experiment/sol-active-normal-weight-20261105",
+      "head_sha": "95d7bf1e3b5a7125d257717f11874b023bb23b77",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T19:23:10Z"
+    },
+    {
+      "number": 411,
+      "title": "SOL chamber: exact 520-member geometry, selective equilibrium and forced penetration evidence",
+      "head": "codex/sol-chamber-yielding-20261105",
+      "head_sha": "b424032b925fd890421d3e94ed0524988445b5fb",
+      "base": "codex/experiment-la-selective-sol-feasibility-20261105",
+      "base_sha": "a38098b1a807fc3ac7b60166e75b217dd7bc629e",
+      "draft": true,
+      "updated_at": "2026-11-05T07:03:30Z"
+    },
+    {
+      "number": 409,
+      "title": "Workbench: compose player rigs, native fields and physical usables",
+      "head": "codex/workbench-player-usables-20261105",
+      "head_sha": "6bdab8ef59e1d7b9771718ebe07dd799c1e06ed3",
+      "base": "codex/flyer-options-20261105",
+      "base_sha": "80bae8847fc2428a213f8b0e5e1c8fcd7e1b80ff",
+      "draft": true,
+      "updated_at": "2026-11-05T04:56:44Z"
+    },
+    {
+      "number": 407,
+      "title": "SOL: correct energy guard precision without changing response impulses",
+      "head": "codex/sol-energy-precision-20261105",
+      "head_sha": "bbca191544f6a578ee14323c08d48021904893f7",
+      "base": "fix/sol347-facade-refusal-20261104-095628",
+      "base_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+      "draft": true,
+      "updated_at": "2026-11-05T04:19:38Z"
+    },
+    {
+      "number": 404,
+      "title": "IN-TOOLS #361: current-main successor admission and Windows causal gate",
+      "head": "feat/in-tools-361-current-main-admission-20261105",
+      "head_sha": "20e668ce66536f9365d07718bfbb5266a2f8502c",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-07T15:01:07Z"
+    },
+    {
+      "number": 403,
+      "title": "PLAY-PACE-003 successor: ANGLE FXC attribution, negative shader experiments, pacing probe",
+      "head": "claude/play-pace003-successor-graphics",
+      "head_sha": "54efc5f876cf57fb1a18a5b441f85d111229835b",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T03:24:08Z"
+    },
+    {
+      "number": 402,
+      "title": "Workbench: saved per-flyer controls, tuning and pixel thrusters",
+      "head": "codex/flyer-options-20261105",
+      "head_sha": "80bae8847fc2428a213f8b0e5e1c8fcd7e1b80ff",
+      "base": "main",
+      "base_sha": "ba9cbc89029be88b812af59b19e5c59829bbcd90",
+      "draft": true,
+      "updated_at": "2026-11-05T16:33:33Z"
+    },
+    {
+      "number": 401,
+      "title": "PLAY-WIN-CRASH: diagnostic Godot #117991 Windows A/B experiment",
+      "head": "experiment/pr379-godot117991-windows-ab-20261105",
+      "head_sha": "aad8e76432ae51ac6acfec635f1a223c2822f0cf",
+      "base": "main",
+      "base_sha": "dea4e53dd71d6e0af71775593fdc9197a7633e3e",
+      "draft": true,
+      "updated_at": "2026-11-14T23:32:05Z"
+    },
+    {
+      "number": 400,
+      "title": "LA-SELECTIVE: real-body qualification and opt-in stale-response guard",
+      "head": "codex/experiment-la-selective-sol-feasibility-20261105",
+      "head_sha": "a38098b1a807fc3ac7b60166e75b217dd7bc629e",
+      "base": "codex/workbench-consolidation-retry-20261104",
+      "base_sha": "77c60b8e0f9b17192a4e04b20cd37ec55096c2c3",
+      "draft": true,
+      "updated_at": "2026-11-05T03:19:46Z"
+    },
+    {
+      "number": 399,
+      "title": "test(physical): establish owner readback before retention baseline",
+      "head": "codex/pr383-retention-readback-tests",
+      "head_sha": "d9101dab7a98d41cae219a7de94165e386eb811f",
+      "base": "feat/in-tools-361a-metered-liquid-drain",
+      "base_sha": "8f99d391f35708e665810e6732a6777baa7c2cf5",
+      "draft": true,
+      "updated_at": "2026-11-05T13:22:57Z"
+    },
+    {
+      "number": 395,
+      "title": "MAT-AUTH-002 #354-B: narrow MoltenGlass cooling deadline and source transition",
+      "head": "fix/mat354b-moltenglass-deadline-20261104",
+      "head_sha": "1dd0d9975bf118cb082ac32dadce328b12f57e2b",
+      "base": "main",
+      "base_sha": "751edc0b495dc85484ad5509a7c95f863651c76b",
+      "draft": true,
+      "updated_at": "2026-11-04T23:07:41Z"
+    },
+    {
+      "number": 393,
+      "title": "SOL #347: repair public refusal and authoritative readback contracts",
+      "head": "fix/sol347-facade-refusal-20261104-095628",
+      "head_sha": "e4c2649e82d943554f4dc6a0634336770cda08f6",
+      "base": "sol-detach-001-current-main",
+      "base_sha": "1598115c9065239cc1eaec11e99077274b457be1",
+      "draft": true,
+      "updated_at": "2026-11-04T20:04:12Z"
+    },
+    {
+      "number": 392,
+      "title": "WORKBENCH-001: shared two-map development sandbox and mixed-body acceptance",
+      "head": "feat/workbench-001-shared-sandbox-20261104",
+      "head_sha": "f763b08545a6bf0874aaaf01fc38d23a60b3ebcd",
+      "base": "main",
+      "base_sha": "0103de80d11304388868f89f7b26c672ad6100ad",
+      "draft": true,
+      "updated_at": "2026-11-04T18:50:23Z"
+    },
+    {
+      "number": 389,
+      "title": "feat: try a braced U-shaped Scooper with matched retention tests",
+      "head": "codex/gcr-scooper-u-hull-20261104",
+      "head_sha": "38d3059e40986c7f869e60cf2097169763129ecf",
+      "base": "codex/gcr-scooper-leak-investigation-20261104",
+      "base_sha": "350a9814fe50609b8eb664a8896fb9e3d5e69dd0",
+      "draft": true,
+      "updated_at": "2026-11-04T16:59:54Z"
+    },
+    {
+      "number": 388,
+      "title": "ACTIVE-LEDGER-001: unified workstream inventory and deterministic status dashboard",
+      "head": "docs/active-work-ledger-001-20261104",
+      "head_sha": "f6c72cd037c5cb3dc39ec26d1b515ab0c01911db",
+      "base": "main",
+      "base_sha": "01f9b7c8e382ca6bdbaf0bf70c7847adc12fe0bc",
+      "draft": true,
+      "updated_at": "2026-11-05T14:20:39Z"
+    },
+    {
+      "number": 387,
+      "title": "fix: preserve entry side for powder against translated compound hulls",
+      "head": "codex/gcr-scooper-leak-investigation-20261104",
+      "head_sha": "350a9814fe50609b8eb664a8896fb9e3d5e69dd0",
+      "base": "codex/gcr-authored-compound-scooper-20261104",
+      "base_sha": "5e79f2be994b652f9aef658e2075650631581427",
+      "draft": true,
+      "updated_at": "2026-11-04T14:52:23Z"
+    },
+    {
+      "number": 386,
+      "title": "MAT-SOL: source-pinned protected-consumer REPAIR evidence",
+      "head": "audit/mat-sol-protected-consumer-20261104",
+      "head_sha": "b661a6f354f8c51e79759d22ad4573a875964b43",
+      "base": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "draft": true,
+      "updated_at": "2026-11-04T14:37:20Z"
+    },
+    {
+      "number": 385,
+      "title": "feat: add data-authored flyers and compound Scooper review",
+      "head": "codex/gcr-authored-compound-scooper-20261104",
+      "head_sha": "5e79f2be994b652f9aef658e2075650631581427",
+      "base": "codex/gcr-repeatable-flight-ui-20261104",
+      "base_sha": "b759e9ea05f274eb01eec7163b0cdc47c83b7c43",
+      "draft": true,
+      "updated_at": "2026-11-04T14:52:26Z"
+    },
+    {
+      "number": 384,
+      "title": "MAT-AUTH-001 #353-B: generated Main names and scoped consumer proof",
+      "head": "feat/mat-auth-353b-display-names-20261104",
+      "head_sha": "3d537d1a62e9b7eca546c63ffd4ec6e7654d5957",
+      "base": "main",
+      "base_sha": "751edc0b495dc85484ad5509a7c95f863651c76b",
+      "draft": true,
+      "updated_at": "2026-11-05T11:29:50Z"
+    },
+    {
+      "number": 383,
+      "title": "IN-TOOLS #361-A: opt-in exact-metered physical Liquid Drain",
+      "head": "feat/in-tools-361a-metered-liquid-drain",
+      "head_sha": "8f99d391f35708e665810e6732a6777baa7c2cf5",
+      "base": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "draft": true,
+      "updated_at": "2026-11-04T21:44:50Z"
+    },
+    {
+      "number": 381,
+      "title": "feat: add saved flyer spawn, Burst shortcut and compact review UI",
+      "head": "codex/gcr-repeatable-flight-ui-20261104",
+      "head_sha": "b759e9ea05f274eb01eec7163b0cdc47c83b7c43",
+      "base": "codex/gcr-flight-review-controls-20261104",
+      "base_sha": "dff9032397900a2c411c6d7b27ac89ef340d7063",
+      "draft": true,
+      "updated_at": "2026-11-04T11:53:23Z"
+    },
+    {
+      "number": 380,
+      "title": "feat: add fleet boost and live powder sources, fix edge alignment",
+      "head": "codex/gcr-flight-review-controls-20261104",
+      "head_sha": "dff9032397900a2c411c6d7b27ac89ef340d7063",
+      "base": "codex/gcr-powder-review-tests-20261104",
+      "base_sha": "7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63",
+      "draft": true,
+      "updated_at": "2026-11-04T11:04:04Z"
+    },
+    {
+      "number": 379,
+      "title": "IN-TOOLS #361: bounded gameplay architecture and test admission",
+      "head": "docs/in-tools-361-admission-20261104",
+      "head_sha": "e7e404b696fb9fc48cdadc95a69baf3a6f5fc6d1",
+      "base": "main",
+      "base_sha": "751edc0b495dc85484ad5509a7c95f863651c76b",
+      "draft": false,
+      "updated_at": "2026-11-05T03:28:04Z"
+    },
+    {
+      "number": 378,
+      "title": "docs: independent SOL347 physical-blocker review and bounded repair finding",
+      "head": "docs/sol347-independent-physical-review-20261104",
+      "head_sha": "8e25c3a9c2c18b5b22c95d641601a07eea81c195",
+      "base": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "draft": true,
+      "updated_at": "2026-11-04T10:28:10Z"
+    },
+    {
+      "number": 376,
+      "title": "WATER-CONTACT #362 Phase A: four-family Rapier impact discrimination (evidence only)",
+      "head": "claude/rapier-water-splash-discrimination-dc6b5c",
+      "head_sha": "61535212529459fc30c5bd7d4db8c0a7631ccb57",
+      "base": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "draft": true,
+      "updated_at": "2026-11-04T13:11:40Z"
+    },
+    {
+      "number": 375,
+      "title": "feat: add repeatable powder burst and stream comparisons",
+      "head": "codex/gcr-powder-review-tests-20261104",
+      "head_sha": "7c2c5fe3c92137eb6ab55768d3bec6ae4b33db63",
+      "base": "codex/gcr-selective-events-20261104",
+      "base_sha": "22fb5026edda2ea95e620ad4c15b491f4fc115a8",
+      "draft": true,
+      "updated_at": "2026-11-04T09:23:05Z"
+    },
+    {
+      "number": 373,
+      "title": "experiment: selective granular arrival response fails joint qualification",
+      "head": "codex/gcr-selective-events-20261104",
+      "head_sha": "22fb5026edda2ea95e620ad4c15b491f4fc115a8",
+      "base": "codex/gcr-granular-events-20261104",
+      "base_sha": "23bd83abf64e741764e02a8fa0eb4ca15a50aa24",
+      "draft": true,
+      "updated_at": "2026-11-04T03:26:50Z"
+    },
+    {
+      "number": 372,
+      "title": "feat: qualify granular-only event response in the painting playground",
+      "head": "codex/gcr-granular-events-20261104",
+      "head_sha": "23bd83abf64e741764e02a8fa0eb4ca15a50aa24",
+      "base": "codex/gcr-causal-tests-20261103",
+      "base_sha": "43028e4999c3038d5d83d77140461329f16364d3",
+      "draft": true,
+      "updated_at": "2026-11-04T02:42:12Z"
+    },
+    {
+      "number": 370,
+      "title": "LCB-FEEL #360: four-family liquid comparison \u2014 admission preflight and playable route",
+      "head": "claude/lcb360-feel",
+      "head_sha": "fbe82bcab8f821aac442c2bf59eb57b279717873",
+      "base": "main",
+      "base_sha": "070c7a22ad51ea9206931cd9d56fd1e7cfe212aa",
+      "draft": true,
+      "updated_at": "2026-11-04T07:08:05Z"
+    },
+    {
+      "number": 368,
+      "title": "test: isolate GCR-LA timing, withdrawal and blocked-event burial",
+      "head": "codex/gcr-causal-tests-20261103",
+      "head_sha": "43028e4999c3038d5d83d77140461329f16364d3",
+      "base": "codex/gcr-creep-investigation-20261103",
+      "base_sha": "029c214e7e3530ebbee63927c725f832d18ff34a",
+      "draft": true,
+      "updated_at": "2026-11-03T21:29:43Z"
+    },
+    {
+      "number": 366,
+      "title": "test: separate GCR-LA quiet creep, dynamic burial and powered sliding",
+      "head": "codex/gcr-creep-investigation-20261103",
+      "head_sha": "029c214e7e3530ebbee63927c725f832d18ff34a",
+      "base": "codex/gcr-rest-comparison-20261102",
+      "base_sha": "8ce36b0e41c9292ab0b1f02cf7789450082a67b5",
+      "draft": true,
+      "updated_at": "2026-11-03T20:28:32Z"
+    },
+    {
+      "number": 358,
+      "title": "feat(materials): add paired walls and finite Water curing",
+      "head": "codex/paired-materials-20261103",
+      "head_sha": "7383946a3ed384966e9e5fb72553fc267f9aacb7",
+      "base": "main",
+      "base_sha": "3da7e7be4a6af4c85e03a7d8a0ed57229e5db33d",
+      "draft": true,
+      "updated_at": "2026-11-04T10:19:53Z"
+    },
+    {
+      "number": 351,
+      "title": "experiment: compare granular budgets, rest and editable flyer controls",
+      "head": "codex/gcr-rest-comparison-20261102",
+      "head_sha": "8ce36b0e41c9292ab0b1f02cf7789450082a67b5",
+      "base": "codex/gcr-load-aware-20261102",
+      "base_sha": "d3e90e6bffa99a7724a4b94d5ec3840d80f0604a",
+      "draft": true,
+      "updated_at": "2026-11-03T00:47:35Z"
+    },
+    {
+      "number": 350,
+      "title": "experiment: qualify mass-scaled GCR capacity and owner controls",
+      "head": "codex/gcr-load-aware-20261102",
+      "head_sha": "d3e90e6bffa99a7724a4b94d5ec3840d80f0604a",
+      "base": "codex/gcr-detachment-integration-20261101",
+      "base_sha": "d1978c14e40cc037f03c6a661e92e15aa0537415",
+      "draft": true,
+      "updated_at": "2026-11-02T20:16:18Z"
+    },
+    {
+      "number": 349,
+      "title": "Compose native detachment with one compound GCR response owner",
+      "head": "codex/gcr-detachment-integration-20261101",
+      "head_sha": "d1978c14e40cc037f03c6a661e92e15aa0537415",
+      "base": "main",
+      "base_sha": "a8f08a67fea3c58f6df7473cbae1831334fcc04e",
+      "draft": true,
+      "updated_at": "2026-11-02T01:33:12Z"
+    },
+    {
+      "number": 348,
+      "title": "experiment: qualify GCR-A1 admission fix; physical response remains NO-GO",
+      "head": "codex/gcr-admission-only-20261101",
+      "head_sha": "be1847464803bab0f74d184d60d77aea5e384228",
+      "base": "codex/gcr001-category-contact-20261101",
+      "base_sha": "be24013012242a4a8724227432d962df1035d148",
+      "draft": true,
+      "updated_at": "2026-11-01T19:14:16Z"
+    },
+    {
+      "number": 347,
+      "title": "SOL-DETACH-001: native structural detachment and conservative local displacement",
+      "head": "sol-detach-001-current-main",
+      "head_sha": "1598115c9065239cc1eaec11e99077274b457be1",
+      "base": "main",
+      "base_sha": "7ef4856e225a2cc2a6e5c36ca33a2dab40e123f1",
+      "draft": true,
+      "updated_at": "2026-11-04T15:24:20Z"
+    },
+    {
+      "number": 346,
+      "title": "experiment: implement GCR-001 and retain R2 qualification NO-GO",
+      "head": "codex/gcr001-category-contact-20261101",
+      "head_sha": "be24013012242a4a8724227432d962df1035d148",
+      "base": "main",
+      "base_sha": "a8f08a67fea3c58f6df7473cbae1831334fcc04e",
+      "draft": true,
+      "updated_at": "2026-11-01T17:09:42Z"
+    },
+    {
+      "number": 345,
+      "title": "experiment(render): qualify strict baseline accounting on production R",
+      "head": "codex/render-retention-production-20261101",
+      "head_sha": "2461a6a9da130a39dcf2578059f3d47337db4c58",
+      "base": "main",
+      "base_sha": "809fd30dfac0c5e127302997075be9c4b279e5aa",
+      "draft": true,
+      "updated_at": "2026-11-01T15:58:04Z"
+    },
+    {
+      "number": 343,
+      "title": "Qualify Y1 granular bearing and plan combined category-wide contact response",
+      "head": "codex/y1-production-envelope-20261101",
+      "head_sha": "2aff460c60f36c0f209b67fe682d0f8b9e5e0f83",
+      "base": "main",
+      "base_sha": "25ce0731d89b9540c2d95cfa8bae321c37e6e118",
+      "draft": true,
+      "updated_at": "2026-11-01T14:10:29Z"
+    },
+    {
+      "number": 342,
+      "title": "Qualify Y1 post-arrest clearance: exact accounting and sustained clearance from sample 706",
+      "head": "codex/y1-post-arrest-clearance-20261101",
+      "head_sha": "1afd03a078393875281ccf335ddabed78c2f4466",
+      "base": "codex/granular-bearing-candidates-20261101",
+      "base_sha": "064a3306dc3a87c3a88172003e42c8e426cb73e1",
+      "draft": true,
+      "updated_at": "2026-11-01T07:51:23Z"
+    },
+    {
+      "number": 341,
+      "title": "Discriminate granular braking and admission: Y1 high-value, A2 partial",
+      "head": "codex/granular-bearing-candidates-20261101",
+      "head_sha": "064a3306dc3a87c3a88172003e42c8e426cb73e1",
+      "base": "codex/granular-bearing-pre-overlap-20261101",
+      "base_sha": "8b4e53d76881f15ad400a3f4137c69c28daf0571",
+      "draft": true,
+      "updated_at": "2026-11-01T04:14:34Z"
+    },
+    {
+      "number": 339,
+      "title": "Measure granular entry momentum and bearing response timing",
+      "head": "codex/granular-bearing-pre-overlap-20261101",
+      "head_sha": "8b4e53d76881f15ad400a3f4137c69c28daf0571",
+      "base": "codex/physical-detachment-a2-20261031",
+      "base_sha": "61f0398e5a6d63432be681dc4a4d32da769f2b20",
+      "draft": true,
+      "updated_at": "2026-11-01T01:01:00Z"
+    },
+    {
+      "number": 338,
+      "title": "A2 topology-diverse recapture: bounded push-chain primary NO-GO",
+      "head": "codex/physical-detachment-a2-20261031",
+      "head_sha": "61f0398e5a6d63432be681dc4a4d32da769f2b20",
+      "base": "codex/physical-detachment-abc-20261031",
+      "base_sha": "7e04e8fde1496c5f32d3f83099ec2a6bfb6bb7d6",
+      "draft": true,
+      "updated_at": "2026-11-01T00:04:41Z"
+    },
+    {
+      "number": 337,
+      "title": "docs(play): reconcile accepted policy and candidate qualification handoff",
+      "head": "codex/play-integration-handoff-final-20261031",
+      "head_sha": "6568391099351677f57e307b123e89bfd8db26f5",
+      "base": "codex/play-pace004-qualified-20261031",
+      "base_sha": "4f3decc242633fb621d76b7529ef87b420dbd87a",
+      "draft": true,
+      "updated_at": "2026-10-31T23:39:44Z"
+    },
+    {
+      "number": 336,
+      "title": "[DRAFT] Diagnose rigid/cellular displacement: replay, topology and push-chain NO-GO",
+      "head": "codex/physical-detachment-abc-20261031",
+      "head_sha": "7e04e8fde1496c5f32d3f83099ec2a6bfb6bb7d6",
+      "base": "main",
+      "base_sha": "15b3a4012b9d5998e808fb371792dd7a71398507",
+      "draft": true,
+      "updated_at": "2026-10-31T22:38:42Z"
+    },
+    {
+      "number": 335,
+      "title": "[DRAFT / NO MERGE] Render publication: graphical ACK feedback, strict E and native R isolation",
+      "head": "codex/render-publication-abc-20261031",
+      "head_sha": "902fc5b518855911c1b6761a7165573843e567ed",
+      "base": "main",
+      "base_sha": "15b3a4012b9d5998e808fb371792dd7a71398507",
+      "draft": true,
+      "updated_at": "2026-10-31T23:29:00Z"
+    },
+    {
+      "number": 333,
+      "title": "[DRAFT / NO MERGE] Reconcile PR #290 published render-copy stack with PLAY main",
+      "head": "prepass/render-copy290-play-integration-20261031",
+      "head_sha": "21d44e43e071d2d5777c2ed46a92f59675639599",
+      "base": "main",
+      "base_sha": "dea4e53dd71d6e0af71775593fdc9197a7633e3e",
+      "draft": true,
+      "updated_at": "2026-11-14T23:30:48Z"
+    },
+    {
+      "number": 329,
+      "title": "PLAY: let original-source Windows exception diagnostics finish and retain late failures",
+      "head": "codex/play-windows-capture-successor-20261031",
+      "head_sha": "d53ae1204ebb992d8ebfe265b6ea1ed211dc3f21",
+      "base": "codex/play-windows-exception-capture-20261031",
+      "base_sha": "b890069877c7b197cf21ddf96cd00128ccbf09ad",
+      "draft": true,
+      "updated_at": "2026-11-14T23:32:45Z"
+    },
+    {
+      "number": 328,
+      "title": "[DRAFT][test-only][reference] PLAY_UI005: local mouse-input test flake, fix and evidence",
+      "head": "claude/ui005-real-cursor-click",
+      "head_sha": "6e30e42e496d80c5f71c595888c1e1237e7c07f6",
+      "base": "claude/palette-fxc-cost",
+      "base_sha": "1afe20c0b2abbffaf3e41ac1e1588b862274c52c",
+      "draft": true,
+      "updated_at": "2026-10-31T13:09:51Z"
+    },
+    {
+      "number": 327,
+      "title": "[DRAFT] Keep the desktop launch window entirely on one screen",
+      "head": "claude/window-placement",
+      "head_sha": "c2ada0a8ce80871e2ce5c28bd9f039e1d1fd235a",
+      "base": "main",
+      "base_sha": "400ec4c6c365324ec7ddeee4aad38c600ce802b6",
+      "draft": true,
+      "updated_at": "2026-10-31T12:09:44Z"
+    },
+    {
+      "number": 326,
+      "title": "[DRAFT] PLAY-PACE-003: bound the ANGLE palette compile and remove the X8000 trigger (#309)",
+      "head": "claude/palette-fxc-cost",
+      "head_sha": "1afe20c0b2abbffaf3e41ac1e1588b862274c52c",
+      "base": "codex/play-pace003-cold-start-20261030",
+      "base_sha": "dc324f7a9e27835a7efade57b6b7f1efd6c3ef82",
+      "draft": true,
+      "updated_at": "2026-10-31T11:55:55Z"
+    },
+    {
+      "number": 321,
+      "title": "PLAY diagnostic: capture the original Windows desktop exit without masking failure",
+      "head": "codex/play-windows-exception-capture-20261031",
+      "head_sha": "b890069877c7b197cf21ddf96cd00128ccbf09ad",
+      "base": "codex/play-ui007-desktop-readiness-20261031",
+      "base_sha": "b255bd83d24c8656724f5f067b6e3ecd80f88bbb",
+      "draft": true,
+      "updated_at": "2026-11-14T23:32:35Z"
+    },
+    {
+      "number": 316,
+      "title": "[NONQUALIFYING / NO-GO] Windows palette decomposition feasibility (#309)",
+      "head": "codex/play-pace003-palette-decomposition-20261031",
+      "head_sha": "8bdebfa3f81e4c1c6a98df3bada2a23955096610",
+      "base": "main",
+      "base_sha": "dea4e53dd71d6e0af71775593fdc9197a7633e3e",
+      "draft": true,
+      "updated_at": "2026-11-14T23:31:21Z"
+    },
+    {
+      "number": 312,
+      "title": "[NONQUALIFYING] Isolate Windows palette compiler paths (#309)",
+      "head": "codex/play-pace003-windows-diagnosis-20261030",
+      "head_sha": "5de468478c37c8ae9e2d446ba348d4e3ecf54bd6",
+      "base": "codex/play-pace003-cold-start-20261030",
+      "base_sha": "dc324f7a9e27835a7efade57b6b7f1efd6c3ef82",
+      "draft": true,
+      "updated_at": "2026-11-14T23:30:59Z"
+    },
+    {
+      "number": 308,
+      "title": "PLAY: qualify integrated churn and recover stopped composed sessions",
+      "head": "codex/play-life006-integrated-stress-20261030",
+      "head_sha": "2443a78378d649df588efeac9db7c54084473329",
+      "base": "main",
+      "base_sha": "b55ce690f9a3d2ca3026674a2e9c6a7635966f59",
+      "draft": false,
+      "updated_at": "2026-10-31T02:25:27Z"
+    },
+    {
+      "number": 304,
+      "title": "test(play): render gameplay while real native phase jobs are held",
+      "head": "codex/play-busy001c-rendered-20261029",
+      "head_sha": "6ac0f63e6e484da47cf00e5d60eac2c6646cac9c",
+      "base": "main",
+      "base_sha": "89020b9eb6d540383a5bb64b58dcd29a87592c32",
+      "draft": true,
+      "updated_at": "2026-11-03T22:45:58Z"
+    },
+    {
+      "number": 301,
+      "title": "build(render-copy290): publish source-matched four-path LFS runtimes",
+      "head": "publish/render-copy290-runtime-20261029",
+      "head_sha": "b5e415784d5e0884684869dd622883dacf3c9de5",
+      "base": "verify/render-copy290-host-producer-20261029",
+      "base_sha": "c6accb68370405a4b0f30302e0f9d18a911b090b",
+      "draft": false,
+      "updated_at": "2026-11-14T23:30:25Z"
+    },
+    {
+      "number": 298,
+      "title": "ci(render-copy290): read-only paired Linux/Windows Godot host evidence producer",
+      "head": "verify/render-copy290-host-producer-20261029",
+      "head_sha": "c6accb68370405a4b0f30302e0f9d18a911b090b",
+      "base": "prep/render-copy290-publisher-20261029",
+      "base_sha": "6f57b584fba3104287dcaa4ba96e3dded7a32b90",
+      "draft": true,
+      "updated_at": "2026-11-14T23:30:15Z"
+    },
+    {
+      "number": 295,
+      "title": "ci(render-copy290): unarmed exact-source/LFS publisher preflight (review only)",
+      "head": "prep/render-copy290-publisher-20261029",
+      "head_sha": "6f57b584fba3104287dcaa4ba96e3dded7a32b90",
+      "base": "claude/render-copy-per-run",
+      "base_sha": "ddf812f34c533f654f1488b9115eb0256305a288",
+      "draft": true,
+      "updated_at": "2026-11-14T23:29:52Z"
+    },
+    {
+      "number": 290,
+      "title": "perf(native): copy full-frame render cells per chunk run",
+      "head": "claude/render-copy-per-run",
+      "head_sha": "ddf812f34c533f654f1488b9115eb0256305a288",
+      "base": "main",
+      "base_sha": "dea4e53dd71d6e0af71775593fdc9197a7633e3e",
+      "draft": true,
+      "updated_at": "2026-11-14T23:29:42Z"
+    },
+    {
+      "number": 283,
+      "title": "[FROZEN EVIDENCE ARCHIVE] SOL-DETACH-001: native tree detachment, compound coupling and cause qualification",
+      "head": "work/sol281-native-detachment-20261027",
+      "head_sha": "254235ec4c3d58782bba44b478caca86bf57c856",
+      "base": "docs/sol-structural-detachment-primary-20261027",
+      "base_sha": "c087ca8569f1df394d67cdc4dbe1c6b46c2bcfb2",
+      "draft": true,
+      "updated_at": "2026-10-31T21:44:22Z"
+    },
+    {
+      "number": 282,
+      "title": "SOL-DETACH-000: prioritize real native solid-tree detachment ahead of Stage 3B optimization",
+      "head": "docs/sol-structural-detachment-primary-20261027",
+      "head_sha": "c087ca8569f1df394d67cdc4dbe1c6b46c2bcfb2",
+      "base": "main",
+      "base_sha": "c9ebe39c6cab086b7f7207ee3d80a6de2cb21f59",
+      "draft": true,
+      "updated_at": "2026-10-27T20:44:51Z"
+    },
+    {
+      "number": 272,
+      "title": "PLAY-ASYNC-001: dedicated async player World owner architecture, protocol and desktop baseline",
+      "head": "codex/play-async-001-architecture",
+      "head_sha": "00c76b338f65f15d01d7b8c2cba8ebc1a5b23753",
+      "base": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5",
+      "draft": true,
+      "updated_at": "2026-10-26T23:12:56Z"
+    },
+    {
+      "number": 262,
+      "title": "feat(playground): 22 distinct maps, agile players and live NPC tools",
+      "head": "codex/player-playground-maps",
+      "head_sha": "70ec119381a2cb9abab5d40ed3314fb07c9b1736",
+      "base": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5",
+      "draft": false,
+      "updated_at": "2026-10-26T09:51:48Z"
+    },
+    {
+      "number": 261,
+      "title": "docs: preserve controlled LCB session handover and desktop testing guide",
+      "head": "codex/lcb-session-handover",
+      "head_sha": "7880635dae4b1229d286c66df123f102b8f3423a",
+      "base": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5",
+      "draft": false,
+      "updated_at": "2026-10-26T00:16:11Z"
+    },
+    {
+      "number": 260,
+      "title": "LCB-003: retain single actors during native-default solver changes",
+      "head": "codex/lcb003-actor-host",
+      "head_sha": "86f95617d2966f9071e9fe8bdd334ea3888fa5cd",
+      "base": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5",
+      "draft": true,
+      "updated_at": "2026-10-26T00:01:37Z"
+    },
+    {
+      "number": 259,
+      "title": "LCB: observe real prepared states with complete native scientific accounting",
+      "head": "codex/lcb004-science",
+      "head_sha": "513bf479e0c069ce492c9e1b6806a7978ae60461",
+      "base": "main",
+      "base_sha": "56422c050bd5ed2ceb5f816b1269748764e2dcb7",
+      "draft": false,
+      "updated_at": "2026-10-26T00:02:01Z"
+    },
+    {
+      "number": 258,
+      "title": "LCB: expose copied inertial ledgers and actual worker participation",
+      "head": "codex/lcb004-observer",
+      "head_sha": "fec2c73a33e146c63398849a1d128cf45c0ba59b",
+      "base": "main",
+      "base_sha": "9e53a5b1b501e0667037b8502d3c1d15089211f5",
+      "draft": false,
+      "updated_at": "2026-10-26T00:09:02Z"
+    },
+    {
+      "number": 238,
+      "title": "MAT-003: archived readback, neutral tails and capture-state evidence",
+      "head": "codex/mat003-overnight-requalification",
+      "head_sha": "7084438425a2025210d4451572dd17d2e1d59961",
+      "base": "codex/mat003-readback-verifier-repair-20261023",
+      "base_sha": "c20d83360bee37cd9342904a7cfd05e5e5ec9f81",
+      "draft": false,
+      "updated_at": "2026-10-24T11:52:41Z"
+    },
+    {
+      "number": 235,
+      "title": "MAT-003: repair Windows correctness readback verifier",
+      "head": "codex/mat003-readback-verifier-repair-20261023",
+      "head_sha": "c20d83360bee37cd9342904a7cfd05e5e5ec9f81",
+      "base": "codex/mat003-continuation",
+      "base_sha": "800e16f02d4f87c5e38757a702ff8f098bc886fa",
+      "draft": false,
+      "updated_at": "2026-10-24T11:52:39Z"
+    },
+    {
+      "number": 231,
+      "title": "MAT-003PREPASS C: independent carrier evidence audit and conditional synthesis",
+      "head": "review/mat003prepass-c-carrier-synthesis-20261023",
+      "head_sha": "3510e6d1bf1e4e3b3be0299f0a8d7c2bd97bce45",
+      "base": "codex/mat003-continuation",
+      "base_sha": "7648e94fd8954d235ffd2723dc67b290dfe2e9e3",
+      "draft": true,
+      "updated_at": "2026-10-25T20:58:53Z"
+    },
+    {
+      "number": 230,
+      "title": "MAT-003PREPASS D: GEN-006 semantic state, lifecycle and persistence contracts",
+      "head": "docs/mat003prepass-gen006-state-contract-20261023",
+      "head_sha": "0d6d71301c5ce24d2dd1a80fe99cb1ac11bfb5a4",
+      "base": "main",
+      "base_sha": "1f9336388f11be39abaae340a781a5eef52115d4",
+      "draft": true,
+      "updated_at": "2026-10-25T21:08:34Z"
+    },
+    {
+      "number": 224,
+      "title": "ACT-IK-001: opt-in Runner joint-reference host, owned motor receipts and adversarial fixtures",
+      "head": "feat/act-ik-001-joint-owner",
+      "head_sha": "993a47044119dedd54db8f1327e957949c478bb3",
+      "base": "main",
+      "base_sha": "def212203ad12234236c4c6bb262c0546bd55b3d",
+      "draft": false,
+      "updated_at": "2026-10-24T22:28:54Z"
+    },
+    {
+      "number": 221,
+      "title": "MAT-003 continuation: packed diagnosis, WCLEAR apparatus and C128 feasibility",
+      "head": "codex/mat003-continuation",
+      "head_sha": "800e16f02d4f87c5e38757a702ff8f098bc886fa",
+      "base": "codex/mat-003prepass-s2-feasibility",
+      "base_sha": "b6033aab449a8dab4dc091cca92ce741a18d6fe8",
+      "draft": false,
+      "updated_at": "2026-10-24T11:52:37Z"
+    },
+    {
+      "number": 211,
+      "title": "MAT-003PREPASS S2: qualify S2F/twins and admit paired S2A timing",
+      "head": "codex/mat-003prepass-s2-feasibility",
+      "head_sha": "b6033aab449a8dab4dc091cca92ce741a18d6fe8",
+      "base": "codex/mat-003prepass-foundation",
+      "base_sha": "20d7e85da912267f31db91c846548e0f5639097a",
+      "draft": false,
+      "updated_at": "2026-10-24T11:52:36Z"
+    },
+    {
+      "number": 208,
+      "title": "MAT-003PREPASS: isolated carrier and native World correctness",
+      "head": "codex/mat-003prepass-foundation",
+      "head_sha": "20d7e85da912267f31db91c846548e0f5639097a",
+      "base": "main",
+      "base_sha": "3e9f0e6dcbfdb9c122c8c555dac43e7b4d926e5f",
+      "draft": false,
+      "updated_at": "2026-10-24T11:52:35Z"
+    },
+    {
+      "number": 188,
+      "title": "Propose a Water flow render plane and opt-in seam-fix presentation (docs only)",
+      "head": "claude/dazzling-nobel-943f75",
+      "head_sha": "c5dd006d1e857e6d00e5e24bae81f21962f423ac",
+      "base": "main",
+      "base_sha": "69ded481a853abb0eefd5edcc79d5dffca10b1f2",
+      "draft": true,
+      "updated_at": "2026-10-23T01:21:25Z"
+    },
+    {
+      "number": 187,
+      "title": "docs: add a complete polished-map authoring guide for agents",
+      "head": "docs/map-authoring-guide-20261020",
+      "head_sha": "fa05be4e8c0e492a500862c7ab91863ada3c90e4",
+      "base": "main",
+      "base_sha": "4f3685b71366218e82e7c2188e4ecdf27553f4cf",
+      "draft": false,
+      "updated_at": "2026-10-20T18:10:55Z"
+    },
+    {
+      "number": 186,
+      "title": "Add RAG guides for producing polished multilayer maps",
+      "head": "docs/polished-map-production-guide",
+      "head_sha": "5f287b9af7bbe7af13778fd41515208d55b1b717",
+      "base": "main",
+      "base_sha": "fc015a77d3b851fef4ea7734923bcdb3762a19a5",
+      "draft": false,
+      "updated_at": "2026-10-20T02:03:27Z"
+    },
+    {
+      "number": 184,
+      "title": "Build Grey Area 51: five connected concrete bunker tiles",
+      "head": "scene/grey-area-51",
+      "head_sha": "1a84e87d22d490f17d79e50b538e62fc4ede0dff",
+      "base": "main",
+      "base_sha": "02f9c890dc4faf0bf132a95acbc13a4d9cdc002f",
+      "draft": true,
+      "updated_at": "2026-10-19T20:58:09Z"
+    },
+    {
+      "number": 162,
+      "title": "WAT-002: conserve Water phase quantity and scale hot-material quenching-archive",
+      "head": "mat/phase-quantity-quench",
+      "head_sha": "19f7ff43ecc494185226d1fff07dc21ef4a220fb",
+      "base": "main",
+      "base_sha": "ec05d7227885bda59bf72a5889b004296b9a07e5",
+      "draft": false,
+      "updated_at": "2026-10-22T19:38:56Z"
+    },
+    {
+      "number": 148,
+      "title": "PENV-002: replace failed traversal with local-contour bands",
+      "head": "penv/issue-147-local-contour-traversal",
+      "head_sha": "0c5439bbe0b0de996185bf6ec7b3e6766dc5f0a8",
+      "base": "main",
+      "base_sha": "23227bc4d660b516306f111b7a7e4398208afa5d",
+      "draft": false,
+      "updated_at": "2026-09-26T02:44:38Z"
+    },
+    {
+      "number": 25,
+      "title": "H gate: append-only Water Feel capture and explicit blind reveal",
+      "head": "codex/h-gate-capture-ux",
+      "head_sha": "7606dc93fbe64c9a25320c9d2b9c50c95f618db1",
+      "base": "main",
+      "base_sha": "3b1747a493d6ffb01661dcf4111f1b32ae89dbac",
+      "draft": true,
+      "updated_at": "2026-09-18T23:11:15Z"
+    },
+    {
+      "number": 23,
+      "title": "Prototype bounded near-rest reversible soliding",
+      "head": "codex/issue-12-soliding",
+      "head_sha": "0b96ce2a2fd5f68560575d4c4db8b0ea2f3b3758",
+      "base": "main",
+      "base_sha": "3b1747a493d6ffb01661dcf4111f1b32ae89dbac",
+      "draft": true,
+      "updated_at": "2026-09-13T16:41:37Z"
+    }
+  ]
+}

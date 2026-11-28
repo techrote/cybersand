@@ -1,0 +1,148 @@
+{
+  "source": "886a149b7f38f9d04bc74da8b2fedb566ce89c62",
+  "tree": "c905324fd96214e88a1a7d3327b4cd7cdff693db",
+  "tracked_changed_inputs_unchanged": true,
+  "checks": [
+    {
+      "name": "new-acquisition-controls",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "tools/ci/test_materialize_lfs.py",
+        "-v"
+      ],
+      "exit_code": 0,
+      "seconds": 0.969,
+      "log": "new-acquisition-controls.log",
+      "log_sha256": "998c285ff510abddc4d5fc62fb35127896437f2e5075677286cb6c5bd53f1f76",
+      "tests_passed": 14
+    },
+    {
+      "name": "palette-contract",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "tools/play/test_palette_qualification.py"
+      ],
+      "exit_code": 0,
+      "seconds": 2.558,
+      "log": "palette-contract.log",
+      "log_sha256": "d9975890b1fdb47d32702cdc99069eb0f02ee7d9c81fa5f99699ae10fd56ca46",
+      "tests_passed": 35
+    },
+    {
+      "name": "palette-custody",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "tools/play/test_palette_checkout_custody.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.048,
+      "log": "palette-custody.log",
+      "log_sha256": "62e6bd3a77554540929dd26eab6204ab86056dc07bacce00a71e4482e9f4bcb8",
+      "tests_passed": 14
+    },
+    {
+      "name": "windows-runner",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "tools/ci/test_windows_godot_regressions.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.413,
+      "log": "windows-runner.log",
+      "log_sha256": "f892396964f3b74b28bb391247c43b70bcbb798cef7de2bd2b473d15e53a6878",
+      "tests_passed": 22
+    },
+    {
+      "name": "windows-reducer",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "tools/ci/test_verify_windows_godot_shards.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.577,
+      "log": "windows-reducer.log",
+      "log_sha256": "4f79a0612c3931600a79b488e12bd4bf9a6ec2d9c4d2a07878309a61764b8a59",
+      "tests_passed": 47
+    },
+    {
+      "name": "linux-reducer",
+      "command": [
+        "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python",
+        "tools/ci/test_verify_linux_godot_shards.py"
+      ],
+      "exit_code": 0,
+      "seconds": 0.146,
+      "log": "linux-reducer.log",
+      "log_sha256": "0fe5cb662bfff14a9884376c5dc9b13021e73aa15d1c18bc3ecfc2226a9f364f",
+      "tests_passed": 13
+    }
+  ],
+  "reviewer": "Specialist A \u2014 product integration, independent of implementation",
+  "disposition": "APPROVE FOR RESULTING-SOURCE QUALIFICATION",
+  "total_tests_passed": 145,
+  "platform": "Linux; Python unit/integration controls, not an actual Windows or hosted qualification",
+  "original_failure": {
+    "run_id": 45715343561,
+    "attempt": 1,
+    "job_id": 139560080793,
+    "sha256": "657ecfe77d26be828c35180d124f2c25655c239b3bfdfb2129ac7091b493bd31",
+    "classification": "Git LFS service timeout before Godot; preserve failed attempt"
+  },
+  "limits": [
+    "No live service recovery claimed",
+    "No hosted resulting-source or actual Windows runtime qualification claimed",
+    "No native/runtime inputs or feature gates changed"
+  ],
+  "evidence": {
+    "path": "bounded-lfs-independent-review-a-evidence.zip",
+    "bytes": 3405,
+    "sha256": "a01446ea477efb0931e353b1b991ee6740a56cfabd0b88ae72be3eced41f9ccb",
+    "files": [
+      {
+        "path": "after.json",
+        "bytes": 816,
+        "sha256": "7ac7500f460243a3126bccadbad5ef36947510510646aaa0910e1ac2a6a63ea6"
+      },
+      {
+        "path": "before.json",
+        "bytes": 816,
+        "sha256": "7ac7500f460243a3126bccadbad5ef36947510510646aaa0910e1ac2a6a63ea6"
+      },
+      {
+        "path": "linux-reducer.log",
+        "bytes": 112,
+        "sha256": "0fe5cb662bfff14a9884376c5dc9b13021e73aa15d1c18bc3ecfc2226a9f364f"
+      },
+      {
+        "path": "new-acquisition-controls.log",
+        "bytes": 2087,
+        "sha256": "998c285ff510abddc4d5fc62fb35127896437f2e5075677286cb6c5bd53f1f76"
+      },
+      {
+        "path": "palette-contract.log",
+        "bytes": 134,
+        "sha256": "d9975890b1fdb47d32702cdc99069eb0f02ee7d9c81fa5f99699ae10fd56ca46"
+      },
+      {
+        "path": "palette-custody.log",
+        "bytes": 113,
+        "sha256": "62e6bd3a77554540929dd26eab6204ab86056dc07bacce00a71e4482e9f4bcb8"
+      },
+      {
+        "path": "results.json",
+        "bytes": 2474,
+        "sha256": "260f73c129bade31e7e2a3fa4282646d91c0613363021322e7e4a7fbf6fc59fc"
+      },
+      {
+        "path": "windows-reducer.log",
+        "bytes": 146,
+        "sha256": "4f79a0612c3931600a79b488e12bd4bf9a6ec2d9c4d2a07878309a61764b8a59"
+      },
+      {
+        "path": "windows-runner.log",
+        "bytes": 121,
+        "sha256": "f892396964f3b74b28bb391247c43b70bcbb798cef7de2bd2b473d15e53a6878"
+      }
+    ]
+  }
+}

@@ -1,0 +1,622 @@
+{
+  "schema": 1,
+  "mission": "MERGEDOWN-RENAISSANCE-001",
+  "intake_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "merges": [
+    {
+      "pr": 736,
+      "programme": "Palette CI parallelism",
+      "candidate_sha": "3c9900ef426c7b50d682c569e06363e821aa31df",
+      "previous_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "merge_commit": "dacd5976b9d62e8332bc8d64ab5e3921a88c8cef",
+      "resulting_main": "dacd5976b9d62e8332bc8d64ab5e3921a88c8cef",
+      "method": "merge",
+      "qualification_runs": [
+        44978447427,
+        44978447442,
+        44978447468
+      ],
+      "independent_review": "Specialist C APPROVE; lead concurred",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/736#issuecomment-7175345538",
+      "post_merge": {
+        "documentation": {
+          "run": 45706206573,
+          "status": "success"
+        },
+        "advisory": {
+          "run": 45706206575,
+          "status": "success"
+        },
+        "palette": {
+          "run": 45706206607,
+          "status": "failure",
+          "classification": "Inherited Linux Godot dependency HTTP403; repaired by #778/#771"
+        }
+      }
+    },
+    {
+      "pr": 758,
+      "programme": "Gentek Windows acceptance tooling",
+      "candidate_sha": "da83f83ff20a5ae0ec0184079146d6d696a9c0e3",
+      "previous_main": "dacd5976b9d62e8332bc8d64ab5e3921a88c8cef",
+      "merge_commit": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "resulting_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "method": "merge",
+      "qualification_runs": [
+        45106062789,
+        45106062785,
+        45106062758,
+        45100222225
+      ],
+      "independent_review": "Specialist C APPROVE and B independent binary/package readback",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/758#issuecomment-7175373448",
+      "post_merge": {
+        "documentation": {
+          "run": 45706427157,
+          "status": "success"
+        },
+        "advisory": {
+          "run": 45706427228,
+          "status": "success"
+        },
+        "architecture": {
+          "run": 45706428091,
+          "status": "success"
+        },
+        "native": {
+          "run": 45706427271,
+          "status": "success"
+        },
+        "gde": {
+          "run": 45706427647,
+          "status": "failure",
+          "classification": "Inherited Linux Godot HTTP403 and one transient Windows LFS acquisition timeout"
+        }
+      }
+    },
+    {
+      "pr": 771,
+      "constituent_prs": [
+        778
+      ],
+      "programme": "CI Engineering Closure plus exact CI Ready Recovery",
+      "candidate_sha": "0da970283d076ae4660a9d93efd0e5180d313247",
+      "candidate_tree": "209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88",
+      "previous_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+      "merge_commit": "5e29b111be6202a76c0042976f74de98bd8ead78",
+      "resulting_main": "5e29b111be6202a76c0042976f74de98bd8ead78",
+      "method": "merge",
+      "qualification_runs": [
+        45706972873,
+        45706973071,
+        45706972995,
+        45706973052,
+        45706972977
+      ],
+      "qualification_attempt": 1,
+      "independent_review": "Specialist B exact source/runtime/campaign review and C final APPROVE MERGE with both coverage reducers independently read; lead concurs",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/771#issuecomment-7176007075",
+      "post_merge": {
+        "documentation": {
+          "run": 45710781079,
+          "status": "success"
+        },
+        "advisory": {
+          "run": 45710781067,
+          "status": "success"
+        },
+        "palette": {
+          "run": 45710781190,
+          "status": "success"
+        },
+        "native": {
+          "run": 45710781082,
+          "status": "success"
+        },
+        "gde": {
+          "run": 45710783369,
+          "status": "success"
+        }
+      },
+      "incorporated_repair": {
+        "pr": 778,
+        "source": "585520e7e62b67ce8c4c86605b08e1f8cc920bba",
+        "github_state": "merged through preserved ancestry; no separate mainline merge operation"
+      }
+    },
+    {
+      "pr": 772,
+      "programme": "Goblin Gameplay QA001 opt-in foundation",
+      "candidate_sha": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+      "candidate_tree": "f36b303be771028e5ffbda4b94e924dcb66fb704",
+      "previous_main": "5e29b111be6202a76c0042976f74de98bd8ead78",
+      "merge_commit": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "resulting_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "method": "merge",
+      "qualification_runs": [
+        45711129917,
+        45711129916,
+        45711130583,
+        45711129922,
+        45711129986
+      ],
+      "qualification_attempt": 1,
+      "independent_review": "Specialist C final APPROVE after all65 jobs and exact merge tree/reducers; lead concurs",
+      "review_record": "goblin001-final-independent-approval.json",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/772#issuecomment-7176602153",
+      "owner_physical_acceptance": "outstanding",
+      "default_enabled": false,
+      "post_merge": {
+        "documentation": {
+          "run": 45714897809,
+          "status": "success"
+        },
+        "advisory": {
+          "run": 45714897818,
+          "status": "success"
+        },
+        "architecture": {
+          "run": 45714897795,
+          "status": "success"
+        },
+        "native": {
+          "run": 45714897803,
+          "status": "success"
+        },
+        "gde": {
+          "run": 45714897904,
+          "attempt": 1,
+          "status": "failure",
+          "classification": "Two Windows shards failed Git LFS acquisition before Godot; reducer correctly refused21/23 reports. Exact premerge source/tree qualification remains preserved."
+        }
+      }
+    },
+    {
+      "pr": 775,
+      "programme": "AMBIENT001 opt-in foundation and exact runtime acquisition/transport",
+      "candidate_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "candidate_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+      "tested_preview": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+      "previous_main": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "merge_commit": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "resulting_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "method": "merge",
+      "qualification_runs": [
+        45727972896,
+        45727973062,
+        45727972728,
+        45727972822,
+        45727972762,
+        45727972790,
+        45727972809
+      ],
+      "execution_attempts": {
+        "gde_linux": 1,
+        "gde_windows": 2,
+        "art_linux": 1,
+        "art_windows": 2,
+        "other_workflows": 1
+      },
+      "independent_review": "B0c77705c0 and C233c2d92a final APPROVE; complete original artifacts and strict reducers",
+      "decision_comment": "https://github.com/techrote/cybersand/pull/775#issuecomment-7179373402",
+      "physical_owner_acceptance": "pending",
+      "experimental_default": "off",
+      "post_merge": {
+        "status": "registered; current checks pending readback"
+      }
+    }
+  ],
+  "decisions": [
+    {
+      "id": "AUTH-001",
+      "decision": "Owner explicitly authorizes qualified infrastructure and opt-in #772/#775 integration; historical HOLD text does not add a second permission gate for that scope.",
+      "source": "User mission 2026-11-25"
+    },
+    {
+      "id": "ANCESTRY-001",
+      "decision": "Use ancestry-preserving merge commits, allowed by repository, to preserve active descendants; do not force-push or rewrite evidence.",
+      "scope": [
+        772,
+        775
+      ]
+    },
+    {
+      "id": "PROTECT-001",
+      "decision": "Protect #767 and #783 active source/campaigns, #774 superseded evidence and rejected RAM/concurrency experiments; no source mutation or campaign cancellation.",
+      "scope": [
+        767,
+        783,
+        774,
+        731,
+        732,
+        733,
+        735,
+        739
+      ]
+    },
+    {
+      "id": "736-REVIEW",
+      "source": "3c9900ef426c7b50d682c569e06363e821aa31df",
+      "decision": "Independent specialist C APPROVE: one Windows Palette max-parallel line, 2 to 3; all eight Palette jobs pass; current-main delta unrelated.",
+      "runs": [
+        44978447427,
+        44978447442,
+        44978447468
+      ],
+      "next": "Expected-head merge; record main and post-merge results"
+    },
+    {
+      "id": "CI-WAVE-001",
+      "decision": "Combine #771 and exact #778 donor with accepted #736/#758 main for one full Ready resulting-source campaign; preserve all original ancestry and rollback identities. No native/Godot/third-party input change.",
+      "source": "0da970283d076ae4660a9d93efd0e5180d313247",
+      "tree": "209c5521024d0c4d5cfa96b9a4aa5eee4a37cf88",
+      "local_identical_tree_source": "e85b1f73d5649158bc628834d169917d5d60ff16",
+      "scope": [
+        771,
+        778
+      ],
+      "registration": "https://github.com/techrote/cybersand/pull/771#issuecomment-7175458828",
+      "ready_at": "2026-11-25T21:43:37Z",
+      "status": "All current-source Ready gates passed; independently approved; merged as5e29b111."
+    },
+    {
+      "id": "CONSOLIDATE-001",
+      "decision": "Closed exact-ancestor historical PRs720/770 in favor of777 and769 in favor of776 after independent review and all276 open PR targets checked. Branches/evaluators/evidence retained; owner gates remain.",
+      "record": "superseded-closures.json"
+    },
+    {
+      "id": "GOBLIN001-QUALIFY",
+      "source": "950bff73404f2fdaeb09362ec1bba408888a4ba9",
+      "tree": "f36b303be771028e5ffbda4b94e924dcb66fb704",
+      "parents": [
+        "d4484bd5b488cb419bfaa94f1e69be8128734405",
+        "5e29b111be6202a76c0042976f74de98bd8ead78"
+      ],
+      "decision": "Qualify exact resulting source in existing Ready PR772;28Goblin-only files, no ordinary scripts/project/native inputs change. Physical owner acceptance remains outstanding.",
+      "registration": "https://github.com/techrote/cybersand/pull/772#issuecomment-7176057490",
+      "runs": [
+        45711129917,
+        45711129916,
+        45711130583,
+        45711129922,
+        45711129986
+      ],
+      "status": "All current-source Ready gates passed; independently approved; merged as c8421a81."
+    },
+    {
+      "id": "AMBIENT001-QUALIFY",
+      "source": "0c1152c21427125066df931cf06a53b7dda0075d",
+      "tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+      "parents": [
+        "d0af9b6015c27417fddd67f79afdcf656a609571",
+        "c8421a81b8f7f61516ed055f3200b49aee57bd65"
+      ],
+      "decision": "Qualify AMBIENT001 plus68-assertion ordinary default-OFF integration test against accepted Goblin001 main; original native/runtime/motor inputs unchanged. Owner physical acceptance remains outstanding.",
+      "registration": "https://github.com/techrote/cybersand/pull/775#issuecomment-7176666734",
+      "runs": [
+        45715343586,
+        45715343583,
+        45715343621,
+        45715343854,
+        45715343614,
+        45715343581,
+        45715343561
+      ],
+      "status": "Original source terminal: Native/Docs/Art/Architecture/advisoryPASS, Palette attempt2PASS with attempt1FAIL retained; GDE attempt1FAIL due5 pre-Godot Windows LFS service failures and19/24 reducer coverage. Repaired candidate registered separately.",
+      "original_failures_record": "lfs-acquisition-independent-triage.json"
+    },
+    {
+      "id": "AMBIENT001-LFS-RECOVERY",
+      "source": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+      "tree": "c905324fd96214e88a1a7d3327b4cd7cdff693db",
+      "parent": "0c1152c21427125066df931cf06a53b7dda0075d",
+      "local_exact_tree_source": "886a149b7f38f9d04bc74da8b2fedb566ce89c62",
+      "decision": "New complete Ready campaign after narrowly classified bounded LFS acquisition repair. Existing allowances, raw failure logs, source pins and exact pointer/size/hash verification remain mandatory.",
+      "review": "Specialist A and lead independently source-approved and executed14 adversarial tests; hosted final C review remains required.",
+      "registration": "https://github.com/techrote/cybersand/pull/775#issuecomment-7177279478",
+      "runs": [
+        45719650370,
+        45719650368,
+        45719650512,
+        45719650703,
+        45719650447,
+        45719650698,
+        45719650316
+      ],
+      "status": "in progress; source frozen; no main merge approval yet"
+    },
+    {
+      "id": "SUCCESSOR-PUBLIC-HANDOFF-001",
+      "status": "prepared; current remote implementation heads unchanged",
+      "comments": {
+        "art780": "https://github.com/techrote/cybersand/pull/780#issuecomment-7177852156",
+        "goblin781": "https://github.com/techrote/cybersand/pull/781#issuecomment-7177856795",
+        "material768": "https://github.com/techrote/cybersand/pull/768#issuecomment-7177862080"
+      },
+      "next": "Reconcile prepared sources against actual accepted AMBIENT001 main, then update the existing successor PRs with exact source/tree joins and independent gates."
+    },
+    {
+      "id": "ULTIMA-STORAGE-HANDOFF-001",
+      "source": "77eafd13d8ec7a541db2cb9e6e6dd12c1975c6d7",
+      "status": "active programme protected; read-only donor/dependency review; no adoption or qualification transfer",
+      "findings": [
+        "Art export truncation can replace an existing file while returning success; unchanged prepared Art region remains an open engineering gate.",
+        "Published Goblin001 audit-write consumer donor e3b8fbe14c2efb9d4570c7bd8fa9cce89da1359e depends on new workbench_file_transaction.gd; adopting a consumer alone is invalid.",
+        "ULTIMA settings and pending-operation receipt storage findings are still in qualification."
+      ],
+      "coordination": "https://github.com/techrote/cybersand/pull/783#issuecomment-7177952318",
+      "next": "Receive independently reviewed narrow complete donor set and applicable platform receipts; independently qualify resulting Art/Goblin integration without importing unfinished ULTIMA.",
+      "dependency_correction": {
+        "art_donor": "a03b83eab8cba84f095043888075b370659d1aac",
+        "art_contract": "Streaming Archive.ClosedFileVerification plus existing native replacement; no dependency on workbench_file_transaction.gd",
+        "goblin_donor": "e3b8fbe14c2efb9d4570c7bd8fa9cce89da1359e",
+        "goblin_contract": "New workbench_file_transaction.gd plus existing native replacement",
+        "correction_comment": "https://github.com/techrote/cybersand/pull/783#issuecomment-7178278358"
+      }
+    },
+    {
+      "id": "LFS-RECOVERY-SAME-SOURCE-002",
+      "registered_utc": "2026-11-25T23:48:57Z",
+      "source": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+      "tree": "c905324fd96214e88a1a7d3327b4cd7cdff693db",
+      "main": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "purpose": "One complete unchanged-source dependency-acquisition recovery; no test, timeout, runtime or source alteration",
+      "original_gde": {
+        "run": 45719650698,
+        "attempt": 1,
+        "conclusion": "failure",
+        "failed_linux_build": 139574458503,
+        "failed_windows_shards": [
+          139577020585,
+          139577020413,
+          139577020700,
+          139577022712,
+          139577022857
+        ],
+        "reducers": "correctly fail incomplete coverage"
+      },
+      "original_palette": {
+        "run": 45719650316,
+        "attempt": 1,
+        "conclusion": "failure",
+        "failed_cohort": 139574781201,
+        "classification": "bounded LFS service timeout exhausted before Godot; missing-manifest readback is consequential"
+      },
+      "passed_runs": [
+        45719650512,
+        45719650370,
+        45719650447,
+        45719650368,
+        45719650703
+      ],
+      "retry_plan": {
+        "gde_common_ancestor_job": 139574529922,
+        "palette_plan_job": 139574455958,
+        "reason": "Fresh same-attempt native artifacts and all platform shard/cohort reports are required; failed-only rerun cannot satisfy custody",
+        "fallback": "If GitHub rejects rerunning the skipped GDE common ancestor, register a terminal-campaign Draft-to-Ready transition to launch the full same-source qualification without source mutation or another programme cancellation",
+        "fallback_used": false
+      },
+      "status": "executed; complete GDE and Palette attempt 2 in progress; no source or PR-state change",
+      "registration": "https://github.com/techrote/cybersand/pull/775#issuecomment-7178090351",
+      "new_gde_jobs": {
+        "plan": 139589874248,
+        "windows_build": 139589874675,
+        "linux_build": 139589874712,
+        "ready_scope": 139589876366
+      }
+    },
+    {
+      "id": "MAINLINE-WINDOWS-HARNESS-READY",
+      "harness_source": "fa68e697cbb368e1c57c9215ed4ee44548acc2a6",
+      "harness_tree": "aad878ab4555a8f0052936583e5011611421fe90",
+      "ledger_import": "b7f4d34a",
+      "status": "independently approved source; request prepared and unadmitted; no Windows execution/package claimed",
+      "independent_review": "mainline-evaluator-independent-review.json",
+      "product_source": null,
+      "execution_budget_seconds": 20420,
+      "parent_minutes": 360,
+      "default_off_watchdog_seconds": 3940,
+      "scope": "Exact accepted-main product checkout, retained105native/4Rapier identity, actual extracted default-OFF and5example ANGLE proof, actualdeliveredCMDs andoriginalGoblin2campaign/reopen/graphics proof",
+      "next": "After actual AMBIENT001 merge and final source gates, admit exact accepted-main SHA/tree and publish request once on existing784branch."
+    },
+    {
+      "at": "2026-11-26T00:32:30.856560+00:00",
+      "pr": 775,
+      "decision": "QUALIFY THEN MERGE",
+      "source": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+      "local_identical_tree_source": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+      "qualification_runs": {
+        "gde": 45727973062,
+        "palette": 45727972728,
+        "native": 45727972896,
+        "documentation": 45727972822,
+        "art": 45727972762,
+        "architecture": 45727972790,
+        "advisory": 45727972809
+      },
+      "finding": "Palette attempt1 producer, six cohorts and 19-case reducer passed. GDE Windows producer failed acquisition timeout then HTTP503 before manifest; Art Windows one-shot LFS failed before Godot. Original failures retained. Current-source full qualification remains pending.",
+      "registration_comment": 7178660197,
+      "retry_registration_comment": 7178830319,
+      "retry_policy": "Independently admitted unchanged-source Windows producer plus complete descendants after terminal; Linux attempt1 retained separately. Art Windows retry separately. No reduced test inventory or stale attempt artifacts."
+    },
+    {
+      "at": "2026-11-26T00:32:30.856560+00:00",
+      "pr": 763,
+      "source": "2d63bba23932feb2c051c11df9d0775c24ea451d",
+      "decision": "SUPERSEDED \u2014 PRESERVE EVIDENCE",
+      "action": "closed without merge; branch retained",
+      "successor": 780,
+      "closure_comment": 7178800146,
+      "review": "historical-candidate-closure-review.json",
+      "physical_issues_preserved": [
+        713,
+        744
+      ]
+    },
+    {
+      "at": "2026-11-26T00:32:30.856560+00:00",
+      "pr": 765,
+      "source": "cb88ab25d6dbdc8b459431d0189332bb7d37188a",
+      "decision": "SUPERSEDED \u2014 PRESERVE EVIDENCE",
+      "action": "closed without merge; branch retained",
+      "successor": 780,
+      "closure_comment": 7178801038,
+      "review": "historical-candidate-closure-review.json",
+      "physical_issues_preserved": [
+        713,
+        744
+      ]
+    },
+    {
+      "at": "2026-11-26T00:32:30.856560+00:00",
+      "pr": 766,
+      "source": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+      "decision": "SUPERSEDED \u2014 PRESERVE EVIDENCE",
+      "action": "closed without merge; branch retained",
+      "successor": 780,
+      "closure_comment": 7178801840,
+      "review": "historical-candidate-closure-review.json",
+      "physical_issues_preserved": [
+        713,
+        744
+      ]
+    },
+    {
+      "at": "2026-11-26T00:32:30.856560+00:00",
+      "pr": 773,
+      "source": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "decision": "SUPERSEDED \u2014 PRESERVE EVIDENCE",
+      "action": "closed without merge; branch retained",
+      "successor": 780,
+      "closure_comment": 7178802810,
+      "review": "historical-candidate-closure-review.json",
+      "physical_issues_preserved": [
+        713,
+        744
+      ]
+    },
+    {
+      "pr": 781,
+      "decision": "RECONCILE THEN QUALIFY",
+      "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+      "type": "production storage repair plus tests",
+      "original_failure_source": "9f3c479efbf356832a691aa2f9c1dbe947c34d32",
+      "original_failure": "Real RLIMIT_FSIZE replaced valid1689byte output with128bytes while writer returnedtrue",
+      "repair": "Closed-stage verification followed by unchanged native replacement; exact expanded allowlist, profile guard and2/32/512MiB limits preserved",
+      "evidence": "goblin-storage-integration.json",
+      "history": {
+        "bundle": "goblin-storage-source.bundle",
+        "bytes": 15584,
+        "sha256": "4fec8a4c7dcd460386bbc13d3727910a3d39b8d5a796a4820c7b10caa797cf46",
+        "prerequisite": "21c9a6670e05cfb8b8eeb76d02b03fb75019468f"
+      },
+      "coordination_comment": 7179118858
+    },
+    {
+      "pr": 780,
+      "decision": "RECONCILE THEN QUALIFY",
+      "source": "368292fe99485e6ea928325f9e8d000d829a4407",
+      "type": "production storage repair plus tests",
+      "independent_review": "art-storage-independent-review.json",
+      "original_failure_source": "97585a0af02f1534eb254adf2d2fbe9036a281b2",
+      "original_failures": "7/13 control rows failed: five short-write false acknowledgements, oversized settings admission and stale save-error recovery",
+      "qualified_scope": "13/13 actual Linux fault controls and18/18cases1662 assertions; no native105/Rapier4 change",
+      "history": {
+        "bundle": "art-storage-source.bundle",
+        "bytes": 26652,
+        "sha256": "aac8edca0b366528cf194329eda0d9a417f9922833e04d60de6281d5309bb25f",
+        "prerequisite": "97585a0af02f1534eb254adf2d2fbe9036a281b2"
+      }
+    },
+    {
+      "decision": "Admit accepted-main Windows evaluator",
+      "source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+      "harness_implementation": "fa68e697cbb368e1c57c9215ed4ee44548acc2a6",
+      "request": "tools/fixtures/mergedown-mainline-windows-request.json",
+      "purpose": "Actual extracted ordinaryCMD/default-OFF68/fiveAmbientANGLEexamples/Goblinlaunch+gameplay+save-reopen proofs; no publicrelease orphysicalacceptance",
+      "status": "registered before publishing request; actualWindows execution pending"
+    }
+  ],
+  "current_accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "preparations": [
+    {
+      "pr": 781,
+      "programme": "Goblin002",
+      "source": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+      "tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207",
+      "qualified_scope": "Prior combined447-check proof retained; narrow verified storage repair: actual short-write/perms refusal and retry3cases, all10paths/bounds67, utility84, sixcanonicalcases and136Python tests PASS on Linux.",
+      "next": "Independent current storage review; reconcile accepted main; publish existing successor; actual Windows storage/platform qualification and physical owner gates remain, original long-horizon timeouts unchanged.",
+      "record": "goblin-storage-integration.json"
+    },
+    {
+      "pr": 779,
+      "programme": "AMBIENT002",
+      "source": "7c64874553f711121f2f5eeb01b8689e16d38bd3",
+      "tree": "5cad334ccbf53278cd67f77e0173e242ba059e5f",
+      "qualified_scope": "Linux11 cases4505 assertions; independent actual mixed-group31 checks; defaultOFF68 checks.",
+      "next": "Retarget main after775 lands; preserve exact predecessor ancestry; retain eight actors and physical owner gate.",
+      "record": "ambient002-integration.json"
+    },
+    {
+      "pr": 780,
+      "constituent_prs": [
+        777
+      ],
+      "programme": "Art and Architecture production integration",
+      "source": "368292fe99485e6ea928325f9e8d000d829a4407",
+      "tree": "64b084bb93b6a78b55fdff76d11249cbb32c4167",
+      "qualified_scope": "Combined ordinary Art/Architecture plus narrow verified export/event/settings/pending-receipt storage:13 real Linux fault/refusal/retry cases and18cases1662 assertions PASS; C independently approved and reproduced original failures plus342 checks.",
+      "next": "Join final accepted main preserving777/780 ancestry, publish prepared780; actual Windows storage and combined-platform/graphical/model/physical gates remain.",
+      "record": "art-storage-integration-review.json"
+    },
+    {
+      "pr": 768,
+      "programme": "Live Material Audition",
+      "source": "2e0233f808e6e9c76aac897593bc88d6ca357b95",
+      "tree": "0473c322acd96f18eeb557ec4ba027fb7242595e",
+      "qualified_scope": "Actual108-input native runtime; new61-check cross-feature test independently reproduced; retained core/authoring/actor/pressure/Wave targeted casesPASS.",
+      "next": "Reconcile final accepted main; publish prepared source preserving108-input runtime; qualify actual resulting Windows/full-source and physical owner gate.",
+      "record": "material-ambient-evidence-manifest.json"
+    },
+    {
+      "pr": 729,
+      "programme": "Consolidated SWARM",
+      "source": "fc7743eb8b49287bb78da48c47e7eb24a15e9b2c",
+      "qualified_scope": "9 Linux application cases/import: 1366 checks; independent actual generated Apply/Undo/save/fresh-reopen 334 checks. Original 106 native and 52 CLI inputs and actual runtime bytes unchanged.",
+      "next": "Reconcile final accepted main and publish preserved successor; full current Windows/package and physical owner gates remain.",
+      "record": "swarm-foundation-integration.json",
+      "independent_record": "swarm-independent-review.json",
+      "tree": "27939ecf0c300bf649227d43fd378a84661aa86a"
+    }
+  ],
+  "active_coordination": [
+    {
+      "pr": 767,
+      "status": "protected; no source or campaign mutation"
+    },
+    {
+      "pr": 783,
+      "status": "protected; narrow reviewed storage donor preparations coordinated; competing same-named LFS helper requires deliberate reconciliation",
+      "coordination": "https://github.com/techrote/cybersand/pull/783#issuecomment-7178821402",
+      "source": "7919e8a752e87e68c4193b3a04960164ab62e117"
+    },
+    {
+      "pr": 785,
+      "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "base_pr": 776,
+      "status": "ACTIVE PROGRAMME \u2014 PROTECT; no source/campaign mutation, Ready promotion or merge",
+      "coordination": "https://github.com/techrote/cybersand/pull/785#issuecomment-7178821806"
+    }
+  ],
+  "closure_recovery": {
+    "mission": "MERGEDOWN-RENAISSANCE-CLOSURE-001",
+    "ledger": "closure-recovery-ledger.json",
+    "observed_at": "2026-11-26T08:10:38.863668+00:00",
+    "current_accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+    "new_merges": [],
+    "status": "Recovery executing; no final completion claim",
+    "owner_queue": "closure-native-dispositions-and-owner-queue.md"
+  }
+}

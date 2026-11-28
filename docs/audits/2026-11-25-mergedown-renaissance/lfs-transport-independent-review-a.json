@@ -1,0 +1,160 @@
+{
+  "schema": 1,
+  "reviewer": "Specialist A, independent of helper/workflow implementation",
+  "disposition": "APPROVE FOR FULL RESULTING-SOURCE QUALIFICATION",
+  "source": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+  "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "base_source": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+  "source_binding": {
+    "source": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+    "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+    "base_source": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+    "original_candidate": "4bb903109321bdc343eaebcb3da86bfec19bd4dc",
+    "all_qualified_production_inputs_match": true,
+    "transport_20_rerun_on_final_fixture": true,
+    "fixture_only_delta": "Canonicalize temporary root for Windows 8.3 path aliases; no guard or assertion removed",
+    "commit_files_sha256": {
+      ".github/workflows/gdextension.yml": "df7c9896799b6e3fe25db8ea8c093b94c2eb4c70766ae36b6e86c6bf528136e7",
+      ".github/workflows/palette-shader-qualification.yml": "15f48d97148bbd877fa479fb5d11c3baa4570b1ddb9bfaf4db880fbd250a3dc0",
+      "docs/audits/2026-11-25-mergedown-renaissance/lfs-fanout-workflow-review.md": "2e5e1a6a5845a775147776d3ea003ef667f534d5e363f462080e1f59217510db",
+      "docs/operations/local-build-and-validation.md": "e77e2139a0e341594056640aa88058b5f3def38d62ef96dcb925805ff5e9b5ad",
+      "tools/ci/lfs_runtime_artifact.py": "ebec1b0fc7634641695956f8a4c9b2748e45ddc7553d69755b476595e08231b3",
+      "tools/ci/run_windows_godot_regressions.py": "6beb14a4c99e1db5d010cb41b6a36fafb310a175469984afd891be35afebe8cc",
+      "tools/ci/test_lfs_runtime_artifact.py": "33dedbc5e73e432d314c3bb364c51dc3dd18ae852d567f9234e11ac662d0fb10",
+      "tools/play/palette_qualification_contract.py": "0898d29986d8b30b546deb6cc5c19820e8427854e46f4757d46993aa02055e23",
+      "tools/play/run_palette_shader_qualification.py": "2eb12a27b16b7bbb7a54a09b579271e9c97a3baae30c67558a314ccf1bba604f",
+      "tools/play/test_palette_qualification.py": "4ba3c1dff54a187b051193dd0df64609935b55f61195778082218bb5ed1c2b2c"
+    },
+    "scope": "140 independent Python tests qualify identical current inputs, with transport 20 rerun on exact final fixture; no hosted/native application claim"
+  },
+  "tests": {
+    "transport": 20,
+    "palette": 38,
+    "windows_runner": 22,
+    "windows_reducer": 47,
+    "linux_reducer": 13,
+    "total_unique_current_controls": 140,
+    "all_passed": true,
+    "platform": "Linux Python; not actual Windows runtime execution",
+    "transport_rerun_on_final_commit": true
+  },
+  "discovered_and_resolved": [
+    {
+      "defect": "Final producer manifest write could overrun its allowance and leave an accepted transport PASS",
+      "original_helper_sha256": "d05443156b7fc41867e1b75bc5652a156b582ed3d2f8584e99bf712837bd0dae",
+      "control": "Induced 601-second elapsed seal under a 600-second allowance",
+      "fixed_behavior": "Raises, preserves failed-manifest.json, leaves no usable manifest"
+    },
+    {
+      "defect": "Final consumer receipt write could overrun its allowance and still return passed",
+      "control": "Induced 301-second elapsed finalization under a 300-second allowance",
+      "fixed_behavior": "Raises, retains original late seal, records canonical receipt status=failed"
+    },
+    {
+      "defect": "Canonical prose still described per-shard Rapier service acquisition",
+      "fixed_behavior": "Final d64 documentation states same-attempt producer distribution and verified consumer install"
+    }
+  ],
+  "additional_review": [
+    "Exact source/run/attempt identity and full declared object inventory are verified independently against consumer committed pointers",
+    "All four Palette objects are verified before selecting a platform pair",
+    "Producer receipt schema, command identities, owned completion, retry classification and original log bytes remain bound",
+    "Consumers have no service/other-attempt/other-runtime fallback",
+    "Native source/runtime pointers, mandatory Godot/native gates, existing case watchdogs and concurrency are unchanged",
+    "Complete producer/consumer attempt retries are documented; producer failure prevents admission",
+    "Final Windows fixture canonicalization preserves assertions and addresses TEMP 8.3 aliases"
+  ],
+  "evidence": {
+    "path": "lfs-transport-independent-review-a-evidence.zip",
+    "bytes": 20220,
+    "sha256": "97d80d9fb7f18e180d8af0ac966723022fa21ed423cdafafffe26311d33a9743",
+    "files": [
+      {
+        "path": "final-source-binding.json",
+        "bytes": 1846,
+        "sha256": "6929742ed66da36d3789918456cda3f44227d58a86d24fe2ec86d9c5aea53a60"
+      },
+      {
+        "path": "finalization-repaired/after.json",
+        "bytes": 918,
+        "sha256": "bf4a0fe696016f40d760395f18d88757a1816c3b978ef23efc391ac6bb3a3332"
+      },
+      {
+        "path": "finalization-repaired/before.json",
+        "bytes": 918,
+        "sha256": "bf4a0fe696016f40d760395f18d88757a1816c3b978ef23efc391ac6bb3a3332"
+      },
+      {
+        "path": "finalization-repaired/linux-reducer.log",
+        "bytes": 1900,
+        "sha256": "7584db88794873e312c3badf07407c836b98196cea729b78e58277b29f1ccc85"
+      },
+      {
+        "path": "finalization-repaired/palette.log",
+        "bytes": 10706,
+        "sha256": "390103189ca9c8d0aed32ae6b72b32595a71c00da23a123a41d4dd6d78da2af0"
+      },
+      {
+        "path": "finalization-repaired/results.json",
+        "bytes": 3003,
+        "sha256": "2593ca82d26702592c3f0122b66e429dfb8f1622d0c6a46cc390d268449447ae"
+      },
+      {
+        "path": "finalization-repaired/transport.log",
+        "bytes": 3469,
+        "sha256": "39366a175fd31d87dc08ac15ca9ada37d97b9c35367ace8f68330255c27f3f27"
+      },
+      {
+        "path": "finalization-repaired/windows-reducer.log",
+        "bytes": 5832,
+        "sha256": "5f0e312a748ec8c47101543963b0749baaca9712f0478fe9560a5dda64365d6d"
+      },
+      {
+        "path": "finalization-repaired/windows-runner.log",
+        "bytes": 3311,
+        "sha256": "bc9e40ba85d8007b769e48db32c683b0d8f0ff7a9f1356b4ed0b7fca87218dc4"
+      },
+      {
+        "path": "frozen-source-binding.json",
+        "bytes": 1574,
+        "sha256": "961f9d310c23c00a6ab6b297dc747ba989a8aa8ae16c7a5a58b786b31bf50567"
+      },
+      {
+        "path": "independent_probe.py",
+        "bytes": 4493,
+        "sha256": "ae478ccde42f2a538d3c334e4c9c19ac79013d42f17cd80446faebae26462e06"
+      },
+      {
+        "path": "initial-gap-controls.json",
+        "bytes": 777,
+        "sha256": "c58ea1fb9fcf5cbe414950895a54dcf645009999c16ee162443039041ea547aa"
+      },
+      {
+        "path": "initial-lfs_runtime_artifact-d0544315.py",
+        "bytes": 18042,
+        "sha256": "d05443156b7fc41867e1b75bc5652a156b582ed3d2f8584e99bf712837bd0dae"
+      },
+      {
+        "path": "repaired-gap-controls-d64b3886.json",
+        "bytes": 1316,
+        "sha256": "50a32cc2856ba51da044f7d8a4042c9edd68d06a2c6365a8e7fdd279bb77c52e"
+      },
+      {
+        "path": "repaired-gap-controls.json",
+        "bytes": 1316,
+        "sha256": "b02ff5e27836869970786c8d786d29d3dbafae51bb80b6a6d5a02afdb8c39c0e"
+      },
+      {
+        "path": "transport-d64b3886.log",
+        "bytes": 3469,
+        "sha256": "53c577bc01d6f8958f00973bebfa52366b0f449fba26a9245f41ea3cfa61d3f6"
+      }
+    ]
+  },
+  "limits": [
+    "Synthetic transport fixtures do not establish actual native runtime identity or platform execution",
+    "External Git LFS availability is not guaranteed",
+    "Hosted same-attempt producer/consumer artifacts and full resulting-source application qualification remain required before merge",
+    "Original service failures remain failed; no owner acceptance is inferred"
+  ]
+}

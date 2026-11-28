@@ -1,0 +1,97 @@
+{
+  "disposition": "APPROVE_EXPLICIT_ACCEPTED_MAIN_DELIVERY_HARNESS_SOURCE",
+  "independent_registered_fixture_probe": {
+    "all_five_source_contract_hashes_match": true,
+    "case": "test_ambient_default_off_integration",
+    "parent_minutes": 360,
+    "product_source": "4789756ec6e9b0bb4808733fe4c0e7f5dfa3752c",
+    "required_minutes": 341,
+    "timeout_seconds": 3940,
+    "total_budget_seconds": 20420
+  },
+  "limits": [
+    "Request remains prepared until lead fills an actually accepted and qualified main checkpoint after both foundations",
+    "Actual Windows campaign and package readback remain required before an interactive download can be claimed",
+    "No native publication, public release, physical playfeel acceptance or complete new AMBIENT campaign is authorized by this review"
+  ],
+  "renderer_banner_confirmation": {
+    "artifact_id": 14981748735,
+    "fact": "Real Godot4.7 Windows log contains same-line OpenGL API ... ANGLE initialization",
+    "log_member": "art-evaluator-displayed.stdout.log",
+    "outer_sha256": "a424e3a5c354291576f81bf77f07e0074253492a2964b64de7896e1acc4d8fde",
+    "scope": "Format confirmation only; original Art failure is not changed"
+  },
+  "resolved_review_findings": [
+    {
+      "old_source": "e6e4f396c9a2c5b9b9643b85bcd176da2b7d4070",
+      "problem": "Bare case_seconds chose1200 instead of canonical3940; former17680 total omitted2740 seconds",
+      "resolution": "Discover original Case for admission, invocation and final receipt; supported360min parent; no child reduction"
+    },
+    {
+      "problem": "Original Goblin import and graphical log bytes not independently read back by existing gameplay verifier",
+      "resolution": "Contained original log paths and SHA256 checked; strict diagnostics, pinned engine, unique successful graphical terminal and actual ANGLE required"
+    },
+    {
+      "problem": "Inherited proof execute/cleanup helper not pinned",
+      "resolution": "qualify_workbench_landscapes and execution_policy source contracts added"
+    },
+    {
+      "problem": "Output readback could hang after parent process exit",
+      "resolution": "Bounded30s task drain and30s cleanup; incomplete output fails"
+    },
+    {
+      "problem": "Failure path did not retain original Goblin outputs before successful final copy",
+      "resolution": "Always-upload points directly at original delivered test-output path"
+    }
+  ],
+  "reviewed_contracts": [
+    "Separate immutable product and harness identities",
+    "Accepted-main ancestry and both exact foundation histories",
+    "Unchanged105/four runtime inputs; raw actual DLL, engine, dependency and manifest hashes",
+    "One common original Goblin payload plus canonical generator profiles, five Ambient examples and actual owner guides",
+    "Exact68-check default-OFF fixture, all five ANGLE examples, original two Goblin CONTROL64 cases and graphics",
+    "Both delivered CMDs execute from a path with spaces; ordinary route is graphical ANGLE and requires native-ready marker",
+    "Original transcript/receipt verifiers and final delivered ZIP versus tested extraction byte inventory",
+    "Failed evidence retained; owner_playfeel_accepted=false and public_release=false"
+  ],
+  "reviewer": "Specialist C / adversarial_qa",
+  "schema": "cybersand-mainline-evaluator-independent-review-v1",
+  "source": "d87ee19950bd2614bc0c67ce7cfa4a8547f964db",
+  "tests": {
+    "command": "python3 tools/ci/test_mainline_evaluator.py",
+    "failed": 0,
+    "passed": 21,
+    "scope": "Synthetic custody and real temporary-Git refusal tests; not Windows product qualification"
+  },
+  "tree": "bb2ff1a41f8dcfc788e4aac31598ce8d6920b172",
+  "final_acquisition_audio_followup": {
+    "reviewer": "Specialist C",
+    "source_commit": "fa68e697cbb368e1c57c9215ed4ee44548acc2a6",
+    "source_tree": "aad878ab4555a8f0052936583e5011611421fe90",
+    "previous_approval": "d87ee19950bd2614bc0c67ce7cfa4a8547f964db",
+    "disposition": "APPROVE SOURCE FOR FUTURE ADMITTED ACCEPTED-MAIN PACKAGE CAMPAIGN",
+    "independent_tests": {
+      "command": "python -m unittest discover -s tools/ci -p test_mainline_evaluator.py",
+      "methods": 21,
+      "failures": 0,
+      "duration_seconds": 0.675,
+      "status": "passed"
+    },
+    "source_contract_product": "120f0d0825e1fcdf9ea1ea9d8d50a0d5b32735d6",
+    "verified_helper_hashes": {
+      "tools/ci/materialize_lfs.py": "9a98d7c1d5535691afeb1d0a794e1b2ae7258f1aaaa89df4ae25607267a01efb",
+      "tools/ci/godot_timeout_diagnostics.py": "3c0bf0552b8d1d4ed408f9ea3df94d2f3416aae51e37f644456da6594d1f7fcd"
+    },
+    "lfs_acquisition_seconds": 600,
+    "unchanged_setup_seconds": 4200,
+    "unchanged_default_off_seconds": 3940,
+    "unchanged_complete_seconds": 20420,
+    "unchanged_parent_minutes": 360,
+    "retry_scope": "At most3 total attempts (2 retries), and only for the observed Git LFS batch-service timeout; exact committed pointer object bytes remain mandatory",
+    "hosted_cmd_proof_arguments": "--audio-driver Dummy --quit-after 180",
+    "interactive_launcher_changed": false,
+    "strict_error_and_actual_angle_gates_retained": true,
+    "request_admitted": false,
+    "actual_windows_campaign_pass_claimed": false
+  }
+}

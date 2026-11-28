@@ -1,0 +1,1029 @@
+{
+  "schema": "mergedown-263-hosted-runtime-transport-v1",
+  "recorded_utc": "2026-11-26T00:30:37.572529+00:00",
+  "candidate_source": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+  "candidate_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "equivalent_local_review_source": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+  "gde_checkout": {
+    "sha": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+    "tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+    "parents": [
+      "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+      "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+    ],
+    "verified_against": "GitHub Git commit API"
+  },
+  "palette": {
+    "run_id": 45727972728,
+    "attempt": 1,
+    "conclusion": "success",
+    "producer": {
+      "id": 15074558949,
+      "node_id": "MDg6QXJ0aWZhY3QxNTA3NDU1ODk0OQ==",
+      "name": "palette-lfs-runtime-45727972728-1",
+      "size_in_bytes": 27549652,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15074558949",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15074558949/zip",
+      "expired": false,
+      "digest": "sha256:1155f88856e63ed88650ddf04d4417c4d6464ed204aba2d5eaa2b11afb8eb30f",
+      "created_at": "2026-11-26T00:20:37Z",
+      "updated_at": "2026-11-26T00:20:37Z",
+      "expires_at": "2026-12-26T00:20:34Z",
+      "workflow_run": {
+        "id": 45727972728,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feature/ambient-001-20261124",
+        "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+      },
+      "manifest": {
+        "attempt": 1,
+        "files_sha256": {
+          "acquisition/lfs-pull-1.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "acquisition/lfs-setup.log": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+          "acquisition/receipt.json": "ad28000516c4a0e6380cf519fc44462d9dd3e12e87eefef957a7c7aa57d93e0a",
+          "payload/godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "payload/godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "payload/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "payload/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+          "stage-result.json": "62357d48c49f8cb4f57836315cac2ad2ee1d06204e2380d9e5cba73b80c1fcbc"
+        },
+        "objects": [
+          {
+            "bytes": 5820416,
+            "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+            "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e"
+          },
+          {
+            "bytes": 5253776,
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+          },
+          {
+            "bytes": 117275416,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          {
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "run_id": "45727972728",
+        "schema": "cybersand-lfs-runtime-artifact-v1",
+        "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+        "status": "passed"
+      },
+      "original_acquisition_receipt": {
+        "allowance_seconds": 1199.9890157260002,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 1189.9792199630003,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "pid": 2470,
+            "returncode": 0,
+            "seconds": 0.06394014099998913,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 1189.9144891750002,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "pid": 2500,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 5.427157954999984,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 5820416,
+            "actual_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+            "bytes": 5820416,
+            "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+            "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e"
+          },
+          {
+            "actual_bytes": 5253776,
+            "actual_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+            "bytes": 5253776,
+            "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+          },
+          {
+            "actual_bytes": 117275416,
+            "actual_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "bytes": 117275416,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+          },
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 5.610524505000001,
+        "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+        "status": "passed"
+      },
+      "stage_result": {
+        "allowance_seconds": 1200.0,
+        "attempt": 1,
+        "run_id": "45727972728",
+        "schema": "cybersand-lfs-runtime-artifact-v1-stage",
+        "seconds": 5.890019977999998,
+        "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+        "status": "payload_verified"
+      },
+      "original_logs": {
+        "acquisition/lfs-pull-1.log": "",
+        "acquisition/lfs-setup.log": "Updated Git hooks.\nGit LFS initialized.\n"
+      },
+      "all_original_archive_and_member_bytes_verified": true
+    },
+    "consumer_samples": [
+      {
+        "id": 15075716605,
+        "name": "palette-shader-cohort-win32-main-cache-0-45727972728-1",
+        "size_in_bytes": 133199273,
+        "digest": "sha256:e1f68cf607915261e2d811e4ebddec730e278f97fc9945e724a8e4bfceda6b33",
+        "archive_sha256_verified": "e1f68cf607915261e2d811e4ebddec730e278f97fc9945e724a8e4bfceda6b33",
+        "zip_crc_verified": true,
+        "selected_entries_sha256": {
+          "dependencies/preparation.json": "24e01e1e977492ad9b37c694ff05a2f31e8895516a2f16d9915caf8d256a33cb",
+          "dependencies/lfs-install.json": "7e54dddd1a7dc8fbfc4bab6ad0d06a122bbed13293022784bf2e9ca73aabff32",
+          "qualification/manifest.json": "2b6ee097783810b10a4e7baba7907c2455ea1b8ef625a597ce5e651de49f75ad",
+          "qualification/qualification.json": "a6983d9690b5287c2d7371d1f877c3d7d5a1a637cea8a5b0b6d0e62a8bbc52de",
+          "qualification/readback.json": "03286892a8ed2567eb29c838b8abe2cc1b69d585a601276497aabcff5270b042"
+        },
+        "actual_install_receipt": {
+          "allowance_seconds": 1200.0,
+          "attempt": 1,
+          "available": [
+            "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 5820416,
+              "path": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+              "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e"
+            },
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "9a4c39b4173aaf6809e54b41f016c2685fc09bb33f399bd5143f47ddfcf5c330",
+          "run_id": "45727972728",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.546999999999997,
+          "selected": [
+            "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+          "status": "passed"
+        },
+        "qualification": {
+          "status": "passed",
+          "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+          "source_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+          "source_unchanged": true,
+          "completed": true,
+          "errors": [],
+          "platform": "win32",
+          "group": "main-cache",
+          "shard_index": 0,
+          "runtimes": {
+            "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": {
+              "bytes": 5820416,
+              "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e"
+            },
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": {
+              "bytes": 9987072,
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          },
+          "engine": {
+            "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+            "archive_size": 83764371,
+            "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+            "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+            "version": "4.7.stable.official.5b4e0cb0f"
+          },
+          "run_id": "45727972728",
+          "run_attempt": "1",
+          "case_plan": [
+            {
+              "cache": "cold",
+              "kind": "main",
+              "name": "main-cold",
+              "rendered": true,
+              "script": "play_palette_shader_main_probe.gd",
+              "timeout": 3940
+            },
+            {
+              "cache": "warm",
+              "kind": "main",
+              "name": "main-warm",
+              "rendered": true,
+              "script": "play_palette_shader_main_probe.gd",
+              "timeout": 3940
+            }
+          ],
+          "budgets": {
+            "case_total_seconds": 9642.0,
+            "cases": 2,
+            "dependency_minutes": 66,
+            "dependency_seconds": 3910,
+            "execution_metadata": {
+              "import_receipt_seconds": 300.0,
+              "internal_readback_seconds": 900.0,
+              "postflight_seconds": 300.0,
+              "preflight_seconds": 300.0,
+              "seal_seconds": 300.0,
+              "telemetry_source_seconds": 300.0
+            },
+            "import_with_cleanup_seconds": 1440.0,
+            "job_minutes": 350,
+            "metadata_step_minutes": 5,
+            "metadata_steps": 6,
+            "process_overhead": {
+              "cleanup_seconds": 240.0,
+              "collect_seconds": 300.0,
+              "observer_join_seconds": 41.0,
+              "prepare_seconds": 300.0
+            },
+            "readback_minutes": 15,
+            "suite_minutes": 235,
+            "suite_seconds": 14082,
+            "total_stage_minutes": 346
+          },
+          "source_archive_sha256": "2a5c3103d099a4bf5966ba0d19e57071c9950ba6d7b0c4369aad9c5cf15a822a"
+        },
+        "source_inventory_count": 1496,
+        "source_inventory_canonical_json_sha256": "2d603d434209cec6bcf05fae49439c81bc99b2c64c8cf161df75b3a09b8ec4a1",
+        "retained_cohort_readback": {
+          "cases": [
+            {
+              "case": "main-cold",
+              "context": {
+                "backend": "opengl3_angle",
+                "cache_state": "cold",
+                "display_server": "Windows",
+                "engine_path": "D:/a/_temp/palette-engine-2ec419ff704a454dbdbc37c555e602d4/Godot_v4.7-stable_win64.exe",
+                "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+                "execution_policy": {
+                  "ok": true,
+                  "path": "res://tests/support/ci_execution_policy.json",
+                  "scale": 1.0,
+                  "schema_version": 1,
+                  "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+                  "watchdogs": {
+                    "complex_fixture_seconds": 3600.0,
+                    "diagnostic_capture_seconds": 30.0,
+                    "godot_import_seconds": 1200.0,
+                    "graphical_case_seconds": 1200.0,
+                    "hosted_job_minutes": 180.0,
+                    "main_ack_seconds": 600.0,
+                    "operation_seconds": 300.0,
+                    "terminate_grace_seconds": 10.0
+                  }
+                },
+                "fixture": "res://tests/play_palette_shader_main_probe.gd",
+                "fixture_sha256": "97422b0dca4dc0669fb7176ee7407be90c70de74300f421031c2777ff57a070a",
+                "godot": {
+                  "build": "official",
+                  "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                  "hex": 263936,
+                  "major": 4,
+                  "minor": 7,
+                  "patch": 0,
+                  "status": "stable",
+                  "string": "4.7-stable (official)",
+                  "timestamp": 0
+                },
+                "nonce": "91081f5876214f64a07f3f9ac30b2c36",
+                "platform": "Windows",
+                "process_id": 8080,
+                "schema": "palette-qualification-context-v1",
+                "shader": {},
+                "source_revision": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+                "user_data_dir": "D:/a/cybersand/cybersand/build/palette-shader-windows-main-cache-0/qualification/main-cache/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox",
+                "video_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+              },
+              "reduced": {
+                "construction_seconds": [
+                  51.084895,
+                  3.235609
+                ],
+                "joined_workers": 2,
+                "lifetimes": 2,
+                "request_to_readback_seconds": [
+                  52.356415,
+                  3.77885
+                ],
+                "retired_sessions": 2,
+                "timing_scope": "whole Main construction/request to actual readback; never compiler-only or FXC time"
+              }
+            },
+            {
+              "case": "main-warm",
+              "context": {
+                "backend": "opengl3_angle",
+                "cache_state": "warm",
+                "display_server": "Windows",
+                "engine_path": "D:/a/_temp/palette-engine-2ec419ff704a454dbdbc37c555e602d4/Godot_v4.7-stable_win64.exe",
+                "engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+                "execution_policy": {
+                  "ok": true,
+                  "path": "res://tests/support/ci_execution_policy.json",
+                  "scale": 1.0,
+                  "schema_version": 1,
+                  "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+                  "watchdogs": {
+                    "complex_fixture_seconds": 3600.0,
+                    "diagnostic_capture_seconds": 30.0,
+                    "godot_import_seconds": 1200.0,
+                    "graphical_case_seconds": 1200.0,
+                    "hosted_job_minutes": 180.0,
+                    "main_ack_seconds": 600.0,
+                    "operation_seconds": 300.0,
+                    "terminate_grace_seconds": 10.0
+                  }
+                },
+                "fixture": "res://tests/play_palette_shader_main_probe.gd",
+                "fixture_sha256": "97422b0dca4dc0669fb7176ee7407be90c70de74300f421031c2777ff57a070a",
+                "godot": {
+                  "build": "official",
+                  "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                  "hex": 263936,
+                  "major": 4,
+                  "minor": 7,
+                  "patch": 0,
+                  "status": "stable",
+                  "string": "4.7-stable (official)",
+                  "timestamp": 0
+                },
+                "nonce": "0aa54510d23048bd966c1cc902a3ede3",
+                "platform": "Windows",
+                "process_id": 5372,
+                "schema": "palette-qualification-context-v1",
+                "shader": {},
+                "source_revision": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+                "user_data_dir": "D:/a/cybersand/cybersand/build/palette-shader-windows-main-cache-0/qualification/main-cache/roaming/Godot/app_userdata/Cyber Sand Reference Sandbox",
+                "video_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+              },
+              "reduced": {
+                "construction_seconds": [
+                  3.056098,
+                  2.666867
+                ],
+                "joined_workers": 2,
+                "lifetimes": 2,
+                "request_to_readback_seconds": [
+                  4.271043,
+                  3.263107
+                ],
+                "retired_sessions": 2,
+                "timing_scope": "whole Main construction/request to actual readback; never compiler-only or FXC time"
+              }
+            }
+          ],
+          "group": "main-cache",
+          "platform": "win32",
+          "schema": "palette-shader-readback-v2",
+          "scope": "registered actual shader/backend/managed-cache and Main controls; no physical device or universal performance claim",
+          "shard_index": 0,
+          "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+          "status": "passed"
+        }
+      },
+      {
+        "id": 15075306928,
+        "name": "palette-shader-cohort-linux-visual-0-45727972728-1",
+        "size_in_bytes": 135150997,
+        "digest": "sha256:7ead4801cc43ac50bab7f7af5f8fefc44d06b8eaf6ed448be97b2d6a2a945f9d",
+        "archive_sha256_verified": "7ead4801cc43ac50bab7f7af5f8fefc44d06b8eaf6ed448be97b2d6a2a945f9d",
+        "zip_crc_verified": true,
+        "selected_entries_sha256": {
+          "dependencies/lfs-install.json": "71cd9f596f4ddf73082cc744c752a53e73e674e064cca76aa2bf43047cf7d947",
+          "dependencies/preparation.json": "6960935e143924ebf6dcbc1660a065238d8d8614a2ec59c65bcfc16a19a4db31",
+          "qualification/manifest.json": "59e618a3f6044fc308c28ba38dcaa5c7186efff2de26f2614170e01d9e9abb37",
+          "qualification/qualification.json": "cd6767f9501c9b38373076f16a3189d5e19851d07e4d74bf53e84cbcfcb4c031",
+          "qualification/readback.json": "d7def0617008b75209ec34e3f24856b1bf5d1ae8d195e53ee1c17e39deb3c42f"
+        },
+        "actual_install_receipt": {
+          "allowance_seconds": 1200.0,
+          "attempt": 1,
+          "available": [
+            "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 5253776,
+              "path": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+              "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+            },
+            {
+              "bytes": 117275416,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+              "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+            }
+          ],
+          "manifest_sha256": "9a4c39b4173aaf6809e54b41f016c2685fc09bb33f399bd5143f47ddfcf5c330",
+          "run_id": "45727972728",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.8967669469999962,
+          "selected": [
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+          ],
+          "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+          "status": "passed"
+        },
+        "qualification": {
+          "status": "passed",
+          "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+          "source_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+          "source_unchanged": true,
+          "completed": true,
+          "errors": [],
+          "platform": "linux",
+          "group": "visual",
+          "shard_index": 0,
+          "runtimes": {
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": {
+              "bytes": 5253776,
+              "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7"
+            },
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": {
+              "bytes": 117275416,
+              "sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+            }
+          },
+          "engine": {
+            "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+            "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "version": "4.7.stable.official.5b4e0cb0f"
+          },
+          "run_id": "45727972728",
+          "run_attempt": "1",
+          "case_plan": [
+            {
+              "cache": "visual-cohort",
+              "kind": "guard",
+              "name": "compile-guard",
+              "rendered": false,
+              "script": "test_palette_shader_compile_bounds.gd",
+              "timeout": 1200
+            },
+            {
+              "cache": "visual-cohort",
+              "kind": "oracle",
+              "name": "bounded-oracle",
+              "rendered": true,
+              "script": "test_palette_crossfade_render.gd",
+              "timeout": 1200
+            },
+            {
+              "cache": "visual-cohort",
+              "kind": "material",
+              "name": "material-render",
+              "rendered": true,
+              "script": "test_material_presentation_render.gd",
+              "timeout": 1200
+            },
+            {
+              "cache": "visual-cohort",
+              "kind": "vapour",
+              "name": "vapour-render",
+              "rendered": true,
+              "script": "test_material_vapour_pipeline_render.gd",
+              "timeout": 1200
+            }
+          ],
+          "budgets": {
+            "case_total_seconds": 8324.0,
+            "cases": 4,
+            "dependency_minutes": 66,
+            "dependency_seconds": 3910,
+            "execution_metadata": {
+              "import_receipt_seconds": 300.0,
+              "internal_readback_seconds": 900.0,
+              "postflight_seconds": 300.0,
+              "preflight_seconds": 300.0,
+              "seal_seconds": 300.0,
+              "telemetry_source_seconds": 300.0
+            },
+            "import_with_cleanup_seconds": 1440.0,
+            "job_minutes": 320,
+            "metadata_step_minutes": 5,
+            "metadata_steps": 5,
+            "process_overhead": {
+              "cleanup_seconds": 240.0,
+              "collect_seconds": 300.0,
+              "observer_join_seconds": 41.0,
+              "prepare_seconds": 300.0
+            },
+            "readback_minutes": 15,
+            "suite_minutes": 213,
+            "suite_seconds": 12764,
+            "total_stage_minutes": 319
+          },
+          "source_archive_sha256": "2a5c3103d099a4bf5966ba0d19e57071c9950ba6d7b0c4369aad9c5cf15a822a"
+        },
+        "source_inventory_count": 1496,
+        "source_inventory_canonical_json_sha256": "a20c9fca27a7bba94e867f1dfb6310b68c88650286b61b5760d95f370313f22a",
+        "retained_cohort_readback": {
+          "cases": [
+            {
+              "case": "compile-guard",
+              "context": {
+                "backend": "opengl3",
+                "cache_state": "visual-cohort",
+                "display_server": "headless",
+                "engine_path": "/home/runner/work/_temp/palette-engine-c577196363d14a3aac89e3eb4453676d/Godot_v4.7-stable_linux.x86_64",
+                "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+                "execution_policy": {
+                  "ok": true,
+                  "path": "res://tests/support/ci_execution_policy.json",
+                  "scale": 1.0,
+                  "schema_version": 1,
+                  "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+                  "watchdogs": {
+                    "complex_fixture_seconds": 3600.0,
+                    "diagnostic_capture_seconds": 30.0,
+                    "godot_import_seconds": 1200.0,
+                    "graphical_case_seconds": 1200.0,
+                    "hosted_job_minutes": 180.0,
+                    "main_ack_seconds": 600.0,
+                    "operation_seconds": 300.0,
+                    "terminate_grace_seconds": 10.0
+                  }
+                },
+                "fixture": "res://tests/test_palette_shader_compile_bounds.gd",
+                "fixture_sha256": "84677d90f9fe3a1714f87243b55960a7ce3d2bab6ebd9d4e7f1201edae0a4abd",
+                "godot": {
+                  "build": "official",
+                  "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                  "hex": 263936,
+                  "major": 4,
+                  "minor": 7,
+                  "patch": 0,
+                  "status": "stable",
+                  "string": "4.7-stable (official)",
+                  "timestamp": 0
+                },
+                "nonce": "63443bb2822d448ab2cb9de083e4dad4",
+                "platform": "Linux",
+                "process_id": 2521,
+                "schema": "palette-qualification-context-v1",
+                "shader": {
+                  "source_bound": true,
+                  "source_file_bound": true,
+                  "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+                  "source_path": "res://shaders/material_palette.gdshader",
+                  "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+                  "variant": "full_crossfade",
+                  "variant_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+                },
+                "source_revision": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+                "user_data_dir": "/home/runner/work/cybersand/cybersand/build/palette-shader-linux-visual-0/qualification/compile-guard/isolated-cache/data/godot/app_userdata/Cyber Sand Reference Sandbox",
+                "video_adapter": "headless"
+              },
+              "reduced": {
+                "explicit_completion_marker": true
+              }
+            },
+            {
+              "case": "bounded-oracle",
+              "context": {
+                "backend": "opengl3",
+                "cache_state": "visual-cohort",
+                "display_server": "X11",
+                "engine_path": "/home/runner/work/_temp/palette-engine-c577196363d14a3aac89e3eb4453676d/Godot_v4.7-stable_linux.x86_64",
+                "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+                "execution_policy": {
+                  "ok": true,
+                  "path": "res://tests/support/ci_execution_policy.json",
+                  "scale": 1.0,
+                  "schema_version": 1,
+                  "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+                  "watchdogs": {
+                    "complex_fixture_seconds": 3600.0,
+                    "diagnostic_capture_seconds": 30.0,
+                    "godot_import_seconds": 1200.0,
+                    "graphical_case_seconds": 1200.0,
+                    "hosted_job_minutes": 180.0,
+                    "main_ack_seconds": 600.0,
+                    "operation_seconds": 300.0,
+                    "terminate_grace_seconds": 10.0
+                  }
+                },
+                "fixture": "res://tests/test_palette_crossfade_render.gd",
+                "fixture_sha256": "8758efa7bd05f15e71b9638a2e38980f77b5f23104955a352d8782c71f162dd6",
+                "godot": {
+                  "build": "official",
+                  "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                  "hex": 263936,
+                  "major": 4,
+                  "minor": 7,
+                  "patch": 0,
+                  "status": "stable",
+                  "string": "4.7-stable (official)",
+                  "timestamp": 0
+                },
+                "nonce": "b5d61e9018c34376beb43522ca06553f",
+                "platform": "Linux",
+                "process_id": 2532,
+                "schema": "palette-qualification-context-v1",
+                "shader": {
+                  "source_bound": true,
+                  "source_file_bound": true,
+                  "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+                  "source_path": "res://shaders/material_palette.gdshader",
+                  "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+                  "variant": "angle_bounded_crossfade",
+                  "variant_sha256": "7e5650cb807825e8febebd402dcba262d0df10baf02d478ee3c30f99ca3d460d"
+                },
+                "source_revision": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+                "user_data_dir": "/home/runner/work/cybersand/cybersand/build/palette-shader-linux-visual-0/qualification/bounded-oracle/isolated-cache/data/godot/app_userdata/Cyber Sand Reference Sandbox",
+                "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+              },
+              "reduced": {
+                "frames": 9,
+                "material_slots": 132,
+                "max_camera_error": 0.0,
+                "max_rgba_error": 0.0003662109375,
+                "program_inputs": {
+                  "bound_texture": {
+                    "object_id": -9223372006857112081,
+                    "rid": 369367187478
+                  },
+                  "canonical_sha256": "6ab9c18f2f2993eda7c552b86a28d639a70fb03e0ffdfb2ae070da5c587bb60d",
+                  "clamped_texture": {
+                    "object_id": -9223371997780638223,
+                    "rid": 1464583847966
+                  },
+                  "edited_sha256": "99d7b6498189b30ed3c3c32cc93a56210f82b7c7bcb73ddf6f1123921850de66",
+                  "negative_control_max_error": 0.0,
+                  "negative_rejection_max_error": 0.765625,
+                  "positive_max_error": 0.0,
+                  "production_bindings": 21,
+                  "retained_probe_images": 2,
+                  "sand_rejection_error": 0.5,
+                  "scalars_per_probe": 4096,
+                  "scope": "Actual production-bound GPU instructions and separately rendered clamped negative; neither uses endpoint self-reference",
+                  "status": "passed",
+                  "water_rejection_error": 0.4375
+                },
+                "retained_images": 24,
+                "tolerance": 0.00784313725490196
+              }
+            },
+            {
+              "case": "material-render",
+              "context": {
+                "backend": "opengl3",
+                "cache_state": "visual-cohort",
+                "display_server": "X11",
+                "engine_path": "/home/runner/work/_temp/palette-engine-c577196363d14a3aac89e3eb4453676d/Godot_v4.7-stable_linux.x86_64",
+                "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+                "execution_policy": {
+                  "ok": true,
+                  "path": "res://tests/support/ci_execution_policy.json",
+                  "scale": 1.0,
+                  "schema_version": 1,
+                  "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+                  "watchdogs": {
+                    "complex_fixture_seconds": 3600.0,
+                    "diagnostic_capture_seconds": 30.0,
+                    "godot_import_seconds": 1200.0,
+                    "graphical_case_seconds": 1200.0,
+                    "hosted_job_minutes": 180.0,
+                    "main_ack_seconds": 600.0,
+                    "operation_seconds": 300.0,
+                    "terminate_grace_seconds": 10.0
+                  }
+                },
+                "fixture": "res://tests/test_material_presentation_render.gd",
+                "fixture_sha256": "a6b57ca0f221d5225a7cf5dfaacd062e4e6ec1ace9c1678c611852fdccc5e8cf",
+                "godot": {
+                  "build": "official",
+                  "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                  "hex": 263936,
+                  "major": 4,
+                  "minor": 7,
+                  "patch": 0,
+                  "status": "stable",
+                  "string": "4.7-stable (official)",
+                  "timestamp": 0
+                },
+                "nonce": "3e8c6a249a504145861cfa0a4f1800ff",
+                "platform": "Linux",
+                "process_id": 2586,
+                "schema": "palette-qualification-context-v1",
+                "shader": {
+                  "source_bound": true,
+                  "source_file_bound": true,
+                  "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+                  "source_path": "res://shaders/material_palette.gdshader",
+                  "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+                  "variant": "full_crossfade",
+                  "variant_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+                },
+                "source_revision": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+                "user_data_dir": "/home/runner/work/cybersand/cybersand/build/palette-shader-linux-visual-0/qualification/material-render/isolated-cache/data/godot/app_userdata/Cyber Sand Reference Sandbox",
+                "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+              },
+              "reduced": {
+                "explicit_completion_marker": true
+              }
+            },
+            {
+              "case": "vapour-render",
+              "context": {
+                "backend": "opengl3",
+                "cache_state": "visual-cohort",
+                "display_server": "X11",
+                "engine_path": "/home/runner/work/_temp/palette-engine-c577196363d14a3aac89e3eb4453676d/Godot_v4.7-stable_linux.x86_64",
+                "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+                "execution_policy": {
+                  "ok": true,
+                  "path": "res://tests/support/ci_execution_policy.json",
+                  "scale": 1.0,
+                  "schema_version": 1,
+                  "sha256": "9eaec2e6318073bff7cfbac209d2d959a751b85ffd63cb94c147e9be237516dc",
+                  "watchdogs": {
+                    "complex_fixture_seconds": 3600.0,
+                    "diagnostic_capture_seconds": 30.0,
+                    "godot_import_seconds": 1200.0,
+                    "graphical_case_seconds": 1200.0,
+                    "hosted_job_minutes": 180.0,
+                    "main_ack_seconds": 600.0,
+                    "operation_seconds": 300.0,
+                    "terminate_grace_seconds": 10.0
+                  }
+                },
+                "fixture": "res://tests/test_material_vapour_pipeline_render.gd",
+                "fixture_sha256": "ca335e21bbae4c3884ae6510e42216c19725186633539a9ef384a514d19ce993",
+                "godot": {
+                  "build": "official",
+                  "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+                  "hex": 263936,
+                  "major": 4,
+                  "minor": 7,
+                  "patch": 0,
+                  "status": "stable",
+                  "string": "4.7-stable (official)",
+                  "timestamp": 0
+                },
+                "nonce": "9a9ffaf6852a4c70b835688970453fad",
+                "platform": "Linux",
+                "process_id": 2640,
+                "schema": "palette-qualification-context-v1",
+                "shader": {
+                  "source_bound": true,
+                  "source_file_bound": true,
+                  "source_file_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+                  "source_path": "res://shaders/material_palette.gdshader",
+                  "source_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+                  "variant": "full_crossfade",
+                  "variant_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1"
+                },
+                "source_revision": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+                "user_data_dir": "/home/runner/work/cybersand/cybersand/build/palette-shader-linux-visual-0/qualification/vapour-render/isolated-cache/data/godot/app_userdata/Cyber Sand Reference Sandbox",
+                "video_adapter": "llvmpipe (LLVM 20.1.2, 256 bits)"
+              },
+              "reduced": {
+                "explicit_completion_marker": true
+              }
+            }
+          ],
+          "group": "visual",
+          "platform": "linux",
+          "schema": "palette-shader-readback-v2",
+          "scope": "registered actual shader/backend/managed-cache and Main controls; no physical device or universal performance claim",
+          "shard_index": 0,
+          "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+          "status": "passed"
+        }
+      }
+    ],
+    "all_six_cohorts_passed": true,
+    "reducer_job": 139604558114,
+    "reducer_artifact": {
+      "id": 15075871610,
+      "name": "palette-shader-readback-45727972728-1",
+      "size_in_bytes": 4546,
+      "digest": "sha256:702ec517ed2fcb85c1d7570de244e302a24d0f67c77e7acec5a6b256e15bdf95",
+      "archive_sha256_verified": "702ec517ed2fcb85c1d7570de244e302a24d0f67c77e7acec5a6b256e15bdf95",
+      "zip_crc_verified": true,
+      "selected_entries_sha256": {
+        "dependencies/preparation.json": "f16548d16d63bbfe5d4a5c7856270d81619c78e57a362dbf1a402bc2766de0a3",
+        "dependencies.log": "e4a5641472d227b288bd2809c04a7d0581a8b909d9f9c9a6add3af055cfcedfb",
+        "suite-readback.log": "fbe33bc60cb76fce1266110249d57ec3b19e25ab3347ddf094f12f280c4c95e1"
+      }
+    },
+    "original_suite_readback": {
+      "bounded_cross_backend": {
+        "finished_image_diagnostic": {
+          "frames": [
+            {
+              "blend": 0.0,
+              "condition": 0,
+              "max_rgba_difference": 0.0009804069995880127,
+              "pixels_exceeding_original_threshold": 0,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.5,
+              "condition": 0,
+              "max_rgba_difference": 0.15097513794898987,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 1.0,
+              "condition": 0,
+              "max_rgba_difference": 0.3009393513202667,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.0,
+              "condition": 128,
+              "max_rgba_difference": 0.0019492805004119873,
+              "pixels_exceeding_original_threshold": 0,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.5,
+              "condition": 128,
+              "max_rgba_difference": 0.15079322457313538,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 1.0,
+              "condition": 128,
+              "max_rgba_difference": 0.3009393513202667,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.0,
+              "condition": 255,
+              "max_rgba_difference": 0.0019608139991760254,
+              "pixels_exceeding_original_threshold": 0,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 0.5,
+              "condition": 255,
+              "max_rgba_difference": 0.15134277939796448,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            },
+            {
+              "blend": 1.0,
+              "condition": 255,
+              "max_rgba_difference": 0.3009393513202667,
+              "pixels_exceeding_original_threshold": 11,
+              "total_pixels": 2304
+            }
+          ],
+          "original_threshold": 0.00784313725490196,
+          "scope": "Retained v2 finished-image identity diagnostic, not the v3 acceptance predicate. Procedural hash finish is stable on one GPU; no tolerated-pixel allowance is introduced.",
+          "status": "failed"
+        },
+        "outgoing_base_frames": [
+          {
+            "blend": 0.0,
+            "condition": 0,
+            "max_rgba_difference": 0.0009804069995880127,
+            "pixels_exceeding_original_threshold": 0,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 0.0,
+            "condition": 128,
+            "max_rgba_difference": 0.0019492805004119873,
+            "pixels_exceeding_original_threshold": 0,
+            "total_pixels": 2304
+          },
+          {
+            "blend": 0.0,
+            "condition": 255,
+            "max_rgba_difference": 0.0019608139991760254,
+            "pixels_exceeding_original_threshold": 0,
+            "total_pixels": 2304
+          }
+        ],
+        "schema": "palette-bounded-semantics-v3",
+        "scope": "Each backend independently passes all base/blend/full-current/camera and actual GPU-input controls; cross-backend CPU-base remains a positive fixed-tolerance gate.",
+        "status": "passed"
+      },
+      "cohorts": 6,
+      "process_cases": 19,
+      "schema": "palette-shader-suite-v3",
+      "scope": "versioned actual-input and bounded-semantic contract; separate exact native full parity and actual Main cache pairs; retained finished-image diagnostic is explicit",
+      "source_commit": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "status": "passed",
+      "tolerance": 0.00784313725490196
+    },
+    "original_suite_log_sha256": "fbe33bc60cb76fce1266110249d57ec3b19e25ab3347ddf094f12f280c4c95e1",
+    "producer_manifest_sha256": "9a4c39b4173aaf6809e54b41f016c2685fc09bb33f399bd5143f47ddfcf5c330",
+    "installed_bytes_equal_original_producer_and_committed_pointers": true
+  },
+  "gde_windows": {
+    "run_id": 45727973062,
+    "attempt": 1,
+    "producer_job": 139602551095,
+    "status": "failed",
+    "cause": "Observed Git LFS batch timeout on pull1, HTTP503 on pull2. Both processes joined; no transport implementation, runtime integrity or application failure shown.",
+    "original_failed_artifact": {
+      "id": 15075561307,
+      "node_id": "MDg6QXJ0aWZhY3QxNTA3NTU2MTMwNw==",
+      "name": "windows-lfs-runtime-45727973062-1",
+      "size_in_bytes": 2324,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15075561307",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15075561307/zip",
+      "expired": false,
+      "digest": "sha256:8669ccf5f58b8537d5f83ea5522fec8c6dbef22296e5ab9f7ce16b5a5728226c",
+      "created_at": "2026-11-26T00:20:42Z",
+      "updated_at": "2026-11-26T00:20:42Z",
+      "expires_at": "2027-02-24T00:20:01Z",
+      "workflow_run": {
+        "id": 45727973062,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "feature/ambient-001-20261124",
+        "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+      },
+      "content": {
+        "acquisition/lfs-pull-1.log": "batch response: Fatal error: We couldn't respond to your request in time. Sorry about that. Please try resubmitting your request and contact us if the problem persists.\n\nErrors logged to '/home/runner/work/cybersand/cybersand/.git/lfs/logs/20261126T002032.076772821.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+        "acquisition/receipt.json": "{\n  \"allowance_seconds\": 599.996338335,\n  \"backoff_seconds\": [\n    2.0\n  ],\n  \"cleanup_reserve_seconds\": 10.0,\n  \"commands\": [\n    {\n      \"allowance_seconds\": 589.994031796,\n      \"command\": [\n        \"git\",\n        \"lfs\",\n        \"install\",\n        \"--local\"\n      ],\n      \"joined\": true,\n      \"label\": \"lfs-setup\",\n      \"log\": \"lfs-setup.log\",\n      \"log_bytes\": 40,\n      \"log_sha256\": \"4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875\",\n      \"pid\": 2182,\n      \"returncode\": 0,\n      \"seconds\": 0.03164175599999908,\n      \"timed_out\": false\n    },\n    {\n      \"allowance_seconds\": 589.961934751,\n      \"command\": [\n        \"git\",\n        \"lfs\",\n        \"pull\",\n        \"--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n        \"--exclude=\"\n      ],\n      \"joined\": true,\n      \"label\": \"lfs-pull-1\",\n      \"log\": \"lfs-pull-1.log\",\n      \"log_bytes\": 400,\n      \"log_sha256\": \"62287254f193d8016728949d8cc4e7f6f543e995917af4daa69dbdd299a3d069\",\n      \"pid\": 2212,\n      \"retryable_service_timeout\": true,\n      \"returncode\": 2,\n      \"seconds\": 13.005622218000013,\n      \"timed_out\": false\n    },\n    {\n      \"allowance_seconds\": 574.954829837,\n      \"command\": [\n        \"git\",\n        \"lfs\",\n        \"pull\",\n        \"--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n        \"--exclude=\"\n      ],\n      \"joined\": true,\n      \"label\": \"lfs-pull-2\",\n      \"log\": \"lfs-pull-2.log\",\n      \"log_bytes\": 352,\n      \"log_sha256\": \"59961df6d69929754112e1d7fab1f816d06d8cb2fa3bc736ee72c09b076d6f08\",\n      \"pid\": 2244,\n      \"retryable_service_timeout\": false,\n      \"returncode\": 2,\n      \"seconds\": 6.434452701999987,\n      \"timed_out\": false\n    }\n  ],\n  \"error\": \"RuntimeError: Git LFS acquisition failed without an admissible retry; see retained original log\",\n  \"max_attempts\": 3,\n  \"objects\": [\n    {\n      \"bytes\": 9987072,\n      \"path\": \"godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll\",\n      \"sha256\": \"b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7\"\n    }\n  ],\n  \"retry_scope\": \"observed Git LFS batch service timeout only\",\n  \"schema\": \"cybersand-lfs-acquisition-v1\",\n  \"seconds\": 21.476604003999995,\n  \"source_commit\": \"a83b44dee96b6db382e8cd9def727c963a979eaf\",\n  \"status\": \"failed\"\n}\n",
+        "acquisition/lfs-pull-2.log": "batch response: Fatal error: Server error https://github.com/techrote/cybersand.git/info/lfs/objects/batch from HTTP 503\n\nErrors logged to '/home/runner/work/cybersand/cybersand/.git/lfs/logs/20261126T002040.511547432.log'.\nUse `git lfs logs last` to view the log.\nFailed to fetch some objects from 'https://github.com/techrote/cybersand.git/info/lfs'\n",
+        "acquisition/lfs-setup.log": "Updated Git hooks.\nGit LFS initialized.\n",
+        "stage-result.json": "{\n  \"allowance_seconds\": 600.0,\n  \"attempt\": 1,\n  \"error\": \"RuntimeError: Git LFS acquisition failed without an admissible retry; see retained original log\",\n  \"run_id\": \"45727973062\",\n  \"schema\": \"cybersand-lfs-runtime-artifact-v1-stage\",\n  \"seconds\": 21.480658328000004,\n  \"source_commit\": \"a83b44dee96b6db382e8cd9def727c963a979eaf\",\n  \"status\": \"failed\"\n}\n"
+      }
+    },
+    "usable_manifest_present": false,
+    "native_candidate_produced": false,
+    "windows_cases_executed": false,
+    "coverage_job": 139603037446,
+    "coverage_disposition": "Correct missing source-built candidate failure; no coverage claim"
+  },
+  "art_windows": {
+    "run_id": 45727972762,
+    "attempt": 1,
+    "failed_job": 139602549515,
+    "cause": "Unchanged one-shot Git LFS pull reports service batch timeout before Godot; Linux companion job139602549257 passed.",
+    "evidence_artifact_created_before_failure": false
+  },
+  "recovery_recommendation": "After terminal GDE, rerun Windows producer and all dependent Windows shards/coverage at newattempt while keeping valid Linux attempt1 independently identified. Successful immutable-source plan outputs are reusable; current-attempt Windows artifacts/reports must all be new. Art Windows may rerun independently. Lead alone registers/executes recovery.",
+  "limits": [
+    "This packet does not declare full current-source GDE or Native qualification complete.",
+    "Successful Palette retains its original failed v2 finished-image diagnostic; the unchanged registered v3 acceptance predicate passes.",
+    "No owner physical acceptance, mainline merge or runtime publication performed by this lane."
+  ]
+}

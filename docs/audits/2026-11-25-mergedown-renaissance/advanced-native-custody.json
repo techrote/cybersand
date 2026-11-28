@@ -1,0 +1,1143 @@
+{
+  "actor_admission": {
+    "latest_publication_source": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+    "maintainer_approval_observation": "Lead original run-page readback recorded awaiting maintainer approval; no workflow-approval connector is available. No source mutation to evade admission.",
+    "record": "https://github.com/techrote/cybersand/pull/762#issuecomment-7175767936",
+    "runs": [
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402518,
+        "name": "Art session-only logging qualification",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402379,
+        "name": "Palette shader actual backend qualification",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402416,
+        "name": "Architectural Generator A+B source qualification",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402437,
+        "name": "Wave Flow native qualification",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402694,
+        "name": "PressureFlow source-built Windows native qualification",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402415,
+        "name": "Native C++ validation",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402537,
+        "name": "Issue 49 Water apparatus v2",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402679,
+        "name": "GDExtension build and current Godot regression",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402531,
+        "name": "Documentation and provenance",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402459,
+        "name": "Native",
+        "run_attempt": 1,
+        "status": "completed"
+      },
+      {
+        "conclusion": "action_required",
+        "head_sha": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73",
+        "id": 45117402454,
+        "name": "Native source-scope advisory (report only)",
+        "run_attempt": 1,
+        "status": "completed"
+      }
+    ],
+    "selected_native_gdextension_docs_job_lists_empty": true
+  },
+  "campaigns": [
+    {
+      "attempt": 1,
+      "conclusion": "success",
+      "jobs": [
+        {
+          "completed_at": "2026-11-24T17:09:19Z",
+          "conclusion": "success",
+          "id": 138626895094,
+          "name": "Explicit frozen-source request and helper guards",
+          "started_at": "2026-11-24T17:08:28Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-24T17:44:54Z",
+          "conclusion": "success",
+          "id": 138627497166,
+          "name": "Linux strict sanitizers all nine GUI examples and known360",
+          "started_at": "2026-11-24T17:09:23Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-24T17:14:31Z",
+          "conclusion": "success",
+          "id": 138627497236,
+          "name": "Windows full-source cross build once",
+          "started_at": "2026-11-24T17:09:23Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-24T17:16:19Z",
+          "conclusion": "success",
+          "id": 138627497276,
+          "name": "Exact-source revealed 006 corpus and frozen scientific harness",
+          "started_at": "2026-11-24T17:09:22Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-24T17:48:45Z",
+          "conclusion": "success",
+          "id": 138631072184,
+          "name": "Real extracted Windows evaluator and accepted-main smokes",
+          "started_at": "2026-11-24T17:14:34Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-24T18:05:40Z",
+          "conclusion": "success",
+          "id": 138631072246,
+          "name": "Actual Windows native and graphical source gates",
+          "started_at": "2026-11-24T17:14:34Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-24T18:13:36Z",
+          "conclusion": "success",
+          "id": 138664529371,
+          "name": "Verify every scoped gate and stage eight reviewable runtime paths",
+          "started_at": "2026-11-24T18:05:44Z",
+          "status": "completed"
+        }
+      ],
+      "run_id": 45445188802,
+      "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45445188802"
+    },
+    {
+      "attempt": 1,
+      "conclusion": "success",
+      "jobs": [
+        {
+          "completed_at": "2026-11-25T02:49:28Z",
+          "conclusion": "success",
+          "id": 138924056891,
+          "name": "linux-workbench",
+          "started_at": "2026-11-25T02:05:24Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-25T02:10:37Z",
+          "conclusion": "success",
+          "id": 138924057296,
+          "name": "windows-native",
+          "started_at": "2026-11-25T02:05:24Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-25T02:22:28Z",
+          "conclusion": "success",
+          "id": 138924057320,
+          "name": "native-sanitizers",
+          "started_at": "2026-11-25T02:05:24Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-25T02:50:21Z",
+          "conclusion": "success",
+          "id": 138926161028,
+          "name": "windows-workbench",
+          "started_at": "2026-11-25T02:10:40Z",
+          "status": "completed"
+        }
+      ],
+      "run_id": 45530425519,
+      "source_commit": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45530425519"
+    },
+    {
+      "attempt": 1,
+      "conclusion": "success",
+      "jobs": [
+        {
+          "completed_at": "2026-11-23T04:55:29Z",
+          "conclusion": "success",
+          "id": 137488547370,
+          "name": "Pinned native builds and Linux coupled Workbench",
+          "started_at": "2026-11-23T04:35:18Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-23T05:22:00Z",
+          "conclusion": "success",
+          "id": 137494640600,
+          "name": "Windows coupled Workbench and portable owner evaluation",
+          "started_at": "2026-11-23T04:55:31Z",
+          "status": "completed"
+        },
+        {
+          "completed_at": "2026-11-23T05:22:50Z",
+          "conclusion": "success",
+          "id": 137502992790,
+          "name": "Append the fully qualified sandbox runtime pair to the unchanged Draft branch",
+          "started_at": "2026-11-23T05:22:04Z",
+          "status": "completed"
+        }
+      ],
+      "run_id": 45112739808,
+      "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+      "status": "completed",
+      "url": "https://github.com/techrote/cybersand/actions/runs/45112739808"
+    }
+  ],
+  "candidates": [
+    {
+      "foundation_comparison": {
+        "actual_accepted_main_after_goblin": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+        "intake_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "overlapping_changed_paths": [
+          ".github/workflows/gdextension.yml",
+          "docs/README.md",
+          "docs/operations/local-build-and-validation.md",
+          "docs/reference/retrieval-corpus.json",
+          "docs/reference/retrieval-index.md",
+          "docs/reference/status-and-roadmap.md",
+          "godot/scripts/main.gd",
+          "godot/scripts/shared_workbench.gd",
+          "tools/ci/test_godot_job_plan.py",
+          "tools/package_explore001_candidate.py"
+        ],
+        "overlapping_native_input_paths": [],
+        "prepared_combined_foundation": "9baa59c9630582958a3b38f2931012775c50e46e",
+        "prepared_foundation_tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+        "remote_combined_foundation_source": "0c1152c21427125066df931cf06a53b7dda0075d",
+        "scope": "Input and path overlap analysis of exact reviewed foundation tree114764; not qualification of an advanced combined source."
+      },
+      "native_changed_paths_from_intake": [
+        "godot/native_extension/cyber_prepared_liquid_world.hpp",
+        "godot/native_extension/workbench_retained_setup.hpp",
+        "native/include/cybersand/workbench_authoring_patch.hpp"
+      ],
+      "native_input_count": 106,
+      "original_artifacts_verified_this_mission": [
+        {
+          "all_zip_members_crc_valid": true,
+          "archive_bytes": 6238955,
+          "archive_name": "swarm456-publication-original.zip",
+          "archive_sha256": "fbb8b5b1e3317e6b40dc75518167d60e96e55b2b8d7ea9308a425c8d69edc230",
+          "artifact_id": 14951152494,
+          "attempt": 1,
+          "binaries": [
+            {
+              "build_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+              "bytes": 5844992,
+              "ledger_member": "godot/addons/cybersand_native/runtime-provenance.json",
+              "ledger_sha256": "05ed3f6a191e16f11188f73c1ee9ea0d6f7a2e3c7e2377a16c91df0374a4927a",
+              "matches_branch_retained_runtime": true,
+              "member": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+              "native_source_count": 106,
+              "native_source_matches_current_candidate": true,
+              "platform": "windows",
+              "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+              "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03"
+            },
+            {
+              "build_source": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+              "bytes": 5278840,
+              "ledger_member": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+              "ledger_sha256": "2f4356c0c42f06b8365b9fbf3f66939bd8c36a0f112d4c13192e33c6ac074a24",
+              "matches_branch_retained_runtime": true,
+              "member": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+              "native_source_count": 106,
+              "native_source_matches_current_candidate": true,
+              "platform": "linux",
+              "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+              "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03"
+            }
+          ],
+          "matches_github_api_digest": true,
+          "run_id": 45445188802,
+          "url": "https://github.com/techrote/cybersand/actions/runs/45445188802/artifacts/14951152494"
+        }
+      ],
+      "pr": 729,
+      "rapier_delta_from_intake": [],
+      "reciprocal_cli_original_bytes_and_definition": [
+        {
+          "artifact": "godot/tools/gentek_reciprocal",
+          "artifact_bytes_match_retained_lfs_pointer": true,
+          "build_context": {
+            "branch": "integration/swarm004-005-006-unified-20261122",
+            "repository": "techrote/cybersand",
+            "run_attempt": "1",
+            "run_id": "45445188802",
+            "workflow": ".github/workflows/swarm456-qualification.yml",
+            "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45445188802"
+          },
+          "bytes": 1554128,
+          "ledger_sha256": "0a55efae0b59eb40749eb9aa4d80d3a52ed73dd017b06e34283a32c4e9f2f470",
+          "native_definition_inputs_count": 52,
+          "native_definition_matches_current_candidate": true,
+          "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+          "platform": "linux",
+          "sha256": "8060bcf839174256776614ea8d0a08c52d0bb268973d6f2acd2d5da986b4d206",
+          "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03"
+        },
+        {
+          "artifact": "godot/tools/gentek_reciprocal.exe",
+          "artifact_bytes_match_retained_lfs_pointer": true,
+          "build_context": {
+            "branch": "integration/swarm004-005-006-unified-20261122",
+            "repository": "techrote/cybersand",
+            "run_attempt": "1",
+            "run_id": "45445188802",
+            "workflow": ".github/workflows/swarm456-qualification.yml",
+            "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45445188802"
+          },
+          "bytes": 3283968,
+          "ledger_sha256": "6d839d6ad535862f10b4dc94b344f0c188401c113d14e9113a3c7a1c15ec8d50",
+          "native_definition_inputs_count": 52,
+          "native_definition_matches_current_candidate": true,
+          "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+          "platform": "windows",
+          "sha256": "6da5e8c4f88783073dbeb3e0526b4434dc0183c056960e2c679ade03c68d484d",
+          "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03"
+        }
+      ],
+      "retained_runtime_paths_changed_from_intake": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/cybersand_native/runtime-provenance.json",
+        "godot/addons/cybersand_native/runtime-provenance.linux.json"
+      ],
+      "runtimes": {
+        "linux": {
+          "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "artifact_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+          "artifact_size": 5278840,
+          "build_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "changed_inputs": [],
+          "input_count": 106,
+          "lfs_pointer_sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+          "lfs_pointer_size": 5278840,
+          "missing_inputs": [],
+          "native_source_matches_current_candidate": true,
+          "obsolete_inputs": [],
+          "pointer_matches_provenance": true,
+          "provenance_sha256": "2f4356c0c42f06b8365b9fbf3f66939bd8c36a0f112d4c13192e33c6ac074a24",
+          "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "toolchain_and_campaign": {
+            "acceptance": "Draft/HOLD: exact-source scoped native, graphical authoring and accepted-main smoke passed. Full ordinary admission and physical original-user-map/NVIDIA owner acceptance remain mandatory.",
+            "build_attempt": "1",
+            "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "kind": "source-matched-swarm45-mainline-evaluation-candidate",
+            "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+            "owner_visual_acceptance": "pending",
+            "platform": "linux x86_64",
+            "qualification": {
+              "graphical": {
+                "report": "linux-source/qualification.json",
+                "sha256": "47fb45739f395cec2ffb311bc0e8e543699017212bc69665b4cc24a911bcd114"
+              },
+              "known_controls": {
+                "executions": 360,
+                "reference_comparison": "separate independent scientific gate",
+                "report": "known-controls/manifest.json",
+                "sha256": "d9d6644fcf843c71062c73bb98892c97f245742485183e0b1ff8fbabb9531f32"
+              },
+              "native": {
+                "report": "linux-native/native-qualification.json",
+                "sha256": "d662786209cdbfec418fb9ba4a69e24d6b22fdac08fb74e3a94ae324cccf5495"
+              },
+              "preservation": {
+                "final_report": "linux-source-final/identity-recheck.json",
+                "final_sha256": "cb79487f0cd3768ffd429d8227225ea264681ee20b9b13bbfc14c1d24b0b1e97",
+                "report": "linux-source-preservation/qualification.json",
+                "sha256": "de543ae773ff9faa2db0c9941682f92e7cd8d232eff16e8de9fcd33445e27530"
+              },
+              "recovery_replay": {
+                "executions": 1920,
+                "report": "recovery/unified-replay.json",
+                "sha256": "82cc67f0124525bcd1d73c213d0ee86cb0ca8094fa7d19e798e19aa69cd0d4a6"
+              },
+              "smokes": {
+                "report": "linux-smokes/accepted-main-smokes.json",
+                "sha256": "2bc0ed8e3865bd3febf0c3a0059a92d10677f454891b4770ccc2da48d2420fcd"
+              }
+            },
+            "qualification_programme": "GENTEK-SWARM-004-005-006-UNIFIED",
+            "reciprocal_programme_acceptance": false,
+            "schema_version": 1,
+            "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1",
+            "size": 5278840,
+            "source_input_hash_kind": "sha256-canonical-lf",
+            "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+            "status": "evaluation-candidate-scoped-qualified",
+            "supersedes": {
+              "build_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+              "sha256": "1db5702cf59f02d1ca4b6e7c0b34a73f3d106e67cec73b4901c0c10cd4c1cbb1"
+            },
+            "toolchain": "compiler_policy=pinned-hosted\ntoolchain_drift=false\nsource_commit=5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f\ngodot_cpp_commit=101ae38034304346a46ea9ea84ae156d3e860496\ngodot_cpp_archive_sha256=bc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666\nnative_definition_sha256=06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf\nscons=4.10.1\nreciprocal_flags=Makefile.reciprocal strict C++20 -Wall -Wextra -Wpedantic -Werror\nreciprocal_cppflags=-D_GLIBCXX_USE_CXX11_ABI=0; extension ABI unchanged; native CLI ABI floor checked\nsanitizers=address,undefined; -fno-omit-frame-pointer\ng++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n",
+            "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45445188802"
+          }
+        },
+        "windows": {
+          "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "artifact_sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+          "artifact_size": 5844992,
+          "build_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "changed_inputs": [],
+          "input_count": 106,
+          "lfs_pointer_sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+          "lfs_pointer_size": 5844992,
+          "missing_inputs": [],
+          "native_source_matches_current_candidate": true,
+          "obsolete_inputs": [],
+          "pointer_matches_provenance": true,
+          "provenance_sha256": "05ed3f6a191e16f11188f73c1ee9ea0d6f7a2e3c7e2377a16c91df0374a4927a",
+          "source_commit": "5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f",
+          "toolchain_and_campaign": {
+            "acceptance": "Draft/HOLD: exact-source scoped native, graphical authoring and accepted-main smoke passed. Full ordinary admission and physical original-user-map/NVIDIA owner acceptance remain mandatory.",
+            "build_attempt": "1",
+            "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "kind": "source-matched-swarm45-mainline-evaluation-candidate",
+            "native_definition_sha256": "06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf",
+            "owner_visual_acceptance": "pending",
+            "platform": "windows x86_64",
+            "qualification": {
+              "extracted_graphical": {
+                "report": "windows-package/qualification.json",
+                "sha256": "8cfd6edc6a5b0cfd07e56e3abd83baf909591260d65aa994db2756a9dfb59c2b"
+              },
+              "extracted_preservation": {
+                "final_report": "windows-package-final/identity-recheck.json",
+                "final_sha256": "33a5214e65858806ca464550b8e61b9b1917f643857a60e1c408eaa473bdf74b",
+                "report": "windows-package-preservation/qualification.json",
+                "sha256": "f71814e9a147e11668f47cc3ce3194269243ac6451e57e7f35608c00a8c0f086"
+              },
+              "extracted_smokes": {
+                "report": "windows-package-smokes/accepted-main-smokes.json",
+                "sha256": "5ede2de14b993ab1fd8b5428e04b300f3d56d49993b21f234c0ff52dd169b4c8"
+              },
+              "graphical": {
+                "report": "windows-source/qualification.json",
+                "sha256": "9be6a245596ca141940ddf3b8ea59b7a5334d2451e8bf00278e8395f47574d7b"
+              },
+              "native": {
+                "report": "windows-native/native-qualification.json",
+                "sha256": "226d2d87cd3dc14ab1b06c8068a913acf5903071ed8f9b3012b8ff22c4739da6"
+              },
+              "owner_launcher": {
+                "report": "windows-launcher/owner-launcher-qualification.json",
+                "sha256": "1ec72857a80b2bb98cd043209c05765475f31f5de3b17181688b3c03ef00a809"
+              },
+              "preservation": {
+                "final_report": "windows-source-final/identity-recheck.json",
+                "final_sha256": "84a98cc2a7b8cec90d2652c3fabdc806c7b54f62e30ec02acc85df0781e64659",
+                "report": "windows-source-preservation/qualification.json",
+                "sha256": "a6ebc64e263b6ca0ae1802775487f3071c08e506b614255f1e86ccf8eabf19b1"
+              },
+              "smokes": {
+                "report": "windows-smokes/accepted-main-smokes.json",
+                "sha256": "379d710ccd1bd501b2e00fb4e703f7ca5e2d0bb3c4a94b8ace5cb33b9508f604"
+              }
+            },
+            "qualification_programme": "GENTEK-SWARM-004-005-006-UNIFIED",
+            "reciprocal_programme_acceptance": false,
+            "schema_version": 1,
+            "sha256": "552f16761a8db7d3774602aba4a4042bfc446372e78a4c720f455d55b9ec6205",
+            "size": 5844992,
+            "source_input_hash_kind": "sha256-canonical-lf",
+            "source_tree": "44a7f066a584d14a4069033e80ab58f3b2231d03",
+            "status": "evaluation-candidate-scoped-qualified",
+            "supersedes": {
+              "build_commit": "96b8d3fb9d5a2e9f580d4b33293b1ab725269d4f",
+              "sha256": "c7fc1fbfea2999489ae83a6da100ca795b336dc6efa251af7e5003071a2bb43d"
+            },
+            "toolchain": "compiler_policy=pinned-hosted\ntoolchain_drift=false\nsource_commit=5e34e0dd89c9d9f9511a2b6c2dca2550a5a56c9f\ngodot_cpp_commit=101ae38034304346a46ea9ea84ae156d3e860496\ngodot_cpp_archive_sha256=3dff08abbf09d243d1e316ab817fc4ea45d3f5df68b47b1a85a43b1b8dd09f05\nnative_definition_sha256=06628be15c9e9734c9c7b5bd98705a12bfc2e7f23d9d06f7d3982888bbb0eaaf\nscons=4.10.1\nreciprocal_flags=Makefile.reciprocal strict C++20 -Wall -Wextra -Wpedantic -Werror\nwindows_compatibility=-include cstdlib; -static\nsanitizers=Linux qualification only\nclang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/swarm45-llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/swarm45-llvm-mingw/bin/x86_64-w64-windows-gnu.cfg\n",
+            "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45445188802"
+          }
+        }
+      },
+      "source_commit": "acc5dc1ca1a4ce0a3b1579d555102f797b2c55cc"
+    },
+    {
+      "foundation_comparison": {
+        "actual_accepted_main_after_goblin": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+        "intake_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "overlapping_changed_paths": [
+          "docs/README.md",
+          "docs/architecture/data-ownership-and-lifetimes.md",
+          "docs/operations/local-build-and-validation.md",
+          "docs/reference/retrieval-corpus.json",
+          "docs/reference/retrieval-index.md",
+          "docs/reference/status-and-roadmap.md",
+          "godot/scripts/main.gd",
+          "godot/scripts/shared_workbench.gd"
+        ],
+        "overlapping_native_input_paths": [],
+        "prepared_combined_foundation": "9baa59c9630582958a3b38f2931012775c50e46e",
+        "prepared_foundation_tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+        "remote_combined_foundation_source": "0c1152c21427125066df931cf06a53b7dda0075d",
+        "scope": "Input and path overlap analysis of exact reviewed foundation tree114764; not qualification of an advanced combined source."
+      },
+      "native_changed_paths_from_intake": [
+        "godot/native_extension/cyber_demo_bridge.hpp",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "godot/native_extension/cyber_object_shard_lab.cpp",
+        "godot/native_extension/cyber_object_shard_lab.hpp",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp",
+        "godot/native_extension/register_types.cpp",
+        "godot/native_extension/workbench_granular_coupling.inc",
+        "native/include/cybersand/material_lifecycle.hpp",
+        "native/include/cybersand/object_shard.hpp",
+        "native/include/cybersand/object_shard_contact.hpp",
+        "native/include/cybersand/object_shard_coordinator.hpp",
+        "native/include/cybersand/object_shard_discovery.hpp",
+        "native/include/cybersand/object_shard_m4_mutable_adapter.hpp",
+        "native/include/cybersand/object_shard_mutation.hpp",
+        "native/include/cybersand/world.hpp",
+        "native/src/object_shard.cpp",
+        "native/src/object_shard_coordinator.cpp",
+        "native/src/object_shard_fire.inc",
+        "native/src/world.cpp"
+      ],
+      "native_input_count": 117,
+      "original_artifacts_verified_this_mission": [
+        {
+          "all_zip_members_crc_valid": true,
+          "archive_bytes": 2265508,
+          "archive_name": "objectshard-m4-dll-original.zip",
+          "archive_sha256": "12563fa3c449963ad1adf04bc7dbb701c61777e18a823607d1e60b9815820a1c",
+          "artifact_id": 14984556771,
+          "attempt": 1,
+          "binaries": [
+            {
+              "build_source": "5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a",
+              "bytes": 6196224,
+              "ledger_member": "candidate-provenance.json",
+              "ledger_sha256": "f481219c914018f066b3624b4d1cec6410e7f7a085574d2ed625a5bd005298e8",
+              "matches_branch_retained_runtime": false,
+              "member": "cybersand_native.windows.x86_64.dll",
+              "native_source_count": 117,
+              "native_source_matches_current_candidate": true,
+              "platform": "windows",
+              "sha256": "cfd75fcdcc252ab8b6b42fba1e0c78182517db6142b89a261a5b881eaff047c4",
+              "source_tree": "51ff1e6a0949dff3b2b17cdca7a40d4943b05f78"
+            }
+          ],
+          "matches_github_api_digest": true,
+          "run_id": 45530425519,
+          "url": "https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14984556771"
+        }
+      ],
+      "pr": 754,
+      "rapier_delta_from_intake": [],
+      "retained_runtime_paths_changed_from_intake": [],
+      "runtimes": {
+        "linux": {
+          "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "artifact_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "artifact_size": 5253776,
+          "build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "changed_inputs": [
+            "godot/native_extension/cyber_demo_bridge.hpp",
+            "godot/native_extension/cyber_native_cell_world.cpp",
+            "godot/native_extension/cyber_native_cell_world.hpp",
+            "godot/native_extension/cyber_prepared_liquid_world.hpp",
+            "godot/native_extension/register_types.cpp",
+            "godot/native_extension/workbench_granular_coupling.inc",
+            "native/include/cybersand/world.hpp",
+            "native/src/world.cpp"
+          ],
+          "input_count": 105,
+          "lfs_pointer_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "lfs_pointer_size": 5253776,
+          "missing_inputs": [
+            "godot/native_extension/cyber_object_shard_lab.cpp",
+            "godot/native_extension/cyber_object_shard_lab.hpp",
+            "native/include/cybersand/material_lifecycle.hpp",
+            "native/include/cybersand/object_shard.hpp",
+            "native/include/cybersand/object_shard_contact.hpp",
+            "native/include/cybersand/object_shard_coordinator.hpp",
+            "native/include/cybersand/object_shard_discovery.hpp",
+            "native/include/cybersand/object_shard_m4_mutable_adapter.hpp",
+            "native/include/cybersand/object_shard_mutation.hpp",
+            "native/src/object_shard.cpp",
+            "native/src/object_shard_coordinator.cpp",
+            "native/src/object_shard_fire.inc"
+          ],
+          "native_source_matches_current_candidate": false,
+          "obsolete_inputs": [],
+          "pointer_matches_provenance": true,
+          "provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+          "source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "toolchain_and_campaign": {
+            "acceptance": "Source-matched built library passed: Exact-source Linux/Windows full architectural, legacy-material and graphical style-card/author/reopen/multistyle gates; 80 distinct Genteks with 520 native PNG captures, 240 input refusals and 80 independent-process replays; ordinary graphical Workbench selection/generation/edit/save/reopen for all 80; graphical 512x512 GEN-008 Flatten recovery; independently extracted Windows owner-package architecture, Flatten and all-80 Workbench replay; all 80 fresh defaults match the committed public gallery's exact rendering inputs and native/pixel hashes.",
+            "build_attempt": "1",
+            "evidence": "docs/audits/gentek80-water-conflict-reconciliation.md",
+            "other_platforms": "No human Windows 11/GPU hardware acceptance is asserted.",
+            "platform": "linux",
+            "schema_version": 1,
+            "sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+            "size": 5253776,
+            "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
+            "source_tree": "81c57e073ef94522e17a09d1981e0fb2389aca6e",
+            "status": "validated-development-runtime",
+            "toolchain": "Ubuntu 24.04 Linux x86_64; pinned godot-cpp=101ae38034304346a46ea9ea84ae156d3e860496; SCons=4.10.1\ng++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nbc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666  /home/runner/work/_temp/godot-cpp/bin/libgodot-cpp.linux.template_debug.x86_64.a\na15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7  godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+            "validated_platform": "Linux x86_64 / real graphical Godot 4.7",
+            "validation_output": "gentek80-validated-linux-44916761139/validation.json",
+            "validation_sha256": "4ec20e40a6b1af616168072a43fdf278c48c08826328c704ea02eeab509cd01a",
+            "workflow_attempt": "1",
+            "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44916761139"
+          }
+        },
+        "windows": {
+          "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "artifact_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "artifact_size": 5820416,
+          "build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "changed_inputs": [
+            "godot/native_extension/cyber_demo_bridge.hpp",
+            "godot/native_extension/cyber_native_cell_world.cpp",
+            "godot/native_extension/cyber_native_cell_world.hpp",
+            "godot/native_extension/cyber_prepared_liquid_world.hpp",
+            "godot/native_extension/register_types.cpp",
+            "godot/native_extension/workbench_granular_coupling.inc",
+            "native/include/cybersand/world.hpp",
+            "native/src/world.cpp"
+          ],
+          "input_count": 105,
+          "lfs_pointer_sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+          "lfs_pointer_size": 5820416,
+          "missing_inputs": [
+            "godot/native_extension/cyber_object_shard_lab.cpp",
+            "godot/native_extension/cyber_object_shard_lab.hpp",
+            "native/include/cybersand/material_lifecycle.hpp",
+            "native/include/cybersand/object_shard.hpp",
+            "native/include/cybersand/object_shard_contact.hpp",
+            "native/include/cybersand/object_shard_coordinator.hpp",
+            "native/include/cybersand/object_shard_discovery.hpp",
+            "native/include/cybersand/object_shard_m4_mutable_adapter.hpp",
+            "native/include/cybersand/object_shard_mutation.hpp",
+            "native/src/object_shard.cpp",
+            "native/src/object_shard_coordinator.cpp",
+            "native/src/object_shard_fire.inc"
+          ],
+          "native_source_matches_current_candidate": false,
+          "obsolete_inputs": [],
+          "pointer_matches_provenance": true,
+          "provenance_sha256": "01620e5d54ae3098a5d2fae0d8a44ab476dc8cf18a21defb3b83087d18b4676d",
+          "source_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "toolchain_and_campaign": {
+            "acceptance": "Source-matched built library passed: Exact-source Linux/Windows full architectural, legacy-material and graphical style-card/author/reopen/multistyle gates; 80 distinct Genteks with 520 native PNG captures, 240 input refusals and 80 independent-process replays; ordinary graphical Workbench selection/generation/edit/save/reopen for all 80; graphical 512x512 GEN-008 Flatten recovery; independently extracted Windows owner-package architecture, Flatten and all-80 Workbench replay; all 80 fresh defaults match the committed public gallery's exact rendering inputs and native/pixel hashes.",
+            "build_attempt": "1",
+            "evidence": "docs/audits/gentek80-water-conflict-reconciliation.md",
+            "other_platforms": "No human Windows 11/GPU hardware acceptance is asserted.",
+            "platform": "windows",
+            "schema_version": 1,
+            "sha256": "668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e",
+            "size": 5820416,
+            "source_input_hash_kind": "SHA-256 of canonical Git blob bytes; CRLF working files normalize to LF",
+            "source_tree": "81c57e073ef94522e17a09d1981e0fb2389aca6e",
+            "status": "validated-development-runtime",
+            "toolchain": "Ubuntu 24.04 cross-target Windows x86_64; godot-cpp=101ae38034304346a46ea9ea84ae156d3e860496; SCons=4.10.1\nclang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nLLVM-MinGW archive SHA-256=cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65\nc11cbc691cf254938b41e38d7556ae0cc17e3883c3c228c767b2bba5c61cfaa4  /home/runner/work/_temp/godot-cpp/bin/libgodot-cpp.windows.template_debug.x86_64.a\n668f2dd094fca611a97c2b6aa38c4cd072179fe9cf591e53578ef57c7db1625e  build/architecture-windows/cybersand_native.windows.x86_64.dll",
+            "validated_platform": "Windows x86_64 / real graphical Godot 4.7",
+            "validation_output": "gentek80-validated-windows-44916761139/validation.json",
+            "validation_sha256": "9c78790f40f6b5711d80f5fffc25b30517eba292e93509c58ba739ba68c6e586",
+            "workflow_attempt": "1",
+            "workflow_run": "https://github.com/techrote/cybersand/actions/runs/44916761139"
+          }
+        }
+      },
+      "source_commit": "75865127fee19c56dacb0ae80307f438dd866cd1"
+    },
+    {
+      "foundation_comparison": {
+        "actual_accepted_main_after_goblin": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+        "intake_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "overlapping_changed_paths": [
+          "docs/README.md",
+          "docs/architecture/data-ownership-and-lifetimes.md",
+          "docs/reference/interfaces-and-message-contracts.md",
+          "docs/reference/retrieval-index.md",
+          "docs/reference/status-and-roadmap.md",
+          "docs/systems/workbench-actor-composition.md",
+          "godot/scripts/main.gd",
+          "godot/scripts/physical_actor_rig.gd",
+          "godot/scripts/physical_actor_session.gd",
+          "godot/scripts/shared_workbench.gd",
+          "godot/scripts/workbench_actor_catalog.gd",
+          "godot/scripts/workbench_actor_panel.gd",
+          "godot/scripts/workbench_setup.gd",
+          "tools/package_explore001_candidate.py"
+        ],
+        "overlapping_native_input_paths": [],
+        "prepared_combined_foundation": "9baa59c9630582958a3b38f2931012775c50e46e",
+        "prepared_foundation_tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+        "remote_combined_foundation_source": "0c1152c21427125066df931cf06a53b7dda0075d",
+        "scope": "Input and path overlap analysis of exact reviewed foundation tree114764; not qualification of an advanced combined source."
+      },
+      "native_changed_paths_from_intake": [
+        "godot/native_extension/cyber_demo_bridge.hpp",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp",
+        "godot/native_extension/workbench_granular_coupling.inc",
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp",
+        "native/src/world_ballistic.inc"
+      ],
+      "native_input_count": 105,
+      "original_artifacts_verified_this_mission": [
+        {
+          "all_zip_members_crc_valid": true,
+          "archive_bytes": 2165267,
+          "archive_name": "actor-windows-runtime-original.zip",
+          "archive_sha256": "35b5fd89968aeebcdc40c57f1317b59d95938cad768005bdf14a60fbc716c8b4",
+          "artifact_id": 14790766458,
+          "attempt": 1,
+          "binaries": [
+            {
+              "build_source": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+              "bytes": 5811712,
+              "ledger_member": "actor-candidate.json",
+              "ledger_sha256": "e9f69ddf88350ccbf7b552f3f21d90c39d62ae4d55be17ef8acf573ee7b61b16",
+              "matches_branch_retained_runtime": true,
+              "member": "cybersand_native.windows.x86_64.dll",
+              "native_source_count": 105,
+              "native_source_matches_current_candidate": true,
+              "platform": "windows",
+              "sha256": "492f92c8c141fa90e6adb6923b7de76aa5d16c4957ffbecb3c62abb024c373dc",
+              "source_tree": "3ab33cfd661b2204d965803f0e9f8312e7e43aa0"
+            }
+          ],
+          "matches_github_api_digest": true,
+          "run_id": 45112739808,
+          "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14790766458"
+        },
+        {
+          "all_zip_members_crc_valid": true,
+          "archive_bytes": 5041978,
+          "archive_name": "actor-linux-original.zip",
+          "archive_sha256": "84795b2c9911164423a9649bed3a63a229398326a6827d5ea46352ab19f6e6eb",
+          "artifact_id": 14791386230,
+          "attempt": 1,
+          "binaries": [
+            {
+              "build_source": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+              "bytes": 5258936,
+              "ledger_member": "build/actor-linux/actor-candidate.json",
+              "ledger_sha256": "07122da1233b9b3eeb3203a06e2f6d2e15f8699d38c3699a471a02ca4cfaf4f6",
+              "matches_branch_retained_runtime": true,
+              "member": "build/actor-linux/libcybersand_native.linux.x86_64.so",
+              "native_source_count": 105,
+              "native_source_matches_current_candidate": true,
+              "platform": "linux",
+              "sha256": "987f75ecee8c0e8672c82b8d6c23507fe1212226e73ad17d92329d30a9f0c230",
+              "source_tree": "3ab33cfd661b2204d965803f0e9f8312e7e43aa0"
+            }
+          ],
+          "matches_github_api_digest": true,
+          "run_id": 45112739808,
+          "url": "https://github.com/techrote/cybersand/actions/runs/45112739808/artifacts/14791386230"
+        }
+      ],
+      "pr": 762,
+      "rapier_delta_from_intake": [],
+      "retained_runtime_paths_changed_from_intake": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/cybersand_native/runtime-provenance.json",
+        "godot/addons/cybersand_native/runtime-provenance.linux.json"
+      ],
+      "runtimes": {
+        "linux": {
+          "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "artifact_sha256": "987f75ecee8c0e8672c82b8d6c23507fe1212226e73ad17d92329d30a9f0c230",
+          "artifact_size": 5258936,
+          "build_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+          "changed_inputs": [],
+          "input_count": 105,
+          "lfs_pointer_sha256": "987f75ecee8c0e8672c82b8d6c23507fe1212226e73ad17d92329d30a9f0c230",
+          "lfs_pointer_size": 5258936,
+          "missing_inputs": [],
+          "native_source_matches_current_candidate": true,
+          "obsolete_inputs": [],
+          "pointer_matches_provenance": true,
+          "provenance_sha256": "6542ae8e162e6ccf2afd29c311224fcf0a3f7a80f38ccd6ab48d66a1e9ba2f71",
+          "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+          "toolchain_and_campaign": {
+            "acceptance": "Draft/HOLD evaluation candidate. No merge, release, default promotion or owner playfeel acceptance.",
+            "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "installed_package_qualification": null,
+            "kind": "source-matched-workbench-actor-sandbox-evaluation-candidate",
+            "platform": "linux x86_64",
+            "pre_checkpoint_build_ledger": null,
+            "publication_branch": "integration/actor-compose-final-001-20261123",
+            "qualification_summary": {
+              "capacity_rows_count": 13,
+              "cases_count": 42,
+              "complete_original_provenance_sha256": "6542ae8e162e6ccf2afd29c311224fcf0a3f7a80f38ccd6ab48d66a1e9ba2f71",
+              "graphical_captures_count": 2,
+              "platform": "linux",
+              "report_sha256": "c98552bac765bf45c99b54cac482c7bd7d6587e65c97a553d4ad097db3273366",
+              "scope": "Complete source-matched automated sandbox campaign; owner hardware and playfeel remain unaccepted.",
+              "status": "passed"
+            },
+            "schema_version": 1,
+            "sha256": "987f75ecee8c0e8672c82b8d6c23507fe1212226e73ad17d92329d30a9f0c230",
+            "size": 5258936,
+            "source_input_hash_kind": "sha256-canonical-lf",
+            "source_tree": "3ab33cfd661b2204d965803f0e9f8312e7e43aa0",
+            "status": "evaluation-candidate-passed",
+            "supersedes": {
+              "build_commit": "a85b3a5655e7f711ce27fbfc8fee7819332006f0",
+              "scope": "Previous accepted runtime remains recoverable from Git/LFS history.",
+              "sha256": "1aa42ed85b2fafa31d1c521224ed9d4f8199709b41cbe8b9c1299f9c2392fb4f"
+            },
+            "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nGNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n",
+            "validated_platform": "linux x86_64; passed",
+            "workflow_attempt": "1",
+            "workflow_run": "45112739808"
+          }
+        },
+        "windows": {
+          "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "artifact_sha256": "492f92c8c141fa90e6adb6923b7de76aa5d16c4957ffbecb3c62abb024c373dc",
+          "artifact_size": 5811712,
+          "build_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+          "changed_inputs": [],
+          "input_count": 105,
+          "lfs_pointer_sha256": "492f92c8c141fa90e6adb6923b7de76aa5d16c4957ffbecb3c62abb024c373dc",
+          "lfs_pointer_size": 5811712,
+          "missing_inputs": [],
+          "native_source_matches_current_candidate": true,
+          "obsolete_inputs": [],
+          "pointer_matches_provenance": true,
+          "provenance_sha256": "b3d1bb80b2a44359264c499848a9383e4c9b15162e24dc2936d18cceceb45722",
+          "source_commit": "af13c6a3926da0749a32708a44a12b66ed5d0c7c",
+          "toolchain_and_campaign": {
+            "acceptance": "Draft/HOLD evaluation candidate. No merge, release, default promotion or owner playfeel acceptance.",
+            "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "installed_package_qualification": {
+              "archive": "CyberSand-Actor-Sandbox-Windows-af13c6a3926d.zip",
+              "complete_original_provenance_sha256": "b3d1bb80b2a44359264c499848a9383e4c9b15162e24dc2936d18cceceb45722",
+              "extraction_report_sha256": "6c7beaa13404642f436cdd4b2ab5f3dc4d65d54600918fbe7e8cc5fc3b37e54c",
+              "gameplay_report_sha256": "eda699699bca4cc2acdf996597f8010611fb8c8e757a09942d8bfc771a5bd7ca",
+              "module_report_sha256": "f39716345f95097179a002fc5370830519509836a3f6dfaa56f78cb5ee1ba920",
+              "scope": "Exact delivered ZIP, fresh extraction, full sandbox reopens/captures and actual app-local DLLs. Hosted Windows/ANGLE is not owner Windows 11/NVIDIA acceptance.",
+              "sha256": "a25477854d028046dc4fa837c48d896aac90d8a34651be8a442ea23cb50cab6b",
+              "status": "passed"
+            },
+            "kind": "source-matched-workbench-actor-sandbox-evaluation-candidate",
+            "platform": "windows x86_64",
+            "pre_checkpoint_build_ledger": null,
+            "publication_branch": "integration/actor-compose-final-001-20261123",
+            "qualification_summary": {
+              "capacity_rows_count": 13,
+              "cases_count": 42,
+              "complete_original_provenance_sha256": "b3d1bb80b2a44359264c499848a9383e4c9b15162e24dc2936d18cceceb45722",
+              "graphical_captures_count": 2,
+              "platform": "windows",
+              "report_sha256": "ecffe70c3b4543dee9892cc978e1b99b2a15a9f1fe2710e69b30362d8f69d11b",
+              "scope": "Complete source-matched automated sandbox campaign; owner hardware and playfeel remain unaccepted.",
+              "status": "passed"
+            },
+            "schema_version": 1,
+            "sha256": "492f92c8c141fa90e6adb6923b7de76aa5d16c4957ffbecb3c62abb024c373dc",
+            "size": 5811712,
+            "source_input_hash_kind": "sha256-canonical-lf",
+            "source_tree": "3ab33cfd661b2204d965803f0e9f8312e7e43aa0",
+            "status": "evaluation-candidate-passed",
+            "supersedes": {
+              "build_commit": "a85b3a5655e7f711ce27fbfc8fee7819332006f0",
+              "scope": "Previous accepted runtime remains recoverable from Git/LFS history.",
+              "sha256": "db24ec1de3a259608a4a44ad7b8a46c7f87d1eb4758a99fd75ed62aa06ca9336"
+            },
+            "toolchain": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg\n",
+            "validated_platform": "windows x86_64; passed",
+            "workflow_attempt": "1",
+            "workflow_run": "45112739808"
+          }
+        }
+      },
+      "source_commit": "47e87cb84cf302b4e283cfc7e8f884e01b7b4c73"
+    },
+    {
+      "foundation_comparison": {
+        "actual_accepted_main_after_goblin": "c8421a81b8f7f61516ed055f3200b49aee57bd65",
+        "intake_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "overlapping_changed_paths": [
+          "docs/README.md",
+          "docs/reference/retrieval-corpus.json",
+          "docs/reference/retrieval-index.md",
+          "docs/reference/status-and-roadmap.md",
+          "godot/scripts/shared_workbench.gd"
+        ],
+        "overlapping_native_input_paths": [],
+        "prepared_combined_foundation": "9baa59c9630582958a3b38f2931012775c50e46e",
+        "prepared_foundation_tree": "114764b42f40bf7edd078171a85e5c043c71b137",
+        "remote_combined_foundation_source": "0c1152c21427125066df931cf06a53b7dda0075d",
+        "scope": "Input and path overlap analysis of exact reviewed foundation tree114764; not qualification of an advanced combined source."
+      },
+      "native_changed_paths_from_intake": [
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "godot/native_extension/material_audition_adapter.inc",
+        "native/include/cybersand/material_audition.hpp",
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp",
+        "native/src/world_material_audition.inc",
+        "native/src/world_pressure.inc"
+      ],
+      "native_input_count": 108,
+      "original_artifacts_verified_this_mission": [],
+      "pr": 768,
+      "rapier_delta_from_intake": [],
+      "retained_runtime_paths_changed_from_intake": [
+        "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/cybersand_native/runtime-provenance.json",
+        "godot/addons/cybersand_native/runtime-provenance.linux.json"
+      ],
+      "runtimes": {
+        "linux": {
+          "artifact": "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "artifact_sha256": "b7afb86202d3a99c4a2c20751819899b362931b78454d1b29c3d7c32888b8f78",
+          "artifact_size": 5315056,
+          "build_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+          "changed_inputs": [],
+          "input_count": 108,
+          "lfs_pointer_sha256": "b7afb86202d3a99c4a2c20751819899b362931b78454d1b29c3d7c32888b8f78",
+          "lfs_pointer_size": 5315056,
+          "missing_inputs": [],
+          "native_source_matches_current_candidate": true,
+          "obsolete_inputs": [],
+          "pointer_matches_provenance": true,
+          "provenance_sha256": "262955148ab157196f8760612ee863bb24e09ea59cf8a8878e9ce95cf7e0eea2",
+          "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+          "toolchain_and_campaign": {
+            "acceptance": "Exact-source current-scene native consumer, owner transaction, profile, Lab regression and graphical qualification. Scope is the retained case list; physical owner acceptance remains pending.",
+            "build_attempt": "1",
+            "candidate_manifest_sha256": "2809b421ac72ed592feb02035223f5842db84721496cfac3cf6a36c940e482ec",
+            "canonical_defaults_changed": false,
+            "default_equivalence_sha256": "f6b2c54f37ec5986b5a303ffc14fe22731f8a45efe8d671c1cd6383d1d267628",
+            "disposition": "Draft/HOLD",
+            "evidence": "docs/audits/material-audition-live-20261124/shared-ledger.md",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "graphical_validation_sha256": "0a19df25f9aa3932bcf5a33f3ea28f79f5b9f6a56c06c80a800551f383d762f4",
+            "physical_owner_acceptance": "OWNER-PENDING",
+            "platform": "linux",
+            "qualification_cases": [
+              "test_material_audition",
+              "test_material_audition_authored_scenes",
+              "test_material_audition_profile",
+              "test_material_audition_ui_contract",
+              "test_material_audition_layout",
+              "test_material_lab_ui",
+              "test_material_lab_catalogue",
+              "test_material_lab_experiment",
+              "test_material_lab_diagnostics"
+            ],
+            "schema_version": 1,
+            "sha256": "b7afb86202d3a99c4a2c20751819899b362931b78454d1b29c3d7c32888b8f78",
+            "size": 5315056,
+            "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+            "status": "validated-development-runtime",
+            "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nGNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\nbc5f860471475c745ebad2b45988607a15c9a35c6996b0f08fea37570e6ef666  /home/runner/work/_temp/godot-cpp/bin/libgodot-cpp.linux.template_debug.x86_64.a\n",
+            "validated_platform": "Linux x86_64 / real graphical Godot 4.7",
+            "validation_sha256": "8aa19bca62131ac1b4d7d3d12f9a939b9dbf7d1daabb93581c0c323d43285f5a",
+            "windows_native_execution_sha256": "84683be15e75fe3217d360820e223a59ac87f52d3a2f3c1e83512602158af605",
+            "windows_package_execution_sha256": "38f60c1f3072966b035fc46c67dc1f1974fa144cda53cb8c1872ddcba3568359",
+            "workflow_attempt": "1",
+            "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45465121123"
+          }
+        },
+        "windows": {
+          "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "artifact_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+          "artifact_size": 5870592,
+          "build_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+          "changed_inputs": [],
+          "input_count": 108,
+          "lfs_pointer_sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+          "lfs_pointer_size": 5870592,
+          "missing_inputs": [],
+          "native_source_matches_current_candidate": true,
+          "obsolete_inputs": [],
+          "pointer_matches_provenance": true,
+          "provenance_sha256": "3439326daaf8ef49fc2295611ed5eb56ea0c165f40936732f35d63eed41ddb75",
+          "source_commit": "5f73b0ae6980ad1eec993ef2ee9b623f874f33a5",
+          "toolchain_and_campaign": {
+            "acceptance": "Exact-source current-scene native consumer, owner transaction, profile, Lab regression and graphical qualification. Scope is the retained case list; physical owner acceptance remains pending.",
+            "build_attempt": "1",
+            "candidate_manifest_sha256": "9b03efa1522ae5a38b9962ca7a7cbd114a61eee80bc1ab9c6e0fe334a5862d3e",
+            "canonical_defaults_changed": false,
+            "default_equivalence_sha256": "f6b2c54f37ec5986b5a303ffc14fe22731f8a45efe8d671c1cd6383d1d267628",
+            "disposition": "Draft/HOLD",
+            "evidence": "docs/audits/material-audition-live-20261124/shared-ledger.md",
+            "godot_version": "4.7.stable.official.5b4e0cb0f",
+            "physical_owner_acceptance": "OWNER-PENDING",
+            "platform": "windows",
+            "qualification_cases": [
+              "test_material_audition",
+              "test_material_audition_authored_scenes",
+              "test_material_audition_profile",
+              "test_material_audition_ui_contract",
+              "test_material_audition_layout",
+              "test_material_lab_ui",
+              "test_material_lab_catalogue",
+              "test_material_lab_experiment",
+              "test_material_lab_diagnostics"
+            ],
+            "schema_version": 1,
+            "sha256": "55db1fb076d5aa5fbb51ab3c5e0cee0eabdf720fdbd81e30224675942068a6c4",
+            "size": 5870592,
+            "source_tree": "043fdb9ff61c0c4fb9d849b39756cdbedf2e7aaa",
+            "status": "validated-development-runtime",
+            "toolchain": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg\nLLD 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4) (compatible with GNU linkers)\nd140ef68049fd66ffad4403e861bafba4e2fa35afa3651f6f6e4024cf1627400  /home/runner/work/_temp/godot-cpp/bin/libgodot-cpp.windows.template_debug.x86_64.a\n",
+            "validated_platform": "Windows x86_64 / real graphical Godot 4.7",
+            "validation_sha256": "6f8fed26aed72ae450fd612437f48ff0a6ba18a06c977b812da5a72312171e8d",
+            "windows_native_execution_sha256": "84683be15e75fe3217d360820e223a59ac87f52d3a2f3c1e83512602158af605",
+            "windows_package_execution_sha256": "38f60c1f3072966b035fc46c67dc1f1974fa144cda53cb8c1872ddcba3568359",
+            "workflow_attempt": "1",
+            "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45465121123"
+          }
+        }
+      },
+      "source_commit": "858ef9e7285fcaa22c9cc1381d0cb0082057a456"
+    }
+  ],
+  "observed_date": "2026-11-25",
+  "pairwise_native_overlap": [
+    {
+      "different_changed_native_paths": [
+        "godot/native_extension/cyber_prepared_liquid_world.hpp"
+      ],
+      "identical_changed_native_paths": [],
+      "programmes": [
+        729,
+        754
+      ]
+    },
+    {
+      "different_changed_native_paths": [
+        "godot/native_extension/cyber_prepared_liquid_world.hpp"
+      ],
+      "identical_changed_native_paths": [],
+      "programmes": [
+        729,
+        762
+      ]
+    },
+    {
+      "different_changed_native_paths": [],
+      "identical_changed_native_paths": [],
+      "programmes": [
+        729,
+        768
+      ]
+    },
+    {
+      "different_changed_native_paths": [
+        "godot/native_extension/cyber_demo_bridge.hpp",
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "godot/native_extension/cyber_prepared_liquid_world.hpp",
+        "godot/native_extension/workbench_granular_coupling.inc",
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp"
+      ],
+      "identical_changed_native_paths": [],
+      "programmes": [
+        754,
+        762
+      ]
+    },
+    {
+      "different_changed_native_paths": [
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp"
+      ],
+      "identical_changed_native_paths": [],
+      "programmes": [
+        754,
+        768
+      ]
+    },
+    {
+      "different_changed_native_paths": [
+        "godot/native_extension/cyber_native_cell_world.cpp",
+        "godot/native_extension/cyber_native_cell_world.hpp",
+        "native/include/cybersand/world.hpp",
+        "native/src/world.cpp"
+      ],
+      "identical_changed_native_paths": [],
+      "programmes": [
+        762,
+        768
+      ]
+    }
+  ],
+  "schema": "cybersand-mergedown-advanced-native-custody-v1",
+  "scope": "Exact committed native source/provenance/LFS pointer joins plus independently re-downloaded original archive and actual native binary byte verification; no new native/platform execution or physical acceptance."
+}

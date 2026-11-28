@@ -1,0 +1,53 @@
+{
+  "schema": 1,
+  "product_source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "product_unchanged": true,
+  "failed_harness_source": "c58a9b1b57dfd7bb9c087170efefb292d47e4367",
+  "failed_run": 45733961954,
+  "failed_job": 139622578939,
+  "failed_phase": "Delivery refusal controls before product checkout",
+  "original_tests": 21,
+  "failed_subtests": 1,
+  "cause": "ZipInfo normalizes Windows backslashes both when constructing fixtures and when reading archives; original fixture lost invalid bytes and extraction/final readback inspected only normalized filename. Raw orig_filename also retains NUL-truncation aliases.",
+  "repair": "Serialize exact original malformed metadata in fixtures; validate orig_filename equality and raw path safety before extraction or final archive readback, including directory entries; preserve all21 controls and add2 normalization controls.",
+  "original_negative_controls": {
+    "source": "cf5031f2322a9576c9c0751c562ecb3ffa4d27ed",
+    "scope": "New explicit raw-metadata controls against original delivery module; standard-library Windows separator behavior simulated on Linux, not actual Windows execution",
+    "tests": 2,
+    "failures": 3,
+    "errors": 0,
+    "expected_failure_count": 3,
+    "original_bad_alias_admission_reproduced": true
+  },
+  "corrected_tests": 23,
+  "corrected_status": "passed",
+  "budgets_or_payload_changed": false,
+  "windows_reexecution": "pending new source publication",
+  "raw_evidence": [
+    {
+      "path": "raw/mainline-evaluator-zip-repair/corrected-controls.log",
+      "bytes": 3425,
+      "sha256": "0604fa77190ae402c708aa2cfec265f72e38dcbc32a3532f3222d23df3e3a758"
+    },
+    {
+      "path": "raw/mainline-evaluator-zip-repair/original-controls.log",
+      "bytes": 2892,
+      "sha256": "4c28daf365d2e3f59f644c0b713debaa301e7eacbae1d7d6089350cc97acfd5c"
+    },
+    {
+      "path": "raw/mainline-evaluator-zip-repair/original-result.json",
+      "bytes": 363,
+      "sha256": "ede7ca0f68e31d41a2ff7182b012daf748ac2e4b1bff900ef28d6a3b2924cbd9"
+    },
+    {
+      "path": "raw/mainline-evaluator-zip-repair/original_mainline_evaluator.py",
+      "bytes": 40225,
+      "sha256": "fd3d81a0b08b5d0bfe3e8cb3519360b81d4a756323eaba402a6c580af7ed8e03"
+    },
+    {
+      "path": "raw/mainline-evaluator-zip-repair/windows-original-job-log-response.json.gz",
+      "bytes": 5928,
+      "sha256": "2f3e1a3a9999cf71afcdf54337652c4d9d3c95ca22597b010fb5cabf4f02e7ce"
+    }
+  ]
+}

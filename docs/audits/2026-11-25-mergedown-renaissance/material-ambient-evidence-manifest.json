@@ -1,0 +1,127 @@
+{
+  "schema": 1,
+  "archive": "material-ambient-evidence.zip",
+  "bytes": 543627,
+  "sha256": "35378a2118d439e0c6acfccc20fa18a18b37739bf9b206551b7f52773499329c",
+  "scope": "Original lead resulting-source Material/AMBIENT logs and exact before/after source/project/native custody, including original test-oracle failure; no Windows or owner acceptance claim",
+  "source": "2e0233f808e6e9c76aac897593bc88d6ca357b95",
+  "tree": "0473c322acd96f18eeb557ec4ba027fb7242595e",
+  "original_failed_source": "1199f64cba5f61c938eb6f98363b244ec4d8cae3",
+  "files": [
+    {
+      "path": "material-integration-1199/identity-before.json",
+      "bytes": 252493,
+      "sha256": "4be7a9ef7cace614c42fe207f88138f93d7b6e0f61f63097dd8344d8bd0baa05"
+    },
+    {
+      "path": "material-integration-1199/import.log",
+      "bytes": 46727,
+      "sha256": "d58b3ab83d563d5f30eb95607617a00687f3977022cedda8ee3754399a62cf9e"
+    },
+    {
+      "path": "material-integration-1199/results.json",
+      "bytes": 8012,
+      "sha256": "37320235ccc0921d0e61da1e3b36b8603c5da43fb05dabcb24bcbd91dc2283e4"
+    },
+    {
+      "path": "material-integration-1199/test_ambient_default_off_integration.log",
+      "bytes": 4102,
+      "sha256": "88d66dc5f1dd8b7d33936f46eaca84dfc74890a2929910b404a0e43379a1e056"
+    },
+    {
+      "path": "material-integration-1199/test_material_audition_ambient_integration.log",
+      "bytes": 3465,
+      "sha256": "bb19f332f308759c35f5019d4b42d831c4fb88899cbb22254c352e00cd2cec17"
+    },
+    {
+      "path": "material-integration-oracle-fix/identity-after.json",
+      "bytes": 252493,
+      "sha256": "ebdcbeea733079693d0ed5d5c93fbdee45544fe91b9d99b898d8495bbcbd408d"
+    },
+    {
+      "path": "material-integration-oracle-fix/identity-before.json",
+      "bytes": 252493,
+      "sha256": "ebdcbeea733079693d0ed5d5c93fbdee45544fe91b9d99b898d8495bbcbd408d"
+    },
+    {
+      "path": "material-integration-oracle-fix/import.log",
+      "bytes": 1165,
+      "sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51"
+    },
+    {
+      "path": "material-integration-oracle-fix/results.json",
+      "bytes": 12945,
+      "sha256": "3ed95b857ad4ba749242914f5a5967118b48a9490bd2571d81a85a438d5354f3"
+    },
+    {
+      "path": "material-integration-oracle-fix/test_ambient_default_off_integration.log",
+      "bytes": 4102,
+      "sha256": "1ead62e304190562d2bc2f1afe1054c24c6ffebd485f3046c1cb6824f42bd10f"
+    },
+    {
+      "path": "material-integration-oracle-fix/test_material_audition_ambient_integration.log",
+      "bytes": 1448,
+      "sha256": "91a6761df4c7247c0383fe07a059bdf96369748331041b6d2eb7283a86436525"
+    },
+    {
+      "path": "material-integration-oracle-fix/test_material_audition_profile.log",
+      "bytes": 303,
+      "sha256": "ff6facce26ccbc1d395cc7d9e0e8c448069ce7f73e06892b2d717e343551d390"
+    },
+    {
+      "path": "material-integration-oracle-fix/test_material_audition_ui_contract.log",
+      "bytes": 301,
+      "sha256": "4360054b01609c91ac547b7d40ac76b6fe377d5c8769aece5707b830574cf9ff"
+    },
+    {
+      "path": "material-integration-2e023-core/identity-after.json",
+      "bytes": 252493,
+      "sha256": "ebdcbeea733079693d0ed5d5c93fbdee45544fe91b9d99b898d8495bbcbd408d"
+    },
+    {
+      "path": "material-integration-2e023-core/identity-before.json",
+      "bytes": 252493,
+      "sha256": "ebdcbeea733079693d0ed5d5c93fbdee45544fe91b9d99b898d8495bbcbd408d"
+    },
+    {
+      "path": "material-integration-2e023-core/import.log",
+      "bytes": 1165,
+      "sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51"
+    },
+    {
+      "path": "material-integration-2e023-core/results.json",
+      "bytes": 15392,
+      "sha256": "369b1e7c9852c0e20a5fa462479d3d2dce0561797f64bee4ba7c6a02c836b30a"
+    },
+    {
+      "path": "material-integration-2e023-core/test_material_audition.log",
+      "bytes": 2412,
+      "sha256": "6216e68430593bf86e96bf1b15d59c7c368aaf82a5124352fb04b186b506abb3"
+    },
+    {
+      "path": "material-integration-2e023-core/test_material_audition_authored_scenes.log",
+      "bytes": 17975,
+      "sha256": "186106f717467a69e613820a597e6e49bc460195821ecc89cb132a63d6a7c6ab"
+    },
+    {
+      "path": "material-integration-2e023-core/test_workbench_actor_composition_native.log",
+      "bytes": 535,
+      "sha256": "4b1b59226c70f2ee96d0af1ea7eacccd081f522a76f76a2a4f3710548ffc1de2"
+    },
+    {
+      "path": "material-integration-2e023-core/test_workbench_retained_pressure.log",
+      "bytes": 280,
+      "sha256": "3a6a19b8a36e99e6592b9ee6743b3b0a566fe31ae1a43fee1ab665783d939428"
+    },
+    {
+      "path": "material-integration-2e023-core/test_workbench_wave.log",
+      "bytes": 67960,
+      "sha256": "36848475abb86ffc71a7d627f92b68f394d4473faaaa8f2fe948e4034cfd45bb"
+    },
+    {
+      "path": "invocation/run_material_integration.py",
+      "bytes": 2451,
+      "sha256": "00c248009d0de80dab8c27f0ae8a11138294685ffcb448076c2d317582be7b6f"
+    }
+  ]
+}

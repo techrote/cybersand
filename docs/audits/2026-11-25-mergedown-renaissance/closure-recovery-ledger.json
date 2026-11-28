@@ -1,0 +1,126 @@
+{
+  "schema": 1,
+  "mission": "MERGEDOWN-RENAISSANCE-CLOSURE-001",
+  "observed_at": "2026-11-26T08:10:38.863668+00:00",
+  "principal_pr": 784,
+  "status": "Recovery executing; no final completion claim",
+  "accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+  "accepted_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "ownership": {
+    "lead": "closure integration lead",
+    "product": "specialist A: recovered Art/Architecture; root: Goblin002",
+    "delivery": "specialist B: actual Windows delivery/runtime custody",
+    "independent": "specialist C: adversarial review, AMBIENT002, Material and native dispositions",
+    "protected": [
+      783,
+      767,
+      776,
+      785
+    ]
+  },
+  "intake": {
+    "prior_ledger": "a3cddc4703ecea7abdfe2db55d1de5ef79874447",
+    "finding": "No continuing original mergedown source/campaign progress after01:39; resumed ULTIMA notice07:23 explicitly protected. Existing source bundles recovered; six completed integrations independently confirmed.",
+    "completed_prs": [
+      736,
+      758,
+      778,
+      771,
+      772,
+      775
+    ],
+    "closed_predecessors_confirmed": [
+      720,
+      770,
+      769,
+      763,
+      765,
+      766,
+      773
+    ],
+    "unique_preserved": [
+      749
+    ]
+  },
+  "work": [
+    {
+      "programme": "Accepted-main Windows evaluator",
+      "class": "TECHNICAL BLOCKER",
+      "source": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+      "original_corrected_local": "2709e8cb6f83cd4d9bf7af5feb91ae0965c2c133",
+      "original_corrected_recovery": "Commit not available remotely or in six original retained bundles; only documented helper/launcher defects recovered on original architecture under new exact identity, never claimed as2709.",
+      "campaigns": [
+        {
+          "run": 45778120328,
+          "result": "FAILED actual Goblin CMD PowerShell module autoload; assembly/default-OFF/five AMBIENT graphics/actual ordinary CMD passed"
+        },
+        {
+          "run": 45779742759,
+          "result": "FAILED new CMD fixture quoting before product checkout; original preserved"
+        },
+        {
+          "run": 45780449642,
+          "result": "IN_PROGRESS; real CMD admission now passes"
+        }
+      ],
+      "next": "Finish actual packaged Windows application/custody contract, independently download/read back inner archive, then assess corrected-main package after narrow merge."
+    },
+    {
+      "programme": "Accepted Goblin001 storage repair",
+      "pr": 786,
+      "class": "PREPARED / RESULTING-SOURCE QUALIFICATION REQUIRED",
+      "product": "12eb302f64d0e468f7a9f851bef57ef8c180633b",
+      "ready_head": "7dbb12bbb128f3550b1a1064a8a7b176a3788adb",
+      "linux": "3 actual OS fault/recovery rows,84 native controls,75 controller checks independently pass; original128-byte false-ack retained",
+      "windows": "45779564107 refused unexpected post-import source change before product cases; diagnostic45780713387 at a75fd439 retains exact status/diff with same strictgate",
+      "next": "Identify actual import change; qualify final Windows harness and full Ready source; merge only after independent gates; preserve four paths/tabs/default-OFF."
+    },
+    {
+      "programme": "Art / Architecture",
+      "prs": [
+        780,
+        777
+      ],
+      "class": "PREPARED / RESULTING-SOURCE QUALIFICATION REQUIRED",
+      "recovered": "368292fe99485e6ea928325f9e8d000d829a4407",
+      "current_main_local": "29a19e5d2bf5676bc4e65d6bf5b0cfe2c63f5b6a",
+      "published_product": "7f7d97a6dda8d0ed2ed6231f1cf7549b342fa221",
+      "linux": "13 real storage fault rows and22 targeted cases; independent13OS/84boundary/85mounted-native reproduction",
+      "next": "Truthful owner-guide child, finite actual Windows storage/native/graphical campaigns and combined evaluator. Preserve creative/physical acceptance HOLD; no paid inference."
+    },
+    {
+      "programme": "Goblin002 / AMBIENT001",
+      "pr": 781,
+      "class": "PREPARED / RESULTING-SOURCE QUALIFICATION REQUIRED",
+      "recovered": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+      "current_main_local": "3097579f0a852c59c24e10d62c46b04df2d0f34e",
+      "tree": "652c9ce3bcdd5da7cd90c39b7c31c35af30b8d09",
+      "linux": "3 actual OS storage rows and all6 current source-owned canonical cases pass; all6 source_dirty=false",
+      "next": "Publish exact integration source, complete Windows storage and applicable resulting-source qualification; preserve ten paths,compact serialization,2/32/512MiB and unresolved512/1024-action timeouts."
+    },
+    {
+      "programme": "AMBIENT002",
+      "pr": 779,
+      "class": "PREPARED / RESULTING-SOURCE QUALIFICATION REQUIRED",
+      "source": "6b5ef1fed14b3e37ef9350f7c7810a3523d626a2",
+      "linux": "24-case complete living campaign /15349 assertions passed; custody passed; additional group/default-OFF verification in progress",
+      "next": "Complete actual resulting-source Windows/graphical qualification; retain eight-actor capacity and owner HOLD."
+    },
+    {
+      "programme": "Live Material Audition",
+      "pr": 768,
+      "class": "PREPARED / RESULTING-SOURCE QUALIFICATION REQUIRED",
+      "recovered": "2e0233f808e6e9c76aac897593bc88d6ca357b95",
+      "current_main_local": "d5fde098",
+      "tree": "c1545168a44897adf2d3887471c13e7ad5f0ea48",
+      "next": "Complete current-main108-input runtime/native61 cross-feature proof, then current-source qualification and owner decision; do not replace with accepted105-input binary."
+    }
+  ],
+  "native_dispositions": "closure-native-dispositions-and-owner-queue.md",
+  "independent_reviews": "closure-independent-product-reviews.md",
+  "protected_contracts": {
+    "ULTIMA": "Owns broad documentation/storage and acquisition-interface reconciliation. Only reviewed narrow accepted writer adopted here; no branch import.",
+    "PUBPRES": "Owns active presentation/physical progression experiments; no cancellation or unselected import.",
+    "Strata": "Frozen fd0830ab evaluator retained. Enabled optical73.49\u201380.59% physical retention remains PERFORMANCE HOLD against90%; A1 not adopted."
+  }
+}

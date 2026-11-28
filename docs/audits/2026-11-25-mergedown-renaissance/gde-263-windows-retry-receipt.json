@@ -1,0 +1,14 @@
+{
+  "registered_comment": 7178830319,
+  "independent_review": "e90036a96",
+  "original_run": 45727973062,
+  "original_attempt": 1,
+  "original_conclusion": "failure",
+  "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+  "job": 139602551095,
+  "result": {
+    "success": true
+  },
+  "observed_at": "2026-11-26 00:39:23 UTC",
+  "scope": "Windows producer and complete dependent chain; preserved Linux original execution must be distinguished from API carry-forward records"
+}

@@ -1,0 +1,2670 @@
+{
+  "schema": "mergedown-ambient001-final-runtime-qualification-v1",
+  "decision": "APPROVE source26317 for authorized opt-in mainline integration",
+  "candidate_source": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+  "candidate_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+  "actual_gde_checkout": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+  "reviewed_local_source": "d64b3886f27a3a3ffa0415bc516db993a112e5f1",
+  "source_tree_join_verified": true,
+  "current_workflows": [
+    {
+      "id": 45727973062,
+      "name": "GDExtension build and current Godot regression",
+      "event": "pull_request",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "run_attempt": 2,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/45727973062"
+    },
+    {
+      "id": 45727972896,
+      "name": "Native C++ validation",
+      "event": "pull_request",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/45727972896"
+    },
+    {
+      "id": 45727972728,
+      "name": "Palette shader actual backend qualification",
+      "event": "pull_request",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/45727972728"
+    },
+    {
+      "id": 45727972822,
+      "name": "Documentation and provenance",
+      "event": "pull_request",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/45727972822"
+    },
+    {
+      "id": 45727972762,
+      "name": "Art session-only logging qualification",
+      "event": "pull_request",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "run_attempt": 2,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/45727972762"
+    },
+    {
+      "id": 45727972790,
+      "name": "Architectural Generator A+B source qualification",
+      "event": "pull_request",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/45727972790"
+    },
+    {
+      "id": 45727972809,
+      "name": "Native source-scope advisory (report only)",
+      "event": "pull_request",
+      "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2",
+      "run_attempt": 1,
+      "status": "completed",
+      "conclusion": "success",
+      "html_url": "https://github.com/techrote/cybersand/actions/runs/45727972809"
+    }
+  ],
+  "gde_api_jobs_attempt2": [
+    {
+      "id": 139610280135,
+      "name": "windows x86_64",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:39:28Z",
+      "completed_at": "2026-11-26T00:43:50Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610281396,
+      "name": "ready validation scope",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-11-26T00:39:25Z",
+      "completed_at": "2026-11-26T00:20:01Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610282031,
+      "name": "complete execution budgets",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:20:05Z",
+      "completed_at": "2026-11-26T00:21:11Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610282670,
+      "name": "linux build x86_64",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:20:04Z",
+      "completed_at": "2026-11-26T00:26:18Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610282989,
+      "name": "linux regression shard 0",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:26:21Z",
+      "completed_at": "2026-11-26T00:30:03Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610283387,
+      "name": "linux regression shard 1",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:26:21Z",
+      "completed_at": "2026-11-26T00:30:29Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610283427,
+      "name": "linux regression shard 3",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:26:22Z",
+      "completed_at": "2026-11-26T00:29:03Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610283744,
+      "name": "linux regression shard 13",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:29:58Z",
+      "completed_at": "2026-11-26T00:34:02Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610283770,
+      "name": "linux regression shard 10",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:29:07Z",
+      "completed_at": "2026-11-26T00:32:37Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610283915,
+      "name": "linux regression shard 9",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:29:05Z",
+      "completed_at": "2026-11-26T00:31:26Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610283927,
+      "name": "linux regression shard 5",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:26:21Z",
+      "completed_at": "2026-11-26T00:28:38Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610284089,
+      "name": "linux regression shard 17",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:31:29Z",
+      "completed_at": "2026-11-26T00:35:13Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610284105,
+      "name": "linux regression shard 12",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:29:48Z",
+      "completed_at": "2026-11-26T00:32:27Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610284183,
+      "name": "linux regression shard 14",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:30:05Z",
+      "completed_at": "2026-11-26T00:32:46Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610284422,
+      "name": "linux regression shard 8",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:28:41Z",
+      "completed_at": "2026-11-26T00:30:56Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610284513,
+      "name": "linux regression shard 11",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:29:09Z",
+      "completed_at": "2026-11-26T00:31:45Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610284733,
+      "name": "linux regression shard 18",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:31:48Z",
+      "completed_at": "2026-11-26T00:34:32Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610284873,
+      "name": "linux regression shard 21",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:32:48Z",
+      "completed_at": "2026-11-26T00:34:58Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610284915,
+      "name": "linux regression shard 16",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:30:58Z",
+      "completed_at": "2026-11-26T00:33:35Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610284991,
+      "name": "linux regression shard 20",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:32:39Z",
+      "completed_at": "2026-11-26T00:34:49Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610285035,
+      "name": "linux regression shard 15",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:30:31Z",
+      "completed_at": "2026-11-26T00:34:34Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610285407,
+      "name": "linux regression shard 19",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:32:29Z",
+      "completed_at": "2026-11-26T00:35:38Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610285638,
+      "name": "linux regression shard 24",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:34:34Z",
+      "completed_at": "2026-11-26T00:36:39Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610285966,
+      "name": "linux regression shard 23",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:34:05Z",
+      "completed_at": "2026-11-26T00:37:39Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610286090,
+      "name": "linux regression shard 22",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:33:38Z",
+      "completed_at": "2026-11-26T00:36:51Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610287985,
+      "name": "linux x86_64",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:37:42Z",
+      "completed_at": "2026-11-26T00:38:08Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610318618,
+      "name": "art workbench graphical smoke",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:26:21Z",
+      "completed_at": "2026-11-26T00:27:59Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610324158,
+      "name": "linux regression shard 2",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:26:21Z",
+      "completed_at": "2026-11-26T00:29:06Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610330835,
+      "name": "linux regression shard 7",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:26:21Z",
+      "completed_at": "2026-11-26T00:29:04Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610332296,
+      "name": "linux regression shard 4",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:26:22Z",
+      "completed_at": "2026-11-26T00:29:46Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610342134,
+      "name": "linux regression shard 6",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:26:21Z",
+      "completed_at": "2026-11-26T00:29:56Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139610345177,
+      "name": "physical-actor-stress",
+      "status": "completed",
+      "conclusion": "skipped",
+      "started_at": "2026-11-26T00:39:35Z",
+      "completed_at": "2026-11-26T00:39:25Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023352,
+      "name": "windows headless regression shard 3",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:43:53Z",
+      "completed_at": "2026-11-26T00:46:24Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023358,
+      "name": "windows headless regression shard 7",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:43:53Z",
+      "completed_at": "2026-11-26T00:47:04Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023366,
+      "name": "windows headless regression shard 11",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:47:24Z",
+      "completed_at": "2026-11-26T00:52:42Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023384,
+      "name": "windows headless regression shard 0",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:43:53Z",
+      "completed_at": "2026-11-26T00:47:45Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023388,
+      "name": "windows headless regression shard 1",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:43:53Z",
+      "completed_at": "2026-11-26T00:47:02Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023410,
+      "name": "windows headless regression shard 2",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:43:53Z",
+      "completed_at": "2026-11-26T00:47:21Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023411,
+      "name": "windows headless regression shard 16",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:48:39Z",
+      "completed_at": "2026-11-26T00:51:54Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023416,
+      "name": "windows headless regression shard 14",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:47:48Z",
+      "completed_at": "2026-11-26T00:51:37Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023423,
+      "name": "windows headless regression shard 13",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:47:33Z",
+      "completed_at": "2026-11-26T00:51:29Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023427,
+      "name": "windows headless regression shard 12",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:47:29Z",
+      "completed_at": "2026-11-26T00:53:09Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023432,
+      "name": "windows headless regression shard 10",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:47:07Z",
+      "completed_at": "2026-11-26T00:55:18Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023448,
+      "name": "windows headless regression shard 17",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:49:36Z",
+      "completed_at": "2026-11-26T00:52:32Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023451,
+      "name": "windows headless regression shard 6",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:43:53Z",
+      "completed_at": "2026-11-26T00:47:31Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023452,
+      "name": "windows headless regression shard 8",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:46:27Z",
+      "completed_at": "2026-11-26T00:48:37Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023471,
+      "name": "windows headless regression shard 9",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:47:04Z",
+      "completed_at": "2026-11-26T00:49:34Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023475,
+      "name": "windows headless regression shard 15",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:47:49Z",
+      "completed_at": "2026-11-26T00:51:28Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023503,
+      "name": "windows headless regression shard 4",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:43:54Z",
+      "completed_at": "2026-11-26T00:47:47Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612023512,
+      "name": "windows headless regression shard 5",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:43:53Z",
+      "completed_at": "2026-11-26T00:47:27Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612025053,
+      "name": "windows headless regression shard 18",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:51:30Z",
+      "completed_at": "2026-11-26T00:53:23Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612025089,
+      "name": "windows headless regression shard 19",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:51:32Z",
+      "completed_at": "2026-11-26T00:54:53Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612025148,
+      "name": "windows headless regression shard 20",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:51:40Z",
+      "completed_at": "2026-11-26T00:55:20Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612025170,
+      "name": "windows headless regression shard 21",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:51:56Z",
+      "completed_at": "2026-11-26T00:56:50Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612025185,
+      "name": "windows headless regression shard 23",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:52:44Z",
+      "completed_at": "2026-11-26T00:55:26Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139612025237,
+      "name": "windows headless regression shard 22",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:52:34Z",
+      "completed_at": "2026-11-26T00:56:14Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139617120341,
+      "name": "retained execution and physical timing history",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:56:53Z",
+      "completed_at": "2026-11-26T00:57:34Z",
+      "run_attempt": 2
+    },
+    {
+      "id": 139617120367,
+      "name": "windows sharded execution coverage",
+      "status": "completed",
+      "conclusion": "success",
+      "started_at": "2026-11-26T00:56:53Z",
+      "completed_at": "2026-11-26T00:57:25Z",
+      "run_attempt": 2
+    }
+  ],
+  "actual_executions": {
+    "gde_linux": {
+      "attempt": 1,
+      "original_reducer_job": 139609596970,
+      "carried_api_job": 139610287985,
+      "case_count": 354,
+      "shard_count": 25,
+      "status": "passed",
+      "independent_owner": "Specialist C",
+      "carried_record_rule": "New API job ID/run_attempt does not establish fresh execution; identical original timestamps and log bytes retained"
+    },
+    "gde_windows": {
+      "attempt": 2,
+      "producer_job": 139610280135,
+      "reducer_job": 139617120367,
+      "case_count": 331,
+      "shard_count": 24,
+      "status": "passed"
+    },
+    "art_linux": {
+      "attempt": 1,
+      "original_job": 139602549257,
+      "carried_api_job": 139606817778,
+      "log_bytes": 53469,
+      "log_sha256": "f388d2c679df9b79e458f0fe4f653c6b6c68644fabd344e6559348edab1d17aa"
+    },
+    "art_windows": {
+      "attempt": 2,
+      "fresh_job": 139606815128,
+      "started_at": "2026-11-26T00:30:40Z",
+      "completed_at": "2026-11-26T00:31:50Z"
+    }
+  },
+  "native_producer_and_transport": {
+    "rapier_transport": {
+      "artifact": {
+        "id": 15075334588,
+        "node_id": "MDg6QXJ0aWZhY3QxNTA3NTMzNDU4OA==",
+        "name": "windows-lfs-runtime-45727973062-2",
+        "size_in_bytes": 3204304,
+        "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15075334588",
+        "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15075334588/zip",
+        "expired": false,
+        "digest": "sha256:0dc15718a5a8bf88d5384418d8a07c34eda589b4961b074f982024e9bfb0c5ac",
+        "created_at": "2026-11-26T00:43:46Z",
+        "updated_at": "2026-11-26T00:43:46Z",
+        "expires_at": "2027-02-24T00:39:25Z",
+        "workflow_run": {
+          "id": 45727973062,
+          "repository_id": 1350077435,
+          "head_repository_id": 1350077435,
+          "head_branch": "feature/ambient-001-20261124",
+          "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+        }
+      },
+      "archive_sha256": "0dc15718a5a8bf88d5384418d8a07c34eda589b4961b074f982024e9bfb0c5ac",
+      "members": [
+        {
+          "name": "acquisition/lfs-pull-1.log",
+          "size": 0,
+          "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "name": "manifest.json",
+          "size": 1005,
+          "sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353"
+        },
+        {
+          "name": "acquisition/lfs-setup.log",
+          "size": 40,
+          "sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875"
+        },
+        {
+          "name": "acquisition/receipt.json",
+          "size": 1771,
+          "sha256": "1a94be306d17ba54a527218f374399573a6e6b20d10f9fc7ea09a08dc7465429"
+        },
+        {
+          "name": "payload/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "size": 9987072,
+          "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+        },
+        {
+          "name": "stage-result.json",
+          "size": 259,
+          "sha256": "99f22371070c3de9bce7b29600f665cc556cd722440329e6ff1532535d9933b0"
+        }
+      ],
+      "manifest.json": {
+        "attempt": 2,
+        "files_sha256": {
+          "acquisition/lfs-pull-1.log": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+          "acquisition/lfs-setup.log": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+          "acquisition/receipt.json": "1a94be306d17ba54a527218f374399573a6e6b20d10f9fc7ea09a08dc7465429",
+          "payload/godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+          "stage-result.json": "99f22371070c3de9bce7b29600f665cc556cd722440329e6ff1532535d9933b0"
+        },
+        "objects": [
+          {
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "run_id": "45727973062",
+        "schema": "cybersand-lfs-runtime-artifact-v1",
+        "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+        "status": "passed"
+      },
+      "acquisition/receipt.json": {
+        "allowance_seconds": 599.996795511,
+        "backoff_seconds": [],
+        "cleanup_reserve_seconds": 10.0,
+        "commands": [
+          {
+            "allowance_seconds": 589.994643191,
+            "command": [
+              "git",
+              "lfs",
+              "install",
+              "--local"
+            ],
+            "joined": true,
+            "label": "lfs-setup",
+            "log": "lfs-setup.log",
+            "log_bytes": 40,
+            "log_sha256": "4fea4bc2b3b77e0192bd58ef65c3a0c982ecc7409dbffab6873bb6e04be6a875",
+            "pid": 2249,
+            "returncode": 0,
+            "seconds": 0.03161493600009635,
+            "timed_out": false
+          },
+          {
+            "allowance_seconds": 589.9626344290001,
+            "command": [
+              "git",
+              "lfs",
+              "pull",
+              "--include=godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "--exclude="
+            ],
+            "joined": true,
+            "label": "lfs-pull-1",
+            "log": "lfs-pull-1.log",
+            "log_bytes": 0,
+            "log_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+            "pid": 2279,
+            "retryable_service_timeout": false,
+            "returncode": 0,
+            "seconds": 1.8695380340000156,
+            "timed_out": false
+          }
+        ],
+        "max_attempts": 3,
+        "objects": [
+          {
+            "actual_bytes": 9987072,
+            "actual_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+            "bytes": 9987072,
+            "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+            "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          }
+        ],
+        "retry_scope": "observed Git LFS batch service timeout only",
+        "schema": "cybersand-lfs-acquisition-v1",
+        "seconds": 1.9143365410000115,
+        "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+        "status": "passed"
+      },
+      "stage-result.json": {
+        "allowance_seconds": 600.0,
+        "attempt": 2,
+        "run_id": "45727973062",
+        "schema": "cybersand-lfs-runtime-artifact-v1-stage",
+        "seconds": 1.9387766570000622,
+        "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+        "status": "payload_verified"
+      }
+    },
+    "native_candidate": {
+      "artifact": {
+        "id": 15075818811,
+        "node_id": "MDg6QXJ0aWZhY3QxNTA3NTgxODgxMQ==",
+        "name": "native-candidate-windows-45727973062-2",
+        "size_in_bytes": 2100740,
+        "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15075818811",
+        "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15075818811/zip",
+        "expired": false,
+        "digest": "sha256:beb932fd136f74bdd7e294c309aadfbe83e2039be29762ac25fb3e7112d89b03",
+        "created_at": "2026-11-26T00:43:43Z",
+        "updated_at": "2026-11-26T00:43:43Z",
+        "expires_at": "2027-02-24T00:39:25Z",
+        "workflow_run": {
+          "id": 45727973062,
+          "repository_id": 1350077435,
+          "head_repository_id": 1350077435,
+          "head_branch": "feature/ambient-001-20261124",
+          "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+        }
+      },
+      "archive_sha256": "beb932fd136f74bdd7e294c309aadfbe83e2039be29762ac25fb3e7112d89b03",
+      "members": [
+        {
+          "name": "candidate-provenance.json",
+          "size": 13119,
+          "sha256": "efce37267754234ec977aef9f6f91d092b75ffe229838847219f82104a5a68b0"
+        },
+        {
+          "name": "source-sha.txt",
+          "size": 41,
+          "sha256": "f1492af850c93df47cdf4049d3773beb3ac017e4c4ddaac9183c7e78d4a5d3e9"
+        },
+        {
+          "name": "runtime.sha256",
+          "size": 102,
+          "sha256": "5a6e4bbdf8901e51f76739987e6917e8b3e326447b6fb7801a1b3998a925580b"
+        },
+        {
+          "name": "cybersand_native.windows.x86_64.dll",
+          "size": 5820416,
+          "sha256": "f2ba56b678ed582489c72b4baf41f37ead84743c6a8bcb9794d6e1c9edbc81bf"
+        },
+        {
+          "name": "toolchain.txt",
+          "size": 141,
+          "sha256": "f98fdba363587b356edff2f39e9ed1ec133eea37829be352d5737c0a3b869b16"
+        }
+      ],
+      "candidate-provenance.json": {
+        "artifact": "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+        "build_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+        "kind": "source-built-windows-candidate",
+        "schema_version": 1,
+        "sha256": "f2ba56b678ed582489c72b4baf41f37ead84743c6a8bcb9794d6e1c9edbc81bf",
+        "size": 5820416,
+        "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+        "source_inputs": {
+          "godot/native_extension/cyber_demo_bridge.hpp": "4808b768ade41dff1f73ddfccf292561438e4c23614018728af1079d45f2014c",
+          "godot/native_extension/cyber_native_cell_world.cpp": "435de9baa6aec527fa9e2243d6f4bd82f6442700177342f46113abf4c2657a9b",
+          "godot/native_extension/cyber_native_cell_world.hpp": "ccc5c0a5030a36d93dd125f49d5c261fc680bfea92d63c1634ee6323e1f06e3c",
+          "godot/native_extension/cyber_native_paint_planner.hpp": "ebd43289791d4638619600b5c5256f86c7625a950f4fda8dc39ca7ce4c364ccd",
+          "godot/native_extension/cyber_observation_values.hpp": "47af553dafed4129aa689fef0e33214d3612148bbcb6b2c10dd6164dbcc3768f",
+          "godot/native_extension/cyber_prepared_level_payload.hpp": "bb414a0f5d2b6272dec3c9f386cee99eb70e1c2f1b5ce74b23fd5953f06c1b5a",
+          "godot/native_extension/cyber_prepared_liquid_world.hpp": "bf6191413e2246baed163461829148fd8bc955b058221fc03d97b6b9b5220351",
+          "godot/native_extension/cyber_world_generator.cpp": "7c0570357f3f3a191c131b076ae914980250644ebe8cd017dfed9c57fd2676bd",
+          "godot/native_extension/cyber_world_generator.hpp": "8be2561cb5e81dee79b55fbe6431f3f50fca1ba89e4ec693fe12f4bed71e0822",
+          "godot/native_extension/generation_grammar_adapter.inc": "363255bf521f90435b620052ee8be288da5cefc4e7afe18f6871512949716b53",
+          "godot/native_extension/generation_grammar_inspection.inc": "5557ce1ef75f72862315ea69a196fd8c8449b7a6c9748e9bf57ee42dbfd3664c",
+          "godot/native_extension/generation_planes_adapter.inc": "f4b2eeba64b57140fb8e9f4f1ca5830cb12fc19b27c2b60367d65d51ff0e4d6b",
+          "godot/native_extension/generation_planes_inspection.inc": "299e87cf74bac6a4ace81e78e8ee052d4be8487f34be2e4c419680a07f9b0f72",
+          "godot/native_extension/generation_planes_methods.inc": "fcbffa284c0d2955bfcbf4ec40961f4ac4432400803470fa6f5f2984df6bf051",
+          "godot/native_extension/generation_workbench_inspection.inc": "13efa68f55fe2273ecf07a041ffcd5b4a274f808c9cb8f18fd260c4302c4e3cf",
+          "godot/native_extension/generation_workbench_methods.inc": "a7b74a41d6282777bd77220e6480258720dfde698938d3bef75d68a2841ae0d8",
+          "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+          "godot/native_extension/material_baseline_file.hpp": "414558d0ebbdc73fcc43e216dd497a91d47ba142ef008cf7bbdd3352825a829f",
+          "godot/native_extension/material_lab_inspection.inc": "f02556482a21a8bf989be500a4f41e77144baf152b8fc9cb018db60fbdde67b4",
+          "godot/native_extension/pressure_optimization_inspection.inc": "d1d3044c05a50cddcae90fc96f46a3e04656e0ce034f650de50ecd431dc66b67",
+          "godot/native_extension/register_types.cpp": "fe6aab15186356478a3b6e7fe1ad6d61c504574864a77ea0302d2875263e9ae3",
+          "godot/native_extension/water_spray_coupling.inc": "02145fc4da1e45a99e2f46e3169f326aed89f22b44fb2189a1782dd284a095e9",
+          "godot/native_extension/workbench_granular_coupling.inc": "30893e2734bd8cecbaaed8d962710c7b958243d92cb6221f3d44af92f4b0f247",
+          "godot/native_extension/workbench_retained_setup.hpp": "ecb5a3e615ab7642b554c07a250d384579297b57644551a3fe1d876d0219f54a",
+          "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "native/src/world_wave.inc": "7658d06173f5badb686d674fce51076ffcfa876bd85961237b5950cc28db0d81"
+        },
+        "source_tree": "984c94a6e312261120dffb4ad3625a6030d2f359"
+      },
+      "toolchain": "godot_cpp_commit=101ae38034304346a46ea9ea84ae156d3e860496\nllvm_mingw_sha256=cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65\n"
+    }
+  },
+  "windows_all_24_independent_readback": {
+    "status": "passed",
+    "actual_execution_attempt": 2,
+    "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+    "source_tree": "984c94a6e312261120dffb4ad3625a6030d2f359",
+    "shard_count": 24,
+    "case_count": 331,
+    "duplicate_cases": false,
+    "results": [
+      {
+        "artifact": {
+          "id": 15076577888,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NjU3Nzg4OA==",
+          "name": "windows-godot-headless-0-45727973062-2",
+          "size_in_bytes": 478015,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076577888",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076577888/zip",
+          "expired": false,
+          "digest": "sha256:ef7ea80015b42708109fc37d8d15c784aefcb130dfb88d66f1c5040fcd3ac957",
+          "created_at": "2026-11-26T00:47:42Z",
+          "updated_at": "2026-11-26T00:47:42Z",
+          "expires_at": "2026-12-26T00:47:41Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "ef7ea80015b42708109fc37d8d15c784aefcb130dfb88d66f1c5040fcd3ac957",
+        "shard": 0,
+        "executed_case_count": 5,
+        "assigned_cases": [
+          "test_play_wait001_jetbarrel",
+          "test_thunderbowl_controllers",
+          "test_wex001_water_body_baseline",
+          "test_workbench_flatten_owner_failure",
+          "test_worldgen_typed"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.18700000000001182,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "4dd4c1af68a1c176d76c064580dbbe37d85e8edd59277494103de404b68c8c39"
+      },
+      {
+        "artifact": {
+          "id": 15076418865,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NjQxODg2NQ==",
+          "name": "windows-godot-headless-1-45727973062-2",
+          "size_in_bytes": 314500,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076418865",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076418865/zip",
+          "expired": false,
+          "digest": "sha256:0067dcd1b67224bafaabeddd37438399fa32c25dc0dbd893fcd98ba24c8d47ce",
+          "created_at": "2026-11-26T00:46:59Z",
+          "updated_at": "2026-11-26T00:46:59Z",
+          "expires_at": "2026-12-26T00:46:58Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "0067dcd1b67224bafaabeddd37438399fa32c25dc0dbd893fcd98ba24c8d47ce",
+        "shard": 1,
+        "executed_case_count": 9,
+        "assigned_cases": [
+          "test_microscenarios",
+          "test_physical_actor_effects",
+          "test_play_auto001_shared_course",
+          "test_play_life002_trialsbike",
+          "test_play_life010_trialsbike",
+          "test_play_wait001_stuntbuggy",
+          "test_transport_profiles",
+          "test_workbench_fleet_session",
+          "test_worldgen_workbench"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.21800000000007458,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "9d50da9c60d973a400c0b51e43e3713d3344eb99c2a0a620826ea74c36f81c84"
+      },
+      {
+        "artifact": {
+          "id": 15077335713,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzMzNTcxMw==",
+          "name": "windows-godot-headless-2-45727973062-2",
+          "size_in_bytes": 131019,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077335713",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077335713/zip",
+          "expired": false,
+          "digest": "sha256:b170207cddf5c114ad8301e6da2950aeeebbca7dcbdc5ce59cfa87f36b2ce679",
+          "created_at": "2026-11-26T00:47:19Z",
+          "updated_at": "2026-11-26T00:47:19Z",
+          "expires_at": "2026-12-26T00:47:18Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "b170207cddf5c114ad8301e6da2950aeeebbca7dcbdc5ce59cfa87f36b2ce679",
+        "shard": 2,
+        "executed_case_count": 10,
+        "assigned_cases": [
+          "test_interaction_policy",
+          "test_material_lab_diagnostics",
+          "test_paint_editor_native",
+          "test_physical_flight_pilot",
+          "test_play_input011_jetbarrel",
+          "test_play_life004_trialsbike",
+          "test_play_pace001_trialsbike",
+          "test_presentation_controls",
+          "test_workbench_actor_composition",
+          "test_workbench_live_liquid_edit"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.1560000000000059,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "255415a18dd68aa2947c72870d24d4567d1108ad59b0cdc57acaf10425d59a80"
+      },
+      {
+        "artifact": {
+          "id": 15077245840,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzI0NTg0MA==",
+          "name": "windows-godot-headless-3-45727973062-2",
+          "size_in_bytes": 88216,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077245840",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077245840/zip",
+          "expired": false,
+          "digest": "sha256:1b5cb38b45c27a1861188a392c1703d0bcde9e22339a15da99a7ae4be14c8e26",
+          "created_at": "2026-11-26T00:46:21Z",
+          "updated_at": "2026-11-26T00:46:21Z",
+          "expires_at": "2026-12-26T00:46:21Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "1b5cb38b45c27a1861188a392c1703d0bcde9e22339a15da99a7ae4be14c8e26",
+        "shard": 3,
+        "executed_case_count": 10,
+        "assigned_cases": [
+          "test_material_lab_experiment",
+          "test_paint_editor_recovery",
+          "test_physical_flight_profile",
+          "test_play_input011_legacy_pause",
+          "test_play_life005_failure_recovery",
+          "test_play_pace004_capture_buffer",
+          "test_rapier_backend_preflight",
+          "test_rem003_player_granular",
+          "test_workbench_actor_composition_native",
+          "test_workbench_material_baseline"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.17200000000002547,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "e9a90ae6f946263e1328e95bac7ab663682bf4b2643e6c64b95befba56d6d516"
+      },
+      {
+        "artifact": {
+          "id": 15077440648,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzQ0MDY0OA==",
+          "name": "windows-godot-headless-4-45727973062-2",
+          "size_in_bytes": 138370,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077440648",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077440648/zip",
+          "expired": false,
+          "digest": "sha256:ed328f1d8377d1f191eb07575d7e5eb96a9937ce2bab60611a30953357d3e30c",
+          "created_at": "2026-11-26T00:47:43Z",
+          "updated_at": "2026-11-26T00:47:43Z",
+          "expires_at": "2026-12-26T00:47:42Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "ed328f1d8377d1f191eb07575d7e5eb96a9937ce2bab60611a30953357d3e30c",
+        "shard": 4,
+        "executed_case_count": 11,
+        "assigned_cases": [
+          "test_lcb_physics_contracts",
+          "test_liquid_pressure_rapier",
+          "test_microscenario_workbench",
+          "test_physical_actor_integration",
+          "test_play_comp001_existing_host_spike",
+          "test_play_life003_acrobat",
+          "test_play_life011_acrobat",
+          "test_play_wait001_trialsbike",
+          "test_usable_session",
+          "test_workbench_generator_discovery",
+          "test_worker_benchmark"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.2189999999999941,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "7308b9fb3fd77e6e3489428b37d96f83aa44a3e50e28c590508af7f3866dabc5"
+      },
+      {
+        "artifact": {
+          "id": 15077395167,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzM5NTE2Nw==",
+          "name": "windows-godot-headless-5-45727973062-2",
+          "size_in_bytes": 151332,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077395167",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077395167/zip",
+          "expired": false,
+          "digest": "sha256:87830fe3fa5a24cb5d18c9e2e8ac7bcb2b8294e31e6921112c4de958b95d1818",
+          "created_at": "2026-11-26T00:47:24Z",
+          "updated_at": "2026-11-26T00:47:24Z",
+          "expires_at": "2026-12-26T00:47:23Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "87830fe3fa5a24cb5d18c9e2e8ac7bcb2b8294e31e6921112c4de958b95d1818",
+        "shard": 5,
+        "executed_case_count": 12,
+        "assigned_cases": [
+          "test_experiment_tower",
+          "test_liquid_reference_body_poses",
+          "test_microscenario_controllers",
+          "test_microscenario_workbench_lifecycle",
+          "test_physical_actor_rigs",
+          "test_physical_flight_teacher_dev_obstacle",
+          "test_play_comp002_five_rig_course",
+          "test_play_life003_arcadelander",
+          "test_play_life011_arcadelander",
+          "test_player_acrobat",
+          "test_usables",
+          "test_workbench_generator_installed"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.20299999999997453,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "77fdc5a4e58cb60f61a206047b2410b945470dd18c7f45fb9495bdc5c3b934a4"
+      },
+      {
+        "artifact": {
+          "id": 15075923944,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NTkyMzk0NA==",
+          "name": "windows-godot-headless-6-45727973062-2",
+          "size_in_bytes": 140500,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15075923944",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15075923944/zip",
+          "expired": false,
+          "digest": "sha256:89ace003b095942733efb443485c78b665d12813617192702ddc619609acbabc",
+          "created_at": "2026-11-26T00:47:28Z",
+          "updated_at": "2026-11-26T00:47:28Z",
+          "expires_at": "2026-12-26T00:47:27Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "89ace003b095942733efb443485c78b665d12813617192702ddc619609acbabc",
+        "shard": 6,
+        "executed_case_count": 14,
+        "assigned_cases": [
+          "test_deepworks_controller",
+          "test_lcb_inertial_adapter",
+          "test_liquid_sampled_preparation",
+          "test_material_appearance_lut",
+          "test_native_edge_contact_regression",
+          "test_physical_actor_script",
+          "test_play_input010_acrobat",
+          "test_play_life003_jetbarrel",
+          "test_play_life011_jetbarrel",
+          "test_player_acrobat_physics",
+          "test_water_experiment_profiles",
+          "test_water_feel_controller",
+          "test_web_rapier",
+          "test_workbench_hard_placement"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.18700000000001182,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "414c580b9c026b94b9e6574ab5771171428d489303a58ac79ccfd32ebfde52e2"
+      },
+      {
+        "artifact": {
+          "id": 15076801838,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NjgwMTgzOA==",
+          "name": "windows-godot-headless-7-45727973062-2",
+          "size_in_bytes": 126944,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076801838",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076801838/zip",
+          "expired": false,
+          "digest": "sha256:ca9aaad6bd2795a519157863f5e3161db6ff3efa3d29a4e70a94b8ff7db45b90",
+          "created_at": "2026-11-26T00:47:01Z",
+          "updated_at": "2026-11-26T00:47:01Z",
+          "expires_at": "2026-12-26T00:47:00Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "ca9aaad6bd2795a519157863f5e3161db6ff3efa3d29a4e70a94b8ff7db45b90",
+        "shard": 7,
+        "executed_case_count": 13,
+        "assigned_cases": [
+          "test_auto_worker_policy",
+          "test_exploratory_actor_selection",
+          "test_failed_world_status_survives",
+          "test_liquid_host_evidence",
+          "test_material_lab_readability",
+          "test_paint_editor_shapes",
+          "test_physical_flight_selection",
+          "test_play_input011_stuntbuggy",
+          "test_play_life007_failed_session_restart",
+          "test_play_ui003_lap_clock",
+          "test_rapier_drop_in",
+          "test_workbench_actor_composition_session",
+          "test_workbench_physics_play"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.18700000000001182,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "f89c43de763682b872d8cce295078daddef6174c791439c6d852ad04aa0f8ec0"
+      },
+      {
+        "artifact": {
+          "id": 15076718052,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NjcxODA1Mg==",
+          "name": "windows-godot-headless-8-45727973062-2",
+          "size_in_bytes": 127362,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076718052",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076718052/zip",
+          "expired": false,
+          "digest": "sha256:d938f596c482c15a5444e73f82a2d2f54d4f67a7f5c5dfea52361e8fddc85f45",
+          "created_at": "2026-11-26T00:48:33Z",
+          "updated_at": "2026-11-26T00:48:33Z",
+          "expires_at": "2026-12-26T00:48:33Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "d938f596c482c15a5444e73f82a2d2f54d4f67a7f5c5dfea52361e8fddc85f45",
+        "shard": 8,
+        "executed_case_count": 13,
+        "assigned_cases": [
+          "test_blacksite_nine",
+          "test_feature_launch_arguments",
+          "test_liquid_host_web_probe",
+          "test_material_lab_service",
+          "test_paint_editor_workbench",
+          "test_physical_flight_session",
+          "test_physical_flight_teacher_dev_free",
+          "test_play_input011_trialsbike",
+          "test_play_life008_recovery_navigation",
+          "test_play_ui003_physics_cadence",
+          "test_rapier_manual_step",
+          "test_workbench_actor_equipment_extent",
+          "test_workbench_pilot_ui"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.14000000000010004,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "65136313563f7b0589ecf3dce14a4e33fe266487c9bdda2120524733bb18f04a"
+      },
+      {
+        "artifact": {
+          "id": 15076414353,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NjQxNDM1Mw==",
+          "name": "windows-godot-headless-9-45727973062-2",
+          "size_in_bytes": 146018,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076414353",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076414353/zip",
+          "expired": false,
+          "digest": "sha256:5cc73fe93b705881101a8c0790f378cf647e447098a35fbf33d04ca8d47ea80e",
+          "created_at": "2026-11-26T00:49:30Z",
+          "updated_at": "2026-11-26T00:49:30Z",
+          "expires_at": "2026-12-26T00:49:29Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "5cc73fe93b705881101a8c0790f378cf647e447098a35fbf33d04ca8d47ea80e",
+        "shard": 9,
+        "executed_case_count": 16,
+        "assigned_cases": [
+          "test_ambient_perception",
+          "test_art_provider",
+          "test_deepworks_reactions",
+          "test_lcb_negative_contracts",
+          "test_lcb_scenario_catalogue",
+          "test_liquid_solver_policy",
+          "test_native_fire_presentation_regression",
+          "test_physical_actor_session",
+          "test_play_input010_arcadelander",
+          "test_play_life003_stuntbuggy",
+          "test_play_life011_stuntbuggy",
+          "test_player_material_field",
+          "test_water_feel_integration",
+          "test_water_feel_scenarios",
+          "test_workbench_host_claim_capacity",
+          "profile_native_world"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.17200000000002547,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "51b11032099cf37d6cfd45a5ccd8402770b746a41b0bc7de60cb7e6463e4b5d6"
+      },
+      {
+        "artifact": {
+          "id": 15076807250,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NjgwNzI1MA==",
+          "name": "windows-godot-headless-10-45727973062-2",
+          "size_in_bytes": 184200,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076807250",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076807250/zip",
+          "expired": false,
+          "digest": "sha256:b49516d81fd0d830e519fe8929946922f38a2a7e2d0f0ebe57134d19c7e8003f",
+          "created_at": "2026-11-26T00:55:15Z",
+          "updated_at": "2026-11-26T00:55:15Z",
+          "expires_at": "2026-12-26T00:55:14Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "b49516d81fd0d830e519fe8929946922f38a2a7e2d0f0ebe57134d19c7e8003f",
+        "shard": 10,
+        "executed_case_count": 15,
+        "assigned_cases": [
+          "test_actor_rigs",
+          "test_architectural_generator_ui",
+          "test_blacksite_nine_integration",
+          "test_feature_launcher",
+          "test_liquid_inertial_host",
+          "test_material_lab_ui",
+          "test_palette_shader_compile_bounds",
+          "test_physical_usable_course",
+          "test_play_life001_acrobat",
+          "test_play_life009_acrobat",
+          "test_play_pace002_acrobat",
+          "test_play_ui004_gamepad_events",
+          "test_rem002_body_granular",
+          "test_workbench_boundary_retention",
+          "test_workbench_reservoir_lab"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.21899999999993724,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "59380bb4869f76ec966f7759fa41461ce7caa2248d60bd8e1ec3dba69c61dcdb"
+      },
+      {
+        "artifact": {
+          "id": 15077207171,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzIwNzE3MQ==",
+          "name": "windows-godot-headless-11-45727973062-2",
+          "size_in_bytes": 201812,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077207171",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077207171/zip",
+          "expired": false,
+          "digest": "sha256:e78ff0ff74d3c22e26c965c0a86c77397e2574fba140cf1c36dc267b174c8eb4",
+          "created_at": "2026-11-26T00:52:39Z",
+          "updated_at": "2026-11-26T00:52:39Z",
+          "expires_at": "2026-12-26T00:52:38Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "e78ff0ff74d3c22e26c965c0a86c77397e2574fba140cf1c36dc267b174c8eb4",
+        "shard": 11,
+        "executed_case_count": 15,
+        "assigned_cases": [
+          "test_actor_usables_integration",
+          "test_architectural_project_contract",
+          "test_brush_owner_commands",
+          "test_gameplay_recorder",
+          "test_liquid_level_import_host",
+          "test_material_lab_workbench_integration",
+          "test_pchar001_player_representations",
+          "test_physical_usable_equipment",
+          "test_play_life001_arcadelander",
+          "test_play_life009_arcadelander",
+          "test_play_pace002_arcadelander",
+          "test_play_ui005_session_selection",
+          "test_render_patch_handoff_regression",
+          "test_workbench_canvas",
+          "test_workbench_retained_pressure"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.2189999999999941,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "d2f166edbce822f1385dca97c35c655dac5699cee22e3461d8f1650454cf3d4c"
+      },
+      {
+        "artifact": {
+          "id": 15076233788,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NjIzMzc4OA==",
+          "name": "windows-godot-headless-12-45727973062-2",
+          "size_in_bytes": 182492,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076233788",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076233788/zip",
+          "expired": false,
+          "digest": "sha256:1e4db3d6425e80a88f7f2befa201e8e4713b78a7fc31cba074bcf4bb16ae8365",
+          "created_at": "2026-11-26T00:53:06Z",
+          "updated_at": "2026-11-26T00:53:06Z",
+          "expires_at": "2026-12-26T00:53:06Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "1e4db3d6425e80a88f7f2befa201e8e4713b78a7fc31cba074bcf4bb16ae8365",
+        "shard": 12,
+        "executed_case_count": 15,
+        "assigned_cases": [
+          "test_ambient_authoring",
+          "test_art_batch_native",
+          "test_building_material_integration",
+          "test_gen007_inspection",
+          "test_liquid_level_preparation",
+          "test_material_lab_world",
+          "test_penv001_player_environment",
+          "test_physical_usable_lifecycle",
+          "test_play_life001_jetbarrel",
+          "test_play_life009_jetbarrel",
+          "test_play_pace002_jetbarrel",
+          "test_play_ui007_acrobat",
+          "test_render_world_generation",
+          "test_workbench_combined_authoring",
+          "test_workbench_spray_rearm"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.18699999999989814,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "25376004495862fde5f8b4b43f6e49e2247ca0f80da402f85bee043270d764a2"
+      },
+      {
+        "artifact": {
+          "id": 15077275814,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzI3NTgxNA==",
+          "name": "windows-godot-headless-13-45727973062-2",
+          "size_in_bytes": 187168,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077275814",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077275814/zip",
+          "expired": false,
+          "digest": "sha256:93def10ba5d036f85f83373589ac2583c88047ea3a47eddac6a74d42ff137a33",
+          "created_at": "2026-11-26T00:51:26Z",
+          "updated_at": "2026-11-26T00:51:26Z",
+          "expires_at": "2026-12-26T00:51:26Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "93def10ba5d036f85f83373589ac2583c88047ea3a47eddac6a74d42ff137a33",
+        "shard": 13,
+        "executed_case_count": 15,
+        "assigned_cases": [
+          "test_ambient_clock",
+          "test_art_deferred_manual",
+          "test_cell_world",
+          "test_gen007_workbench",
+          "test_liquid_ordinary_demo_host",
+          "test_megablock_project",
+          "test_pf_c2048_prepared",
+          "test_physical_usable_script",
+          "test_play_life001_stuntbuggy",
+          "test_play_life009_stuntbuggy",
+          "test_play_pace002_stuntbuggy",
+          "test_play_ui007_arcadelander",
+          "test_script_hotpath_native_fill",
+          "test_workbench_deferred_paint",
+          "test_workbench_wave"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.20299999999997453,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "83bac1d361cd3c05db47dd1958e8f35c79b2a4c285eb1a3fbe34293831009d27"
+      },
+      {
+        "artifact": {
+          "id": 15077590572,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzU5MDU3Mg==",
+          "name": "windows-godot-headless-14-45727973062-2",
+          "size_in_bytes": 182766,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077590572",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077590572/zip",
+          "expired": false,
+          "digest": "sha256:7e53a92aa6a9f2d657ddc5517e124754308295e9e826c341103f8a3a96651d6d",
+          "created_at": "2026-11-26T00:51:34Z",
+          "updated_at": "2026-11-26T00:51:34Z",
+          "expires_at": "2026-12-26T00:51:32Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "7e53a92aa6a9f2d657ddc5517e124754308295e9e826c341103f8a3a96651d6d",
+        "shard": 14,
+        "executed_case_count": 15,
+        "assigned_cases": [
+          "test_ambient_engine",
+          "test_art_history_durability",
+          "test_ci_execution_policy",
+          "test_gentek_cathedral_showcase",
+          "test_liquid_owner_observation",
+          "test_microscenario_flood_control",
+          "test_physical_actor_actuation",
+          "test_physical_usables_admission",
+          "test_play_life001_trialsbike",
+          "test_play_life009_trialsbike",
+          "test_play_pace002_trialsbike",
+          "test_play_ui007_jetbarrel",
+          "test_semantic_planes_examples",
+          "test_workbench_desktop_interest",
+          "test_workbench_wave_spill"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.20299999999997453,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "fa49e74954f5e0de00e7024433e657bc6c2eb952632a3ee3d2b70abd4a6e2db2"
+      },
+      {
+        "artifact": {
+          "id": 15077271713,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzI3MTcxMw==",
+          "name": "windows-godot-headless-15-45727973062-2",
+          "size_in_bytes": 323301,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077271713",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077271713/zip",
+          "expired": false,
+          "digest": "sha256:1cf16ffe6e1b6b29933a9c5827b4b8cc18e179d02c27da3538a48a681593c115",
+          "created_at": "2026-11-26T00:51:24Z",
+          "updated_at": "2026-11-26T00:51:24Z",
+          "expires_at": "2026-12-26T00:51:23Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "1cf16ffe6e1b6b29933a9c5827b4b8cc18e179d02c27da3538a48a681593c115",
+        "shard": 15,
+        "executed_case_count": 15,
+        "assigned_cases": [
+          "test_ambient_examples_native",
+          "test_art_history_receipt_identity",
+          "test_coupling_lockstep",
+          "test_goblin_contract",
+          "test_liquid_physical_preparation",
+          "test_microscenario_materials_lab",
+          "test_physical_actor_arena",
+          "test_physical_usables_desktop",
+          "test_play_life002_acrobat",
+          "test_play_life010_acrobat",
+          "test_play_ui007_stuntbuggy",
+          "test_semantic_planes_runtime",
+          "test_transport_probe",
+          "test_workbench_edit_ordering",
+          "test_world_design_pack_adapter"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.20400000000000773,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "861814d0a663de4d60b653d57268e4e98352896ab8c826a8f5748b20e4851dbf"
+      },
+      {
+        "artifact": {
+          "id": 15076034392,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NjAzNDM5Mg==",
+          "name": "windows-godot-headless-16-45727973062-2",
+          "size_in_bytes": 114333,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076034392",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076034392/zip",
+          "expired": false,
+          "digest": "sha256:ac0c01ef6e250b16df2e5fc424491c3b86a3d7a41ddc15d39211c023314a26d2",
+          "created_at": "2026-11-26T00:51:51Z",
+          "updated_at": "2026-11-26T00:51:51Z",
+          "expires_at": "2026-12-26T00:51:50Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "ac0c01ef6e250b16df2e5fc424491c3b86a3d7a41ddc15d39211c023314a26d2",
+        "shard": 16,
+        "executed_case_count": 16,
+        "assigned_cases": [
+          "test_actor_prototypes",
+          "test_ambient_personalities_native",
+          "test_art_stored_material",
+          "test_depth_dimensions",
+          "test_liquid_comparison_ui",
+          "test_liquid_synchronous_water_reference_body",
+          "test_liquid_tower_host",
+          "test_neon_reliquary",
+          "test_physical_flight_handling",
+          "test_play_input010_stuntbuggy",
+          "test_play_life004_acrobat",
+          "test_play_pace001_acrobat",
+          "test_player_playground_runtime",
+          "test_wave_flow",
+          "test_workbench_input",
+          "scene"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.20299999999997453,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "b9bceb79e47b9a3a26a44d9a7553fedf207f1c4816f1c83a8a0492c499bc319a"
+      },
+      {
+        "artifact": {
+          "id": 15077520497,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzUyMDQ5Nw==",
+          "name": "windows-godot-headless-17-45727973062-2",
+          "size_in_bytes": 315467,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077520497",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077520497/zip",
+          "expired": false,
+          "digest": "sha256:dcc0c736110b5decdc2b5ac522a6b5e0893b6e12b937cfda12ddb9a10cd6f5b1",
+          "created_at": "2026-11-26T00:52:28Z",
+          "updated_at": "2026-11-26T00:52:28Z",
+          "expires_at": "2026-12-26T00:52:27Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "dcc0c736110b5decdc2b5ac522a6b5e0893b6e12b937cfda12ddb9a10cd6f5b1",
+        "shard": 17,
+        "executed_case_count": 16,
+        "assigned_cases": [
+          "test_actor_actuator_session",
+          "test_ambient_independent",
+          "test_art_lazy_traffic",
+          "test_coupling_lockstep_desktop",
+          "test_gen007_qualification",
+          "test_goblin_policies",
+          "test_liquid_physical_transaction",
+          "test_microscenario_native_observation",
+          "test_physical_actor_catalog",
+          "test_physical_usables_runtime",
+          "test_play_life002_arcadelander",
+          "test_play_life010_arcadelander",
+          "test_play_ui007_trialsbike",
+          "test_showcase_tiles",
+          "test_workbench_failure_containment",
+          "test_worldgen_fields"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.18699999999989814,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "8ec54a0625f4c1f2fe6de9960413f848317de706c5bb19069d3b978e1a5bd735"
+      },
+      {
+        "artifact": {
+          "id": 15076773000,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3Njc3MzAwMA==",
+          "name": "windows-godot-headless-18-45727973062-2",
+          "size_in_bytes": 314470,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076773000",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076773000/zip",
+          "expired": false,
+          "digest": "sha256:b3fc057c9159d650f596649b84f1775a7c498161fe15a731b614c5618679c1f9",
+          "created_at": "2026-11-26T00:53:21Z",
+          "updated_at": "2026-11-26T00:53:21Z",
+          "expires_at": "2026-12-26T00:53:19Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "b3fc057c9159d650f596649b84f1775a7c498161fe15a731b614c5618679c1f9",
+        "shard": 18,
+        "executed_case_count": 16,
+        "assigned_cases": [
+          "test_actor_prototype_integration",
+          "test_ambient_ledge_geometry",
+          "test_art_manual_audit",
+          "test_coupling_lockstep_semantics",
+          "test_hard_surface_incremental_packet",
+          "test_lcb_pressure_reference",
+          "test_liquid_policy_worker",
+          "test_microscenario_reference_pack_ui",
+          "test_physical_actor_effect_admission",
+          "test_physics_characterisation",
+          "test_play_life002_jetbarrel",
+          "test_play_life010_jetbarrel",
+          "test_play_wait001_acrobat",
+          "test_simulation_worker_interest_ownership",
+          "test_workbench_failure_recovery",
+          "test_worldgen_grammar"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.14099999999999113,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "97499e5cb8d97ad8884858705e0636984e68ea8e7ed09a33ccb39475fe7d74a1"
+      },
+      {
+        "artifact": {
+          "id": 15076921856,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NjkyMTg1Ng==",
+          "name": "windows-godot-headless-19-45727973062-2",
+          "size_in_bytes": 329433,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076921856",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15076921856/zip",
+          "expired": false,
+          "digest": "sha256:1e7f5f4806c46e80e74f558b65ebc5937dd7986cbc1d2438bcf58a565ebf7661",
+          "created_at": "2026-11-26T00:54:49Z",
+          "updated_at": "2026-11-26T00:54:49Z",
+          "expires_at": "2026-12-26T00:54:48Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "1e7f5f4806c46e80e74f558b65ebc5937dd7986cbc1d2438bcf58a565ebf7661",
+        "shard": 19,
+        "executed_case_count": 16,
+        "assigned_cases": [
+          "test_actor_prototype_session",
+          "test_ambient_native_motion",
+          "test_art_panel_ui",
+          "test_deepworks",
+          "test_lcb_fixture_manifests",
+          "test_liquid_prepared_host",
+          "test_microscenario_reference_contract",
+          "test_microscenario_stress",
+          "test_physical_actor_effect_cancellation",
+          "test_physics_instrumentation",
+          "test_play_life002_stuntbuggy",
+          "test_play_life010_stuntbuggy",
+          "test_play_wait001_arcadelander",
+          "test_thunderbowl_arena",
+          "test_workbench_flatten",
+          "test_worldgen_planes"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.2189999999999941,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "a9f331856d8d0cfa6a69116fec8593b8db4e6de5037ccf6a3f6f31fdeeb88607"
+      },
+      {
+        "artifact": {
+          "id": 15077117126,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzExNzEyNg==",
+          "name": "windows-godot-headless-20-45727973062-2",
+          "size_in_bytes": 149626,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077117126",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077117126/zip",
+          "expired": false,
+          "digest": "sha256:b840c590f1a3bf4ef658bf35d2f96163a24b88428f5f3a9f2b5b97b4856ed3e0",
+          "created_at": "2026-11-26T00:55:18Z",
+          "updated_at": "2026-11-26T00:55:18Z",
+          "expires_at": "2026-12-26T00:55:17Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "b840c590f1a3bf4ef658bf35d2f96163a24b88428f5f3a9f2b5b97b4856ed3e0",
+        "shard": 20,
+        "executed_case_count": 16,
+        "assigned_cases": [
+          "test_ambient_default_off_integration",
+          "test_art_session_log",
+          "test_depth_compositor",
+          "test_lcb_pressure_optimization",
+          "test_liquid_synchronous_reference_body",
+          "test_native_render_bridge_regression",
+          "test_physical_actor_trial",
+          "test_physics_async",
+          "test_play_input010_jetbarrel",
+          "test_play_life003_trialsbike",
+          "test_play_life011_trialsbike",
+          "test_player_playground_course",
+          "test_tick_failure_regression",
+          "test_water_presentation_model",
+          "test_workbench_host_claim_native",
+          "profile_scheduler"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.20299999999997453,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "629d8bc34897e9a5a1f2ecdbb557863334e8c54a5c3cc9def42307c150000a11"
+      },
+      {
+        "artifact": {
+          "id": 15077671019,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzY3MTAxOQ==",
+          "name": "windows-godot-headless-21-45727973062-2",
+          "size_in_bytes": 139362,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077671019",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077671019/zip",
+          "expired": false,
+          "digest": "sha256:26610bd114cf6ab3763cd48606d03994c80b738f2777e556a2be1e4b1d17d1ec",
+          "created_at": "2026-11-26T00:56:47Z",
+          "updated_at": "2026-11-26T00:56:47Z",
+          "expires_at": "2026-12-26T00:56:47Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "26610bd114cf6ab3763cd48606d03994c80b738f2777e556a2be1e4b1d17d1ec",
+        "shard": 21,
+        "executed_case_count": 16,
+        "assigned_cases": [
+          "test_actor_rig_session",
+          "test_architectural_generator",
+          "test_art_undo",
+          "test_explore001_generated_workbench",
+          "test_gen007_reactions",
+          "test_interaction_async",
+          "test_liquid_feel_census",
+          "test_material_lab_catalogue",
+          "test_paint_editor_history",
+          "test_physical_flight_physics",
+          "test_play_input011_arcadelander",
+          "test_play_life004_stuntbuggy",
+          "test_play_pace001_stuntbuggy",
+          "test_prepared_physical_owner",
+          "test_workbench_actor_catalog",
+          "test_workbench_liquid_equipment"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.18799999999998818,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "a3bbb52824885c594bbafe1836f6bc4e0a86e6c13ffbf718394bab8f095400f4"
+      },
+      {
+        "artifact": {
+          "id": 15077286977,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzI4Njk3Nw==",
+          "name": "windows-godot-headless-22-45727973062-2",
+          "size_in_bytes": 137360,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077286977",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077286977/zip",
+          "expired": false,
+          "digest": "sha256:74e0fa7b53feda8bee39c0b111ba56f81bb3d2a37001ffac364bfa0d636663c8",
+          "created_at": "2026-11-26T00:56:11Z",
+          "updated_at": "2026-11-26T00:56:11Z",
+          "expires_at": "2026-12-26T00:56:10Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "74e0fa7b53feda8bee39c0b111ba56f81bb3d2a37001ffac364bfa0d636663c8",
+        "shard": 22,
+        "executed_case_count": 16,
+        "assigned_cases": [
+          "test_actor_rig_integration",
+          "test_ambient_workbench",
+          "test_art_traffic_panel_safety",
+          "test_depth_layer_runtime",
+          "test_liquid_desktop_default_host",
+          "test_liquid_trial_body",
+          "test_material_glow_control",
+          "test_paint_editor_generated_workbench",
+          "test_physical_flight_lab_scene",
+          "test_play_input011_acrobat",
+          "test_play_life004_jetbarrel",
+          "test_play_pace001_jetbarrel",
+          "test_playval001_selectable_player_fixtures",
+          "test_web_worker_parity",
+          "test_wex004_decompression",
+          "test_workbench_liquid_edges"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.20299999999997453,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "2fa52fd241763701d9dcdc7579373ded2f44f549ba52df91121835e4b3619954"
+      },
+      {
+        "artifact": {
+          "id": 15077685793,
+          "node_id": "MDg6QXJ0aWZhY3QxNTA3NzY4NTc5Mw==",
+          "name": "windows-godot-headless-23-45727973062-2",
+          "size_in_bytes": 102916,
+          "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077685793",
+          "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/15077685793/zip",
+          "expired": false,
+          "digest": "sha256:6ef203b2ca50e485fb02b13d7e5d2056c5337972d83e8faf5ceab98d5a1e1b9f",
+          "created_at": "2026-11-26T00:55:23Z",
+          "updated_at": "2026-11-26T00:55:23Z",
+          "expires_at": "2026-12-26T00:55:22Z",
+          "workflow_run": {
+            "id": 45727973062,
+            "repository_id": 1350077435,
+            "head_repository_id": 1350077435,
+            "head_branch": "feature/ambient-001-20261124",
+            "head_sha": "26317ada6a1f40637e96d732ec28f55c70cd53a2"
+          }
+        },
+        "archive_sha256": "6ef203b2ca50e485fb02b13d7e5d2056c5337972d83e8faf5ceab98d5a1e1b9f",
+        "shard": 23,
+        "executed_case_count": 16,
+        "assigned_cases": [
+          "test_act004_body_capacity",
+          "test_actor_rig_actuation",
+          "test_ambient_profile_editor",
+          "test_art_traffic_integrity",
+          "test_depth_lab",
+          "test_liquid_default_demo_preparation",
+          "test_liquid_water_feel_host",
+          "test_liquid_water_reference_body",
+          "test_paint_editor_executor",
+          "test_physical_flight_lab",
+          "test_play_input010_trialsbike",
+          "test_play_life004_arcadelander",
+          "test_play_pace001_arcadelander",
+          "test_player_vehicle_controls",
+          "test_web_demo_setup",
+          "test_workbench_lcb_salvage"
+        ],
+        "status": "passed",
+        "install": {
+          "allowance_seconds": 300.0,
+          "attempt": 2,
+          "available": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "installed": [
+            {
+              "bytes": 9987072,
+              "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+              "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+            }
+          ],
+          "manifest_sha256": "5278f661af436c597c4266de6154978161f9a93a9c6df9954fafc17329052353",
+          "run_id": "45727973062",
+          "schema": "cybersand-lfs-runtime-artifact-v1-installation",
+          "seconds": 0.17199999999996862,
+          "selected": [
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll"
+          ],
+          "source_commit": "a83b44dee96b6db382e8cd9def727c963a979eaf",
+          "status": "passed"
+        },
+        "input_count": 1137,
+        "tested_inputs_digest": "91d5206e464c173cfce12efe6513d5177539cf33694177bb49071b5ce5c5b659",
+        "native_source_input_count": 105,
+        "native_input_digest": "2f80641f569659e871f8ed3e09524939de12d5bb230a65ea978b7092c7e3e6cd",
+        "all_case_logs_verified": true,
+        "report_sha256": "b014b5651b1f32fa194a9975c4134dda980af8ed5671dc7fa629b01bfc250bb2"
+      }
+    ]
+  },
+  "prior_packet": "lfs-fanout-hosted-263-attempt1.json",
+  "limits": [
+    "Physical owner acceptance remains outstanding",
+    "No native binary publication or public release performed",
+    "Original failed attempts remain failed; fresh and carried executions are not pooled into invented attempts",
+    "This review approves the frozen candidate source; subsequent accepted main requires its own post-merge checks"
+  ]
+}

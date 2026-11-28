@@ -1,0 +1,186 @@
+{
+  "successor": "d503d824aac4128968f7dfba5dccd540c3c07b59",
+  "receipts": [
+    {
+      "pr": 763,
+      "source": "2d63bba23932feb2c051c11df9d0775c24ea451d",
+      "comment": {
+        "id": 7178800146
+      },
+      "result": {
+        "url": "https://github.com/techrote/cybersand/pull/763",
+        "number": 763,
+        "state": "closed",
+        "merged": false,
+        "mergeable": true,
+        "draft": true,
+        "body": "## Purpose\nImplement the owner-observed **WB-ART-UI-APPLY-001 (#713)** fix on accepted `main` without importing PUBPRES/Actor/Gentek/ObjectShard/RAMCACHE Draft branches.\n\n## Changed\n- `godot/scripts/art_conversation_editor.gd`: bounds custom editor content in a vertically scrolling region while retaining the standard ConfirmationDialog Apply/Cancel footer; centers the dialog clamped to its Art window.\n- `godot/tests/test_art_panel_ui.gd`: extends the existing real Workbench UI regression with 720p parent sizing, 520\u00d7320 and 640\u00d7400 Art windows, 400-line note text and long notices; checks both action buttons remain visible and within the actual popup bounds.\n- Existing edit/Cancel/audit semantics are retained and checked by the existing regression suite.\n\n**Only two files changed in one atomic commit.** No native World, physics, material laws, binary files, core workflow changes, or production-default modifications.\n\n## Verification and current limits\nSource HEAD: `a5c19ac51a9114a02daadc4c65f6e301c3c9b668`, based on accepted main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`.\n\nThe Godot 4.7 UI regression is prepared but **not yet executed** at PR creation; source review is not runtime acceptance. Use existing `art-session-logging.yml` Linux/Windows `test_art_panel_ui.gd` job and its isolated user profiles. If the popup geometry assertion differs on hosted Windows, retain original failure and investigate before changing the gate.\n\nPhysical Windows 11/NVIDIA 720p/1080p/DPI acceptance remains **NOT RUN**. Keep issue #713 open until the owner can actually click Apply after a long Note, fresh reopen and confirm semantics.\n\n**Draft/HOLD. No merge, Ready promotion, auto-merge, or source-provenance bypass authorized.**",
+        "title": "[Draft/HOLD] WB-ART-UI-APPLY-001: bound conversation editor and keep Apply visible (#713)",
+        "base": "main",
+        "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "head": "fix/art-conversation-bounded-713-20261123",
+        "head_sha": "2d63bba23932feb2c051c11df9d0775c24ea451d",
+        "head_repo_id": 1350077435,
+        "head_repo_full_name": "techrote/cybersand",
+        "merge_commit_sha": "ae383e64e78d439ca02b7542160598f21ebf7c68",
+        "user": {
+          "login": "techrote",
+          "name": "techrote",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/261801702?v=4",
+          "id": 261801702
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-23T02:27:26Z",
+        "updated_at": "2026-11-26T00:28:49Z",
+        "closed_at": "2026-11-26T00:28:49Z",
+        "merged_at": null,
+        "commits": 3,
+        "changed_files": 2,
+        "additions": 60,
+        "deletions": 2,
+        "display_url": "https://github.com/techrote/cybersand/pull/763",
+        "display_title": "[Draft/HOLD] WB-ART-UI-APPLY-001: bound conversation editor and keep Apply visible (#713)"
+      }
+    },
+    {
+      "pr": 765,
+      "source": "cb88ab25d6dbdc8b459431d0189332bb7d37188a",
+      "comment": {
+        "id": 7178801038
+      },
+      "result": {
+        "url": "https://github.com/techrote/cybersand/pull/765",
+        "number": 765,
+        "state": "closed",
+        "merged": false,
+        "mergeable": true,
+        "draft": true,
+        "body": "## ART-LOCAL-CLOSE-744 \u2014 absent LM Studio server / window-close investigation (not an unproved freeze fix)\n\nImplements the **measurement and deterministic reproduction** portion of [#744](https://github.com/techrote/cybersand/issues/744) on a fresh branch from accepted `main` at `00cdb02f103265b6dc5224c68283e9a0c8cb449f` (includes merged Art session-only PR #727).\n\n### What changed\n- Bounded, credential-free in-memory `last_request_timing` in `art_provider.gd` around request startup, asynchronous HTTP completion, JSONL response/usage writes, JSON parse, total callback and cancellation. It retains **one** request only and emits **no** new JSONL records.\n- Bounded `last_close_timing` and `last_stop_timing` on the actual Art window to separate synchronous X/Hide from main-thread HTTP or Stop processing.\n- An **isolated loopback-only Python HTTP fixture** drives the actual Shared Workbench and provider UI through immediate 404, delayed 404, close with request active, close then reopen, explicit Stop, **one no-server/connection-refused case**, and valid `[]`. It measures maximum adjacent-frame gap and stores source-bound, no-credential JSON evidence.\n- Integrated into the existing Linux and Windows Godot 4.7 Art qualification workflow. Added procedure/evidence limitations in `docs/audits/2026-11-23-art-local-close/README.md`.\n\n### Important scope boundary\n**Closing Art still hides it; it does not stop the current HTTP request.** This source behavior is unchanged intentionally because owner policy and physical root cause have not been established. `HTTPRequest.use_threads` does not prove the callback's synchronous log/parse/UI work is off-thread. There is no change to model inference, provider credentials, PAINT, saved Art JSONL, historical logs or session restore.\n\n**Owner correction (23 November 2026): LM Studio was not running during the freeze.** The selected invalid model name was incidental because no server could return model-validation HTTP 404. The correct primary reproduction is **Send to the configured LM Studio endpoint with no listener, then close Art**. The existing hosted fixture has only one closed-port case, so its passing 404-heavy matrix does **not** establish that the owner's no-server regression is resolved. There is no need to load a real model or investigate LM Studio GPU inference contention for this original symptom. Compare absent-server Send+close, Send without close, Stop+close, and idle close on physical Windows before choosing a narrow remedy.\n\n### Acceptance and execution\n- New probe: `python tools/ci/run_art_local_close.py --godot <source-matched Godot 4.7 executable> --project godot --output <evidence directory>`.\n- Source/snapshot `cb88ab25d6dbdc8b459431d0189332bb7d37188a`.\n- CI source-qualification pending at PR creation. Do not count unfinished checks as passing.\n- No paid inference or external network model calls; all HTTP requests are loopback-only, no API keys used.\n- **Draft/HOLD**, no merge, no auto-merge, no promotion. Owner physical repro and policy decision needed before changing what X does.\n\nRefs #744.",
+        "title": "[Draft/HOLD] ART-LOCAL-CLOSE-744: absent LM Studio server / Art-close timing probe",
+        "base": "main",
+        "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "head": "investigation/art-local-close-744-20261123",
+        "head_sha": "cb88ab25d6dbdc8b459431d0189332bb7d37188a",
+        "head_repo_id": 1350077435,
+        "head_repo_full_name": "techrote/cybersand",
+        "merge_commit_sha": "f0228cc6fbdbc7194b1e4b28457c3f066a1ea60b",
+        "user": {
+          "login": "techrote",
+          "name": "techrote",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/261801702?v=4",
+          "id": 261801702
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-23T03:06:45Z",
+        "updated_at": "2026-11-26T00:28:52Z",
+        "closed_at": "2026-11-26T00:28:52Z",
+        "merged_at": null,
+        "commits": 1,
+        "changed_files": 6,
+        "additions": 401,
+        "deletions": 2,
+        "display_url": "https://github.com/techrote/cybersand/pull/765",
+        "display_title": "[Draft/HOLD] ART-LOCAL-CLOSE-744: absent LM Studio server / Art-close timing probe"
+      }
+    },
+    {
+      "pr": 766,
+      "source": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+      "comment": {
+        "id": 7178801840
+      },
+      "result": {
+        "url": "https://github.com/techrote/cybersand/pull/766",
+        "number": 766,
+        "state": "closed",
+        "merged": false,
+        "mergeable": true,
+        "draft": true,
+        "body": "## Scope \u2014 issue #744 (Draft/HOLD)\n\nOwner-observed Windows 11 Art Workbench pause after **Send** with nonexistent LM Studio model and closing the Art window.\n\nThis small mainline-only candidate addresses two source-verified sources of unnecessary main-thread work on the failed local-model path:\n\n1. **HTTP non-2xx responses are not assistant turns.** The provider keeps the complete redacted HTTP response in its append-only session JSONL, but no longer additionally writes fictitious `usage` and `assistant` audit events on the failure path. The error shown in UI/future conversation is bounded to 512 characters of response content (full response still retained in Traffic). Success-path response/usage/assistant audit semantics remain unchanged. Transport errors remain distinct.\n2. **Hidden Art window skips model-mode UI refresh.** After an X/Hide, the provider request and all native executor polling, audit results, deadlines, and model-turn completion continue normally. The repeated window-specific control text, tooltips and layout state are not rebuilt until the window is visible. X remains Hide, **not Stop**.\n\n## Reproduction/qualification\n\n- New `godot/tests/test_art_invalid_local_model_close.gd`: runs the actual Shared Workbench with a real in-process loopback HTTP server, nonexistent LM Studio model, 404 error (4-KB body), and immediately hidden Art window. Asserts real HTTP request, active background request after Hide, one response receipt, no artificial assistant/usage records, bounded error, single failure conversation turn, no window reappearance, and absence of multi-second frame gaps. No external/model/paid calls.\n- The existing `art-session-logging.yml` Linux/Windows Godot 4.7 jobs now execute this one additional targeted test. Prior session-only/Undo/native Art regression suites remain mandatory.\n- Do not run arbitrary full CI extra campaigns for this script-only, native-unchanged patch. Preserve real test negatives and correct the candidate source if the loopback test fails.\n\n## Qualification/limits\n\n**PASS \u2014 hosted Linux/Windows exact-source Godot 4.7 Art suites** at [run 45106738619](https://github.com/techrote/cybersand/actions/runs/45106738619) for HEAD `48970266ae3b1ae47d2278d25ea312328078ddbd`, including 12/12 actual localhost HTTP 404/Hide regression checks on each platform. Observed maximum frame gap: Linux 7.005 ms; Windows 8.367 ms. Full original logs and report are retained in run artifacts; [qualification evidence comment](https://github.com/techrote/cybersand/pull/766#issuecomment-7090874487).\n\n**OWNER HOLD:** The physical Windows 11/NVIDIA/LM Studio freeze is not yet independently reproduced or retested on the owner's actual hardware. Hosted loopback success does not prove physical playfeel. Preserve #744 as an open acceptance gate until verified.\n\nNo native, physics, world, persistence or other ongoing PR code imported. No merge, auto-merge, Ready or mainline source changes are authorized.",
+        "title": "[Draft/HOLD] ART-INVALID-MODEL-CLOSE-744: bound failed HTTP path and hidden Art UI work",
+        "base": "main",
+        "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "head": "fix/art-invalid-model-close-latency-744-20261123",
+        "head_sha": "48970266ae3b1ae47d2278d25ea312328078ddbd",
+        "head_repo_id": 1350077435,
+        "head_repo_full_name": "techrote/cybersand",
+        "merge_commit_sha": "f1dac5d0e81c962f847ffa4a1c35909657d3ba07",
+        "user": {
+          "login": "techrote",
+          "name": "techrote",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/261801702?v=4",
+          "id": 261801702
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-23T03:27:41Z",
+        "updated_at": "2026-11-26T00:28:55Z",
+        "closed_at": "2026-11-26T00:28:55Z",
+        "merged_at": null,
+        "commits": 8,
+        "changed_files": 4,
+        "additions": 179,
+        "deletions": 12,
+        "display_url": "https://github.com/techrote/cybersand/pull/766",
+        "display_title": "[Draft/HOLD] ART-INVALID-MODEL-CLOSE-744: bound failed HTTP path and hidden Art UI work"
+      }
+    },
+    {
+      "pr": 773,
+      "source": "1c2d084cba2e44e455f6ffe7d269007519829102",
+      "comment": {
+        "id": 7178802810
+      },
+      "result": {
+        "url": "https://github.com/techrote/cybersand/pull/773",
+        "number": 773,
+        "state": "closed",
+        "merged": false,
+        "mergeable": true,
+        "draft": false,
+        "body": "## Outcome and acceptance boundary\n\nThis consolidates the Art provider, conversation UI, session logging, close timing and authoring lifecycle work into one source-qualified candidate on accepted main.\n\n**Draft/HOLD. No merge, Ready promotion or automatic merge.** The integrated application is qualified on Linux and hosted Windows Godot 4.7, and the final Windows evaluator has passed its actual extracted launcher, immutable-file and loaded-module gates. The owner's physical Windows/NVIDIA acceptance remains pending.\n\n**Owner correction preserved:** LM Studio was not running during the original multi-second freeze. The primary protocol is an absent listener \u2192 Send \u2192 Art's ordinary X/Hide. A live mock HTTP 404 is a separate condition and does not reproduce that report. This work repairs independently reproduced teardown and large-value processing defects; it does not assert an unproved cause or physical fix for the original no-server freeze.\n\n## Exact source and evaluator\n\n| Identity | Value |\n| --- | --- |\n| Candidate/package commit | `fa22d386b802b686c371bb6e12996c7a93c18588` |\n| Candidate tree | `3245dfc9090a6f37a0e0824325b21e86b59d50a8` |\n| Same-tree local review checkpoint | `d14a8985d4e062ecfa80bb6f461ba1d843c77f70` |\n| Accepted main | `00cdb02f103265b6dc5224c68283e9a0c8cb449f` |\n| Application matrix source | `981a740828decbeac04d5a14511d0222095de0a9`, tree `9e37f6c4113e51b7aa9969bd7f3cc726405467bf` |\n| Windows evaluator | `art-workbench-final-windows.zip`, 92,551,375 bytes |\n| Evaluator SHA-256 | `c1666f1b6cee269bea8e95c4d018f2f36dd3b246491a3754c83cc37d167f9f9f` |\n\n[Qualified Windows artifact](https://github.com/techrote/cybersand/actions/runs/45497650568/artifacts/14968792395) contains the evaluator ZIP and checksum. Extract the evaluator ZIP to a writable folder, then double-click **Open Workbench.cmd**. It needs no Git, Python, compiler or running model server. It opens the normal Workbench with Art, uses a package-local profile, leaves Image off for the primary reproduction, and sends no request automatically. **Ctrl+F12** writes a timing checkpoint; **Open diagnostics.cmd** opens the reports.\n\nThe package contains exact Godot 4.7, unchanged native/Rapier payloads, required VC runtime, notices, source identity, complete immutable hashes and `APPLICATION-QUALIFICATION.json`. The proof distinguishes the package commit from the application-tested commit. The published source bundle independently reconstructs the complete 21-commit suffix and final tree from a declared complete shallow accepted-main snapshot; local/API identity mappings and older failed controls are retained.\n\n## What changed\n\n- Preserve ordinary X as Hide and explicit Stop as cancellation. Keep World-generation and reentrant-audit fences before HTTP or native admission, including hidden-window and replacement paths.\n- Use nonblocking HTTP polling, finite timeouts, bounded response allocation and disabled redirects. Connection/DNS/TLS/timeout, genuine HTTP errors, malformed responses and capacity failures remain distinct; failures do not fabricate assistant turns or usage.\n- Prepare large incoming and outgoing values away from the UI thread. One preparation task per provider uses copied values, cooperative cancellation and credential-snapshot validation; workers never touch World or SceneTree. Durable journal append and native ordering remain on the main thread.\n- Preserve accepted session-only JSONL and complete admitted redacted traffic, while bounding live/error projections and avoiding repeated parsing/filesystem work. Hide/reopen preserves the current game-session conversation; a new game session starts empty with an independent audit. Historical files remain untouched.\n- Bound Note/conversation dialogs and scaled auxiliary windows, keep Apply/Cancel reachable, fill the actual editing area, populate very long conversation lists in frame slices and reject stale Apply. Large messages retain complete editable 4,096-character parts, with direct part-number navigation and clipboard paging before expensive text shaping.\n- Preserve manual drawing, model-assisted authoring, partial native application, Stop, Undo/Redo and saved authored starts. Captured prompt/image/World state stays coherent while the owner edits or switches modes.\n- Apply the exact #750/#756 NVIDIA and LM Studio presets, remove `astra5-6` from suggestions, retain custom identifiers/endpoints/history, and bind each Key dialog to its captured provider. Presets are not claims of API access, model availability or image support.\n- Package from a fresh committed checkout with strict source checks. Canonical descriptor export preserves all settings; all four import descriptors now remain byte-identical after actual Windows first import. No immutable-file exclusion was added.\n\nNo native source rebuild or unrelated Batch Lab, PUBPRES, ObjectShard, Actor Compose or Architecture implementation is imported. Donor branches are preserved.\n\n## Important design choices\n\n| Choice | Reason and practical limit |\n| --- | --- |\n| Nonblocking HTTP with finite budgets | The controlled accepted-socket/no-header case exceeded a 30-second teardown watchdog with threaded HTTP. Polling avoids that blocking ownership path. The pinned 64 KiB read path advances with frames, so slow rendering reduces transfer throughput under the configured timeout. |\n| Value preparation worker; durable append stays on the main thread | Large JSON/redaction work can finish or be cancelled without accessing native/scene objects. Complete admitted receipts retain ordering. Slow storage and total heap remain measurable limits. |\n| Complete 4,096-character editable parts | A single giant text widget caused multi-second shaping pauses. All content and edits are retained. Changing parts or pasting across parts resets local text Undo; Cancel still discards the whole draft, and native World Undo/Redo is independent. |\n| Preserve #727's session-only contract | Collaboration persists within the current game session, including Hide/reopen. Automatic cross-session transcript restoration would change the accepted contract; historical audit files are retained. |\n| Reuse only unchanged application qualification | A fail-closed gate checks the seven explicit packaging/workflow/test/guide paths, protected trees, fixed prior run/jobs, immutable artifact digests and all 12 groups per platform. Any other source change requires full application tests. Fresh package/launcher/module acceptance always runs separately. |\n\n## Qualified evidence\n\n[Application run 45482969231](https://github.com/techrote/cybersand/actions/runs/45482969231) exercised the actual native Shared Workbench, isolated profiles, real loopback fixtures, Godot UI hit testing and displayed Linux/Windows paths. All application groups passed. The original Windows overall job subsequently failed at packaging; that failure remains explicit in every reuse proof.\n\n| Application check on `981a7408` | Linux | Windows |\n| --- | ---: | ---: |\n| Complete matrix groups | 12 | 12 |\n| Headless matrix assertions | 928 | 928 |\n| Displayed matrix assertions | 903 | 904 |\n| Panel UI assertions, headless/displayed | 275 / 279 | 275 / 279 |\n| Displayed native clipboard assertions | 71 | 71 |\n| Evaluator-input assertions per mode | 18 | 18 |\n| Complete redacted response bodies independently rehashed | 16 | 16 |\n| Complete changed conversations independently rehashed | 2 | 2 |\n\nConditional assertion-count differences are documented as unobserved conditions, not invented passes. The matrix covers absent listeners, immediate refusal, delayed connection, stalled/delayed HTTP, invalid model, malformed/oversized bodies, visible/X/Stop/reopen, incoming/outgoing preparation, native drawing, World replacement and real process exit with unfinished work.\n\nThe edited 16,769,024-byte conversation applied in **354.215 ms Linux / 413.840 ms Windows** in the displayed runs, with its complete content hash and zero HTTP admission. Windows's 16,773,283-byte assistant response completed with HTTP 200 after **48.129 seconds**, matched its complete audit body, and had a maximum frame of **823.830 ms in that case**. Transport duration and UI/callback/JSON/audit/native timing remain separate. The two-second adjacent-frame and cancellation/exit gates remain unchanged.\n\n[Final package run 45497650568](https://github.com/techrote/cybersand/actions/runs/45497650568), source `fa22d386`, passed:\n\n- Actual fixed-evidence/source proof, 30 proof-boundary tests and 7 Linux package tests, without skips.\n- Fresh committed Windows source/runtime staging and 7 Windows package tests, without skips.\n- Actual delivered command launcher from an extracted path containing spaces, native Workbench readiness, orderly teardown and exit 0.\n- Strict post-launch verification of **all 1,098 immutable files**; exact before/after/source equality for all four vendor import descriptors.\n- A complementary actual GUI process loading the expected Godot executable, native library, Rapier and VC runtime from that same copied installation with matching hashes.\n- Independent full ZIP inventory, every payload SHA, source/recipe/LFS identity, licenses and privacy review. No profile, diagnostics, generated caches, session configuration, duplicate paths or symlinks are included.\n\nThe final installed run recorded **54.185 seconds to readiness**, a **49.253-second startup gap**, **161.351 ms maximum visible-idle frame**, and **391.459 ms teardown** under hosted software rendering. No Send/provider activity occurred in this smoke check. Cold startup is an explicit remaining performance boundary and is separate from the qualified post-startup interaction matrix.\n\n[Final documentation/provenance run 45497650751](https://github.com/techrote/cybersand/actions/runs/45497650751) passed 11 suites / 459 tests plus documentation/action/source checks. Its merge-preview commit has the exact candidate tree. The existing Draft materialized-repository gate was skipped, not counted as passed. The four existing retrieval misses remain recorded. Existing Draft policies also skipped native/GDExtension/palette rebuild campaigns.\n\n## Source reconciliation and retained failures\n\n| Record | Reconciled donor head |\n| --- | --- |\n| #756 model roster | `8093a782a13a078ad6fa4fc9fdf11b969cbbf52f` |\n| #763 bounded conversation | `2d63bba23932feb2c051c11df9d0775c24ea451d` |\n| #765 local-close investigation | `cb88ab25d6dbdc8b459431d0189332bb7d37188a` |\n| #766 failed HTTP / hidden work | `48970266ae3b1ae47d2278d25ea312328078ddbd` |\n\n#727 is the accepted session-only baseline. #713, #744, #750, #559 and #558 were inspected alongside current PR identities, comments, ownership and CI. #756 is actually non-Draft despite its title/body; this candidate is an actual Draft. Latest Architecture coordination remains a separate future proposal, without imported implementation.\n\nOriginal artifacts, source mappings and negative controls are preserved. Earlier qualification found and corrected obsolete long-note assertions, incorrect root-versus-Art geometry checks, a total-list-loading cutoff, Windows clipboard LF/CRLF fixture semantics, a missed unfinished-worker Stop precondition and large-response fixture budgets under software frame pacing. Earlier controlled runtime failures include the >30-second accepted-socket teardown watchdog, 2.488-second near-limit response pause and 3.329-second outgoing Send frame.\n\nTwo packaging failures also remain explicit: `981a7408` failed a used-checkout guard whose rejected filenames were not retained; `2eedd8f3` built and launched but failed an import-descriptor hash check whose changed bytes were not retained. The final fresh-checkout/canonical-export run proves current stability without retroactively assigning an unproved cause to either missing observation. External local SIGKILLs and the brief workspace outage remain incomplete observations with no product-cause attribution.\n\n## Owner acceptance\n\nUse the [five-item owner checklist and engineering matrix](https://github.com/techrote/cybersand/blob/fa22d386b802b686c371bb6e12996c7a93c18588/docs/operations/art-workbench-final-evaluation.md). First allow import and World setup to finish, then test LM Studio fully stopped \u2192 no local listener \u2192 Send \u2192 immediate ordinary X. Compare visible, Stop/X and reopen paths; check Note layout/paging, custom provider settings and manual/partial/native authoring.\n\nPhysical Windows/NVIDIA no-listener acceptance, actual OS DPI/monitor transitions and owner storage/driver behavior remain owner checks. No paid inference or private provider configuration was used. The timing report excludes prompts, response bodies, endpoints, model identifiers and keys; the separate complete redacted Art audit remains in the isolated profile.\n\n[Integration evidence and design record](https://github.com/techrote/cybersand/blob/fa22d386b802b686c371bb6e12996c7a93c18588/docs/audits/2026-11-24-art-workbench-final/README.md).\n",
+        "title": "[Draft/HOLD] ART-WORKBENCH-FINAL-001 \u2014 Art Workbench finisher",
+        "base": "main",
+        "base_sha": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+        "head": "art/workbench-final-001",
+        "head_sha": "1c2d084cba2e44e455f6ffe7d269007519829102",
+        "head_repo_id": 1350077435,
+        "head_repo_full_name": "techrote/cybersand",
+        "merge_commit_sha": "597417d984f8f53696cd809c5c92ecb764fa446a",
+        "user": {
+          "login": "techrote",
+          "name": "techrote",
+          "email": null,
+          "avatar_url": "https://avatars.githubusercontent.com/u/261801702?v=4",
+          "id": 261801702
+        },
+        "requested_reviewers": null,
+        "requested_team_reviewers": null,
+        "diff": null,
+        "comments": null,
+        "created_at": "2026-11-24T18:42:45Z",
+        "updated_at": "2026-11-26T00:28:59Z",
+        "closed_at": "2026-11-26T00:28:59Z",
+        "merged_at": null,
+        "commits": 23,
+        "changed_files": 47,
+        "additions": 9801,
+        "deletions": 282,
+        "display_url": "https://github.com/techrote/cybersand/pull/773",
+        "display_title": "[Draft/HOLD] ART-WORKBENCH-FINAL-001 \u2014 Art Workbench finisher"
+      }
+    }
+  ],
+  "recorded_at": "2026-11-26T00:32:30.856560+00:00"
+}

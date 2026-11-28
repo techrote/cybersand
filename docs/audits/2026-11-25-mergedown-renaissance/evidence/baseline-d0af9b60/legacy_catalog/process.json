@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/2e90cf7b4aa3/cybersand-product/godot",
+    "--script",
+    "res://tests/test_workbench_actor_catalog.gd",
+    "--",
+    "--ci"
+  ],
+  "exit_code": 0,
+  "log_sha256": "86feccb14d4268f2c4f648e1ccc98a50e0dea2cb4a5856d4996a8aff8d1b1901",
+  "pid": 878,
+  "seconds": 0.976,
+  "status": "passed",
+  "timeout_seconds": 3940.0
+}

@@ -1,0 +1,1570 @@
+{
+  "schema": "cybersand-goblin-storage-independent-review-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at": "2026-11-26T00:53:24.205079+00:00",
+  "disposition": "APPROVE PREPARED SOURCE; full platform and owner gates remain",
+  "application_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+  "application_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207",
+  "prior_prepared_source": "21c9a6670e05cfb8b8eeb76d02b03fb75019468f",
+  "actual_independent_checkout": "eb17ca92c7f6de05ff2558350a33d0a418cfa05f",
+  "evidence_only_delta": [
+    "docs/audits/2026-11-25-mergedown-renaissance/goblin-storage-evidence.zip",
+    "docs/audits/2026-11-25-mergedown-renaissance/goblin-storage-integration.json",
+    "docs/audits/2026-11-25-mergedown-renaissance/goblin-storage-integration.md"
+  ],
+  "independent_summary": {
+    "actual_checkout": "eb17ca92c7f6de05ff2558350a33d0a418cfa05f",
+    "actual_fault_cases": 3,
+    "application_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+    "canonical_case": "goblin_storage_contract",
+    "canonical_result": {
+      "case": "goblin_storage_contract",
+      "command": [
+        "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/canonical-storage/project",
+        "--script",
+        "res://goblin/tests/test_storage_contract.gd"
+      ],
+      "completion_marker": "GOBLIN_STORAGE_CONTRACT_RESULT ",
+      "completion_observed": true,
+      "diagnostic_errors": [],
+      "diagnostic_prefix_bytes": 321,
+      "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+      "elapsed_seconds": 2.746,
+      "exit_code": 0,
+      "interrupted": false,
+      "log_bytes": 321,
+      "log_limit_bytes": 16777216,
+      "log_sha256": "ae986ecba3613e24ab870be4e4092bf039f2d1df601a24d0842e109822c55876",
+      "memory_limit_mib": 3072,
+      "observed_processes": 1,
+      "peak_tree_rss_bytes": 714133504,
+      "process_exit_status": "pass",
+      "resource_samples": 27,
+      "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+      "status": "pass",
+      "surviving_owned_pids": [],
+      "timeout_seconds": 300
+    },
+    "completed_at": "2026-11-26T00:50:03.709037+00:00",
+    "source_runtime_project_engine_unchanged": true,
+    "status": "PASS"
+  },
+  "independent_fault_matrix": {
+    "schema": "goblin-storage-qualification-v1",
+    "source_head": "eb17ca92c7f6de05ff2558350a33d0a418cfa05f",
+    "platform": "linux",
+    "engine_version": "4.7.stable.official.5b4e0cb0f",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "input_sha256": {
+      "godot/goblin/goblin_controller.gd": "09b6bb3af55e93f4ee5d6c3cd96e934fbc26a7c7ba64e9d639759d528010680c",
+      "godot/goblin/goblin_adapter.gd": "8a414c7c5d77ac3e62a14c9c82f67661bea8f6a85c1c612d98c2854224e4941e",
+      "godot/goblin/goblin_corpus.gd": "d7adcaa068400a48f449ece816c42f25ebe5b129bf91cf1b743a9537d60260f9",
+      "godot/goblin/goblin_transcript.gd": "c8493cdc2c382922c97caed50e906f5959a65851df722c6b608c1e824852683e",
+      "godot/scripts/workbench_file_transaction.gd": "d4f7eb8b60247d24f1105c661ff7c431356101ee541ac5abfbd257660afea64a",
+      "godot/tests/goblin_storage_fault_child.gd": "a3a5fc4926c85ede36cafdddd443fc11080ea496f2210a12e0874c034376efc2",
+      "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "tools/ci/windows_file_lock.py": "f46d3495eb61862b721188847f788b582643bb697a0b64274283510a8e3d14ef",
+      "tools/ci/run_goblin_storage_qualification.py": "b27739711196e1b90e77c439e12dfb28aa81fccb6ad88a5d3b2cad8b19d45ea3"
+    },
+    "status": "passed",
+    "completed": true,
+    "cases": [
+      {
+        "fault": "none",
+        "evidence_class": "guarded-fixed-writer",
+        "before": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": 7,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+          "retained_bytes": "01-observed-output.bin",
+          "log": "01-seed-7.log",
+          "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "replacement": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": 8,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "aa83bc13480ac9c1cdf9a1fbba6d99948a597fb4c34a2ab883caa7ad3cd67b4e",
+          "retained_bytes": "02-observed-output.bin",
+          "log": "02-seed-8.log",
+          "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "stale_partial_sha256": "d929b7e73e0140e2da2771f2af5bcd225dd7910f06e514a268a63d0ff387bd08"
+      },
+      {
+        "fault": "RLIMIT_FSIZE-128-buffered-tail-SIGXFSZ-ignored",
+        "evidence_class": "real-os-failure",
+        "before": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": 7,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+          "retained_bytes": "03-observed-output.bin",
+          "log": "03-seed-7.log",
+          "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "refusal": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 2,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": false,
+          "error": "Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+          "value": 7,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+          "retained_bytes": "04-observed-output.bin",
+          "log": "04-seed-8.log",
+          "log_sha256": "872481815bdbd5a61b8c481eb689471c01ca6cd2f0f3c3e4dce0159e981fc0ed",
+          "guards": {
+            "acknowledged": false,
+            "error": "Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "retry": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": 8,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "aa83bc13480ac9c1cdf9a1fbba6d99948a597fb4c34a2ab883caa7ad3cd67b4e",
+          "retained_bytes": "05-observed-output.bin",
+          "log": "05-seed-8.log",
+          "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "limit_bytes": 128
+      },
+      {
+        "fault": "directory-permission-denied",
+        "evidence_class": "real-os-failure",
+        "before": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": 7,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+          "retained_bytes": "06-observed-output.bin",
+          "log": "06-seed-7.log",
+          "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "refusal": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 2,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": false,
+          "error": "Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+          "value": 7,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+          "retained_bytes": "07-observed-output.bin",
+          "log": "07-seed-8.log",
+          "log_sha256": "18da0ff6b716b4a2313b77b676da01bed2848d2e370d2dbee44912f0f0c72472",
+          "guards": {
+            "acknowledged": false,
+            "error": "Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "retry": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": 8,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "aa83bc13480ac9c1cdf9a1fbba6d99948a597fb4c34a2ab883caa7ad3cd67b4e",
+          "retained_bytes": "08-observed-output.bin",
+          "log": "08-seed-8.log",
+          "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        }
+      }
+    ],
+    "executions": [
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": 7,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+        "retained_bytes": "01-observed-output.bin",
+        "log": "01-seed-7.log",
+        "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": 8,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "aa83bc13480ac9c1cdf9a1fbba6d99948a597fb4c34a2ab883caa7ad3cd67b4e",
+        "retained_bytes": "02-observed-output.bin",
+        "log": "02-seed-8.log",
+        "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": 7,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+        "retained_bytes": "03-observed-output.bin",
+        "log": "03-seed-7.log",
+        "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 2,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": false,
+        "error": "Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+        "value": 7,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+        "retained_bytes": "04-observed-output.bin",
+        "log": "04-seed-8.log",
+        "log_sha256": "872481815bdbd5a61b8c481eb689471c01ca6cd2f0f3c3e4dce0159e981fc0ed",
+        "guards": {
+          "acknowledged": false,
+          "error": "Save refused; this save did not replace the previous file. The staged file is incomplete; check free space and write permissions.",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": 8,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "aa83bc13480ac9c1cdf9a1fbba6d99948a597fb4c34a2ab883caa7ad3cd67b4e",
+        "retained_bytes": "05-observed-output.bin",
+        "log": "05-seed-8.log",
+        "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": 7,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+        "retained_bytes": "06-observed-output.bin",
+        "log": "06-seed-7.log",
+        "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 2,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": false,
+        "error": "Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+        "value": 7,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+        "retained_bytes": "07-observed-output.bin",
+        "log": "07-seed-8.log",
+        "log_sha256": "18da0ff6b716b4a2313b77b676da01bed2848d2e370d2dbee44912f0f0c72472",
+        "guards": {
+          "acknowledged": false,
+          "error": "Save refused; this save did not replace the previous file. Cannot create a temporary file in the selected directory.",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": 8,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "aa83bc13480ac9c1cdf9a1fbba6d99948a597fb4c34a2ab883caa7ad3cd67b4e",
+        "retained_bytes": "08-observed-output.bin",
+        "log": "08-seed-8.log",
+        "log_sha256": "acbbf4c1c3b44e7bee799909045db89904ec8bd9e8ad59100d37e130db01c455",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/actual-faults/profile-x821zqc2/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      }
+    ],
+    "limits": [
+      "Guarded fixed-output writer only; campaign/replay/resource qualification is separate",
+      "Actual OS fault behavior only on the recorded platform; no power-loss or multi-file atomicity claim"
+    ]
+  },
+  "independent_fresh_import": {
+    "command": [
+      "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--path",
+      "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/canonical-storage/project",
+      "--editor",
+      "--quit"
+    ],
+    "diagnostic_errors": [],
+    "diagnostic_prefix_bytes": 47279,
+    "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+    "elapsed_seconds": 7.061,
+    "exit_code": 0,
+    "fresh_import_qualified": true,
+    "interrupted": false,
+    "log_bytes": 47279,
+    "log_limit_bytes": 16777216,
+    "log_sha256": "621dfde89ac6a085177e122436f1660a15e7180de81cffc3a825091cd62247c7",
+    "memory_limit_mib": 3072,
+    "observed_processes": 7,
+    "peak_tree_rss_bytes": 794632192,
+    "process_exit_status": "pass",
+    "resource_samples": 70,
+    "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+    "status": "pass",
+    "surviving_owned_pids": [],
+    "timeout_seconds": 240
+  },
+  "independent_source_archive_alias": {
+    "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/canonical-storage/executed-game-source.zip",
+    "bytes": 2951967,
+    "sha256": "79707507151897b3604aa13af256bed38f52b531f0b3f0a7f6920ac8e1a67e39",
+    "retained_in": "goblin-storage-evidence.zip",
+    "member": "goblin-storage-cases/ambient_integration/executed-game-source.zip",
+    "archive_sha256": "4a5b897d3792c83576fe629bf374b3c346ad0e6f49805be20d68fb6f2237326a"
+  },
+  "before_after_custody_identical": true,
+  "reviewed_source_constraints": {
+    "fixed_outputs": 10,
+    "corpus_bytes": 2097152,
+    "transcript_bytes": 33554432,
+    "cumulative_archive_bytes": 536870912,
+    "compact_json_unchanged": true,
+    "actual_profile_guard_unchanged": true,
+    "source_bytes_before_staging": true,
+    "native_or_runtime_delta": [],
+    "shared_utility_sha256": "13ef034bc836763546957c60a3f0731f6934f99a7d9ef384969b15bb2a1852f2",
+    "shared_utility_identical_to_art_and_ultima": true,
+    "canonical_runner_exception": "Only the new fixed-output fixture bypasses campaign-transcript parsing; all campaign/controller/replay cases retain their original validator."
+  },
+  "original_failure_independently_read_and_hash_verified": {
+    "schema": "goblin-storage-qualification-v1",
+    "source_head": "9f3c479efbf356832a691aa2f9c1dbe947c34d32",
+    "platform": "linux",
+    "engine_version": "4.7.stable.official.5b4e0cb0f",
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "input_sha256": {
+      "godot/goblin/goblin_controller.gd": "9fcab6c23ac483238cf1835b029892c6db5d6fd159d8cf24c309e1e3b5015a01",
+      "godot/goblin/goblin_adapter.gd": "8a414c7c5d77ac3e62a14c9c82f67661bea8f6a85c1c612d98c2854224e4941e",
+      "godot/goblin/goblin_corpus.gd": "d7adcaa068400a48f449ece816c42f25ebe5b129bf91cf1b743a9537d60260f9",
+      "godot/goblin/goblin_transcript.gd": "c8493cdc2c382922c97caed50e906f5959a65851df722c6b608c1e824852683e",
+      "godot/tests/goblin_storage_fault_child.gd": "a3a5fc4926c85ede36cafdddd443fc11080ea496f2210a12e0874c034376efc2",
+      "godot/native_extension/material_baseline_file.cpp": "03d7793bddc38414bca87d01f55d6c8d87553d49582bae547aef9bc6bbfd0873",
+      "tools/ci/windows_file_lock.py": "f46d3495eb61862b721188847f788b582643bb697a0b64274283510a8e3d14ef",
+      "tools/ci/run_goblin_storage_qualification.py": "b27739711196e1b90e77c439e12dfb28aa81fccb6ad88a5d3b2cad8b19d45ea3"
+    },
+    "status": "failed",
+    "completed": false,
+    "cases": [
+      {
+        "fault": "none",
+        "evidence_class": "guarded-fixed-writer",
+        "before": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": 7,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+          "retained_bytes": "01-observed-output.bin",
+          "log": "01-seed-7.log",
+          "log_sha256": "bbb8216588ffc9f87cb45acb2e57d4d2c139916575400642173a53f1b1f5ea99",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "replacement": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": 8,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "aa83bc13480ac9c1cdf9a1fbba6d99948a597fb4c34a2ab883caa7ad3cd67b4e",
+          "retained_bytes": "02-observed-output.bin",
+          "log": "02-seed-8.log",
+          "log_sha256": "bbb8216588ffc9f87cb45acb2e57d4d2c139916575400642173a53f1b1f5ea99",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "stale_partial_sha256": "d929b7e73e0140e2da2771f2af5bcd225dd7910f06e514a268a63d0ff387bd08"
+      },
+      {
+        "fault": "RLIMIT_FSIZE-128-buffered-tail-SIGXFSZ-ignored",
+        "evidence_class": "real-os-failure",
+        "before": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": 7,
+          "complete_json": true,
+          "bytes": 1689,
+          "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+          "retained_bytes": "03-observed-output.bin",
+          "log": "03-seed-7.log",
+          "log_sha256": "bbb8216588ffc9f87cb45acb2e57d4d2c139916575400642173a53f1b1f5ea99",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        },
+        "refusal": {
+          "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "command": [
+            "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+            "--headless",
+            "--audio-driver",
+            "Dummy",
+            "--path",
+            "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+            "--script",
+            "res://tests/goblin_storage_fault_child.gd"
+          ],
+          "exit_code": 0,
+          "natural_completion": true,
+          "engine_error_detected": false,
+          "acknowledged": true,
+          "error": "",
+          "value": null,
+          "complete_json": false,
+          "bytes": 128,
+          "sha256": "66eb23aa9e127b81a25f5f18e7a35d093a0f0872e92fcff1d34bb0af97b37e02",
+          "retained_bytes": "04-observed-output.bin",
+          "log": "04-seed-8.log",
+          "log_sha256": "bbb8216588ffc9f87cb45acb2e57d4d2c139916575400642173a53f1b1f5ea99",
+          "guards": {
+            "acknowledged": true,
+            "error": "",
+            "guards_preserved": true,
+            "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+            "profile_verified": true,
+            "wrong_path_refused": true,
+            "wrong_profile_refused": true
+          }
+        }
+      }
+    ],
+    "executions": [
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": 7,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+        "retained_bytes": "01-observed-output.bin",
+        "log": "01-seed-7.log",
+        "log_sha256": "bbb8216588ffc9f87cb45acb2e57d4d2c139916575400642173a53f1b1f5ea99",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": 8,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "aa83bc13480ac9c1cdf9a1fbba6d99948a597fb4c34a2ab883caa7ad3cd67b4e",
+        "retained_bytes": "02-observed-output.bin",
+        "log": "02-seed-8.log",
+        "log_sha256": "bbb8216588ffc9f87cb45acb2e57d4d2c139916575400642173a53f1b1f5ea99",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": 7,
+        "complete_json": true,
+        "bytes": 1689,
+        "sha256": "2eb30c3a147f1beaf5f4873bdc2018384b2f59216d4f2a01b211f943d0c2fe67",
+        "retained_bytes": "03-observed-output.bin",
+        "log": "03-seed-7.log",
+        "log_sha256": "bbb8216588ffc9f87cb45acb2e57d4d2c139916575400642173a53f1b1f5ea99",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      },
+      {
+        "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+        "command": [
+          "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--audio-driver",
+          "Dummy",
+          "--path",
+          "/workspace/scratch/2e90cf7b4aa3/cybersand-goblin/godot",
+          "--script",
+          "res://tests/goblin_storage_fault_child.gd"
+        ],
+        "exit_code": 0,
+        "natural_completion": true,
+        "engine_error_detected": false,
+        "acknowledged": true,
+        "error": "",
+        "value": null,
+        "complete_json": false,
+        "bytes": 128,
+        "sha256": "66eb23aa9e127b81a25f5f18e7a35d093a0f0872e92fcff1d34bb0af97b37e02",
+        "retained_bytes": "04-observed-output.bin",
+        "log": "04-seed-8.log",
+        "log_sha256": "bbb8216588ffc9f87cb45acb2e57d4d2c139916575400642173a53f1b1f5ea99",
+        "guards": {
+          "acknowledged": true,
+          "error": "",
+          "guards_preserved": true,
+          "path": "/workspace/scratch/2e90cf7b4aa3/goblin-storage-before/profile-_1olh0g0/godot/app_userdata/Cyber Sand Reference Sandbox/goblin/transcript.json",
+          "profile_verified": true,
+          "wrong_path_refused": true,
+          "wrong_profile_refused": true
+        }
+      }
+    ],
+    "limits": [
+      "Guarded fixed-output writer only; campaign/replay/resource qualification is separate",
+      "Actual OS fault behavior only on the recorded platform; no power-loss or multi-file atomicity claim"
+    ],
+    "error": "Failed output was acknowledged"
+  },
+  "lead_six_cases_independently_read_and_log_hash_verified": [
+    {
+      "case": "ambient_integration",
+      "qualification": {
+        "evidence_kind": "headless_godot",
+        "provenance": {
+          "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+          "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "native_source_input_count": 105,
+          "platform": "linux",
+          "project_files_sha256": "562d199fcffbb329e77b5f5e499996dab02a93cdd458df7e403bccc632b968d0",
+          "python": "3.12.14",
+          "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+          "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+          "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "rapier_source_input_count": 4,
+          "replay_identity": {
+            "game_source_files": 989,
+            "game_sources_sha256": "2cdb8722aad49fb9b4200511b8208779f2829213d372a89abf5bdc1917958903",
+            "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "import_normalization": "existing-four-rapier-import-descriptors-crlf-to-lf",
+            "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+            "platform": "linux",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "schema": "cybersand-goblin-replay-identity-v1",
+            "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+            "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+          },
+          "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+          "source_dirty": false,
+          "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+        },
+        "tests": [
+          {
+            "case": "goblin_ambient_integration",
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/ambient_integration/project",
+              "--script",
+              "res://goblin/tests/test_ambient_integration.gd"
+            ],
+            "completion_marker": "GOBLIN_AMBIENT_INTEGRATION_RESULT ",
+            "completion_observed": true,
+            "diagnostic_errors": [],
+            "diagnostic_prefix_bytes": 347,
+            "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+            "elapsed_seconds": 8.623,
+            "exit_code": 0,
+            "interrupted": false,
+            "log_bytes": 347,
+            "log_limit_bytes": 16777216,
+            "log_sha256": "f0fe13057e0af7cc0ca60968c436448db17726d3a7da78296bad9514f7565344",
+            "memory_limit_mib": 3072,
+            "observed_processes": 1,
+            "peak_tree_rss_bytes": 590495744,
+            "process_exit_status": "pass",
+            "resource_samples": 85,
+            "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+            "status": "pass",
+            "surviving_owned_pids": [],
+            "timeout_seconds": 300
+          }
+        ]
+      },
+      "qualification_sha256": "51c22be6b07a25f9856fdad84aacd8e092d3cd7e73ceed40cb7a1d42d49ee2e9"
+    },
+    {
+      "case": "authored_lineage",
+      "qualification": {
+        "evidence_kind": "headless_godot",
+        "provenance": {
+          "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+          "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "native_source_input_count": 105,
+          "platform": "linux",
+          "project_files_sha256": "562d199fcffbb329e77b5f5e499996dab02a93cdd458df7e403bccc632b968d0",
+          "python": "3.12.14",
+          "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+          "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+          "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "rapier_source_input_count": 4,
+          "replay_identity": {
+            "game_source_files": 989,
+            "game_sources_sha256": "2cdb8722aad49fb9b4200511b8208779f2829213d372a89abf5bdc1917958903",
+            "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "import_normalization": "existing-four-rapier-import-descriptors-crlf-to-lf",
+            "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+            "platform": "linux",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "schema": "cybersand-goblin-replay-identity-v1",
+            "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+            "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+          },
+          "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+          "source_dirty": false,
+          "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+        },
+        "tests": [
+          {
+            "case": "goblin_authored_lineage",
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/authored_lineage/project",
+              "--script",
+              "res://goblin/tests/test_authored_lineage.gd"
+            ],
+            "completion_marker": "GOBLIN_AUTHORED_LINEAGE_RESULT ",
+            "completion_observed": true,
+            "diagnostic_errors": [],
+            "diagnostic_prefix_bytes": 537,
+            "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+            "elapsed_seconds": 31.97,
+            "exit_code": 0,
+            "independent_readback": {
+              "errors": [],
+              "independent_failures": [],
+              "unreported_failures": [],
+              "valid": true
+            },
+            "interrupted": false,
+            "log_bytes": 537,
+            "log_limit_bytes": 16777216,
+            "log_sha256": "1a4734e19f6a86dfa8525c0432e7516ec20d4710e2921d457e8e87b000c80516",
+            "memory_limit_mib": 3072,
+            "observed_processes": 5,
+            "peak_tree_rss_bytes": 661852160,
+            "process_exit_status": "pass",
+            "resource_samples": 317,
+            "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+            "status": "pass",
+            "summary": {
+              "action_attempts": {
+                "actor_place": 1,
+                "actor_remove": 1,
+                "actor_reset": 1,
+                "pause": 1,
+                "play": 1,
+                "reopen_layout": 1,
+                "save_layout": 1
+              },
+              "assertions": {
+                "fail": 0,
+                "not_applicable": 1,
+                "pass": 130
+              },
+              "attempted_actions": 7,
+              "classification_counts": {
+                "game_observation": 7
+              },
+              "completed_actions": 7,
+              "completed_adjacent_pairs": {
+                "actor_place -> play": 1,
+                "actor_remove -> save_layout": 1,
+                "actor_reset -> actor_remove": 1,
+                "pause -> actor_reset": 1,
+                "play -> pause": 1,
+                "save_layout -> reopen_layout": 1
+              },
+              "completed_features": {
+                "actor_place": 1,
+                "actor_remove": 1,
+                "actor_reset": 1,
+                "pause": 1,
+                "play": 1,
+                "reopen_layout": 1,
+                "save_layout": 1
+              },
+              "completed_triples": {
+                "actor_place -> play -> pause": 1,
+                "actor_remove -> save_layout -> reopen_layout": 1,
+                "actor_reset -> actor_remove -> save_layout": 1,
+                "pause -> actor_reset -> actor_remove": 1,
+                "play -> pause -> actor_reset": 1
+              },
+              "distinct_completed_features": 7,
+              "duration_usec": 5455124,
+              "failures": [],
+              "status_counts": {
+                "completed": 7
+              },
+              "termination": "budget_complete"
+            },
+            "surviving_owned_pids": [],
+            "timeout_seconds": 300,
+            "transcript_sha256": "767c55db44ac1323a6c1b5e7ceda6703bf8f4740da43da5fcab71a5b7b7bb083"
+          }
+        ]
+      },
+      "qualification_sha256": "b158d876ecf5b30deec0cc366ec0dc32417038b4b287bc35eb95b00ced3e54fd"
+    },
+    {
+      "case": "controller",
+      "qualification": {
+        "evidence_kind": "headless_godot",
+        "provenance": {
+          "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+          "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "native_source_input_count": 105,
+          "platform": "linux",
+          "project_files_sha256": "562d199fcffbb329e77b5f5e499996dab02a93cdd458df7e403bccc632b968d0",
+          "python": "3.12.14",
+          "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+          "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+          "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "rapier_source_input_count": 4,
+          "replay_identity": {
+            "game_source_files": 989,
+            "game_sources_sha256": "2cdb8722aad49fb9b4200511b8208779f2829213d372a89abf5bdc1917958903",
+            "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "import_normalization": "existing-four-rapier-import-descriptors-crlf-to-lf",
+            "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+            "platform": "linux",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "schema": "cybersand-goblin-replay-identity-v1",
+            "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+            "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+          },
+          "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+          "source_dirty": false,
+          "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+        },
+        "tests": [
+          {
+            "case": "goblin_controller",
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/controller/project",
+              "--script",
+              "res://goblin/tests/test_controller.gd"
+            ],
+            "completion_marker": "GOBLIN_CONTROLLER ",
+            "completion_observed": true,
+            "diagnostic_errors": [],
+            "diagnostic_prefix_bytes": 347,
+            "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+            "elapsed_seconds": 14.028,
+            "exit_code": 0,
+            "independent_readback": {
+              "errors": [],
+              "independent_failures": [],
+              "unreported_failures": [],
+              "valid": true
+            },
+            "interrupted": false,
+            "log_bytes": 347,
+            "log_limit_bytes": 16777216,
+            "log_sha256": "4deb32ee9c50b92d56d492259cb01a4d3025ba5c6eb112c00d89a705c64e7616",
+            "memory_limit_mib": 3072,
+            "observed_processes": 4,
+            "peak_tree_rss_bytes": 660398080,
+            "process_exit_status": "pass",
+            "resource_samples": 139,
+            "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+            "status": "pass",
+            "summary": {
+              "action_attempts": {},
+              "assertions": {
+                "fail": 0,
+                "not_applicable": 0,
+                "pass": 0
+              },
+              "attempted_actions": 0,
+              "classification_counts": {},
+              "completed_actions": 0,
+              "completed_adjacent_pairs": {},
+              "completed_features": {},
+              "completed_triples": {},
+              "distinct_completed_features": 0,
+              "duration_usec": 0,
+              "failures": [],
+              "status_counts": {},
+              "termination": "stopped"
+            },
+            "surviving_owned_pids": [],
+            "timeout_seconds": 300,
+            "transcript_sha256": "3c124ff9a79bda2d9af9efa6da022f5108ba246acc436387d87a10a791835bc4"
+          }
+        ]
+      },
+      "qualification_sha256": "f3ceb35aa26a5c315f1de90d331d9b97c00698c28670bbd2cf90b06d5cbecc1e"
+    },
+    {
+      "case": "discovery",
+      "qualification": {
+        "evidence_kind": "headless_godot",
+        "provenance": {
+          "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+          "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "native_source_input_count": 105,
+          "platform": "linux",
+          "project_files_sha256": "562d199fcffbb329e77b5f5e499996dab02a93cdd458df7e403bccc632b968d0",
+          "python": "3.12.14",
+          "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+          "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+          "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "rapier_source_input_count": 4,
+          "replay_identity": {
+            "game_source_files": 989,
+            "game_sources_sha256": "2cdb8722aad49fb9b4200511b8208779f2829213d372a89abf5bdc1917958903",
+            "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "import_normalization": "existing-four-rapier-import-descriptors-crlf-to-lf",
+            "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+            "platform": "linux",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "schema": "cybersand-goblin-replay-identity-v1",
+            "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+            "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+          },
+          "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+          "source_dirty": false,
+          "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+        },
+        "tests": [
+          {
+            "case": "goblin_exploration",
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/discovery/project",
+              "--script",
+              "res://goblin/tests/test_exploration.gd"
+            ],
+            "completion_marker": "GOBLIN_EXPLORATION_UNIT ",
+            "completion_observed": true,
+            "diagnostic_errors": [],
+            "diagnostic_prefix_bytes": 402,
+            "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+            "elapsed_seconds": 2.616,
+            "exit_code": 0,
+            "interrupted": false,
+            "log_bytes": 402,
+            "log_limit_bytes": 16777216,
+            "log_sha256": "704ac50b27a04f0a12a7f315b41f1f24f6df8e18037e0609c7a2f14274ce109a",
+            "memory_limit_mib": 3072,
+            "observed_processes": 1,
+            "peak_tree_rss_bytes": 127950848,
+            "process_exit_status": "pass",
+            "resource_samples": 26,
+            "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+            "status": "pass",
+            "surviving_owned_pids": [],
+            "timeout_seconds": 300
+          }
+        ]
+      },
+      "qualification_sha256": "350405aa5d575b0c1c32ba92d355ce0b1a5814cdcc2818d03bdd53bfa534beaf"
+    },
+    {
+      "case": "laboratory",
+      "qualification": {
+        "evidence_kind": "headless_godot",
+        "provenance": {
+          "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+          "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "native_source_input_count": 105,
+          "platform": "linux",
+          "project_files_sha256": "562d199fcffbb329e77b5f5e499996dab02a93cdd458df7e403bccc632b968d0",
+          "python": "3.12.14",
+          "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+          "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+          "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "rapier_source_input_count": 4,
+          "replay_identity": {
+            "game_source_files": 989,
+            "game_sources_sha256": "2cdb8722aad49fb9b4200511b8208779f2829213d372a89abf5bdc1917958903",
+            "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "import_normalization": "existing-four-rapier-import-descriptors-crlf-to-lf",
+            "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+            "platform": "linux",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "schema": "cybersand-goblin-replay-identity-v1",
+            "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+            "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+          },
+          "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+          "source_dirty": false,
+          "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+        },
+        "tests": [
+          {
+            "case": "goblin_laboratory",
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/laboratory/project",
+              "--script",
+              "res://goblin/tests/test_laboratory.gd"
+            ],
+            "completion_marker": "GOBLIN_LABORATORY ",
+            "completion_observed": true,
+            "diagnostic_errors": [],
+            "diagnostic_prefix_bytes": 510,
+            "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+            "elapsed_seconds": 26.223,
+            "exit_code": 0,
+            "independent_readback": {
+              "errors": [],
+              "independent_failures": [],
+              "unreported_failures": [],
+              "valid": true
+            },
+            "interrupted": false,
+            "log_bytes": 510,
+            "log_limit_bytes": 16777216,
+            "log_sha256": "8cd150a4b1e6cacaae0c45910f18324bee7a3c5f71198550982928401f6e8b63",
+            "memory_limit_mib": 3072,
+            "observed_processes": 6,
+            "peak_tree_rss_bytes": 684453888,
+            "process_exit_status": "pass",
+            "resource_samples": 259,
+            "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+            "status": "pass",
+            "summary": {
+              "action_attempts": {
+                "pause": 1
+              },
+              "assertions": {
+                "fail": 0,
+                "not_applicable": 0,
+                "pass": 12
+              },
+              "attempted_actions": 1,
+              "classification_counts": {
+                "game_observation": 1
+              },
+              "completed_actions": 1,
+              "completed_adjacent_pairs": {},
+              "completed_features": {
+                "pause": 1
+              },
+              "completed_triples": {},
+              "distinct_completed_features": 1,
+              "duration_usec": 45755,
+              "failures": [],
+              "status_counts": {
+                "completed": 1
+              },
+              "termination": "budget_complete"
+            },
+            "surviving_owned_pids": [],
+            "timeout_seconds": 300,
+            "transcript_sha256": "bc5d2cc6a402f9064566f28e74fd07c4fd3bbd194ee291071f2c1d461ac80e7e"
+          }
+        ]
+      },
+      "qualification_sha256": "034c1c5de9889c79cc4860c2ea404310131e054247bbc521587f682c53936e60"
+    },
+    {
+      "case": "storage",
+      "qualification": {
+        "evidence_kind": "headless_godot",
+        "provenance": {
+          "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+          "godot_version": "4.7.stable.official.5b4e0cb0f",
+          "host_platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+          "native_build_commit": "c53fd6f9d3d0f2b3f39396c7e605654f65c17299",
+          "native_provenance_sha256": "4ad998411383bde857d9ff00348eb097ebf83e14d6227bb5af1b4960569a0bd1",
+          "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+          "native_source_input_count": 105,
+          "platform": "linux",
+          "project_files_sha256": "562d199fcffbb329e77b5f5e499996dab02a93cdd458df7e403bccc632b968d0",
+          "python": "3.12.14",
+          "rapier_build_commit": "96dcb2ab6e35c9104726b2a541d1c2fbb298eecb",
+          "rapier_provenance_sha256": "5855a3132da91af8d3a9edffd520fbe8599f17f423fc791bd29fe9861e27c11b",
+          "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+          "rapier_source_input_count": 4,
+          "replay_identity": {
+            "game_source_files": 989,
+            "game_sources_sha256": "2cdb8722aad49fb9b4200511b8208779f2829213d372a89abf5bdc1917958903",
+            "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+            "import_normalization": "existing-four-rapier-import-descriptors-crlf-to-lf",
+            "native_sha256": "a15fc422313eb01e79bc904f44cc8879816484ae4fc98c63ac4b815afdb6a5e7",
+            "platform": "linux",
+            "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "schema": "cybersand-goblin-replay-identity-v1",
+            "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+            "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+          },
+          "source_commit": "7f7095a0664afc1225346d782deb42ab04f81aeb",
+          "source_dirty": false,
+          "source_tree": "a78ea1ac28af809d41ac14f0c172c8e523abd207"
+        },
+        "tests": [
+          {
+            "case": "goblin_storage_contract",
+            "command": [
+              "/workspace/scratch/2e90cf7b4aa3/deps/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+              "--headless",
+              "--path",
+              "/workspace/scratch/2e90cf7b4aa3/goblin-storage-cases/storage/project",
+              "--script",
+              "res://goblin/tests/test_storage_contract.gd"
+            ],
+            "completion_marker": "GOBLIN_STORAGE_CONTRACT_RESULT ",
+            "completion_observed": true,
+            "diagnostic_errors": [],
+            "diagnostic_prefix_bytes": 321,
+            "diagnostic_scope": "bounded log prefix; complete on-disk log retained and streamed into its digest",
+            "elapsed_seconds": 2.63,
+            "exit_code": 0,
+            "interrupted": false,
+            "log_bytes": 321,
+            "log_limit_bytes": 16777216,
+            "log_sha256": "ae986ecba3613e24ab870be4e4092bf039f2d1df601a24d0842e109822c55876",
+            "memory_limit_mib": 3072,
+            "observed_processes": 1,
+            "peak_tree_rss_bytes": 712294400,
+            "process_exit_status": "pass",
+            "resource_samples": 26,
+            "resource_scope": "launched process tree RSS sampled every100ms; no global process monitoring",
+            "status": "pass",
+            "surviving_owned_pids": [],
+            "timeout_seconds": 300
+          }
+        ]
+      },
+      "qualification_sha256": "7e371d7ea20943bd8a4667650a2654679be20f710412b19f4af5ec23b558162c"
+    }
+  ],
+  "count_rule": "The laboratory preflight14 is included in its final cumulative70; do not add both. Storage67 is a fixture contract, not native gameplay oracle or campaign acceptance.",
+  "resource_scope": "Short sampled execution only; original 512/1024-action timeouts and long-horizon stability limitation preserved.",
+  "remaining": [
+    "Actual Windows storage/lock and package qualification",
+    "Reconcile against eventual accepted main and complete resulting-source admission",
+    "Physical owner acceptance",
+    "Original long-horizon experimental timeouts"
+  ],
+  "no_fsync_power_loss_or_multifile_claim": true,
+  "reviewer_product_edits": false,
+  "raw_packet": {
+    "path": "raw/goblin-storage-independent-7f7095.json.gz",
+    "bytes": 372401,
+    "sha256": "91c8313e67f12af4eed73e2112801d68871255d381273a05659d2bdcf6e1121b"
+  },
+  "excluded_derived_cache": [
+    {
+      "path": "/workspace/scratch/2e90cf7b4aa3/qa-artifacts/goblin-storage-independent-7f7095/canonical-storage/profile/cache/godot/editor_doc_cache-4.7.res",
+      "bytes": 3268746,
+      "sha256": "3231862a670cb98afae09bf8cf57f1e4b7097917e0fe69f8a63c63c0ee5d7395"
+    }
+  ]
+}
