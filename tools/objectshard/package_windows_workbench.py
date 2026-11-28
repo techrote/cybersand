@@ -10,7 +10,7 @@ import shutil
 import sys
 
 from package_windows_lab import ROOT, copy_committed_tree, git, native, sha, stage_vc_runtime, verify_vc_runtime, windows
-from verify_workbench_package import (CANDIDATE_PROVENANCE, ENTRY, MANIFEST, RENDERING_DRIVER,
+from verify_workbench_package import (CANDIDATE_PROVENANCE, CANDIDATE_REUSE_PROVENANCE, ENTRY, MANIFEST, RENDERING_DRIVER,
                                       RETAINED_PROVENANCE, RETAINED_REFERENCE, SCHEMA, verify)
 
 
@@ -59,6 +59,9 @@ def package(args: argparse.Namespace) -> dict:
         shutil.copyfile(args.engine_notices / name, args.output / ("Godot-" + name))
     vc_hash = stage_vc_runtime(args.vc_runtime, args.output)
     shutil.copyfile(args.native_candidate / native.NAME, args.output / CANDIDATE_PROVENANCE)
+    reuse_receipt = args.native_candidate / native.REUSE_NAME
+    if reuse_receipt.is_file():
+        shutil.copyfile(reuse_receipt, args.output / CANDIDATE_REUSE_PROVENANCE)
     (args.output / RETAINED_PROVENANCE).rename(args.output / RETAINED_REFERENCE)
     shutil.copyfile(args.output / args.guide, args.output / "READ-ME.md")
     for name, content in launchers(candidate["source_commit"]).items():
