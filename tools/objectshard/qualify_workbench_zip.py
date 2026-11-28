@@ -14,8 +14,8 @@ import time
 import zipfile
 
 from qualify_windows_zip import extract
-from verify_workbench_package import (CANDIDATE_PROVENANCE, MANIFEST, RETAINED_PROVENANCE,
-                                      RETAINED_REFERENCE, verify)
+from verify_workbench_package import (CANDIDATE_PROVENANCE, CANDIDATE_REUSE_PROVENANCE,
+                                      MANIFEST, RETAINED_PROVENANCE, RETAINED_REFERENCE, verify)
 
 PATHS = {"spaces": "Workbench evaluation with spaces", "parentheses": "Workbench (1)",
          "unicode": "Workbench_日本語_é", "nested": "nested/owner evaluation/longer directory/Workbench"}
@@ -45,13 +45,16 @@ def qualify_provenance_refusals(target: Path, output: Path, timeout: int) -> lis
     active_retained = target / RETAINED_PROVENANCE
     if active_retained.exists():
         raise ValueError("Provenance refusal fixture would overwrite an active ledger")
+    reuse = (target / CANDIDATE_REUSE_PROVENANCE).is_file()
+    stale_identity_refusal = ("Reused native candidate equivalence provenance mismatch"
+                              if reuse else "Reused native candidate lacks an inventoried equivalence receipt")
     cases = (
         ("missing-candidate", None, "Missing package file:"),
         ("tampered-candidate", None, "Package file changed:"),
         ("incorrect-candidate-kind", {"kind": "retained-runtime"}, "Native candidate provenance contract mismatch"),
-        ("stale-candidate-source", {"source_commit": "0" * 40}, "Candidate source identity mismatch"),
-        ("stale-candidate-build", {"build_commit": "0" * 40}, "Candidate build identity mismatch"),
-        ("wrong-candidate-runtime", {"sha256": "0" * 64}, "Candidate source identity mismatch"),
+        ("stale-candidate-source", {"source_commit": "0" * 40}, stale_identity_refusal),
+        ("stale-candidate-build", {"build_commit": "0" * 40}, stale_identity_refusal),
+        ("wrong-candidate-runtime", {"sha256": "0" * 64}, "Candidate binary identity mismatch"),
         ("missing-retained-reference", None, "Missing package file:"),
         ("active-retained-provenance", None, "Active retained runtime provenance is forbidden"),
     )
