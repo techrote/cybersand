@@ -32,6 +32,7 @@ jobs:
     timeout-minutes: 15
     outputs:
       phase: ${{ steps.request.outputs.phase }}
+      general_performance_status: ${{ steps.request.outputs.general_performance_status }}
       runtime_run: ${{ steps.request.outputs.runtime_run }}
       runtime_attempt: ${{ steps.request.outputs.runtime_attempt }}
       runtime_source: ${{ steps.request.outputs.runtime_source }}
@@ -663,7 +664,7 @@ jobs:
     # contracts. Keep this job visibly skipped until the step-addressed adapter
     # and its positive/negative controls are integrated. Do not award comparison
     # credit to an incomplete or known-invalid cohort.
-    if: ${{ false }}
+    if: needs.admission.outputs.general_performance_status == 'qualified'
     runs-on: windows-2022
     timeout-minutes: 90
     defaults:

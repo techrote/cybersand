@@ -15,6 +15,7 @@ BRANCH = "codex/pubpres-playability-final-001-20261124"
 MAIN = "50e3bcb839211eac2abe1e065750cbcba4d36f8c"
 OWNER = "9f2127256a555d177536cbb5fad2be7dcb322c8e"
 PHASES = ("build", "qualify", "publish", "delivery")
+GENERAL_PERFORMANCE_STATUS = "hold-observer-contract"
 
 
 def git(*args):
@@ -110,6 +111,7 @@ def main():
                 for key in ("phase", "runtime_run", "runtime_attempt", "runtime_source", "qualification_run",
                             "qualification_attempt", "qualification_source", "publication_commit"):
                     stream.write(f"{key}={value[key] or ''}\n")
+                stream.write(f"general_performance_status={GENERAL_PERFORMANCE_STATUS}\n")
         print(json.dumps(value, indent=2))
 
 

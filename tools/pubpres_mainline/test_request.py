@@ -1,6 +1,12 @@
 """A stale request or a foreign source must not dispatch qualification/publication."""
 import copy
+import contextlib
+import io
+import os
+from pathlib import Path
+import tempfile
 import unittest
+from unittest import mock
 import campaign_request as request
 
 
@@ -41,6 +47,18 @@ class RequestTests(unittest.TestCase):
             request.validate_record(value)
         value["publication_commit"] = "d" * 40
         request.validate_record(value)
+
+    def test_validated_cli_exports_source_bound_general_performance_hold(self):
+        with tempfile.TemporaryDirectory(prefix="pubpres-request-output-") as directory:
+            output = Path(directory) / "github-output.txt"
+            with mock.patch.object(request, "validate", return_value=self.good), \
+                    mock.patch.dict(os.environ, {"GITHUB_OUTPUT": str(output)}), \
+                    mock.patch("sys.argv", ["request.py"]), \
+                    contextlib.redirect_stdout(io.StringIO()):
+                request.main()
+            self.assertIn(
+                "general_performance_status=hold-observer-contract\n",
+                output.read_text(encoding="utf-8"))
 
 
 if __name__ == "__main__":
