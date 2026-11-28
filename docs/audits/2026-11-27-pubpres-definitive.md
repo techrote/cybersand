@@ -663,3 +663,52 @@ contact checks. The palette and glow source limit expensive neighbouring
 effects to bounds certified from actual material publications. Those bounds
 include the sampling radius, preserve live appearance edits and still draw
 decaying vapour outside the current source region.
+
+The final world-edge correction (`910ac36d5`) preserves the sampler's
+clamping when Follow looks beyond the canvas. All 19 reference-versus-bounded
+HDR framebuffer pairs matched byte for byte across 13,248 pixel pairs,
+including an actual Fire ember, a live emissive Water edit and lingering
+Steam and Smoke.
+
+The integrated mounted Water fixture observed 4,893 draws and passed
+208 checks, including both 2,338-draw pauses, the first restored frame,
+and all 375 RGB samples. Fourteen member observations were withheld on
+five isolated draws. The piloted Needle was outside the Free camera on
+all four of its omissions. One manually stepped draw did omit the visible
+selected Barrel while its applied native response was unavailable. This
+remains a known limitation. The same product passed 194 headless,
+206 graphical, 12 held-placement and 574 multipart checks.
+
+### Downloadable Fire-on retest
+
+The [Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46084542128/artifacts/15237664774)
+contains the exact application `9f2127256a555d177536cbb5fad2be7dcb322c8e`.
+The selected Stock Safe engine ran two 90-second Follow patrols on hosted
+Windows ANGLE using the Microsoft Basic Render Driver. Every draw kept the
+Needle visible. Adjacent visible draws had zero frozen poses during pilot
+travel and zero catch-up jumps. Both tests paused and manually stepped.
+
+| Fire on | Completed physical steps | Steps/s | Pilot draws | Successful Fire writes | Physical gap p95 / max | Draw gap p95 / max |
+|---|---:|---:|---:|---:|---:|---:|
+| Wave512 | 2,662 | 29.56 | 774 | 477 | 101 / 221 ms | 128 / 222 ms |
+| Mixed2048 | 1,462 | 16.23 | 640 | 307 | 126 / 241 ms | 173 / 289 ms |
+
+The separate directed courses recorded 35 Fire-adjacent draws, 35 Rapier
+wall contacts and nine Water contacts. The pilot remained visible and all
+six framebuffer and mouse-pick controls passed. Mixed had six repeated
+poses during short movements of up to 1.15 cells. No catch-up jump was
+observed. Mixed physical-step gap p95 was 151 ms with Fire at the hull and
+154 ms without it. The longest patrol chains above 100 ms were 318 and 311
+draw intervals respectively. Hosted software-rendered play therefore still
+fell well short of 60 completed physical steps/s, including away from
+contacts. Physical GPU acceptance remains with the owner.
+[Raw timing, contact frames, picking and recorder output](https://github.com/techrote/cybersand/actions/runs/46084542128/artifacts/15238453402)
+
+The downloaded inner ZIP was 105,597,452 bytes, SHA-256
+`0459f7c70c6a8a4cda5f340a134ef834479256b128028986cdeaccd7ca6063ec`.
+Independent Windows installation verified 2,865 payload hashes, 1,130
+Git-matched application resources and the source-bound native runtime.
+Both shipped scene CMDs exited normally from a pristine extraction path
+containing spaces. Separate headless Fire-on sessions produced 63 and 56
+successful nozzle writes. The shipped collector recovered all 46 files
+from four source- and PID-bound sessions with zero reported record loss.
