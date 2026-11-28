@@ -87,7 +87,7 @@ jobs:
           if-no-files-found: error
           retention-days: 60
   focused-windows-live-input-package:
-    if: github.event_name == 'push' && contains(github.event.head_commit.message, '[objectshard-m4-focused-windows]')
+    if: github.event_name == 'push' && (contains(github.event.head_commit.message, '[objectshard-m4-focused-windows]') || contains(github.event.head_commit.message, '[objectshard-m4-focused-live-input]'))
     runs-on: windows-2022
     timeout-minutes: 35
     env:
