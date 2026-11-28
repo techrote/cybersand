@@ -2488,7 +2488,10 @@ func _pump_object_shard_pointer(pressed: bool = false) -> bool:
 		_object_shard_pointer_previous = _object_shard_segment.end
 		_object_shard_segment.clear()
 		return false
-	var owner: int = int(_object_shard_segment.remaining.pop_front())
+	# Do not consume this owner until the ordinary worker explicitly admits the
+	# transaction. A fenced no-write refusal is retryable while the gesture is
+	# still held; advancing the stroke here would silently create a sweep gap.
+	var owner: int = int(_object_shard_segment.remaining[0])
 	var values: Array = current_groups[owner]
 	var targets: Array = values if owner>0 else []
 	var terrain: Array = values if owner==0 else []
@@ -2513,13 +2516,34 @@ func _pump_object_shard_pointer(pressed: bool = false) -> bool:
 		"material_filter":selection.material_filter,
 		"captured_usec":captured,"stroke_id":_object_shard_stroke_id,"sample_id":_object_shard_segment.sample_id,
 		"input_kind":_object_shard_segment.input_kind}
-	_object_shard_edit_probe.record("admitted" if result.get("ok",false) else "uncertain" if result.get("may_have_executed",false) else "refused",detail)
-	if result.get("ok",false):
+	var admission_ok: bool = bool(result.get("ok",false))
+	var admission_uncertain: bool = bool(result.get("may_have_executed",false))
+	_object_shard_edit_probe.record("admitted" if admission_ok else "uncertain" if admission_uncertain else "refused",detail)
+	if admission_ok:
+		# Only a positive ordinary-worker admission consumes this owner from the
+		# bounded segment. Native completion/presentation remains separately fenced.
+		_object_shard_segment.remaining.pop_front()
 		_object_shard_last_admission_usec = admitted_now
 		message = "Structural edit admitted · %d cells · waiting for native completion." % values.size()
 		if mode==WEATHERING_TOOL: _erosion_pass += 1
+	elif admission_uncertain:
+		# The port enters a hold for an ambiguous acknowledgement. Never replay a
+		# transaction that may already have crossed the worker admission boundary.
+		message = "Structural edit admission is uncertain; no retry will be issued until the owner is explicitly restored."
+		return false
 	else:
-		message = "Structural edit "+str(result.outcome)+"; no success has been reported."
+		var refusal: String = str(result.get("outcome","WorkerAdmissionRefused"))
+		var terminal_refusal: bool = refusal in ["UnsupportedAction","FootprintCapacity","InvalidTerrainBatch",
+			"InvalidTerrainCell","InvalidMovingBatch","InvalidBatchSelection",
+			"TransactionalReabsorptionControlRequired","InvalidInputTime","OwnerChangedWithoutRetirement"]
+		if terminal_refusal:
+			message = "Structural edit "+refusal+"; the invalid unadmitted gesture was retired."
+			_cancel_object_shard_pointer(refusal)
+			return false
+		# This refusal is explicitly fenced as non-admission. Keep the same segment
+		# and owner so the held gesture can retry against the next coherent visible
+		# publication instead of advancing _object_shard_pointer_previous.
+		return _object_shard_wait("AdmissionDeferred:"+refusal)
 	if mode in [DRILL_TOOL,SLICE_TOOL]:
 		if not _object_shard_segment.remaining.is_empty():
 			_object_shard_edit_probe.record("partial",{"outcome":"SingleOwnerPlacement","remaining_owners":_object_shard_segment.remaining.size(),"tool":mode})
@@ -2529,7 +2553,7 @@ func _pump_object_shard_pointer(pressed: bool = false) -> bool:
 	elif _object_shard_segment.remaining.is_empty():
 		_object_shard_pointer_previous = _object_shard_segment.end
 		_object_shard_segment.clear()
-	return result.get("ok",false)
+	return admission_ok
 
 func _object_shard_terrain_history_capacity(maximum_changed: int) -> bool:
 	# Reserve a worst-case one-cell record for every possible acknowledged
