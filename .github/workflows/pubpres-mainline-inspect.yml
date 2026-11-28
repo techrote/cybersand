@@ -23,7 +23,7 @@ jobs:
       fail-fast: false
       max-parallel: 2
       matrix:
-        role: [wave512, wave1024, sustained-wave512, sustained-mixed2048]
+        role: [wave2048]
     steps:
       - name: Authenticate original final artifacts and independently reduce retained observations
         env:
@@ -35,16 +35,18 @@ jobs:
           REPOSITORY = "techrote/cybersand"
           SOURCE = "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7"
           TREE = "f6b7b8d3d613b70cdcdf3643fb906934b3887173"
-          RUN, ATTEMPT = 46144440297, 1  # Authenticated original final delivery run.
+          RUN, ATTEMPT = 46144440297, 1  # Actual frozen final delivery run.
           MAIN = "50e3bcb839211eac2abe1e065750cbcba4d36f8c"
           OWNER = "9f2127256a555d177536cbb5fad2be7dcb322c8e"
           ENGINE = "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
           # Each immutable tuple is (artifact ID, exact ZIP bytes, SHA256, exact artifact name, kind, case).
           ROLES = {
-              "wave512": (15264340599, 62247320, "800730b55f901f397f92c32f2097f37db64113a6abd8c7e66c53a198abdf89c0", "pubpres-mainline-performance-windows-wave_512_follow-46144440297-1", "performance", "wave_512_follow"),
-              "wave1024": (15263811985, 61775606, "9df17293edf343d29034f426120682187a6268ffeb2c85e74d6b0265ecc7ddc8", "pubpres-mainline-performance-windows-wave_1024_follow_4-46144440297-1", "performance", "wave_1024_follow_4"),
-              "sustained-wave512": (15263757954, 17994967, "a324ea5792e594b969b966971809028cdbfba511f95b0fe755fe752b585a002d", "pubpres-mainline-sustained-windows-wave512-46144440297-1", "sustained", "wave512"),
-              "sustained-mixed2048": (15263364621, 17803090, "20a4fd54a752c16eb1d3acefa376d8fb9e100ac94cd5f8fb24685f4715ba4fd1", "pubpres-mainline-sustained-windows-mixed2048-46144440297-1", "sustained", "mixed2048"),
+              "spawn": (0, 0, "__SHA256__", "__ARTIFACT_NAME__", "spawn", None),
+              "wave512": (0, 0, "__SHA256__", "__ARTIFACT_NAME__", "performance", "wave_512_follow"),
+              "wave1024": (0, 0, "__SHA256__", "__ARTIFACT_NAME__", "performance", "wave_1024_follow_4"),
+              "wave2048": (15264790241, 55952968, "650d493a9d01b3dd127edf82b54e92d942fdddf3e74c0c462303ccfa58ab7a8d", "pubpres-mainline-performance-windows-wave_gameplay_2048_follow-46144440297-1", "performance", "wave_gameplay_2048_follow"),
+              "sustained-wave512": (0, 0, "__SHA256__", "__ARTIFACT_NAME__", "sustained", "wave512"),
+              "sustained-mixed2048": (0, 0, "__SHA256__", "__ARTIFACT_NAME__", "sustained", "mixed2048"),
           }
           ROLE = os.environ["INSPECTION_ROLE"]
           AID, SIZE, SHA, NAME, KIND, CASE = ROLES[ROLE]
