@@ -184,6 +184,9 @@ func _finish() -> void:
 			observations.final = f.diagnostics()
 			observations.display = f.display_witness()
 			observations.pointer_events = input.events
+			# Preserve the bounded edit event ledger on early failures as well as
+			# successful completion; this changes evidence only, never assertions.
+			if f.bench!=null: observations.edit_diagnostics = f.bench.object_shard_edit_diagnostics()
 			f.validate_display()
 		await f.close()
 	print(JSON.stringify({"schema":"objectshard-m4-live-input-v1","checks":f.checks,
