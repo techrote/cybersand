@@ -1,0 +1,31 @@
+{
+  "date": "2026-11-28",
+  "scope": "preserved corrective infrastructure failures; no qualification credit",
+  "runs": [
+    {
+      "run": 46173856737,
+      "result": "workflow validation failed before execution; runner context unavailable at job env scope"
+    },
+    {
+      "run": 46173857722,
+      "result": "workflow validation failed before execution; same archive path expression"
+    },
+    {
+      "run": 46173990075,
+      "result": "unit guard fixture rejected long/short Windows aliases of same linker file; no authoring execution"
+    },
+    {
+      "run": 46174278075,
+      "result": "selector unit fixture compared long/short spellings of same owned root; no authoring execution"
+    },
+    {
+      "run": 46174310096,
+      "result": "same-source duplicate principal run encountered same selector fixture failure"
+    },
+    {
+      "run": 46174517955,
+      "result": "standard Documentation actionlint rejected constant-false performance gate; downstream docs/provenance checks skipped"
+    }
+  ],
+  "corrections": "Archive input path is set inside actual Windows run step; fixture paths compare canonical file identity; source-validated CLI emits hold-observer-contract for performance admission and pinned actionlint passed. Original runs retain failures."
+}

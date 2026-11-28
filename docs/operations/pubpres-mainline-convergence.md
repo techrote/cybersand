@@ -272,6 +272,20 @@ record successful real compile/link/execute from a combined Unicode path,
 actual DLL-complete linker staging/version readback, and positive/negative
 receipt tests. They do not establish a hosted or complete extracted-package pass.
 
+**Hosted focused compiler/authoring gate passed:** the
+[source-bound Windows witness](../audits/pubpres-delivery-recovery-20261128/focused-windows-success.json)
+compiled, linked and executed in all six installation layouts, observed the
+packaged GCC/assembler/collect2/LLD paths, and completed the real reference and
+candidate Materials Lab World comparison. Verified per-executable outbound
+blocks covered authoring tools and both generated World probes. The three
+untouched original Unicode controls reproduced their expected failure and
+provide negative-control credit only. The newly corrected archive still needs
+its separate complete extraction campaign. The
+[infrastructure failure ledger](../audits/pubpres-delivery-recovery-20261128/infrastructure-failures.json)
+retains the initial workflow/fixture/lint failures; no skipped check is counted
+as passing. General performance admission is emitted as source-controlled
+`hold-observer-contract`, with no request-schema or owner promotion change.
+
 ## Owner route and subsequent ObjectShard integration
 
 The [complete Windows owner playtest](../audits/2026-11-28-pubpres-mainline-owner-route.md)
