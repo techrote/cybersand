@@ -49,6 +49,11 @@ var last_receipt: Dictionary = {}
 var _retired_operation := 0
 var _retired_history_job: Dictionary = {}
 var completed_actions := 0
+
+# Disabled in production. A mounted diagnostic may record monotonic timestamps
+# without altering native worker admission, cancellation or authoring semantics.
+var latency_probe_enabled := false
+var latency_trace: Dictionary = {}
 var _agent_history: Dictionary = {}
 var _agent_submission := -1
 var _agent_group := 0
@@ -526,6 +531,11 @@ func _queue_capture(kind: String, region: Rect2i, seed: Vector2i = Vector2i.ZERO
 		return false
 	_operation = {"kind":kind,"operation_id":admitted.operation_id,"seed":seed,
 		"material":material_id,"generation":state.generation}
+	if latency_probe_enabled and kind == "fill":
+		var captures: Array = latency_trace.get("captures",[])
+		captures.append({"operation_id":int(admitted.operation_id),"region":region,
+			"admitted_usec":Time.get_ticks_usec()})
+		latency_trace.captures = captures
 	_say("Capturing native materials…")
 	return true
 
@@ -536,6 +546,9 @@ func copy_selection() -> bool:
 	return _queue_capture("copy",selection)
 
 func fill_at(point: Vector2i) -> bool:
+	if latency_probe_enabled:
+		latency_trace = {"schema":"paint-fill-latency-v1",
+			"requested_usec":Time.get_ticks_usec(),"captures":[]}
 	var region := selection
 	if not region.has_area() or not region.has_point(point):
 		var size := Vector2i(256,256).min(extent())
@@ -603,6 +616,9 @@ func _begin_plan(job: Dictionary, label: String) -> bool:
 	return _start_planner(job)
 
 func _start_planner(job: Dictionary) -> bool:
+	if latency_probe_enabled and str(job.get("tool","")) == "Fill":
+		job.latency_probe = true
+		latency_trace.plan_started_usec = Time.get_ticks_usec()
 	_planning_job = job
 	_planning_cancelled = false
 	_planner = Thread.new()
@@ -623,6 +639,9 @@ func _plan(job: Dictionary) -> Dictionary:
 	var cells := PackedInt32Array()
 	var shape: Dictionary = {}
 	var dimensions: Vector2i = job.extent
+	var trace_geometry_usec := -1
+	var trace_pack_usec := -1
+	var trace_history_usec := -1
 	match str(job.tool):
 		"Cells": cells = job.cells
 		"Line": shape = Shapes.line(job.anchor,job.cursor,int(job.radius),dimensions,MAX_CELLS)
@@ -668,16 +687,20 @@ func _plan(job: Dictionary) -> Dictionary:
 				cells[i*3+1] = shape.cells[i*2+1]
 				cells[i*3+2] = clip.materials[i]
 		"Fill":
+			var geometry_start_usec: int = Time.get_ticks_usec() if bool(job.get("latency_probe",false)) else 0
 			shape = Shapes.fill_connected(job.seed,job.region.position,job.region.size,
 				job.materials,dimensions,MAX_CELLS)
+			if geometry_start_usec > 0: trace_geometry_usec = Time.get_ticks_usec() - geometry_start_usec
 		_: return {"accepted":false,"error":"Unknown paint tool."}
 	if cells.is_empty():
 		if not shape.get("accepted",false): return shape
+		var pack_start_usec: int = Time.get_ticks_usec() if bool(job.get("latency_probe",false)) else 0
 		cells.resize(int(shape.count)*3)
 		for i: int in int(shape.count):
 			cells[i*3] = shape.cells[i*2]
 			cells[i*3+1] = shape.cells[i*2+1]
 			cells[i*3+2] = int(job.material)
+		if pack_start_usec > 0: trace_pack_usec = Time.get_ticks_usec() - pack_start_usec
 	var candidate: Dictionary
 	if job.has("override_edits"):
 		candidate = job.setup.duplicate(true)
@@ -696,10 +719,16 @@ func _plan(job: Dictionary) -> Dictionary:
 		if body.to_utf8_buffer().size() > Setup.BYTE_LIMIT:
 			return {"accepted":false,"error":"Restored authoring state exceeds the file budget."}
 	else:
+		var history_start_usec: int = Time.get_ticks_usec() if bool(job.get("latency_probe",false)) else 0
 		var prepared: Dictionary = History.prepare(job.setup,cells,job.generated,job.get("material_baseline",{}))
+		if history_start_usec > 0: trace_history_usec = Time.get_ticks_usec() - history_start_usec
 		if not prepared.accepted: return prepared
 		candidate = prepared.setup
-	return {"accepted":true,"error":"","cells":cells,"setup":candidate}
+	var answer := {"accepted":true,"error":"","cells":cells,"setup":candidate}
+	if bool(job.get("latency_probe",false)) and str(job.tool) == "Fill":
+		answer.probe_plan_stages_usec = {"geometry":trace_geometry_usec,
+			"triplet_pack":trace_pack_usec,"history_preflight":trace_history_usec}
+	return answer
 
 func _consume_plan() -> void:
 	if _planner == null or _planner.is_alive(): return
@@ -707,6 +736,9 @@ func _consume_plan() -> void:
 	_planner = null
 	var job := _planning_job
 	_planning_job = {}
+	if latency_probe_enabled and str(job.get("tool","")) == "Fill":
+		latency_trace.plan_done_usec = Time.get_ticks_usec()
+		if planned is Dictionary: latency_trace.plan_stages_usec = planned.get("probe_plan_stages_usec",{})
 	if _planning_cancelled:
 		_history_replay.clear()
 		_say("Planning cancelled; no cells queued.")
@@ -751,6 +783,9 @@ func _consume_plan() -> void:
 		_notify_history(job,{"status":"refused","reason":_message},false)
 		return
 	_operation = {"kind":"edit","operation_id":admitted.operation_id,"job":job,"planned":planned}
+	if latency_probe_enabled and str(job.get("tool","")) == "Fill":
+		latency_trace.edit_admitted_usec = Time.get_ticks_usec()
+		latency_trace.requested_cells = int(planned.cells.size()/3)
 	_say(str(job.label)+" queued · awaiting native confirmation…")
 
 func _process(_delta: float) -> void:
@@ -822,6 +857,16 @@ func _receive(receipt: Dictionary) -> void:
 		_finish_deferred(operation.get("job",{}),retired)
 		_notify_history(operation.get("job",{}),retired,false)
 		return
+	if latency_probe_enabled and str(operation.kind) == "fill":
+		var captures: Array = latency_trace.get("captures",[])
+		if not captures.is_empty():
+			var capture: Dictionary = captures.back()
+			capture.receipt_usec = Time.get_ticks_usec()
+			capture.executor_elapsed_usec = int(receipt.get("elapsed_usec",-1))
+			capture.slices = int(receipt.get("slices",-1))
+			capture.status = str(receipt.get("status",""))
+			captures[captures.size()-1] = capture
+			latency_trace.captures = captures
 	if str(operation.kind) != "edit":
 		if operation.kind == "strata_capture":
 			var copied := receipt.duplicate(true)
@@ -848,7 +893,16 @@ func _receive(receipt: Dictionary) -> void:
 				"fence":_source(receipt),"label":"Fill"}
 			_start_planner(job)
 		return
+	if latency_probe_enabled and str(operation.get("job",{}).get("tool","")) == "Fill":
+		latency_trace.edit_receipt_usec = Time.get_ticks_usec()
+		latency_trace.edit_executor_usec = int(receipt.get("elapsed_usec",-1))
+		latency_trace.edit_max_slice_usec = int(receipt.get("maximum_slice_usec",-1))
+		latency_trace.edit_slices = int(receipt.get("slices",-1))
+		latency_trace.edit_revision = int(receipt.get("revision",-1))
+		latency_trace.edit_status = str(receipt.get("status",""))
 	_receive_edit(operation,receipt,current)
+	if latency_probe_enabled and str(operation.get("job",{}).get("tool","")) == "Fill":
+		latency_trace.edit_recorded_usec = Time.get_ticks_usec()
 	var completed := receipt.duplicate(true)
 	completed.recorded = not _save_hold
 	if _save_hold: completed.reason = _message
