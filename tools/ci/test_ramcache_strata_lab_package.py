@@ -324,25 +324,88 @@ class CompilerCopyTests(unittest.TestCase):
 
 
 class DependencyReceiptTests(unittest.TestCase):
+    def _make_dependencies(self, directory: Path, *, compiler_receipt: bytes | None = None) -> Path:
+        destination = directory / "dependencies"
+        files = [*package.TOOL_PATHS.values(), "python/LICENSE.txt", "git/LICENSE.txt",
+                 "git/ucrt64/bin/git.exe", "git/ucrt64/share/licenses/runtime/LICENSE", "cxx/licenses/COPYING"]
+        for name in files:
+            target = destination / name
+            target.parent.mkdir(parents=True, exist_ok=True)
+            target.write_bytes(("fixture " + name).encode())
+        for name in ("python/Lib/json", "python/DLLs"):
+            (destination / name).mkdir(parents=True)
+        if compiler_receipt is not None:
+            receipt = destination / "cxx" / package.portable_compiler_utf8.RECEIPT_NAME
+            receipt.write_bytes(compiler_receipt)
+        return destination
+
+    def _static_compiler_proof(self, compiler_root: Path, *, execute: bool) -> dict:
+        # Keep this test at the package identity boundary. The Windows PE
+        # verifier owns binary/resource validation; here we model its static
+        # readback while binding the result to the actual staged receipt bytes.
+        self.assertFalse(execute)
+        receipt = compiler_root / package.portable_compiler_utf8.RECEIPT_NAME
+        return {
+            "schema": package.portable_compiler_utf8.SCHEMA,
+            "status": "verified",
+            "binaries": {
+                "bin/g++.exe": {"sha256": package.sha(compiler_root / "bin/g++.exe")},
+            },
+            "receipt_sha256": package.sha(receipt),
+        }
+
     def test_dependency_bytes_and_notices_are_replayed_without_execution(self):
         with tempfile.TemporaryDirectory(prefix="ramcache-strata-dependencies-") as directory:
-            destination = Path(directory) / "dependencies"
-            files = [*package.TOOL_PATHS.values(), "python/LICENSE.txt", "git/LICENSE.txt",
-                     "git/ucrt64/bin/git.exe", "git/ucrt64/share/licenses/runtime/LICENSE", "cxx/licenses/COPYING"]
-            for name in files:
-                target = destination / name
-                target.parent.mkdir(parents=True, exist_ok=True)
-                target.write_bytes(("fixture " + name).encode())
-            for name in ("python/Lib/json", "python/DLLs"):
-                (destination / name).mkdir(parents=True)
-            record = package.dependency_identity(destination, execute=False)
-            package.verify_dependencies(destination, record, execute=False)
+            destination = self._make_dependencies(Path(directory))
+            with mock.patch.object(package.portable_compiler_utf8, "verify") as compiler_verify:
+                record = package.dependency_identity(destination, execute=False)
+                package.verify_dependencies(destination, record, execute=False)
+                compiler_verify.assert_not_called()
+            self.assertNotIn("compiler_utf8", record)
             (destination / "python/python.exe").write_bytes(b"changed interpreter")
             with self.assertRaisesRegex(RuntimeError, "dependency identity changed"):
                 package.verify_dependencies(destination, record, execute=False)
             (destination / "cxx/licenses/COPYING").unlink()
             with self.assertRaisesRegex(RuntimeError, "license notices"):
                 package.dependency_identity(destination, execute=False)
+
+    def test_nested_compiler_receipt_is_replayed_in_static_identity(self):
+        receipt_bytes = b'{"schema":"cybersand.portable-compiler-utf8-v1","status":"prepared-candidate"}\n'
+        with tempfile.TemporaryDirectory(prefix="ramcache-strata-compiler-proof-") as directory:
+            destination = self._make_dependencies(Path(directory), compiler_receipt=receipt_bytes)
+            with mock.patch.object(package.portable_compiler_utf8, "verify", side_effect=self._static_compiler_proof) as verifier:
+                record = package.dependency_identity(destination, execute=False)
+                replayed = package.verify_dependencies(destination, record, execute=False)
+            self.assertEqual(verifier.call_count, 2)
+            self.assertEqual(record["compiler_utf8"]["status"], "verified")
+            self.assertEqual(record["compiler_utf8"]["receipt_sha256"],
+                             hashlib.sha256(receipt_bytes).hexdigest())
+            self.assertEqual(replayed, record)
+
+    def test_modified_nested_compiler_receipt_refuses_replay(self):
+        original = b'{"proof":"prepared compiler A"}\n'
+        with tempfile.TemporaryDirectory(prefix="ramcache-strata-mutated-compiler-proof-") as directory:
+            destination = self._make_dependencies(Path(directory), compiler_receipt=original)
+            receipt = destination / "cxx" / package.portable_compiler_utf8.RECEIPT_NAME
+            with mock.patch.object(package.portable_compiler_utf8, "verify", side_effect=self._static_compiler_proof):
+                record = package.dependency_identity(destination, execute=False)
+                receipt.write_bytes(b'{"proof":"mutated compiler receipt"}\n')
+                with self.assertRaisesRegex(RuntimeError, "dependency identity changed"):
+                    package.verify_dependencies(destination, record, execute=False)
+
+    def test_foreign_nested_compiler_proof_refuses_replay(self):
+        with tempfile.TemporaryDirectory(prefix="ramcache-strata-foreign-compiler-proof-") as directory:
+            root = Path(directory)
+            local = self._make_dependencies(root / "local", compiler_receipt=b'{"proof":"local"}\n')
+            foreign = self._make_dependencies(root / "foreign", compiler_receipt=b'{"proof":"foreign"}\n')
+            with mock.patch.object(package.portable_compiler_utf8, "verify", side_effect=self._static_compiler_proof):
+                local_record = package.dependency_identity(local, execute=False)
+                foreign_record = package.dependency_identity(foreign, execute=False)
+                self.assertNotEqual(local_record["compiler_utf8"], foreign_record["compiler_utf8"])
+                self.assertEqual({key: value for key, value in local_record.items() if key != "compiler_utf8"},
+                                 {key: value for key, value in foreign_record.items() if key != "compiler_utf8"})
+                with self.assertRaisesRegex(RuntimeError, "dependency identity changed"):
+                    package.verify_dependencies(local, foreign_record, execute=False)
 
 
 if __name__ == "__main__":

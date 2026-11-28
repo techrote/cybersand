@@ -14,6 +14,7 @@ on:
       - 'tools/ci/ramcache_strata_lab_package.py'
       - 'tools/ci/portable_compiler_utf8.py'
       - 'tools/ci/test_portable_compiler_utf8.py'
+      - 'tools/ci/test_ramcache_strata_lab_package.py'
       - 'tools/package_materials_lab_candidate.py'
       - 'tools/material_catalogue/**'
 
@@ -53,6 +54,8 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Portable witness positive/negative controls failed' }
           python -B -m unittest discover -s tools/ci -p 'test_portable_compiler_utf8.py' -v
           if ($LASTEXITCODE -ne 0) { throw 'Compiler metadata preservation controls failed' }
+          python -B tools/ci/test_ramcache_strata_lab_package.py DependencyReceiptTests -v
+          if ($LASTEXITCODE -ne 0) { throw 'Nested portable compiler receipt integration controls failed' }
           python -B -m unittest discover -s tools/ci -p 'test_portable_authoring_environment.py' -v
           if ($LASTEXITCODE -ne 0) { throw 'Portable compiler environment isolation controls failed' }
       - name: Acquire original failed package custody manifest
