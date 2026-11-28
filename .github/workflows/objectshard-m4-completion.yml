@@ -525,7 +525,7 @@ jobs:
     outputs:
       runtime-id: ${{ steps.runtime.outputs.artifact-id }}
       attempt: ${{ steps.producer.outputs.attempt }}
-    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') || contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') || (github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/objectshard-m4-mainline-20261122' && contains(github.event.head_commit.message, '[objectshard-m4-publish]')) }}
+    if: ${{ github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, '[objectshard-m4-completion]') || contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') || contains(github.event.head_commit.message, '[objectshard-m4-package-recovery]') || (github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/objectshard-m4-mainline-20261122' && contains(github.event.head_commit.message, '[objectshard-m4-publish]')) }}
     runs-on: ubuntu-24.04
     timeout-minutes: 60
     steps:
@@ -533,7 +533,7 @@ jobs:
         with:
           persist-credentials: false
       - name: Reuse immutable qualified Windows native artifact
-        if: contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]')
+        if: ${{ contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') || contains(github.event.head_commit.message, '[objectshard-m4-package-recovery]') }}
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
           github-token: ${{ github.token }}
@@ -542,7 +542,7 @@ jobs:
           merge-multiple: true
           path: build/objectshard-windows/
       - name: Prove exact native input equivalence and retain reuse provenance
-        if: contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]')
+        if: ${{ contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') || contains(github.event.head_commit.message, '[objectshard-m4-package-recovery]') }}
         shell: bash
         run: |
           set -euo pipefail
@@ -556,7 +556,7 @@ jobs:
           python3 tools/ci/native_candidate_identity.py build/objectshard-windows
           cp build/objectshard-windows/candidate-reuse-provenance.json evidence/
       - name: Exact Windows cross toolchain
-        if: ${{ !contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') }}
+        if: ${{ !contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') && !contains(github.event.head_commit.message, '[objectshard-m4-package-recovery]') }}
         shell: bash
         run: |
           set -euo pipefail
@@ -578,7 +578,7 @@ jobs:
             ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
           fi
       - name: Exact-source Windows native artifact
-        if: ${{ !contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') }}
+        if: ${{ !contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') && !contains(github.event.head_commit.message, '[objectshard-m4-package-recovery]') }}
         shell: bash
         env:
           GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
@@ -622,7 +622,7 @@ jobs:
           retention-days: 60
   windows-native-presentation:
     needs: windows-native
-    if: ${{ !contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') }}
+    if: ${{ !contains(github.event.head_commit.message, '[objectshard-m4-application-recovery]') && !contains(github.event.head_commit.message, '[objectshard-m4-package-recovery]') }}
     runs-on: windows-2022
     timeout-minutes: 30
     steps:
@@ -677,6 +677,7 @@ jobs:
   # guarded publication still requires both complete matrices and package replay.
   windows-workbench-regressions:
     needs: windows-native
+    if: ${{ !contains(github.event.head_commit.message, '[objectshard-m4-package-recovery]') }}
     runs-on: windows-2022
     timeout-minutes: 120
     steps:
@@ -729,6 +730,7 @@ jobs:
           retention-days: 60
   windows-workbench-graphical:
     needs: windows-native
+    if: ${{ !contains(github.event.head_commit.message, '[objectshard-m4-package-recovery]') }}
     runs-on: windows-2022
     timeout-minutes: 120
     steps:
