@@ -248,7 +248,22 @@ jobs:
                       compact["original_inner_zip_receipt"] = receipt
                       compact["manifest_bytes"] = proof["records"][manifest_name]
                       proof["package_review"] = compact
-                      present("ORIGINAL_PACKAGE_CUSTODY", compact)
+                      # Keep the full original manifest and review in the artifact. Project only
+                      # its large committed-file inventory for the bounded human console.
+                      console_record = dict(compact)
+                      source_repository = dict(compact["source_repository"])
+                      inventory = source_repository["original_files"]
+                      require(isinstance(inventory, dict) and 0 < len(inventory) <= 100000,
+                              "Unexpected original committed source inventory")
+                      inventory_json = json.dumps(inventory, sort_keys=True, separators=(",", ":"), ensure_ascii=False).encode("utf-8")
+                      source_repository["original_files"] = {
+                          "entries": len(inventory),
+                          "canonical_json_sha256": hashlib.sha256(inventory_json).hexdigest(),
+                          "original_record": manifest_name,
+                          "scope": "Console projection only; every original path/Git blob entry remains in the authenticated manifest and full package_review artifact.",
+                      }
+                      console_record["source_repository"] = source_repository
+                      present("ORIGINAL_PACKAGE_CUSTODY", console_record)
                   elif chosen["kind"] == "extracted":
                       result_name = one("extracted-verification.json")
                       result = read_json(result_name)
