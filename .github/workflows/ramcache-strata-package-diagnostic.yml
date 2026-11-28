@@ -1,0 +1,107 @@
+name: RAMCACHE Strata portable dependency diagnosis
+
+on:
+  push:
+    branches: [integration/ramcache-strata-package-diagnostic-20261128]
+    paths: ['.github/workflows/ramcache-strata-package-diagnostic.yml']
+
+permissions:
+  contents: read
+
+jobs:
+  staging:
+    name: Reproduce original Windows dependency staging admission
+    runs-on: windows-2022
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: 18e37259678fbf5097470fff030f5f7f16f52ae6
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Inventory actual runner caches and replay the unchanged archive guard
+        shell: pwsh
+        env:
+          PYTHONUTF8: '1'
+        run: |
+          @'
+          import hashlib, json, os, pathlib, subprocess, sys, zipfile
+          root = pathlib.Path.cwd()
+          sys.path.insert(0, str(root / 'tools'))
+          sys.path.insert(0, str(root / 'tools/ci'))
+          import ramcache_strata_lab_package as lab
+          import package_ramcache_strata as package
+          source = subprocess.check_output(['git','rev-parse','HEAD'], text=True).strip()
+          assert source == '18e37259678fbf5097470fff030f5f7f16f52ae6', source
+          output = pathlib.Path(os.environ['RUNNER_TEMP']) / 'ramcache-strata-package-diagnostic'
+          output.mkdir()
+          def sha(path):
+              with path.open('rb') as stream:
+                  return hashlib.file_digest(stream, 'sha256').hexdigest()
+          def generated_inventory(folder):
+              result = {}
+              for path in sorted(folder.rglob('*')):
+                  if path.is_file() and any(part in ('userdata','.godot','__pycache__') for part in path.relative_to(folder).parts):
+                      name = path.relative_to(folder).as_posix()
+                      result[name] = {'bytes': path.stat().st_size, 'sha256': sha(path)}
+              return result
+          record = {
+              'schema': 'ramcache-strata-package-staging-diagnostic-v1',
+              'scope': 'Diagnostic only; no application/runtime qualification or evaluator publication',
+              'source_commit': source,
+              'source_tree': subprocess.check_output(['git','rev-parse','HEAD^{tree}'], text=True).strip(),
+              'workflow_commit': os.environ['GITHUB_SHA'],
+              'workflow_run': os.environ['GITHUB_RUN_ID'],
+              'image': {key: os.environ.get(key) for key in ('ImageOS','ImageVersion','RUNNER_OS','RUNNER_ARCH')},
+              'python': sys.version,
+              'staging_helper_sha256': sha(root / 'tools/ci/ramcache_strata_lab_package.py'),
+              'archive_reader_sha256': sha(root / 'tools/package_ramcache_strata.py'),
+              'before': {},
+          }
+          try:
+              for label, folder in (('python',pathlib.Path(sys.base_prefix)), ('git',pathlib.Path(r'C:\Program Files\Git')), ('cxx',pathlib.Path(r'C:\mingw64'))):
+                  record['before'][label] = generated_inventory(folder)
+              target = pathlib.Path(os.environ['RUNNER_TEMP']) / 'ramcache-strata-diagnostic-staged' / 'dependencies'
+              record['dependency_identity'] = lab.stage_dependencies(target)
+              record['staged_generated_files'] = generated_inventory(target)
+              before = {label + '/' + name: value for label, values in record['before'].items() for name, value in values.items()}
+              record['staged_byte_identical_to_runner'] = [name for name, value in record['staged_generated_files'].items() if before.get(name) == value]
+              record['staged_new_or_changed'] = [name for name, value in record['staged_generated_files'].items() if before.get(name) != value]
+              members = {('dependencies/' + name): (target / name).read_bytes() for name in record['staged_generated_files']}
+              if not members:
+                  members = {'diagnostic-clean-sentinel.txt': b'No forbidden staged dependency members.\n'}
+              manifest = {'files_sha256': {name: hashlib.sha256(data).hexdigest() for name, data in members.items()}}
+              probe = output / 'original-member-reproduction.zip'
+              with zipfile.ZipFile(probe, 'w', zipfile.ZIP_DEFLATED) as archive:
+                  for name, data in members.items():
+                      archive.writestr(name, data)
+                  archive.writestr(package.MANIFEST, json.dumps(manifest))
+              record['probe_members'] = list(members)
+              record['probe_sha256'] = sha(probe)
+              try:
+                  package.inspect_archive(probe)
+              except RuntimeError as exc:
+                  record['original_guard'] = {'outcome': 'refused', 'error': str(exc)}
+                  assert record['staged_generated_files'], 'Unexpected guard refusal without generated members'
+                  assert str(exc) == 'Shipped package contains prior generated state or an altered committed bootstrap', str(exc)
+              else:
+                  record['original_guard'] = {'outcome': 'admitted'}
+                  assert not record['staged_generated_files'], 'Original guard admitted generated files'
+              record['status'] = 'diagnostic-completed'
+              print(json.dumps({'status': record['status'], 'image': record['image'], 'counts_before': {k:len(v) for k,v in record['before'].items()}, 'staged_count':len(record['staged_generated_files']), 'first_staged_names':list(record['staged_generated_files'])[:10], 'guard':record['original_guard']}, indent=2))
+          finally:
+              (output / 'staging-diagnostic.json').write_text(json.dumps(record, indent=2, sort_keys=True) + '\n', encoding='utf-8')
+          '@ | python -B -
+          if ($LASTEXITCODE -ne 0) { throw 'Original dependency staging diagnostic failed' }
+      - name: Preserve original diagnosis and exact rejected member bytes
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramcache-strata-package-staging-diagnostic-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/ramcache-strata-package-diagnostic/
+          if-no-files-found: error
+          retention-days: 90
