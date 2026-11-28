@@ -1,11 +1,11 @@
 # PUBPRES delivery recovery: residual correctness review
 
-**Review date:** 2026-11-28  
-**Review scope:** Read-only triage of the retained Water/manual-Step omission, Mixed2048 repeated-moving observations, and the final legacy shared-budget event.  
-**Application source reviewed:** `65f71aaf4be3a67896bafac7f5220a0cb25a8fb7`  
-**Application tree reviewed:** `f6b7b8d3d613b70cdcdf3643fb906934b3887173`  
-**Accepted-main identity recorded by the preceding custody report:** `50e3bcb839211eac2abe1e065750cbcba4d36f8c`  
-**Previous physically owner-evaluated PUBPRES source:** `9f2127256a555d177536cbb5fad2be7dcb322c8e`  
+**Review date:** 2026-11-28
+**Review scope:** Read-only triage of the retained Water/manual-Step omission, Mixed2048 repeated-moving observations, and the final legacy shared-budget event.
+**Application source reviewed:** `65f71aaf4be3a67896bafac7f5220a0cb25a8fb7`
+**Application tree reviewed:** `f6b7b8d3d613b70cdcdf3643fb906934b3887173`
+**Accepted-main identity recorded by the preceding custody report:** `50e3bcb839211eac2abe1e065750cbcba4d36f8c`
+**Previous physically owner-evaluated PUBPRES source:** `9f2127256a555d177536cbb5fad2be7dcb322c8e`
 **Immutable final evidence source:** `21957d0df95800b0f418c078ebef7ee070c541af`
 
 This review examined the source and evidence identified above. It made no application or native-source edits and ran no application, test, or qualification campaign. It makes no new execution, acceptance, or owner-evaluation claim. The source-level observations below do not replace the original hosted observations.
