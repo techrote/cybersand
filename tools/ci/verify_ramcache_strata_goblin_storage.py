@@ -39,6 +39,16 @@ def sha(path: Path) -> str:
     return hashlib.sha256(path.read_bytes()).hexdigest()
 
 
+def path_spelling(value: object, platform: str) -> str:
+    require(isinstance(value, str), "Goblin fixed target is not a path string")
+    # Godot records forward slashes while pathlib records backslashes on Windows.
+    # Preserve every other character: no case folding, resolution or dot collapse.
+    spelling = value.replace("\\", "/") if platform == "win32" else value
+    require(all(part not in (".", "..") for part in spelling.split("/")),
+            "Goblin fixed target contains a traversal or dot component")
+    return spelling
+
+
 def verify_storage_evidence(folder: Path, *, expected_source: str, platform: str,
                             engine_path: str, project_path: str, engine_sha256: str,
                             engine_version: str, expected_inputs: dict[str, str]) -> dict:
@@ -88,12 +98,13 @@ def verify_storage_evidence(folder: Path, *, expected_source: str, platform: str
         require(probe == row.get("guards") and probe.get("acknowledged") is acknowledged[index]
                 and all(probe.get(key) is True for key in
                         ("profile_verified", "wrong_path_refused", "wrong_profile_refused", "guards_preserved"))
-                and isinstance(probe.get("path"), str) and probe["path"] == row.get("path")
+                and path_spelling(probe.get("path"), platform) == path_spelling(row.get("path"), platform)
                 and isinstance(probe.get("error"), str) and probe["error"] == row.get("error"),
                 "Goblin guard observations disagree with original process output")
         if target is None:
-            target = probe["path"]
-        require(probe["path"] == target, "Goblin executions did not use the same fixed output")
+            target = path_spelling(probe["path"], platform)
+        require(path_spelling(probe["path"], platform) == target,
+                "Goblin executions did not use the same fixed output")
         require((not probe["error"]) if acknowledged[index] else
                 ("not replaced" in probe["error"] or "did not replace the previous file" in probe["error"]),
                 "Goblin replacement did not disclose its actual success or preservation")
