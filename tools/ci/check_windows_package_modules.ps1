@@ -8,7 +8,8 @@ param(
     [Parameter(Mandatory = $true)][string]$Evidence,
     [switch]$Combined,
     [ValidateSet('candidate-manifest.json','materials-lab-evaluation.json','evaluation-manifest.json')]
-    [Alias('Manifest')][string]$ManifestFile
+    [Alias('Manifest')][string]$ManifestFile,
+    [ValidateSet('godot','source/godot')][string]$ProjectRelative
 )
 
 $ErrorActionPreference = 'Stop'
@@ -104,7 +105,7 @@ try {
     }
     $receipt.package = [System.IO.Path]::GetFullPath((Resolve-Path -LiteralPath $Package).ProviderPath)
     $manifestName = if ($ManifestFile) { $ManifestFile } elseif ($Combined) { 'materials-lab-evaluation.json' } else { 'candidate-manifest.json' }
-    $projectRelative = if ($Combined) { 'source/godot' } else { 'godot' }
+    $projectDirectory = if ($ProjectRelative) { $ProjectRelative } elseif ($Combined) { 'source/godot' } else { 'godot' }
     $manifest = Get-Content -LiteralPath (Join-Path $receipt.package $manifestName) -Raw | ConvertFrom-Json
     $receipt.source_commit = [string]$manifest.source_commit
     $receipt.source_tree = [string]$manifest.source_tree
@@ -114,10 +115,10 @@ try {
     $receipt.executable = New-PackageFileRecord 'Godot_v4.7-stable_win64.exe'
     $receipt.modules = @(
         (New-PackageFileRecord 'vcruntime140.dll'),
-        (New-PackageFileRecord ($projectRelative + '/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll')),
-        (New-PackageFileRecord ($projectRelative + '/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'))
+        (New-PackageFileRecord ($projectDirectory + '/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll')),
+        (New-PackageFileRecord ($projectDirectory + '/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll'))
     )
-    $projectPath = (Resolve-Path -LiteralPath (Join-Path $receipt.package $projectRelative)).ProviderPath
+    $projectPath = (Resolve-Path -LiteralPath (Join-Path $receipt.package $projectDirectory)).ProviderPath
     if (-not (Test-Path -LiteralPath (Join-Path $projectPath 'project.godot') -PathType Leaf)) {
         throw 'Copied installation has no Godot project'
     }

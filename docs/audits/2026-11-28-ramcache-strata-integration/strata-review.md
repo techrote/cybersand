@@ -1,9 +1,9 @@
 # Strata integration and independent qualification review — 28 November 2026
 
 This is Specialist B's source review for RAMCACHE-STRATA-INTEGRATION-001. It
-records the complete Strata lineage, bounded implementation repairs and local
-diagnostics before the principal's mainline merge. It also reviews Specialist
-C's proposed combined qualification and portable package. **It is not an
+records the complete Strata lineage, bounded implementation repairs, local
+diagnostics and the first integrated candidate's hosted Linux graphical results.
+It also reviews Specialist C's combined qualification and portable package. **It is not an
 exact-final hosted graphical qualification or a physical NVIDIA evaluation.**
 The final source, original workflow receipts and delivered archive are owned by
 the [combined integration record](../../operations/ramcache-strata-integration.md).
@@ -146,6 +146,60 @@ held Windows process handles bind its import/application children and exit
 status. Subsequent extracted RAMCACHE/Strata tests and DLL-module inspection
 must pass before artifact publication. At this review stage those are inspected
 implementation requirements, **not completed execution results**.
+
+## First integrated candidate graphical evidence and portable Lab repair
+
+The principal merged RAMCACHE as `9920e7a7369f24e2818313c007cc33616c1a6a83`.
+B independently confirmed its tree is exactly the qualified RAMCACHE tree
+`91223c4427ef6896140368f7a28ca6c8e7ba75b0`; the merge adds no product delta.
+
+The first combined candidate was `e135c2e116f4a111309e01621fcf87bb966a50ee`,
+tree `acb4bafe138dd5c16c6973393f150de9e5deb344`. Its
+[Linux Strata job](https://github.com/techrote/cybersand/actions/runs/46088677236/job/140804337224)
+passed. C downloaded and safely extracted the
+[original artifact](https://github.com/techrote/cybersand/actions/runs/46088677236/artifacts/15240473010).
+B independently checked out the exact candidate, ran its unmodified
+`ramcache_strata_qualification.verify` against those original files and obtained
+PASS. This replay verifies all original receipts, commands, process/resource
+custody, selected coverage, source/runtime maps and artifact hashes. It is not a
+new execution or a final-main qualification.
+
+The hosted renderer was X11 with llvmpipe (LLVM 20.1.2, 256 bits). Actual graphical
+checks were 922/415 for optical install/fresh reopen, 2,043 for four-profile motion,
+130/24 for Diorama 1.3 install/reopen and 172/184 for persistent boundary
+write/reopen; all reported zero failures. Each fresh pair used distinct observed
+processes. The Diorama save hash remained the same as the local witness above.
+Inspection controls reset while authored optics, named preset and separate low
+quality preference reopened. Camera/picking checks sampled 216 transforms with
+maximum error 0.00018310546875. Returning to Classic changed zero pixels in the
+529,984-pixel unresampled world-view framebuffer. Repeated profile changes caused
+zero additional decorative native captures or texture uploads.
+
+B visually inspected all eleven original profile captures, representative
+Classic/Diorama/Gameplay Clarity/Cinematic motion frames, the Optics Lab panel,
+owner-preference reopen, persistent refusal and 720p RAM cache panel. Rear optics
+change tone/focus while physical Play edges, Water/Sand and actor markers remain
+legible. The refusal clearly directs the user through Launcher to ordinary
+Workbench. No new graphical defect was identified in this registered subset.
+This does not extend the original scene coverage or replace the owner's hardware
+acceptance; final Windows extracted captures remain a separate gate.
+
+Both shared-host lanes then correctly refused Materials Lab output paths placed
+inside the source repository by the new harness. B confirmed that the existing
+outside-source guard caused the failure after the first 38 native/input checks
+passed. C relocates campaign output to runner temporary storage without changing
+the Lab guard, tests or application. Review also found that the proposed compact
+package omitted the accepted offline Lab authoring stack. The bounded repair
+reuses the existing portable Python/Git/compiler copying functions and a fresh
+HEAD-only source bundle at `source/`, with userdata outside that source directory.
+It keeps both original runtime publication manifests and the active native
+extension unchanged. Helper `101dcdd91916372d354e2c9bd7b00dcd7b38d84e` verifies
+all immutable committed blobs, exact admitted Windows LFS materializations,
+reviewed Rapier import exceptions, tool hashes/versions and dependency notices.
+Its five adversarial tests pass. A independently demonstrated that excluded
+branch/unreachable objects are absent, and that off-HEAD refs are refused.
+Actual packaged Windows tools and author/reopen execution still require the
+new hosted package campaign; this review does not claim those pending results.
 
 ## Acceptance policy and retained limitations
 

@@ -23,9 +23,113 @@
     "Test owner Diorama rear depth1.3 with named preset, separate quality, excluded inspection and true save/reopen",
     "Exercise native Play and rear brush/erase/Undo through the changed input dispatch"
   ],
-  "disposition": "source-review-complete-final-hosted-and-package-evidence-pending",
+  "disposition": "source-and-first-candidate-linux-graphical-review-complete-final-main-and-package-evidence-pending",
   "exact_final_main_qualified": false,
   "general_runner_context_commit": "00df15c1f2a1d0633f6080f73200c7ff1c454662",
+  "hosted_candidate_graphical": {
+    "adapter": "llvmpipe (LLVM 20.1.2, 256 bits)",
+    "artifact_id": 15240473010,
+    "artifact_sha256": "6554ccf5c2f2ffc946407211237ebda4db5012a237c86e11f62e3d9f18c46571",
+    "display_server": "X11",
+    "elapsed_seconds": 1.724,
+    "final_main_qualification": false,
+    "graphical": true,
+    "independent_exact_candidate_reader": "passed",
+    "integration_json_sha256": "331e1cbccf109001d954033aa0c7ac040acf0e42cb8f2ed0f495de39357c58f7",
+    "job_id": 140804337224,
+    "mode": "strata",
+    "platform": "linux",
+    "reader_sha256": "f3ff70969cfcac7b285554230aa2b129dc2f583026a570af38dd358c09c74665",
+    "receipts": [
+      {
+        "checks": 922,
+        "completed": true,
+        "failures": [],
+        "path": "optics/industrial-underworks/install/result.json",
+        "process_id": 3441,
+        "sha256": "075cf4e40cb897db41c5d794f9be792fc38cd307b2ba8167ab1ac6d97e1a84ee"
+      },
+      {
+        "checks": 415,
+        "completed": true,
+        "failures": [],
+        "path": "optics/industrial-underworks/reopen/result.json",
+        "process_id": 3562,
+        "sha256": "2f204cfdab61a6d9e862ecdeeb504982e8a1a147fe10294542b13ef2f6e2b375"
+      },
+      {
+        "checks": 2043,
+        "completed": true,
+        "failures": [],
+        "path": "optical-motion/result.json",
+        "process_id": 3830,
+        "sha256": "e1fd2306c84821005e462eef91ba8059420510bc4857dfd78447f07d69c2ad69"
+      },
+      {
+        "checks": 130,
+        "completed": true,
+        "failures": [],
+        "path": "preference-install/result.json",
+        "process_id": 4058,
+        "sha256": "6adff74c729aa2c2fcb2a7142fb2b11a20256e629abacb1009d9690ea3aceedb"
+      },
+      {
+        "checks": 24,
+        "completed": true,
+        "failures": [],
+        "path": "preference-reopen/result.json",
+        "process_id": 4108,
+        "sha256": "9c4a51e965f324cb87e08122b8a7844f34b46973358b4d38a694e0b7890d24df"
+      },
+      {
+        "checks": 172,
+        "completed": true,
+        "failures": [],
+        "path": "boundary-data/ramcache-strata-boundaries-write.json",
+        "process_id": 3906,
+        "sha256": "aebea8ebff83fc1fcd68ff60bf9ca3acdbc36f12125a958a1b2c144559d95c01"
+      },
+      {
+        "checks": 184,
+        "completed": true,
+        "failures": [],
+        "path": "boundary-data/ramcache-strata-boundaries-reopen.json",
+        "process_id": 3983,
+        "sha256": "bc3ccd1c98885ec805544cf3966d4f66660561b803bef793423cfa2f686636b1"
+      }
+    ],
+    "source_commit": "e135c2e116f4a111309e01621fcf87bb966a50ee",
+    "source_tree": "acb4bafe138dd5c16c6973393f150de9e5deb344",
+    "status": "passed",
+    "visual_disposition": "No new graphical defect in all eleven profile captures and selected camera/motion/UI observations; final-main extracted Windows review pending",
+    "visually_reviewed_png_sha256": {
+      "boundary-data/ramcache-controls-720.png": "f09e91a7c7257d628830b7e2da0d26335835af689c60cc66d9db22dae5de4a50",
+      "boundary-data/strata-refused-write.png": "f6f9249694956cc52301a20b565c86354c3c70913bae945d27bb287f7f8461a8",
+      "optical-motion/motion-cinematic_deep_focus-05.png": "9d11292cbae3f6393fcb70163437bad1706a703f5d30e48be603761205673011",
+      "optical-motion/motion-classic-00.png": "ea30604e771b45031d6c758849c120e86aeef80cef3875f830af776657bbcbed",
+      "optical-motion/motion-classic-05.png": "4c47ff0f612b0c4e549638f52269b08e4574ab256cf0fd5da5f993340682891f",
+      "optical-motion/motion-classic-09.png": "fc866d9180ced45037969c421c033248e3b7f408739618f08310d7a6e5931fcc",
+      "optical-motion/motion-diorama-00.png": "39b77fcd1d140537b9f47fdd961319fad2e1374880fd6a47095cfb6954afc6d8",
+      "optical-motion/motion-diorama-05.png": "789620bfcb3794b84084fb0c07d6d596c613968d108a9f42fe94cf15a0ca6009",
+      "optical-motion/motion-diorama-09.png": "b2f3d5e7210b16de9e5050a537b53db1ada4a26101cb81bb5426a853a5ca1520",
+      "optical-motion/motion-gameplay_clarity-00.png": "8ff057c4550fc3ecbed802cd4cbd23a6b3ca448f41e1723870c96292b9c7cb2f",
+      "optical-motion/motion-gameplay_clarity-05.png": "b3b08d98d08ef10bb9ec41455d4f1cd6df9c046f1c514878a615f50a132edf5e",
+      "optics/industrial-underworks/install/optics-lab.png": "e35fb356e71d9c5a691d6f22cc0f0ef445417be514c4b1d6371dada506300cc7",
+      "optics/industrial-underworks/install/profile-alien_bioluminescence.png": "8ebf91071da8619004cf74429127ca6796f38793ccaf7307f76aca435f6776f2",
+      "optics/industrial-underworks/install/profile-architectural.png": "52e7a09ff5c21ae88074699840e30b5d42cdadbc5f39e6a4cff97457ccfbcf00",
+      "optics/industrial-underworks/install/profile-atmospheric_industrial.png": "d603f2bd77a218b4836e8b155d4270ed1ec232b3b51b6f8f195051011144e0c4",
+      "optics/industrial-underworks/install/profile-cinematic_deep_focus.png": "b58491334a4342159c64da5682d28548d529b96f1c38b64c4870a4b575d50e93",
+      "optics/industrial-underworks/install/profile-classic.png": "096a68bbd292b887f07fbf8e69efa179de01ed5ee31e5a0f1c559612ca5df8cf",
+      "optics/industrial-underworks/install/profile-cold_orbital.png": "5c782628456c68f6672987132914b5bf3975df9f1130e2f382d96fdb32af8ed9",
+      "optics/industrial-underworks/install/profile-diorama.png": "605f30bf2070414e32707f9eef25358b25f4ae55f8c6218d2ff77d8894c503f0",
+      "optics/industrial-underworks/install/profile-gameplay_clarity.png": "80225d13cf3d9ef3c3da2d886857ea253c1570d2d72139d7c33abd4478d33143",
+      "optics/industrial-underworks/install/profile-noir.png": "2f24609f45533c0eaa338eb4878a8c35b3c5b0965efd29ffc3ad2a8f810225c4",
+      "optics/industrial-underworks/install/profile-optical_lens.png": "9b4cfed40848757976d30be74b698f396896b3781f1af9e941b3e7d4091e9c45",
+      "optics/industrial-underworks/install/profile-sunlit_megastructure.png": "a2662ec8ce01f3a1fe7b33831f72eeb93f800cf33f10d605e1a5eb4333687826",
+      "preference-reopen/owner-diorama-reopen.png": "0749c8bda08831dd3271b7b41e612565e5e138f0ae722ba3f61b57d5fb2e1f86"
+    },
+    "workflow_url": "https://github.com/techrote/cybersand/actions/runs/46088677236"
+  },
   "independent_review": {
     "campaign_scope": "All11 profiles on one inherited smoke scene; separate challenge motion; source-matched native authoring; owner preference and persistent refusal pairs; no new retention benchmark claim",
     "implementation_peer": "A: boundary, signature and common save semantics reviewed; discovered save warning-tail omission repaired and rereviewed",
@@ -38,6 +142,8 @@
   },
   "lineage": {
     "accepted_main_plus_ramcache_commits_since_base": 501,
+    "actual_ramcache_main": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+    "actual_ramcache_main_tree": "91223c4427ef6896140368f7a28ca6c8e7ba75b0",
     "implementation_correction": "f0a8f08fc3a0f222d6749b4707ddc345ed7c93b9",
     "intake_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
     "local_merge": "f4b26c9917d97cea5d3bf160d89759d595ddad63",
@@ -163,6 +269,17 @@
     "Independent final graphical and package review"
   ],
   "physical_gpu_test_for_combined_application": false,
+  "portable_authoring_repair": {
+    "dependency_custody": "Existing accepted Python/Git/compiler copy functions; tool executable hashes and actual Windows versions plus notices",
+    "helper_commit": "101dcdd91916372d354e2c9bd7b00dcd7b38d84e",
+    "independent_review": "A passed actual separate M4/PUBPRES/unreachable donor fixture and reachable off-HEAD-ref refusal",
+    "runtime_publication_manifests_unchanged": true,
+    "source_custody": "Fresh self-contained HEAD-only bundle, no remote/config carryover, full immutable Git blobs, exactly admitted LFS and reviewed Rapier import exceptions",
+    "source_layout": "source/godot; userdata outside source",
+    "test_cases": 5,
+    "test_failures": 0,
+    "windows_dependency_execution": "pending"
+  },
   "retained_limits": [
     "Persistent-area and Strata hosts remain separate with visible refusal",
     "Local optical actor assist is at most8 rectangles from the first64 observed parts; accepted main actor capacity, rendering and physics remain intact",

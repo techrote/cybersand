@@ -47,6 +47,7 @@ jobs:
           python3 tools/ci/check_ci_provider_policy.py
           python3 tools/ci/test_ramcache_strata_qualification.py
           python3 tools/ci/test_verify_ramcache_strata_goblin_storage.py
+          python3 tools/ci/test_ramcache_strata_lab_package.py
           python3 tools/ci/ramcache_strata_qualification.py admit --output build/integration-admission.json
       - name: Preserve exact admission receipt
         if: always()
@@ -74,7 +75,7 @@ jobs:
           - mode: strata
             minutes: 240
           - mode: shared
-            minutes: 180
+            minutes: 240
     env:
       LIBGL_ALWAYS_SOFTWARE: '1'
       LP_NUM_THREADS: '2'
@@ -105,14 +106,14 @@ jobs:
           INTEGRATION_MODE: ${{ matrix.mode }}
         run: |
           set -euo pipefail
-          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/ramcache_strata_qualification.py run --mode "$INTEGRATION_MODE" --godot "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64" --output "build/linux-$INTEGRATION_MODE"
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/ramcache_strata_qualification.py run --mode "$INTEGRATION_MODE" --godot "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64" --output "$RUNNER_TEMP/ramcache-strata-linux-$INTEGRATION_MODE"
       - name: Preserve all original Linux evidence, including failures
         if: always()
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: ramcache-strata-linux-${{ matrix.mode }}-${{ github.sha }}-${{ github.run_attempt }}
           path: |
-            build/linux-${{ matrix.mode }}/
+            ${{ runner.temp }}/ramcache-strata-linux-${{ matrix.mode }}/
             ${{ runner.temp }}/runtime-acquisition.json
           include-hidden-files: true
           if-no-files-found: warn
@@ -133,7 +134,7 @@ jobs:
           - mode: strata
             minutes: 240
           - mode: shared
-            minutes: 180
+            minutes: 240
     defaults:
       run:
         shell: pwsh
@@ -171,8 +172,9 @@ jobs:
       - name: Run original graphical assertions on the combined source
         env:
           INTEGRATION_MODE: ${{ matrix.mode }}
+          CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
         run: |
-          python tools/ci/ramcache_strata_qualification.py run --mode $env:INTEGRATION_MODE --godot $env:GODOT_EXE --output "build/win32-$env:INTEGRATION_MODE"
+          python tools/ci/ramcache_strata_qualification.py run --mode $env:INTEGRATION_MODE --godot $env:GODOT_EXE --output "$env:RUNNER_TEMP/ramcache-strata-win32-$env:INTEGRATION_MODE"
           if ($LASTEXITCODE -ne 0) { throw 'Combined Windows qualification failed' }
       - name: Stage licensed portable dependencies once
         if: matrix.mode == 'shared'
@@ -207,7 +209,7 @@ jobs:
         with:
           name: ramcache-strata-win32-${{ matrix.mode }}-${{ github.sha }}-${{ github.run_attempt }}
           path: |
-            build/win32-${{ matrix.mode }}/
+            ${{ runner.temp }}/ramcache-strata-win32-${{ matrix.mode }}/
             ${{ runner.temp }}/runtime-acquisition.json
           include-hidden-files: true
           if-no-files-found: warn
@@ -217,7 +219,7 @@ jobs:
     name: Definitive archive and cold actual Windows launcher
     needs: [admission, linux, windows]
     runs-on: windows-2022
-    # Two extracted mode aggregates retain their registered child budgets. This
+    # Extracted feature and portable Lab aggregates retain their registered child budgets. This
     # is a ceiling, not an extended deadline for any individual failed test.
     timeout-minutes: 360
     defaults:
@@ -263,10 +265,8 @@ jobs:
           'INTEGRATION_ARCHIVE=' + $archive | Out-File -Append -FilePath $env:GITHUB_ENV
       - name: Execute shipped CMD first and repeat extracted save and reopen
         run: |
-          python tools/package_ramcache_strata.py installed --archive $env:INTEGRATION_ARCHIVE --installation "$env:RUNNER_TEMP/CyberSand Integrated Fresh Installation" --output build/extracted-evidence
+          python tools/package_ramcache_strata.py installed --archive $env:INTEGRATION_ARCHIVE --installation "$env:RUNNER_TEMP/CyberSand Integrated Fresh Installation" --output "$env:RUNNER_TEMP/ramcache-strata-extracted"
           if ($LASTEXITCODE -ne 0) { throw 'Actual pristine evaluator launch or integrated persistence failed' }
-          & tools/ci/check_windows_package_modules.ps1 -Package "$env:RUNNER_TEMP/CyberSand Integrated Fresh Installation" -Evidence build/extracted-evidence/runtime-modules.json -Manifest evaluation-manifest.json
-          if ($LASTEXITCODE -ne 0) { throw 'Portable dependency resolution failed' }
           powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:RUNNER_TEMP/CyberSand Integrated Fresh Installation/Verify Package.ps1"
           if ($LASTEXITCODE -ne 0) { throw 'Actual shipped PowerShell verifier failed' }
       - name: Publish the qualified consolidated evaluator
@@ -285,7 +285,7 @@ jobs:
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         with:
           name: ramcache-strata-extracted-${{ github.sha }}-${{ github.run_attempt }}
-          path: build/extracted-evidence/
+          path: ${{ runner.temp }}/ramcache-strata-extracted/
           include-hidden-files: true
           if-no-files-found: warn
           retention-days: 90

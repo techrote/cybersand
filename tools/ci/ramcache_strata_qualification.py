@@ -36,12 +36,24 @@ require, sha, write_json = custody.require, custody.sha, custody.write_json
 REQUEST = "tools/ci/ramcache-strata-integration-request.json"
 WORKFLOW = ".github/workflows/ramcache-strata-integration.yml"
 MODES = ("ramcache", "strata", "shared")
+# The extracted portable Lab subset does not replace any of the six source gates.
+RUN_MODES = (*MODES, "lab")
+LAB_LABELS = ("material-lab-author", "material-lab-reopen")
+LAB_DEADLINE_SECONDS = 1800
+LAB_CAPTURE_MAX_FPS = 1
 EXTRA_INPUTS = (REQUEST, WORKFLOW, "tools/ci/ramcache_strata_qualification.py",
                 "tools/package_ramcache_strata.py", "tools/ci/test_ramcache_strata_qualification.py",
                 "tools/package_gen006_persistent_areas.py", "tools/ci/check_windows_package_modules.ps1",
                 "tools/ci/strata3_cold_launcher.py",
                 "tools/ci/verify_ramcache_strata_goblin_storage.py",
-                "tools/ci/test_verify_ramcache_strata_goblin_storage.py")
+                "tools/ci/test_verify_ramcache_strata_goblin_storage.py",
+                "tools/ci/ramcache_strata_lab_package.py",
+                "tools/ci/test_ramcache_strata_lab_package.py",
+                "tools/package_materials_lab_candidate.py",
+                "tools/ci/mat_workbench_runtime_publication.py",
+                "tools/ci/strata_generated_imports.py",
+                "tools/ci/run_art_collaborative_gates.py",
+                "tools/package_art_workbench_final.py", "tools/package_art_collaborative.py")
 ANCHORS = {
     "accepted_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
     "ramcache_head": "af45bfb332f9822780db9304779ff0cdf55661df",
@@ -54,9 +66,8 @@ SHARED = (
     ("test_workbench_wave_render", "WORKBENCH_WAVE_RENDER ", 600),
     ("test_workbench_actor_composition_native", "Workbench actor composition native:", 600),
     ("test_ambient_default_off_integration", "AMBIENT_DEFAULT_OFF ", 600),
-    ("test_material_lab_workbench_integration", "MAT_WB_EVIDENCE ", 600),
     ("test_material_audition", "MATERIAL_AUDITION_RESULT ", 600),
-    ("test_art_collaborative_native", "ART_COLLABORATIVE_NATIVE_RESULT ", 600),
+    ("test_art_collaborative_native", "ART_COLLABORATIVE_NATIVE_RESULT ", 1800),
     ("test_art_architecture_workbench", "ART_ARCHITECTURE_WORKBENCH_RESULT ", 600),
     ("test_architecture_stage_native", "ARCHITECTURE_STAGE_NATIVE:", 600),
     ("test_goblin_contract", "GOBLIN_CONTRACT_RESULT ", 180),
@@ -243,8 +254,10 @@ def expected_labels(mode: str) -> set[str]:
     if mode == "strata":
         return {"import", "optical-smoke", *[r[0] for r in STRATA_NATIVE], "optical-motion",
                 "boundaries-write", "boundaries-reopen", "preference-install", "preference-reopen"}
+    if mode == "lab":
+        return {"import", *LAB_LABELS}
     require(mode == "shared", "Unknown integration mode")
-    return {"import", *[r[0] for r in SHARED], "goblin-storage", "gentek-write", "gentek-reopen"}
+    return {"import", *[r[0] for r in SHARED], "goblin-storage", "gentek-write", "gentek-reopen", *LAB_LABELS}
 
 
 def validate_process(report: dict, row: dict, original: dict, text: str) -> None:
@@ -261,6 +274,7 @@ def validate_process(report: dict, row: dict, original: dict, text: str) -> None
                       "cache-off-write": 420, "cache-off-reopen": 420, "optical-motion": 600,
                       "boundaries-write": 600, "boundaries-reopen": 600,
                       "preference-install": 600, "preference-reopen": 600, "gentek-write": 600, "gentek-reopen": 600})
+    deadlines.update({label: LAB_DEADLINE_SECONDS for label in LAB_LABELS})
     require(row.get("timeout_seconds") == deadlines[label] and type(row.get("seconds")) in (int, float)
             and math.isfinite(row["seconds"]) and 0 <= row["seconds"] <= deadlines[label] + 15,
             "Actual process changed its registered deadline or reported an invalid duration")
@@ -270,11 +284,14 @@ def validate_process(report: dict, row: dict, original: dict, text: str) -> None
     if label == "import":
         expected += ["--headless", "--editor", "--quit"]
     else:
-        script = ("test_persistent_area_ramcache" if label.startswith("ramcache-") else
+        script = ("test_material_lab_workbench_integration" if label in LAB_LABELS else
+                  "test_persistent_area_ramcache" if label.startswith("ramcache-") else
                   "test_persistent_areas_workbench" if label.startswith("cache-off-") or label == "exit-fault" else
                   "test_ramcache_strata_boundaries" if label.startswith("boundaries-") else
                   "test_strata_owner_preference" if label.startswith("preference-") else
                   "test_workbench_generator_installed" if label.startswith("gentek-") else label)
+        if label in LAB_LABELS:
+            expected += ["--max-fps", str(LAB_CAPTURE_MAX_FPS)]
         expected += ["--script", optics.HARNESS if label == "optical-motion" else "res://tests/" + script + ".gd"]
         if label == "exit-fault":
             data = join(report["output_root"], "exit-data")
@@ -306,12 +323,54 @@ def validate_preference_completion(result: dict, text: str) -> None:
             "Owner-preference disk evidence differs from its actual completion")
 
 
+def require_external_output(output: Path, project: Path) -> None:
+    require(not output.is_relative_to(ROOT) and not output.is_relative_to(project.parent),
+            "Qualification evidence/userdata must be outside source custody")
+
+
+def validate_lab_pair(folder: Path, report: dict, rows: dict) -> None:
+    # Reuse the original combined authoring reader, including source/native
+    # script hashes and actual framebuffer evidence; retain its assertion set.
+    import mat_workbench_runtime_publication as original_lab
+    require(original_lab.COMBINED_GRAPHICAL_MAX_FPS == LAB_CAPTURE_MAX_FPS,
+            "Established combined Lab capture contract changed")
+    pids = []
+    native_sha = report["runtime"]["cybersand_runtime"]["sha256"]
+    for phase in ("author", "reopen"):
+        label = "material-lab-" + phase
+        location = folder / label
+        text = (location / "process.log").read_text(encoding="utf-8")
+        receipt = original_lab.verify_combined_case(location, "process", ROOT / "godot", 1, phase,
+            platform="windows" if report["platform"] == "win32" else "linux", native_sha=native_sha)
+        require(receipt == validate_marker(text, "MAT_WB_EVIDENCE ") and receipt.get("errors") == []
+                and receipt.get("complete") is True and receipt.get("native_material_witnesses"),
+                "Original Lab native authoring/reopen receipt is incomplete")
+        require(marker(text, "MAT_WB_INTEGRATION ") ==
+                "checks=" + str(receipt["checks"]) + " failures=0 complete=true",
+                "Lab terminal contradicts its original detailed receipt")
+        if phase == "author":
+            world = receipt.get("candidate_world_receipt", {})
+            require(world.get("schema_id") == "cybersand.material-lab.world-receipt"
+                    and world.get("runtime_active") is False
+                    and world.get("candidate", {}).get("world_simulation") is True
+                    and world["candidate"].get("descriptor_readback", {}).get("density") == 500
+                    and all(world.get(backend, {}).get("checks", {}).get(gate) is True
+                        for backend in ("reference", "candidate")
+                        for gate in ("deterministic_repeat", "worker_1_4_equal", "persistence_checkpoint",
+                                     "persistence_replay", "quantity_balanced"))
+                    and world["candidate"]["final"]["target_below_reservoir"] <
+                        world["reference"]["final"]["target_below_reservoir"],
+                    "Actual source-authored native candidate comparison did not pass")
+        pids.append(rows[label]["pid"])
+    require(pids[0] != pids[1], "Lab saved authoring did not reopen in a fresh observed process")
+
+
 def verify(folder: Path, expected: dict | None = None) -> dict:
     folder = folder.resolve(strict=True)
     report = read(folder / "integration.json")
     require(report.get("schema") == "ramcache-strata-integration-v1" and report.get("status") == "passed"
             and report.get("completed") is True and report.get("input_custody") == "passed"
-            and report.get("platform") in ("linux", "win32") and report.get("mode") in MODES,
+            and report.get("platform") in ("linux", "win32") and report.get("mode") in RUN_MODES,
             "Incomplete or failed integration campaign")
     source = report.get("source_identity")
     require(source == (expected or identity()) and source.get("local_delta") == [],
@@ -436,7 +495,7 @@ def verify(folder: Path, expected: dict | None = None) -> dict:
             strata.verify_resource_receipt(folder, rows["preference-" + phase], result["process_id"])
             pids.append(result["process_id"])
         require(pids[0] != pids[1], "Owner preference did not reopen in a fresh process")
-    else:
+    elif report["mode"] == "shared":
         for name, prefix, _ in SHARED:
             validate_marker((folder / name / "process.log").read_text(), prefix)
         require(rows["gentek-write"]["pid"] != rows["gentek-reopen"]["pid"], "Gentek must reopen in a fresh process")
@@ -470,11 +529,14 @@ def verify(folder: Path, expected: dict | None = None) -> dict:
         for records in witness.get("native_records_sha256", {}).values():
             for filename, digest in records.items():
                 require(sha(folder / name / filename) == digest, "Actual generator request/result bytes changed")
+    if report["mode"] in ("shared", "lab"):
+        validate_lab_pair(folder, report, rows)
     return report
 
 
 def run(args) -> int:
     output = args.output.resolve()
+    require_external_output(output, args.project.resolve(strict=True))
     output.mkdir(parents=True, exist_ok=False)
     report = {"schema": "ramcache-strata-integration-v1", "mode": args.mode, "platform": sys.platform,
               "status": "running", "completed": False, "cases": [], "physical_gpu_acceptance": False,
@@ -581,7 +643,7 @@ def run(args) -> int:
                 location = output / ("preference-" + phase)
                 execute("preference-" + phase, base + ["--script", "res://tests/test_strata_owner_preference.gd"],
                     dict(env, STRATA_PHASE=phase, STRATA_EVIDENCE=str(location), STRATA_REPORT=str(location / "result.json")))
-        else:
+        elif args.mode == "shared":
             for name, prefix, timeout in SHARED:
                 env = custody.case_environment(output / "userdata" / name)
                 env.update(CYBERSAND_TEST_ARTIFACT_DIR=str(output / name), MAT_AUDITION_EVIDENCE_DIR=str(output / name))
@@ -609,6 +671,19 @@ def run(args) -> int:
                 execute("gentek-" + phase, base + ["--script", "res://tests/test_workbench_generator_installed.gd"],
                         dict(env, WB_GENERATOR_REOPEN="1" if phase == "reopen" else "0"), timeout=600,
                         prefix="WB_GENERATOR_INSTALLED ")
+        if args.mode in ("shared", "lab"):
+            # Preserve the accepted combined Lab contract: isolated external
+            # userdata, actual native compilation/comparison, unchanged 1800 s
+            # watchdog and 1 FPS diagnostic capture, then a fresh process.
+            env = custody.case_environment(output / "userdata/material-lab-pair")
+            for phase in ("author", "reopen"):
+                label = "material-lab-" + phase
+                location = output / label
+                execute(label, base + ["--max-fps", str(LAB_CAPTURE_MAX_FPS), "--script",
+                    "res://tests/test_material_lab_workbench_integration.gd"],
+                    dict(env, ART_UNDO_WORKERS="1", MAT_WB_REOPEN="1" if phase == "reopen" else "0",
+                         MAT_WB_SCREENSHOTS=str(location / "process-frames")),
+                    timeout=LAB_DEADLINE_SECONDS, prefix="MAT_WB_EVIDENCE ")
         report["status"] = "passed"
     except Exception as error:
         report.update(status="failed", error=str(error))
@@ -645,7 +720,7 @@ def main():
     admit = commands.add_parser("admit")
     admit.add_argument("--output", type=Path, required=True)
     campaign = commands.add_parser("run")
-    campaign.add_argument("--mode", choices=MODES, required=True)
+    campaign.add_argument("--mode", choices=RUN_MODES, required=True)
     campaign.add_argument("--godot", type=Path, required=True)
     campaign.add_argument("--project", type=Path, default=ROOT / "godot")
     campaign.add_argument("--output", type=Path, required=True)

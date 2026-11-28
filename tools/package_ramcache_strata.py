@@ -9,7 +9,6 @@ from __future__ import annotations
 
 import argparse
 import hashlib
-import io
 import json
 import math
 import ntpath
@@ -21,7 +20,6 @@ import stat
 import struct
 import subprocess
 import sys
-import tarfile
 import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -29,25 +27,24 @@ sys.path.insert(0, str(ROOT / "tools/ci"))
 import ramcache_strata_qualification as q
 import strata3_cold_launcher as cold
 import package_strata2_workbench as base
-from package_explore001_candidate import stage_generator_profiles, verify_vc_runtime
-from package_wave_flow_candidate import archive_environment, omit_regenerated_imports, REGENERATED_RAPIER_IMPORTS
+import ramcache_strata_lab_package as lab
+from package_explore001_candidate import verify_vc_runtime
+from package_wave_flow_candidate import omit_regenerated_imports, REGENERATED_RAPIER_IMPORTS
 from package_workbench_landscape_review import DEPENDENCIES
 
 require, sha, write_json = q.require, q.sha, q.write_json
 MANIFEST = "evaluation-manifest.json"
-ARCHIVE_INPUTS = ["godot", "examples/worldgen", "third_party", "THIRD_PARTY_NOTICES.md", "LICENSE_STATUS.md",
-    "tools/ci/ramcache_strata_qualification.py", "tools/package_ramcache_strata.py",
-    "docs/operations/persistent-area-ramcache-evaluation.md", "docs/operations/strata-optics-evaluation.md",
-    "docs/operations/strata-optical-composition.md", "docs/systems/strata-optics.md",
-    "docs/systems/strata-authoring.md", "docs/systems/strata-workbench.md",
-    "docs/operations/ramcache-strata-integration.md"]
 MATERIALIZED = {
     "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
     "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
     "godot/tools/gentek_reciprocal.exe",
 }
-OMITTED_PLATFORM = {"godot/tools/gentek_reciprocal", "godot/tools/swarm004-runtime.linux.json"}
-MAXIMUM_UNCOMPRESSED_BYTES = 2 * 1024**3
+# Full accepted Lab source/history alone measured 1,049,929,696 bytes on e135.
+# Bound the complete offline-tool layout at 4 GiB while retaining 1 GiB/member;
+# exact per-component and expanded bytes are recorded from the actual payload.
+MAXIMUM_UNCOMPRESSED_BYTES = 4 * 1024**3
+SOURCE_BOOTSTRAP_FILES = {"source/godot/.godot/" + name for name in
+    (".gdignore", "extension_list.cfg", "global_script_class_cache.cfg")}
 
 
 def payload(folder: Path) -> dict:
@@ -60,33 +57,26 @@ def safe_name(name: str) -> str:
     return name
 
 
-def persistent_launcher(source: dict) -> str:
+def launcher_text(source: dict) -> str:
     ordinary = base.launcher_text(source)
+    require(ordinary.count('%~dp0godot"') == 2 and ordinary.count('cd /d "%~dp0"\n') == 1,
+            "Established portable project/import sequence changed")
+    rows = ['set "PYTHONHOME="', 'set "PYTHONPATH="', 'set "PYTHONSTARTUP="',
+            'set "PYTHONNOUSERSITE=1"', 'set "PYTHONUTF8=1"']
+    rows += ['set "' + key + '="' for key in sorted(lab.lab.GIT_LOCATION)]
+    rows += ['set "GIT_CONFIG_NOSYSTEM=1"', 'set "GIT_CONFIG_GLOBAL=NUL"', 'set "GIT_LFS_SKIP_SMUDGE=1"',
+             'set "PATH=%~dp0dependencies\\python;%~dp0dependencies\\git\\cmd;%~dp0dependencies\\git\\ucrt64\\bin;%~dp0dependencies\\git\\mingw64\\bin;%~dp0dependencies\\cxx\\bin;%SystemRoot%\\System32;%SystemRoot%"',
+             'set "CYBERSAND_LAB_CXX=%~dp0dependencies\\cxx\\bin\\g++.exe"']
+    ordinary = ordinary.replace('cd /d "%~dp0"\n', 'cd /d "%~dp0"\n' + "\n".join(rows) + "\n")
+    return ordinary.replace('%~dp0godot"', '%~dp0source\\godot"')
+
+
+def persistent_launcher(source: dict) -> str:
+    ordinary = launcher_text(source)
     require(ordinary.count("-- --workbench\n") == 1, "Ordinary portable host argument is ambiguous")
     # Both routes use the application's same default user:// profile. An
     # explicit shortcut-only profile would split the owner's durable areas.
     return ordinary.replace("-- --workbench\n", "-- --persistent-areas\n")
-
-
-def original_inventory(runtime: dict) -> tuple[dict, dict]:
-    items = q.custody.git("ls-tree", "-rz", "HEAD", "--", *ARCHIVE_INPUTS)
-    original, omitted = {}, {}
-    for entry in items.split(b"\0"):
-        if not entry:
-            continue
-        metadata, raw = entry.split(b"\t", 1)
-        mode, kind, oid = metadata.decode().split()
-        name = safe_name(raw.decode())
-        require(kind == "blob" and mode in ("100644", "100755"), "Linked source file refused")
-        if name.startswith("godot/.godot/") or name in OMITTED_PLATFORM:
-            continue
-        if "/bin/" in name and name not in MATERIALIZED:
-            continue
-        if name in REGENERATED_RAPIER_IMPORTS:
-            omitted[name] = REGENERATED_RAPIER_IMPORTS[name]
-        original[name] = oid
-    require(MATERIALIZED <= set(original), "Missing committed native, Rapier or SWARM runtime")
-    return original, omitted
 
 
 def materialized_identity(name: str) -> dict:
@@ -103,8 +93,12 @@ Application: `{source["source_commit"]}`
 
 Git tree: `{source["source_tree"]}`
 
-Extract this entire ZIP into a writable folder and double-click **Open Workbench.cmd**.
+Extract this entire ZIP into a short writable folder such as **C:\\CyberSand**,
+then double-click **Open Workbench.cmd**. The full source history is included; a short
+installation path avoids Windows Explorer path-length limits.
 Godot, the source-matched CyberSand extension, Rapier and the SWARM generator are included.
+The complete source and compatibility history are in `source`; bundled Python, Git and
+MinGW in `dependencies` support Materials Lab authoring and native comparisons offline.
 The first opening imports the project and may take longer. Saved profiles and settings
 stay in this package's `userdata` folder. Keep that folder when moving your installation.
 Use **Verify Package.cmd** to check the original payload hashes with Windows PowerShell.
@@ -170,7 +164,7 @@ this optional optical assistance.
 exact runtime hashes, six source-campaign identities, package input blobs and every
 payload hash. `qualification` contains the source-campaign summaries; full original
 execution evidence is retained in the linked workflow artifacts.
-The complete combined operating guide is `docs/operations/ramcache-strata-integration.md`.
+The complete combined operating guide is `source/docs/operations/ramcache-strata-integration.md`.
 '''
 
 
@@ -207,28 +201,25 @@ def verify(folder: Path, *, pristine=False) -> dict:
             and record.get("runtime") == runtime and record.get("native_reuse") == q.native_reuse()
             and record.get("classic_default") is True and record.get("objectshard_m4_included") is False,
             "Evaluator source/runtime/default identity differs from qualified application")
-    original, omitted = original_inventory(runtime)
-    require(record.get("archived_git_blobs") == {k: v for k, v in original.items() if k not in omitted}
-            and record.get("regenerated_imports_sha256") == omitted, "Package source inventory differs from Git")
+    materialized = {name: materialized_identity(name) for name in MATERIALIZED}
+    require(record.get("materialized_lfs") == materialized
+            and record.get("regenerated_imports_sha256") == REGENERATED_RAPIER_IMPORTS,
+            "Package native-pointer or regenerated-import inventory changed")
+    lab.verify_source(folder / "source", record.get("source_repository", {}),
+        expected_source=source["source_commit"], expected_tree=source["source_tree"],
+        materialized_lfs=materialized, omitted_files=REGENERATED_RAPIER_IMPORTS,
+        git_executable=folder / "dependencies/git/cmd/git.exe" if sys.platform == "win32" else None)
+    lab.verify_dependencies(folder / "dependencies", record.get("offline_authoring_dependencies", {}),
+                            execute=sys.platform == "win32")
     names = record.get("files_sha256")
     require(isinstance(names, dict) and names and len(names) == len({n.casefold() for n in names}),
             "Missing/ambiguous payload inventory")
     for name, digest in names.items():
         path = folder / safe_name(name)
         require(path.is_file() and not path.is_symlink() and sha(path) == digest, "Changed/missing payload: " + name)
-    for name, oid in record["archived_git_blobs"].items():
-        data = (folder / name).read_bytes()
-        if name in MATERIALIZED:
-            expected = materialized_identity(name)
-            require(len(data) == expected["size"] and hashlib.sha256(data).hexdigest() == expected["sha256"],
-                    "Materialized runtime differs from committed pointer")
-        else:
-            require(hashlib.sha1(b"blob " + str(len(data)).encode() + b"\0" + data).hexdigest() == oid,
-                    "Archived source differs directly from Git: " + name)
-    q.custody.project_identity(folder / "godot", source, runtime)
-    q.strata.project_assets_identity(folder / "godot", source)
-    base.verify_generator_profiles(folder, record, set(record["archived_git_blobs"]), names)
-    require((folder / "Open Workbench.cmd").read_text(encoding="utf-8") == base.launcher_text(source),
+    q.custody.project_identity(folder / "source/godot", source, runtime)
+    q.strata.project_assets_identity(folder / "source/godot", source)
+    require((folder / "Open Workbench.cmd").read_text(encoding="utf-8") == launcher_text(source),
             "Shipped ordinary launcher changed")
     require((folder / "Open Persistent Areas.cmd").read_text(encoding="utf-8") == persistent_launcher(source),
             "Shipped persistent-area launcher differs from the established source contract")
@@ -240,9 +231,11 @@ def verify(folder: Path, *, pristine=False) -> dict:
     verify_vc_runtime(folder)
     require(names.get(cold.GUI) == q.strata.GODOT_GUI_SHA256 and names.get(cold.CONSOLE) == q.strata.GODOT_SHA256["win32"],
             "Portable Godot identity changed")
-    required = {*MATERIALIZED, "Open Workbench.cmd", "Open Persistent Areas.cmd", "Verify Package.cmd", "Verify Package.ps1", "READ-ME.md",
-                "godot/scripts/persistent_area_cache.gd", "godot/scripts/depth/workbench_strata_controller.gd",
-                "godot/scripts/depth/workbench_strata_optics_panel.gd", "godot/shaders/strata_optical_plane.gdshader"}
+    required = {*{"source/" + name for name in MATERIALIZED}, "Open Workbench.cmd", "Open Persistent Areas.cmd", "Verify Package.cmd", "Verify Package.ps1", "READ-ME.md",
+                "source/godot/scripts/persistent_area_cache.gd", "source/godot/scripts/depth/workbench_strata_controller.gd",
+                "source/godot/scripts/depth/workbench_strata_optics_panel.gd", "source/godot/shaders/strata_optical_plane.gdshader",
+                "source/tools/material_catalogue/lab.py", "dependencies/python/python.exe",
+                "dependencies/git/cmd/git.exe", "dependencies/cxx/bin/g++.exe"}
     require(required <= set(names), "Incomplete integrated owner application")
     summaries = record.get("qualification", {})
     require(set(summaries) == {platform + "-" + mode for platform in ("linux", "win32") for mode in q.MODES},
@@ -253,6 +246,12 @@ def verify(folder: Path, *, pristine=False) -> dict:
         require(sha(path) == digest and report.get("source_identity") == source and report.get("status") == "passed"
                 and report.get("completed") is True and report.get("input_custody") == "passed"
                 and name == report.get("platform", "") + "-" + report.get("mode", ""), "Packaged source campaign changed")
+    components = {component: sum((folder / name).stat().st_size for name in names
+                                if name.startswith(component + "/"))
+                  for component in ("source", "dependencies", "qualification")}
+    components["root_files"] = sum((folder / name).stat().st_size for name in names if "/" not in name)
+    require(record.get("component_bytes_before_manifest") == components,
+            "Original package component sizes differ from staged inventory")
     if pristine:
         require(payload(folder) == names, "Pristine archive has extra/missing files")
     return record
@@ -276,29 +275,22 @@ def build(args):
     for name, digest in DEPENDENCIES.items():
         require(sha(dependencies / name) == digest, "Portable dependency mismatch: " + name)
     verify_vc_runtime(dependencies)
-    original, omitted = original_inventory(runtime)
-    for name in MATERIALIZED:
-        expected = materialized_identity(name)
+    materialized = {name: materialized_identity(name) for name in MATERIALIZED}
+    for name, expected in materialized.items():
         require((ROOT / name).stat().st_size == expected["size"] and sha(ROOT / name) == expected["sha256"],
                 "Required LFS payload not materialized: " + name)
-    archive = subprocess.check_output(["git", "archive", "HEAD", "--", *ARCHIVE_INPUTS], cwd=ROOT,
-                                      env=archive_environment(), timeout=90)
     output.mkdir(parents=True)
-    with tarfile.open(fileobj=io.BytesIO(archive)) as source_tar:
-        for member in source_tar:
-            if not member.isfile() or member.name not in original:
-                continue
-            data = (ROOT / member.name).read_bytes() if member.name in MATERIALIZED else source_tar.extractfile(member).read()
-            require(not data.startswith(b"version https://git-lfs.github.com/spec/v1\n"),
-                    "Unmaterialized required archive member: " + member.name)
-            target = output / safe_name(member.name)
-            target.parent.mkdir(parents=True, exist_ok=True)
-            target.write_bytes(data)
-    profiles = stage_generator_profiles(output)
-    require(omit_regenerated_imports(output) == omitted, "Unexpected regenerated import omission")
+    offline_dependencies = lab.stage_dependencies(output / "dependencies")
+    source_repository = lab.stage_source(ROOT, source["source_commit"], output / "source")
+    for name in MATERIALIZED:
+        shutil.copyfile(ROOT / name, output / "source" / name)
+    # The full source includes the canonical examples/worldgen recipes. Duplicating
+    # them under godot would create an unnecessary, separately mutable discovery root.
+    omitted = omit_regenerated_imports(output / "source")
+    require(omitted == REGENERATED_RAPIER_IMPORTS, "Unexpected regenerated import omission")
     for name in [*DEPENDENCIES, "vcruntime140.dll", "vc-runtime-provenance.json"]:
         shutil.copyfile(dependencies / name, output / name)
-    (output / "Open Workbench.cmd").write_text(base.launcher_text(source), encoding="utf-8", newline="\r\n")
+    (output / "Open Workbench.cmd").write_text(launcher_text(source), encoding="utf-8", newline="\r\n")
     (output / "Open Persistent Areas.cmd").write_text(persistent_launcher(source), encoding="utf-8", newline="\r\n")
     (output / "Verify Package.cmd").write_bytes(VERIFY_CMD.encode())
     (output / "Verify Package.ps1").write_text(VERIFY_PS1, encoding="utf-8", newline="\n")
@@ -309,17 +301,26 @@ def build(args):
         target = output / "qualification" / (name + ".json")
         shutil.copyfile(path, target)
         qualification[name] = sha(target)
+    component_bytes = {name: sum(p.stat().st_size for p in (output / name).rglob("*") if p.is_file())
+                       for name in ("source", "dependencies", "qualification")}
+    component_bytes["root_files"] = sum(p.stat().st_size for p in output.iterdir() if p.is_file())
+    print("RAMCACHE_STRATA_PAYLOAD_BYTES", json.dumps(component_bytes, sort_keys=True), flush=True)
     record = {"schema": "ramcache-strata-workbench-evaluation-v1", "source_identity": source,
               "source_commit": source["source_commit"], "source_tree": source["source_tree"], "runtime": runtime,
               "native_reuse": admitted["native_reuse"], "classic_default": True, "objectshard_m4_included": False,
               "performance_policy": admitted["performance_policy"], "physical_gpu_acceptance_for_this_archive": False,
-              "qualification": qualification, "generator_profiles_sha256": profiles,
-              "archived_git_blobs": {k: v for k, v in original.items() if k not in omitted},
+              "qualification": qualification, "component_bytes_before_manifest": component_bytes, "source_repository": source_repository,
+              "materialized_lfs": materialized, "offline_authoring_dependencies": offline_dependencies,
               "regenerated_imports_sha256": omitted, "files_sha256": payload(output),
               "workflow_url": "https://github.com/techrote/cybersand/actions/runs/" + os.environ.get("GITHUB_RUN_ID", ""),
               "workflow_attempt": os.environ.get("GITHUB_RUN_ATTEMPT", "")}
     write_json(output / MANIFEST, record)
     verify(output, pristine=True)
+    total = sum(component_bytes.values()) + (output / MANIFEST).stat().st_size
+    require(total <= MAXIMUM_UNCOMPRESSED_BYTES and
+            max(path.stat().st_size for path in output.rglob("*") if path.is_file()) <= 1024**3,
+            "Measured complete portable payload exceeds registered archive bounds: " +
+            json.dumps({"total_bytes": total, "components": component_bytes}, sort_keys=True))
     archive_path = args.archive.resolve()
     require(not archive_path.exists(), "Refusing to overwrite archive")
     archive_path.parent.mkdir(parents=True, exist_ok=True)
@@ -329,7 +330,7 @@ def build(args):
                 bundle.write(path, path.relative_to(output).as_posix())
     identity = {"filename": archive_path.name, "bytes": archive_path.stat().st_size, "sha256": sha(archive_path),
                 "manifest_sha256": sha(output / MANIFEST), "source_commit": source["source_commit"],
-                "source_tree": source["source_tree"], "files": len(record["files_sha256"])}
+                "source_tree": source["source_tree"], "files": len(record["files_sha256"]), "expanded_bytes": total}
     write_json(archive_path.with_suffix(".identity.json"), identity)
     archive_path.with_suffix(".zip.sha256").write_text(identity["sha256"] + "  " + archive_path.name + "\n")
     require(q.identity() == source, "Source changed during packaging")
@@ -347,9 +348,12 @@ def inspect_archive(archive: Path) -> dict:
             folded.add(name.casefold())
             total += item.file_size
             require(total <= MAXIMUM_UNCOMPRESSED_BYTES and item.file_size <= 1024**3, "Archive extraction bound exceeded")
-            require(not any(part in ("userdata", ".godot", "__pycache__") for part in PurePosixPath(name).parts),
-                    "Shipped package contains prior generated user/import state")
-            names[name] = hashlib.sha256(bundle.read(item)).hexdigest()
+            data = bundle.read(item)
+            generated = any(part in ("userdata", ".godot", "__pycache__") for part in PurePosixPath(name).parts)
+            require(not generated or name in SOURCE_BOOTSTRAP_FILES and
+                    data == q.custody.git("show", "HEAD:" + name.removeprefix("source/")),
+                    "Shipped package contains prior generated state or an altered committed bootstrap")
+            names[name] = hashlib.sha256(data).hexdigest()
         manifest = json.loads(bundle.read(MANIFEST))
     require(manifest.get("files_sha256") == {k: v for k, v in names.items() if k != MANIFEST},
             "Actual ZIP and complete payload manifest disagree")
@@ -432,6 +436,25 @@ def validate_launcher_execution(process, raw_lifetimes, resources, log, source, 
                 "Process escaped the actual launcher tree")
     cold.validate_resources(resources, process, rows)
     result = validate_launcher_log(log, source, persistent=persistent)
+    if persistent:
+        close = process.get("persistent_close", {})
+        ready = cold.persistent_readiness(log)
+        application = next(row for row in engines if row["parent_pid"] == consoles[1]["pid"])
+        require(isinstance(close, dict) and close.get("schema") == "ramcache-strata-persistent-close-v1"
+                and close.get("message") == "WM_CLOSE" and close.get("message_id") == 0x0010
+                and cold.integer(close.get("hwnd"), 1) and close.get("visible") is True and close.get("posted") is True
+                and close.get("pid") == close.get("window_owner_pid") == application["pid"]
+                and close.get("start_id") == application["start_id"]
+                and cold.normalized(close.get("image_path", "")) == cold.normalized(application["image_path"])
+                and close.get("readiness") == ready["value"] == result["admission"]
+                and close.get("readiness_line_sha256") == ready["line_sha256"],
+                "Persistent shortcut did not post normal close to its exact ready engine window")
+        ready_time, posted_time = close.get("ready_observed_unix_seconds"), close.get("posted_unix_seconds")
+        require(cold.number(ready_time, 1) and cold.number(posted_time, 1)
+                and application["start_id"] / 10_000_000 - 11644473600 <= ready_time <= posted_time
+                <= application["exit_filetime_100ns"] / 10_000_000 - 11644473600,
+                "Persistent close/readiness times fall outside the actual engine lifetime")
+        result["normal_window_close"] = close
     result.update(console_process_ids=[r["pid"] for r in consoles], engine_process_ids=[r["pid"] for r in engines],
                   cold_import_command_seconds=consoles[0]["lifetime_seconds"],
                   ordinary_workbench_command_seconds=consoles[1]["lifetime_seconds"])
@@ -483,6 +506,62 @@ def read_persistent_profile(profile: Path, native_sha256: str) -> dict:
             "files_sha256": {p.name: sha(p) for p in profile.iterdir() if p.is_file()}}
 
 
+def validate_portable_compiler(receipt: dict, installation: str, dependencies: dict, source: str,
+                               expected_snapshot: dict) -> None:
+    expected = ntpath.join(installation, "dependencies", *dependencies["tools"]["compiler"]["path"].split("/"))
+    compiler = dependencies["tools"]["compiler"]
+    require(receipt.get("compiler") == ntpath.basename(expected)
+            and receipt.get("compiler_version") == compiler["version"].splitlines()[0],
+            "Actual Lab compiler version differs from the shipped offline tool")
+    for name in ("reference_build", "candidate_build"):
+        argv = receipt.get(name, {}).get("argv", [])
+        require(isinstance(argv, list) and argv and isinstance(argv[0], str)
+                and ntpath.normcase(ntpath.normpath(argv[0])) == ntpath.normcase(ntpath.normpath(expected))
+                and q.HEX64.fullmatch(str(receipt[name].get("native_executable_sha256", ""))),
+                "Lab compiled native Worlds with an unshipped compiler")
+    identity = receipt.get("source_identity", {})
+    require(identity == expected_snapshot and identity.get("git_head") == source
+            and q.HEX64.fullmatch(str(identity.get("digest", "")))
+            and receipt.get("source_identity_after") == identity["digest"]
+            and isinstance(identity.get("lf_sha256"), dict) and identity["lf_sha256"],
+            "Offline native comparison did not retain exact source custody")
+
+
+def verify_portable_lab_execution(installation: Path, folder: Path, manifest: dict) -> dict:
+    report = q.verify(folder, manifest["source_identity"])
+    require(report["mode"] == "lab" and report["platform"] == "win32", "Wrong extracted authoring campaign")
+    dependencies = manifest["offline_authoring_dependencies"]
+    lab.verify_dependencies(installation / "dependencies", dependencies)
+    environment = lab.dependency_environment(installation)
+    resolved = {}
+    for name, command in (("python", "python"), ("git", "git"), ("compiler", "g++")):
+        actual = shutil.which(command, path=environment["PATH"])
+        expected = installation / "dependencies" / dependencies["tools"][name]["path"]
+        require(actual and Path(actual).resolve() == expected.resolve(),
+                "Extracted authoring resolves a developer-machine tool: " + name)
+        resolved[name] = {"path": str(expected), "sha256": sha(expected),
+                          "version": dependencies["tools"][name]["version"]}
+    original = q.validate_marker((folder / "material-lab-author/process.log").read_text(encoding="utf-8"),
+                                 "MAT_WB_EVIDENCE ")["candidate_world_receipt"]
+    # Run the existing World's exact source snapshot using the shipped Python
+    # and Git. This replays its full 113-input inventory/digest independently of
+    # the receipt, including native headers, Lab compiler tools and fixtures.
+    snapshot_command = [str(installation / "dependencies/python/python.exe"), "-I", "-c",
+        "import json,sys;sys.path.insert(0,sys.argv[1]);import world_candidate;print(json.dumps(world_candidate._source_snapshot()[0],sort_keys=True))",
+        str(installation / "source/tools/material_catalogue")]
+    snapshot = subprocess.run(snapshot_command, cwd=installation / "source", env=environment,
+        stdout=subprocess.PIPE, stderr=subprocess.PIPE, check=True, timeout=30)
+    require(not snapshot.stderr, "Portable source snapshot emitted unexpected diagnostics")
+    snapshot_path = folder.parent / "portable-lab-source-snapshot.json"
+    snapshot_path.write_bytes(snapshot.stdout)
+    expected_snapshot = json.loads(snapshot.stdout)
+    validate_portable_compiler(original, str(installation), dependencies, manifest["source_commit"], expected_snapshot)
+    return {"status": "passed", "source_commit": manifest["source_commit"], "resolved_tools": resolved,
+            "campaign_sha256": sha(folder / "integration.json"),
+            "source_snapshot_sha256": sha(snapshot_path), "source_snapshot_command": snapshot_command,
+            "scope": "Actual graphical Make editable copy, compiled native comparison, cancellation, save and fresh reopen using shipped tools"}
+
+
 def installed(args):
     require(sys.platform == "win32", "Actual shipped CMD qualification requires Windows")
     names = inspect_archive(args.archive)
@@ -498,6 +577,7 @@ def installed(args):
     require({p.relative_to(destination).as_posix(): sha(p) for p in destination.rglob("*") if p.is_file()} == names,
             "Pristine extracted bytes differ from actual archive")
     manifest = verify(destination, pristine=True)
+    expanded_bytes = sum((destination / name).stat().st_size for name in names)
     output = args.output.resolve()
     output.mkdir(parents=True, exist_ok=False)
     # This is deliberately the first Godot invocation against the extracted copy.
@@ -524,18 +604,44 @@ def installed(args):
             and set(shortcut[0]["engine_process_ids"]).isdisjoint(shortcut[1]["engine_process_ids"]),
             "Persistent shortcut did not reopen the same profile through new actual engine processes")
     write_json(output / "persistent-shortcut-verification.json", {"status": "passed", "launches": shortcut,
-               "scope": "Actual shipped CMD launch/default-profile route; durable save/close assertions are in separate full fixtures"})
-    for mode in ("ramcache", "strata"):
-        from types import SimpleNamespace
-        code = q.run(SimpleNamespace(mode=mode, godot=destination / cold.CONSOLE,
-                     project=destination / "godot", output=output / mode))
-        require(code == 0, "Actual extracted " + mode + " campaign failed")
+               "scope": "Actual shipped CMD launch, default profile, readiness-driven normal WM_CLOSE and clean durable reopen; full fault/save fixtures remain separate"})
+    environment = lab.dependency_environment(destination)
+    previous = dict(os.environ)
+    try:
+        # Godot's backend subprocesses resolve only the actual shipped authoring
+        # tools. The orchestrator is not used as a substitute for those tools.
+        os.environ.clear()
+        os.environ.update(environment)
+        for mode in ("ramcache", "strata", "lab"):
+            from types import SimpleNamespace
+            code = q.run(SimpleNamespace(mode=mode, godot=destination / cold.CONSOLE,
+                         project=destination / "source/godot", output=output / mode))
+            require(code == 0, "Actual extracted " + mode + " campaign failed")
+        authoring = verify_portable_lab_execution(destination, output / "lab", manifest)
+        powershell = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32/WindowsPowerShell/v1.0/powershell.exe"
+        command = [str(powershell), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File",
+            str(ROOT / "tools/ci/check_windows_package_modules.ps1"), "-Package", str(destination),
+            "-Evidence", str(output / "runtime-modules.json"), "-Manifest", MANIFEST,
+            "-ProjectRelative", "source/godot"]
+        with (output / "runtime-modules-observer.log").open("w", encoding="utf-8") as log:
+            subprocess.run(command, env=environment, stdout=log, stderr=subprocess.STDOUT,
+                           check=True, timeout=180)
+        modules = q.read(output / "runtime-modules.json")
+        require(modules.get("status") == "passed" and modules.get("source_commit") == manifest["source_commit"],
+                "Actual portable module observer did not pass")
+    finally:
+        os.environ.clear()
+        os.environ.update(previous)
     verify(destination)
     result = {"schema": "ramcache-strata-extracted-evaluator-v1", "status": "passed",
               "source_commit": manifest["source_commit"], "source_tree": manifest["source_tree"],
-              "archive": {"filename": args.archive.name, "bytes": args.archive.stat().st_size, "sha256": sha(args.archive)},
+              "archive": {"filename": args.archive.name, "bytes": args.archive.stat().st_size, "sha256": sha(args.archive),
+                          "expanded_bytes": expanded_bytes},
               "manifest_sha256": sha(destination / MANIFEST), "cold_cmd_was_first_engine_invocation": True,
-              "cold_launch": observation, "extracted_modes": {m: sha(output / m / "integration.json") for m in ("ramcache", "strata")},
+              "cold_launch": observation, "extracted_modes": {m: sha(output / m / "integration.json") for m in ("ramcache", "strata", "lab")},
+              "offline_authoring": authoring, "runtime_modules_sha256": sha(output / "runtime-modules.json"),
+              "runtime_modules_observer_log_sha256": sha(output / "runtime-modules-observer.log"),
+              "runtime_modules_command": command,
               "persistent_shortcut_receipt_sha256": sha(output / "persistent-shortcut-verification.json"),
               "payload_after_execution": "all original manifest files unchanged", "physical_gpu_acceptance": False}
     write_json(output / "extracted-verification.json", result)

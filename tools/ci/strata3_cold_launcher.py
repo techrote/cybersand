@@ -221,7 +221,7 @@ def command_line(comspec, folder, *, persistent=False):
     # integrated evaluator also exercises its explicit persistent host under
     # the same held-process 180-second outer observation bound.
     launcher='Open Persistent Areas.cmd' if persistent else LAUNCHER
-    arguments=ARGS.replace('--quit-after 180','--quit-after 1800') if persistent else ARGS
+    arguments=ARGS.removesuffix(' --quit-after 180') if persistent else ARGS
     return '"'+str(comspec)+'" /d /s /c ""'+ntpath.join(str(folder),launcher)+'" '+arguments+'"'
 
 
@@ -306,6 +306,71 @@ def kill_owned_tree(process,reader):
     if process.poll() is None: process.wait(timeout=10)
 
 
+def persistent_readiness(text):
+    # Never parse an incomplete concurrent stdout write. Only the existing
+    # product marker admits a normal window close; elapsed frames do not.
+    complete=text.splitlines() if text.endswith("\n") else text.splitlines()[:-1]
+    lines=[line for line in complete if line.startswith('PERSISTENT_AREAS_READY ')]
+    require(len(lines)<=1,'Duplicate persistent readiness marker')
+    if not lines: return None
+    value=json.loads(lines[0].removeprefix('PERSISTENT_AREAS_READY '))
+    require(isinstance(value,dict) and set(value)=={'session','area','revision'}
+            and value['area'] in ('a','b','c') and integer(value['revision'],1)
+            and re.fullmatch(r'[0-9a-f]{32}',str(value['session'])) is not None,
+            'Malformed persistent readiness marker')
+    return {'value':value,'line_sha256':hashlib.sha256(lines[0].encode('utf-8')).hexdigest()}
+
+
+def close_persistent_window(folder,reader,ready,observed_unix):
+    """Post normal WM_CLOSE only to the live, held packaged engine's window."""
+    from ctypes import wintypes as W
+    engine=normalized(ntpath.join(str(folder),GUI))
+    live=[row for row in reader.final_rows() if not row['exited'] and normalized(row['image_path'])==engine]
+    require(len(live)<=1,'Ambiguous live packaged Godot engine')
+    if not live: return None
+    target=live[0]
+    user=ctypes.WinDLL('user32',use_last_error=True)
+    callback_type=ctypes.WINFUNCTYPE(W.BOOL,W.HWND,W.LPARAM)
+    for name,args,result in (
+        ('EnumWindows',[callback_type,W.LPARAM],W.BOOL),
+        ('GetWindowThreadProcessId',[W.HWND,ctypes.POINTER(W.DWORD)],W.DWORD),
+        ('IsWindowVisible',[W.HWND],W.BOOL),
+        ('PostMessageW',[W.HWND,W.UINT,W.WPARAM,W.LPARAM],W.BOOL)):
+        function=getattr(user,name);function.argtypes=args;function.restype=result
+    windows=[];errors=[]
+    @callback_type
+    def observe(hwnd,_):
+        try:
+            owner=W.DWORD()
+            if user.GetWindowThreadProcessId(hwnd,ctypes.byref(owner)) and owner.value==target['pid'] and user.IsWindowVisible(hwnd):
+                windows.append(int(hwnd))
+            return True
+        except BaseException as error:
+            errors.append(error);return False
+    completed=user.EnumWindows(observe,0)
+    if errors: raise errors[0]
+    if not completed: raise ctypes.WinError(ctypes.get_last_error())
+    require(len(windows)<=1,'Ambiguous visible window for persistent Godot engine')
+    if not windows: return None
+    hwnd=windows[0]
+    # Re-read the held process and HWND owner immediately before the only
+    # mutating UI operation. An exited/reused/unowned target is never closed.
+    current=[row for row in reader.final_rows() if row['pid']==target['pid'] and row['start_id']==target['start_id']]
+    require(len(current)==1 and not current[0]['exited'] and normalized(current[0]['image_path'])==engine,
+            'Persistent engine exited before normal window close')
+    owner=W.DWORD()
+    require(user.GetWindowThreadProcessId(hwnd,ctypes.byref(owner)) and owner.value==target['pid']
+            and user.IsWindowVisible(hwnd),'Persistent window ownership changed before close')
+    posted_unix=time.time()
+    if not user.PostMessageW(hwnd,0x0010,0,0): raise ctypes.WinError(ctypes.get_last_error())
+    return {'schema':'ramcache-strata-persistent-close-v1','readiness':ready['value'],
+            'readiness_line_sha256':ready['line_sha256'],'ready_observed_unix_seconds':observed_unix,
+            'message':'WM_CLOSE','message_id':0x0010,'hwnd':hwnd,'pid':target['pid'],
+            'start_id':target['start_id'],'image_path':target['image_path'],
+            'window_owner_pid':int(owner.value),'visible':True,'posted':True,
+            'posted_unix_seconds':posted_unix}
+
+
 def execute_launcher(folder,output,metrics,*,persistent=False):
     require(sys.platform=='win32','Actual cold launch requires Windows')
     output.mkdir(parents=True,exist_ok=False)
@@ -315,6 +380,7 @@ def execute_launcher(folder,output,metrics,*,persistent=False):
     env=dict(os.environ,GODOT_SILENCE_ROOT_WARNING='1')
     began=time.monotonic();started_unix=time.time()
     process=None;reader=None;tree=None;timed_out=False;failure=None;cleanup_errors=[]
+    close_record=None;ready_observed=None
     try:
         with (output/'process.log').open('wb') as log:
             # Construct query APIs before creating a child. A failed observer
@@ -330,6 +396,11 @@ def execute_launcher(folder,output,metrics,*,persistent=False):
                 if process.poll() is not None: break
                 if time.monotonic()-began>=180:
                     timed_out=True;kill_owned_tree(process,reader);break
+                if persistent and close_record is None:
+                    ready=persistent_readiness((output/'process.log').read_text(encoding='utf-8',errors='replace'))
+                    if ready is not None:
+                        if ready_observed is None: ready_observed=time.time()
+                        close_record=close_persistent_window(folder,reader,ready,ready_observed)
                 time.sleep(min(metrics.SAMPLE_SECONDS,max(0.001,180-(time.monotonic()-began))))
             process.wait(timeout=10)
             tree.sample()
@@ -362,6 +433,7 @@ def execute_launcher(folder,output,metrics,*,persistent=False):
             'log_sha256':sha(output/'process.log') if (output/'process.log').exists() else None,
             'resources_sha256':sha(output/'resources.json'),'lifetimes_sha256':sha(output/'lifetimes.json'),
             'resources':{k:v for k,v in resources.items() if k!='samples'}}
+        if persistent: receipt['persistent_close']=close_record
         write(output/'process.json',receipt)
     require(failure is None and not timed_out and receipt['exit_code']==0,'Cold shipped command failed or exceeded 180 seconds')
     return receipt

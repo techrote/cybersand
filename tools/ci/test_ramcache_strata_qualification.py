@@ -10,6 +10,7 @@ import struct
 import tempfile
 import unittest
 from unittest import mock
+from types import SimpleNamespace
 import zipfile
 
 import ramcache_strata_qualification as q
@@ -157,6 +158,107 @@ class IntegrationControls(unittest.TestCase):
                     changed["project"]["assets_sha256"]["art/pixel.png"] = "0" * 64
                     self.reject(lambda: q.validate_project_record(changed, source))
 
+    def test_backend_userdata_cannot_be_inside_any_source_repository(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp).resolve()
+            project = root / "copied-source/godot"
+            q.require_external_output(root / "evidence", project)
+            self.reject(lambda: q.require_external_output(project / "evidence", project))
+            self.reject(lambda: q.require_external_output(project.parent / "userdata", project))
+            self.reject(lambda: q.require_external_output(q.ROOT / "build/evidence", project))
+
+    def test_registered_lab_command_retains_donor_capture_and_deadline(self):
+        for platform in ("linux", "win32"):
+            values = list(process_fixture(platform))
+            report, row, original, text = values
+            command = row["command"][:row["command"].index("--script")]
+            command += ["--max-fps", "1", "--script", "res://tests/test_material_lab_workbench_integration.gd"]
+            row.update(label="material-lab-author", command=command, timeout_seconds=1800)
+            original.update(command=command, timeout_seconds=1800)
+            q.validate_process(*values)
+            for mutation in ("headless", "fps", "deadline", "script"):
+                changed = copy.deepcopy(values)
+                if mutation == "headless":
+                    changed[1]["command"].insert(1, "--headless")
+                elif mutation == "fps":
+                    changed[1]["command"][changed[1]["command"].index("--max-fps") + 1] = "60"
+                elif mutation == "deadline":
+                    changed[1]["timeout_seconds"] = changed[2]["timeout_seconds"] = 3600
+                else:
+                    changed[1]["command"][-1] = "res://tests/unrelated.gd"
+                self.reject(lambda: q.validate_process(*changed))
+        self.assertEqual(q.expected_labels("lab"), {"import", *q.LAB_LABELS})
+        self.assertTrue(set(q.LAB_LABELS) <= q.expected_labels("shared"))
+        self.assertNotIn("lab", q.MODES)
+
+    def test_original_lab_native_comparison_and_fresh_reopen_are_required(self):
+        import mat_workbench_runtime_publication as original_lab
+        world = {"schema_id": "cybersand.material-lab.world-receipt", "runtime_active": False,
+                 "candidate": {"world_simulation": True, "descriptor_readback": {"density": 500},
+                               "final": {"target_below_reservoir": 1}},
+                 "reference": {"final": {"target_below_reservoir": 2}}}
+        for backend in ("reference", "candidate"):
+            world[backend]["checks"] = {key: True for key in ("deterministic_repeat", "worker_1_4_equal",
+                "persistence_checkpoint", "persistence_replay", "quantity_balanced")}
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            report = {"runtime": {"cybersand_runtime": {"sha256": "a" * 64}}, "platform": "win32"}
+            rows = {"material-lab-author": {"pid": 100}, "material-lab-reopen": {"pid": 101}}
+            originals = {}
+            for phase in ("author", "reopen"):
+                receipt = {"checks": 97, "failures": 0, "errors": [], "complete": True, "workers": 1,
+                    "phase": phase, "native_material_witnesses": [{"sha256": "d" * 64}],
+                    "candidate_world_receipt": copy.deepcopy(world) if phase == "author" else {}}
+                originals[phase] = receipt
+                location = root / ("material-lab-" + phase)
+                location.mkdir()
+                (location / "process.log").write_text("MAT_WB_EVIDENCE " + json.dumps(receipt) +
+                    "\nMAT_WB_INTEGRATION checks=97 failures=0 complete=true\n")
+            with mock.patch.object(original_lab, "verify_combined_case", side_effect=lambda *a, **kw: originals[a[4]]):
+                q.validate_lab_pair(root, report, rows)
+                for backend, gate in (("candidate", "persistence_replay"), ("reference", "worker_1_4_equal")):
+                    originals["author"]["candidate_world_receipt"][backend]["checks"][gate] = False
+                    self.reject(lambda: q.validate_lab_pair(root, report, rows))
+                    originals["author"]["candidate_world_receipt"][backend]["checks"][gate] = True
+                rows["material-lab-reopen"]["pid"] = 100
+                self.reject(lambda: q.validate_lab_pair(root, report, rows))
+
+    def test_shipped_launcher_uses_only_portable_tools_and_external_userdata(self):
+        text = package.launcher_text({"source_commit": "a" * 40})
+        self.assertEqual(text.count('%~dp0source\\godot"'), 2)
+        self.assertNotIn('%PATH%', text)
+        self.assertNotIn('Program Files', text)
+        self.assertIn('set "PYTHONPATH="', text)
+        self.assertIn('set "GIT_CONFIG_GLOBAL=NUL"', text)
+        self.assertIn('set "CYBERSAND_LAB_CXX=%~dp0dependencies\\cxx\\bin\\g++.exe"', text)
+        self.assertIn('set "APPDATA=%~dp0userdata\\roaming"', text)
+        with mock.patch.object(package.base, "launcher_text", return_value=text.replace("--editor --quit", "--quit")):
+            self.reject(lambda: package.launcher_text({"source_commit": "a" * 40}))
+
+    def test_actual_compilation_must_use_the_shipped_compiler_and_source(self):
+        root, source = r"D:\Extracted Copy", "a" * 40
+        dependencies = {"tools": {"compiler": {"path": "cxx/bin/g++.exe", "version": "g++.exe 14.2\nnotice"}}}
+        command = [r"D:\Extracted Copy\dependencies\cxx\bin\g++.exe", "-std=c++20"]
+        receipt = {"compiler": "g++.exe", "compiler_version": "g++.exe 14.2",
+                   "source_identity": {"git_head": source, "digest": "b" * 64, "lf_sha256": {"native/test.cpp": "c" * 64}},
+                   "source_identity_after": "b" * 64}
+        for name in ("reference_build", "candidate_build"):
+            receipt[name] = {"argv": list(command), "native_executable_sha256": "d" * 64}
+        package.validate_portable_compiler(receipt, root, dependencies, source, receipt["source_identity"])
+        for mutation in ("developer-tool", "wrong-version", "wrong-source", "changed-source", "wrong-input-map"):
+            changed = copy.deepcopy(receipt)
+            if mutation == "developer-tool":
+                changed["candidate_build"]["argv"][0] = r"C:\mingw64\bin\g++.exe"
+            elif mutation == "wrong-version":
+                changed["compiler_version"] = "unshipped compiler"
+            elif mutation == "wrong-source":
+                changed["source_identity"]["git_head"] = "f" * 40
+            elif mutation == "wrong-input-map":
+                changed["source_identity"]["lf_sha256"] = {"unrelated.cpp": "c" * 64}
+            else:
+                changed["source_identity_after"] = "0" * 64
+            self.reject(lambda: package.validate_portable_compiler(changed, root, dependencies, source, receipt["source_identity"]))
+
     def archive(self, root, extra="assets/file.txt", corrupt=False):
         files = {"Open Workbench.cmd": b"launcher", "godot/project.godot": b"project", extra: b"payload"}
         manifest = {"files_sha256": {name: digest(data) for name, data in files.items()}}
@@ -181,6 +283,19 @@ class IntegrationControls(unittest.TestCase):
                     path = self.archive(root, name)
                     self.reject(lambda: package.inspect_archive(path))
 
+    def test_archive_accepts_only_exact_committed_bootstrap_state(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            root = Path(tmp)
+            for name in package.SOURCE_BOOTSTRAP_FILES:
+                archive = self.archive(root, name)
+                with mock.patch.object(q.custody, "git", return_value=b"payload"):
+                    package.inspect_archive(archive)
+                with mock.patch.object(q.custody, "git", return_value=b"different committed bootstrap"):
+                    self.reject(lambda: package.inspect_archive(archive))
+            for name in ("source/godot/.godot/editor/old.cfg", "source/godot/.godot/imported/old.ctex",
+                         "source/godot/.godot/script-classes.cfg"):
+                self.reject(lambda: package.inspect_archive(self.archive(root, name)))
+
     def launcher(self):
         values = list(execution())
         source = "1" * 40
@@ -202,20 +317,84 @@ class IntegrationControls(unittest.TestCase):
 
     def test_shortcut_and_f2_share_default_profile_and_import_contract(self):
         source = {"source_commit": "1" * 40}
-        ordinary = package.base.launcher_text(source)
+        ordinary = package.launcher_text(source)
         shortcut = package.persistent_launcher(source)
         self.assertEqual(shortcut.replace("-- --persistent-areas\n", "-- --workbench\n"), ordinary)
         self.assertIn('set "APPDATA=%~dp0userdata\\roaming"', shortcut)
         self.assertNotIn("--persistent-profile", shortcut)
         for altered in (ordinary.replace("-- --workbench\n", "-- --other\n"), ordinary * 2):
-            with mock.patch.object(package.base, "launcher_text", return_value=altered):
+            with mock.patch.object(package, "launcher_text", return_value=altered):
                 self.reject(lambda: package.persistent_launcher(source))
 
-    def test_persistent_cmd_readiness_and_original_observation_hashes(self):
+    def persistent_launch(self):
         values, source = self.launcher()
-        values[0]["command"] = package.cold.command_line(values[0]["executable"], values[0]["cwd"], persistent=True)
+        process = values[0]
+        process["command"] = package.cold.command_line(process["executable"], process["cwd"], persistent=True)
         values[3] = values[3].split("STRATA_WORKBENCH_LAUNCH_ADMITTED ")[0] + "PERSISTENT_AREAS_READY " + json.dumps(
             {"session": "a" * 32, "area": "a", "revision": 2}) + "\n"
+        ready = package.cold.persistent_readiness(values[3])
+        engine = values[1]["rows"][-1]
+        process["persistent_close"] = {"schema": "ramcache-strata-persistent-close-v1",
+            "readiness": ready["value"], "readiness_line_sha256": ready["line_sha256"],
+            "ready_observed_unix_seconds": process["started_unix_seconds"] + 50,
+            "posted_unix_seconds": process["started_unix_seconds"] + 51,
+            "message": "WM_CLOSE", "message_id": 0x0010, "hwnd": 4242,
+            "pid": engine["pid"], "start_id": engine["start_id"], "image_path": engine["image_path"],
+            "window_owner_pid": engine["pid"], "visible": True, "posted": True}
+        return values, source
+
+    def test_persistent_close_requires_readiness_exact_window_owner_and_live_time(self):
+        values, source = self.persistent_launch()
+        package.validate_launcher_execution(*values, source, persistent=True)
+        self.assertNotIn("--quit-after", values[0]["command"])
+        for key, replacement in (("pid", 12), ("start_id", 1), ("window_owner_pid", 999),
+                ("hwnd", 0), ("visible", False), ("posted", False), ("message_id", 0x0012),
+                ("image_path", r"C:\unrelated\Godot.exe"), ("readiness_line_sha256", "0" * 64),
+                ("readiness", {"session": "a" * 32, "area": "b", "revision": 2}),
+                ("ready_observed_unix_seconds", values[0]["started_unix_seconds"]),
+                ("posted_unix_seconds", values[0]["started_unix_seconds"] + 110)):
+            changed = copy.deepcopy(values)
+            changed[0]["persistent_close"][key] = replacement
+            self.reject(lambda: package.validate_launcher_execution(*changed, source, persistent=True))
+        values[0].pop("persistent_close")
+        self.reject(lambda: package.validate_launcher_execution(*values, source, persistent=True))
+
+    def test_persistent_readiness_waits_for_complete_unique_native_marker(self):
+        good = 'PERSISTENT_AREAS_READY ' + json.dumps({"session": "a" * 32, "area": "a", "revision": 1})
+        self.assertIsNone(package.cold.persistent_readiness(good))
+        self.assertIsNone(package.cold.persistent_readiness("ordinary unrelated output\n"))
+        self.assertEqual(package.cold.persistent_readiness(good + "\n")["value"]["revision"], 1)
+        for text in (good + "\n" + good + "\n", 'PERSISTENT_AREAS_READY {}\n',
+                     good.replace('"revision": 1', '"revision": 0') + "\n"):
+            self.reject(lambda: package.cold.persistent_readiness(text))
+
+    def test_win32_close_only_posts_to_the_held_packaged_engine(self):
+        values, _source = self.persistent_launch()
+        engine = dict(values[1]["rows"][-1], exited=False)
+        ready = package.cold.persistent_readiness(values[3])
+        def owner(_hwnd, pointer):
+            pointer._obj.value = engine["pid"]
+            return 1
+        user = SimpleNamespace(GetWindowThreadProcessId=mock.Mock(side_effect=owner),
+            IsWindowVisible=mock.Mock(return_value=True), PostMessageW=mock.Mock(return_value=True),
+            EnumWindows=mock.Mock(side_effect=lambda callback, argument: callback(4242, argument)))
+        reader = SimpleNamespace(final_rows=mock.Mock(return_value=[engine]))
+        with mock.patch.object(package.cold.ctypes, "WinDLL", create=True, return_value=user), \
+             mock.patch.object(package.cold.ctypes, "WINFUNCTYPE", create=True, return_value=lambda fn: fn):
+            result = package.cold.close_persistent_window(values[0]["cwd"], reader, ready, 1800000050.0)
+            self.assertEqual(result["pid"], engine["pid"])
+            user.PostMessageW.assert_called_once_with(4242, 0x0010, 0, 0)
+            user.PostMessageW.reset_mock()
+            reader.final_rows.side_effect = [[engine], []]
+            self.reject(lambda: package.cold.close_persistent_window(values[0]["cwd"], reader, ready, 1800000050.0))
+            user.PostMessageW.assert_not_called()
+            reader.final_rows.side_effect = None
+            reader.final_rows.return_value = [dict(engine, image_path=r"C:\unrelated\Godot.exe")]
+            self.assertIsNone(package.cold.close_persistent_window(values[0]["cwd"], reader, ready, 1800000050.0))
+            user.PostMessageW.assert_not_called()
+
+    def test_persistent_cmd_readiness_and_original_observation_hashes(self):
+        values, source = self.persistent_launch()
         package.validate_launcher_execution(*values, source, persistent=True)
         self.reject(lambda: package.validate_launcher_execution(*values, source))
         with tempfile.TemporaryDirectory() as tmp:
