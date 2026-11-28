@@ -4,11 +4,17 @@ status: Current
 document-kind: navigation
 scope: Entry routes and authority rules for the focused documentation hierarchy
 canonical-for: []
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-27
 related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.md, operations/documentation-maintenance.md, operations/microscenarios-programme.md, operations/development-claims-remediation-programme.md, operations/water-hybrid-pressure-extension-programme.md, operations/atlas-agent-runner.md, architecture/pressure-optimization.md]
 ---
 
 # CyberSand documentation
+
+## Persistent authored areas · GEN-006
+
+The stacked [Draft/HOLD RAM-cache successor #734](https://github.com/techrote/cybersand/pull/734) extends #725 with [actual native HOT residency, WARM/COLD tiers, bounded write-behind and predictive preparation](systems/persistent-area-residency.md). Use the [RAM-cache owner guide](operations/persistent-area-ramcache-evaluation.md) and [source/performance ledger](audits/2026-11-22-gen006-ramcache.md). The broader #194 actor, streaming and recipe programme remains unfinished.
+
+The opt-in Draft/HOLD [three-area native continuation contract](systems/persistent-authored-areas.md) owns retained dynamic state, completed game-time debt and conservative dependency refusal. The [desktop evaluator guide](operations/persistent-areas-evaluation.md) explains travel, Simulate Ahead, isolated profiles and recovery. The [dated qualification ledger](audits/2026-11-21-gen006-persistent-areas.md) separates actual platform results from physical NVIDIA owner acceptance and the broader unfinished #194 programme.
 
 **Current SWARM-004/005/006 consolidated delivery:** [canonical decision packet](audits/swarm456-definitive-001/final-decision-packet.md), [machine-readable decision](audits/swarm456-definitive-001/final-decision-packet.json), [unified runbook](operations/swarm456-unified-mainline.md) and [physical owner procedure](operations/swarm456-owner-acceptance.md). The same principal #729 preserves both donor histories and accepted Art session logging. Q7 qualifies application/runtime/evaluator source `5e34e0dd`; guarded publication `5323b837` and fresh remote LFS materialization passed. Complete Native, full Documentation and current PLAY identity passed their reviewed scopes; final full GDExtension review passes at `5fd9985e` with 344 Linux/321 Windows cases and complete original coverage. **Draft/HOLD; physical Windows 11/NVIDIA acceptance remains owner-pending.**
 

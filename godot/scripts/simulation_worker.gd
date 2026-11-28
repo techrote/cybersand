@@ -15,6 +15,7 @@ const LiquidHostEvidence = preload("res://scripts/liquid_host_evidence.gd")
 const PhysicalEffects = preload("res://scripts/physical_actor_effects.gd")
 const PhysicalUsables = preload("res://scripts/physical_usable_runtime.gd")
 const PaintEditorExecutor = preload("res://scripts/workbench_paint_editor_executor.gd")
+const PersistentWorkerProtocol = preload("res://scripts/persistent_area_worker_protocol.gd")
 const MaterialAuditionMailbox = preload("res://scripts/material_audition_mailbox.gd")
 const SIMULATION_HZ: float = 60.0
 const FIXED_TIMESTEP: float = 1.0 / SIMULATION_HZ
@@ -151,6 +152,265 @@ var _material_capture_sequence := 0
 var _material_capture_request: Dictionary = {}
 var _material_capture_result: Dictionary = {}
 var _material_capture_inflight := false
+# GEN-006: one copied request and one result, serviced only by the native owner.
+# The lease freezes the live World from capture through durable publication and
+# optional candidate adoption. A prepared candidate never advances the live one.
+var _persistent_sequence := 0
+var _persistent_request: Dictionary = {}
+var _persistent_result: Dictionary = {}
+var _persistent_operation_id := ""
+var _persistent_lease := false
+var _persistent_mode := false
+var _persistent_candidate: Dictionary = {} # Exclusive worker owner, not UI.
+var _persistent_prepared_info: Dictionary = {} # Mutex-owned copied publication.
+var _persistent_commit_token := 0
+var _persistent_refusal := ""
+# Worker-exclusive host companions for native unique-owned resident bundles.
+# No UI/controller receives a World, host object or renderer reference.
+var _persistent_resident_hosts: Dictionary = {}
+var _persistent_hot_activations := 0
+var _persistent_handoff_sequence := 0
+var _persistent_hot_handoff: Dictionary = {}
+var _resident_prefetch_thread: Thread
+var _resident_prefetch_sequence := 0
+var _resident_prefetch_request: Dictionary = {}
+var _resident_prefetch_result: Dictionary = {}
+var _resident_prefetch_cancelled := false
+var _resident_prefetch_committing := false
+var _resident_private_preparations_started := 0
+
+func persistent_stage_resident_handoff(value: Dictionary) -> Dictionary:
+	var protocol_error := PersistentWorkerProtocol.handoff_error(value)
+	if not protocol_error.is_empty(): return {"ok":false,"error":protocol_error}
+	if not value.get("serial") is int or not value.get("expected_generation") is int \
+			or not value.get("operation_id") is String or not value.get("target_receipt") is Dictionary:
+		return {"ok":false,"error":"Resident handoff requires an explicit Main serial, generation and target receipt."}
+	var target: Dictionary = value.target_receipt
+	if not target.get("handle") is int or not target.get("resident_generation") is int \
+			or not target.get("identity") is Dictionary or bool(target.get("active",true)):
+		return {"ok":false,"error":"Resident handoff target has no inactive native identity."}
+	_mutex.lock()
+	var reason := ""
+	if not _running or not _persistent_lease or str(value.operation_id)!=_persistent_operation_id:
+		reason = "Resident handoff has no matching frozen owner."
+	elif not _persistent_hot_handoff.is_empty() or not _persistent_request.is_empty():
+		reason = "A resident handoff or native request is already outstanding."
+	elif int(value.expected_generation)!=_world_generation or int(value.serial)<=_scenario_request_serial:
+		reason = "Main resident handoff serial or active generation is stale."
+	if reason.is_empty():
+		_persistent_handoff_sequence += 1
+		_persistent_hot_handoff = value.duplicate(true)
+		_persistent_hot_handoff["ticket"] = _persistent_handoff_sequence
+	var ticket := _persistent_handoff_sequence
+	_mutex.unlock()
+	return {"ok":true,"ticket":ticket} if reason.is_empty() else {"ok":false,"error":reason}
+
+func persistent_cancel_resident_handoff(ticket: int) -> bool:
+	_mutex.lock()
+	var accepted := not _persistent_hot_handoff.is_empty() and int(_persistent_hot_handoff.ticket)==ticket \
+		and _persistent_request.is_empty()
+	if accepted: _persistent_hot_handoff = {}
+	_mutex.unlock()
+	return accepted
+
+# A separate private preparation owner receives only copied values. It never
+# receives this worker's active adapter, host, renderer or scene objects.
+# Completed candidate objects move only from the joined thread to this worker.
+func persistent_prefetch_request(value: Dictionary) -> Dictionary:
+	var value_error := PersistentWorkerProtocol.prefetch_error(value)
+	if not value_error.is_empty(): return {"ok":false,"error":value_error}
+	_mutex.lock()
+	if not _running or not _resident_prefetch_request.is_empty():
+		_mutex.unlock()
+		return {"ok":false,"error":"One private prefetch is already outstanding or the owner stopped."}
+	_resident_prefetch_sequence += 1
+	_resident_prefetch_request = value.duplicate(true)
+	_resident_prefetch_request["token"] = _resident_prefetch_sequence
+	_resident_prefetch_result = {}
+	_resident_prefetch_cancelled = false
+	_resident_prefetch_committing = false
+	var token := _resident_prefetch_sequence
+	_mutex.unlock()
+	return {"ok":true,"token":token}
+
+func persistent_prefetch_poll(token: int) -> Dictionary:
+	_mutex.lock()
+	var result := {"ok":false,"status":"failed","error":"Stale prefetch token."}
+	if token>0 and token==_resident_prefetch_sequence:
+		result = _resident_prefetch_result.duplicate(true) if not _resident_prefetch_result.is_empty() \
+			else {"ok":true,"status":"pending","token":token}
+	result["private_preparations_started"] = _resident_private_preparations_started
+	_mutex.unlock()
+	return result
+
+func persistent_prefetch_cancel(token: int) -> bool:
+	_mutex.lock()
+	var accepted := token>0 and token==_resident_prefetch_sequence and _resident_prefetch_result.is_empty() \
+		and not _resident_prefetch_committing
+	if accepted: _resident_prefetch_cancelled = true
+	_mutex.unlock()
+	return accepted
+
+static func _persistent_build_prefetch(request: Dictionary) -> Dictionary:
+	var start := Time.get_ticks_usec()
+	var authoring: Dictionary = request.authoring
+	var identity: Dictionary = request.identity
+	var candidate: Dictionary = authoring.get("setup",{})
+	const Store = preload("res://scripts/persistent_area_store.gd")
+	var error: String = Store._capture_error(request.capture)
+	if error.is_empty(): error = Store._authoring_error(authoring)
+	if error.is_empty(): error = preload("res://scripts/workbench_setup.gd").validate(candidate)
+	if not error.is_empty(): return {"ok":false,"error":error}
+	var private_world: Variant = ClassDB.instantiate(&"CyberNativeCellWorld")
+	var private_host: CyberMicroScenarioHost = MicroHost.new()
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	var continuation := {"session_id":str(identity.get("session_id","")),"area_id":str(identity.get("area_id","")),
+		"generation":int(request.get("generation",1)),"operation_id":"prefetch-"+str(request.token)}
+	var settings := {"intent":"exploratory","normalization":"","maximum_rule_radius":int(candidate.rule_radius),
+		"workbench_response":str(candidate.response),"workbench_retain_cells":false,
+		"workbench_worker_threads":int(request.capture.get("execution",{}).get("worker_threads",1)),
+		"workbench_continuation":request.capture,
+		"workbench_continuation_identity":continuation,
+		"workbench_sample":{"session":int(request.token),"epoch":1,"states":PackedFloat64Array(),
+			"geometry":PackedFloat64Array(),"bodies":[],"emitters":[]},
+		"owner_execution":{"region":[0,0,512,512],"simulation_window_enabled":true,"cadence_lod_enabled":false,
+			"liquid_surface_adhesion_enabled":bool(authoring.definition.execution.liquid_surface_adhesion_enabled)}}
+	var commit := func(prepared_bridge: Variant, token: int) -> bool:
+		return prepared_bridge.commit_liquid_world(private_world,token)
+	if not private_host.install(private_world,authoring.definition,"Inspect",false,
+			PackedInt32Array(candidate.liquid_policy),settings,commit):
+		return {"ok":false,"error":"Private destination preparation refused: "+private_host.last_error}
+	var bound: Dictionary = bridge.resident_admit(private_world,identity)
+	if not bound.get("ok",false): return bound
+	var maximum_ticks := int(request.get("max_ticks",0))
+	var maximum_us := int(request.get("max_us",5000))
+	if maximum_ticks<0 or maximum_ticks>32 or maximum_us<1 or maximum_us>100000:
+		return {"ok":false,"error":"Prefetch catch-up slice exceeds its bounded native work."}
+	var tick_started := Time.get_ticks_usec()
+	var completed := 0
+	while completed<maximum_ticks and (completed==0 or Time.get_ticks_usec()-tick_started<maximum_us):
+		if not private_host.advance(): return {"ok":false,"error":private_host.last_error}
+		completed += 1
+	var step_us := Time.get_ticks_usec()-tick_started
+	var current: Dictionary = bridge.resident_status(private_world)
+	if not current.get("ok",false): return current
+	bound.receipt = current.active
+	var reserved := int(request.get("max_native_bytes",request.get("reservation_bytes",0)))
+	if reserved<1 or int(bound.receipt.native_bytes)>reserved:
+		return {"ok":false,"error":"Private native preparation exceeded its explicit memory reservation."}
+	var finished := Time.get_ticks_usec()
+	return {"ok":true,"world":private_world,"host":private_host,"receipt":bound.receipt,
+		"authoring":authoring,"prepare_us":finished-start,
+		"prepare_started_usec":start,"prepare_completed_usec":finished,
+		"workbench_sample":settings.workbench_sample.duplicate(true),
+		"completed_ticks":completed,"current_tick":int(private_world.tick_index),"elapsed_us":step_us}
+
+func _consume_persistent_prefetch() -> void:
+	_mutex.lock()
+	var running := _running
+	var held := _persistent_lease or _world_change_inflight or not _lab_request.is_empty()
+	var cancelled := _resident_prefetch_cancelled
+	var request := _resident_prefetch_request.duplicate(true)
+	_mutex.unlock()
+	if request.is_empty(): return
+	if _resident_prefetch_thread == null:
+		if cancelled or not running:
+			_mutex.lock()
+			_resident_prefetch_result = {"ok":true,"status":"cancelled","token":int(request.token),"result":{}}
+			_resident_prefetch_request = {}
+			_mutex.unlock()
+			return
+		if held: return
+		if bool(request.get("advance_only",false)):
+			_mutex.lock()
+			var may_advance := not _resident_prefetch_cancelled and _running \
+				and not _paint_holds_slot_locked() and not _art_holds_slot_locked() and not _legacy_edits_pending_locked()
+			_resident_prefetch_committing = may_advance
+			_mutex.unlock()
+			if not may_advance: return
+			var work_started := Time.get_ticks_usec()
+			var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+			var advanced: Dictionary = bridge.resident_advance(_world,request.receipt,
+				mini(2,int(request.get("max_ticks",1))),mini(5000,int(request.get("max_us",5000))))
+			if advanced.get("ok",false): advanced["current_tick"] = int(advanced.completed_tick)
+			advanced["work_started_usec"] = work_started
+			advanced["work_completed_usec"] = Time.get_ticks_usec()
+			_mutex.lock()
+			_resident_prefetch_result = {"ok":bool(advanced.get("ok",false)),"token":int(request.token),
+				"status":"ready" if advanced.get("ok",false) else "failed","result":advanced,
+				"error":str(advanced.get("error",""))}
+			_resident_prefetch_request = {}
+			_resident_prefetch_committing = false
+			_mutex.unlock()
+			return
+		# Check the owner bound before bootstrap + source + restore allocation.
+		var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+		var residents: Dictionary = bridge.resident_status(_world)
+		var active: Dictionary = residents.get("active",{})
+		var native_bound := int(active.get("native_reservation_bytes",0))
+		if native_bound<1 or int(request.max_native_bytes)<native_bound \
+				or int(request.reservation_bytes)<3*native_bound+64*1024*1024:
+			_mutex.lock()
+			_resident_prefetch_request = {}
+			_resident_prefetch_result = {"ok":false,"status":"failed","token":int(request.token),
+				"error":"Prefetch reservation is smaller than the trusted native preparation bound."}
+			_mutex.unlock()
+			return
+		_resident_prefetch_thread = Thread.new()
+		var launch_error := _resident_prefetch_thread.start(_persistent_build_prefetch.bind(request),Thread.PRIORITY_LOW)
+		if launch_error != OK:
+			_resident_prefetch_thread = null
+			_mutex.lock()
+			_resident_prefetch_request = {}
+			_resident_prefetch_result = {"ok":false,"status":"failed","error":"Private prefetch thread could not start."}
+			_mutex.unlock()
+		else:
+			_mutex.lock()
+			_resident_private_preparations_started += 1
+			_mutex.unlock()
+		return
+	# An obsolete candidate owns only private state. Retire it even while an
+	# explicit transition holds the active lease, so cancellation never waits
+	# for activation authority or transfers the old speculative result.
+	if _resident_prefetch_thread.is_alive() or (held and not cancelled and running): return
+	var prepared: Dictionary = _resident_prefetch_thread.wait_to_finish()
+	_resident_prefetch_thread = null
+	_mutex.lock()
+	cancelled = _resident_prefetch_cancelled
+	running = _running
+	_resident_prefetch_committing = not cancelled and running
+	_mutex.unlock()
+	var result := {"ok":false,"status":"failed","token":int(request.token),"error":str(prepared.get("error","Preparation refused."))}
+	if cancelled or not running:
+		result = {"ok":true,"status":"cancelled","token":int(request.token),"result":{}}
+	elif prepared.get("ok",false):
+		var started := Time.get_ticks_usec()
+		var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+		var imported: Dictionary = bridge.resident_import(_world,prepared.world,prepared.receipt)
+		if imported.get("ok",false):
+			var definition: Dictionary = prepared.authoring.definition
+			var transport: Dictionary = CyberTransportProfiles.resolve(definition.transport_profile)
+			_persistent_resident_hosts[int(imported.receipt.handle)] = {"identity":imported.receipt.identity.duplicate(true),
+				"host":prepared.host,"lab_profile":transport.profile.duplicate(true),"lab_profile_hash":str(transport.hash),
+				"workbench_sample":prepared.workbench_sample.duplicate(true),
+				"rigid_body_epoch":int(prepared.workbench_sample.epoch),
+				"workbench_extent":Vector2i(512,512),"native_worker_request":int(imported.receipt.worker_threads),
+				"view_origin":Vector2i.ZERO,"view_size":Vector2i(512,512),"horizontal_buffer":0,"vertical_buffer":0,
+				"simulation_window_enabled":true,"cadence_lod_enabled":false,
+				"liquid_surface_adhesion_enabled":bool(definition.execution.liquid_surface_adhesion_enabled)}
+			result = {"ok":true,"status":"ready","token":int(request.token),
+				"result":{"receipt":imported.receipt,"prepare_us":int(prepared.prepare_us),
+					"import_us":Time.get_ticks_usec()-started,"prepared_before_activation":true,
+					"prepare_started_usec":int(prepared.prepare_started_usec),"prepare_completed_usec":int(prepared.prepare_completed_usec),
+					"import_started_usec":started,"import_completed_usec":Time.get_ticks_usec(),
+					"completed_ticks":int(prepared.completed_ticks),"current_tick":int(prepared.current_tick),
+					"elapsed_us":int(prepared.elapsed_us)}}
+		else: result.error = str(imported.get("error","Prefetch import refused."))
+	_mutex.lock()
+	_resident_prefetch_request = {}
+	_resident_prefetch_result = result
+	_resident_prefetch_committing = false
+	_mutex.unlock()
 var _authoring_generation := 1
 var _reset_requested: bool = false
 var _reset_spawn: Vector2 = Vector2(150.0, 145.0)
@@ -244,6 +504,13 @@ var _water_explicit_sink: int = 0
 
 func queue_lab(command: Dictionary) -> void:
 	_mutex.lock()
+	if _persistent_lease and (not command.has("scenario_reset") or \
+			str(command.get("controlled_liquid_setup",{}).get("persistent_operation_id","")) != _persistent_operation_id \
+			or not _persistent_prepared_info.is_empty() or not _lab_request.is_empty() or _world_change_inflight):
+		_persistent_refusal = "The area continuation owner is frozen; retry after the operation."
+		_mutex.unlock()
+		return
+	if _persistent_lease: _persistent_refusal = ""
 	_material_audition.refuse_pending("A scene control command superseded the pending configuration.","scene_command")
 	_lab_request_revision += 1
 	_paint_epoch += 1
@@ -344,6 +611,13 @@ func _advance_prepared_physical_liquid() -> Dictionary:
 	return command
 
 func _prepared_liquid_continuation_token(command: Dictionary) -> int:
+	if command.get("_prepared_persistent_commit",false):
+		var original: Dictionary = command.duplicate(true)
+		original.erase("_prepared_persistent_commit")
+		if _persistent_candidate.is_empty() or original != _persistent_candidate.get("command",{}):
+			_prepared_liquid_owner_error = "Persistent continuation command binding changed"
+			return -1
+		return int(_persistent_candidate.token)
 	if not command.get("_prepared_physical_commit",false): return 0
 	var original: Dictionary = command.duplicate(true)
 	original.erase("_prepared_physical_commit")
@@ -358,7 +632,11 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		owner_execution: Dictionary) -> Variant:
 	var physical: Dictionary = command.get("controlled_liquid_setup",{}).get("physical_owner",{})
 	var completing: bool = bool(command.get("_prepared_physical_commit",false))
-	var staged: Dictionary = _pending_physical_liquid.get("staged",{}) if completing else PreparedSampled.prepare(bridge, _world, token,
+	var persistent_completing: bool = bool(command.get("_prepared_persistent_commit",false))
+	var persistent_setup: Dictionary = command.get("controlled_liquid_setup",{})
+	var persistent_staging: bool = bool(persistent_setup.get("persistent_stage",false))
+	var staged: Dictionary = (_persistent_candidate.get("staged",{}) if persistent_completing else \
+		_pending_physical_liquid.get("staged",{})) if completing or persistent_completing else PreparedSampled.prepare(bridge, _world, token,
 		Vector2(definition.player_start[0],definition.player_start[1]),
 		bool(command.get("sampled_character_enabled",false)),
 		bool(command.get("runtime_enclosure_recovery_enabled",true)), profile,
@@ -367,6 +645,18 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 	if not staged.get("ok",false):
 		_prepared_liquid_owner_error = str(staged.get("error","Prepared owner was retired"))
 		return false
+	if persistent_staging and not persistent_completing:
+		_mutex.lock()
+		var persistent_current := _running and _persistent_lease and not _reset_requested \
+			and _persistent_operation_id == str(persistent_setup.get("persistent_operation_id","")) \
+			and request_revision == _lab_request_revision and settings_revision == _construction_settings_revision \
+			and _persistent_candidate.is_empty() and physical.is_empty()
+		if persistent_current:
+			_persistent_candidate = {"bridge":bridge,"token":token,"command":command.duplicate(true),
+				"request_revision":request_revision,"settings_revision":settings_revision,"staged":staged}
+			_persistent_prepared_info = {"prepared":true,"operation_id":_persistent_operation_id,"error":""}
+		_mutex.unlock()
+		return {"deferred":true} if persistent_current else false
 	if not physical.is_empty() and not completing:
 		var values: Dictionary = bridge.prepared_liquid_world_values(_world,token)
 		if values.is_empty():
@@ -388,6 +678,8 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 	if _controlled_liquid_prepare_barrier.is_valid(): _controlled_liquid_prepare_barrier.call()
 	# Retain the previous sessions through the no-fail swap; refusal never calls
 	# clear/configure on them or changes their epochs, equipment or actor state.
+	# The native desktop constructor supplies owner policies and a player start without a MicroScenario ID.
+	var retire_generic_body_packet: bool = physical.is_empty() and definition.get("id", "") == CyberMicroScenarioContract.WORKBENCH_ID
 	var retained_actors: CyberActorPrototypeSession = _actor_session
 	var retained_usables: CyberUsableSession = _usable_session
 	_mutex.lock()
@@ -396,8 +688,13 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 	if completing:
 		current = current and not _pending_physical_liquid.is_empty() \
 			and token == int(_pending_physical_liquid.get("token",0)) and bool(_prepared_physical_ready.get("ready",false))
+	if persistent_completing:
+		current = current and _persistent_lease and not _persistent_candidate.is_empty() \
+			and token == int(_persistent_candidate.get("token",0)) \
+			and _persistent_operation_id == str(persistent_setup.get("persistent_operation_id",""))
 	var committed: bool = bridge.commit_liquid_world(_world, token) if current else false
 	if committed:
+		_persistent_mode = not str(persistent_setup.get("persistent_operation_id","")).is_empty()
 		_scheduler_thread_capacity_hint = int(_world.get_worker_threads())
 		var accepted_setup: Dictionary = command.get("controlled_liquid_setup",{})
 		if accepted_setup.has("workbench_worker_threads"):
@@ -423,6 +720,10 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		_workbench_prepared_sample = -1
 		_workbench_sample = command.get("controlled_liquid_setup",{}).get("workbench_sample",{}).duplicate(true)
 		_workbench_extent = Vector2i(definition.extent[0],definition.extent[1]) if definition.has("extent") else Vector2i.ZERO
+		if retire_generic_body_packet:
+			# An accepted actor-free Workbench owns no generic Main body packet.
+			# Retiring that old copied input is part of the same no-fail swap.
+			_rigid_body_states = PackedFloat32Array()
 		if not _workbench_sample.is_empty(): _rigid_body_epoch = _workbench_sample.epoch
 		_actor_session = staged.actors
 		_usable_session = staged.usables
@@ -869,18 +1170,32 @@ func _apply_lab(command: Dictionary) -> bool:
 		var retained_host_error: String = _scenario_host.last_error
 		var retained_host_refusal: Dictionary = _scenario_host.last_liquid_policy_refusal
 		# The host validates the raw definition below, including missing identity.
-		if not _scenario_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect")),
+		# A registered hot source keeps its actual host object. Cold staging and
+		# commit use a different host, assigned only after native success.
+		var install_host: CyberMicroScenarioHost = MicroHost.new() if not _persistent_resident_hosts.is_empty() \
+			and not str(controlled_setup.get("persistent_operation_id","")).is_empty() else _scenario_host
+		if not install_host.install(_world, command.scenario_reset, str(command.get("scenario_mode", "Inspect")),
 			command.scenario_reset.get("id", "") != CyberMicroScenarioContract.WORKBENCH_ID,
 			command.get("liquid_policy", null), controlled_setup, guard, continuation_token):
+			if not _persistent_candidate.is_empty() and not command.get("_prepared_persistent_commit",false):
+				_scenario_host.last_error = retained_host_error
+				_scenario_host.last_liquid_policy_refusal = retained_host_refusal
+				return false
 			if not _pending_physical_liquid.is_empty() and not command.get("_prepared_physical_commit",false):
 				_scenario_host.last_error = retained_host_error
 				_scenario_host.last_liquid_policy_refusal = retained_host_refusal
 				return false
 			_lab_status = "MicroScenario rejected; " + (_prepared_liquid_owner_error \
-				if not _prepared_liquid_owner_error.is_empty() else _scenario_host.last_error)
+				if not _prepared_liquid_owner_error.is_empty() else install_host.last_error)
 			if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
 			return false
+		_scenario_host = install_host
 		if command.get("_prepared_physical_commit",false): _retire_prepared_physical_liquid()
+		if command.get("_prepared_persistent_commit",false):
+			_persistent_candidate = {}
+			_mutex.lock()
+			_persistent_prepared_info = {}
+			_mutex.unlock()
 		_world_generation += 1
 		var definition: Dictionary = _scenario_host.definition()
 		var transport: Dictionary = CyberTransportProfiles.resolve(definition.transport_profile)
@@ -1125,20 +1440,38 @@ func start_worker(spawn_position: Vector2) -> Error:
 
 func stop_worker() -> void:
 	_mutex.lock()
-	_material_audition.refuse_pending("The native owner stopped before activation.","stopped")
-	_mutex.unlock()
-	if not _thread.is_started():
-		_retire_prepared_physical_liquid()
-		return
-	_mutex.lock()
 	_running = false
 	_material_audition.refuse_pending("The native owner stopped before activation.","stopped")
 	_lab_request_revision += 1
 	_paint_epoch += 1
 	_invalidate_art_locked("Simulation worker stopped")
+	_persistent_stop_locked()
+	_resident_prefetch_cancelled = true
 	_mutex.unlock()
+	if not _thread.is_started():
+		_persistent_retire_candidate()
+		_retire_prepared_physical_liquid()
+		_persistent_finish_stopped_prefetch()
+		return
 	_thread.wait_to_finish()
+	# A preparation owns no active World. Join before releasing its private
+	# candidate so normal exit never destroys a World another thread is using.
+	if _resident_prefetch_thread != null:
+		_resident_prefetch_thread.wait_to_finish()
+		_resident_prefetch_thread = null
+	_persistent_finish_stopped_prefetch()
 	_actor_session.set_suspended(true)
+
+
+func _persistent_finish_stopped_prefetch() -> void:
+	# A terminal cancellation is published only after all owners have joined.
+	_mutex.lock()
+	_resident_prefetch_request = {}
+	_resident_prefetch_committing = false
+	if _resident_prefetch_sequence>0 and _resident_prefetch_result.is_empty():
+		_resident_prefetch_result = {"ok":true,"status":"cancelled","token":_resident_prefetch_sequence,
+			"reason":"Simulation worker stopped","result":{}}
+	_mutex.unlock()
 
 
 func submit_actor_action(
@@ -1219,7 +1552,7 @@ func queue_actor_prototype_reset(definitions: Array, spawn_position: Vector2, sa
 	_mutex.lock()
 	# The experimental sandbox cannot rewrite a registered apparatus identity.
 	if (
-		not _lab_request.is_empty()
+		_persistent_lease or not _lab_request.is_empty()
 		or (_published_snapshot != null and _published_snapshot.lab_context.get("active", false))
 	):
 		_mutex.unlock()
@@ -1260,6 +1593,10 @@ func set_frame_state(
 		liquid_surface_adhesion_enabled: bool
 ) -> void:
 	_mutex.lock()
+	if _persistent_lease:
+		# Camera/pause publications cannot rewrite a captured execution envelope.
+		_mutex.unlock()
+		return
 	_horizontal_input = horizontal_input
 	_jetpack_active = jetpack_active
 	if paused and not _frame_command_paused:
@@ -1309,6 +1646,10 @@ func set_workbench_sample(value: Dictionary) -> Dictionary:
 	# with a request issued against an older equipment frame.
 	_mutex.lock()
 	var result := {"accepted":false,"status":"refused","reason":"workbench_identity"}
+	if _persistent_lease:
+		result.reason = "persistent_area_frozen"
+		_mutex.unlock()
+		return result
 	if value.is_empty() or _workbench_sample.is_empty() or not _prepared_physical_frame_hold.is_empty() \
 			or value.get("session") != _workbench_sample.session or value.get("epoch") != _workbench_sample.epoch:
 		_mutex.unlock()
@@ -1356,6 +1697,7 @@ func cancel_workbench_emission() -> void:
 	_mutex.unlock()
 
 func _cancel_workbench_emission_locked() -> void:
+	if _persistent_lease: return
 	_workbench_emitters.clear()
 	_workbench_source_commands = _workbench_source_commands.filter(func(v: Dictionary) -> bool: return v.command == "configure")
 	if _workbench_extent != Vector2i.ZERO:
@@ -1363,14 +1705,14 @@ func _cancel_workbench_emission_locked() -> void:
 
 func queue_water_spray(settings: Dictionary) -> bool:
 	_mutex.lock()
-	var ok := _water_spray_requests.size() < 8
+	var ok := not _persistent_lease and _water_spray_requests.size() < 8
 	if ok: _water_spray_requests.append(settings.duplicate(true))
 	_mutex.unlock()
 	return ok
 
 func queue_workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 	_mutex.lock()
-	var ok := _workbench_extent != Vector2i.ZERO and _prepared_physical_publication.is_empty() and _lab_request.is_empty() and _workbench_source_commands.size() < 8
+	var ok := not _persistent_lease and _workbench_extent != Vector2i.ZERO and _prepared_physical_publication.is_empty() and _lab_request.is_empty() and _workbench_source_commands.size() < 8
 	if ok:
 		ok = command in ["configure","burst","stream","stop"] and (command != "configure" or _workbench_source.valid(origin,material,_workbench_extent))
 	if ok: _workbench_source_commands.append({"command":command,"origin":origin,"material":material})
@@ -1384,7 +1726,7 @@ func queue_workbench_equipment(request: Dictionary) -> bool:
 	_mutex.lock()
 	# An extracted replacement is still in flight after _lab_request is cleared.
 	# Do not admit an old-World command that its commit would silently discard.
-	var ok := _workbench_extent != Vector2i.ZERO and not _world_change_inflight and not _reset_requested \
+	var ok := not _persistent_lease and _workbench_extent != Vector2i.ZERO and not _world_change_inflight and not _reset_requested \
 		and _prepared_physical_publication.is_empty() \
 		and _lab_request.is_empty() and _workbench_equipment_commands.size() < 16 \
 		and str(request.get("command","")) in ["configure","valve","drain","nozzle","tune","stop","observe"]
@@ -1533,7 +1875,7 @@ func set_rigid_body_states(states: PackedFloat32Array, body_epoch: int = 0, effe
 	# of effect admission. A nonempty effects batch is queued wholly or refused;
 	# previously queued work is never replaced to make room for a newer batch.
 	_mutex.lock()
-	if not _prepared_physical_frame_hold.is_empty():
+	if _persistent_lease or _persistent_mode or not _prepared_physical_frame_hold.is_empty():
 		var held: Dictionary = {"epoch":body_epoch,"status":"refused","reason":"prepared_owner_adoption_pending",
 			"requested":effects.size(),"queued":0,"refused":effects.size()}
 		_mutex.unlock()
@@ -1625,6 +1967,9 @@ func set_physical_usable_state(frame: Dictionary, requests: Array = [], states: 
 
 
 func _set_physical_usable_state_locked(frame: Dictionary, requests: Array = [], states: PackedFloat32Array = PackedFloat32Array()) -> Dictionary:
+	if _persistent_lease or _persistent_mode:
+		return {"frame_admitted":false,"status":"refused","reason":"persistent_actor_free_owner",
+			"requested":requests.size(),"queued":0,"refused":requests.size(),"pending":_physical_usable_inflight.size()}
 	var reason: String = PhysicalUsables.frame_error(frame)
 	if reason.is_empty() and (states.size() > CyberRigidBodyCoupling.MAX_BODIES * CyberRigidBodyCoupling.INPUT_STRIDE \
 		or states.size() % CyberRigidBodyCoupling.INPUT_STRIDE != 0):
@@ -1868,6 +2213,376 @@ func _legacy_edits_pending_locked() -> bool:
 func _material_capture_holds_slot_locked() -> bool:
 	return _material_capture_inflight or not _material_capture_request.is_empty() or not _material_capture_result.is_empty()
 
+# Thread-safe value interface. Neither this API nor the controller exposes the
+# live World or opaque native preparation token. One operation owns the lease.
+func persistent_request(request: Dictionary) -> Dictionary:
+	var kind := str(request.get("kind",""))
+	var operation := str(request.get("operation_id",""))
+	if kind not in ["begin","capture","freeze","status","advance","capture_prepared","commit","discard","release",
+			"resident_bind","resident_status","activate_resident","resident_capture","resident_advance",
+			"resident_release","resident_clear_active","advance_active"] \
+			or operation.is_empty() or operation.length() > 128:
+		return {"ok":false,"error":"Invalid persistent owner request."}
+	_mutex.lock()
+	var reason := ""
+	var retryable := false
+	if not _running: reason = "Native owner stopped."
+	elif not _persistent_request.is_empty(): reason = "A persistent owner request is outstanding."
+	elif _persistent_lease and operation != _persistent_operation_id: reason = "Stale persistent operation identity."
+	elif kind not in ["begin","capture","freeze","resident_status","resident_advance","resident_capture","resident_release"] \
+			and not _persistent_lease: reason = "No persistent owner lease."
+	elif kind == "begin" and (_persistent_lease or _workbench_extent != Vector2i.ZERO \
+			or _world_change_inflight or _reset_requested or not _lab_request.is_empty()):
+		reason = "Bootstrap lease requires an unused owner with no authored Workbench."
+	elif kind in ["capture","freeze"]:
+		if _persistent_lease: reason = "The live World is already captured by this operation."
+		elif int(request.get("expected_generation",_world_generation)) != _world_generation:
+			reason = "Stale World generation at persistent capture admission."
+		elif _simulation_failed or _workbench_extent == Vector2i.ZERO: reason = "A healthy native Workbench is required."
+		elif _paint_holds_slot_locked() or _art_holds_slot_locked() or _legacy_edits_pending_locked() \
+				or _material_capture_holds_slot_locked():
+			reason = "Wait for authoring completion before persistent capture."
+			retryable = true
+		elif _world_change_inflight or _reset_requested or not _lab_request.is_empty() \
+				or not _prepared_physical_publication.is_empty():
+			reason = "Wait for the native canvas transaction."
+			retryable = true
+		elif not _pending_physical_effects.is_empty() or not _pending_physical_usables.is_empty() \
+				or not _workbench_emitters.is_empty() or not _workbench_source_commands.is_empty() \
+				or not _workbench_equipment_commands.is_empty() or not _water_spray_requests.is_empty() \
+				or not _pending_player_environment_profile.is_empty():
+			reason = "Wait for admitted host commands to reach their native boundary."
+			retryable = true
+	elif not _persistent_lease and kind.begins_with("resident_"):
+		if _world_change_inflight or _reset_requested or not _lab_request.is_empty() \
+				or _paint_holds_slot_locked() or _art_holds_slot_locked() or _legacy_edits_pending_locked() \
+				or _material_capture_holds_slot_locked():
+			reason = "Speculative residency work yields to active authoring or canvas ownership."
+			retryable = true
+	if reason.is_empty():
+		_persistent_sequence += 1
+		_persistent_request = request.duplicate(true)
+		_persistent_request["token"] = _persistent_sequence
+		_persistent_result = {}
+		if kind in ["begin","capture","freeze"]:
+			_persistent_lease = true
+			_persistent_operation_id = operation
+			_persistent_refusal = ""
+	var token := _persistent_sequence
+	_mutex.unlock()
+	return {"ok":true,"token":token} if reason.is_empty() else {"ok":false,"error":reason,"retryable":retryable}
+
+func persistent_poll(token: int) -> Dictionary:
+	_mutex.lock()
+	var result := {"ok":false,"status":"failed","error":"Persistent request token is stale."}
+	if token == _persistent_sequence and token > 0:
+		result = _persistent_result.duplicate(true) if not _persistent_result.is_empty() \
+			else {"ok":true,"status":"pending","result":{},"error":""}
+		# A timed-out caller must retain this token until its actual owner
+		# completion is known. These copied fields allow same-operation cleanup
+		# without guessing whether a failed capture still holds the lease.
+		result["lease_held"] = _persistent_lease
+		result["operation_id"] = _persistent_operation_id
+	_mutex.unlock()
+	return result
+
+func _persistent_finish(token: int, result: Dictionary, error: String = "") -> void:
+	_mutex.lock()
+	if token == _persistent_sequence:
+		if not _running:
+			error = "Native owner stopped; persistent completion was retired."
+			result = {}
+		_persistent_result = {"ok":error.is_empty(),"status":"complete" if error.is_empty() else "failed",
+			"result":result.duplicate(true),"error":error}
+		_persistent_request = {}
+		if not error.is_empty(): _persistent_refusal = error
+	_mutex.unlock()
+
+func _persistent_stop_locked() -> void:
+	if not _persistent_request.is_empty():
+		_persistent_result = {"ok":false,"status":"failed","result":{},
+			"error":"Native owner stopped; persistent request was retired."}
+	_persistent_request = {}
+	_persistent_commit_token = 0
+	_persistent_lease = false
+	_persistent_operation_id = ""
+	_persistent_prepared_info = {}
+	_persistent_hot_handoff = {}
+
+func _persistent_capture_refusal() -> String:
+	if _simulation_failed or _world.has_failed(): return "Native World is quarantined."
+	var host_refusal: String = _scenario_host.persistent_continuation_refusal()
+	if not host_refusal.is_empty(): return host_refusal
+	if _actor_session.active() or _sampled_character_enabled or not _rigid_body_states.is_empty() \
+			or not _workbench_sample.get("states",PackedFloat64Array()).is_empty() \
+			or not _workbench_sample.get("bodies",[]).is_empty():
+		return "Live actors, controllers and Rapier bodies pin this area; remove them before travel (actors=%s, sampled=%s, generic bodies=%d, Workbench bodies=%d)." % [
+			_actor_session.active(),_sampled_character_enabled,_rigid_body_states.size(),_workbench_sample.get("bodies",[]).size()]
+	if bool(_workbench_source.receipt().get("armed",false)) or _workbench_equipment.configured:
+		return "Host emitters and liquid equipment pin this area; their continuation is unsupported."
+	_mutex.lock()
+	var queued := not _pending_physical_effects.is_empty() or not _pending_physical_usables.is_empty() \
+		or not _workbench_emitters.is_empty() or not _workbench_source_commands.is_empty() \
+		or not _workbench_equipment_commands.is_empty() or not _water_spray_requests.is_empty() \
+		or not _pending_player_environment_profile.is_empty() or _legacy_edits_pending_locked() \
+		or _paint_holds_slot_locked() or _art_holds_slot_locked() or _material_capture_holds_slot_locked()
+	_mutex.unlock()
+	return "Pending host edits, equipment or controller requests pin this area." if queued else ""
+
+func _persistent_owner_fence(include_physical_hash: bool = true) -> Dictionary:
+	return {"operation_id":_persistent_operation_id,"world_generation":_world_generation,
+		"mutation_generation":int(_world.revision),"completed_tick":int(_world.tick_index),
+		"physical_hash":str(_world.get_physical_state_hash()) if include_physical_hash else ""}
+
+func _persistent_remember_host(receipt: Dictionary) -> void:
+	_persistent_resident_hosts[int(receipt.handle)] = {"identity":receipt.identity.duplicate(true),
+		"host":_scenario_host,"lab_profile":_lab_profile.duplicate(true),"lab_profile_hash":_lab_profile_hash,
+		"workbench_sample":_workbench_sample.duplicate(true),"rigid_body_epoch":_rigid_body_epoch,
+		"workbench_extent":_workbench_extent,"native_worker_request":_native_worker_request,
+		"view_origin":_view_origin,"view_size":_view_size,"horizontal_buffer":_horizontal_buffer,
+		"vertical_buffer":_vertical_buffer,"simulation_window_enabled":_simulation_window_enabled,
+		"cadence_lod_enabled":_cadence_lod_enabled,"liquid_surface_adhesion_enabled":_liquid_surface_adhesion_enabled}
+
+func _persistent_activate_resident(bridge: Variant, request: Dictionary) -> Dictionary:
+	var target: Dictionary = request.get("target_receipt",{})
+	var source: Dictionary = request.get("active_receipt",{})
+	_mutex.lock()
+	var admission := _persistent_hot_handoff.duplicate(true)
+	_mutex.unlock()
+	if admission.is_empty() or not request.get("worker_ticket") is int \
+			or not request.get("expected_generation") is int or not request.get("serial") is int \
+			or int(request.worker_ticket)!=int(admission.ticket) or int(request.serial)!=int(admission.serial) \
+			or int(request.serial)<=_scenario_request_serial or int(request.expected_generation)!=_world_generation \
+			or int(request.expected_generation)!=int(admission.expected_generation) \
+			or str(request.operation_id)!=str(admission.operation_id) or target!=admission.target_receipt:
+		return {"ok":false,"error":"Resident activation has no fresh matching one-use Main handoff admission."}
+	var saved: Dictionary = _persistent_resident_hosts.get(int(target.get("handle",0)),{})
+	var reason := _persistent_capture_refusal()
+	if not reason.is_empty(): return {"ok":false,"error":reason}
+	if saved.is_empty() or saved.identity != target.get("identity",{}) \
+			or int(request.get("serial",0)) < 1 or not _persistent_candidate.is_empty() \
+			or int(request.expected_generation) != _world_generation:
+		return {"ok":false,"error":"Resident host, serial or active generation is stale."}
+	var retained: CyberMicroScenarioHost = saved.host
+	reason = retained.persistent_resident_refusal(str(target.identity.get("authored_source_sha256","")))
+	if not reason.is_empty(): return {"ok":false,"error":reason}
+	var switched: Dictionary = bridge.resident_activate(_world,target,source,str(request.operation_id))
+	if not switched.get("ok",false): return switched
+	# All fallible admission precedes the native no-fail swap. The remaining
+	# host publication uses only already retained, validated actor-free values.
+	_persistent_remember_host(switched.source_receipt)
+	_scenario_host = retained
+	_scenario_host.persistent_resume_resident(_world,switched.target_receipt)
+	_lab_profile = saved.lab_profile
+	_lab_profile_hash = saved.lab_profile_hash
+	_workbench_extent = saved.workbench_extent
+	_native_worker_request = int(saved.native_worker_request)
+	_scheduler_thread_capacity_hint = int(_world.get_worker_threads())
+	_mutex.lock()
+	_persistent_hot_handoff = {}
+	_world_generation += 1
+	_persistent_mode = true
+	_micro_active = true
+	_lab_active = true
+	_water_lab_active = false
+	_simulation_failed = false
+	_scenario_request_serial = int(request.serial)
+	_scenario_request_applied = true
+	_view_origin = saved.view_origin; _view_size = saved.view_size
+	_horizontal_buffer = saved.horizontal_buffer; _vertical_buffer = saved.vertical_buffer
+	_simulation_window_enabled = saved.simulation_window_enabled
+	_cadence_lod_enabled = saved.cadence_lod_enabled
+	_liquid_surface_adhesion_enabled = saved.liquid_surface_adhesion_enabled
+	_pending_emissions.clear(); _pending_cell_emissions.clear()
+	_paint_epoch += 1
+	_invalidate_art_locked("Persistent resident World activated")
+	_workbench_result = {}; _workbench_consumed_sample = {}; _workbench_display = {}
+	_workbench_completed_sample = -1; _workbench_prepared_sample = -1
+	_workbench_refusal = ""; _world_change_inflight = false
+	# The native coupling bundle retains its original actor-free session/epoch.
+	# Main's new install serial acknowledges ownership; it is not a new body
+	# session. Restore the matching copied sample before the next owner turn.
+	_workbench_sample = saved.workbench_sample.duplicate(true)
+	_rigid_body_epoch = int(saved.rigid_body_epoch)
+	_rigid_body_states = PackedFloat32Array()
+	_prepared_frame_hold = {}; _prepared_frame_serial = 0
+	_mutex.unlock()
+	_lab_schedule.clear(); _lab_inputs.clear(); _micro_capture = {}
+	_water_recipe.clear()
+	_snapshot_world_revision = -1
+	_snapshot_hard_surface_revision = -1
+	_snapshot_hard_surface_epoch = -1
+	_snapshot_hard_surface_rectangles_valid = false
+	_snapshot_hard_surface_chunk_rectangles_valid = false
+	_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+	_liquid_policy_receipt_generation = -1
+	_lab_status = "Persistent area activated from resident native World"
+	_persistent_hot_activations += 1
+	_publish_snapshot(0.0,true,_render_snapshot_interval_usec,false,_rigid_body_states,_rigid_body_epoch)
+	switched.merge({"committed":true,"world_generation":_world_generation,
+		"mutation_generation":int(_world.revision),"tick":int(_world.tick_index),"serial":int(request.serial),
+		"hot_activations":_persistent_hot_activations})
+	return switched
+
+func _persistent_retire_candidate() -> void:
+	if not _persistent_candidate.is_empty():
+		_persistent_candidate.bridge.discard_liquid_world(_world,int(_persistent_candidate.token))
+		_persistent_candidate = {}
+	_mutex.lock()
+	_persistent_prepared_info = {}
+	_mutex.unlock()
+
+# Called at the start of an exclusive owner turn, before any native mutation.
+# A commit returns its frozen ordinary install command to the normal ACK path.
+func _consume_persistent_request() -> Dictionary:
+	_mutex.lock()
+	var request := _persistent_request.duplicate(true)
+	_mutex.unlock()
+	if request.is_empty() or _persistent_commit_token != 0: return {}
+	var token := int(request.token)
+	var kind := str(request.kind)
+	var bridge: Variant = ClassDB.instantiate(&"CyberDemoBridge")
+	var result := {}
+	var error := ""
+	match kind:
+		"begin":
+			if _scenario_host.active() or _workbench_extent != Vector2i.ZERO:
+				error = "Bootstrap cannot retire an installed authored area."
+				_mutex.lock()
+				_persistent_lease = false
+				_persistent_operation_id = ""
+				_mutex.unlock()
+			else: result = {"owner_fence":_persistent_owner_fence(),"bootstrap":true}
+		"capture", "freeze":
+			error = _persistent_capture_refusal()
+			if error.is_empty():
+				var start := Time.get_ticks_usec()
+				if kind == "freeze":
+					result = {"world_generation":_world_generation,"mutation_generation":int(_world.revision),
+						"authoring_generation":_authoring_generation,"tick":int(_world.tick_index),
+						"freeze_us":Time.get_ticks_usec()-start,"owner_fence":_persistent_owner_fence(false)}
+				else:
+					var capsule: Dictionary = bridge.capture_workbench_continuation(_world)
+					if capsule.is_empty(): error = bridge.get_last_error()
+					else:
+						result = {"capsule":capsule,"world_generation":_world_generation,
+							"mutation_generation":int(_world.revision),"authoring_generation":_authoring_generation,
+							"tick":int(capsule.completed_tick),"physical_hash":capsule.physical_hash,
+							"capture_us":Time.get_ticks_usec()-start,"owner_fence":_persistent_owner_fence()}
+			if not error.is_empty():
+				_mutex.lock()
+				_persistent_lease = false
+				_persistent_operation_id = ""
+				_mutex.unlock()
+		"resident_bind":
+			error = _persistent_capture_refusal()
+			if error.is_empty():
+				result = bridge.resident_admit(_world,request.get("identity",{}))
+				if result.get("ok",false): _persistent_remember_host(result.receipt)
+				else: error = str(result.get("error",bridge.get_last_error()))
+		"resident_status":
+			result = bridge.resident_status(_world)
+			if not result.get("ok",false): error = str(result.get("error",bridge.get_last_error()))
+			result["owner_fence"] = _persistent_owner_fence(false)
+		"activate_resident":
+			result = _persistent_activate_resident(bridge,request)
+			if not result.get("ok",false): error = str(result.get("error","Resident activation refused."))
+		"resident_capture", "resident_advance", "resident_release":
+			var receipt: Dictionary = request.get("receipt",{})
+			if not _persistent_lease and bool(receipt.get("active",false)):
+				error = "Active resident capture requires an exclusive owner lease."
+			elif kind == "resident_capture":
+				var capture_started := Time.get_ticks_usec()
+				result = bridge.resident_capture(_world,receipt)
+				result["capture_us"] = Time.get_ticks_usec()-capture_started
+			elif kind == "resident_advance":
+				result = bridge.resident_advance(_world,receipt,int(request.get("max_ticks",1)),int(request.get("max_us",8000)))
+				if result.get("ok",false): result["current_tick"] = int(result.completed_tick)
+			else:
+				result = bridge.resident_release(_world,receipt)
+				if result.get("ok",false): _persistent_resident_hosts.erase(int(receipt.get("handle",0)))
+			if error.is_empty() and not result.get("ok",false): error = str(result.get("error",bridge.get_last_error()))
+		"resident_clear_active":
+			var before: Dictionary = bridge.resident_status(_world)
+			result = bridge.resident_clear_active(_world,request.get("receipt",before.get("active",{})))
+			if result.get("ok",false): _persistent_resident_hosts.erase(int(before.get("active",{}).get("handle",0)))
+			else: error = str(result.get("error",bridge.get_last_error()))
+		"advance_active":
+			error = _persistent_capture_refusal()
+			var requested_ticks := int(request.get("max_ticks",1))
+			var requested_us := int(request.get("max_us",8000))
+			if requested_ticks<1 or requested_ticks>32 or requested_us<1 or requested_us>100000:
+				error = "Active continuation slice exceeds the native tick/time budget."
+			if error.is_empty():
+				var first_tick := int(_world.tick_index)
+				var started := Time.get_ticks_usec()
+				var completed := 0
+				while completed<requested_ticks and (completed==0 or Time.get_ticks_usec()-started<requested_us):
+					if not _scenario_host.advance():
+						error = _scenario_host.last_error
+						break
+					completed += 1
+				result = {"ok":error.is_empty(),"completed_ticks":completed,"start_tick":first_tick,
+					"end_tick":int(_world.tick_index),"current_tick":int(_world.tick_index),"tick":int(_world.tick_index),
+					"mutation_generation":int(_world.revision),"native_step_us":Time.get_ticks_usec()-started,
+					"world_generation":_world_generation}
+				var residents: Dictionary = bridge.resident_status(_world)
+				result["receipt"] = residents.get("active",{})
+				if not error.is_empty(): _simulation_failed = true
+				_snapshot_world_revision = -1
+				_publish_snapshot(0.0,true,_render_snapshot_interval_usec,false,_rigid_body_states,_rigid_body_epoch)
+		"status":
+			_mutex.lock()
+			result = _persistent_prepared_info.duplicate(true)
+			if result.is_empty(): result = {"prepared":false,"operation_id":_persistent_operation_id,
+				"error":_persistent_refusal}
+			_mutex.unlock()
+			result["owner_fence"] = _persistent_owner_fence()
+		"advance", "capture_prepared", "commit":
+			if _persistent_candidate.is_empty(): error = "No prepared area continuation."
+			elif kind == "advance":
+				result = _persistent_candidate.bridge.advance_workbench_continuation(_world,
+					int(_persistent_candidate.token),int(request.get("max_ticks",32)),int(request.get("max_us",100000)))
+				if not result.get("ok",false):
+					error = str(result.get("error","Native catch-up refused."))
+					_persistent_retire_candidate()
+					_persistent_publish_refusal(error)
+			elif kind == "capture_prepared":
+				var capsule: Dictionary = _persistent_candidate.bridge.capture_prepared_workbench_continuation(
+					_world,int(_persistent_candidate.token))
+				if capsule.is_empty(): error = _persistent_candidate.bridge.get_last_error()
+				else: result = {"capsule":capsule,"world_generation":_world_generation+1,
+					"mutation_generation":int(capsule.completed_tick),"tick":int(capsule.completed_tick),
+					"physical_hash":capsule.physical_hash}
+			else:
+				var command: Dictionary = _persistent_candidate.command.duplicate(true)
+				command["_prepared_persistent_commit"] = true
+				_persistent_commit_token = token
+				return command
+		"discard":
+			_persistent_retire_candidate()
+			_persistent_publish_refusal("Persistent continuation cancelled; the previous area is retained.")
+			result = {"discarded":true}
+		"release":
+			if not _persistent_candidate.is_empty(): error = "Discard or commit the prepared area before releasing its lease."
+			else:
+				_mutex.lock()
+				_persistent_lease = false
+				_persistent_operation_id = ""
+				_persistent_hot_handoff = {}
+				_mutex.unlock()
+				result = {"released":true}
+	_persistent_finish(token,result,error)
+	return {}
+
+func _persistent_publish_refusal(reason: String) -> void:
+	_scenario_request_applied = false
+	_lab_status = reason
+	_mutex.lock()
+	_world_change_inflight = false
+	_mutex.unlock()
+	_publish_snapshot(0.0,true,_render_snapshot_interval_usec,false,_rigid_body_states,_rigid_body_epoch)
+
 # These checks deliberately do not compare tick/revision: ordinary simulation
 # after the capture boundary is not part of this authored material baseline.
 func _material_capture_error_locked(request: Dictionary) -> String:
@@ -1885,7 +2600,8 @@ func _material_capture_error_locked(request: Dictionary) -> String:
 func material_capture_request(expected_generation: int, capacity_bytes: int = MATERIAL_CAPTURE_MAX_BYTES) -> Dictionary:
 	_mutex.lock()
 	var reason := ""
-	if not _running or _workbench_extent == Vector2i.ZERO: reason = "The native Workbench is not ready."
+	if _persistent_lease: reason = "The area continuation owner is frozen."
+	elif not _running or _workbench_extent == Vector2i.ZERO: reason = "The native Workbench is not ready."
 	elif _simulation_failed: reason = "The native owner failed."
 	elif expected_generation != _world_generation: reason = "Stale session/World generation; retry with the current canvas."
 	elif _material_capture_holds_slot_locked(): reason = "A material capture is already pending."
@@ -1997,7 +2713,7 @@ func queue_emit_disc(
 	var packed_material: int = (material_id & EMISSION_MATERIAL_MASK) | packed_flags
 	var emission_command: Vector4i = Vector4i(world_x, world_y, radius, packed_material)
 	_mutex.lock()
-	if _paint_holds_slot_locked() or _art_holds_slot_locked() or _material_capture_holds_slot_locked():
+	if _persistent_lease or _paint_holds_slot_locked() or _art_holds_slot_locked() or _material_capture_holds_slot_locked():
 		_mutex.unlock()
 		return false
 	if _workbench_extent != Vector2i.ZERO and (_world_change_inflight or _reset_requested or not _lab_request.is_empty()):
@@ -2054,7 +2770,8 @@ func art_queue(points: PackedInt32Array, material: int, scope: Rect2i, protected
 	_mutex.lock()
 	var reason := ""
 	var retryable := false
-	if epoch != _art_epoch: reason = "Batch stopped or canvas replaced"
+	if _persistent_lease: reason = "The area continuation owner is frozen."
+	elif epoch != _art_epoch: reason = "Batch stopped or canvas replaced"
 	elif _material_capture_holds_slot_locked(): reason = "Wait for material capture and baseline adoption."
 	elif _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty() or _workbench_extent == Vector2i.ZERO: reason = "Canvas changing"
 	elif _simulation_failed: reason = "Native simulation failed"
@@ -2193,7 +2910,7 @@ func queue_emit_cells(
 		"packed_material": packed_material,
 	}
 	_mutex.lock()
-	if _paint_holds_slot_locked() or _art_holds_slot_locked() or _material_capture_holds_slot_locked():
+	if _persistent_lease or _paint_holds_slot_locked() or _art_holds_slot_locked() or _material_capture_holds_slot_locked():
 		_mutex.unlock()
 		return false
 	if _workbench_extent != Vector2i.ZERO and (_world_change_inflight or _reset_requested or not _lab_request.is_empty()):
@@ -2256,7 +2973,8 @@ func paint_queue(request: Dictionary) -> Dictionary:
 	var reason: String = PaintEditorExecutor.request_error(candidate)
 	if not reason.is_empty(): return {"status":"refused","reason":reason}
 	_mutex.lock()
-	if not _running or _workbench_extent == Vector2i.ZERO: reason = "The native Workbench is not ready."
+	if _persistent_lease: reason = "The area continuation owner is frozen."
+	elif not _running or _workbench_extent == Vector2i.ZERO: reason = "The native Workbench is not ready."
 	elif _simulation_failed: reason = "The native simulation failed."
 	elif _material_capture_holds_slot_locked(): reason = "Wait for material capture and baseline adoption."
 	elif not _paused: reason = "Pause the simulation before authoring."
@@ -2360,6 +3078,9 @@ func queue_reset(
 	runtime_enclosure_recovery_enabled: bool = true
 ) -> void:
 	_mutex.lock()
+	if _persistent_lease:
+		_mutex.unlock()
+		return
 	_material_audition.refuse_pending("Canvas reset retired the pending material configuration.","scene_command")
 	_lab_request_revision += 1
 	_paint_epoch += 1
@@ -2381,6 +3102,8 @@ func queue_reset(
 
 
 func _material_audition_error_locked() -> String:
+	if _persistent_mode or _persistent_lease:
+		return "Persistent areas retain the default material laws. Open the ordinary Workbench to audition a profile."
 	if not _running: return "The native owner is stopped."
 	if _simulation_failed: return "The native World has failed; restart the session."
 	if _world_change_inflight or _reset_requested or not _lab_request.is_empty() or not _prepared_physical_publication.is_empty():
@@ -2426,6 +3149,9 @@ func queue_player_environment_profile(profile: Dictionary) -> bool:
 	if not resolved.get("ok", false):
 		return false
 	_mutex.lock()
+	if _persistent_lease:
+		_mutex.unlock()
+		return false
 	_construction_settings_revision += 1
 	_pending_player_environment_profile = resolved.profile.duplicate(true)
 	# PENV tuning remains fresh-reset only. The presentation owner follows this
@@ -2490,6 +3216,20 @@ func _worker_loop() -> void:
 	var lockstep_hold_start_usec: int = -1
 	var lockstep_hold_timed_out: bool = false
 	while true:
+		_consume_persistent_prefetch()
+		var persistent_command := _consume_persistent_request()
+		_mutex.lock()
+		var persistent_running := _running
+		var persistent_holding := _persistent_lease and _lab_request.is_empty() and persistent_command.is_empty()
+		_mutex.unlock()
+		if not persistent_running:
+			_persistent_retire_candidate()
+			_retire_prepared_physical_liquid()
+			return
+		if persistent_holding:
+			OS.delay_usec(1000)
+			next_tick_usec = Time.get_ticks_usec()
+			continue
 		if _lockstep_waiting():
 			# Bounded non-blocking hold: no latch, no extraction, no tick.
 			var hold_now_usec: int = Time.get_ticks_usec()
@@ -2599,6 +3339,7 @@ func _worker_loop() -> void:
 			_pending_player_environment_profile = {}
 		local_lab = _lab_request
 		_lab_request = {}
+		if not persistent_command.is_empty(): local_lab = persistent_command
 		_legacy_edit_inflight = not local_emissions.is_empty() or not local_cell_emissions.is_empty()
 		_world_change_inflight = local_reset_requested or not local_lab.is_empty() or not _pending_physical_liquid.is_empty()
 		_mutex.unlock()
@@ -2640,7 +3381,15 @@ func _worker_loop() -> void:
 			OS.delay_usec(1000)
 			next_tick_usec = Time.get_ticks_usec()
 			continue
-		if _apply_lab(local_lab):
+		var lab_applied := _apply_lab(local_lab)
+		if not persistent_command.is_empty():
+			var commit_token := _persistent_commit_token
+			_persistent_commit_token = 0
+			if not lab_applied: _persistent_retire_candidate()
+			_persistent_finish(commit_token,{"committed":lab_applied,"world_generation":_world_generation,
+				"mutation_generation":int(_world.revision),"tick":int(_world.tick_index)},
+				"" if lab_applied else _lab_status)
+		if lab_applied:
 			art_stop()
 			local_emissions.clear()
 			local_cell_emissions.clear()
@@ -2673,9 +3422,22 @@ func _worker_loop() -> void:
 				_mutex.unlock()
 			local_paused = true
 			_last_render_snapshot_usec = -DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
-		if not _pending_physical_liquid.is_empty():
+		if not _pending_physical_liquid.is_empty() or not _persistent_candidate.is_empty():
 			OS.delay_usec(1000)
 			next_tick_usec = Time.get_ticks_usec()
+			continue
+		_mutex.lock()
+		var persistent_frozen := _persistent_lease
+		if persistent_frozen:
+			_world_change_inflight = false
+			if not lab_applied and not local_lab.is_empty(): _persistent_refusal = _lab_status
+		_mutex.unlock()
+		if persistent_frozen:
+			# Publish only the ordinary installation ACK; no execution-setting,
+			# body-mask, event, paint or simulation write may follow its fence.
+			_publish_snapshot(0.0,true,local_render_snapshot_interval_usec,false,
+				local_rigid_body_states,local_rigid_body_epoch)
+			OS.delay_usec(1000)
 			continue
 		if not local_player_environment_profile.is_empty():
 			_player_environment_profile = local_player_environment_profile.duplicate(true)

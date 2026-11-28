@@ -1,0 +1,625 @@
+name: 'GEN-006 RAM cache qualification and runtime publication'
+
+# An explicit request arms this isolated Draft/HOLD branch. Runtime publication
+# paths are deliberately absent from the push filter, preventing recursion.
+on:
+  pull_request:
+    types: [opened, synchronize, reopened]
+    paths:
+      - '.github/workflows/gen006-ramcache-qualification.yml'
+      - 'tools/ci/gen006_ramcache_runtime_publication.py'
+      - 'tools/ci/test_gen006_ramcache_runtime_publication.py'
+      - 'tools/ci/bounded_campaign_process.py'
+      - 'tools/ci/test_bounded_campaign_process.py'
+      - 'tools/package_gen006_ramcache.py'
+      - 'tools/ci/test_gen006_packaged_smoke.ps1'
+      - 'tools/ci/test_gen006_ramcache_packaged_smoke.ps1'
+  push:
+    branches: [exp/gen006-ramcache-finisher-001-20261122]
+    paths:
+      - 'tools/ci/gen006_ramcache_publish_request.json'
+      - '.github/workflows/gen006-ramcache-qualification.yml'
+      - 'tools/ci/gen006_ramcache_runtime_publication.py'
+      - 'tools/ci/test_gen006_ramcache_runtime_publication.py'
+      - 'tools/ci/bounded_campaign_process.py'
+      - 'tools/ci/test_bounded_campaign_process.py'
+      - 'tools/package_gen006_ramcache.py'
+      - 'tools/ci/test_gen006_packaged_smoke.ps1'
+      - 'tools/ci/test_gen006_ramcache_packaged_smoke.ps1'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: gen006-ramcache-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GODOT_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+  LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+defaults:
+  run:
+    shell: bash
+
+jobs:
+  publisher-guards:
+    name: validate isolated publication and evaluator guards
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-finisher-001-20261122') || (github.event_name == 'pull_request' && github.head_ref == 'exp/gen006-ramcache-finisher-001-20261122' && github.base_ref == 'main'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Verify fail-closed provenance and CI routing
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_gen006_ramcache_runtime_publication.py
+          python3 tools/ci/test_gen006_persistent_runtime_publication.py
+          python3 tools/ci/test_gen006_source_custody.py
+          python3 tools/ci/test_lcb001_shared_contract_runtime_publication.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_bounded_campaign_process.py --output build/gen006-process-guards-linux
+      - name: Retain actual Linux process-owner guards
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-process-guards-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-process-guards-linux/
+          if-no-files-found: warn
+          retention-days: 90
+
+  windows-smoke-guards:
+    name: Windows PowerShell 5 portable smoke failure guards
+    if: github.repository == 'techrote/cybersand' && ((github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-finisher-001-20261122') || (github.event_name == 'pull_request' && github.head_ref == 'exp/gen006-ramcache-finisher-001-20261122' && github.base_ref == 'main'))
+    runs-on: windows-2022
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exercise the actual packaged script under Windows PowerShell 5
+        shell: powershell
+        run: |
+          ./tools/ci/test_gen006_packaged_smoke.ps1 -Output build/gen006-ramcache-smoke-guards/donor
+          ./tools/ci/test_gen006_ramcache_packaged_smoke.ps1 -Output build/gen006-ramcache-smoke-guards/ramcache
+      - name: Exercise actual Windows process ownership and retirement
+        run: |
+          set -euo pipefail
+          python tools/ci/test_gen006_ramcache_runtime_publication.py
+          python tools/ci/test_gen006_persistent_runtime_publication.py
+          python tools/ci/test_gen006_source_custody.py
+          python tools/ci/test_bounded_campaign_process.py --output build/gen006-process-guards-windows
+      - name: Retain actual Windows process-owner guards
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-process-guards-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-process-guards-windows/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Retain original native-process guard evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-smoke-guards-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-ramcache-smoke-guards/
+          if-no-files-found: error
+          retention-days: 90
+
+  admission:
+    needs: [publisher-guards, windows-smoke-guards]
+    name: require explicit request and unchanged GEN-006 branch
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-finisher-001-20261122'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    outputs:
+      armed: ${{ steps.gate.outputs.armed }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Check request before expensive or writable work
+        id: gate
+        run: |
+          set -euo pipefail
+          if test -f tools/ci/gen006_ramcache_publish_request.json; then
+            python3 tools/ci/gen006_ramcache_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+            echo 'armed=true' >> "$GITHUB_OUTPUT"
+          else
+            echo 'armed=false' >> "$GITHUB_OUTPUT"
+            echo 'No explicit GEN-006 request; runtime builds and publication are disabled.' >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+  native-continuation:
+    needs: admission
+    if: needs.admission.outputs.armed == 'true'
+    name: real native continuation, new-process restore and sanitizers
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Build only the affected native continuation fixture
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen006_ramcache_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          mkdir -p build/gen006-ramcache-native
+          g++-13 --version > build/gen006-ramcache-native/compiler.txt
+          timeout 20m make CXX=g++-13 build/test_persistent_area_continuation
+          timeout 20m make CXX=g++-13 build/test_persistent_area_continuation_sanitized
+          timeout 20m make CXX=g++-13 build/test_persistent_area_residency_lifetime
+          timeout 20m make CXX=g++-13 build/test_persistent_area_residency_lifetime_sanitized
+      - name: Exact continuation, worker parity, debt refusal and separate-process resume
+        run: |
+          set -euo pipefail
+          timeout 10m build/test_persistent_area_continuation build/gen006-ramcache-native/checkpoint.cyps 2>&1 | tee build/gen006-ramcache-native/native.log
+          python3 tools/ci/gen006_ramcache_runtime_publication.py verify-native --source-sha "$GITHUB_SHA" --log build/gen006-ramcache-native/native.log --binary build/test_persistent_area_continuation --output build/gen006-ramcache-native/native.json
+          python3 - <<'PY'
+          import json, pathlib, subprocess
+          root = pathlib.Path('build/gen006-ramcache-native')
+          value = json.loads((root/'checkpoint.cyps.json').read_text())
+          command = ['build/test_persistent_area_continuation', '--restore', str(root/'checkpoint.cyps'),
+              value['sha256'], str(value['completed_tick']), value['physical_hash'],
+              str(value['resume_ticks']), value['expected_physical_hash']]
+          result = subprocess.run(command, capture_output=True, text=True, timeout=120)
+          (root/'fresh-process.log').write_text(result.stdout+result.stderr)
+          if result.returncode or 'GEN006_NATIVE_FRESH_PROCESS_PASS' not in result.stdout:
+              raise SystemExit('Real independent-process native continuation failed')
+          PY
+      - name: Representative address and undefined-behaviour sanitizer execution
+        env:
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: |
+          set -euo pipefail
+          timeout 10m build/test_persistent_area_continuation_sanitized 2>&1 | tee build/gen006-ramcache-native/sanitizer.log
+          python3 tools/ci/gen006_ramcache_runtime_publication.py verify-native --source-sha "$GITHUB_SHA" --sanitizer --log build/gen006-ramcache-native/sanitizer.log --binary build/test_persistent_area_continuation_sanitized --output build/gen006-ramcache-native/sanitizer.json
+      - name: Independent native memory growth and retained render-lease lifetime
+        env:
+          ASAN_OPTIONS: detect_leaks=1:halt_on_error=1
+          UBSAN_OPTIONS: halt_on_error=1:print_stacktrace=1
+        run: |
+          set -euo pipefail
+          timeout 10m build/test_persistent_area_residency_lifetime 2>&1 | tee build/gen006-ramcache-native/residency-lifetime.log
+          timeout 10m build/test_persistent_area_residency_lifetime_sanitized 2>&1 | tee build/gen006-ramcache-native/residency-lifetime-sanitizer.log
+          python3 - <<'PY'
+          import hashlib, json, pathlib, re, sys
+          sys.path.insert(0, 'tools/ci')
+          import gen006_ramcache_runtime_publication as profile
+          root = pathlib.Path('build/gen006-ramcache-native')
+          records = []
+          for name, binary in [('residency-lifetime', 'test_persistent_area_residency_lifetime'),
+                               ('residency-lifetime-sanitizer', 'test_persistent_area_residency_lifetime_sanitized')]:
+              data = (root/(name+'.log')).read_bytes()
+              text = data.decode()
+              if len(re.findall(r'(?m)^GEN006_INDEPENDENT_NATIVE_LIFETIME checks=[1-9][0-9]* failures=0$', text)) != 1 or re.search(r'runtime error:|ERROR: AddressSanitizer|SUMMARY: .*Sanitizer', text):
+                  raise SystemExit('Independent native lifetime evidence is incomplete or failed')
+              records.append({'log':name+'.log', 'log_sha256':hashlib.sha256(data).hexdigest(),
+                  'binary':binary, 'binary_sha256':profile.sha(pathlib.Path('build')/binary),
+                  'sanitizer':name.endswith('-sanitizer')})
+          value = profile.engine.context(profile.engine.git('rev-parse', 'HEAD').decode().strip())
+          value.update(schema='gen006-native-residency-lifetime-v1', status='passed', runs=records,
+              scope='World storage growth and RenderSnapshotExchange lifetime; GDExtension/GDScript ownership is separately executed unsanitized')
+          (root/'residency-lifetime.json').write_text(json.dumps(value, indent=2)+'\n')
+          PY
+      - name: Preserve original native evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-ramcache-native/
+          if-no-files-found: error
+          retention-days: 90
+
+  linux:
+    needs: [admission, native-continuation]
+    if: needs.admission.outputs.armed == 'true'
+    name: source-built Linux graphical persistence campaign
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Verify source and fetch only pinned Linux Rapier
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen006_ramcache_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+          python tools/ci/materialize_lfs.py --expected-source "$GITHUB_SHA" --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so --output "$RUNNER_TEMP/gen006-current-lfs.json"
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum --check --strict
+          sudo apt-get update -qq
+          sudo apt-get install --no-install-recommends -y xvfb xauth libgl1-mesa-dri libglx-mesa0
+      - name: Prepare pinned SCons and godot-cpp
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+      - name: Pinned Linux build with actual source and output ledger
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh linux
+          timeout 20m python3 tools/ci/build_gentek80_runtime.py --platform linux --ledger build/gen006-ramcache-linux/native-build.json
+          {
+            echo "GitHub-hosted Ubuntu24.04; godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            g++-13 --version | head -n 1
+            ld --version | head -n 1
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.linux.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/gen006_ramcache_runtime_publication.py record --platform linux --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --native-build-ledger build/gen006-ramcache-linux/native-build.json --bundle build/gen006-ramcache-linux
+      - name: Prepare isolated qualified donor for controlled cold comparison
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin d0d043f4740ffed5f0dbb4120e437458d7a9bd57
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/gen006-ramcache-donor" d0d043f4740ffed5f0dbb4120e437458d7a9bd57
+          python tools/ci/materialize_lfs.py --root "$RUNNER_TEMP/gen006-ramcache-donor" --expected-source d0d043f4740ffed5f0dbb4120e437458d7a9bd57 --include godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so --output "$RUNNER_TEMP/gen006-donor-lfs.json"
+      - name: Run bounded real graphical, crash and fresh-process campaign
+        id: campaign
+        env:
+          LIBGL_ALWAYS_SOFTWARE: '1'
+          LP_NUM_THREADS: '2'
+          CYBERSAND_GEN006_DONOR: ${{ runner.temp }}/gen006-ramcache-donor
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-linux.zip" "$GODOT_URL"
+          xvfb-run -a -s '-screen 0 1600x1000x24' python3 tools/ci/gen006_ramcache_runtime_publication.py test --platform linux --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-linux.zip" --bundle build/gen006-ramcache-linux
+      - name: Source-exact Linux failed Save and Menu must refuse exit and permit healthy retry
+        run: |
+          set -euo pipefail
+          folder="$PWD/build/gen006-ramcache-exit-linux"
+          mkdir -p "$folder"
+          "$RUNNER_TEMP/godot-linux/Godot_v4.7-stable_linux.x86_64" --headless --path "$PWD/godot" --audio-driver Dummy \
+            --script res://tests/test_persistent_areas_workbench.gd -- \
+            "--persistent-profile=$folder/profile" "--persistent-evidence=$folder" \
+            --persistent-test-mode=exit_fault --persistent-start-paused >"$folder/engine.log" 2>&1 || { cat "$folder/engine.log"; exit 1; }
+          python3 - "$folder" <<'PY'
+          import json,pathlib,sys
+          d=pathlib.Path(sys.argv[1])
+          value=json.loads((d/'workbench-exit_fault.json').read_text(encoding='utf-8'))
+          log=(d/'engine.log').read_text(encoding='utf-8')
+          assert value.get('mode')=='exit_fault' and value.get('failures')==[] and value.get('assertions',0)>=16
+          assert value.get('graphical') is False
+          assert 'failure of real native Save during normal Save & Menu exit' in log
+          assert 'PERSISTENT_AREAS_WORKBENCH' in log and 'SCRIPT ERROR:' not in log
+          print('GEN006_RAMCACHE_SOURCE_EXACT_EXIT_FAULT_LINUX_PASS')
+          PY
+      - name: Retain source-exact Linux Save-failure refusal and recovery receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-exit-fault-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-ramcache-exit-linux/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - name: Retain Linux runtime and complete original evidence
+        # Normal success includes complete existing child-wait/custody/semantic
+        # verification. Failed mutable evidence needs its own positive witness.
+        if: always() && (steps.campaign.outcome == 'success' || (steps.campaign.outputs.campaign_retirement_record != '' && steps.campaign.outputs.campaign_retired_record == steps.campaign.outputs.campaign_retirement_record))
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-runtime-attempt-${{ github.run_attempt }}-linux-${{ github.run_id }}
+          path: build/gen006-ramcache-linux/
+          if-no-files-found: error
+          retention-days: 90
+
+      - name: Retain immutable outer campaign diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-outer-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-ramcache-linux/validation.json
+            build/gen006-ramcache-linux/native-build.json
+            build/gen006-ramcache-linux/campaign-process-owner-*.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  windows-build:
+    needs: [admission, native-continuation]
+    if: needs.admission.outputs.armed == 'true'
+    name: source-build Windows DLL with pinned LLVM-MinGW
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - name: Verify source and prepare pinned build dependencies
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen006_ramcache_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          "$RUNNER_TEMP/scons/bin/python" -c 'import SCons; assert SCons.__version__ == "4.10.1"'
+          mkdir "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" init
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          timeout 10m git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" "$LLVM_MINGW_URL"
+          echo "$LLVM_MINGW_SHA256  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/llvm-mingw" --strip-components=1
+          if test ! -e "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"; then
+            ln -s llvm-ar "$RUNNER_TEMP/llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+          fi
+      - name: Pinned Windows build and exact input/output ledger
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/llvm-mingw/bin/x86_64-w64-mingw32-g++
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/cybersand_native.windows.x86_64.dll
+        run: |
+          set -euo pipefail
+          timeout 35m tools/build_pinned_godot_cpp.sh windows
+          timeout 20m python3 tools/ci/build_gentek80_runtime.py --platform windows --ledger build/gen006-ramcache-windows/native-build.json
+          "$LLVM_MINGW_ROOT/bin/llvm-objdump" -p "$CYBERSAND_NATIVE_OUTPUT" > build/gen006-ramcache-windows/windows-imports.txt
+          {
+            echo "Ubuntu24.04 Windows target; godot-cpp=$GODOT_CPP_COMMIT; SCons=4.10.1"
+            echo "LLVM-MinGW=20260826 UCRT archive=$LLVM_MINGW_SHA256"
+            "$WINDOWS_CXX" --version | head -n 1
+            "$LLVM_MINGW_ROOT/bin/ld.lld" --version
+            sha256sum "$GODOT_CPP_ROOT/bin/libgodot-cpp.windows.template_debug.x86_64.a"
+          } > "$RUNNER_TEMP/toolchain.txt"
+          python3 tools/ci/gen006_ramcache_runtime_publication.py record --platform windows --source-sha "$GITHUB_SHA" --runtime "$CYBERSAND_NATIVE_OUTPUT" --toolchain "$RUNNER_TEMP/toolchain.txt" --native-build-ledger build/gen006-ramcache-windows/native-build.json --bundle build/gen006-ramcache-windows
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - name: Retain source-bound Windows build
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-build-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-ramcache-windows/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows-execution:
+    needs: windows-build
+    name: actual Windows graphical recovery and extracted owner evaluator
+    runs-on: windows-2022
+    timeout-minutes: 150
+    outputs:
+      artifact_attempt: ${{ steps.artifact.outputs.attempt }}
+    env:
+      GODOT_WINDOWS_URL: https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen006-ramcache-build-windows-${{ github.run_id }}-${{ needs.windows-build.outputs.artifact_attempt }}
+          path: build/gen006-ramcache-windows
+      - name: Verify exact source and acquire the Windows Rapier and reciprocal runtimes
+        run: |
+          set -euo pipefail
+          python tools/ci/gen006_ramcache_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+          python tools/ci/materialize_lfs.py --expected-source "$GITHUB_SHA" --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$RUNNER_TEMP/gen006-current-lfs.json"
+          echo 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7  godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' | sha256sum --check --strict
+      - name: Prepare isolated qualified donor for controlled cold comparison
+        run: |
+          set -euo pipefail
+          git fetch --depth=1 origin d0d043f4740ffed5f0dbb4120e437458d7a9bd57
+          GIT_LFS_SKIP_SMUDGE=1 git worktree add --detach "$RUNNER_TEMP/gen006-ramcache-donor" d0d043f4740ffed5f0dbb4120e437458d7a9bd57
+          python tools/ci/materialize_lfs.py --root "$RUNNER_TEMP/gen006-ramcache-donor" --expected-source d0d043f4740ffed5f0dbb4120e437458d7a9bd57 --include godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --output "$RUNNER_TEMP/gen006-donor-lfs.json"
+      - name: Run actual Windows native, graphical and crash-recovery campaign
+        id: campaign
+        env:
+          CYBERSAND_GEN006_DONOR: ${{ runner.temp }}/gen006-ramcache-donor
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --connect-timeout 60 --max-time 600 --output "$RUNNER_TEMP/godot-windows.zip" "$GODOT_WINDOWS_URL"
+          python tools/ci/gen006_ramcache_runtime_publication.py test --platform windows --source-sha "$GITHUB_SHA" --godot-archive "$RUNNER_TEMP/godot-windows.zip" --bundle build/gen006-ramcache-windows
+      - name: Source-exact Windows failed Save and Menu must refuse exit and permit healthy retry
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $folder = Join-Path (Get-Location) 'build/gen006-ramcache-exit-windows'
+          New-Item -ItemType Directory -Path $folder -Force | Out-Null
+          $engine = Join-Path $env:RUNNER_TEMP 'godot-windows/Godot_v4.7-stable_win64_console.exe'
+          & $engine --headless --path godot --audio-driver Dummy --script res://tests/test_persistent_areas_workbench.gd -- `
+            "--persistent-profile=$(Join-Path $folder 'profile')" "--persistent-evidence=$folder" `
+            '--persistent-test-mode=exit_fault' '--persistent-start-paused' *> (Join-Path $folder 'engine.log')
+          if ($LASTEXITCODE -ne 0) { throw 'Source-exact native Save failure / exit refusal failed' }
+          $value = Get-Content (Join-Path $folder 'workbench-exit_fault.json') -Raw | ConvertFrom-Json
+          $log = Get-Content (Join-Path $folder 'engine.log') -Raw
+          if ($value.mode -ne 'exit_fault' -or $value.failures.Count -ne 0 -or $value.assertions -lt 16 -or $value.graphical `
+            -or !$log.Contains('failure of real native Save during normal Save & Menu exit') `
+            -or !$log.Contains('PERSISTENT_AREAS_WORKBENCH') -or $log.Contains('SCRIPT ERROR:')) {
+            throw 'Native Save & Menu did not prove refusal, live authority and healthy retry'
+          }
+          'GEN006_RAMCACHE_SOURCE_EXACT_EXIT_FAULT_WINDOWS_PASS'
+      - name: Retain source-exact Windows Save-failure refusal and recovery receipts
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-exit-fault-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/gen006-ramcache-exit-windows/
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Stage pinned portable engine and signed VC runtime with notices
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $deps = Join-Path $env:RUNNER_TEMP 'gen006-dependencies'
+          New-Item -ItemType Directory -Path $deps -Force | Out-Null
+          Copy-Item "$env:RUNNER_TEMP/godot-windows/Godot_v4.7-stable_win64*.exe" $deps
+          Invoke-WebRequest 'https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/LICENSE.txt' -OutFile "$deps/Godot-LICENSE.txt"
+          Invoke-WebRequest 'https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/COPYRIGHT.txt' -OutFile "$deps/Godot-COPYRIGHT.txt"
+          $runtimeLicense = "$deps/Microsoft-Visual-C-Runtime-LICENSE.docx"
+          $developerLicense = "$deps/Microsoft-Visual-Studio-2022-LICENSE.docx"
+          Invoke-WebRequest 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx' -OutFile $runtimeLicense
+          Invoke-WebRequest 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx' -OutFile $developerLicense
+          $vc = Join-Path $env:RUNNER_TEMP 'gen006-vc'
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          Copy-Item "$vc/vcruntime140.dll","$vc/vc-runtime-provenance.json" $deps
+      - name: Package complete source-matched Windows evaluator
+        run: |
+          set -euo pipefail
+          python tools/package_gen006_ramcache.py build --runtime-bundle build/gen006-ramcache-windows --dependencies "$RUNNER_TEMP/gen006-dependencies" --output "$RUNNER_TEMP/gen006-owner" --archive build/gen006-ramcache-owner-windows.zip
+      - name: Extract and execute portable graphical smoke plus ordinary Workbench
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $unpacked = Join-Path $env:RUNNER_TEMP 'GEN006 RAM cache extracted with spaces'
+          Expand-Archive build/gen006-ramcache-owner-windows.zip $unpacked
+          python tools/package_gen006_ramcache.py verify $unpacked
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted package verification failed.' }
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$unpacked/Run Automated Smoke.ps1" 2>&1 | Tee-Object -FilePath build/gen006-ramcache-windows/packaged-graphical-smoke.log
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted graphical smoke failed.' }
+          & powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$unpacked/Run RAM Cache Smoke.ps1" 2>&1 | Tee-Object -FilePath build/gen006-ramcache-windows/packaged-ramcache-smoke.log
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted RAM-cache graphical smoke failed.' }
+          & "$unpacked/Open Workbench.cmd" --audio-driver Dummy --script res://tests/test_persistent_areas_ordinary_launcher.gd 2>&1 | Tee-Object -FilePath build/gen006-ramcache-windows/packaged-ordinary-workbench.log
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted ordinary Workbench failed.' }
+          $ordinary = Get-Content -Raw build/gen006-ramcache-windows/packaged-ordinary-workbench.log
+          if ($ordinary -notmatch 'GEN006_ORDINARY_WORKBENCH' -or $ordinary -match 'SCRIPT ERROR:|(?m)^ERROR:') { throw 'Ordinary Workbench did not acknowledge native readiness.' }
+          $ordinaryRows = @($ordinary -split "`n" | Where-Object { $_.StartsWith('GEN006_ORDINARY_WORKBENCH ') })
+          if ($ordinaryRows.Count -ne 1) { throw 'Missing or ambiguous ordinary native completion.' }
+          $ordinaryReceipt = $ordinaryRows[0].Substring('GEN006_ORDINARY_WORKBENCH '.Length) | ConvertFrom-Json
+          if ($ordinaryReceipt.checks -le 0 -or $ordinaryReceipt.failures -ne 0 -or !$ordinaryReceipt.graphical) { throw 'Ordinary graphical native checks did not pass.' }
+          python tools/package_gen006_ramcache.py verify $unpacked
+          if ($LASTEXITCODE -ne 0) { throw 'Original package files mutated during smoke.' }
+      - name: Retain portable smoke diagnostics after success or refusal
+        if: always()
+        shell: pwsh
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $smoke = Join-Path $env:RUNNER_TEMP 'GEN006 RAM cache extracted with spaces/smoke'
+          if (Test-Path $smoke) { Copy-Item $smoke build/gen006-ramcache-windows/packaged-smoke -Recurse }
+      - name: Record artifact attempt
+        if: always()
+        id: artifact
+        run: echo "attempt=$GITHUB_RUN_ATTEMPT" >> "$GITHUB_OUTPUT"
+      - name: Retain Windows runtime and complete original evidence
+        if: always() && (steps.campaign.outcome == 'success' || (steps.campaign.outputs.campaign_retirement_record != '' && steps.campaign.outputs.campaign_retired_record == steps.campaign.outputs.campaign_retirement_record))
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-runtime-attempt-${{ github.run_attempt }}-windows-${{ github.run_id }}
+          path: build/gen006-ramcache-windows/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain immutable outer campaign diagnostics
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-outer-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-ramcache-windows/validation.json
+            build/gen006-ramcache-windows/native-build.json
+            build/gen006-ramcache-windows/campaign-process-owner-*.json
+          if-no-files-found: warn
+          retention-days: 90
+      - name: Retain Windows owner evaluator
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: gen006-ramcache-owner-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/gen006-ramcache-owner-windows.zip
+            build/gen006-ramcache-owner-windows.zip.sha256
+          if-no-files-found: warn
+          retention-days: 90
+
+  publish:
+    needs: [linux, windows-execution]
+    name: append both qualified runtimes to unchanged GEN-006 branch
+    if: github.repository == 'techrote/cybersand' && github.event_name == 'push' && github.ref == 'refs/heads/exp/gen006-ramcache-finisher-001-20261122'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+      - name: Refuse changed source before publication
+        run: |
+          set -euo pipefail
+          python3 tools/ci/test_gen006_ramcache_runtime_publication.py
+          python3 tools/ci/gen006_ramcache_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          git lfs install --local
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen006-ramcache-runtime-attempt-${{ needs.linux.outputs.artifact_attempt }}-linux-${{ github.run_id }}
+          path: build/gen006-ramcache-linux
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: gen006-ramcache-runtime-attempt-${{ needs.windows-execution.outputs.artifact_attempt }}-windows-${{ github.run_id }}
+          path: build/gen006-ramcache-windows
+      - name: Validate complete matching provenance and stage exactly four runtime paths
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen006_ramcache_runtime_publication.py stage --source-sha "$GITHUB_SHA" --linux-bundle build/gen006-ramcache-linux --windows-bundle build/gen006-ramcache-windows
+          git add -- godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/runtime-provenance.linux.json godot/addons/cybersand_native/runtime-provenance.json
+          python3 tools/ci/gen006_ramcache_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git diff --check --cached
+          git diff --exit-code
+      - name: Append with an exact branch lease; retain Draft/HOLD
+        run: |
+          set -euo pipefail
+          python3 tools/ci/gen006_ramcache_runtime_publication.py check-source --source-sha "$GITHUB_SHA"
+          python3 tools/ci/gen006_ramcache_runtime_publication.py check-index --source-sha "$GITHUB_SHA"
+          git config user.name 'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git commit -m 'build(gen006): publish qualified native RAM-cache runtimes'
+          test "$(git rev-list --parents -n 1 HEAD)" = "$(git rev-parse HEAD) $GITHUB_SHA"
+          # This lease only appends the verified single-child commit; concurrent
+          # source changes or resets cause refusal, never an overwritten branch.
+          git push --force-with-lease="refs/heads/exp/gen006-ramcache-finisher-001-20261122:$GITHUB_SHA" origin HEAD:refs/heads/exp/gen006-ramcache-finisher-001-20261122
+          {
+            echo '### GEN-006 RAM cache — Draft/HOLD'
+            echo "Exact implementation source: $GITHUB_SHA"
+            echo "Runtime publication HEAD: $(git rev-parse HEAD)"
+            echo 'Native continuation and sanitizer gates plus actual Linux/Windows graphical recovery completed. The extracted Windows evaluator also passed write/reopen and ordinary Workbench smoke.'
+            echo 'Physical Windows 11/NVIDIA owner acceptance remains pending. This is the bounded three-area milestone, not completion of GEN-006 #194.'
+          } >> "$GITHUB_STEP_SUMMARY"

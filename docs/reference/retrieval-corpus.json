@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "reviewed": "2026-11-25",
+  "reviewed": "2026-11-27",
   "scope": "Explicit current-answer corpus; status and scope must accompany every chunk. Historical records are separately routed, never silently mixed into current answers.",
   "documents": [
     "architecture/experimental-workbench-authoring-patch.md",
@@ -179,6 +179,12 @@
     "tools/world-art-preview.md",
     "tools/world-art-capture.md",
     "tools/world-art-evaluation.md",
+    "systems/persistent-authored-areas.md",
+    "decisions/ADR-015-persistent-authored-areas.md",
+    "operations/persistent-areas-evaluation.md",
+    "systems/persistent-area-residency.md",
+    "operations/persistent-area-ramcache-evaluation.md",
+    "decisions/ADR-016-persistent-area-native-residency.md",
     "systems/ambient-actors.md",
     "operations/ambient-workbench.md",
     "systems/ambient-living-inhabitants.md",

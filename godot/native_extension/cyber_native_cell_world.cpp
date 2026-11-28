@@ -410,6 +410,10 @@ Dictionary CyberNativeCellWorld::gameplay_water_options() {
 }
 
 bool CyberNativeCellWorld::reset_demo_world(bool gameplay_water) {
+    if (active_resident_handle_!=0) {
+        last_tick_error_="Resident active World requires an admitted handoff before reset";
+        return false;
+    }
     if (world_ == nullptr) return false;
     bool committed = false;
     try {
@@ -1933,6 +1937,10 @@ double CyberNativeCellWorld::density_scale(cybersand::Material material, double 
 }
 
 bool CyberNativeCellWorld::diagnostic_reset(const Dictionary& options) {
+    if (active_resident_handle_!=0) {
+        last_tick_error_="Resident active World requires an admitted handoff before diagnostic reset";
+        return false;
+    }
     // Explicit API, fresh construction, no live descriptor edits. A demo reset
     // restores production defaults. Validate before replacing existing authority.
     bool committed = false;

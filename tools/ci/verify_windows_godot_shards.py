@@ -14,6 +14,7 @@ from pathlib import Path
 import subprocess
 
 import execution_policy
+import verify_godot_shard_command
 import _architecture_campaign_context as architecture_context
 import run_godot_regressions as runner
 from verify_retained_play_readback import same_json
@@ -227,9 +228,8 @@ def verify_source_report(report: dict, directory: Path, expected: dict, index: i
         require(host_paths is None or paths == host_paths, f"inconsistent original Windows command roots: {directory}")
         host_paths = paths
         source_case = runner.Case(case["name"], tuple(case["flags"]), case["timeout_seconds"], 0, case["requires_display"])
-        expected_command = runner.case_command(command[0], source_case, "win32")
-        # The original Windows checkout root is retained, not rewritten to Linux.
-        expected_command[expected_command.index("--path") + 1] = project
+        expected_command = verify_godot_shard_command.shard_case_command(
+            command[0], source_case, "win32", project, index, directory)
         require(command == expected_command, f"source-derived command or watchdog mismatch: {directory}")
         require(same_json(result.get("execution_policy"), expected["execution_policy"]),
                 f"source-derived execution policy mismatch: {directory}")

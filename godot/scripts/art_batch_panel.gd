@@ -1261,6 +1261,12 @@ func stop_all(reason: String = "Human Stop") -> void:
 		"provider_cancel_usec":int(provider.last_request_timing.get("cancel_usec",0)),
 		"active_after":provider.active}
 
+func native_authoring_pending() -> bool:
+	return (collaboration != null and collaboration.busy()) or executor.active or executor.waiting \
+		or not executor.manual.is_empty() or not executor.manual_inflight.is_empty() \
+		or provider.active or provider.request_preparation_active() or provider.response_preparation_active() \
+		or capturing or remaining_turns != 0 or waiting_until_ms > Time.get_ticks_msec() or log_draw
+
 # Shared PAINT shortcuts call the same guard as these buttons. A native-idle
 # gap is not permission to undo while a provider or another turn can still write.
 func history_block_reason() -> String:

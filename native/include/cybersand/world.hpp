@@ -367,6 +367,14 @@ public:
     [[nodiscard]] std::size_t chunk_count() const noexcept;
     [[nodiscard]] std::size_t active_chunk_count() const noexcept;
     [[nodiscard]] std::size_t resident_cell_bytes() const noexcept;
+    // Owned allocation estimate for the admitted Current/FreeMass residency
+    // domain. Includes vector capacities, scheduling scratch and empty body
+    // coupling; excludes allocator metadata and operating-system thread stacks.
+    // Pressure/Wave/discovery extensions are deliberately outside this metric.
+    [[nodiscard]] std::size_t current_resident_storage_bytes() const noexcept;
+    // Reservation for bounded Current area growth. This is cache admission
+    // accounting, not a guarantee on allocator/OS process-memory overhead.
+    [[nodiscard]] std::size_t current_resident_reservation_bytes() const noexcept;
     [[nodiscard]] std::uint64_t state_hash() const noexcept;
     [[nodiscard]] std::uint64_t content_hash() const noexcept;
     [[nodiscard]] std::uint64_t hard_surface_revision() const noexcept;

@@ -4,11 +4,15 @@ status: Current
 document-kind: guide
 scope: Pinned source build entry points, Windows workspace wrappers, platform boundaries and freshness limits
 canonical-for: [build-entry-points, dependency-pins, build-freshness]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-27
 related-documents: [source-checkpoint-and-recovery.md, testing-validation-and-replay.md, web-threading.md, deepworks-exhibition.md, ../systems/depth-layers-and-parallax.md]
 ---
 
 # Local build and validation
+
+## GEN-006 persistent-area candidate qualification
+
+Use the bounded [persistent-area evaluator](persistent-areas-evaluation.md) and [exact-source qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md). `make persistent-area-test` and `make persistent-area-sanitize` exercise complete native continuation. `tools/ci/run_persistent_areas_qualification.py` runs native bridge, Store/Clock, actual Main, graphical travel and real-process crash/reopen checks. The dedicated Draft/HOLD workflow builds and qualifies source-matched Linux and Windows runtimes and an extracted Windows evaluator; it does not run the unrelated 80-Gentek publication corpus. A local toolchain-drift binary is diagnostic evidence only.
 
 ## AMBIENT-001 scoped gameplay qualification
 

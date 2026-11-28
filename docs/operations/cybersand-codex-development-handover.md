@@ -4,11 +4,15 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-27
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## Persistent authored areas
+
+[PR #745](https://github.com/techrote/cybersand/pull/745) combines the three-area Current/FreeMass continuation, resident World handoff, bounded catch-up and acknowledged durable publication. The [ownership contract](../systems/persistent-area-residency.md) and [evaluation guide](persistent-area-ramcache-evaluation.md) describe the actor-free domain, strict and deferred modes, and physical Windows evaluation.
 
 ## Unified SWARM definitive delivery — 2026-11-24
 

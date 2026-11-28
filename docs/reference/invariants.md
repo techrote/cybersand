@@ -6,10 +6,14 @@ status: Approved design
 scope: Stable review IDs with current enforcement, known exceptions and approved requirements; this register is not a test-result ledger
 keywords: [invariants, ownership, threading, replay, conservation, capacity, body mask, interest defect]
 related-documents: [../architecture/principles-and-non-goals.md, interfaces-and-message-contracts.md, validation-evidence.md, status-and-roadmap.md, ../architecture/pressure-optimization.md]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-21
 ---
 
 # Architectural and simulation invariants
+
+## Opt-in persistent authored areas
+
+The [persistent-area contract](../systems/persistent-authored-areas.md#lifecycle-and-atomic-handoff) retains a frozen live owner until a private target is validated, its completed game time is durable, and native/Main adoption is acknowledged. Native checkpoint bytes, original source identity and edited authoring metadata have separate authority. Failed or stale operations cannot grant new time or silently regenerate a seed; unsupported host dependencies refuse travel. This remains a scoped Draft/HOLD prototype.
 
 Use these stable IDs in reviews and fixtures. **Current** identifies inspected
 scope; **Approved** requires implementation where incomplete. **Planned**,

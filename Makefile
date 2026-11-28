@@ -127,6 +127,33 @@ wave-body-boundary-thread-sanitize: $(BUILD_DIR)/test_wave_body_boundary_tsan
 
 .PHONY: material-baseline-test material-baseline-sanitize
 
+# GEN-006 opt-in full-area continuation; no default native law changes.
+.PHONY: persistent-area-test persistent-area-sanitize
+$(BUILD_DIR)/test_persistent_area_continuation: $(SIMULATION_SOURCES) native/src/render_snapshot.cpp $(CORE_HEADERS) native/tests/test_persistent_area_continuation.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/tests/test_persistent_area_continuation.cpp -o $@
+
+$(BUILD_DIR)/test_persistent_area_continuation_sanitized: $(SIMULATION_SOURCES) native/src/render_snapshot.cpp $(CORE_HEADERS) native/tests/test_persistent_area_continuation.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/tests/test_persistent_area_continuation.cpp -o $@
+
+persistent-area-test: $(BUILD_DIR)/test_persistent_area_continuation
+	./$(BUILD_DIR)/test_persistent_area_continuation
+
+persistent-area-sanitize: $(BUILD_DIR)/test_persistent_area_continuation_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_persistent_area_continuation_sanitized
+
+.PHONY: persistent-area-residency-test persistent-area-residency-sanitize
+$(BUILD_DIR)/test_persistent_area_residency_lifetime: $(SIMULATION_SOURCES) native/src/render_snapshot.cpp $(CORE_HEADERS) native/tests/test_persistent_area_residency_lifetime.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/tests/test_persistent_area_residency_lifetime.cpp -o $@
+
+$(BUILD_DIR)/test_persistent_area_residency_lifetime_sanitized: $(SIMULATION_SOURCES) native/src/render_snapshot.cpp $(CORE_HEADERS) native/tests/test_persistent_area_residency_lifetime.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(SIMULATION_SOURCES) native/src/render_snapshot.cpp native/tests/test_persistent_area_residency_lifetime.cpp -o $@
+
+persistent-area-residency-test: $(BUILD_DIR)/test_persistent_area_residency_lifetime
+	./$(BUILD_DIR)/test_persistent_area_residency_lifetime
+
+persistent-area-residency-sanitize: $(BUILD_DIR)/test_persistent_area_residency_lifetime_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_persistent_area_residency_lifetime_sanitized
+
 # MAT-AUDITION-LIVE-001: scene-local profile transactions and actual consumers.
 .PHONY: material-audition-test material-audition-sanitize material-audition-thread-sanitize
 
