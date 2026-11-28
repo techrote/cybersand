@@ -60,8 +60,9 @@ ANCHORS = {
     "strata_head": "d37fea86dbed2d9ae4b22e59c676d98f525c1ea8",
     "excluded_objectshard_head": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
 }
-# These are source-owned tests, run with an actual display on both hosts.
-# Integer-failure and list-failure records are handled explicitly by the reader.
+# Source-owned tests retain their accepted display context on both hosts.
+# The private reciprocal controller is mechanical/headless; actual SWARM006
+# input remains graphical. Integer/list failure records are read explicitly.
 SHARED = (
     ("test_workbench_wave_render", "WORKBENCH_WAVE_RENDER ", 600),
     ("test_workbench_actor_composition_native", "Workbench actor composition native:", 600),
@@ -73,7 +74,7 @@ SHARED = (
     ("test_goblin_contract", "GOBLIN_CONTRACT_RESULT ", 180),
     ("test_goblin_policies", "GOBLIN_POLICY_UNIT ", 180),
     ("test_workbench_reciprocal_runtime", "SWARM45_RUNTIME ", 180),
-    ("test_workbench_reciprocal_controller", "SWARM004_CONTROLLER ", 300),
+    ("test_workbench_reciprocal_controller", "SWARM004_CONTROLLER ", 90),
     ("swarm006_reciprocal_input", "SWARM006_INPUT_INTEGRITY ", 180),
     ("test_workbench_file_transaction", "FILE_TRANSACTION_RESULT ", 180),
 )
@@ -260,6 +261,20 @@ def expected_labels(mode: str) -> set[str]:
     return {"import", *[r[0] for r in SHARED], "goblin-storage", "gentek-write", "gentek-reopen", *LAB_LABELS}
 
 
+def process_base(engine: str, project: str, platform: str, label: str) -> list[str]:
+    # Preserve tools/swarm45/qualify_workbench.py's distinct admitted contexts:
+    # controller mechanics are headless; live native input has its original
+    # graphical driver and 60 FPS cap. No fixture deadline/assertion is relaxed.
+    if label in ("test_workbench_reciprocal_controller", "swarm006_reciprocal_input"):
+        base = [engine, "--audio-driver", "Dummy", "--path", project]
+        if label == "test_workbench_reciprocal_controller":
+            return base + ["--headless"]
+        return base + ["--rendering-method", "gl_compatibility", "--max-fps", "60"] + (
+            ["--rendering-driver", "opengl3_angle"] if platform == "win32" else ["--display-driver", "x11"])
+    return [engine, "--audio-driver", "Dummy", "--rendering-method", "gl_compatibility",
+            "--rendering-driver", "opengl3", "--path", project]
+
+
 def validate_process(report: dict, row: dict, original: dict, text: str) -> None:
     require({k: v for k, v in row.items() if k not in ("label", "completion")} == original,
             "Process receipt differs from original record")
@@ -278,8 +293,7 @@ def validate_process(report: dict, row: dict, original: dict, text: str) -> None
     require(row.get("timeout_seconds") == deadlines[label] and type(row.get("seconds")) in (int, float)
             and math.isfinite(row["seconds"]) and 0 <= row["seconds"] <= deadlines[label] + 15,
             "Actual process changed its registered deadline or reported an invalid duration")
-    expected = [report["godot"]["path"], "--audio-driver", "Dummy", "--rendering-method", "gl_compatibility",
-                "--rendering-driver", "opengl3", "--path", report["project"]["path"]]
+    expected = process_base(report["godot"]["path"], report["project"]["path"], report["platform"], label)
     join = ntpath.join if report["platform"] == "win32" else posixpath.join
     if label == "import":
         expected += ["--headless", "--editor", "--quit"]
@@ -649,7 +663,8 @@ def run(args) -> int:
                 env.update(CYBERSAND_TEST_ARTIFACT_DIR=str(output / name), MAT_AUDITION_EVIDENCE_DIR=str(output / name))
                 if name == "swarm006_reciprocal_input":
                     env["SWARM004_UI_EVIDENCE"] = str(output / name)
-                execute(name, base + ["--script", "res://tests/" + name + ".gd"], env, timeout, prefix)
+                command = process_base(str(godot), str(project), sys.platform, name)
+                execute(name, command + ["--script", "res://tests/" + name + ".gd"], env, timeout, prefix)
             import run_goblin_storage_qualification as goblin
             old_argv = sys.argv
             location = output / "goblin-storage"

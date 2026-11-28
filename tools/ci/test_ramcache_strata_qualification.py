@@ -95,6 +95,42 @@ class IntegrationControls(unittest.TestCase):
                         command[-7] = "--persistent-profile=another-profile"
                     self.reject(lambda: q.validate_process(*values))
 
+    def test_reciprocal_mechanics_and_actual_input_keep_distinct_donor_contexts(self):
+        for platform in ("linux", "win32"):
+            for label, deadline in (("test_workbench_reciprocal_controller", 90), ("swarm006_reciprocal_input", 180)):
+                with self.subTest(platform=platform, label=label):
+                    report, row, original, text = process_fixture(platform)
+                    base = [report["godot"]["path"], "--audio-driver", "Dummy", "--path", report["project"]["path"]]
+                    if label == "test_workbench_reciprocal_controller":
+                        base += ["--headless"]
+                    else:
+                        base += ["--rendering-method", "gl_compatibility", "--max-fps", "60"]
+                        base += ["--rendering-driver", "opengl3_angle"] if platform == "win32" else ["--display-driver", "x11"]
+                    self.assertEqual(q.process_base(report["godot"]["path"], report["project"]["path"], platform, label), base)
+                    command = base + ["--script", "res://tests/" + label + ".gd"]
+                    row.update(label=label, command=command, timeout_seconds=deadline)
+                    original.update(command=command, timeout_seconds=deadline)
+                    q.validate_process(report, row, original, text)
+                    for mutation in ("display-context", "deadline", "wrong-script"):
+                        changed_row, changed_original = copy.deepcopy((row, original))
+                        if mutation == "display-context":
+                            if label == "test_workbench_reciprocal_controller":
+                                changed_row["command"].remove("--headless")
+                            else:
+                                changed_row["command"].insert(1, "--headless")
+                        elif mutation == "deadline":
+                            changed_row["timeout_seconds"] = 300
+                        else:
+                            changed_row["command"][-1] = "res://tests/unrelated.gd"
+                        changed_original.update({key: value for key, value in changed_row.items() if key != "label"})
+                        self.reject(lambda: q.validate_process(report, changed_row, changed_original, text))
+                    if label == "swarm006_reciprocal_input":
+                        for flag in ("--max-fps", "--rendering-driver" if platform == "win32" else "--display-driver"):
+                            changed_row, changed_original = copy.deepcopy((row, original))
+                            changed_row["command"][changed_row["command"].index(flag) + 1] = "wrong"
+                            changed_original["command"] = changed_row["command"]
+                            self.reject(lambda: q.validate_process(report, changed_row, changed_original, text))
+
     def test_original_preference_terminal_matches_its_summary_fields(self):
         summary = {"checks": 128, "failures": [], "scene": "owner-diorama-depth-1-3", "phase": "install"}
         result = dict(summary, schema="ramcache-strata-owner-preference-v1", completed=True,
