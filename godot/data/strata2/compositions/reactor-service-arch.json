@@ -1,0 +1,147 @@
+{
+  "format": "cybersand-strata-composition-v1",
+  "id": "reactor-service-arch",
+  "name": "Reactor service arch",
+  "modules": [
+    "reactor-window",
+    "rear-truss-bay",
+    "service-pipe",
+    "signal-panel"
+  ],
+  "stages": [
+    {
+      "id": "reactor",
+      "plane": "scripted",
+      "region": [0, 0, 128, 128],
+      "depends_on": [],
+      "allowed_materials": [0, 62, 66, 69, 79],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "reactor-window",
+          "origin": [0, 0],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "pipe",
+      "plane": "scripted",
+      "region": [132, 16, 128, 96],
+      "depends_on": [
+        "reactor"
+      ],
+      "allowed_materials": [0, 62, 69],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "service-pipe",
+          "origin": [132, 16],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "signals",
+      "plane": "effects",
+      "region": [132, 114, 64, 96],
+      "depends_on": [
+        "reactor"
+      ],
+      "allowed_materials": [
+        0,
+        62,
+        77,
+        78,
+        79,
+        80
+      ],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "signal-panel",
+          "origin": [132, 114],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "far-bay",
+      "plane": "background",
+      "region": [0, 130, 128, 80],
+      "depends_on": [],
+      "allowed_materials": [0, 62, 63, 79],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "rear-truss-bay",
+          "origin": [0, 130],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "provenance": {
+      "kind": "original-layered-design",
+      "generator": "tools/strata2_build_part_recipes.py",
+      "generator_version": 1,
+      "semantic_limits": "Explicit decorative parts, no Play mutation and no load-bearing solver."
+    },
+    "visual_proposal": {
+      "planes": [
+        {
+          "id": "scripted",
+          "opacity": 0.78,
+          "depth": 0.28
+        },
+        {
+          "id": "effects",
+          "opacity": 0.85,
+          "depth": 0.16
+        },
+        {
+          "id": "background",
+          "opacity": 0.4,
+          "depth": 0.82
+        }
+      ],
+      "presentation": {
+        "parallax_strength": 0.4,
+        "fog_strength": 0.3
+      }
+    },
+    "atmosphere_proposal": {
+      "scope": "Anchor-relative regions; separately review and apply; native plan does not apply atmosphere.",
+      "configuration": {
+        "version": 1,
+        "enabled": true,
+        "paused": false,
+        "seed": 1207,
+        "effects": [
+          {
+            "id": "reactor-beacons",
+            "kind": "beacon",
+            "plane": "scripted",
+            "region": [24, 12, 80, 8],
+            "seed": 102,
+            "count": 3,
+            "speed": 0.8,
+            "strength": 0.8,
+            "direction": [1.0, 0.0],
+            "colour": [1.0, 0.33, 0.08, 0.85],
+            "enabled": true
+          }
+        ]
+      }
+    }
+  }
+}

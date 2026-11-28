@@ -28,7 +28,8 @@ from run_art_collaborative_gates import TESTS, parse_case_output, validate_recei
 PROGRAMME = "ART-WORKBENCH-COLLABORATIVE-002"
 GUIDE = "docs/operations/art-workbench-collaborative-evaluation.md"
 QUALIFICATION_DIR = "qualification"
-PACKAGED_TOOLS = ("tools/package_art_collaborative.py", "tools/ci/run_art_collaborative_gates.py")
+PACKAGED_TOOLS = ("tools/package_art_collaborative.py", "tools/ci/run_art_collaborative_gates.py",
+                  "tools/ci/strata_generated_imports.py")
 
 
 SCENARIO_IDS = (

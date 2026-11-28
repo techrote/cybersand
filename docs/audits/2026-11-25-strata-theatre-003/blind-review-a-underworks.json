@@ -1,0 +1,180 @@
+{
+  "schema": "cybersand-strata003-blind-visual-review-v1",
+  "reviewer": "specialist-a",
+  "recorded_utc": "2026-11-25T22:36:57.403619+00:00",
+  "phase": "scores_frozen_before_label_unmask",
+  "scene": "industrial-underworks",
+  "capture_environment": "Hosted Linux according to lead assignment; exact source/campaign binding to be attached after unmask.",
+  "scale": {
+    "range": [
+      1,
+      5
+    ],
+    "higher_is_better": true,
+    "meanings": {
+      "physical_distinction": "Estimated immediate distinction of physical shelves/supports from decoration",
+      "actor_visibility": "Visible body/label against surroundings at this overview",
+      "architectural_detail": "Recognizability and fine construction detail remaining in rear structures",
+      "spatial_depth": "Impression of depth separation from a single still",
+      "artifact_freedom": "No distracting visible blur/halo/clipping/displacement; not a correctness proof"
+    }
+  },
+  "limitations": [
+    "Profile names/key were not opened before saving these scores.",
+    "Reviewer implemented renderer and previously inspected original Strata002 corpus; this is label-blind expert judgment, not a naive human study.",
+    "One paused overview, one scene, one small actor; no motion, close zoom, input/collision task or owner display examined.",
+    "Ordinal estimates have roughly one-point uncertainty; equal scores intentionally retain ties.",
+    "Scores cannot prove human route understanding or establish native authority; parent native qualification is separate."
+  ],
+  "preferences": {
+    "clarity_detail_compromise": "frame-07",
+    "atmospheric_detail_balance": "frame-03",
+    "restrained_lens_balance": "frame-09",
+    "maximum_foreground_subordination": "frame-02",
+    "uncertain_ties": [
+      [
+        "frame-05",
+        "frame-10",
+        "frame-11"
+      ],
+      [
+        "frame-06",
+        "frame-08"
+      ]
+    ]
+  },
+  "frames": [
+    {
+      "filename": "frame-01.png",
+      "sha256": "8b77ae51eb5291e9f205f987f4a109811a41d5696440d0f82badee0d3b2d4ea7",
+      "scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 3,
+        "spatial_depth": 4,
+        "artifact_freedom": 4
+      },
+      "notes": "Clear foreground crispness, but rear wheel and lattice lose microtexture. Softness supplies depth; some thin machinery reads as broad softened strokes."
+    },
+    {
+      "filename": "frame-02.png",
+      "sha256": "41758ed292112dfd0deb616dac6a0182ef2db74c100050572cec0290b3c6c249",
+      "scores": {
+        "physical_distinction": 5,
+        "actor_visibility": 4,
+        "architectural_detail": 3,
+        "spatial_depth": 4,
+        "artifact_freedom": 5
+      },
+      "notes": "Strongest foreground dominance among inspected frames; rear wheel and machinery remain identifiable but are noticeably dim. The small labelled actor separates slightly better; fine detail requires more effort."
+    },
+    {
+      "filename": "frame-03.png",
+      "sha256": "a5973c8ee4836ff1806fc2f4dcd26211609d5c3d70c20930aec8c3997534d448",
+      "scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 4,
+        "artifact_freedom": 5
+      },
+      "notes": "Distinct restrained violet rear atmosphere while fine spokes, grilles and trusses remain readable. Physical shelves remain dominant. Strongest atmospheric/detail balance in this scene for this reviewer."
+    },
+    {
+      "filename": "frame-04.png",
+      "sha256": "515abac21fba33c78da2330db471755eecfaf5f23783b6b06099db14d57e152d",
+      "scores": {
+        "physical_distinction": 3,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      },
+      "notes": "Very crisp and richly coloured rear machinery; copper rear truss and structural frames still compete with physical architecture. Beautiful construction detail, less immediate physical/decorative distinction."
+    },
+    {
+      "filename": "frame-05.png",
+      "sha256": "9a7f269ba23118c509d0bb8b645540a7a8b17a558928bc42130dc78735d11a7c",
+      "scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      },
+      "notes": "Crisp cool rear architecture with moderately reduced prominence. Fine structure survives; difference from frames10/11 is too small here to rank confidently."
+    },
+    {
+      "filename": "frame-06.png",
+      "sha256": "4a906f56262e8c96a12ed1fb70db0f2b319cf1edd4f7edcba1fd8c8a68cc92fa",
+      "scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      },
+      "notes": "Warm subdued machinery and intact fine detail. Physical shelves remain clear, but rear frames still read somewhat as parallel physical structures. Small difference from08 should not be overinterpreted."
+    },
+    {
+      "filename": "frame-07.png",
+      "sha256": "1b403756470eb46a5db6686f9518f42159fa58c02cf6750d983663edb581a42b",
+      "scores": {
+        "physical_distinction": 5,
+        "actor_visibility": 4,
+        "architectural_detail": 4,
+        "spatial_depth": 4,
+        "artifact_freedom": 5
+      },
+      "notes": "Strong physical hierarchy without heavy blur; the central wheel and rear truss remain identifiable. Restrained rear colour and luminance help the genuinely physical copper pipe stand apart. Preferred clarity/detail compromise."
+    },
+    {
+      "filename": "frame-08.png",
+      "sha256": "4748ecbe7c2a951fa8902652e1f5f74d0c6d7dce940cf3811cf2b544b466bd06",
+      "scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      },
+      "notes": "Warm crisp rear machinery with visible wheel construction. Rear frame brightness competes slightly with foreground supports, though major Play shelves remain evident. Similar practical result to06."
+    },
+    {
+      "filename": "frame-09.png",
+      "sha256": "308ee0d63a842866fc0046a308f168fbc9f5b2b9bd5fb6c3141015df41eb170e",
+      "scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 4,
+        "spatial_depth": 4,
+        "artifact_freedom": 4
+      },
+      "notes": "Restrained optical softness in wheel and distant towers while machinery panels remain readable. More convincing lens separation than crisp neutral variants, with some fine texture loss. Better detail balance than01."
+    },
+    {
+      "filename": "frame-10.png",
+      "sha256": "c0302a611fc5a94f6e5322b77e175d596127f862cb38c01d5fd62f089479441b",
+      "scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      },
+      "notes": "Crisp cool-neutral architecture; Play shelves are clear but rear frames and trusses remain a potentially ambiguous secondary structure. No confident ranking versus05/11 from this overview alone."
+    },
+    {
+      "filename": "frame-11.png",
+      "sha256": "38b87def4195903bb143a6496968f0cef2bfa253b2a0b74f9e2878cb66329ec1",
+      "scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      },
+      "notes": "Neutral restrained rear presentation, strong preservation of construction detail. Spatial layering relies mainly on intensity hierarchy. Similar to05/10 at this view; no visible alpha defect observed."
+    }
+  ]
+}

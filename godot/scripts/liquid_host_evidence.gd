@@ -153,6 +153,62 @@ static func _freeze(value: Variant) -> void:
 		for nested: Variant in value.values() if value is Dictionary else value: _freeze(nested)
 		value.make_read_only()
 
+# GEN-006 continuation has nonzero native clocks and a different authority from
+# a tick-zero construction receipt. The ordinary collect() contract remains
+# strict. Construction is retained as source provenance, never relabelled as
+# proof of the reconstructed dynamic state or of the mapped runtime module.
+static func collect_continuation(bridge: Variant, receipt: Dictionary, host_claims: Dictionary = {}) -> Dictionary:
+	var raw: Variant = receipt.get("canonical_bytes")
+	if receipt.get("kind","") != "workbench_continuation" or receipt.get("schema_version",0) != 1 \
+			or not raw is PackedByteArray or raw.is_empty() or raw.size() > MAX_CANONICAL_BYTES \
+			or not receipt.get("qualifications") is int or receipt.qualifications != 15 \
+			or not receipt.get("eligible_for_full_matched_evidence") is bool or receipt.eligible_for_full_matched_evidence:
+		return {"ok":false,"error":"A qualified typed native Workbench continuation receipt is required"}
+	for key: String in ["receipt_hash","source_checkpoint_sha256","checkpoint_sha256","authored_source_sha256","policy_hash"]:
+		var digest: Variant = receipt.get(key)
+		if not digest is String or digest.length() != 64 or not digest.is_valid_hex_number(false):
+			return {"ok":false,"error":"Continuation receipt has an invalid " + key}
+	for key: String in ["session_generation","completed_tick","source_completed_tick","advanced_native_ticks"]:
+		if not receipt.get(key) is int or int(receipt[key]) < 0:
+			return {"ok":false,"error":"Continuation receipt has an invalid " + key}
+	if receipt.completed_tick < receipt.source_completed_tick \
+			or receipt.completed_tick-receipt.source_completed_tick != receipt.advanced_native_ticks \
+			or receipt.get("physical_state_hash_version",0) != 2 or receipt.get("physical_state_format_version",0) != 2 \
+			or not receipt.get("physical_state_hash",null) is String \
+			or str(receipt.physical_state_hash).length() != 16 or not str(receipt.physical_state_hash).is_valid_hex_number(false):
+		return {"ok":false,"error":"Continuation receipt state and completed-time contract disagrees"}
+	var identity: Variant = receipt.get("continuation_identity")
+	if not identity is Dictionary or identity.size() != 4 or not identity.get("generation") is int or identity.generation < 1:
+		return {"ok":false,"error":"Continuation receipt identity is incomplete"}
+	for key: String in ["session_id","area_id","operation_id"]:
+		if not identity.get(key) is String or identity[key].is_empty() or identity[key].length() > 128:
+			return {"ok":false,"error":"Continuation receipt identity is invalid"}
+	var hash := HashingContext.new();hash.start(HashingContext.HASH_SHA256);hash.update(raw)
+	if hash.finish().hex_encode() != receipt.receipt_hash:
+		return {"ok":false,"error":"Continuation copied bytes and declared digest disagree"}
+	var provenance: Dictionary = collect(bridge,receipt.get("source_construction_receipt",{}))
+	if not provenance.ok: return {"ok":false,"error":"Continuation source construction provenance is invalid: "+str(provenance.error)}
+	var claims: Dictionary = _claims(host_claims,0,[MAX_CLAIM_VALUES,MAX_CLAIM_TEXT_BYTES])
+	if not claims.ok: return {"ok":false,"error":"Host claims exceed the pure value/depth/capacity contract"}
+	var source_values: Dictionary = provenance.evidence.snapshot()
+	var values: Dictionary = {"schema_version":VERSION,"kind":"qualified_workbench_continuation_host_observation",
+		"native_continuation":{"schema_version":1,"canonical_bytes_hex":raw.hex_encode(),
+			"receipt_hash":receipt.receipt_hash,"qualifications":15,"native_eligible_for_full_matched_evidence":false,
+			"session_generation_decimal":str(receipt.session_generation),"completed_tick_decimal":str(receipt.completed_tick),
+			"source_checkpoint_sha256":receipt.source_checkpoint_sha256,"checkpoint_sha256":receipt.checkpoint_sha256,
+			"physical_state_hash":receipt.physical_state_hash},
+		"source_construction_provenance":source_values.native_applied_run,
+		"runtime":source_values.runtime,"host_claims":{"status":"unverified","values":claims.value},
+		"qualifications":["native_continuation_qualifications_retained","source_construction_is_provenance_only",
+			"mapped_module_binding_unverified","executed_script_binding_unverified","complete_host_binding_unverified"],
+		"host_eligible_for_full_matched_evidence":false}
+	var bytes: PackedByteArray = JSON.stringify(values,"",true,true).to_utf8_buffer()
+	if bytes.size() > MAX_CANONICAL_BYTES: return {"ok":false,"error":"Host continuation observation byte capacity exceeded"}
+	var evidence = load("res://scripts/liquid_host_evidence.gd").new()
+	evidence._values = values;evidence._bytes = bytes;evidence._digest = bytes.get_string_from_utf8().sha256_text()
+	_freeze(values)
+	return {"ok":true,"evidence":evidence}
+
 func snapshot() -> Dictionary:
 	return _values.duplicate(true)
 

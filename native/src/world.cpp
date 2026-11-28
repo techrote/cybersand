@@ -5194,6 +5194,68 @@ std::size_t World::resident_cell_bytes() const noexcept {
     return result;
 }
 
+std::size_t World::current_resident_storage_bytes() const noexcept {
+    // std::unordered_map does not expose node allocation sizes. Count its
+    // stored value and two pointers per node, plus the actual bucket array;
+    // report this as an estimate, never as measured process RSS.
+    std::size_t result = sizeof(*this) + chunks_.bucket_count() * sizeof(void*);
+    result += chunks_.size() * (sizeof(decltype(chunks_)::value_type) + 2 * sizeof(void*));
+    result += chunk_directory_.capacity() * sizeof(Chunk*);
+    result += active_chunk_scratch_.capacity() * sizeof(ChunkCoord);
+    result += active_core_scratch_.capacity() * sizeof(SchedulingCoreCoord);
+    result += pending_explosions_.capacity() * sizeof(ExplosionCommand);
+    result += ballistic_parcels_.capacity() * sizeof(BallisticParcel);
+    result += ballistic_face_chunks_.capacity() * sizeof(ChunkCoord);
+    result += ballistic_face_water_.capacity() * sizeof(std::uint64_t);
+    for (const auto& [coord, chunk] : chunks_) {
+        (void)coord;
+        result += sizeof(Chunk) + chunk->cells.capacity() * sizeof(Chunk::Cell);
+        result += chunk->activity_blocks.capacity() * sizeof(Chunk::ActivityBlock);
+        if (chunk->temperatures)
+            result += sizeof(*chunk->temperatures) + chunk->temperatures->capacity() * sizeof(std::int16_t);
+        if (chunk->granular_arrivals)
+            result += sizeof(*chunk->granular_arrivals) + chunk->granular_arrivals->capacity() * sizeof(std::uint64_t);
+    }
+    if (parallel_) {
+        result += sizeof(ParallelState);
+        result += parallel_->activity_flags.capacity();
+        result += parallel_->activity_deadlines.capacity() * sizeof(std::uint64_t);
+        result += parallel_->results.capacity() * sizeof(ParallelState::JobResult);
+        result += parallel_->physics.capacity() * sizeof(PhysicsJobHistogram);
+        result += parallel_->phase_job_indices.capacity() * sizeof(std::size_t);
+        if (parallel_->pool) result += parallel_->pool->resident_storage_bytes();
+    }
+    if (transient_obstacles_) {
+        result += sizeof(TransientObstacleState);
+        result += transient_obstacles_->body_ids.capacity() * sizeof(std::uint16_t);
+        result += transient_obstacles_->occupied_indices.capacity() * sizeof(std::size_t);
+    }
+    if (physics_totals_) result += sizeof(PhysicsTotals);
+    return result;
+}
+
+std::size_t World::current_resident_reservation_bytes() const noexcept {
+    std::size_t result=current_resident_storage_bytes();
+    const auto cells=static_cast<std::size_t>(config_.chunk_size)*static_cast<std::size_t>(config_.chunk_size);
+    const auto activity_axis=(config_.chunk_size+config_.activity_block_size-1)/config_.activity_block_size;
+    const auto activity=static_cast<std::size_t>(activity_axis)*static_cast<std::size_t>(activity_axis);
+    // Reserve all optional admitted cell arrays even when a particular area's
+    // initial temperature field or granular witness has not allocated them.
+    for (const auto& [coord,chunk]:chunks_) {
+        (void)coord;
+        if (!chunk->temperatures) result+=sizeof(std::vector<std::int16_t>)+cells*sizeof(std::int16_t);
+        if (!chunk->granular_arrivals) result+=sizeof(std::vector<std::uint64_t>)+cells*sizeof(std::uint64_t);
+    }
+    const auto missing=config_.maximum_chunk_count>chunks_.size()?config_.maximum_chunk_count-chunks_.size():0;
+    result+=missing*(sizeof(Chunk)+cells*(sizeof(Chunk::Cell)+sizeof(std::int16_t)+sizeof(std::uint64_t))+
+        activity*sizeof(Chunk::ActivityBlock)+2*sizeof(std::vector<std::uint8_t>)+
+        sizeof(decltype(chunks_)::value_type)+6*sizeof(void*));
+    // Growth headroom for finite-area coordinate/hash indexing and allocator
+    // size rounding is explicit. Thread stacks and host values remain separate.
+    result+=1024U*1024U;
+    return result;
+}
+
 std::uint64_t World::state_hash() const noexcept {
     std::uint64_t hash = 1469598103934665603ULL;
     hash_integer(hash, tick_index_);

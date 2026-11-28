@@ -1,0 +1,110 @@
+{
+  "version": 1,
+  "frozen_date": "2026-11-25",
+  "purpose": "Strata003 focused source-backed optical ownership, authoring and evidence route checks; lexical hits are not answer acceptance.",
+  "questions": [
+    {
+      "id": "SO01",
+      "query": "Does Strata optical depth change native cells, collision, actor authority or the paint target?",
+      "canonical": [
+        "systems/strata-optics.md"
+      ],
+      "facts": [
+        "Optical depth is an independent artistic coordinate; the existing four native plane owners and Play authority remain unchanged.",
+        "The Play material surface never receives the optical shader."
+      ],
+      "sources": [
+        "../godot/scripts/depth/strata_optical_renderer.gd",
+        "../godot/scripts/depth/workbench_strata_controller.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "SO02",
+      "query": "How do Strata Classic, bypass and the optical comparison wipe preserve the original presentation?",
+      "canonical": [
+        "systems/strata-optics.md"
+      ],
+      "facts": [
+        "Classic and bypass restore original haze material objects.",
+        "The one-draw wipe uses Classic parallax for shared alignment, without duplicate scene rendering.",
+        "Temporary inspection state does not rewrite authored optics."
+      ],
+      "sources": [
+        "../godot/scripts/depth/strata_optical_renderer.gd",
+        "../godot/shaders/strata_optical_plane.gdshader"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "SO03",
+      "query": "Which Strata optics values survive scene Save and a fresh process, and what happens to old v1/v2 files?",
+      "canonical": [
+        "systems/strata-optics.md"
+      ],
+      "facts": [
+        "Old documents without optics open in Classic and retain their version until an explicit optical edit.",
+        "CYSSTRAT v3 embeds complete validated optical configuration, while material layouts/provenance persist.",
+        "Wipe, bypass, inspection focus and clarity assistance are temporary; quality is an application preference."
+      ],
+      "sources": [
+        "../godot/scripts/depth/workbench_layer_document.gd",
+        "../godot/scripts/depth/strata_optics_presets.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "SO04",
+      "query": "How should I use the Strata Optics Lab to distinguish physical platforms from decorative stairs without blurring the architecture?",
+      "canonical": [
+        "operations/strata-optical-composition.md",
+        "operations/strata-optics-evaluation.md"
+      ],
+      "facts": [
+        "Inspect Play Solo first, then compare Architectural, Gameplay Clarity and Classic at the same camera.",
+        "Combine modest tonal/detail/saturation/scattering cues; colour or blur alone does not prove physical readability.",
+        "Reject treatments that obscure a real passage or small actor even if attractive."
+      ],
+      "sources": [
+        "../godot/scripts/depth/strata_optical_profiles.gd",
+        "../godot/scripts/depth/strata_optics_fixtures.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "SO05",
+      "query": "How does Strata optical actor reveal find actors without changing native opacity or querying physics?",
+      "canonical": [
+        "systems/strata-optics.md"
+      ],
+      "facts": [
+        "It reads already-published overlay bounds, at most64physicalrenderparts/eightactorrectangles plus existing sampledplayer.",
+        "Only rear content is attenuated; no native World/session/Rapier queries or new texture are introduced.",
+        "Conservative visual rectangles and tiny overview actors remain limitations."
+      ],
+      "sources": [
+        "../godot/scripts/actor_presentation_bounds.gd",
+        "../godot/scripts/depth/workbench_strata_presentation.gd"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "SO06",
+      "query": "Does the Strata003 portable evaluator or hosted FPS constitute Windows11 NVIDIA acceptance, and is the45second admission target relaxed?",
+      "canonical": [
+        "operations/strata-optics-evaluation.md",
+        "systems/strata-optics.md"
+      ],
+      "facts": [
+        "Hosted software-rendered evidence is distinct from physical owner acceptance and actual simulation progression.",
+        "The45second target and originalfive extractedWindowsmisses remain unchanged.",
+        "Draft/HOLD does not authorize merge,Ready promotion,release or defaultactivation."
+      ],
+      "sources": [
+        "../tools/ci/qualify_strata3_workbench.py",
+        "../tools/package_strata3_workbench.py"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

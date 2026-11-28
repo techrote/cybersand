@@ -1,0 +1,227 @@
+{
+  "cohort": "original extracted-package Windows run45721790366 artifact15080936111; separate from original source campaign",
+  "input_sha256": "7de2d920e400cd950048cd5ed591b101974534bb2af031f0bd4487170745b101",
+  "interpretation": "Threshold flags only, not automatic acceptance. Every rate recomputed from actual counters and elapsed time; p95/p99 from consecutive completed physical timestamps. Hosted software renderer only.",
+  "p95_limit_ms": 254.37599999999998,
+  "prior_full_frozen_reader_pass": true,
+  "reader_completion_receipt": "package-reader-completion-a.json",
+  "schema": "strata3-extracted-package-progression-recompute-a-v1",
+  "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "summary": {
+    "architectural": {
+      "median_native": 3.913319360584722,
+      "median_p95_ms": 255.069,
+      "median_p99_ms": 694.535,
+      "median_rapier": 3.9572892410407303,
+      "native_rate_flag": false,
+      "native_ratio": 0.78258824392256,
+      "p95_flag": false,
+      "rapier_rate_flag": false,
+      "rapier_ratio": 0.7825882439225601,
+      "repeats": [
+        {
+          "decorative_uploads": 0,
+          "native": 3.8883639354856636,
+          "native_captures": 0,
+          "p95_ms": 255.069,
+          "p99_ms": 729.063,
+          "rapier": 3.9320534179068507,
+          "repeat": 0,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 4.000541196809096,
+          "native_captures": 0,
+          "p95_ms": 250.781,
+          "p99_ms": 694.535,
+          "rapier": 4.045491097896839,
+          "repeat": 1,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 3.913319360584722,
+          "native_captures": 0,
+          "p95_ms": 260.035,
+          "p99_ms": 690.11,
+          "rapier": 3.9572892410407303,
+          "repeat": 2,
+          "steps": 90
+        }
+      ]
+    },
+    "cinematic_deep_focus": {
+      "median_native": 4.029827789158142,
+      "median_p95_ms": 247.462,
+      "median_p99_ms": 695.528,
+      "median_rapier": 4.0751067530812675,
+      "native_rate_flag": false,
+      "native_ratio": 0.8058876780136806,
+      "p95_flag": true,
+      "rapier_rate_flag": false,
+      "rapier_ratio": 0.8058876780136807,
+      "repeats": [
+        {
+          "decorative_uploads": 0,
+          "native": 4.024152329267538,
+          "native_captures": 0,
+          "p95_ms": 250.22,
+          "p99_ms": 688.075,
+          "rapier": 4.069367523978409,
+          "repeat": 0,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 4.074402247421967,
+          "native_captures": 0,
+          "p95_ms": 246.616,
+          "p99_ms": 695.528,
+          "rapier": 4.120182047954799,
+          "repeat": 1,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 4.029827789158142,
+          "native_captures": 0,
+          "p95_ms": 247.462,
+          "p99_ms": 707.975,
+          "rapier": 4.0751067530812675,
+          "repeat": 2,
+          "steps": 90
+        }
+      ]
+    },
+    "classic": {
+      "median_native": 5.000483192757953,
+      "median_p95_ms": 211.98,
+      "median_p99_ms": 534.03,
+      "median_rapier": 5.056668397170963,
+      "native_rate_flag": true,
+      "native_ratio": 1.0,
+      "p95_flag": true,
+      "rapier_rate_flag": true,
+      "rapier_ratio": 1.0,
+      "repeats": [
+        {
+          "decorative_uploads": 0,
+          "native": 4.527459627650528,
+          "native_captures": 0,
+          "p95_ms": 219.968,
+          "p99_ms": 225.971,
+          "rapier": 4.578329960545479,
+          "repeat": 0,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 5.000483192757953,
+          "native_captures": 0,
+          "p95_ms": 211.98,
+          "p99_ms": 534.03,
+          "rapier": 5.056668397170963,
+          "repeat": 1,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 5.008893036327363,
+          "native_captures": 0,
+          "p95_ms": 210.969,
+          "p99_ms": 555.002,
+          "rapier": 5.065172733364749,
+          "repeat": 2,
+          "steps": 90
+        }
+      ]
+    },
+    "diorama": {
+      "median_native": 3.6750522136140202,
+      "median_p95_ms": 272.173,
+      "median_p99_ms": 762.816,
+      "median_rapier": 3.7163449351153015,
+      "native_rate_flag": false,
+      "native_ratio": 0.7349394192418217,
+      "p95_flag": false,
+      "rapier_rate_flag": false,
+      "rapier_ratio": 0.7349394192418218,
+      "repeats": [
+        {
+          "decorative_uploads": 0,
+          "native": 3.677501771398887,
+          "native_captures": 0,
+          "p95_ms": 268.241,
+          "p99_ms": 278.481,
+          "rapier": 3.7188220160213463,
+          "repeat": 0,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 3.6750522136140202,
+          "native_captures": 0,
+          "p95_ms": 272.173,
+          "p99_ms": 762.816,
+          "rapier": 3.7163449351153015,
+          "repeat": 1,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 3.6234256012199464,
+          "native_captures": 0,
+          "p95_ms": 276.895,
+          "p99_ms": 774.09,
+          "rapier": 3.664138248424665,
+          "repeat": 2,
+          "steps": 90
+        }
+      ]
+    },
+    "gameplay_clarity": {
+      "median_native": 3.7844227800650385,
+      "median_p95_ms": 267.35,
+      "median_p99_ms": 746.425,
+      "median_rapier": 3.826944384335432,
+      "native_rate_flag": false,
+      "native_ratio": 0.7568114188536625,
+      "p95_flag": false,
+      "rapier_rate_flag": false,
+      "rapier_ratio": 0.7568114188536625,
+      "repeats": [
+        {
+          "decorative_uploads": 0,
+          "native": 3.532555575732137,
+          "native_captures": 0,
+          "p95_ms": 288.326,
+          "p99_ms": 790.22,
+          "rapier": 3.5722472114145205,
+          "repeat": 0,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 3.7844227800650385,
+          "native_captures": 0,
+          "p95_ms": 267.35,
+          "p99_ms": 740.636,
+          "rapier": 3.826944384335432,
+          "repeat": 1,
+          "steps": 90
+        },
+        {
+          "decorative_uploads": 0,
+          "native": 3.7935034931347387,
+          "native_captures": 0,
+          "p95_ms": 263.316,
+          "p99_ms": 746.425,
+          "rapier": 3.836127127889062,
+          "repeat": 2,
+          "steps": 90
+        }
+      ]
+    }
+  }
+}

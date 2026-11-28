@@ -1,0 +1,37 @@
+{
+  "schema": "strata2-lead-focused-flatten-review-v1",
+  "utc": "2026-11-25T00:32:43.321202+00:00",
+  "application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "reviewed_report_sha256": "c01ace73f4d58ce762d531d67e68a7f0b452cf7dee2c1601534082285bffec1f",
+  "independently_verified_inventory_files": 21,
+  "cases": [
+    {
+      "label": "test_workbench_flatten-author",
+      "checks": 194,
+      "pid": 32,
+      "seconds": 17.1812372280001
+    },
+    {
+      "label": "test_workbench_flatten-reopen",
+      "checks": 43,
+      "pid": 255,
+      "seconds": 8.801016498000536
+    },
+    {
+      "label": "test_workbench_flatten_owner_failure-author",
+      "checks": 53,
+      "pid": 482,
+      "seconds": 7.23904218700045
+    },
+    {
+      "label": "test_workbench_flatten_owner_failure-reopen",
+      "checks": 44,
+      "pid": 706,
+      "seconds": 7.747768706998613
+    }
+  ],
+  "raw_expected_planes_hashed": 2,
+  "source_runtime_equal_before_after": true,
+  "method": "Lead read the external runner and original results, independently rehashed all inventoried evidence and retained LE16 planes; no new Godot invocation.",
+  "scope": "Separate local Linux headless,512-square/1worker ordinary default-OFF Strata; no active-four-plane Flatten or storage-interruption claim."
+}

@@ -20,6 +20,9 @@ var copied_patch_bytes: int = 0
 var last_rejection: String = ""
 var static_bake: bool = false
 var material_surface_size: Vector2i = MATERIAL_SURFACE_SIZE
+# Standalone depth tools retain their historical 1024-square backing. The
+# Workbench adapter explicitly supplies its admitted native plane dimensions.
+var native_size: Vector2i = NATIVE_SIZE
 var render_enabled: bool = true
 var bake_requests: int = 0
 var _configured: bool = false
@@ -29,16 +32,20 @@ var cell_texture: ImageTexture
 var _material_rect: TextureRect
 var _material: ShaderMaterial
 
-func configure(id: String, frozen: bool = false, authored_size: Vector2i = MATERIAL_SURFACE_SIZE) -> bool:
+func configure(id: String, frozen: bool = false, authored_size: Vector2i = MATERIAL_SURFACE_SIZE,
+		backing_size: Vector2i = NATIVE_SIZE) -> bool:
+	if backing_size.x < 8 or backing_size.y < 8 or backing_size.x > 2048 or backing_size.y > 2048:
+		return _reject("Material backing dimensions must be within 8..2048 cells on each axis")
 	if (authored_size.x < 8 or authored_size.y < 8
-			or authored_size.x > NATIVE_SIZE.x or authored_size.y > NATIVE_SIZE.y):
-		return _reject("Material surface dimensions must be within 8..1024 cells on each axis")
+			or authored_size.x > backing_size.x or authored_size.y > backing_size.y):
+		return _reject("Material surface dimensions must be within the admitted backing")
 	if _configured:
-		return id == layer_id and frozen == static_bake and authored_size == material_surface_size
+		return id == layer_id and frozen == static_bake and authored_size == material_surface_size and backing_size == native_size
 	_configured = true
 	layer_id = id
 	static_bake = frozen
 	material_surface_size = authored_size
+	native_size = backing_size
 	# Each material plane needs its own canvas; inherited World2D would draw
 	# every sibling plane into all four viewport textures.
 	world_2d = World2D.new()
@@ -47,7 +54,7 @@ func configure(id: String, frozen: bool = false, authored_size: Vector2i = MATER
 	render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
 	render_enabled = not static_bake
 	render_target_update_mode = SubViewport.UPDATE_ALWAYS if render_enabled else SubViewport.UPDATE_ONCE
-	cell_image = Image.create(NATIVE_SIZE.x, NATIVE_SIZE.y, false, Image.FORMAT_RG8)
+	cell_image = Image.create(native_size.x, native_size.y, false, Image.FORMAT_RG8)
 	cell_image.fill(Color(0.0, 0.0, 0.0, 1.0))
 	# RenderingServer may retain this Image in its separate-owner queue.
 	# Later packets mutate cell_image, so creation needs its own snapshot too.
@@ -67,7 +74,7 @@ func configure(id: String, frozen: bool = false, authored_size: Vector2i = MATER
 	_material = ShaderMaterial.new()
 	_material.shader = CyberPaletteShader.for_current_renderer(load("res://shaders/material_palette.gdshader"))
 	_material_rect.material = _material
-	_material.set_shader_parameter("world_size_px", Vector2(NATIVE_SIZE))
+	_material.set_shader_parameter("world_size_px", Vector2(native_size))
 	_material.set_shader_parameter("view_size_px", Vector2(material_surface_size))
 	_material.set_shader_parameter("view_rect_uv", Vector4(0.0, 0.0, 1.0, 1.0))
 	_material.set_shader_parameter("camera_origin_px", Vector2.ZERO)
@@ -89,6 +96,12 @@ func set_source_texture(texture: Texture2D) -> void:
 	_material_rect.texture = texture
 	_material.set_shader_parameter("current_world_texture", texture)
 	_material.set_shader_parameter("previous_world_texture", texture)
+
+func freeze_material_time(value: float) -> bool:
+	if _material == null or not is_finite(value) or value < 0.0:
+		return _reject("A frozen material presentation time must be finite and nonnegative")
+	_material.set_shader_parameter("presentation_time_override", value)
+	return true
 
 func apply_packet(packet: Dictionary) -> bool:
 	var error: String = _validate_packet(packet)
@@ -133,7 +146,7 @@ func apply_packet(packet: Dictionary) -> bool:
 		if not render_enabled: render_target_update_mode = SubViewport.UPDATE_ONCE
 		upload_count += 1
 		# ImageTexture.update uploads the complete backing image.
-		uploaded_bytes += MAX_PAYLOAD_BYTES
+		uploaded_bytes += native_size.x * native_size.y * 2
 		copied_patch_bytes += compacted_bytes
 	var incoming_generation: int = int(packet["reset_generation"])
 	if incoming_generation != reset_generation:
@@ -163,7 +176,7 @@ func diagnostics() -> Dictionary:
 		"uploaded_bytes": uploaded_bytes,
 		"copied_patch_bytes": copied_patch_bytes,
 		"last_rejection": last_rejection,
-		"native_texture_size": NATIVE_SIZE,
+		"native_texture_size": native_size,
 		"material_surface_size": size,
 		"static_bake": static_bake,
 		"render_enabled": render_enabled,
@@ -201,7 +214,7 @@ func _validate_packet(packet: Dictionary) -> String:
 		return "patch metadata stride is malformed"
 	if rectangles.size() / META_STRIDE > MAX_PATCHES:
 		return "patch count exceeds bounded capacity"
-	if cells.size() > MAX_PAYLOAD_BYTES:
+	if cells.size() > native_size.x * native_size.y * 2:
 		return "patch payload exceeds RG8 backing capacity"
 	if rectangles.is_empty():
 		if not cells.is_empty():
@@ -219,7 +232,7 @@ func _validate_packet(packet: Dictionary) -> String:
 		var stride: int = rectangles[offset + 5]
 		if width <= 0 or height <= 0:
 			return "patch dimensions must be positive"
-		if x < 0 or y < 0 or x + width > NATIVE_SIZE.x or y + height > NATIVE_SIZE.y:
+		if x < 0 or y < 0 or x + width > native_size.x or y + height > native_size.y:
 			return "patch rectangle exceeds native backing"
 		if data_offset < 0 or stride < width * 2:
 			return "patch payload offset/stride is invalid"
@@ -227,12 +240,12 @@ func _validate_packet(packet: Dictionary) -> String:
 		if required_end > cells.size():
 			return "patch requires payload bytes outside supplied buffer"
 		staged_area += width * height
-		if staged_area > NATIVE_SIZE.x * NATIVE_SIZE.y:
+		if staged_area > native_size.x * native_size.y:
 			return "cumulative staged patch area exceeds one backing image"
 	if bool(packet.get("full_refresh", false)):
 		if rectangles.size() != META_STRIDE:
 			return "full refresh must contain exactly one rectangle"
-		if rectangles[0] != 0 or rectangles[1] != 0 or rectangles[2] != NATIVE_SIZE.x or rectangles[3] != NATIVE_SIZE.y:
+		if rectangles[0] != 0 or rectangles[1] != 0 or rectangles[2] != native_size.x or rectangles[3] != native_size.y:
 			return "full refresh does not cover the native backing"
 	return ""
 

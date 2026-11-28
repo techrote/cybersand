@@ -1,0 +1,423 @@
+{
+  "schema": "strata003-independent-shader-cost-v1-rejection-review-v1",
+  "assessor": "Specialist C",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "observer_source": "c1b13096da9dbbe1c3c45f9ee4c48fa009e6f14e",
+  "run_id": 45730815481,
+  "artifact_id": 15075884273,
+  "zip_sha256": "60f8265419830d411022978f70311575a6877b1fa3faa1f6a7fb56db57bf0564",
+  "zip_bytes": 14690912,
+  "original_annex_sha256": "3ffb0dbcca296f8b0f4cb0d1a54c971bf712880401ecffd82326869a94da2f86",
+  "progression_report_sha256": "985d6b157863e93b7b49f95be9d7fd5756e78c174d1c5220a64f396c67999ae1",
+  "original_annex_completed": false,
+  "original_annex_failures": [
+    "Actual shader, bounded resources or native isolation changed"
+  ],
+  "recorded_file_hashes_independently_verified": 70,
+  "original_gd_report_completed": true,
+  "original_gd_checks": 4007,
+  "original_gd_failures": [],
+  "actual_backend": "llvmpipe (LLVM 20.1.2, 256 bits)",
+  "retained_initial_c_review_sha256": "23ab36deec44fc14a57867838ec06ba05c8dc15f08302281c4ef1489260cad65",
+  "synthetic_fixture_scope": {
+    "assertions_per_shader": 109,
+    "failures_per_shader": 0,
+    "png_pairs": 18,
+    "compared_rgba_bytes": 884736,
+    "changed_channels": 0,
+    "classic_partial_opacity_wipe_compared_bytes_each_shader": 16384,
+    "pairs": [
+      {
+        "filename": "actor-reveal.png",
+        "original_sha256": "9cd813a26ff531bd609c25224b0317ad3c78358da94e8c36d7ac946629e7adb9",
+        "candidate_sha256": "9cd813a26ff531bd609c25224b0317ad3c78358da94e8c36d7ac946629e7adb9",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "classic-alpha.png",
+        "original_sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+        "candidate_sha256": "edc2d8ae184c4e160b9011413278ba14d4356f9cb198e7a58304742b29735aa3",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "detail-preserving.png",
+        "original_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+        "candidate_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-0.png",
+        "original_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+        "candidate_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-1.png",
+        "original_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+        "candidate_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-2.png",
+        "original_sha256": "f9e99fd295504513f1275489e3031d97b73ed047ebac3fd00b71016864893169",
+        "candidate_sha256": "f9e99fd295504513f1275489e3031d97b73ed047ebac3fd00b71016864893169",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-3.png",
+        "original_sha256": "891695725a52bf2151cae5f16d799847eba2e885ea9baa85cf1588f97972b37d",
+        "candidate_sha256": "891695725a52bf2151cae5f16d799847eba2e885ea9baa85cf1588f97972b37d",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-aperture-6.png",
+        "original_sha256": "37f64920bd583fb9eb8c19cbb03a0c685c2191cd3886218423d22221aea654ea",
+        "candidate_sha256": "37f64920bd583fb9eb8c19cbb03a0c685c2191cd3886218423d22221aea654ea",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-detail.png",
+        "original_sha256": "5793ad31e4cc4ca68cd76ed8fe996afb6d8125556ef2b251d4353f14a6bd3cdc",
+        "candidate_sha256": "5793ad31e4cc4ca68cd76ed8fe996afb6d8125556ef2b251d4353f14a6bd3cdc",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-diffusion.png",
+        "original_sha256": "eab920e760cd4902d7b34a55c1e7bb8b47a6bd96d889bec4f8839d74ce42b764",
+        "candidate_sha256": "eab920e760cd4902d7b34a55c1e7bb8b47a6bd96d889bec4f8839d74ce42b764",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-haze-opacity-classic.png",
+        "original_sha256": "cea45e6d7b1ff00a134b7fd304bbe2d76f6535e38ae753e6bd8275af6c00dec1",
+        "candidate_sha256": "cea45e6d7b1ff00a134b7fd304bbe2d76f6535e38ae753e6bd8275af6c00dec1",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-haze-opacity-wipe.png",
+        "original_sha256": "e2c0afb92f2e84a119b75623e6c8bb19f7e7e27dcc74d35eeed87cf4b29308d9",
+        "candidate_sha256": "e2c0afb92f2e84a119b75623e6c8bb19f7e7e27dcc74d35eeed87cf4b29308d9",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-low-aperture.png",
+        "original_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+        "candidate_sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "frequency-reference.png",
+        "original_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+        "candidate_sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "highlight-diffusion.png",
+        "original_sha256": "fcf964af5ceed57d1c135e3178edbf626783c9c39bd33a66be6a5d39488512c3",
+        "candidate_sha256": "fcf964af5ceed57d1c135e3178edbf626783c9c39bd33a66be6a5d39488512c3",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "pixel-aperture.png",
+        "original_sha256": "0896271680a73490fe93af9005964499df9a98dbbfc9a8b9a370a65fda1f3f8d",
+        "candidate_sha256": "0896271680a73490fe93af9005964499df9a98dbbfc9a8b9a370a65fda1f3f8d",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "processed-alpha.png",
+        "original_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+        "candidate_sha256": "7c5e71cdcb8efd081c80f15f79e061d05c6722e6629f6eeece587830d744b492",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      },
+      {
+        "filename": "wipe-alpha.png",
+        "original_sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+        "candidate_sha256": "1b60aa3b09975d3e63a386e847226558053d08f9227e5cfd825d4e1bba30ccd7",
+        "size": [
+          192,
+          64
+        ],
+        "compared_rgba_bytes": 49152,
+        "changed_channels": 0
+      }
+    ]
+  },
+  "native_window_identity_witnesses": [
+    {
+      "case_id": "classic-original",
+      "repeat": 0,
+      "variant": "original",
+      "declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "capture_declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "classic",
+      "material_count": 0,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-original",
+      "repeat": 0,
+      "variant": "original",
+      "declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "capture_declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "architectural",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-empty-coverage",
+      "repeat": 0,
+      "variant": "empty-coverage",
+      "declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "capture_declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "architectural",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-original",
+      "repeat": 0,
+      "variant": "original",
+      "declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "capture_declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "gameplay_clarity",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-empty-coverage",
+      "repeat": 0,
+      "variant": "empty-coverage",
+      "declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "capture_declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "gameplay_clarity",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-empty-coverage",
+      "repeat": 1,
+      "variant": "empty-coverage",
+      "declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "capture_declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "gameplay_clarity",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-original",
+      "repeat": 1,
+      "variant": "original",
+      "declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "capture_declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "gameplay_clarity",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-empty-coverage",
+      "repeat": 1,
+      "variant": "empty-coverage",
+      "declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "capture_declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "architectural",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-original",
+      "repeat": 1,
+      "variant": "original",
+      "declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "capture_declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "architectural",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "classic-original",
+      "repeat": 1,
+      "variant": "original",
+      "declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "capture_declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "classic",
+      "material_count": 0,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "classic-original",
+      "repeat": 2,
+      "variant": "original",
+      "declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "capture_declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "classic",
+      "material_count": 0,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-original",
+      "repeat": 2,
+      "variant": "original",
+      "declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "capture_declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "architectural",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "architectural-empty-coverage",
+      "repeat": 2,
+      "variant": "empty-coverage",
+      "declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "capture_declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "architectural",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-original",
+      "repeat": 2,
+      "variant": "original",
+      "declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "capture_declared_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "gameplay_clarity",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    },
+    {
+      "case_id": "clarity-empty-coverage",
+      "repeat": 2,
+      "variant": "empty-coverage",
+      "declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "capture_declared_shader_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+      "actual_presenter_shader_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+      "profile": "gameplay_clarity",
+      "material_count": 3,
+      "callbacks": 90,
+      "completed_physical_steps": 90
+    }
+  ],
+  "native_candidate_performance_disposition": "REJECTED. All six A1-labelled windows actually reported the original presenter shader; no A1 native performance or A1 native-world pixel equivalence can be inferred.",
+  "application_after_receipt_present": false,
+  "source_review_correction": "Initial source review assumed the external preload reference was the live presenter resource. Actual execution disproved that assumption. Initial review retained unchanged; new before-timer live constant/material attachment assertions and strict reader witnesses required.",
+  "limits": [
+    "Synthetic fixture RGBA equality remains valid in its separately hashed wrapper process, which mutates the Renderer constant used by the fixture.",
+    "The failed annex did not reach a successful application-after custody gate; do not report it as passed.",
+    "Actual native progression rows remain raw evidence, but labels cannot support an original-versus-A1 cost claim.",
+    "No original report or reader predicate was modified to manufacture acceptance.",
+    "Final application fd0830ab and its enabled-optics performance HOLD remain unchanged."
+  ],
+  "interpretation_correction": "c-shader-identity-correction.md supersedes the detached-resource/original-versus-original inference. Original raw hashes and strict rejection remain. Native A1 performance is unadmitted."
+}

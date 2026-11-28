@@ -1,0 +1,450 @@
+{
+  "schema": "strata-independent-extracted-lifecycle-review-v1",
+  "status": "passed_targeted_extracted_review",
+  "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+  "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+  "original_directory": "/workspace/scratch/f1ade3e61398/final-evidence/package-evidence",
+  "campaign_report_sha256": "7eb196d6e64227f486f151185b2a1a24580361f304f11806994d85b63abfdbd8",
+  "platform": "win32",
+  "scenes": [
+    {
+      "scene": "industrial-assembly",
+      "install": {
+        "engine_pid": 712,
+        "console_pid": 5836,
+        "report_sha256": "0a10fbf32bd39cdb34212ac40602a509f97f229025579300e3eea247e2095a6f",
+        "original_process_sha256": "4c0d95c5cdaf894465c3afda2fc60866331e0cd7e7c8e2a9d58fb5e9e3ae21e2",
+        "checks": 880,
+        "retired_worlds": 3,
+        "zero_live_pending_after_teardown": true,
+        "owner_session": "5b7b6e9439fd51c4f004e67d045a060d",
+        "play_worker_id": "-9223371957733423621",
+        "play_world_generation": 3,
+        "physical_actor_session_id": "371011363860",
+        "registered_actor_ids": [
+          1
+        ],
+        "bootstrap_elapsed_ms": 68754,
+        "deadline_rechecks": [
+          {
+            "elapsed_ms": 87289,
+            "label": "play and all three decorative native owners adopted",
+            "limit_ms": 45000
+          }
+        ]
+      },
+      "fresh_reopen": {
+        "engine_pid": 1084,
+        "console_pid": 1840,
+        "report_sha256": "5cd08a0f92ad17a589ce8fea04ab90c95c123e9e9a99fbf6de0edaf817528fe3",
+        "original_process_sha256": "c4993a25ed0677e9456d1bbcd272a884fb6a9c7af1fa8a8bb0166c1631f1c54f",
+        "checks": 162,
+        "retired_worlds": 3,
+        "zero_live_pending_after_teardown": true,
+        "owner_session": "379dc061fdb777005c5216f31bbce319",
+        "play_worker_id": "-9223371958404512261",
+        "play_world_generation": 3,
+        "physical_actor_session_id": "306368750612",
+        "registered_actor_ids": [
+          1
+        ],
+        "bootstrap_elapsed_ms": 5904,
+        "deadline_rechecks": []
+      },
+      "same_saved_bytes_sha256": "f00847692b694e392cafeed4dbcf39024b27ce8461c63551c2e3544bdaf2a488",
+      "saved_file_bytes": 22750,
+      "all_four_native_hashes_match_independent_saved_layout_replay": {
+        "play": "8f52fc578c3a9191a501344740a531f9fefe5010c6eb24ff41b7e0e59b875156",
+        "scripted": "77b24f6f4b8c480ccfd0dcc9cc7b40493a5cf58744a9bd83a81cd74711b615af",
+        "effects": "8f23683c735de8a3d0bbf910be6c77879c6fe24a8b9874c78ca2aea7787ef95c",
+        "background": "f3ad2d641ac4c947f7a44adeeb8b2afa25387f17babdfc63b790dc32be4011b3"
+      },
+      "mode_transitions_preserving_exact_identity": 12,
+      "live_actor_play": {
+        "after": {
+          "actor_body_ids": [
+            "371128804379"
+          ],
+          "actor_session_id": "371011363860",
+          "native_tick": 9,
+          "physical_epoch": 1,
+          "rapier_tick": 10,
+          "worker_id": "-9223371957733423621",
+          "world_generation": 3
+        },
+        "before": {
+          "actor_body_ids": [
+            "371128804379"
+          ],
+          "actor_session_id": "371011363860",
+          "native_tick": 0,
+          "physical_epoch": 1,
+          "rapier_tick": 0,
+          "worker_id": "-9223371957733423621",
+          "world_generation": 3
+        },
+        "distance": 0.5350341796875,
+        "position_after": [
+          534.0,
+          624.535034179688
+        ],
+        "position_before": [
+          534.0,
+          624.0
+        ]
+      },
+      "native_play_unchanged_by_decorative_edit": true,
+      "executed_refusals": {
+        "hidden": true,
+        "invalid_document": true,
+        "locked": true,
+        "outside": true,
+        "stale_generation": true
+      },
+      "authored_layout_reopen_not_exact_physical_continuation": true
+    },
+    {
+      "scene": "arcology",
+      "install": {
+        "engine_pid": 6680,
+        "console_pid": 5892,
+        "report_sha256": "70a01d56c5bca7ddcb3b6e7d4efb017da66b6933bd45d3ecdbaec98b4c4d871c",
+        "original_process_sha256": "6f74d4d06361166589914a1d08eda8ab04494bc2fe746052c35ddbf5a01e7cce",
+        "checks": 880,
+        "retired_worlds": 3,
+        "zero_live_pending_after_teardown": true,
+        "owner_session": "b3853c319375395c00bad24afcc57ea7",
+        "play_worker_id": "-9223371957733423621",
+        "play_world_generation": 3,
+        "physical_actor_session_id": "372319986708",
+        "registered_actor_ids": [
+          1
+        ],
+        "bootstrap_elapsed_ms": 70873,
+        "deadline_rechecks": [
+          {
+            "elapsed_ms": 74863,
+            "label": "play and all three decorative native owners adopted",
+            "limit_ms": 45000
+          }
+        ]
+      },
+      "fresh_reopen": {
+        "engine_pid": 4732,
+        "console_pid": 6652,
+        "report_sha256": "ce1748ee4194c6f8c926d7f2340ab1a3ac564583d02c7607ed78941fe4396533",
+        "original_process_sha256": "94f9842926554fcedb97d1865a0e4e44b4bb6bdfb5f8c6eed08ae0b0f49a28da",
+        "checks": 162,
+        "retired_worlds": 3,
+        "zero_live_pending_after_teardown": true,
+        "owner_session": "488d5f268d9458d9092cc62c8399e338",
+        "play_worker_id": "-9223371958404512261",
+        "play_world_generation": 3,
+        "physical_actor_session_id": "305362117652",
+        "registered_actor_ids": [
+          1
+        ],
+        "bootstrap_elapsed_ms": 5493,
+        "deadline_rechecks": []
+      },
+      "same_saved_bytes_sha256": "d15cf80b2c429ee05ec3b40a58fe80b3e6fa542acdfccbb5591752901718413c",
+      "saved_file_bytes": 21965,
+      "all_four_native_hashes_match_independent_saved_layout_replay": {
+        "play": "9e77d5ffbcc6813bbe79fce92ec0365108e9f8b546946b14d4ab19b910af19d3",
+        "scripted": "05bd73e04c452d03da02acad31750c287e2005f4cee54a7e1182b05877f9fd3f",
+        "effects": "aad3835b9c1c49ea225858425509e22921200a872cb34dc3746556f2cd3e67ce",
+        "background": "3b8528c5d54dddb54edea15b7325283ccb6178d05d2fb1a93f1ea44588808356"
+      },
+      "mode_transitions_preserving_exact_identity": 12,
+      "live_actor_play": {
+        "after": {
+          "actor_body_ids": [
+            "372437427227"
+          ],
+          "actor_session_id": "372319986708",
+          "native_tick": 9,
+          "physical_epoch": 1,
+          "rapier_tick": 10,
+          "worker_id": "-9223371957733423621",
+          "world_generation": 3
+        },
+        "before": {
+          "actor_body_ids": [
+            "372437427227"
+          ],
+          "actor_session_id": "372319986708",
+          "native_tick": 0,
+          "physical_epoch": 1,
+          "rapier_tick": 0,
+          "worker_id": "-9223371957733423621",
+          "world_generation": 3
+        },
+        "distance": 0.5350341796875,
+        "position_after": [
+          504.0,
+          655.535034179688
+        ],
+        "position_before": [
+          504.0,
+          655.0
+        ]
+      },
+      "native_play_unchanged_by_decorative_edit": true,
+      "executed_refusals": {
+        "hidden": true,
+        "invalid_document": true,
+        "locked": true,
+        "outside": true,
+        "stale_generation": true
+      },
+      "authored_layout_reopen_not_exact_physical_continuation": true
+    },
+    {
+      "scene": "cavern",
+      "install": {
+        "engine_pid": 3140,
+        "console_pid": 3384,
+        "report_sha256": "f119992437d3ccd2d1d1909c6cdc79d80ff32350a9c9f85e2c8c08dde0c0c439",
+        "original_process_sha256": "6ed531403bcb4b72f72383bc5447eb39e0ea0d4ab2f6e7e791a348257b40a4b5",
+        "checks": 880,
+        "retired_worlds": 3,
+        "zero_live_pending_after_teardown": true,
+        "owner_session": "7c489cab56eded12ba42585d332158f5",
+        "play_worker_id": "-9223371957733423621",
+        "play_world_generation": 3,
+        "physical_actor_session_id": "355324666900",
+        "registered_actor_ids": [
+          1
+        ],
+        "bootstrap_elapsed_ms": 53433,
+        "deadline_rechecks": [
+          {
+            "elapsed_ms": 49164,
+            "label": "play and all three decorative native owners adopted",
+            "limit_ms": 45000
+          }
+        ]
+      },
+      "fresh_reopen": {
+        "engine_pid": 6252,
+        "console_pid": 7240,
+        "report_sha256": "93c57fa37c3eb655366ae792b45a4fdb0047ef004cfd27f7128a25dcd4c841b7",
+        "original_process_sha256": "079aef3a896aab387199723e876d23856d74943c0e490394a6679ee3ffa9ecb7",
+        "checks": 162,
+        "retired_worlds": 3,
+        "zero_live_pending_after_teardown": true,
+        "owner_session": "a02c4e19df339980a4f8c5adc3ac46ed",
+        "play_worker_id": "-9223371958404512261",
+        "play_world_generation": 3,
+        "physical_actor_session_id": "305244677140",
+        "registered_actor_ids": [
+          1
+        ],
+        "bootstrap_elapsed_ms": 5533,
+        "deadline_rechecks": []
+      },
+      "same_saved_bytes_sha256": "d3f35b2fd97154146c457bd654c8760618d7e3fd735c7c7580108b45fff77c48",
+      "saved_file_bytes": 16889,
+      "all_four_native_hashes_match_independent_saved_layout_replay": {
+        "play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+        "scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea",
+        "effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+        "background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856"
+      },
+      "mode_transitions_preserving_exact_identity": 12,
+      "live_actor_play": {
+        "after": {
+          "actor_body_ids": [
+            "355458884635"
+          ],
+          "actor_session_id": "355324666900",
+          "native_tick": 9,
+          "physical_epoch": 1,
+          "rapier_tick": 10,
+          "worker_id": "-9223371957733423621",
+          "world_generation": 3
+        },
+        "before": {
+          "actor_body_ids": [
+            "355458884635"
+          ],
+          "actor_session_id": "355324666900",
+          "native_tick": 0,
+          "physical_epoch": 1,
+          "rapier_tick": 0,
+          "worker_id": "-9223371957733423621",
+          "world_generation": 3
+        },
+        "distance": 0.5350341796875,
+        "position_after": [
+          512.0,
+          603.535034179688
+        ],
+        "position_before": [
+          512.0,
+          603.0
+        ]
+      },
+      "native_play_unchanged_by_decorative_edit": true,
+      "executed_refusals": {
+        "hidden": true,
+        "invalid_document": true,
+        "locked": true,
+        "outside": true,
+        "stale_generation": true
+      },
+      "authored_layout_reopen_not_exact_physical_continuation": true
+    }
+  ],
+  "maximum": {
+    "checks": 82,
+    "engine_pid": 7184,
+    "report_sha256": "5f008e50c22da6a01bbb6483b310950a36170441ab9dc8bacc424813f730a08b",
+    "identity": {
+      "after": {
+        "actor_body_ids": [
+          "356566173202"
+        ],
+        "actor_session_id": "356448732705",
+        "native_tick": 0,
+        "physical_epoch": 1,
+        "rapier_tick": 0,
+        "worker_id": "-9223371957297216004",
+        "world_generation": 3
+      },
+      "before": {
+        "actor_body_ids": [
+          "356566173202"
+        ],
+        "actor_session_id": "356448732705",
+        "native_tick": 0,
+        "physical_epoch": 1,
+        "rapier_tick": 0,
+        "worker_id": "-9223371957297216004",
+        "world_generation": 3
+      }
+    },
+    "whole_play_material_sha256": "2daeb1f36095b44b318410b3f4e8b5d989dcc7bb023d1426c492dab0a3053e74",
+    "native_and_pixel_observations": {
+      "background": {
+        "extent": [
+          2048,
+          2048
+        ],
+        "native_material": 131,
+        "owner": "-9223371609824287790",
+        "pixel_delta": 0.10980392806232,
+        "before_rgb8": [
+          5,
+          7,
+          12
+        ],
+        "after_material_rgb8": [
+          33,
+          32,
+          33
+        ],
+        "separate_guide_rgb8": [
+          98,
+          196,
+          219
+        ],
+        "independent_png_delta": 0.10980392156862745
+      },
+      "effects": {
+        "extent": [
+          2048,
+          2048
+        ],
+        "native_material": 131,
+        "owner": "-9223371609874619437",
+        "pixel_delta": 0.10980392806232,
+        "before_rgb8": [
+          5,
+          7,
+          12
+        ],
+        "after_material_rgb8": [
+          33,
+          32,
+          33
+        ],
+        "separate_guide_rgb8": [
+          98,
+          196,
+          219
+        ],
+        "independent_png_delta": 0.10980392156862745
+      },
+      "scripted": {
+        "extent": [
+          2048,
+          2048
+        ],
+        "native_material": 131,
+        "owner": "-9223371609924951073",
+        "pixel_delta": 0.10980392806232,
+        "before_rgb8": [
+          5,
+          7,
+          12
+        ],
+        "after_material_rgb8": [
+          33,
+          32,
+          33
+        ],
+        "separate_guide_rgb8": [
+          98,
+          196,
+          219
+        ],
+        "independent_png_delta": 0.10980392156862745
+      }
+    },
+    "retired_worlds": 3,
+    "zero_live_pending_after_teardown": true,
+    "paused_control": true
+  },
+  "host_teardowns": 7,
+  "total_retired_decorative_worlds": 21,
+  "distinct_engine_processes": [
+    712,
+    1084,
+    6680,
+    4732,
+    3140,
+    6252,
+    7184
+  ],
+  "ordinary_shipped_cmd": {
+    "receipt_sha256": "2095d31dc1cbad1a00b3f07704e5202b1fe84032c1e658995d0233cbd18668cc",
+    "stdout_sha256": "64318ef4d45202a388adf6a29969e8d8459a5d66a35e02c50d8dc69171054cb1",
+    "stderr_sha256": "adeadf86b9fc0a9f5305a10791cb2669e569e2f711fdb4d10b5f97f6361e6397",
+    "admitted": {
+      "extent": [
+        2048,
+        2048
+      ],
+      "source_revision": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+      "strata_enabled": false,
+      "workbench_script": "res://scripts/shared_workbench.gd",
+      "worker_id": "-9223371959830575630",
+      "world_generation": 2
+    },
+    "same_extracted_directory": "D:\\a\\_temp\\strata owner package",
+    "exit_code": 0
+  },
+  "source_reviewed_without_mounted_fault_injection": [
+    "failed Play ACK while composition staged",
+    "partial native decorative edit quarantine",
+    "committed native edit with failed decorative publication"
+  ],
+  "limits": [
+    "This targeted independent review covers actual extracted actor/material/owner witnesses; C separately owns complete archive, source, payload and campaign custody.",
+    "Fresh process hashes establish saved authored material layouts. Native/Rapier state, evolved simulation and actor velocity are not exact continuation.",
+    "The default2048 maximum control is paused; all three native owner releases do not prove allocator memory return or repeated maximum replacement stress.",
+    "Recorded callback admission overruns remain timing negatives, despite eventual functional success within the separate process timeout.",
+    "Hosted ANGLE/Microsoft Basic Render Driver does not establish physical Windows11/NVIDIA appearance, DPI, interaction or performance."
+  ]
+}

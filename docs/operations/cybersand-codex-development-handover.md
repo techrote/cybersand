@@ -4,11 +4,41 @@ status: Current
 document-kind: guide
 scope: Short onboarding sequence and checkpoint protocol; product intent, source identity and contracts have canonical homes
 canonical-for: [development-onboarding]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-27
 related-documents: [source-checkpoint-and-recovery.md, ../reference/product-intent-and-priorities.md, ../reference/status-and-roadmap.md, microscenarios-programme.md, development-claims-remediation-programme.md, water-hybrid-pressure-extension-programme.md, github-development-and-release.md, ../audits/2026-09-24-cybersand-recovery-audit.md, ../architecture/pressure-optimization.md]
 ---
 
 # Development handover
+
+## RAMCACHE-STRATA-INTEGRATION-001 — 2026-11-28
+
+The owner authorized full integration and delivery of #745 RAMCACHE and #785 Strata Theatre 003 with its intended 002 predecessor. Read the [integration guide](ramcache-strata-integration.md) for acceptance scope, safe mode boundaries and source/runtime/package custody. Preserve current main features, Classic defaults and all historical failures. The optional enhanced-optics 90% retention gate is explicitly waived; unrelated correctness/performance gates remain. Root alone performs final mainline merges. ObjectShard M4 and ongoing PUBPRES remain excluded.
+
+## Strata Theatre 002 successor — 2026-11-24
+
+[Draft PR #776](https://github.com/techrote/cybersand/pull/776) retains immutable
+#769 archival ancestry `80623d039aa49bc0c1d84a9206d89812ffa99ea6` over accepted
+main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. It extends the ordinary borrowed-Play
+[composition contract](../systems/strata-workbench.md) with reviewed local
+[native/raster import and layered construction](../systems/strata-authoring.md),
+bounded presentation-only atmosphere and five [native environments](../systems/strata-environments.md).
+The ordinary World, worker, camera, actor session and publication remain owned
+by Workbench. Three decorative native Worlds remain static at zero Hz.
+
+Read the [successor decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md)
+for source/runtime/package custody and exact qualification status; the
+[owner guide](strata-workbench-evaluation.md) covers import, composition,
+atmosphere and fresh-process authored Save. The original #769 application and
+acceptance package are preserved; their passes cannot qualify this union.
+#770 contributes a source-pinned read-only module schema adapter, not its moving
+application. Art #773 remains Play-only and no model-provider permission is
+extended. PUBPRES, AMBIENT and all other active programmes remain independently
+owned and unimported. Keep Draft/HOLD: no Ready, merge, default activation or
+physical Windows/NVIDIA acceptance is implied.
+
+## Persistent authored areas
+
+[PR #745](https://github.com/techrote/cybersand/pull/745) combines the three-area Current/FreeMass continuation, resident World handoff, bounded catch-up and acknowledged durable publication. The [ownership contract](../systems/persistent-area-residency.md) and [evaluation guide](persistent-area-ramcache-evaluation.md) describe the actor-free domain, strict and deferred modes, and physical Windows evaluation.
 
 ## Unified SWARM definitive delivery — 2026-11-24
 

@@ -1,0 +1,76 @@
+{
+  "reviewed_local_commit": "5ef637170cc1c3a3a6ccfd63c0ef445166d44d09",
+  "reviewed_tree": "21d47b1ca2210ad61cfeac8997019586f8e0d639",
+  "published_candidate": "99d3d9ef8cbf112e13979e6d64ed3113b4ec55fc",
+  "active_campaign": "45451508995",
+  "files_sha256": {
+    "tools/ci/qualify_strata_workbench.py": "5f61192b240ba99b592616b61e8268024cccfbf84878f9347b886549f9044e9c",
+    "tools/package_strata_workbench.py": "db32440c2cbf30e39a783cc130d14b3f22dabcd227b9f7eb1555c257b1e5c43d",
+    ".github/workflows/strata-theatre-workbench.yml": "538b778f6406d2b0ac7d60fd07013d778e39b10766dd3ce5e26a3b0169f2637d",
+    "godot/tools/qualify_workbench_strata.gd": "151d2bc502b03c44916969353e2272e4a4a2a98c746f8ea2bfa01abd094c95c0",
+    "godot/tools/qualify_workbench_strata_maximum.gd": "b6866f5782b5c72ab3bb7f8b8b421cf689f1c6f992722fd92c0dc4f6c5396fcc",
+    "godot/scripts/shared_workbench.gd": "bda73dcae01b13da0b59c8f47d17a1c1ba9f10b17557d8e4a278f9c68e8c1b3a",
+    "godot/scripts/depth/workbench_strata_controller.gd": "c483f1437fa6e33fc7cb3c847fd8ac153e5e6fdbb9acedbd8c960d98fd80c548",
+    "godot/scripts/depth/workbench_strata_presentation.gd": "f32bd3dcb58707d40436bc2aed0f078602d6cb09797ee3fe4930beaa775a69ee",
+    "godot/shaders/material_palette.gdshader": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+    "godot/shaders/glow_composite.gdshader": "0685d7df435b76860facfde0bd604e9cfa2e1dbce8a86ae4063b7def67accccf",
+    "tools/ci/test_strata_campaign_custody.py": "7a1988d17c580cf6691d1f3bd56a5fcbdbb13e2c5710c1e057a622216c699c45",
+    "docs/systems/strata-workbench.md": "aaf7314632a5d5f662fadab3f3b0cbd2dc35bdeb3363dea92c49372252fcc72f"
+  },
+  "later_package_verifier_review": {
+    "local_commit": "22ff4bdf0251d58164b68ad1f81d0bbf2cdb479c",
+    "tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+    "scope": "Read-only direct canonical profile selector review; no actual extracted-package pass claimed.",
+    "changed_files": [
+      "tools/ci/test_strata_qualification.py",
+      "tools/package_strata_workbench.py"
+    ],
+    "input_sha256": {
+      "tools/package_strata_workbench.py": "466053a008c4c26942e100b0d8063c94adc7d8eafe5c8b6dd1e9d69a027ded9e",
+      "tools/ci/test_strata_qualification.py": "ba3cf93da7224bdde3af9cc2a4336c854d9fbc743a9ac688218868f9b0e03976"
+    }
+  },
+  "final_source_review": {
+    "published_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+    "local_tree_equivalent_commit": "22ff4bdf0251d58164b68ad1f81d0bbf2cdb479c",
+    "tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+    "workflow_run": 45457176340,
+    "files_sha256": {
+      "tools/ci/qualify_strata_workbench.py": "a0de46a145a7908c5798173a084cefe6a0aef1782a6ebba05af3e29b6223137b",
+      "tools/package_strata_workbench.py": "466053a008c4c26942e100b0d8063c94adc7d8eafe5c8b6dd1e9d69a027ded9e",
+      ".github/workflows/strata-theatre-workbench.yml": "538b778f6406d2b0ac7d60fd07013d778e39b10766dd3ce5e26a3b0169f2637d",
+      "godot/tools/qualify_workbench_strata.gd": "151d2bc502b03c44916969353e2272e4a4a2a98c746f8ea2bfa01abd094c95c0",
+      "godot/tools/qualify_workbench_strata_maximum.gd": "b6866f5782b5c72ab3bb7f8b8b421cf689f1c6f992722fd92c0dc4f6c5396fcc",
+      "godot/scripts/shared_workbench.gd": "bda73dcae01b13da0b59c8f47d17a1c1ba9f10b17557d8e4a278f9c68e8c1b3a",
+      "godot/scripts/depth/workbench_strata_controller.gd": "c483f1437fa6e33fc7cb3c847fd8ac153e5e6fdbb9acedbd8c960d98fd80c548",
+      "godot/scripts/depth/workbench_strata_presentation.gd": "f32bd3dcb58707d40436bc2aed0f078602d6cb09797ee3fe4930beaa775a69ee",
+      "godot/shaders/material_palette.gdshader": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+      "godot/shaders/glow_composite.gdshader": "0685d7df435b76860facfde0bd604e9cfa2e1dbce8a86ae4063b7def67accccf",
+      "tools/ci/test_strata_campaign_custody.py": "7a1988d17c580cf6691d1f3bd56a5fcbdbb13e2c5710c1e057a622216c699c45",
+      "docs/systems/strata-workbench.md": "aaf7314632a5d5f662fadab3f3b0cbd2dc35bdeb3363dea92c49372252fcc72f"
+    },
+    "changes_from_initial_review": {
+      "tools/ci/qualify_strata_workbench.py": {
+        "initial": "5f61192b240ba99b592616b61e8268024cccfbf84878f9347b886549f9044e9c",
+        "final": "a0de46a145a7908c5798173a084cefe6a0aef1782a6ebba05af3e29b6223137b"
+      },
+      "tools/package_strata_workbench.py": {
+        "initial": "db32440c2cbf30e39a783cc130d14b3f22dabcd227b9f7eb1555c257b1e5c43d",
+        "final": "466053a008c4c26942e100b0d8063c94adc7d8eafe5c8b6dd1e9d69a027ded9e"
+      }
+    },
+    "maximum_reviews": "strata-campaign4-maximum-review-a.json",
+    "scope_refresh": "strata-scope-live-refresh.json",
+    "pristine_package_gate": "pending actual extracted execution and shipped-CMD receipt at this observation",
+    "original_campaigns_preserved": true
+  },
+  "final_extracted_lifecycle_review": {
+    "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+    "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+    "status": "passed_targeted_extracted_review",
+    "receipt": "package-lifecycle-review-a.json",
+    "original_campaign_sha256": "7eb196d6e64227f486f151185b2a1a24580361f304f11806994d85b63abfdbd8",
+    "original_launcher_sha256": "2095d31dc1cbad1a00b3f07704e5202b1fe84032c1e658995d0233cbd18668cc",
+    "complete_zip_source_payload_custody_owner": "Specialist C"
+  }
+}

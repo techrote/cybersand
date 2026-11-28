@@ -1,0 +1,48 @@
+{
+  "schema": "strata2-independent-visual-review-v1",
+  "reviewer": "lead",
+  "utc": "2026-11-25T00:23:40.164010+00:00",
+  "application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "run": 45509477752,
+  "artifact": 14976602377,
+  "original_archive_sha256": "7f5c27a5b27674c6bfc7db21e6c382f8d0dbc33c2e48b0d32c740dcff626ecaf",
+  "method": "Direct view_image inspection of six original Windows framebuffer PNGs; no image modification or new Godot execution.",
+  "frames": [
+    {
+      "path": "orbital-terminal/reference-composite.png",
+      "sha256": "5d2c59e864f76b61ab3e52f87e1117400783d6a55a4cf8e0b134dbddb64276f3",
+      "observed": "Bright Play decks, rear trusses and broad lower void are visibly distinct; Overview actor is small."
+    },
+    {
+      "path": "abyss-foundry/reference-composite.png",
+      "sha256": "baea74d283d300b63e6ef07229c1a4922c747b31cefb2d0403133ecf7a6f5b39",
+      "observed": "Connected cavern surfaces surround a large void; central orange rear gantry can be mistaken for a usable floor."
+    },
+    {
+      "path": "neon-rain-arcology/reference-import-rocket-hangar-frame-approval.png",
+      "sha256": "7fd6e27e7b975a25168da422ce097c959bdff171bd181619ed4c4f2af7ba1f38",
+      "observed": "Source, explicit selection mask and native-ID proposal are clearly labeled; actual Scripted rectangle [128,128,512,320] is visible."
+    },
+    {
+      "path": "orbital-terminal/composition-ready-approval.png",
+      "sha256": "9afe2c882bc7cff3c727a5c84b7f0a6ce930f5b75228737bd0a6e5a1e7fe74ef",
+      "observed": "Selected-stage native Before/After and composite proposal are explicit; text separates complete atmosphere replacement approval."
+    },
+    {
+      "path": "neon-rain-arcology/atmosphere-off.png",
+      "sha256": "93ed1ace525438fdc2e9404f042f8b44af18c8f9b0e73ee195de741e1996f863",
+      "observed": "Native diagonal facade texture is present without atmosphere."
+    },
+    {
+      "path": "neon-rain-arcology/atmosphere-on.png",
+      "sha256": "cab2de5076d13d8b00d5d7fc31e48f99a6968165e3d1f0d3d73322df47df9f69",
+      "observed": "Sparse rain and haze preserve route silhouettes in the matched still frame; motion quality is not inferred."
+    }
+  ],
+  "blocking_visual_findings": [],
+  "limits": [
+    "Select Play then Flat or Solo to distinguish decorative rear beams from collision geometry.",
+    "Overview does not show actor movement at a useful inspection scale.",
+    "Static frames do not prove full route traversal, physical Windows display scaling, NVIDIA frame pacing, or owner aesthetic acceptance."
+  ]
+}

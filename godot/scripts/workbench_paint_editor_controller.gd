@@ -1,6 +1,7 @@
 extends HFlowContainer
 
 signal deferred_brush_finished(token: int, receipt: Dictionary)
+signal strata_operation_finished(token: int, receipt: Dictionary)
 signal history_action_finished(receipt: Dictionary)
 signal selection_changed(region: Rect2i)
 
@@ -292,6 +293,9 @@ func cancel_preview() -> void:
 	if _overlay != null: _overlay.queue_redraw()
 
 func cancel() -> void:
+	if bench != null and bench.has_method("strata_edit_action"):
+		var routed: Dictionary = bench.strata_edit_action("cancel")
+		if routed.get("handled",false): return
 	cancel_preview()
 	_history_replay.clear()
 	if _planner != null: _planning_cancelled = true
@@ -345,6 +349,11 @@ func _finish_art_context(operation: Dictionary, receipt: Dictionary) -> void:
 
 func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false, live_brush: bool = false) -> bool:
 	if host == null or bench.applied.is_empty(): return false
+	if bench.has_method("strata_play_edit_reason"):
+		var layer_reason: String = bench.strata_play_edit_reason()
+		if not layer_reason.is_empty():
+			_say(layer_reason)
+			return false
 	if bench.is_flatten_pending() or bool(_current().get("flatten_busy",false)):
 		_say("Wait for Flatten material capture and baseline adoption.")
 		return false
@@ -535,6 +544,9 @@ func _queue_capture(kind: String, region: Rect2i, seed: Vector2i = Vector2i.ZERO
 	return true
 
 func copy_selection() -> bool:
+	if bench != null and bench.has_method("strata_edit_action"):
+		var routed: Dictionary = bench.strata_edit_action("copy")
+		if routed.get("handled",false): return bool(routed.get("ok",false))
 	return _queue_capture("copy",selection)
 
 func fill_at(point: Vector2i) -> bool:
@@ -557,6 +569,29 @@ func paste_at(point: Vector2i) -> bool:
 func commit_cells(cells: PackedInt32Array, label: String = "Paint") -> bool:
 	return _begin_plan({"tool":"Cells","cells":cells.duplicate()},label)
 
+
+func strata_capture(region: Rect2i, token: int) -> bool:
+	# Strata borrows the ordinary queue and its single receipt consumer. It
+	# neither reads the Play World nor competes for worker publications.
+	if token <= 0 or not _queue_capture("strata_capture", region): return false
+	_operation.job = {"strata_token": token}
+	return true
+
+
+func strata_commit(cells: PackedInt32Array, token: int, expected_before: PackedInt32Array = PackedInt32Array()) -> bool:
+	if token <= 0 or cells.is_empty() or cells.size() > 4096 * 3: return false
+	var job := {"tool":"Cells", "cells":cells.duplicate(), "strata_token":token}
+	if not expected_before.is_empty(): job.expected_before = expected_before.duplicate()
+	return _begin_plan(job, "Strata native placement")
+
+
+func strata_stop(token: int) -> void:
+	# Stop only this caller's owned operation; never cancel unrelated painting.
+	if int(_planning_job.get("strata_token", -1)) == token: _planning_cancelled = true
+	if int(_operation.get("job", {}).get("strata_token", -1)) == token:
+		_operation.cancel_requested = true
+		host.simulation_worker.paint_stop()
+
 func begin_deferred_brush(point: Vector2i, material: int, brush_radius: int, token: int) -> bool:
 	if material not in host.simulation_worker.paint_materials() or brush_radius < 0 or brush_radius > 24:
 		_say("Deferred human brush has an unsupported material or radius.")
@@ -567,6 +602,8 @@ func begin_deferred_brush(point: Vector2i, material: int, brush_radius: int, tok
 func _finish_deferred(job: Dictionary, receipt: Dictionary) -> void:
 	if job.has("deferred_art_token"):
 		deferred_brush_finished.emit(int(job.deferred_art_token),receipt.duplicate(true))
+	if job.has("strata_token"):
+		strata_operation_finished.emit(int(job.strata_token),receipt.duplicate(true))
 
 func _begin_plan(job: Dictionary, label: String) -> bool:
 	if not _ready_to_author(): return false
@@ -589,6 +626,7 @@ func _start_planner(job: Dictionary) -> bool:
 		_planning_job = {}
 		_history_replay.clear()
 		_say("Could not start bounded paint planning.")
+		_finish_deferred(job,{"status":"refused","applied":0,"reason":_message})
 		_notify_history(job,{"status":"refused","reason":_message},false)
 		return false
 	_say("Planning "+str(job.label)+"…")
@@ -760,6 +798,8 @@ func _process(_delta: float) -> void:
 	if not _operation.is_empty():
 		_status.text = "%s · %s · %d / %d cells" % [_operation.get("kind","Paint"),state.get("status","queued"),
 			int(state.get("applied",state.get("checked",0))),int(state.get("requested_cells",0))]
+	if bench != null and bench.has_method("strata_edit_action") and is_instance_valid(bench.strata):
+		bench.strata.update_editor_controls(self)
 
 func _receive(receipt: Dictionary) -> void:
 	last_result = receipt.duplicate(true)
@@ -800,6 +840,13 @@ func _receive(receipt: Dictionary) -> void:
 		_notify_history(operation.get("job",{}),retired,false)
 		return
 	if str(operation.kind) != "edit":
+		if operation.kind == "strata_capture":
+			var copied := receipt.duplicate(true)
+			if bool(operation.get("cancel_requested",false)):
+				copied.status = "cancelled"
+				copied.reason = "Strata capture stopped before approval; no write queued."
+			_finish_deferred(operation.get("job",{}), copied)
+			return
 		if bool(operation.get("cancel_requested",false)):
 			_say("Capture cancelled; no follow-up paint was queued.")
 			return
@@ -934,9 +981,15 @@ func _trim_history() -> void:
 				_say(history_notice)
 
 func undo() -> bool:
+	if bench != null and bench.has_method("strata_edit_action"):
+		var routed: Dictionary = bench.strata_edit_action("undo")
+		if routed.get("handled",false): return bool(routed.get("ok",false))
 	return _reverse("undo")
 
 func redo() -> bool:
+	if bench != null and bench.has_method("strata_edit_action"):
+		var routed: Dictionary = bench.strata_edit_action("redo")
+		if routed.get("handled",false): return bool(routed.get("ok",false))
 	return _reverse("redo")
 
 func _reverse(action: String) -> bool:

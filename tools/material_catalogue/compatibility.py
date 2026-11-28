@@ -569,13 +569,14 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'pr': 762},)
 
 
-# PUBPRES joins the retained worker-pool implementation to the admitted World.
-REVIEWED_TRANSITIONS += ({"path": "native/src/world.cpp",
-    "from_lf_sha256": "98254d531ca7ca8f8e76f6d963f15b26b772777dc5633718a92cc637217eb77c",
-    "to_lf_sha256": "fd7079d6cf4798275280eeb99ed996258482327c4bfeae64a2efb02655daac3e",
-    "source_commit": "13c0b731b0659d4a8bd00cbd5d85e5e5b66fc72b",
-    "record": "docs/audits/2026-11-27-pubpres-definitive.md",
-    "issue": 717, "pr": 767},)
+# RAMCACHE adds read-only resident-size estimates to the Actor/Material World.
+REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
+  'from_lf_sha256': '98254d531ca7ca8f8e76f6d963f15b26b772777dc5633718a92cc637217eb77c',
+  'to_lf_sha256': '54a727f6eb0543c2d9cdd868ed0486bf6e68d1b98c03c7a86a260891b49b1c24',
+  'source_commit': '3ad6541a6211f85672789fcf9b8271ab02609d67',
+  'record': 'docs/audits/2026-11-27-persistent-area-world-integration.md',
+  'issue': 591,
+  'pr': 745},)
 
 
 def lf(data: bytes) -> bytes:

@@ -1,0 +1,326 @@
+name: RAMCACHE Strata integration and portable Windows delivery
+
+# An explicit source-owned request arms only the owner-authorized candidate and
+# its actual main merge. No native publication, unrelated branch mutation or
+# paid/custom runner is performed. Existing broad required gates remain separate.
+on:
+  push:
+    branches: [feat/strata-theatre-003-20261125, main]
+    paths:
+      - '.github/workflows/ramcache-strata-integration.yml'
+      - 'tools/ci/ramcache-strata-integration-request.json'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: ramcache-strata-integration-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '2'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_CONFIG_KEY_1: core.eol
+  GIT_CONFIG_VALUE_1: lf
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  admission:
+    name: Exact integrated ancestry and unchanged native publication
+    if: github.repository == 'techrote/cybersand' && (github.ref == 'refs/heads/feat/strata-theatre-003-20261125' || github.ref == 'refs/heads/main')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      reuse: ${{ steps.reuse.outputs.reuse }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Validate request, owner scope, native inventory and adverse readers
+        run: |
+          set -euo pipefail
+          git fetch --no-tags origin 1ec3f214662f7d5a0a38ff727b684c15b41c067b
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_ramcache_strata_qualification.py
+          python3 tools/ci/test_verify_ramcache_strata_goblin_storage.py
+          python3 tools/ci/test_ramcache_strata_lab_package.py
+          python3 tools/ci/ramcache_strata_qualification.py admit --output build/integration-admission.json
+      - name: Authenticate original six successful source lanes and packaging-only applicability
+        id: reuse
+        env:
+          CYBERSAND_QUALIFICATION_TOKEN: ${{ github.token }}
+        run: |
+          set -euo pipefail
+          python3 tools/package_ramcache_strata.py reuse-admission --output build/qualification-reuse-admission.json
+          echo 'reuse=true' >> "$GITHUB_OUTPUT"
+      - name: Preserve exact admission receipt
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramcache-strata-admission-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            build/integration-admission.json
+            build/qualification-reuse-admission.json
+          if-no-files-found: warn
+          retention-days: 90
+
+  linux:
+    name: Linux graphical ${{ matrix.mode }}
+    needs: admission
+    # The fixed N run's six actual source receipts remain unchanged. Only a
+    # proved packaging-only successor can skip these redundant source reruns.
+    if: needs.admission.outputs.reuse != 'true'
+    runs-on: ubuntu-24.04
+    # Aggregate bounds derive from all admitted child ceilings plus setup;
+    # individual registered test deadlines are not extended by this ceiling.
+    timeout-minutes: ${{ matrix.minutes }}
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - mode: ramcache
+            minutes: 110
+          - mode: strata
+            minutes: 240
+          - mode: shared
+            minutes: 240
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - name: Authenticate exact retained Linux native, Rapier and SWARM binaries
+        run: |
+          set -euo pipefail
+          python3 tools/ci/materialize_lfs.py --expected-source "$GITHUB_SHA" --include godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so --include godot/tools/gentek_reciprocal --output "$RUNNER_TEMP/runtime-acquisition.json" --allowance-seconds 600
+          chmod +x godot/tools/gentek_reciprocal
+          python3 -c 'from pathlib import Path; import sys; sys.path.insert(0,"tools"); from package_explore001_candidate import stage_generator_profiles; stage_generator_profiles(Path.cwd())'
+      - name: Prepare pinned official Godot and graphical display
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb xauth libgl1-mesa-dri libglx-mesa0
+          curl --fail --location --retry 3 --connect-timeout 30 --max-time 600 --output "$RUNNER_TEMP/godot47.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot47.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot47.zip" -d "$RUNNER_TEMP/godot47"
+          chmod +x "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64"
+      - name: Run original graphical assertions on the combined source
+        env:
+          INTEGRATION_MODE: ${{ matrix.mode }}
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/ramcache_strata_qualification.py run --mode "$INTEGRATION_MODE" --godot "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64" --output "$RUNNER_TEMP/ramcache-strata-linux-$INTEGRATION_MODE"
+      - name: Preserve all original Linux evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramcache-strata-linux-${{ matrix.mode }}-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/ramcache-strata-linux-${{ matrix.mode }}/
+            ${{ runner.temp }}/runtime-acquisition.json
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+
+  windows:
+    name: Windows graphical ${{ matrix.mode }}
+    needs: admission
+    if: needs.admission.outputs.reuse != 'true'
+    runs-on: windows-2022
+    timeout-minutes: ${{ matrix.minutes }}
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        include:
+          - mode: ramcache
+            minutes: 110
+          - mode: strata
+            minutes: 240
+          - mode: shared
+            minutes: 240
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Authenticate exact retained Windows native, Rapier and SWARM binaries
+        run: |
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/runtime-acquisition.json" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Source-matched retained runtime acquisition failed' }
+          python -c 'from pathlib import Path; import sys; sys.path.insert(0,"tools"); from package_explore001_candidate import stage_generator_profiles; stage_generator_profiles(Path.cwd())'
+          if ($LASTEXITCODE -ne 0) { throw 'Canonical generator profile staging failed' }
+      - name: Authenticate pinned official Windows engine and portable notices
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP 'godot-windows.zip'
+          curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 600 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot download failed' }
+          $env:INTEGRATION_GODOT_ARCHIVE = $archive
+          @'
+          import os,pathlib,sys
+          sys.path.insert(0,'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          executable,record=prepare_godot(pathlib.Path(os.environ['INTEGRATION_GODOT_ARCHIVE']))
+          with open(os.environ['GITHUB_ENV'],'a',encoding='utf-8') as output:
+              output.write('GODOT_EXE='+str(executable)+'\nWINDOWS_DEPENDENCIES='+str(executable.parent)+'\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Official Godot pin admission failed' }
+      - name: Run original graphical assertions on the combined source
+        env:
+          INTEGRATION_MODE: ${{ matrix.mode }}
+          CYBERSAND_LAB_CXX: 'C:\mingw64\bin\g++.exe'
+        run: |
+          python tools/ci/ramcache_strata_qualification.py run --mode $env:INTEGRATION_MODE --godot $env:GODOT_EXE --output "$env:RUNNER_TEMP/ramcache-strata-win32-$env:INTEGRATION_MODE"
+          if ($LASTEXITCODE -ne 0) { throw 'Combined Windows qualification failed' }
+      - name: Stage licensed portable dependencies once
+        if: matrix.mode == 'shared'
+        run: |
+          $dependencies = $env:WINDOWS_DEPENDENCIES
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe --fail --location --retry 3 --max-time 180 --output (Join-Path $dependencies "Godot-$name") "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot notice acquisition failed' }
+          }
+          $runtimeLicense = Join-Path $dependencies 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $dependencies 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe --fail --location --retry 3 --max-time 180 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime notice acquisition failed' }
+          curl.exe --fail --location --retry 3 --max-time 180 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution notice acquisition failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'integration-vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'Signed VC runtime staging failed' }
+          Copy-Item (Join-Path $vc 'vcruntime140.dll') $dependencies
+          Copy-Item (Join-Path $vc 'vc-runtime-provenance.json') $dependencies
+      - name: Retain same-source portable dependencies
+        if: matrix.mode == 'shared'
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramcache-strata-dependencies-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ env.WINDOWS_DEPENDENCIES }}/
+          if-no-files-found: error
+          retention-days: 7
+      - name: Preserve all original Windows evidence, including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramcache-strata-win32-${{ matrix.mode }}-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/ramcache-strata-win32-${{ matrix.mode }}/
+            ${{ runner.temp }}/runtime-acquisition.json
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90
+
+  package:
+    name: Definitive archive and cold actual Windows launcher
+    needs: [admission, linux, windows]
+    if: always() && needs.admission.result == 'success' && needs.admission.outputs.reuse == 'true' && needs.linux.result == 'skipped' && needs.windows.result == 'skipped'
+    runs-on: windows-2022
+    env:
+      # Godot's optional Android editor initialization reads JAVA_HOME. The
+      # portable desktop launch must also qualify without a hosted Java SDK.
+      JAVA_HOME: ''
+    # Extracted feature and portable Lab aggregates retain their registered child budgets. This
+    # is a ceiling, not an extended deadline for any individual failed test.
+    timeout-minutes: 360
+    defaults:
+      run:
+        shell: pwsh
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          lfs: false
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify actual Windows payload hash acceptance and refusal
+        run: |
+          python -B tools/ci/test_ramcache_strata_qualification.py WindowsVerifierControls
+          if ($LASTEXITCODE -ne 0) { throw 'Actual shipped Windows payload verifier controls failed' }
+      - name: Download exact current packaging applicability admission
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: ramcache-strata-admission-${{ github.sha }}-${{ github.run_attempt }}
+          path: admission
+      - name: Download fixed N originals without relabelling their source
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46105901845
+          pattern: ramcache-strata-*-*-d414774ddc582cbc03d74e119937665368dc3476-1
+          path: original-evidence
+      - name: Download pinned original portable engine and notices
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46105901845
+          name: ramcache-strata-dependencies-d414774ddc582cbc03d74e119937665368dc3476-1
+          path: dependencies
+      - name: Verify originals and package exact application and runtimes
+        run: |
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output "$env:RUNNER_TEMP/runtime-acquisition.json" --allowance-seconds 600
+          if ($LASTEXITCODE -ne 0) { throw 'Package runtime acquisition failed' }
+          @'
+          import os,pathlib,shutil
+          root=pathlib.Path('original-evidence');target=pathlib.Path('evidence');target.mkdir()
+          for platform in ('linux','win32'):
+              for mode in ('ramcache','strata','shared'):
+                  matches=list(root.glob('ramcache-strata-'+platform+'-'+mode+'-*/**/integration.json'))
+                  assert len(matches)==1,('Missing or ambiguous original campaign',platform,mode,matches)
+                  shutil.copytree(matches[0].parent,target/(platform+'-'+mode))
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Original artifact inventory admission failed' }
+          $archive = "build/CyberSand-RAMCACHE-Strata-Workbench-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
+          python tools/package_ramcache_strata.py build --dependencies dependencies --evidence evidence --qualification-admission admission/qualification-reuse-admission.json --output build/evaluator --archive $archive
+          if ($LASTEXITCODE -ne 0) { throw 'Exact source/runtime evaluator build refused' }
+          'INTEGRATION_ARCHIVE=' + $archive | Out-File -Append -FilePath $env:GITHUB_ENV
+      - name: Execute shipped CMD first and repeat extracted save and reopen
+        run: |
+          python tools/package_ramcache_strata.py installed --archive $env:INTEGRATION_ARCHIVE --installation "$env:RUNNER_TEMP/CyberSand Integrated Fresh Installation" --output "$env:RUNNER_TEMP/ramcache-strata-extracted"
+          if ($LASTEXITCODE -ne 0) { throw 'Actual pristine evaluator launch or integrated persistence failed' }
+          powershell.exe -NoProfile -ExecutionPolicy Bypass -File "$env:RUNNER_TEMP/CyberSand Integrated Fresh Installation/Verify Package.ps1"
+          if ($LASTEXITCODE -ne 0) { throw 'Actual shipped PowerShell verifier failed' }
+      - name: Publish the qualified consolidated evaluator
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramcache-strata-workbench-windows-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            build/CyberSand-RAMCACHE-Strata-Workbench-Windows-*.zip
+            build/CyberSand-RAMCACHE-Strata-Workbench-Windows-*.zip.sha256
+            build/CyberSand-RAMCACHE-Strata-Workbench-Windows-*.identity.json
+          if-no-files-found: error
+          compression-level: 0
+          retention-days: 90
+      - name: Preserve actual extracted launcher and application evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: ramcache-strata-extracted-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/ramcache-strata-extracted/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90

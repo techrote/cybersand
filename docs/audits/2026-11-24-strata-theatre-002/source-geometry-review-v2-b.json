@@ -1,0 +1,548 @@
+{
+  "schema": "strata2-independent-geometry-review-v1",
+  "check": "PASS",
+  "scenes": [
+    {
+      "id": "orbital-terminal",
+      "source_file_sha256": "3195a2e9ff080fd57dd202eaab1e872a9b808e38ef418398a64e2a34bf861c8f",
+      "extent": [
+        2048,
+        1024
+      ],
+      "planes": {
+        "play": {
+          "native_recipe_uint16le_sha256": "ede31da6ff80596cd672c0a9447a0fd60f51c1389af309e9327f3fa98c993c0e",
+          "nonempty_cells": 230348,
+          "nonempty_fraction": 0.10983848571777344,
+          "exposed_without_nearer_opaque_geometry": 230348,
+          "material_counts": {
+            "62": 135855,
+            "63": 5112,
+            "64": 3748,
+            "65": 18000,
+            "66": 5157,
+            "74": 16520,
+            "76": 8296,
+            "77": 528,
+            "79": 88,
+            "114": 18522,
+            "130": 18522
+          }
+        },
+        "scripted": {
+          "native_recipe_uint16le_sha256": "2441e4a6027e23c9e3132bf24f98705535a976652f8a8d6a1871a0313395e4be",
+          "nonempty_cells": 180567,
+          "nonempty_fraction": 0.08610105514526367,
+          "exposed_without_nearer_opaque_geometry": 175138,
+          "material_counts": {
+            "62": 76267,
+            "63": 29880,
+            "64": 46973,
+            "68": 5175,
+            "69": 17696,
+            "76": 1360,
+            "114": 3216
+          }
+        },
+        "effects": {
+          "native_recipe_uint16le_sha256": "1e61cf287c9c1a4f536ad3ef1cef4136e340c97a1952f56bd095d61dfe4fc439",
+          "nonempty_cells": 6822,
+          "nonempty_fraction": 0.0032529830932617188,
+          "exposed_without_nearer_opaque_geometry": 6337,
+          "material_counts": {
+            "62": 4032,
+            "66": 1080,
+            "77": 456,
+            "79": 654,
+            "80": 600
+          }
+        },
+        "background": {
+          "native_recipe_uint16le_sha256": "1fff49b0bae5bae11f3ee4e3882ad0bb96285bda32bdf097841e340830ae3d40",
+          "nonempty_cells": 503721,
+          "nonempty_fraction": 0.24019289016723633,
+          "exposed_without_nearer_opaque_geometry": 383401,
+          "material_counts": {
+            "62": 24306,
+            "63": 6575,
+            "64": 21378,
+            "72": 2304,
+            "77": 2769,
+            "80": 75,
+            "114": 2800,
+            "130": 443514
+          }
+        }
+      },
+      "all_native_union_cells": 795224,
+      "all_native_union_fraction": 0.3791923522949219,
+      "spawn": [
+        150,
+        730
+      ],
+      "spawn_clear_square_radius": 100,
+      "routes": [
+        {
+          "id": "lower-flight-corridor",
+          "square_radius": 34,
+          "clear": true,
+          "length_cells": 1730,
+          "from": [
+            150,
+            730
+          ],
+          "to": [
+            1880,
+            730
+          ]
+        },
+        {
+          "id": "central-rise",
+          "square_radius": 34,
+          "clear": true,
+          "length_cells": 490,
+          "from": [
+            1260,
+            730
+          ],
+          "to": [
+            1260,
+            240
+          ]
+        }
+      ],
+      "atmosphere_effects": 5,
+      "bounded_visual_motifs": 114,
+      "scope": "Final authored cells and untransformed opaque occupancy only. Opacity/parallax/physical stability and actual actor traversal require native/framebuffer witnesses."
+    },
+    {
+      "id": "neon-rain-arcology",
+      "source_file_sha256": "3b7194af6cb905beafddb36e2ff953baf98803701b517d146ffd2a6aa83bdf9c",
+      "extent": [
+        2048,
+        1024
+      ],
+      "planes": {
+        "play": {
+          "native_recipe_uint16le_sha256": "6ade4679695cc042d8f505a82b258ae422cf1d6f77a5768b01f434ef0cf3acb0",
+          "nonempty_cells": 289953,
+          "nonempty_fraction": 0.1382603645324707,
+          "exposed_without_nearer_opaque_geometry": 289953,
+          "material_counts": {
+            "57": 43882,
+            "58": 40492,
+            "62": 100286,
+            "64": 24194,
+            "66": 3564,
+            "72": 30726,
+            "74": 9565,
+            "76": 440,
+            "77": 2340,
+            "78": 1896,
+            "79": 88,
+            "114": 12972,
+            "128": 6536,
+            "130": 12972
+          }
+        },
+        "scripted": {
+          "native_recipe_uint16le_sha256": "f7b0d095e9e09f5fc38e509353a5b5dfc5f297dbe8bd2be4efdb503de2a26878",
+          "nonempty_cells": 515278,
+          "nonempty_fraction": 0.24570369720458984,
+          "exposed_without_nearer_opaque_geometry": 474696,
+          "material_counts": {
+            "57": 3420,
+            "58": 3382,
+            "62": 56542,
+            "63": 3684,
+            "64": 6016,
+            "65": 7836,
+            "72": 406618,
+            "77": 4122,
+            "78": 2472,
+            "79": 3378,
+            "114": 17808
+          }
+        },
+        "effects": {
+          "native_recipe_uint16le_sha256": "2572370905344aa4eac9070f3d322a4ee2486e7ae2cfb66eff0c9cec22c84414",
+          "nonempty_cells": 5598,
+          "nonempty_fraction": 0.0026693344116210938,
+          "exposed_without_nearer_opaque_geometry": 5261,
+          "material_counts": {
+            "62": 3348,
+            "77": 750,
+            "78": 750,
+            "79": 750
+          }
+        },
+        "background": {
+          "native_recipe_uint16le_sha256": "8c1fec99bae663b6d6b4a426bca6bb8b955be90ee6c7c76448b3393a36610748",
+          "nonempty_cells": 429316,
+          "nonempty_fraction": 0.2047138214111328,
+          "exposed_without_nearer_opaque_geometry": 342968,
+          "material_counts": {
+            "62": 14442,
+            "63": 12069,
+            "64": 25416,
+            "77": 2457,
+            "79": 612,
+            "130": 374320
+          }
+        }
+      },
+      "all_native_union_cells": 1112878,
+      "all_native_union_fraction": 0.5306615829467773,
+      "spawn": [
+        160,
+        850
+      ],
+      "spawn_clear_square_radius": 66,
+      "routes": [
+        {
+          "id": "street-flight",
+          "square_radius": 34,
+          "clear": true,
+          "length_cells": 1720,
+          "from": [
+            160,
+            850
+          ],
+          "to": [
+            1880,
+            850
+          ]
+        },
+        {
+          "id": "eastern-ascent",
+          "square_radius": 34,
+          "clear": true,
+          "length_cells": 550,
+          "from": [
+            1540,
+            850
+          ],
+          "to": [
+            1540,
+            300
+          ]
+        }
+      ],
+      "atmosphere_effects": 4,
+      "bounded_visual_motifs": 237,
+      "scope": "Final authored cells and untransformed opaque occupancy only. Opacity/parallax/physical stability and actual actor traversal require native/framebuffer witnesses."
+    },
+    {
+      "id": "industrial-underworks",
+      "source_file_sha256": "b7fb46146b03305409e1a96288792e5f6b656fdb9f741ddeb679303601b91efb",
+      "extent": [
+        1024,
+        1024
+      ],
+      "planes": {
+        "play": {
+          "native_recipe_uint16le_sha256": "4af3c63461ece1502fc937a5eee0dddbb9bde3d5c7bb8fc8151b927c7355d023",
+          "nonempty_cells": 161090,
+          "nonempty_fraction": 0.1536273956298828,
+          "exposed_without_nearer_opaque_geometry": 161090,
+          "material_counts": {
+            "58": 36432,
+            "62": 80058,
+            "64": 1664,
+            "65": 4548,
+            "66": 3024,
+            "68": 6280,
+            "69": 6220,
+            "76": 176,
+            "79": 704,
+            "114": 10992,
+            "130": 10992
+          }
+        },
+        "scripted": {
+          "native_recipe_uint16le_sha256": "7eb3caa8e8a971a6ee51e8195c8399311949d55d0d8ee1186df74e42857f4744",
+          "nonempty_cells": 107538,
+          "nonempty_fraction": 0.10255622863769531,
+          "exposed_without_nearer_opaque_geometry": 101735,
+          "material_counts": {
+            "62": 51348,
+            "65": 14260,
+            "66": 16896,
+            "68": 5952,
+            "69": 18380,
+            "79": 702
+          }
+        },
+        "effects": {
+          "native_recipe_uint16le_sha256": "b531a073e559949b3da3d355aadbcfcea8ffb942973fd2d913b8abdd3a16dbfb",
+          "nonempty_cells": 2824,
+          "nonempty_fraction": 0.00269317626953125,
+          "exposed_without_nearer_opaque_geometry": 2824,
+          "material_counts": {
+            "62": 1368,
+            "66": 616,
+            "77": 720,
+            "79": 120
+          }
+        },
+        "background": {
+          "native_recipe_uint16le_sha256": "f8b0f6046dc7f3d68ce62e7e46431ec9590e3caf1d51497459a053997cb8512f",
+          "nonempty_cells": 183553,
+          "nonempty_fraction": 0.1750497817993164,
+          "exposed_without_nearer_opaque_geometry": 148774,
+          "material_counts": {
+            "62": 13014,
+            "63": 6262,
+            "64": 21020,
+            "68": 5282,
+            "130": 137975
+          }
+        }
+      },
+      "all_native_union_cells": 414423,
+      "all_native_union_fraction": 0.39522457122802734,
+      "spawn": [
+        512,
+        842
+      ],
+      "spawn_clear_square_radius": 83,
+      "routes": [
+        {
+          "id": "central-service-shaft",
+          "square_radius": 34,
+          "clear": true,
+          "length_cells": 662,
+          "from": [
+            512,
+            842
+          ],
+          "to": [
+            512,
+            180
+          ]
+        },
+        {
+          "id": "lower-cross-passage",
+          "square_radius": 34,
+          "clear": true,
+          "length_cells": 560,
+          "from": [
+            230,
+            870
+          ],
+          "to": [
+            790,
+            870
+          ]
+        }
+      ],
+      "atmosphere_effects": 5,
+      "bounded_visual_motifs": 121,
+      "scope": "Final authored cells and untransformed opaque occupancy only. Opacity/parallax/physical stability and actual actor traversal require native/framebuffer witnesses."
+    },
+    {
+      "id": "abyss-foundry",
+      "source_file_sha256": "5eb9e81360abbc2bf99b48ed886bcbbcd7b5c47eb57000c51ccb9fbd5c343412",
+      "extent": [
+        1024,
+        1024
+      ],
+      "planes": {
+        "play": {
+          "native_recipe_uint16le_sha256": "52ccafce52a14e743fe4e0c3e8ef627401071ca6cb226c878b9061076a4bbdc1",
+          "nonempty_cells": 369843,
+          "nonempty_fraction": 0.3527097702026367,
+          "exposed_without_nearer_opaque_geometry": 369843,
+          "material_counts": {
+            "62": 9642,
+            "64": 464,
+            "65": 3036,
+            "66": 1026,
+            "69": 4419,
+            "74": 1500,
+            "76": 88,
+            "77": 88,
+            "79": 352,
+            "100": 317068,
+            "101": 24336,
+            "114": 3912,
+            "130": 3912
+          }
+        },
+        "scripted": {
+          "native_recipe_uint16le_sha256": "a6312dce620f3baefb5c8cd3e8cfd61b80f67402c7d44e739b24ce1a07a0d4c7",
+          "nonempty_cells": 39269,
+          "nonempty_fraction": 0.03744983673095703,
+          "exposed_without_nearer_opaque_geometry": 38373,
+          "material_counts": {
+            "62": 18138,
+            "64": 7140,
+            "65": 8160,
+            "69": 4599,
+            "79": 1232
+          }
+        },
+        "effects": {
+          "native_recipe_uint16le_sha256": "fb60a6ac0e41ed008513664c8e806ea8a991239ecd30cc6011f60c4b30f8f508",
+          "nonempty_cells": 1128,
+          "nonempty_fraction": 0.00107574462890625,
+          "exposed_without_nearer_opaque_geometry": 1106,
+          "material_counts": {
+            "66": 594,
+            "77": 126,
+            "122": 408
+          }
+        },
+        "background": {
+          "native_recipe_uint16le_sha256": "edbcef534462f8f4861fa93fd1f89d21e94e9bba461d3be0b74884490ff65060",
+          "nonempty_cells": 373954,
+          "nonempty_fraction": 0.3566303253173828,
+          "exposed_without_nearer_opaque_geometry": 281342,
+          "material_counts": {
+            "100": 233728,
+            "101": 140226
+          }
+        }
+      },
+      "all_native_union_cells": 690664,
+      "all_native_union_fraction": 0.6586685180664062,
+      "spawn": [
+        512,
+        820
+      ],
+      "spawn_clear_square_radius": 72,
+      "routes": [
+        {
+          "id": "abyss-central-rise",
+          "square_radius": 34,
+          "clear": true,
+          "length_cells": 630,
+          "from": [
+            512,
+            820
+          ],
+          "to": [
+            512,
+            190
+          ]
+        },
+        {
+          "id": "lower-open-span",
+          "square_radius": 34,
+          "clear": true,
+          "length_cells": 650,
+          "from": [
+            200,
+            850
+          ],
+          "to": [
+            850,
+            850
+          ]
+        }
+      ],
+      "atmosphere_effects": 5,
+      "bounded_visual_motifs": 139,
+      "scope": "Final authored cells and untransformed opaque occupancy only. Opacity/parallax/physical stability and actual actor traversal require native/framebuffer witnesses."
+    },
+    {
+      "id": "vertical-transfer-spine",
+      "source_file_sha256": "b4ba804fd2cdc674523298cddb97545b69d74d5e50cde572c410c06e18188262",
+      "extent": [
+        1024,
+        1536
+      ],
+      "planes": {
+        "play": {
+          "native_recipe_uint16le_sha256": "eb0cfc3f9271badf05ec1f57154845764b44f36467062c3ea3539164f36c77fa",
+          "nonempty_cells": 239154,
+          "nonempty_fraction": 0.15205001831054688,
+          "exposed_without_nearer_opaque_geometry": 239154,
+          "material_counts": {
+            "62": 161846,
+            "63": 7072,
+            "64": 2680,
+            "65": 10608,
+            "66": 3900,
+            "68": 11512,
+            "69": 11736,
+            "76": 440,
+            "77": 448,
+            "79": 448,
+            "114": 14232,
+            "130": 14232
+          }
+        },
+        "scripted": {
+          "native_recipe_uint16le_sha256": "ad50b3811f32e0d2a4e8d89fec087c88a9a6ed53003fff39310e10f299881fe3",
+          "nonempty_cells": 206284,
+          "nonempty_fraction": 0.1311518351236979,
+          "exposed_without_nearer_opaque_geometry": 197388,
+          "material_counts": {
+            "62": 89056,
+            "63": 28630,
+            "64": 28744,
+            "66": 13100,
+            "74": 9504,
+            "77": 720,
+            "130": 36530
+          }
+        },
+        "effects": {
+          "native_recipe_uint16le_sha256": "744d42a275aabb64416776cd65c195b6492969b1585482eaccda21bd45b0ffc6",
+          "nonempty_cells": 3120,
+          "nonempty_fraction": 0.001983642578125,
+          "exposed_without_nearer_opaque_geometry": 3120,
+          "material_counts": {
+            "62": 2520,
+            "77": 300,
+            "79": 300
+          }
+        },
+        "background": {
+          "native_recipe_uint16le_sha256": "8df2bc2ec971a457013a80d8bff8f559af666a5db4c1438553303bfe1249545b",
+          "nonempty_cells": 297200,
+          "nonempty_fraction": 0.18895467122395834,
+          "exposed_without_nearer_opaque_geometry": 231271,
+          "material_counts": {
+            "62": 33960,
+            "72": 2496,
+            "77": 2688,
+            "130": 258056
+          }
+        }
+      },
+      "all_native_union_cells": 670933,
+      "all_native_union_fraction": 0.4265677134195964,
+      "spawn": [
+        512,
+        1360
+      ],
+      "spawn_clear_square_radius": 89,
+      "routes": [
+        {
+          "id": "full-transfer-shaft",
+          "square_radius": 34,
+          "clear": true,
+          "length_cells": 1200,
+          "from": [
+            512,
+            1360
+          ],
+          "to": [
+            512,
+            160
+          ]
+        }
+      ],
+      "atmosphere_effects": 4,
+      "bounded_visual_motifs": 100,
+      "scope": "Final authored cells and untransformed opaque occupancy only. Opacity/parallax/physical stability and actual actor traversal require native/framebuffer witnesses."
+    }
+  ],
+  "limitations": [
+    "No native World or GPU execution in this inspection.",
+    "Zero parallax and opaque silhouettes are analytic comparison controls, not actual composite visibility.",
+    "Route geometry is not a movement, rotation, load or playability result."
+  ]
+}

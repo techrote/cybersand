@@ -1,0 +1,170 @@
+{
+  "schema": "cybersand-strata003-blind-review-unmask-v1",
+  "reviewer": "specialist-a",
+  "unmasked_utc": "2026-11-25T22:41:03.510733+00:00",
+  "frozen_scores_commit": "66ce9fa3",
+  "frozen_scores_file_sha256": "24b099194a8c0dd50d58d5044d8b7be18a11a3a4e5b547f38507521354d09d21",
+  "source_commit": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+  "source_tree": "f161fad574bc7f8233b159406f2b7db54959be6c",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45712854522",
+  "linux_artifact": "https://github.com/techrote/cybersand/actions/runs/45712854522/artifacts/15067809163",
+  "matching_windows_artifact": "https://github.com/techrote/cybersand/actions/runs/45712854522/artifacts/15067754459",
+  "key_sha256": "a2b838ca73f5d96c2b3cf26cff9d08e21d06043745f413cf30d6d53d98d268c2",
+  "labels_bound_to_original_hashes": true,
+  "frames": [
+    {
+      "frame": "frame-01.png",
+      "profile": "diorama",
+      "sha256": "8b77ae51eb5291e9f205f987f4a109811a41d5696440d0f82badee0d3b2d4ea7",
+      "frozen_scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 3,
+        "spatial_depth": 4,
+        "artifact_freedom": 4
+      }
+    },
+    {
+      "frame": "frame-02.png",
+      "profile": "gameplay_clarity",
+      "sha256": "41758ed292112dfd0deb616dac6a0182ef2db74c100050572cec0290b3c6c249",
+      "frozen_scores": {
+        "physical_distinction": 5,
+        "actor_visibility": 4,
+        "architectural_detail": 3,
+        "spatial_depth": 4,
+        "artifact_freedom": 5
+      }
+    },
+    {
+      "frame": "frame-03.png",
+      "profile": "alien_bioluminescence",
+      "sha256": "a5973c8ee4836ff1806fc2f4dcd26211609d5c3d70c20930aec8c3997534d448",
+      "frozen_scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 4,
+        "artifact_freedom": 5
+      }
+    },
+    {
+      "frame": "frame-04.png",
+      "profile": "classic",
+      "sha256": "515abac21fba33c78da2330db471755eecfaf5f23783b6b06099db14d57e152d",
+      "frozen_scores": {
+        "physical_distinction": 3,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      }
+    },
+    {
+      "frame": "frame-05.png",
+      "profile": "cold_orbital",
+      "sha256": "9a7f269ba23118c509d0bb8b645540a7a8b17a558928bc42130dc78735d11a7c",
+      "frozen_scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      }
+    },
+    {
+      "frame": "frame-06.png",
+      "profile": "atmospheric_industrial",
+      "sha256": "4a906f56262e8c96a12ed1fb70db0f2b319cf1edd4f7edcba1fd8c8a68cc92fa",
+      "frozen_scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      }
+    },
+    {
+      "frame": "frame-07.png",
+      "profile": "noir",
+      "sha256": "1b403756470eb46a5db6686f9518f42159fa58c02cf6750d983663edb581a42b",
+      "frozen_scores": {
+        "physical_distinction": 5,
+        "actor_visibility": 4,
+        "architectural_detail": 4,
+        "spatial_depth": 4,
+        "artifact_freedom": 5
+      }
+    },
+    {
+      "frame": "frame-08.png",
+      "profile": "sunlit_megastructure",
+      "sha256": "4748ecbe7c2a951fa8902652e1f5f74d0c6d7dce940cf3811cf2b544b466bd06",
+      "frozen_scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      }
+    },
+    {
+      "frame": "frame-09.png",
+      "profile": "optical_lens",
+      "sha256": "308ee0d63a842866fc0046a308f168fbc9f5b2b9bd5fb6c3141015df41eb170e",
+      "frozen_scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 4,
+        "spatial_depth": 4,
+        "artifact_freedom": 4
+      }
+    },
+    {
+      "frame": "frame-10.png",
+      "profile": "cinematic_deep_focus",
+      "sha256": "c0302a611fc5a94f6e5322b77e175d596127f862cb38c01d5fd62f089479441b",
+      "frozen_scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      }
+    },
+    {
+      "frame": "frame-11.png",
+      "profile": "architectural",
+      "sha256": "38b87def4195903bb143a6496968f0cef2bfa253b2a0b74f9e2878cb66329ec1",
+      "frozen_scores": {
+        "physical_distinction": 4,
+        "actor_visibility": 3,
+        "architectural_detail": 5,
+        "spatial_depth": 3,
+        "artifact_freedom": 5
+      }
+    }
+  ],
+  "interpretation": {
+    "clarity_detail_preference": "Noir",
+    "atmospheric_detail_preference": "Alien Bioluminescence",
+    "restrained_lens_preference": "Optical Lens",
+    "strongest_physical_subordination": "Gameplay Clarity",
+    "optional_cost": "Diorama loses more rear microtexture than Optical Lens at this overview.",
+    "uncertain_ties": [
+      "Cold Orbital/Cinematic Deep Focus/Architectural",
+      "Atmospheric Industrial/Sunlit Megastructure"
+    ]
+  },
+  "independent_disagreement": {
+    "specialist_b_reported_by_lead": "B prefers Cold Orbital and Cinematic Deep Focus for balance, Gameplay Clarity/Noir for physical priority, Alien for atmosphere.",
+    "specialist_a": "A prefers Noir for the clarity/detail compromise and Alien for atmospheric detail; the crisp neutral/cool group did not separate reliably at this one overview.",
+    "agreement": "Physical dominance strongest in Gameplay Clarity/Noir; Alien retains atmosphere; strong lens has a detail cost.",
+    "disposition": "Retain different artistic weighting and uncertain ties. Do not claim unanimous profile ordering or generalize one scene to the whole corpus."
+  },
+  "limits": [
+    "One paused overview image per profile; no human navigation task or motion study.",
+    "Review source predates actor reveal extension and its subsequent typed-array fix.",
+    "Whole-scene Linux/Windows identity is not established by this review; B reports small encoded colour differences and localized large thin-edge differences on both Classic and processed images."
+  ]
+}

@@ -60,6 +60,8 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_world(
     const PackedInt32Array& profile, const PackedInt32Array& policy,
     const PackedInt32Array& water_fills, const PackedInt32Array& liquid_policy,
     const Dictionary& options) {
+    if (options.has("workbench_continuation") || options.has("workbench_continuation_identity"))
+        return prepare_workbench_continuation(adapter, rectangles, profile, policy, water_fills, liquid_policy, options);
     return prepare_liquid_candidate(adapter, rectangles, profile, policy, water_fills, liquid_policy, options, nullptr);
 }
 
@@ -1084,6 +1086,7 @@ inline std::int64_t CyberDemoBridge::prepare_liquid_candidate(
         pending->retained_window = adapter->simulation_window_enabled_;
         const auto token = pending->token;
         adapter->pending_liquid_world_ = std::move(pending);
+        ++adapter->resident_source_constructions_;
         return static_cast<std::int64_t>(token);
     } catch (const cybersand::LiquidPolicyRefused& error) {
         refuse_liquid_policy(error.refusal());
@@ -1111,6 +1114,25 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
         error_ = "Preparation token is absent or retired";
         return false;
     }
+    if (adapter->pending_liquid_world_->continuation) {
+        // Body masks are intentionally absent from physical_state_hash(). A
+        // new host dependency can therefore appear without a physical-hash
+        // change; refuse it before any swap even for a direct native caller.
+        try { validate_continuation_dependencies(*adapter.ptr()); }
+        catch (const std::exception& error) {
+            adapter->pending_liquid_world_.reset();
+            error_ = String(error.what());
+            return false;
+        }
+    }
+    if (adapter->pending_liquid_world_->continuation_dirty) {
+        try { refresh_continuation_receipt(*adapter.ptr()); }
+        catch (const std::exception& error) {
+            adapter->pending_liquid_world_.reset();
+            error_ = String(error.what());
+            return false;
+        }
+    }
     auto pending = std::move(adapter->pending_liquid_world_); // One use, also on refusal.
     if (pending->receipt.has("workbench_authoring_patch")) {
         // The physical hash binds scheduling-core coverage, which can remain
@@ -1123,14 +1145,27 @@ inline bool CyberDemoBridge::commit_liquid_world(const Ref<CyberNativeCellWorld>
             return false;
         }
     }
-    if (adapter->world_->has_failed() || pending->retained_generation != adapter->liquid_policy_session_generation_ ||
+    if (adapter->world_->has_failed() || pending->world->has_failed() || pending->retained_generation != adapter->liquid_policy_session_generation_ ||
         pending->retained_revision != adapter->revision_ || pending->retained_hash != adapter->world_->physical_state_hash() ||
         pending->retained_cadence != adapter->cadence_lod_enabled_ || pending->retained_window != adapter->simulation_window_enabled_) {
         error_ = "Retained World changed after preparation";
         return false;
     }
+    std::unique_ptr<CyberNativeCellWorld::PendingLiquidWorld> resident_departure;
+    try {
+        if (adapter->active_resident_handle_!=0) {
+            if (!pending->workbench || pending->extent!=Vector2i(512,512) || pending->cadence)
+                throw std::invalid_argument("Resident replacement must remain an admitted actor-free persistent area");
+            for (const auto& owner:pending->workbench->sample.owners)
+                if (owner.instance!=0) throw std::invalid_argument("Resident replacement is pinned by target actors");
+            cybersand::persistent_areas::validate_domain(*pending->world);
+        }
+        resident_departure=resident_stage_departure(*adapter.ptr());
+    }
+    catch (const std::exception& error) { error_=String(error.what()); return false; }
     // No allocations, capture, configuration changes or host callbacks after
     // this fence. All final native facts and copied receipts were prepared.
+    resident_take_active(*adapter.ptr(),std::move(resident_departure));
     adapter->world_.swap(pending->world);
     adapter->worker_threads_ = adapter->world_->config().worker_threads;
     adapter->workbench_.swap(pending->workbench);

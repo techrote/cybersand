@@ -110,6 +110,12 @@ public:
         return count;
     }
 
+    // RAMCACHE's owner-side residency estimate includes the selected pool's
+    // actual object and allocated thread handles; thread stacks stay separate.
+    [[nodiscard]] std::size_t resident_storage_bytes() const noexcept {
+        return sizeof(*this) + workers_.capacity() * sizeof(std::jthread);
+    }
+
     [[nodiscard]] std::uint64_t completed_dispatches() const noexcept { return completed_dispatches_; }
     [[nodiscard]] std::uint64_t completed_tasks() const noexcept { return completed_tasks_; }
 

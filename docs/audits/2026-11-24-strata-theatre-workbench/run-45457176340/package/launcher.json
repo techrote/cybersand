@@ -1,0 +1,18 @@
+{
+  "pristine_directory": "D:\\a\\_temp\\strata owner package",
+  "admitted": {
+    "extent": [
+      2048,
+      2048
+    ],
+    "source_revision": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+    "strata_enabled": false,
+    "workbench_script": "res://scripts/shared_workbench.gd",
+    "worker_id": "-9223371959830575630",
+    "world_generation": 2
+  },
+  "source_revision": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+  "exit_code": 0,
+  "command": "C:\\Windows\\system32\\cmd.exe /d /s /c \"\"D:\\a\\_temp\\strata owner package\\Open Workbench.cmd\" --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --quit-after 180\"",
+  "wrapper_pid": 6596
+}

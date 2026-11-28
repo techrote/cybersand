@@ -13,6 +13,7 @@ on:
       - 'godot/tests/run_art_collaborative.gd'
       - 'godot/data/art_collaborative_briefs.json'
       - 'tools/ci/run_art_collaborative_gates.py'
+      - 'tools/ci/strata_generated_imports.py'
       - 'tools/ci/run_art_collaborative.py'
       - 'tools/package_art_collaborative.py'
       - 'tools/ci/test_art_collaborative_packaging.py'

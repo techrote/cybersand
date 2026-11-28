@@ -4,7 +4,7 @@ status: Current
 document-kind: contract
 scope: CYSD1 finite-level format, ownership and omitted continuation state; accepted main LCB CYPS2 exact accounting/continuation, explicit historical CYPS1 refusal and remaining application replay gaps
 canonical-for: [cysd1-level-format, save-import-export, replay-persistence]
-last-reviewed: 2026-11-13
+last-reviewed: 2026-11-21
 related-documents: [interfaces-and-message-contracts.md, ../architecture/pressure-flow-v1.md, ../architecture/determinism-and-boundary-transfers.md, validation-evidence.md]
 ---
 
@@ -16,6 +16,10 @@ generic import of identical native tuples retires its native generation and
 cannot acquire Water recipe/transport origin from the UI label. This adds no
 save schema or policy persistence; moving-body imports and separately restored
 host masks remain unsupported work.
+
+## Experimental whole-area continuation
+
+The opt-in [persistent authored-area prototype](../systems/persistent-authored-areas.md) composes the existing admitted native CYPS2 domain with a versioned desktop profile manifest and separate Workbench authoring metadata. Current/FreeMass native fire/reactions, temperature/activity state, Sand/Water quantities, completed clocks and explicit Empty edits are retained. The exact supported domain has source-bound continuation tests; actors, Rapier/controller graphs, external queues, other solvers and general application replay remain unsupported. Ordinary CYSD1, named starting-map Save and Flatten contracts below are unchanged. The [candidate ledger](../audits/2026-11-21-gen006-persistent-areas.md) separates executed qualification from remaining delivery gates.
 
 ## Does an identical save reproduce the next tick?
 

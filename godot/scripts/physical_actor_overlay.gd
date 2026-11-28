@@ -3,6 +3,7 @@ extends Control
 
 # Filled polygons use the actual rectangle or circle shape and the bridge's
 # authoritative physics transform. This node owns no gameplay or collision.
+const PresentationBounds = preload("res://scripts/actor_presentation_bounds.gd")
 var outlines: bool = true
 var _parts: Array = []
 var source_origin: Vector2 = Vector2.INF
@@ -80,6 +81,11 @@ func set_water_composition(state: Dictionary) -> void:
 	shader.set_shader_parameter("world_size", Vector2(state.world_size))
 	shader.set_shader_parameter("previous_active", bool(state.get("previous_active", false)))
 	shader.set_shader_parameter("snapshot_blend", float(state.get("snapshot_blend", 1.0)))
+
+func presentation_bounds(limit: int = 8) -> Array[Rect2]:
+	# Evaluated only when a caller needs visual assistance. Reuses the displayed
+	# part poses, including existing presentation interpolation, without queries.
+	return PresentationBounds.physical(_parts, limit)
 
 
 func show_actor_labels(labels: Dictionary) -> void:

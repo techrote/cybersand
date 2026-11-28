@@ -11,6 +11,8 @@ last-reviewed: 2026-11-27
 
 # Data ownership and lifetimes
 
+The opt-in [persistent-area prototype](../systems/persistent-authored-areas.md) retains one exclusive native gameplay owner. Its [RAM residency extension](../systems/persistent-area-residency.md) retains inactive Worlds in unique-owned native bundles and worker-exclusive host companions. A validated native move and one-use Main ticket transfer active authority; cache values never contain World pointers. One separately owned private preparation may run while the active area progresses, and joins before native import. A nonreusable capture boundary freezes mutations only while complete continuation is captured; deferred immutable publication then runs on one serialized I/O owner holding the OS profile lock. Strict/cache-disabled operation retains conservative durability waits. Late saves, unsupported live dependencies and uncertain publication cannot discard or resume an older authoritative incarnation. Ordinary scene ownership is unchanged.
+
 The opt-in [AMBIENT-002 successor](../systems/ambient-living-inhabitants.md)
 adds bounded per-actor ephemeral memory and copied peer caches to the same owner.
 World generation is observed independently of material-sensor activation; missing

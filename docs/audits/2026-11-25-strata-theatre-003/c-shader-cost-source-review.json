@@ -1,0 +1,57 @@
+{
+  "schema": "strata003-independent-shader-cost-source-review-v1",
+  "reviewed_utc": "2026-11-26 00:49:07 UTC",
+  "assessor": "Specialist C",
+  "observer_source_commit": "c1b13096da9dbbe1c3c45f9ee4c48fa009e6f14e",
+  "observer_source_tree": "250a63d1e4fa968c3420b18106df6415da0648bc",
+  "application_source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "reviewed_inputs_sha256": {
+    "tools/ci/strata3_shader_cost.gd": "bc186d08c58f4e558e102564527dd16c34571cf06147dfbc7c97d7ba887bfe05",
+    "tools/ci/strata3_shader_cost.py": "acf55404e8da2aac8481839520b869196f8545746bb1edcf4caddfceaec2beb2",
+    "tools/ci/test_strata3_shader_cost.py": "14d8aafd30b97f14ac803cbeed6f41f8bf3d9bd8d0bc5c5d12c9767c7cb0b42e",
+    "tools/ci/experiments/strata3_optical_override_test.gd": "a9b41d173ce33e3d3a321cc6e1d81772c52b39c10590c6db3d1d1a1751733242",
+    "tools/ci/experiments/strata3_optical_empty_coverage_a1.gdshader": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+    ".github/workflows/strata-theatre-003-cost-probe.yml": "6b8bbd293850664a3bf9f33e982454e035a647cc9e42c2fa817897244af56a53",
+    "docs/audits/2026-11-25-strata-theatre-003/shader-cost-probe-registration.md": "2651135ac38fd9b110e5ef36affcf0b40e183f71dcfdd19a0ad57d7b28309b60",
+    "tools/ci/strata3_sustained.py": "7c64e246f08d2138bcd572d0107969683b734016d909526c23e6af7578375cf0"
+  },
+  "actual_adverse_controls": {
+    "command": [
+      "python3",
+      "tools/ci/test_strata3_shader_cost.py"
+    ],
+    "working_directory": "external observer checkout",
+    "tests": 11,
+    "failures": 0,
+    "exit_code": 0
+  },
+  "source_review_disposition": "No blocking source or observation-contract issue found; hosted graphical and timing qualification pending.",
+  "resolved_review_comments": [
+    "Require renderer statistics.profile to match the registered profile.",
+    "Report candidate versus same-profile original median native/Rapier/p95 ratios and per-repeat rate ratios."
+  ],
+  "nonblocking_disclosures": [
+    "Progression driver restores cached shader code; standalone graphical wrapper terminates its isolated process rather than restoring a shared surviving resource.",
+    "Headless 15-window 2823-check diagnostic reported by lead is nongraphical and is not actual hosted admission."
+  ],
+  "retained_gates": {
+    "native_rate_ratio_minimum": 0.9,
+    "rapier_rate_ratio_minimum": 0.9,
+    "physical_p95_limit": "max(1.20 * Classic median p95, Classic median p95 + 10000 usec)",
+    "admission_target_ms": 45000,
+    "registered_windows": 15,
+    "callbacks_per_window": 90,
+    "graphical_assertions_each_shader": 109,
+    "graphical_capture_inventory": 18,
+    "same_repeat_native_world_rgba_comparisons": 6
+  },
+  "limitations": [
+    "No hosted result is asserted by this source review.",
+    "No physical Windows11/NVIDIA result.",
+    "Three sequential repeats do not establish statistical independence.",
+    "Whole-process CPU/RSS is not per-profile GPU timing.",
+    "Original application enabled-optics performance failures remain valid.",
+    "No candidate adoption, merge, default activation or owner acceptance is authorized by this review."
+  ]
+}

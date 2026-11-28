@@ -1,0 +1,153 @@
+{
+  "schema": "strata3-selected-interface-capture-v1",
+  "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "run": 45721790366,
+  "artifact": 15078368890,
+  "artifact_sha256": "84671ae068d7a759112cd6ca84a5485ec555db3aa3a04342f3c7a9bd2927ee13",
+  "original_path": "industrial-underworks/install/optics-lab.png",
+  "selected_file": "optics-lab-windows.png",
+  "png_sha256": "a1f80e4ff529149355f6a2ff0f6ecc23b02ec6ed8079fa3d93046f36ba3b5943",
+  "bytes": 96821,
+  "original_report_sha256": "4222a16057e05974b8422a783bec4ca607f74be2fdd75540f758fbdcc397afff",
+  "scene": "industrial-underworks",
+  "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)",
+  "lab": {
+    "custom_presets": [
+      {
+        "custom": true,
+        "description": "Custom optical preset \u00b7 editable scene values",
+        "id": "custom-f0eebcbfde2297dc4bd93988",
+        "label": "Strata3 evaluated industrial-underworks"
+      }
+    ],
+    "master_visible": true,
+    "native_target_after": "play",
+    "native_target_before": "play",
+    "optics_tab_index": 5,
+    "profile_count": 12,
+    "tab_count": 6
+  },
+  "saved_optics": {
+    "configuration": {
+      "atmosphere": 0.22,
+      "chromatic": 0.18,
+      "clarity": 0.0,
+      "defocus": 0.0,
+      "defocus_method": "pixel",
+      "detail": 0.08,
+      "dof_width": 0.62,
+      "effects": {
+        "atmosphere": true,
+        "chromatic": true,
+        "defocus": false,
+        "detail": true,
+        "illumination": true,
+        "shadows": true,
+        "tonal": true
+      },
+      "enabled": true,
+      "focal_plane": "play",
+      "focus_distance": 0.27,
+      "focus_mode": "manual",
+      "illumination": 0.18,
+      "planes": {
+        "background": {
+          "atmosphere": 0.7,
+          "brightness": 0.94,
+          "contrast": 0.82,
+          "defocus": 1.0,
+          "depth": 0.95,
+          "glow": 0.5,
+          "opacity": 1.0,
+          "parallax": 1.0,
+          "participates": true,
+          "saturation": 0.76,
+          "tint": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "effects": {
+          "atmosphere": 0.25,
+          "brightness": 1.0,
+          "contrast": 0.95,
+          "defocus": 1.0,
+          "depth": 0.2,
+          "glow": 0.8,
+          "opacity": 1.0,
+          "parallax": 1.0,
+          "participates": true,
+          "saturation": 0.9,
+          "tint": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "play": {
+          "atmosphere": 1.0,
+          "brightness": 1.0,
+          "contrast": 1.0,
+          "defocus": 1.0,
+          "depth": 0.0,
+          "glow": 1.0,
+          "opacity": 1.0,
+          "parallax": 1.0,
+          "participates": false,
+          "saturation": 1.0,
+          "tint": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        },
+        "scripted": {
+          "atmosphere": 0.45,
+          "brightness": 0.98,
+          "contrast": 0.83,
+          "defocus": 1.0,
+          "depth": 0.47,
+          "glow": 0.7,
+          "opacity": 1.0,
+          "parallax": 1.0,
+          "participates": true,
+          "saturation": 0.92,
+          "tint": [
+            1.0,
+            1.0,
+            1.0
+          ]
+        }
+      },
+      "profile": "architectural",
+      "scattering_color": [
+        0.21,
+        0.22,
+        0.23
+      ],
+      "shadow": 0.2,
+      "shadow_offset": [
+        5.0,
+        7.0
+      ],
+      "shadow_softness": 1.0,
+      "strength": 1.0,
+      "tonal": 0.63,
+      "transition_speed": 4.0,
+      "version": 1
+    },
+    "configuration_canonical_json": "{\"atmosphere\":0.22,\"chromatic\":0.18,\"clarity\":0.0,\"defocus\":0.0,\"defocus_method\":\"pixel\",\"detail\":0.08,\"dof_width\":0.62,\"effects\":{\"atmosphere\":true,\"chromatic\":true,\"defocus\":false,\"detail\":true,\"illumination\":true,\"shadows\":true,\"tonal\":true},\"enabled\":true,\"focal_plane\":\"play\",\"focus_distance\":0.27,\"focus_mode\":\"manual\",\"illumination\":0.18,\"planes\":{\"background\":{\"atmosphere\":0.7,\"brightness\":0.94,\"contrast\":0.82,\"defocus\":1.0,\"depth\":0.95,\"glow\":0.5,\"opacity\":1.0,\"parallax\":1.0,\"participates\":true,\"saturation\":0.76,\"tint\":[1.0,1.0,1.0]},\"effects\":{\"atmosphere\":0.25,\"brightness\":1.0,\"contrast\":0.95,\"defocus\":1.0,\"depth\":0.2,\"glow\":0.8,\"opacity\":1.0,\"parallax\":1.0,\"participates\":true,\"saturation\":0.9,\"tint\":[1.0,1.0,1.0]},\"play\":{\"atmosphere\":1.0,\"brightness\":1.0,\"contrast\":1.0,\"defocus\":1.0,\"depth\":0.0,\"glow\":1.0,\"opacity\":1.0,\"parallax\":1.0,\"participates\":false,\"saturation\":1.0,\"tint\":[1.0,1.0,1.0]},\"scripted\":{\"atmosphere\":0.45,\"brightness\":0.98,\"contrast\":0.83,\"defocus\":1.0,\"depth\":0.47,\"glow\":0.7,\"opacity\":1.0,\"parallax\":1.0,\"participates\":true,\"saturation\":0.92,\"tint\":[1.0,1.0,1.0]}},\"profile\":\"architectural\",\"scattering_color\":[0.21,0.22,0.23],\"shadow\":0.2,\"shadow_offset\":[5.0,7.0],\"shadow_softness\":1.0,\"strength\":1.0,\"tonal\":0.63,\"transition_speed\":4.0,\"version\":1}",
+    "inspection_at_save": {
+      "bypass": true,
+      "clarity": true,
+      "focus_override": "background",
+      "wipe": 0.35
+    },
+    "quality": "balanced",
+    "sha256": "c75ba511a0942ad3ceea27a55abbda761a7cde86fad52f0876544e8568d0ca96"
+  },
+  "scope": "Unchanged original actual Windows Optics Lab capture after named-preset authoring. Interface evidence, separate from the twelve matched architectural image selections. No resizing, cropping or invented UI."
+}

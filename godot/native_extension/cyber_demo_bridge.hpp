@@ -8,6 +8,7 @@
 #include "cybersand/material_rules.hpp"
 #include "cybersand/material_appearance.hpp"
 #include "cybersand/material_baseline.hpp"
+#include "cybersand/persistent_area_continuation.hpp"
 #include <bit>
 #include <algorithm>
 #include <chrono>
@@ -111,6 +112,8 @@ class CyberDemoBridge final : public RefCounted {
     }
 
     static void install(CyberNativeCellWorld& adapter, std::unique_ptr<cybersand::World> candidate) {
+        if (adapter.active_resident_handle_!=0)
+            throw std::invalid_argument("Resident active World requires an admitted handoff before replacement");
         auto exchange = std::make_unique<cybersand::RenderSnapshotExchange>(
             3, 64, std::size_t{cybersand::demo::kWidth} * cybersand::demo::kHeight * 2);
         candidate->set_liquid_surface_adhesion_enabled(adapter.liquid_surface_adhesion_enabled_);
@@ -760,7 +763,52 @@ public:
         const PackedInt32Array& policy, const PackedInt32Array& liquid_policy, const Dictionary& options);
     [[nodiscard]] std::int64_t prepare_liquid_default_demo(const Ref<CyberNativeCellWorld>& adapter,
         const PackedInt32Array& liquid_policy, const Dictionary& options);
+    // GEN-006: exclusive-owner, complete native continuation. Unsupported host
+    // dependencies pin the active area rather than being discarded.
+    [[nodiscard]] Dictionary capture_workbench_continuation(const Ref<CyberNativeCellWorld>& adapter);
+    [[nodiscard]] Dictionary capture_prepared_workbench_continuation(
+        const Ref<CyberNativeCellWorld>& adapter, std::int64_t token);
+    [[nodiscard]] Dictionary advance_workbench_continuation(const Ref<CyberNativeCellWorld>& adapter,
+        std::int64_t token, std::int64_t maximum_ticks, std::int64_t maximum_microseconds);
+    [[nodiscard]] Dictionary assess_workbench_coarse_advance(const Ref<CyberNativeCellWorld>& adapter,
+        std::int64_t requested_ticks);
+    // GEN-006 RAM residency: copied receipts, never a mutable World handle.
+    // Every call runs at the existing SimulationWorker's exclusive boundary.
+    [[nodiscard]] Dictionary resident_admit(const Ref<CyberNativeCellWorld>& adapter, const Dictionary& identity);
+    [[nodiscard]] Dictionary resident_status(const Ref<CyberNativeCellWorld>& adapter);
+    [[nodiscard]] Dictionary resident_activate(const Ref<CyberNativeCellWorld>& adapter,
+        const Dictionary& target, const Dictionary& active, const String& operation_id);
+    [[nodiscard]] Dictionary resident_capture(const Ref<CyberNativeCellWorld>& adapter, const Dictionary& receipt);
+    [[nodiscard]] Dictionary resident_advance(const Ref<CyberNativeCellWorld>& adapter,
+        const Dictionary& receipt, std::int64_t maximum_ticks, std::int64_t maximum_microseconds);
+    [[nodiscard]] Dictionary resident_release(const Ref<CyberNativeCellWorld>& adapter, const Dictionary& receipt);
+    [[nodiscard]] Dictionary resident_clear_active(const Ref<CyberNativeCellWorld>& adapter, const Dictionary& receipt);
+    // The preparation thread must have ended/joined before this transfer.
+    // Its private adapter is consumed and retains no native World afterward.
+    [[nodiscard]] Dictionary resident_import(const Ref<CyberNativeCellWorld>& adapter,
+        const Ref<CyberNativeCellWorld>& candidate, const Dictionary& receipt);
 private:
+    [[nodiscard]] static CyberNativeCellWorld::ResidentArea& resident_find(CyberNativeCellWorld& adapter,
+        std::uint64_t handle);
+    [[nodiscard]] static Dictionary resident_receipt(CyberNativeCellWorld& adapter,
+        CyberNativeCellWorld::ResidentArea& area);
+    [[nodiscard]] static CyberNativeCellWorld::ResidentArea& resident_validate(CyberNativeCellWorld& adapter,
+        const Dictionary& receipt, bool allow_quarantined = false);
+    [[nodiscard]] static std::unique_ptr<CyberNativeCellWorld::PendingLiquidWorld> resident_stage_departure(
+        CyberNativeCellWorld& adapter);
+    static void resident_take_active(CyberNativeCellWorld& adapter,
+        std::unique_ptr<CyberNativeCellWorld::PendingLiquidWorld> staged) noexcept;
+    static void resident_install(CyberNativeCellWorld& adapter,
+        CyberNativeCellWorld::ResidentArea& area) noexcept;
+    [[nodiscard]] std::int64_t prepare_workbench_continuation(const Ref<CyberNativeCellWorld>& adapter,
+        const PackedInt32Array& rectangles, const PackedInt32Array& profile,
+        const PackedInt32Array& policy, const PackedInt32Array& water_fills,
+        const PackedInt32Array& liquid_policy, const Dictionary& options);
+    [[nodiscard]] static Dictionary continuation_capsule(const cybersand::World& world,
+        const cybersand::setup::SetupDescriptor& setup, const String& response, bool window);
+    static void refresh_continuation_receipt(CyberNativeCellWorld& adapter);
+    static void validate_continuation_dependencies(const CyberNativeCellWorld& adapter);
+    static void validate_continuation_host(const CyberNativeCellWorld& adapter);
     [[nodiscard]] std::int64_t prepare_liquid_candidate(const Ref<CyberNativeCellWorld>& adapter,
         const PackedInt32Array& rectangles, const PackedInt32Array& profile,
         const PackedInt32Array& policy, const PackedInt32Array& water_fills,
@@ -810,6 +858,14 @@ public:
             adapter->pending_liquid_world_->token != static_cast<std::uint64_t>(token)) {
             error_ = "Preparation token is absent or retired";
             return {};
+        }
+        if (adapter->pending_liquid_world_->continuation_dirty) {
+            try { refresh_continuation_receipt(*adapter.ptr()); }
+            catch (const std::exception& error) {
+                adapter->pending_liquid_world_.reset();
+                error_ = String(error.what());
+                return {};
+            }
         }
         // The encoding was captured during preparation. This copied wrapper
         // explicitly remains pending; it does not install or expose a World.
@@ -1123,6 +1179,22 @@ protected:
         ClassDB::bind_method(D_METHOD("export_physical_state", "world"), &CyberDemoBridge::export_physical_state);
         ClassDB::bind_method(D_METHOD("import_physical_state", "world", "bytes"),
                              &CyberDemoBridge::import_physical_state);
+        ClassDB::bind_method(D_METHOD("capture_workbench_continuation", "world"),
+            &CyberDemoBridge::capture_workbench_continuation);
+        ClassDB::bind_method(D_METHOD("capture_prepared_workbench_continuation", "world", "token"),
+            &CyberDemoBridge::capture_prepared_workbench_continuation);
+        ClassDB::bind_method(D_METHOD("advance_workbench_continuation", "world", "token", "maximum_ticks", "maximum_microseconds"),
+            &CyberDemoBridge::advance_workbench_continuation);
+        ClassDB::bind_method(D_METHOD("assess_workbench_coarse_advance", "world", "requested_ticks"),
+            &CyberDemoBridge::assess_workbench_coarse_advance);
+        ClassDB::bind_method(D_METHOD("resident_admit", "world", "identity"), &CyberDemoBridge::resident_admit);
+        ClassDB::bind_method(D_METHOD("resident_status", "world"), &CyberDemoBridge::resident_status);
+        ClassDB::bind_method(D_METHOD("resident_activate", "world", "target", "active", "operation_id"), &CyberDemoBridge::resident_activate);
+        ClassDB::bind_method(D_METHOD("resident_capture", "world", "receipt"), &CyberDemoBridge::resident_capture);
+        ClassDB::bind_method(D_METHOD("resident_advance", "world", "receipt", "maximum_ticks", "maximum_microseconds"), &CyberDemoBridge::resident_advance);
+        ClassDB::bind_method(D_METHOD("resident_release", "world", "receipt"), &CyberDemoBridge::resident_release);
+        ClassDB::bind_method(D_METHOD("resident_clear_active", "world", "receipt"), &CyberDemoBridge::resident_clear_active);
+        ClassDB::bind_method(D_METHOD("resident_import", "world", "candidate", "receipt"), &CyberDemoBridge::resident_import);
         ClassDB::bind_method(D_METHOD("build_world", "world", "rectangles", "gameplay_water"), &CyberDemoBridge::build_world, DEFVAL(false));
         ClassDB::bind_method(D_METHOD("build_tuned_world", "world", "rectangles", "profile"), &CyberDemoBridge::build_tuned_world);
         ClassDB::bind_method(D_METHOD("build_water_feel_world", "world", "rectangles",
@@ -1173,3 +1245,5 @@ protected:
 }  // namespace godot
 
 #include "cyber_prepared_liquid_world.hpp"
+#include "cyber_persistent_area_continuation.hpp"
+#include "cyber_persistent_area_residency.hpp"

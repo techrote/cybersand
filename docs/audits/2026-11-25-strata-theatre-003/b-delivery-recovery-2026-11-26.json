@@ -1,0 +1,234 @@
+{
+  "schema": "strata3-specialist-b-delivery-recovery-v1",
+  "date": "2026-11-26",
+  "record_kind": "Recovered observation summary after local execution environment became unavailable; not an original runtime report or a byte-identical reconstruction of the local review files.",
+  "application": {
+    "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+    "disposition": "Draft/HOLD; enabled-optics performance HOLD; A1 not adopted"
+  },
+  "recovery_base": {
+    "commit": "75b60f4aab9512ca668da12d58d51220e5b2cdef",
+    "tree": "7fae61ebc6a5de794089fc1e73e5abcbeb3d5728"
+  },
+  "hosted_package": {
+    "run_id": 45721790366,
+    "job_id": 139629241289,
+    "status": "completed",
+    "conclusion": "success",
+    "started_utc": "2026-11-26T01:28:23Z",
+    "completed_utc": "2026-11-26T02:09:10Z",
+    "steps": [
+      {
+        "name": "Verify retained payload and build the complete evaluator",
+        "started_utc": "2026-11-26T01:29:09Z",
+        "completed_utc": "2026-11-26T01:30:00Z",
+        "conclusion": "success"
+      },
+      {
+        "name": "Extract pristine shipped bytes and repeat native graphical save/reopen",
+        "started_utc": "2026-11-26T01:30:00Z",
+        "completed_utc": "2026-11-26T02:08:40Z",
+        "conclusion": "success"
+      },
+      {
+        "name": "Retain qualified evaluator, checksum and complete payload manifest",
+        "started_utc": "2026-11-26T02:08:40Z",
+        "completed_utc": "2026-11-26T02:08:51Z",
+        "conclusion": "success"
+      },
+      {
+        "name": "Retain original extracted-package and launcher evidence",
+        "started_utc": "2026-11-26T02:08:51Z",
+        "completed_utc": "2026-11-26T02:09:07Z",
+        "conclusion": "success"
+      }
+    ],
+    "scope": "Hosted Windows job completed its pristine static payload check, full extracted optical campaign, actual shipped CMD with prepared generated state, and post-execution original-payload verification. This is separate from the later cold-first-CMD annex."
+  },
+  "evaluator": {
+    "artifact_id": 15080761776,
+    "artifact_name": "strata3-workbench-windows-evaluator-fd0830abcfadd9ae19162e5677943bb131223e59-1",
+    "download_url": "https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080761776",
+    "outer_zip_bytes": 477073937,
+    "outer_zip_sha256": "cc6d27dbf377cb62ac397c2db0b3ba6f9b2f3b3b294a3bc89b7fbbc18767b1ee",
+    "inner_zip_filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+    "inner_zip_bytes": 477296145,
+    "inner_zip_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "manifest_sha256": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+    "inner_members": 2549,
+    "inner_uncompressed_bytes": 622420427,
+    "local_inner_zip_at_outage": "/home/agent/strata003-final-evaluator/CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+    "verified_before_outage": [
+      "Outer artifact byte count and SHA-256 match GitHub metadata.",
+      "All three outer members streamed completely, CRC checked, and target bytes rehashed.",
+      "Inner ZIP SHA-256 matches the supplied checksum.",
+      "Embedded evaluation-manifest.json is byte-identical to the separate manifest file.",
+      "Embedded source/tree exactly equal frozen fd0830ab/fd4dc12d.",
+      "Specialist C independently streamed and checked all 2549 inner members and complete manifest inventory."
+    ]
+  },
+  "package_evidence": {
+    "artifact_id": 15080936111,
+    "artifact_name": "strata3-package-evidence-fd0830abcfadd9ae19162e5677943bb131223e59-1",
+    "download_url": "https://github.com/techrote/cybersand/actions/runs/45721790366/artifacts/15080936111",
+    "outer_zip_bytes": 464793280,
+    "outer_zip_sha256": "c01cbd055e762af0ca96e47a3e8c4f4cd4ecf47070d48d5eab361ead76938513",
+    "extracted_files": 4245,
+    "uncompressed_bytes": 619413588,
+    "local_extraction_at_outage": "/tmp/strata003-final-package-evidence",
+    "original_members_crc_and_target_hashes_verified": true,
+    "local_independent_full_campaign_reread": "A's new local strict read did not start before environment outage. No independent local PASS is claimed here."
+  },
+  "paired_reader": {
+    "local_commit": "8fbadeb4",
+    "adapter_sha256": "acc4b927e4e1addd053aedd9d505673818a84398326bca5d4bc86f9d6c031dda",
+    "tests": 8,
+    "failures": 0,
+    "independent_repetition": "Specialist A repeated positive Windows corpus and all 8 controls; transitive dependencies matched frozen Git blobs.",
+    "windows_controls_artifact_id": 15078378766,
+    "windows_controls_zip_sha256": "5cf98513696d691071ad388fb698e015ad8fba78bf985ea5341c2da969155928",
+    "windows_comparison_sha256": "9b4288609b7dfb0e9cdade7d0410e29ab782b75cc0f595f27080bbb7afb96b65",
+    "windows_receipt_sha256": "c1e70623db457efce2d5b1a05db4da6de3bc01674e26e399e9d35d925cd9ddec",
+    "original_linux_reader_outcome": "rejected: Observation did not execute the external graphical driver",
+    "correction": "Exactly one reversible frozen verify expression: interpret the retained command basename with PureWindowsPath for win32 and PurePosixPath for linux; exact case-sensitive filename comparison and every other frozen gate unchanged.",
+    "corrected_windows_outcome": "passed",
+    "windows_medians": {
+      "predecessor_native_ticks_per_second": 2.90549755071745,
+      "candidate_classic_native_ticks_per_second": 2.93791599378309,
+      "predecessor_physical_p95_usec": 335406,
+      "candidate_classic_physical_p95_usec": 329010
+    },
+    "registered_same_host_criteria": {
+      "native_progression": true,
+      "rapier_progression": true,
+      "physical_p95": true
+    },
+    "admission_target_ms": 45000,
+    "predecessor_admissions_ms": [
+      50911,
+      57214,
+      49280
+    ],
+    "candidate_admissions_ms": [
+      48930,
+      53168,
+      51531
+    ],
+    "all_six_admissions_miss_target": true,
+    "linux_receipt_sha256": "f2e34bca7858201e76d2446148d902a99766c6b990632b1139fbc2bc7b23c269",
+    "linux_outcome": "Original frozen and portable readers both passed; summaries exactly equal.",
+    "scope": "Retained paired original/Classic observations, not enabled optics or physical GPU acceptance."
+  },
+  "portable_package_reader": {
+    "local_commit": "33eff695",
+    "helper_path": "tools/ci/strata3_package_portable_verify.py",
+    "helper_sha256": "65f0b6e13a89afd9ed5500ce96d1925947e08dcb83ecb65937c1281c7945eec8",
+    "registration_sha256": "7c52f7e4af4d4bb46a6bca874b0db114fa400a0ccb8a4bb200ce1741909fb2a0",
+    "source_bound_imported_modules": 28,
+    "source_and_adverse_controls": 10,
+    "failures": 0,
+    "independent_repetition": "A repeated all 10 controls and reviewed scoped replacement/restoration and output destination guard.",
+    "design": "Unchanged exact-fd static package.verify, with only the reviewed predecessor.verify supplied in memory, original outcome retained, all source/ZIP/manifest/payload checks preserved, original function restored.",
+    "actual_final_zip_reread": "UNCONFIRMED. Session12723 was still running at the last observed poll; local transport then failed. No completed receipt was observed.",
+    "no_claim_of_code_reconstruction": "This recovery note records the observed original helper hash; it does not publish reconstructed code or claim newly written bytes match that hash."
+  },
+  "final_windows_art_review": {
+    "local_commit": "46145907",
+    "original_local_review_json_sha256": "9a41e160288c46eafcbb7f6b8581f6449f555015ee3462f462ca092153498e3b",
+    "original_artifact_id": 15078368890,
+    "original_zip_sha256": "84671ae068d7a759112cd6ca84a5485ec555db3aa3a04342f3c7a9bd2927ee13",
+    "actual_png_extent": [
+      1600,
+      900
+    ],
+    "inspected": [
+      {
+        "scene": "optics-readability-challenge",
+        "profile": "classic",
+        "finding": "Rear bars, stairs, ladder and central panel remain convincing false affordances."
+      },
+      {
+        "scene": "optics-readability-challenge",
+        "profile": "gameplay_clarity",
+        "finding": "Real structures become substantially more prominent; coherent dim rear silhouettes can still imply routes."
+      },
+      {
+        "scene": "industrial-underworks",
+        "profile": "diorama",
+        "finding": "Wheel rim and six spokes remain identifiable while fine rear grids soften; lower orange truss remains an apparent route."
+      },
+      {
+        "scene": "lunar-terminator-observatory",
+        "profile": "diorama",
+        "finding": "Negative sky and separated instruments support an optional miniature aesthetic; not a gameplay or performance recommendation."
+      },
+      {
+        "scene": "xeno-resonance-grotto",
+        "profile": "alien_bioluminescence",
+        "finding": "Muted violet rear masses and restrained green accents preserve organic identity behind cyan lips; lower rear truss still implies a traverse."
+      },
+      {
+        "scene": "sunward-freight-megastructure",
+        "profile": "cinematic_deep_focus",
+        "finding": "Freight housings and rear grids retain construction; long rear trusses and orange line still suggest physical routes."
+      }
+    ],
+    "comparison": "Profile configuration hash, paused actor state, native geometry-group hash, image extent and camera origin/view/scale matched the prior Linux counterparts.",
+    "camera_caveat": {
+      "exact_raw_camera_json_equal": false,
+      "maximum_world_rect_decimal_difference": 1.000444171950221e-11,
+      "binary32_representations_equal": true,
+      "example_linux_height": 751.666625976562,
+      "example_windows_height": 751.666625976563
+    },
+    "limits": [
+      "Named-profile specialist-agent assessment with known geometry, not blinded human perceptual evidence.",
+      "Overview actor bodies unresolved; labels and markers do not establish body visibility.",
+      "No new conspicuous halo, coverage displacement or major silhouette loss observed in these six frames; not exhaustive backend equivalence.",
+      "New procedural light motifs remain too subtle in the inspected overviews to establish convincing volumetric lighting.",
+      "Predominantly dark-background corpus; Sunward/Sunlit is a warm industrial study, not demonstrated bright daylight readability."
+    ]
+  },
+  "cold_source_review": {
+    "local_review_commit": "3545e143",
+    "reviewed_observer_commit": "572567ebf06709827c49d503bdde41cde4e1ec6d",
+    "original_local_review_sha256": "3c0912246be79a20e1c2355fa887fa648d10e0d11ed3285d1387cfb87dd2343e",
+    "source_controls": 21,
+    "failures": 0,
+    "boundary": "Source orders exact archive, absent spaced extraction, static pristine verification, then untouched owner CMD as first Godot invocation; original files remain exact and generated state is separate.",
+    "corrected_clock_gap": "Root FILETIME creation within5s of recorded Unix start; root lifetime <= monotonic wall+1s. Wrong-clock and long-lifetime controls pass.",
+    "runtime_result_at_outage": "None; source/adverse controls only.",
+    "later_armed_api_source": "3f37d27bb7637e6ef7107e968d6e27fb4128ce2e",
+    "later_armed_api_tree": "e2892998bf42a8b2a9a8194d2f3268a14ed0f314",
+    "later_arming_scope": "Root reported a request-only child of572567eb with exact readback verified. No post-arming local test claim; hosted cold result is separately owned."
+  },
+  "local_commits_not_remotely_published_before_outage": [
+    {
+      "commit": "8fbadeb4",
+      "purpose": "Portable predecessor reader, tests and exact receipts"
+    },
+    {
+      "commit": "33eff695",
+      "purpose": "Complete external package reader and source-only registration"
+    },
+    {
+      "commit": "46145907",
+      "purpose": "Six final Windows original-image review and metadata"
+    },
+    {
+      "commit": "033ccf6c",
+      "purpose": "Canonical bright/daylight corpus limit"
+    },
+    {
+      "commit": "3545e143",
+      "purpose": "Independent cold-command source boundary review"
+    }
+  ],
+  "owner_steps": [
+    "Download artifact15080761776 and extract its outer transport ZIP.",
+    "Extract CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip into its own folder, then run Open Workbench.cmd.",
+    "Use the separately identified owner-guide addendum for Solo, focus mode, scrolling and named Save/Load clarifications.",
+    "Keep named optical presets separate from native scene Save start/Load start; retain package/source identity when reporting feedback."
+  ]
+}

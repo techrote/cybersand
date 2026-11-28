@@ -1,0 +1,1342 @@
+{
+  "available": true,
+  "observation_errors": [],
+  "observed_cpu_seconds": 76.484375,
+  "observer_wall_seconds": 0.4370000000003529,
+  "peak_observed_tree_rss_bytes": 778891264,
+  "process_identities": [
+    [
+      1344,
+      134400166755470368
+    ],
+    [
+      5852,
+      134400166755397321
+    ]
+  ],
+  "root_pid": 5852,
+  "root_start_id": 134400166755397321,
+  "sample_count": 53,
+  "sample_interval_seconds": 0.5,
+  "samples": [
+    {
+      "elapsed_seconds": 0.0,
+      "processes": [
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 3280896,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 3280896,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 0.0,
+      "tree_rss_bytes": 3280896
+    },
+    {
+      "elapsed_seconds": 0.5,
+      "processes": [
+        {
+          "cpu_seconds": 0.484375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 150667264,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 150667264,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 0.484375,
+      "tree_rss_bytes": 155611136
+    },
+    {
+      "elapsed_seconds": 1.0,
+      "processes": [
+        {
+          "cpu_seconds": 1.0,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 211939328,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 211939328,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 1.0,
+      "tree_rss_bytes": 216883200
+    },
+    {
+      "elapsed_seconds": 1.515,
+      "processes": [
+        {
+          "cpu_seconds": 1.5,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 248123392,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 248123392,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 1.5,
+      "tree_rss_bytes": 253067264
+    },
+    {
+      "elapsed_seconds": 2.015,
+      "processes": [
+        {
+          "cpu_seconds": 2.0,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 251551744,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 244490240,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 2.0,
+      "tree_rss_bytes": 249434112
+    },
+    {
+      "elapsed_seconds": 2.515,
+      "processes": [
+        {
+          "cpu_seconds": 2.5,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 257810432,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 202182656,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 2.5,
+      "tree_rss_bytes": 207126528
+    },
+    {
+      "elapsed_seconds": 3.015,
+      "processes": [
+        {
+          "cpu_seconds": 3.0,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 321101824,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 321101824,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 3.0,
+      "tree_rss_bytes": 326045696
+    },
+    {
+      "elapsed_seconds": 3.515,
+      "processes": [
+        {
+          "cpu_seconds": 3.515625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 338337792,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 335519744,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 3.515625,
+      "tree_rss_bytes": 340463616
+    },
+    {
+      "elapsed_seconds": 4.031,
+      "processes": [
+        {
+          "cpu_seconds": 4.015625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 352342016,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 352342016,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 4.015625,
+      "tree_rss_bytes": 357285888
+    },
+    {
+      "elapsed_seconds": 4.531,
+      "processes": [
+        {
+          "cpu_seconds": 5.046875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 562491392,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 562491392,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 5.046875,
+      "tree_rss_bytes": 567435264
+    },
+    {
+      "elapsed_seconds": 5.031,
+      "processes": [
+        {
+          "cpu_seconds": 6.046875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 494268416,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 6.046875,
+      "tree_rss_bytes": 499212288
+    },
+    {
+      "elapsed_seconds": 5.672,
+      "processes": [
+        {
+          "cpu_seconds": 7.390625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 488624128,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 7.390625,
+      "tree_rss_bytes": 493568000
+    },
+    {
+      "elapsed_seconds": 6.234,
+      "processes": [
+        {
+          "cpu_seconds": 9.453125,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 495108096,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 9.453125,
+      "tree_rss_bytes": 500051968
+    },
+    {
+      "elapsed_seconds": 6.781,
+      "processes": [
+        {
+          "cpu_seconds": 11.46875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 500297728,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 11.46875,
+      "tree_rss_bytes": 505241600
+    },
+    {
+      "elapsed_seconds": 7.312,
+      "processes": [
+        {
+          "cpu_seconds": 13.515625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 504848384,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 13.515625,
+      "tree_rss_bytes": 509792256
+    },
+    {
+      "elapsed_seconds": 7.859,
+      "processes": [
+        {
+          "cpu_seconds": 15.625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 505344000,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 15.625,
+      "tree_rss_bytes": 510287872
+    },
+    {
+      "elapsed_seconds": 8.375,
+      "processes": [
+        {
+          "cpu_seconds": 17.671875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 505552896,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 17.671875,
+      "tree_rss_bytes": 510496768
+    },
+    {
+      "elapsed_seconds": 8.922,
+      "processes": [
+        {
+          "cpu_seconds": 19.734375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 505577472,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 19.734375,
+      "tree_rss_bytes": 510521344
+    },
+    {
+      "elapsed_seconds": 9.453,
+      "processes": [
+        {
+          "cpu_seconds": 21.734375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 506277888,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 21.734375,
+      "tree_rss_bytes": 511221760
+    },
+    {
+      "elapsed_seconds": 10.015,
+      "processes": [
+        {
+          "cpu_seconds": 23.75,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 507011072,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 23.75,
+      "tree_rss_bytes": 511954944
+    },
+    {
+      "elapsed_seconds": 10.547,
+      "processes": [
+        {
+          "cpu_seconds": 25.84375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 500768768,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 25.84375,
+      "tree_rss_bytes": 505712640
+    },
+    {
+      "elapsed_seconds": 11.078,
+      "processes": [
+        {
+          "cpu_seconds": 27.859375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 500682752,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 27.859375,
+      "tree_rss_bytes": 505626624
+    },
+    {
+      "elapsed_seconds": 11.609,
+      "processes": [
+        {
+          "cpu_seconds": 29.9375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 491905024,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 29.9375,
+      "tree_rss_bytes": 496848896
+    },
+    {
+      "elapsed_seconds": 12.156,
+      "processes": [
+        {
+          "cpu_seconds": 32.03125,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 492109824,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 32.03125,
+      "tree_rss_bytes": 497053696
+    },
+    {
+      "elapsed_seconds": 12.687,
+      "processes": [
+        {
+          "cpu_seconds": 34.140625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 481816576,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 34.140625,
+      "tree_rss_bytes": 486760448
+    },
+    {
+      "elapsed_seconds": 13.218,
+      "processes": [
+        {
+          "cpu_seconds": 36.171875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 481591296,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 36.171875,
+      "tree_rss_bytes": 486535168
+    },
+    {
+      "elapsed_seconds": 13.734,
+      "processes": [
+        {
+          "cpu_seconds": 38.234375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 566104064,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 481484800,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 38.234375,
+      "tree_rss_bytes": 486428672
+    },
+    {
+      "elapsed_seconds": 14.328,
+      "processes": [
+        {
+          "cpu_seconds": 40.453125,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 582246400,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 562814976,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 40.453125,
+      "tree_rss_bytes": 567758848
+    },
+    {
+      "elapsed_seconds": 14.859,
+      "processes": [
+        {
+          "cpu_seconds": 42.421875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 582246400,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 563511296,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 42.421875,
+      "tree_rss_bytes": 568455168
+    },
+    {
+      "elapsed_seconds": 15.484,
+      "processes": [
+        {
+          "cpu_seconds": 43.921875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 594169856,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 592916480,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 43.921875,
+      "tree_rss_bytes": 597860352
+    },
+    {
+      "elapsed_seconds": 16.109,
+      "processes": [
+        {
+          "cpu_seconds": 46.421875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 665395200,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 665395200,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 46.421875,
+      "tree_rss_bytes": 670339072
+    },
+    {
+      "elapsed_seconds": 16.718,
+      "processes": [
+        {
+          "cpu_seconds": 49.875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 667820032,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 655904768,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 49.875,
+      "tree_rss_bytes": 660848640
+    },
+    {
+      "elapsed_seconds": 17.547,
+      "processes": [
+        {
+          "cpu_seconds": 51.96875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 667820032,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 656576512,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 51.96875,
+      "tree_rss_bytes": 661520384
+    },
+    {
+      "elapsed_seconds": 18.093,
+      "processes": [
+        {
+          "cpu_seconds": 54.125,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 667820032,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 656818176,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 54.125,
+      "tree_rss_bytes": 661762048
+    },
+    {
+      "elapsed_seconds": 18.703,
+      "processes": [
+        {
+          "cpu_seconds": 56.53125,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 667820032,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 643129344,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 56.53125,
+      "tree_rss_bytes": 648073216
+    },
+    {
+      "elapsed_seconds": 19.328,
+      "processes": [
+        {
+          "cpu_seconds": 58.890625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 667820032,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 609927168,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 58.890625,
+      "tree_rss_bytes": 614871040
+    },
+    {
+      "elapsed_seconds": 19.859,
+      "processes": [
+        {
+          "cpu_seconds": 60.875,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 667820032,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 611282944,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 60.875,
+      "tree_rss_bytes": 616226816
+    },
+    {
+      "elapsed_seconds": 20.359,
+      "processes": [
+        {
+          "cpu_seconds": 62.203125,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 699310080,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 676130816,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 62.203125,
+      "tree_rss_bytes": 681074688
+    },
+    {
+      "elapsed_seconds": 20.859,
+      "processes": [
+        {
+          "cpu_seconds": 62.75,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 755728384,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 755728384,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 62.75,
+      "tree_rss_bytes": 760672256
+    },
+    {
+      "elapsed_seconds": 21.359,
+      "processes": [
+        {
+          "cpu_seconds": 63.265625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 755728384,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 746418176,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 63.265625,
+      "tree_rss_bytes": 751362048
+    },
+    {
+      "elapsed_seconds": 21.875,
+      "processes": [
+        {
+          "cpu_seconds": 64.84375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773947392,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 773947392,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 64.84375,
+      "tree_rss_bytes": 778891264
+    },
+    {
+      "elapsed_seconds": 22.375,
+      "processes": [
+        {
+          "cpu_seconds": 65.34375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 734380032,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 65.34375,
+      "tree_rss_bytes": 739323904
+    },
+    {
+      "elapsed_seconds": 23.047,
+      "processes": [
+        {
+          "cpu_seconds": 66.8125,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 734658560,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 66.8125,
+      "tree_rss_bytes": 739602432
+    },
+    {
+      "elapsed_seconds": 23.547,
+      "processes": [
+        {
+          "cpu_seconds": 68.5,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 742051840,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 68.5,
+      "tree_rss_bytes": 746995712
+    },
+    {
+      "elapsed_seconds": 24.062,
+      "processes": [
+        {
+          "cpu_seconds": 69.0,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 742051840,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 69.0,
+      "tree_rss_bytes": 746995712
+    },
+    {
+      "elapsed_seconds": 24.562,
+      "processes": [
+        {
+          "cpu_seconds": 69.5,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 745205760,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 69.5,
+      "tree_rss_bytes": 750149632
+    },
+    {
+      "elapsed_seconds": 25.062,
+      "processes": [
+        {
+          "cpu_seconds": 70.0,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 745205760,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 70.0,
+      "tree_rss_bytes": 750149632
+    },
+    {
+      "elapsed_seconds": 25.562,
+      "processes": [
+        {
+          "cpu_seconds": 70.515625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 745205760,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 70.515625,
+      "tree_rss_bytes": 750149632
+    },
+    {
+      "elapsed_seconds": 26.078,
+      "processes": [
+        {
+          "cpu_seconds": 71.015625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 745205760,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 71.015625,
+      "tree_rss_bytes": 750149632
+    },
+    {
+      "elapsed_seconds": 26.578,
+      "processes": [
+        {
+          "cpu_seconds": 71.515625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 741163008,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 71.515625,
+      "tree_rss_bytes": 746106880
+    },
+    {
+      "elapsed_seconds": 27.125,
+      "processes": [
+        {
+          "cpu_seconds": 72.890625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 731889664,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 72.890625,
+      "tree_rss_bytes": 736833536
+    },
+    {
+      "elapsed_seconds": 27.703,
+      "processes": [
+        {
+          "cpu_seconds": 75.140625,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 732340224,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 75.140625,
+      "tree_rss_bytes": 737284096
+    },
+    {
+      "elapsed_seconds": 28.203,
+      "processes": [
+        {
+          "cpu_seconds": 76.484375,
+          "image_name": "Godot_v4.7-stable_win64.exe",
+          "os_peak_rss_bytes": 773951488,
+          "parent_pid": 5852,
+          "pid": 1344,
+          "rss_bytes": 569589760,
+          "start_id": 134400166755470368
+        },
+        {
+          "cpu_seconds": 0.0,
+          "image_name": "Godot_v4.7-stable_win64_console.exe",
+          "os_peak_rss_bytes": 4943872,
+          "parent_pid": 4616,
+          "pid": 5852,
+          "rss_bytes": 4943872,
+          "start_id": 134400166755397321
+        }
+      ],
+      "tree_cpu_seconds_observed": 76.484375,
+      "tree_rss_bytes": 574533632
+    }
+  ],
+  "schema": "strata-process-resources-v1",
+  "scope": "observed_process_and_descendants",
+  "semantics": "Last observed per-process user+kernel CPU counters; sampled simultaneous RSS/working-set sum. Short-lived descendants and exit tails may be missed; shared pages may be counted more than once. OS per-process peak counters are separate. No GPU-memory or presented-FPS measurement."
+}

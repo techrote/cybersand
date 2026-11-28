@@ -1,0 +1,1859 @@
+{
+  "schema": "strata3-final-corpus-artistic-review-v1",
+  "reviewer": "Specialist B",
+  "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "status": "eight-authored-scenes-reviewed-and-independent-challenge-reviewed-performance-hold",
+  "source_frozen_for_package": true,
+  "review_scope": "Original final-source Linux captures admitted. Each scene records only the profiles actually visually inspected; a verified unreviewed capture is not an artistic pass. Agent assessment, not human perceptual testing or physical NVIDIA acceptance.",
+  "axes": [
+    "physical_route_distinction",
+    "selected_actor_localization",
+    "retained_rear_architectural_detail",
+    "perceived_layer_depth",
+    "absence_of_visible_artifacts"
+  ],
+  "performance_scope": {
+    "registered_profile_cost_scene": "optics-readability-challenge",
+    "registered_profile_cost_extent": [
+      1024,
+      768
+    ],
+    "paired_predecessor_classic_scene": "industrial-underworks",
+    "paired_predecessor_classic_extent": [
+      1024,
+      1024
+    ],
+    "all_scene_physical_performance_claim": false,
+    "physical_windows_nvidia_acceptance": false,
+    "scene_admission_target_ms": 45000,
+    "retained_original_windows_misses_ms": [
+      51619,
+      66316,
+      66200,
+      59958,
+      54804
+    ],
+    "functional_corpus_pass_is_not_profile_cost_gate_acceptance": true,
+    "final_linux_profile_progression_observation": {
+      "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "report": "optics-readability-challenge/progression/result.json",
+      "report_sha256": "999e061358c09ae67e7011e4d26c6887550439f38c8bd15727c2c2d8618e2b9e",
+      "classic_median_ticks_per_second": 8.8098034701123,
+      "ratios_to_classic": {
+        "architectural": 0.7995,
+        "cinematic_deep_focus": 0.8153,
+        "gameplay_clarity": 0.7506,
+        "diorama_high": 0.7545
+      },
+      "scope": "Hosted Linux software-rendered registered challenge only;3 repeat medians. Independently reviewed in c-performance-review-linux.md.",
+      "acceptance": "HOLD; material progression regression preserved",
+      "artistic_preferences_override_gate": false
+    }
+  },
+  "scenes": [
+    {
+      "scene": "orbital-terminal",
+      "title": "Orbital Fabrication Terminal",
+      "extent": [
+        2048,
+        1024
+      ],
+      "source_path": "godot/data/strata2/orbital-terminal.json",
+      "source_sha256": "3195a2e9ff080fd57dd202eaab1e872a9b808e38ef418398a64e2a34bf861c8f",
+      "status": "3-matched-profiles-visually-reviewed",
+      "original_install_report": {
+        "relative_path": "orbital-terminal/install/result.json",
+        "sha256": "fe65a2bfafe8641fba42336ed1ed7b646993193058b682dea84c2871636f195c"
+      },
+      "original_capture_manifest": [
+        {
+          "profile": "classic",
+          "relative_path": "orbital-terminal/install/profile-classic.png",
+          "sha256": "54fbf14a3a4e30333946f079b19866be8cd0d4f1dfcb3100131a45962fdf30b6",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907"
+        },
+        {
+          "profile": "architectural",
+          "relative_path": "orbital-terminal/install/profile-architectural.png",
+          "sha256": "1fefc17634fb25ffcd7fccdb5bff5d59850fa5144e323c7dc51c0bd7ebcdf066",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c"
+        },
+        {
+          "profile": "gameplay_clarity",
+          "relative_path": "orbital-terminal/install/profile-gameplay_clarity.png",
+          "sha256": "eba4170aa58c4bd32cb15d6f3634523225e3bba7d8322721aabad12b038d6330",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f"
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "relative_path": "orbital-terminal/install/profile-cinematic_deep_focus.png",
+          "sha256": "117ff9e4026decb119dcc6b1d4f2e73ea907d956e64b72a59870bb32c53bd348",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a"
+        },
+        {
+          "profile": "optical_lens",
+          "relative_path": "orbital-terminal/install/profile-optical_lens.png",
+          "sha256": "ef9ce770e17716ce07007f36273575246650413dd0cf730f76cea798433ffa67",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7"
+        },
+        {
+          "profile": "diorama",
+          "relative_path": "orbital-terminal/install/profile-diorama.png",
+          "sha256": "25caab07ce328224fffaa1f3d4368e2cfd58595034f94f0b8a55bf2a2bcaa53a",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c"
+        },
+        {
+          "profile": "atmospheric_industrial",
+          "relative_path": "orbital-terminal/install/profile-atmospheric_industrial.png",
+          "sha256": "20cf180de798207ceaac27e5ac511312365e8ac318313300f8ca00a6f4ba07fd",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52"
+        },
+        {
+          "profile": "noir",
+          "relative_path": "orbital-terminal/install/profile-noir.png",
+          "sha256": "6c29368581dcb6961f200d30f26af45bf3d89c73d3e6b3162b51c300f1f3f2d1",
+          "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1"
+        },
+        {
+          "profile": "cold_orbital",
+          "relative_path": "orbital-terminal/install/profile-cold_orbital.png",
+          "sha256": "e437dd5f7f94df4987d5483186d19be8814e0c87f9cac45af153044c90c0596b",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816"
+        },
+        {
+          "profile": "alien_bioluminescence",
+          "relative_path": "orbital-terminal/install/profile-alien_bioluminescence.png",
+          "sha256": "15a9ef83fce39a46f4ba52501d0c9ce2316110b2a0372ff06f13a4bed0514d6f",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a"
+        },
+        {
+          "profile": "sunlit_megastructure",
+          "relative_path": "orbital-terminal/install/profile-sunlit_megastructure.png",
+          "sha256": "8cb5e3bd4740f13eff4f72963df1c196feb9f56b129bd573cb22e0ee8a419614",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb"
+        }
+      ],
+      "principal_question": "Can a player separate physical decks from suspended rear frames while retaining dark distant docking detail?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [
+        "classic",
+        "gameplay_clarity",
+        "cinematic_deep_focus"
+      ],
+      "findings": {
+        "physical_route": "The actual silver deck lips, outer enclosure and cargo remain crisp. The long middle rear X-truss and lower orange pipeline look like possible continuous support in Classic. Gameplay Clarity substantially subordinates both while retaining their construction.",
+        "architecture": "Rear machinery pods, docking frames and fine X-bracing survive all three views. Deep Focus retains more rear texture and cool detail, with only restrained depth change at Overview; the bright long truss remains an ambiguous apparent route.",
+        "actor": "The selected actor near the lower-left deck is localized primarily by its label/ring. The body is too small in this Overview to establish a profile-specific visibility improvement.",
+        "artifacts": "No conspicuous alpha halo, displaced Play edge or seam is apparent in these stills.",
+        "preference": "Gameplay Clarity for ordinary route hierarchy; Deep Focus for detailed architectural inspection. No inspected cinematic treatment replaces clarity assistance.",
+        "limitations": [
+          "Three of eleven profiles personally inspected by B at Overview.",
+          "Named-profile assessment with known geometry; no human comprehension study.",
+          "The continuous rear bridge remains a placement-based ambiguity."
+        ]
+      },
+      "artistic_disposition": "Strong retained industrial detail; Clarity improves ownership, while Deep Focus remains an inspection choice rather than a false-route solution.",
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          2048,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          48.3333320617676,
+          135.0,
+          1503.33325195312,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          150.0,
+          730.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "geometry_group_sha256": "99ef7cb74b1595c8dcd2d6e42ceedf591f5946d11c6a3a93d8b26c9e52784038",
+      "admission": {
+        "elapsed_ms": 16324,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      "ratings_b_five_axis": {
+        "classic": [
+          3,
+          3,
+          5,
+          3,
+          5
+        ],
+        "gameplay_clarity": [
+          5,
+          3,
+          4,
+          4,
+          5
+        ],
+        "cinematic_deep_focus": [
+          3,
+          3,
+          5,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "title": "Rain over the Arcology",
+      "extent": [
+        2048,
+        1024
+      ],
+      "source_path": "godot/data/strata2/neon-rain-arcology.json",
+      "source_sha256": "3b7194af6cb905beafddb36e2ff953baf98803701b517d146ffd2a6aa83bdf9c",
+      "status": "3-matched-profiles-visually-reviewed",
+      "original_install_report": {
+        "relative_path": "neon-rain-arcology/install/result.json",
+        "sha256": "b8b4dc3496c8a7fddb9e22022670d8ddaba6043e1f309208893ba7fd15608dae"
+      },
+      "original_capture_manifest": [
+        {
+          "profile": "classic",
+          "relative_path": "neon-rain-arcology/install/profile-classic.png",
+          "sha256": "3bba7b70affe9d06956024becbb14463a7f22f8e61df40af20943dbba910d82c",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907"
+        },
+        {
+          "profile": "architectural",
+          "relative_path": "neon-rain-arcology/install/profile-architectural.png",
+          "sha256": "bc55bc730d49f0a30babc9e21b66c8806d70fd0f47ee7791919c20b3d37d4027",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c"
+        },
+        {
+          "profile": "gameplay_clarity",
+          "relative_path": "neon-rain-arcology/install/profile-gameplay_clarity.png",
+          "sha256": "200a665db40504cc5f5de7d059d0d0aacc94e670f23b29626898f600e3d2face",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f"
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "relative_path": "neon-rain-arcology/install/profile-cinematic_deep_focus.png",
+          "sha256": "5074738d005c7dbdb6bdaa38e3eb9cf75c312ce656ac4cbe9e5f9de05e876527",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a"
+        },
+        {
+          "profile": "optical_lens",
+          "relative_path": "neon-rain-arcology/install/profile-optical_lens.png",
+          "sha256": "d21e08ccedddd6c58867f67b4124db72fdbd2dcc8922ebe0a51b8dc614806eb8",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7"
+        },
+        {
+          "profile": "diorama",
+          "relative_path": "neon-rain-arcology/install/profile-diorama.png",
+          "sha256": "10b35f7e4b8d5a8ff8409a1932873041460a02f1566d41dca670a9376a519cf3",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c"
+        },
+        {
+          "profile": "atmospheric_industrial",
+          "relative_path": "neon-rain-arcology/install/profile-atmospheric_industrial.png",
+          "sha256": "ec70849ba4f445899cd9ea285fa042ef92557151c9c65a4d85adbb61c0efffae",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52"
+        },
+        {
+          "profile": "noir",
+          "relative_path": "neon-rain-arcology/install/profile-noir.png",
+          "sha256": "f7276562c8b560f2120ae93c7dae17cf8d5895b052a1fe03107c9d39bb71d4f9",
+          "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1"
+        },
+        {
+          "profile": "cold_orbital",
+          "relative_path": "neon-rain-arcology/install/profile-cold_orbital.png",
+          "sha256": "6006767d236e7ac32594302149a2d82a29a61878cd2509625d5a0c7abf5292b3",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816"
+        },
+        {
+          "profile": "alien_bioluminescence",
+          "relative_path": "neon-rain-arcology/install/profile-alien_bioluminescence.png",
+          "sha256": "9518a853d27c88cb57b1586aad2bca08b9c26509ed9dd8523d663255ae6d092c",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a"
+        },
+        {
+          "profile": "sunlit_megastructure",
+          "relative_path": "neon-rain-arcology/install/profile-sunlit_megastructure.png",
+          "sha256": "6838989792ecc36d12663fe118f5adeca1dfcb147bb663484d04524573e1ae4f",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb"
+        }
+      ],
+      "principal_question": "Does the rear orange skybridge still imply a false route across the central gap?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [
+        "classic",
+        "gameplay_clarity",
+        "cinematic_deep_focus"
+      ],
+      "findings": {
+        "physical_route": "Gameplay Clarity makes the physical brick terraces and their bright metal lips much more dominant. The orange rear bridge around framebuffer x283..617,y481..516 and the decorative ladders are markedly attenuated. The bridge remains a coherent shape and its alignment can still imply a continuation.",
+        "architecture": "The cyan, yellow and magenta window grids and distant towers remain recognizable under Clarity, with a deliberate reduction in neon intensity. Deep Focus retains the lively rain and window texture but also retains inviting bright rear ladders and cross-bridges.",
+        "actor": "The actor near the lower-left empty space is primarily identified by the label and selection ring; no body-visibility improvement is established at this scale.",
+        "artifacts": "Play material edges remain visually crisp; no conspicuous optical seam or alpha fringe is apparent in the three full original stills.",
+        "preference": "Gameplay Clarity for physical-route reading; Classic or Deep Focus for a richer neon architectural view with assistance available.",
+        "limitations": [
+          "Three of eleven profiles personally inspected by B.",
+          "Colourful decorative ladders retain a semantic affordance even when their intensity is lower.",
+          "No close camera movement through this original scene was personally reviewed here."
+        ]
+      },
+      "artistic_disposition": "Clarity resolves much of the visual competition without erasing the city; rich neon treatments retain stronger false-route cues.",
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          2048,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          48.3333320617676,
+          135.0,
+          1503.33325195312,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          160.0,
+          850.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "geometry_group_sha256": "05804c7182ba7326c80b152d655a7c01ec43033b2de348a6b5fd57108e59fa12",
+      "admission": {
+        "elapsed_ms": 12962,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      "ratings_b_five_axis": {
+        "classic": [
+          3,
+          3,
+          5,
+          3,
+          5
+        ],
+        "gameplay_clarity": [
+          5,
+          3,
+          4,
+          4,
+          5
+        ],
+        "cinematic_deep_focus": [
+          3,
+          3,
+          5,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "scene": "industrial-underworks",
+      "title": "Underworks / Reactor Service",
+      "extent": [
+        1024,
+        1024
+      ],
+      "source_path": "godot/data/strata2/industrial-underworks.json",
+      "source_sha256": "b7fb46146b03305409e1a96288792e5f6b656fdb9f741ddeb679303601b91efb",
+      "status": "4-matched-profiles-visually-reviewed",
+      "original_install_report": {
+        "relative_path": "industrial-underworks/install/result.json",
+        "sha256": "2877c0563ac6c6156059f9c85b38915a8ddf6312f57944a7357d4f157807ed9d"
+      },
+      "original_capture_manifest": [
+        {
+          "profile": "classic",
+          "relative_path": "industrial-underworks/install/profile-classic.png",
+          "sha256": "01f8d519018d90ffac0a12fdca0ba801c10396fc4feca42587c6740fffafd588",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907"
+        },
+        {
+          "profile": "architectural",
+          "relative_path": "industrial-underworks/install/profile-architectural.png",
+          "sha256": "e10378c3c04e042ab4f6d72bb06798a70142f16a4bcb40bd2b0f7fa8c2f82ac6",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c"
+        },
+        {
+          "profile": "gameplay_clarity",
+          "relative_path": "industrial-underworks/install/profile-gameplay_clarity.png",
+          "sha256": "43dd1f5b480ff98eed89a0f3e7c0e14c6134b95613912aa80ca1e32f2ebefe70",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f"
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "relative_path": "industrial-underworks/install/profile-cinematic_deep_focus.png",
+          "sha256": "2c0af3aa3860f303fef1e89a734362d540357bfe8158890f21558d387d7d6558",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a"
+        },
+        {
+          "profile": "optical_lens",
+          "relative_path": "industrial-underworks/install/profile-optical_lens.png",
+          "sha256": "9479c364f2c3b240e46763dc1d3ef100d7bb1345d916bbc18f97880382e2d8e3",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7"
+        },
+        {
+          "profile": "diorama",
+          "relative_path": "industrial-underworks/install/profile-diorama.png",
+          "sha256": "b09c1800bc689cd441b71121180a71206c1067eaaf16b27e730a0f7692d6441b",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c"
+        },
+        {
+          "profile": "atmospheric_industrial",
+          "relative_path": "industrial-underworks/install/profile-atmospheric_industrial.png",
+          "sha256": "11f8c3ded7bce8fccd5c92ac344784d2e2500515efd5df852fa0bf645c51d06b",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52"
+        },
+        {
+          "profile": "noir",
+          "relative_path": "industrial-underworks/install/profile-noir.png",
+          "sha256": "2258e3d01f3f12d0eb31322953c9ef22edc1a68793586abf5e0b30d95a61e198",
+          "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1"
+        },
+        {
+          "profile": "cold_orbital",
+          "relative_path": "industrial-underworks/install/profile-cold_orbital.png",
+          "sha256": "f685c54a55aff0786d75b0016d0d5c1a0918158661e3236098656d7f997db268",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816"
+        },
+        {
+          "profile": "alien_bioluminescence",
+          "relative_path": "industrial-underworks/install/profile-alien_bioluminescence.png",
+          "sha256": "76f7eea41de46e3db556003dbe8adf1331f508b2e71c361bd56f86bf339846b5",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a"
+        },
+        {
+          "profile": "sunlit_megastructure",
+          "relative_path": "industrial-underworks/install/profile-sunlit_megastructure.png",
+          "sha256": "49347cca622fdf5e7a0f8bb8b1430f5d4141c2174f00b8a1dc42d60fd2d299a2",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb"
+        }
+      ],
+      "principal_question": "Do revised dense lens kernels preserve wheel spokes without the rear lower truss competing with Play?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [
+        "classic",
+        "gameplay_clarity",
+        "cinematic_deep_focus",
+        "diorama"
+      ],
+      "findings": {
+        "physical_route": "The bright physical platforms and enclosure read decisively under Clarity. Classic, Deep Focus and Diorama preserve a plausible lower orange rear bridge between the cargo blocks; softer focus does not remove that apparent support.",
+        "architecture": "The central wheel, full rim and six-spoke identity survive the final dense Diorama filter. Fine wheel material texture and housing grids soften, whereas Deep Focus retains that construction more completely. Clarity preserves the recognizable wheel and service cabinets while reducing their competing emphasis.",
+        "lens": "The revised dense Diorama is a usable optional miniature treatment in this actual source. Earlier sparse-kernel assessments are not reused. The intact spokes demonstrate meaningful architectural retention, but the profile is neither the clearest route presentation nor the cheapest measured treatment.",
+        "actor": "The small lower-centre actor is located through label/ring rather than resolved body detail in all four inspected views.",
+        "artifacts": "No obvious broken wheel silhouette, bright alpha halo, Play blur or optical seam is apparent in the final stills.",
+        "preference": "Gameplay Clarity for interaction; Deep Focus for precise construction inspection; Diorama as optional atmosphere with visible fine-detail cost.",
+        "limitations": [
+          "Four of eleven profiles personally inspected at this final source.",
+          "Single stills cannot establish temporal stability of the directional kernel.",
+          "The lower false bridge remains a composition issue."
+        ]
+      },
+      "artistic_disposition": "Final dense lens retains the major machine identity; tonal hierarchy is more effective than defocus alone for gameplay ownership.",
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976562,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          842.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+      "admission": {
+        "elapsed_ms": 12510,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      "ratings_b_five_axis": {
+        "classic": [
+          3,
+          3,
+          5,
+          3,
+          5
+        ],
+        "gameplay_clarity": [
+          5,
+          3,
+          4,
+          4,
+          5
+        ],
+        "cinematic_deep_focus": [
+          3,
+          3,
+          5,
+          4,
+          5
+        ],
+        "diorama": [
+          3,
+          3,
+          4,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "scene": "abyss-foundry",
+      "title": "Abyss Foundry",
+      "extent": [
+        1024,
+        1024
+      ],
+      "source_path": "godot/data/strata2/abyss-foundry.json",
+      "source_sha256": "5eb9e81360abbc2bf99b48ed886bcbbcd7b5c47eb57000c51ccb9fbd5c343412",
+      "status": "3-matched-profiles-visually-reviewed",
+      "original_install_report": {
+        "relative_path": "abyss-foundry/install/result.json",
+        "sha256": "36061667c08a4b1bd2319223431c2f9299d2a176cf0662bbb4146145fa5a677d"
+      },
+      "original_capture_manifest": [
+        {
+          "profile": "classic",
+          "relative_path": "abyss-foundry/install/profile-classic.png",
+          "sha256": "e9ab56cb12a74d32c42e21405c128d773546b6567f92befb3cf3152418177dda",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907"
+        },
+        {
+          "profile": "architectural",
+          "relative_path": "abyss-foundry/install/profile-architectural.png",
+          "sha256": "e5cdf1176c8f2f965f6705fbab31934c6cc7b0b910db718367b02bb69191fe20",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c"
+        },
+        {
+          "profile": "gameplay_clarity",
+          "relative_path": "abyss-foundry/install/profile-gameplay_clarity.png",
+          "sha256": "407306de90a2efe6363c6d59eddbba98dcc64afeb39c673b69ef29d5f0b287cd",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f"
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "relative_path": "abyss-foundry/install/profile-cinematic_deep_focus.png",
+          "sha256": "4032e85690a0d0643087a10c6b112d5c6dfa71b7a6f9a147cee983c57299a690",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a"
+        },
+        {
+          "profile": "optical_lens",
+          "relative_path": "abyss-foundry/install/profile-optical_lens.png",
+          "sha256": "241352af699ab113313f7c69fb985837f4ffdd30d5999fd65450c7aac4f21ff4",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7"
+        },
+        {
+          "profile": "diorama",
+          "relative_path": "abyss-foundry/install/profile-diorama.png",
+          "sha256": "0c69ff045a49ab0e5981c84d3c32e6d4e426f9fe6372733ce33c03ed271fd8c1",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c"
+        },
+        {
+          "profile": "atmospheric_industrial",
+          "relative_path": "abyss-foundry/install/profile-atmospheric_industrial.png",
+          "sha256": "53d3112feeea3ce1e37e686392209a9071da9587fb524f726b2cc461281729a2",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52"
+        },
+        {
+          "profile": "noir",
+          "relative_path": "abyss-foundry/install/profile-noir.png",
+          "sha256": "39a0192fbaf43122c3dd8585bec0036649a044ca64a6be55cf8e1afcbecd7b8b",
+          "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1"
+        },
+        {
+          "profile": "cold_orbital",
+          "relative_path": "abyss-foundry/install/profile-cold_orbital.png",
+          "sha256": "a220689e67d6ccfad0e3c148e298252efc0d0667aef1381b6abe48dcd5f085b5",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816"
+        },
+        {
+          "profile": "alien_bioluminescence",
+          "relative_path": "abyss-foundry/install/profile-alien_bioluminescence.png",
+          "sha256": "e058d8646fa015542344249dd3635eab0ba0922a6587f53ccd1a44b8f74185aa",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a"
+        },
+        {
+          "profile": "sunlit_megastructure",
+          "relative_path": "abyss-foundry/install/profile-sunlit_megastructure.png",
+          "sha256": "5a26c8bf757fe02468a291ad38b5e54cad3682a749cbeb8f9d78a5ab0a3ad889",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb"
+        }
+      ],
+      "principal_question": "Can dark physical basalt shelves remain dominant over a lifted rear industrial gantry?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [
+        "classic",
+        "gameplay_clarity",
+        "cinematic_deep_focus"
+      ],
+      "findings": {
+        "physical_route": "Clarity reduces the rear orange bridge, isolated rear columns and chamber frames. The real silver-capped basalt shelves remain crisp, but the rear bridge still appears to span the middle gap. Dark unmarked native rock and dark rear cave masses remain the hardest ownership distinction in this corpus.",
+        "architecture": "Deep Focus preserves cave texture, subtle mineral specks and machinery frames. It does not reliably make every rear region darker; the tonal transform can lift low-luminance rear material. Clarity loses some of that fine texture in broad rear cave masses while keeping their silhouettes.",
+        "actor": "The selected lower-centre actor is label/ring dominated at Overview. Neither B nor A establishes an actor-body visibility improvement from these stills.",
+        "artifacts": "No obvious alpha fringe or displaced physical edge is apparent. The broad flat rear values under Clarity are an intentional detail tradeoff, not evidence of material mutation.",
+        "preference": "Gameplay Clarity with explicit Play/Solo or temporary assistance when route ownership matters. Deep Focus for cave construction inspection with the bridge ambiguity openly retained.",
+        "limitations": [
+          "Three of eleven profiles personally inspected.",
+          "Clarity is a reduction in ambiguity, not proof that a new player identifies every physical rock surface.",
+          "The intact bridge silhouette and alignment can outweigh lower luminance."
+        ]
+      },
+      "artistic_disposition": "Most important residual ambiguity: a recognizably continuous rear bridge can still look traversable even when strongly attenuated.",
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976562,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          820.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "geometry_group_sha256": "28d8e3de1ab81afd431a031007ae9112a6fdf1283fda4215798b0eec592b323f",
+      "admission": {
+        "elapsed_ms": 12434,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      "ratings_b_five_axis": {
+        "classic": [
+          3,
+          3,
+          5,
+          3,
+          5
+        ],
+        "gameplay_clarity": [
+          4,
+          3,
+          4,
+          4,
+          5
+        ],
+        "cinematic_deep_focus": [
+          3,
+          3,
+          5,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "title": "Vertical Transfer Spine",
+      "extent": [
+        1024,
+        1536
+      ],
+      "source_path": "godot/data/strata2/vertical-transfer-spine.json",
+      "source_sha256": "b4ba804fd2cdc674523298cddb97545b69d74d5e50cde572c410c06e18188262",
+      "status": "3-matched-profiles-visually-reviewed",
+      "original_install_report": {
+        "relative_path": "vertical-transfer-spine/install/result.json",
+        "sha256": "17b477e1945bb48c2cbcb0ef29fed9a70dcc1a0d1a0553137772bfd77b558062"
+      },
+      "original_capture_manifest": [
+        {
+          "profile": "classic",
+          "relative_path": "vertical-transfer-spine/install/profile-classic.png",
+          "sha256": "fa0d81c6aafdb64d55bc12f20523887d21d292b37f545691cd61ec17c9efce2c",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907"
+        },
+        {
+          "profile": "architectural",
+          "relative_path": "vertical-transfer-spine/install/profile-architectural.png",
+          "sha256": "0de9afafb69812550e52f21abf0749292670834234ad8ab8cec860aabfaf44b5",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c"
+        },
+        {
+          "profile": "gameplay_clarity",
+          "relative_path": "vertical-transfer-spine/install/profile-gameplay_clarity.png",
+          "sha256": "e13da83002e8e6ed343b932898b0adbe2d49ba71b7f2baa58864b8041a3631af",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f"
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "relative_path": "vertical-transfer-spine/install/profile-cinematic_deep_focus.png",
+          "sha256": "100119a41ddad3930de126f0fb5433ad49f7d37a01a14504d48f27d420d71305",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a"
+        },
+        {
+          "profile": "optical_lens",
+          "relative_path": "vertical-transfer-spine/install/profile-optical_lens.png",
+          "sha256": "8c235d9b1c13c72914a2cf861767c6ca67c32c6ded2d2151d8dd908e601592ec",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7"
+        },
+        {
+          "profile": "diorama",
+          "relative_path": "vertical-transfer-spine/install/profile-diorama.png",
+          "sha256": "059c6570a9d258148f7c68ad1bdb8b9c2c5d2f65f8191f609749f72c655cc250",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c"
+        },
+        {
+          "profile": "atmospheric_industrial",
+          "relative_path": "vertical-transfer-spine/install/profile-atmospheric_industrial.png",
+          "sha256": "50d9209a073dd9716a01005c2a739a3df5b28158822e723dba124f86788dd5ae",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52"
+        },
+        {
+          "profile": "noir",
+          "relative_path": "vertical-transfer-spine/install/profile-noir.png",
+          "sha256": "53fd08291a7669bcac15bd3a3f5809fe581083d1859f15a429d0c8a44efa5b3c",
+          "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1"
+        },
+        {
+          "profile": "cold_orbital",
+          "relative_path": "vertical-transfer-spine/install/profile-cold_orbital.png",
+          "sha256": "a36974d45eb4982e6ac705c696cde874ddfe3b6e9c091ce7ae808450b4dc9e34",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816"
+        },
+        {
+          "profile": "alien_bioluminescence",
+          "relative_path": "vertical-transfer-spine/install/profile-alien_bioluminescence.png",
+          "sha256": "1d067e3546829e6a035c1c5e34df531c3f1ed11305f16cc8245b5ce376fa95e6",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a"
+        },
+        {
+          "profile": "sunlit_megastructure",
+          "relative_path": "vertical-transfer-spine/install/profile-sunlit_megastructure.png",
+          "sha256": "4dffe96cf178c525cfcedd215a6552602190a7fdab846036193eeeb4c5c6cbf4",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb"
+        }
+      ],
+      "principal_question": "Are rear silver cross-shaft trusses visibly subordinate to physical horizontal deck lips?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [
+        "classic",
+        "gameplay_clarity",
+        "cinematic_deep_focus"
+      ],
+      "findings": {
+        "physical_route": "Alternating left/right physical shelves and coloured cargo stay crisp. Clarity reduces the six repeated cross-shaft trusses and rear lift-like frames, making the alternating real supports more dominant. The full-width rear lattice silhouette still suggests a floor at repeated heights.",
+        "architecture": "Deep Focus retains the fine rear lattice, cyan accents and repeating vertical machinery. That rich periodic pattern remains close enough in visual language to the actual silver platforms to preserve false-floor risk. Clarity retains the frame hierarchy with less fine surface texture.",
+        "actor": "The actor near the bottom of the shaft is primarily located by the label/ring; the compressed tall Overview does not resolve a body-visibility gain.",
+        "artifacts": "No conspicuous seam, alpha halo or moved Play edge appears in the three inspected stills.",
+        "preference": "Gameplay Clarity for climbing/flight route inspection; Deep Focus for inspecting the repeating machinery. Explicit Play inspection remains useful when judging which cross-shaft structures are physical.",
+        "limitations": [
+          "Three of eleven profiles personally inspected.",
+          "The tall whole-scene Overview compresses fine details and actor size.",
+          "Repeated rear trusses remain a structural affordance even after attenuation."
+        ]
+      },
+      "artistic_disposition": "Clarity helps the alternating physical route, but repeated full-width rear trusses remain an adversarial composition.",
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1536
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          549.444458007812,
+          135.0,
+          501.111083984375,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          1360.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "geometry_group_sha256": "3df48ba2f7dff3405fb167f0ac71d82a52862862b7719edb08fe29fa7dec8083",
+      "admission": {
+        "elapsed_ms": 13697,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      "ratings_b_five_axis": {
+        "classic": [
+          3,
+          3,
+          5,
+          3,
+          5
+        ],
+        "gameplay_clarity": [
+          4,
+          3,
+          4,
+          4,
+          5
+        ],
+        "cinematic_deep_focus": [
+          3,
+          3,
+          5,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "scene": "sunward-freight-megastructure",
+      "title": "Sunward Freight Megastructure",
+      "extent": [
+        1536,
+        1024
+      ],
+      "source_path": "godot/data/strata3/sunward-freight-megastructure.json",
+      "source_sha256": "1a9a509e1e00aee86daf99143f15cdb811722832ea47a66a5179f565493c97d5",
+      "status": "six-matched-profiles-visually-reviewed",
+      "original_install_report": {
+        "relative_path": "sunward-freight-megastructure/install/result.json",
+        "sha256": "7487570a928db5e69ef9286d0376f9b90c8c34b34e6325fd14ba7f08d9163694"
+      },
+      "original_capture_manifest": [
+        {
+          "profile": "classic",
+          "relative_path": "sunward-freight-megastructure/install/profile-classic.png",
+          "sha256": "223948be821010120ebe38d2f033f12309ba21c9c67a7b441fc0a18a458f262b",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907"
+        },
+        {
+          "profile": "architectural",
+          "relative_path": "sunward-freight-megastructure/install/profile-architectural.png",
+          "sha256": "2376d6fd42bf43140ec41ccd7075b8a2a572604df1c2d9732dc1b887570fa1e3",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c"
+        },
+        {
+          "profile": "gameplay_clarity",
+          "relative_path": "sunward-freight-megastructure/install/profile-gameplay_clarity.png",
+          "sha256": "9233952210821c7f4e73851d5c9e7d0f72182b904568fd6fea61c3515182557a",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f"
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "relative_path": "sunward-freight-megastructure/install/profile-cinematic_deep_focus.png",
+          "sha256": "8cc4b450030141c758bb093f22e0e7c54345b9ec9d43ab2a257dbf306054465d",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a"
+        },
+        {
+          "profile": "optical_lens",
+          "relative_path": "sunward-freight-megastructure/install/profile-optical_lens.png",
+          "sha256": "12b77390ca7553b237a2b56162d07924a81cd96df2f271babd7ec7f48cee2d91",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7"
+        },
+        {
+          "profile": "diorama",
+          "relative_path": "sunward-freight-megastructure/install/profile-diorama.png",
+          "sha256": "901d3fad5ae2716c07beedf9e514e918489ef24b93024e7cb62f2be7883b720d",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c"
+        },
+        {
+          "profile": "atmospheric_industrial",
+          "relative_path": "sunward-freight-megastructure/install/profile-atmospheric_industrial.png",
+          "sha256": "786a4d762c47add541b3ef5255ba1ef3154cbea4fe239b5e1346878cd3a142e6",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52"
+        },
+        {
+          "profile": "noir",
+          "relative_path": "sunward-freight-megastructure/install/profile-noir.png",
+          "sha256": "acc84fc029a31412ab955ccee18da90b740b5fea1618877231de434de4cf0ac7",
+          "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1"
+        },
+        {
+          "profile": "cold_orbital",
+          "relative_path": "sunward-freight-megastructure/install/profile-cold_orbital.png",
+          "sha256": "16226e758fb6cd9c3a31ba7effea4c9f30e91a7bc70c93ab2f304657e184ef49",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816"
+        },
+        {
+          "profile": "alien_bioluminescence",
+          "relative_path": "sunward-freight-megastructure/install/profile-alien_bioluminescence.png",
+          "sha256": "fedbc2254e20ac2646837b77f6ff7c4fd1519e9617ce2001b5d8cc92f114ec29",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a"
+        },
+        {
+          "profile": "sunlit_megastructure",
+          "relative_path": "sunward-freight-megastructure/install/profile-sunlit_megastructure.png",
+          "sha256": "1b820cf1956421cc057db6cc2d1b785b7a98c1cfe2549c5223c6c2fedeade7c4",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb"
+        }
+      ],
+      "principal_question": "Do warm shafts and local cool machinery pools support depth without resembling solid panels or closing the central shaft?",
+      "new_light_motifs": [
+        {
+          "id": "sun-shafts",
+          "kind": "light_shaft",
+          "plane": "effects",
+          "region": [
+            330,
+            155,
+            900,
+            680
+          ],
+          "seed": 3,
+          "count": 4,
+          "speed": 0.0,
+          "strength": 0.6,
+          "direction": [
+            0.26,
+            1.0
+          ],
+          "colour": [
+            1.0,
+            0.82,
+            0.48,
+            0.45
+          ],
+          "enabled": true
+        },
+        {
+          "id": "machine-pools",
+          "kind": "light_pool",
+          "plane": "scripted",
+          "region": [
+            126,
+            670,
+            1280,
+            105
+          ],
+          "seed": 4,
+          "count": 5,
+          "speed": 0.0,
+          "strength": 0.7,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.26,
+            0.7,
+            0.84,
+            0.42
+          ],
+          "enabled": true
+        }
+      ],
+      "independently_viewed_profiles": [
+        "classic",
+        "gameplay_clarity",
+        "sunlit_megastructure",
+        "atmospheric_industrial",
+        "cinematic_deep_focus",
+        "diorama"
+      ],
+      "findings": {
+        "physical_route": "Actual bright terrace lips and ground remain crisp. The full-width lower rear truss and long orange rear pipe compete with physical platforms in Classic. Gameplay Clarity substantially reduces their emphasis, while richer profiles retain a plausible apparent rear route.",
+        "architecture": "All six preserve the four rear freight cages, overhead bracing and open central shaft. Deep Focus provides a restrained detailed balance. Sunlit and Atmospheric Industrial produce a similar warm bay wash at this Overview; their difference is modest rather than a radically different look.",
+        "light_motifs": "No conspicuous stepped beam or pool boundary appears at Overview. The individual new shafts and pools remain subtle; broad warm bay areas cannot be credited specifically to those motifs because optical material tint/attenuation and native panels also contribute. No isolated-motif on/off comparison is present.",
+        "lens": "Final dense Diorama smooths rear panel texture and softens thin cage edges while retaining beam/truss identity. Play edges and ground cargo surfaces remain crisp. No obvious seam or destructive alpha halo is apparent in this still.",
+        "actor": "The small actor is localized primarily through the label/ring, with no profile-specific body-visibility win established.",
+        "preference": "Gameplay Clarity for practical hierarchy; Deep Focus for detailed composition; Sunlit or Industrial as warm palette starting points. Diorama is a clearly softer optional treatment.",
+        "limitations": [
+          "Six of eleven profiles inspected.",
+          "Named-profile assessment with known source geometry.",
+          "The apparent lower rear route remains a composition risk outside strongest assistance.",
+          "No close-zoom native movement or isolated light-motif acceptance is established by this group."
+        ]
+      },
+      "artistic_disposition": "Substantial detailed freight composition with a clear central void; strong clarity improvement but remaining false-route ambiguity and understated local-light evidence.",
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1536,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          236.25,
+          135.0,
+          1127.5,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          768.0,
+          814.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+      "admission": {
+        "elapsed_ms": 13578,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      "ratings_b_five_axis": {
+        "classic": [
+          3,
+          3,
+          5,
+          3,
+          5
+        ],
+        "gameplay_clarity": [
+          5,
+          3,
+          4,
+          4,
+          5
+        ],
+        "sunlit_megastructure": [
+          4,
+          3,
+          5,
+          4,
+          5
+        ],
+        "atmospheric_industrial": [
+          4,
+          3,
+          5,
+          4,
+          5
+        ],
+        "cinematic_deep_focus": [
+          4,
+          3,
+          5,
+          4,
+          5
+        ],
+        "diorama": [
+          4,
+          3,
+          4,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "scene": "xeno-resonance-grotto",
+      "title": "Xeno Resonance Grotto",
+      "extent": [
+        1024,
+        1024
+      ],
+      "source_path": "godot/data/strata3/xeno-resonance-grotto.json",
+      "source_sha256": "cc79583f8e34c341947a7c7f33a1543e38ef34dbbb50a740f49a0b741a01022b",
+      "status": "six-matched-profiles-visually-reviewed",
+      "original_install_report": {
+        "relative_path": "xeno-resonance-grotto/install/result.json",
+        "sha256": "8edb238108af0d70ec7fa26ddb9f570322e5c9db5a0832b2386ad47ab9a91425"
+      },
+      "original_capture_manifest": [
+        {
+          "profile": "classic",
+          "relative_path": "xeno-resonance-grotto/install/profile-classic.png",
+          "sha256": "57540c9ff7f3d811a019378e6f592f838e4bc781f802684bc890fa8269ae8820",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907"
+        },
+        {
+          "profile": "architectural",
+          "relative_path": "xeno-resonance-grotto/install/profile-architectural.png",
+          "sha256": "655bf9683180b8b9f81aeb2a6ef259d2c785a9b7fa399daee6197e70492f0541",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c"
+        },
+        {
+          "profile": "gameplay_clarity",
+          "relative_path": "xeno-resonance-grotto/install/profile-gameplay_clarity.png",
+          "sha256": "3b0d053c04876744c52b355f58c2cbf0aded718c304f200bba1870e5ba6a384e",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f"
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "relative_path": "xeno-resonance-grotto/install/profile-cinematic_deep_focus.png",
+          "sha256": "2917b5b2f72947004595b0f397f16ee23c474bb9267ae61b4f9fee627da95476",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a"
+        },
+        {
+          "profile": "optical_lens",
+          "relative_path": "xeno-resonance-grotto/install/profile-optical_lens.png",
+          "sha256": "3f3fd666fd045f644159ab5e51f54a98b233f15ed43b82ce76e3bcafedcd0ed4",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7"
+        },
+        {
+          "profile": "diorama",
+          "relative_path": "xeno-resonance-grotto/install/profile-diorama.png",
+          "sha256": "053b644a4db21db4afb4bdc55526d768444fd05399a4d5ce308a892a1a51a8da",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c"
+        },
+        {
+          "profile": "atmospheric_industrial",
+          "relative_path": "xeno-resonance-grotto/install/profile-atmospheric_industrial.png",
+          "sha256": "27006da5db8d0b23c069850dbc43a4f8c34e803df207cea1c0a972c83ae73f3b",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52"
+        },
+        {
+          "profile": "noir",
+          "relative_path": "xeno-resonance-grotto/install/profile-noir.png",
+          "sha256": "af6abe68adfd3ec9103454433c956bcdddd6d279c298d0f570343f94eb55d0fe",
+          "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1"
+        },
+        {
+          "profile": "cold_orbital",
+          "relative_path": "xeno-resonance-grotto/install/profile-cold_orbital.png",
+          "sha256": "6393b6a8cedd96a1403fad1e66a86731594022be3022070116684afdd2e64b00",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816"
+        },
+        {
+          "profile": "alien_bioluminescence",
+          "relative_path": "xeno-resonance-grotto/install/profile-alien_bioluminescence.png",
+          "sha256": "9a590b90b74f41fc03378b3ef6f5151f7be201fbc01bdd1fc814fb33407f7ead",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a"
+        },
+        {
+          "profile": "sunlit_megastructure",
+          "relative_path": "xeno-resonance-grotto/install/profile-sunlit_megastructure.png",
+          "sha256": "01755da27f06850d8f6424f95f1d8859ba5348253d8bd001262f1632c4175b46",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb"
+        }
+      ],
+      "principal_question": "Do physical shelves remain distinguishable from organic rear mineral rings under bioluminescence and haze?",
+      "new_light_motifs": [
+        {
+          "id": "organic-light",
+          "kind": "light_pool",
+          "plane": "effects",
+          "region": [
+            118,
+            212,
+            800,
+            580
+          ],
+          "seed": 11,
+          "count": 6,
+          "speed": 0.22,
+          "strength": 0.62,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.21,
+            0.84,
+            0.66,
+            0.42
+          ],
+          "enabled": true
+        },
+        {
+          "id": "ceiling-light",
+          "kind": "light_shaft",
+          "plane": "background",
+          "region": [
+            340,
+            156,
+            360,
+            700
+          ],
+          "seed": 14,
+          "count": 2,
+          "speed": 0.0,
+          "strength": 0.42,
+          "direction": [
+            -0.08,
+            1.0
+          ],
+          "colour": [
+            0.42,
+            0.55,
+            0.78,
+            0.4
+          ],
+          "enabled": true
+        }
+      ],
+      "independently_viewed_profiles": [
+        "classic",
+        "gameplay_clarity",
+        "alien_bioluminescence",
+        "cinematic_deep_focus",
+        "optical_lens",
+        "diorama"
+      ],
+      "findings": {
+        "physical_route": "Four bright cyan/white physical terrace lips remain crisp across all six. Gameplay Clarity most strongly subordinates the lower rear truss, which still resembles a supporting bridge in Classic and several richer treatments.",
+        "architecture": "Large mineral rings, hanging native green accents and copper rectangular rear intrusions remain identifiable. Deep Focus preserves more fine construction than Diorama; Alien Bioluminescence gives the rear mineral masses a distinctive muted violet separation without hiding the four Play terraces.",
+        "light_motifs": "The central dark void remains open and no conspicuous rectangular pool or stepped-shaft boundary is apparent at Overview. The separately authored pool/shaft contribution is too subtle here to independently establish convincing volumetric illumination. Native green accent geometry must not be mistaken for proof of the new procedural light motifs.",
+        "lens": "The final dense Optical Lens preserves ring and truss identity. Diorama visibly suppresses far mineral texture into broader grey masses while retaining major silhouettes. This is an artistic detail-loss tradeoff; no obvious alpha halo or seam was apparent in these stills. Directional response and temporal stability need separate motion evidence.",
+        "actor": "At this Overview scale the label/ring identifies the actor much more clearly than its tiny body in every inspected profile. No actor-localization improvement is claimed from these stills.",
+        "preference": "Gameplay Clarity for physical hierarchy; Deep Focus for a restrained detailed balance; Alien Bioluminescence for the distinctive cave palette. Diorama remains an optional shallow-focus study.",
+        "limitations": [
+          "Six of eleven profiles inspected for this scene.",
+          "Known geometry and named profiles; no blind human study.",
+          "Overview stills do not establish ordinary close-zoom movement or sustained responsiveness.",
+          "No independent isolated-motif on/off pair in this final capture group."
+        ]
+      },
+      "artistic_disposition": "Useful playable composition with preferred clarity/deep-focus/alien starting points; local volumetric-light success remains limited by subtle visible contribution and lack of isolated motif comparisons.",
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          1024
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          424.166656494141,
+          135.0,
+          751.666625976562,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          512.0,
+          826.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+      "admission": {
+        "elapsed_ms": 11369,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      "ratings_b_five_axis": {
+        "classic": [
+          4,
+          3,
+          5,
+          3,
+          5
+        ],
+        "gameplay_clarity": [
+          5,
+          3,
+          4,
+          4,
+          5
+        ],
+        "alien_bioluminescence": [
+          4,
+          3,
+          5,
+          4,
+          5
+        ],
+        "cinematic_deep_focus": [
+          4,
+          3,
+          5,
+          4,
+          5
+        ],
+        "optical_lens": [
+          4,
+          3,
+          4,
+          4,
+          5
+        ],
+        "diorama": [
+          4,
+          3,
+          3,
+          4,
+          5
+        ]
+      }
+    },
+    {
+      "scene": "lunar-terminator-observatory",
+      "title": "Lunar Terminator Observatory",
+      "extent": [
+        1536,
+        768
+      ],
+      "source_path": "godot/data/strata3/lunar-terminator-observatory.json",
+      "source_sha256": "c1c35204039cb564134ec1b9cb939798e2eca79742140aa7866e170472e07e24",
+      "status": "six-matched-profiles-visually-reviewed",
+      "original_install_report": {
+        "relative_path": "lunar-terminator-observatory/install/result.json",
+        "sha256": "37e35fcbff3eeafc349b9f6f52b50642e8730ee8faadd873a4efa6169d4e16c8"
+      },
+      "original_capture_manifest": [
+        {
+          "profile": "classic",
+          "relative_path": "lunar-terminator-observatory/install/profile-classic.png",
+          "sha256": "355440642e2e94781c4f793b42ef5f300e6c431d51705179bbc20b583d1ecb63",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907"
+        },
+        {
+          "profile": "architectural",
+          "relative_path": "lunar-terminator-observatory/install/profile-architectural.png",
+          "sha256": "ddc93be4355e910172eab661b6d4ad22d5d25f37f111c71383796dbd20875a8d",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c"
+        },
+        {
+          "profile": "gameplay_clarity",
+          "relative_path": "lunar-terminator-observatory/install/profile-gameplay_clarity.png",
+          "sha256": "e60a4964b732e29fc74d9609e9020b54f66dfd2d1df135a51826f577311da1d3",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f"
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "relative_path": "lunar-terminator-observatory/install/profile-cinematic_deep_focus.png",
+          "sha256": "95b66a64b0c2044bf8fdb9227e24e4a422dce7e4414aac09704ab51b97042036",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a"
+        },
+        {
+          "profile": "optical_lens",
+          "relative_path": "lunar-terminator-observatory/install/profile-optical_lens.png",
+          "sha256": "d559e2be615a8635a71c4546f1dc29179a82589ef56d1c0b6d6af58e1f9dbcfe",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7"
+        },
+        {
+          "profile": "diorama",
+          "relative_path": "lunar-terminator-observatory/install/profile-diorama.png",
+          "sha256": "189e62faba4a07b11437c1abfa43d24e5fa0978dd65f2032d8eea1c2fcbf6495",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c"
+        },
+        {
+          "profile": "atmospheric_industrial",
+          "relative_path": "lunar-terminator-observatory/install/profile-atmospheric_industrial.png",
+          "sha256": "02aaf95339ebfb1b20d36cc61215a66090b8f29b0def2d385bb4f1c1a1602168",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52"
+        },
+        {
+          "profile": "noir",
+          "relative_path": "lunar-terminator-observatory/install/profile-noir.png",
+          "sha256": "9a2f6e02e075e0eeae7c22202b870e523a0e80a868092b16fd56fb6510fe57d9",
+          "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1"
+        },
+        {
+          "profile": "cold_orbital",
+          "relative_path": "lunar-terminator-observatory/install/profile-cold_orbital.png",
+          "sha256": "7ce8c52c0bd2e796c158bc3be35b48e292e9c359944f4adf031288740f8cca9f",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816"
+        },
+        {
+          "profile": "alien_bioluminescence",
+          "relative_path": "lunar-terminator-observatory/install/profile-alien_bioluminescence.png",
+          "sha256": "d6a936ebef137fb11c13664f322d6577448813e5e80bc1d5525f9552d3632927",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a"
+        },
+        {
+          "profile": "sunlit_megastructure",
+          "relative_path": "lunar-terminator-observatory/install/profile-sunlit_megastructure.png",
+          "sha256": "8e135f5a26fc0b60ba676c0cdcd5a352a38719e4efb0e3289b87873b74412203",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb"
+        }
+      ],
+      "principal_question": "Is large negative sky space retained while instrument frames and planetary context remain behind physical decks?",
+      "new_light_motifs": [
+        {
+          "id": "instrument-light",
+          "kind": "light_pool",
+          "plane": "scripted",
+          "region": [
+            510,
+            360,
+            640,
+            155
+          ],
+          "seed": 21,
+          "count": 3,
+          "speed": 0.0,
+          "strength": 0.42,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.32,
+            0.6,
+            0.85,
+            0.38
+          ],
+          "enabled": true
+        },
+        {
+          "id": "sunward-rim-light",
+          "kind": "light_shaft",
+          "plane": "background",
+          "region": [
+            320,
+            100,
+            940,
+            530
+          ],
+          "seed": 22,
+          "count": 2,
+          "speed": 0.0,
+          "strength": 0.32,
+          "direction": [
+            0.42,
+            1.0
+          ],
+          "colour": [
+            0.92,
+            0.82,
+            0.59,
+            0.32
+          ],
+          "enabled": true
+        }
+      ],
+      "independently_viewed_profiles": [
+        "classic",
+        "gameplay_clarity",
+        "cold_orbital",
+        "cinematic_deep_focus",
+        "optical_lens",
+        "diorama"
+      ],
+      "findings": {
+        "physical_route": "Bright physical deck lips and the long ground surface stay distinct and crisp. Classic rear solar-array edges and instrument frames can resemble support; Clarity most clearly subordinates them.",
+        "architecture": "Large negative sky space survives all treatments. Fine solar grids, left instrument oval and right display/antenna remain recognizable. Cold Orbital and Deep Focus retain their construction and give a restrained blue/graphite hierarchy; their Overview differences are subtle.",
+        "light_motifs": "The quiet instrument pools and background shafts are not independently conspicuous at Overview. There is no obvious rectangular-light artifact, but this view does not establish strong volumetric lighting.",
+        "lens": "Optical Lens softens the distant circular rim while retaining much of the rear array detail. Diorama provides a more convincing miniature-like layered composition here than in Xeno: rear frames soften and grids remain identifiable while Play stays crisp. This is a still-image artistic preference, not a gameplay or performance promotion.",
+        "context": "The large dark circular rim supplies distant scale but may also read as an architectural ring rather than an unmistakable planetary body. No recognition study establishes its semantic interpretation.",
+        "actor": "Overview still relies heavily on the tiny actor label/ring. No actor visibility improvement is established.",
+        "preference": "Cold Orbital or Deep Focus for detailed inspection; Gameplay Clarity for physical ownership; Diorama is an attractive optional still/inspection treatment in this particular open composition.",
+        "limitations": [
+          "Six of eleven profiles inspected.",
+          "No isolated procedural-light comparison.",
+          "Named-profile agent judgement, not owner/human validation.",
+          "Diorama preference here does not override the independent challenge or measured cost-gate limitations."
+        ]
+      },
+      "artistic_disposition": "Useful open orbital composition with retained negative space and an attractive optional lens treatment; physical clarity still benefits most from stronger rear suppression.",
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1536,
+          768
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          48.3333320617676,
+          135.0,
+          1503.33325195312,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          768.0,
+          588.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+      "admission": {
+        "elapsed_ms": 14435,
+        "target_ms": 45000,
+        "target_met": true
+      },
+      "ratings_b_five_axis": {
+        "classic": [
+          3,
+          3,
+          5,
+          3,
+          5
+        ],
+        "gameplay_clarity": [
+          5,
+          3,
+          4,
+          4,
+          5
+        ],
+        "cold_orbital": [
+          4,
+          3,
+          5,
+          4,
+          5
+        ],
+        "cinematic_deep_focus": [
+          4,
+          3,
+          5,
+          4,
+          5
+        ],
+        "optical_lens": [
+          4,
+          3,
+          4,
+          4,
+          5
+        ],
+        "diorama": [
+          4,
+          3,
+          4,
+          5,
+          5
+        ]
+      }
+    },
+    {
+      "scene": "optics-readability-challenge",
+      "title": "Optics Readability Challenge",
+      "extent": [
+        1024,
+        768
+      ],
+      "source_path": "godot/scripts/depth/strata_optics_fixtures.gd",
+      "source_sha256": "06a2dd457d5bfc5e3ef2d4c350d10b4a87e41c9774f18844559e1cfdb798a68e",
+      "status": "independently-reviewed-by-C-in-opaque-order-all-eleven-profiles",
+      "original_install_report": {
+        "relative_path": "optics-readability-challenge/install/result.json",
+        "sha256": "70f66d128ef314967bba8289419b7876712a8a25b794d29c2a4a05715c728059"
+      },
+      "original_capture_manifest": [
+        {
+          "profile": "classic",
+          "relative_path": "optics-readability-challenge/install/profile-classic.png",
+          "sha256": "851bd050a0a96fb01db5a0154b1dbbbdde3a3e194a04c8f782d35b0ff11046a5",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907"
+        },
+        {
+          "profile": "architectural",
+          "relative_path": "optics-readability-challenge/install/profile-architectural.png",
+          "sha256": "63d0754a54eeb446d0d88d73d243c6d3f25fb30dee32d1734ec3ee9b6f1789bf",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c"
+        },
+        {
+          "profile": "gameplay_clarity",
+          "relative_path": "optics-readability-challenge/install/profile-gameplay_clarity.png",
+          "sha256": "a54e19802fe042ac5a13bdee1b411b900cdc89216ea086aa1da88bcf233de57f",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f"
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "relative_path": "optics-readability-challenge/install/profile-cinematic_deep_focus.png",
+          "sha256": "a50ee529aad8363f824b720c94b4742e09f27956946c30431337392b50f0ca18",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a"
+        },
+        {
+          "profile": "optical_lens",
+          "relative_path": "optics-readability-challenge/install/profile-optical_lens.png",
+          "sha256": "ef2d37dcf9e5ff0182d2a0c1c7b573840ae37be5da2d4b04157fbb89e777343c",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7"
+        },
+        {
+          "profile": "diorama",
+          "relative_path": "optics-readability-challenge/install/profile-diorama.png",
+          "sha256": "0320b38159f72c0f4962481284414febf0b4b93d0bc0c937e805efea0676ec27",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c"
+        },
+        {
+          "profile": "atmospheric_industrial",
+          "relative_path": "optics-readability-challenge/install/profile-atmospheric_industrial.png",
+          "sha256": "16417c529abda16bf755560366fad0be0b3abb6c9a982285fb557427d5f85e76",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52"
+        },
+        {
+          "profile": "noir",
+          "relative_path": "optics-readability-challenge/install/profile-noir.png",
+          "sha256": "30ff7421cdd85984102a5879d140e2b2236cc67a700c67183958a992031f0873",
+          "configuration_sha256": "df5598000e8af09acbd468a4ec2c42b18f1917844904a9a9420fa8e001aa01a1"
+        },
+        {
+          "profile": "cold_orbital",
+          "relative_path": "optics-readability-challenge/install/profile-cold_orbital.png",
+          "sha256": "a796e21c169d060de413d9938c71ab98a5606096c9d0ebdf92c12902f4fe09fe",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816"
+        },
+        {
+          "profile": "alien_bioluminescence",
+          "relative_path": "optics-readability-challenge/install/profile-alien_bioluminescence.png",
+          "sha256": "0989e4cddc2667b2b707a65f19af35af993da564c42443c18d1f378687743bd5",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a"
+        },
+        {
+          "profile": "sunlit_megastructure",
+          "relative_path": "optics-readability-challenge/install/profile-sunlit_megastructure.png",
+          "sha256": "9f7b7f9c04684caec116e09f70424c888e87598443b398b6a7213dcd1ff7a1c7",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb"
+        }
+      ],
+      "principal_question": "Can same-colour false platforms, stairs, ladder and blocked-looking passage be distinguished from actual Play, including moving actors and materials?",
+      "new_light_motifs": [],
+      "independently_viewed_profiles": [],
+      "findings": {
+        "reviewer": "Specialist C, separately registered six-axis rubric",
+        "review_record": "c-readability-and-motion-review.md",
+        "initial_scores": "c-blind-review-initial.json",
+        "initial_scores_sha256": "8af0549e54137f78e387446fd4f424ce2ef2660b5da45e5a6c9ae64f4127043f",
+        "strongest_ownership": [
+          "gameplay_clarity",
+          "noir"
+        ],
+        "residual_issue": "Architectural and Deep Focus preserve fine grids but score poorly on false-platform/passage distinction. Diorama loses detail without comparable ownership improvement.",
+        "actor_scope": "Actual body unresolved in all eleven Overview frames; each C actor-visibility score remains2.",
+        "B_personally_reviewed_challenge_stills": false,
+        "human_perceptual_study": false
+      },
+      "artistic_disposition": "Independent opaque-order review favours Clarity and Noir for ownership; detail-preserving profiles are not clarity substitutes.",
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          0.0,
+          0.0
+        ],
+        "view_size": [
+          1024,
+          768
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          298.888885498047,
+          135.0,
+          1002.22216796875,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          0.0,
+          0.0
+        ],
+        "position": [
+          410.0,
+          600.0
+        ],
+        "rapier_tick": 0,
+        "rotation": 0.0
+      },
+      "geometry_group_sha256": "2968262dd2f6ff37e6ca9ce53b23bef6630e478209a37d0d8e42e56b33bc1a50",
+      "admission": {
+        "elapsed_ms": 14605,
+        "target_ms": 45000,
+        "target_met": true
+      }
+    }
+  ],
+  "motion_review": {
+    "status": "actual-frames-admitted-C-corpus-review-and-B-twelve-keyframe-review",
+    "scene": "optics-readability-challenge",
+    "profiles": [
+      "classic",
+      "gameplay_clarity",
+      "cinematic_deep_focus",
+      "diorama"
+    ],
+    "frames_per_profile": 10,
+    "review_cadence_fps": 3,
+    "cadence_is_actual_runtime_fps": false,
+    "camera_and_native_state_evolve": true,
+    "actor_variant_count": 3,
+    "final_findings": null,
+    "independent_C_review": "c-motion-review-linux.json",
+    "independent_C_summary": "C reports actual mint actor bodies resolved in the close movement captures for all four profiles; Clarity most strongly reduces competing rear detail, while Diorama is much softer at close zoom. This is not a rendering FPS measurement.",
+    "B_keyframe_review": "b-motion-keyframe-review.json",
+    "B_personally_viewed_indices_per_profile": [
+      0,
+      4,
+      9
+    ],
+    "B_personally_viewed_original_count": 12,
+    "B_continuous_playback_review": false,
+    "B_final_findings": "At close240x135 and wider480x270, mint actor bodies are resolved in all four sampled profiles. Clarity most strongly reduces rear competition with no obvious broad reveal hole in samples; Diorama softness is much stronger than in the Lunar Overview. This does not establish continuous temporal stability or performance."
+  },
+  "independent_challenge_review": {
+    "reviewer": "Specialist C",
+    "status": "opaque-initial-scores-preserved-source-bound-reveal-and-measurements-completed",
+    "key_reveal_before_initial_score": false,
+    "human_perceptual_study": false,
+    "expected_profile_count": 11,
+    "score_all_profiles": true,
+    "minimum_profiles_with_detailed_commentary": 6,
+    "scoring_registration": "c-blind-review-registration.json",
+    "scoring_registration_sha256": "4bcba2f3147ae45be2507a60547121967998f9600707bae46d281d9e6f0e6b52",
+    "criteria_count": 6,
+    "marker_only_actor_score_cap": 2,
+    "numerical_ratings_comparable_to_b_five_axes": false,
+    "packet_sha256": "f53d456db95884adfd443150f8a842023a3ece7557622fd3d984fc6caee78f0e",
+    "all_sample_header_pixels_identical": true,
+    "direct_profile_name_leak_observed": false,
+    "initial_score_commit": "76df950a",
+    "initial_score_sha256": "8af0549e54137f78e387446fd4f424ce2ef2660b5da45e5a6c9ae64f4127043f",
+    "key_revealed_after_initial_scores_verified": true,
+    "key_record": "b-challenge-reveal-key.json",
+    "opaque_packet_record": "b-challenge-opaque-packet.json",
+    "reported_strongest_separation": [
+      "noir",
+      "gameplay_clarity"
+    ],
+    "independent_actor_marker_limit_observed": true,
+    "detail_vs_clarity_disagreement": "B prefers Deep Focus for construction-rich environmental inspection. C scores Architectural/Deep Focus poorly for false-platform and real-passage distinction in the adversarial challenge. These are different goals, not an averaged consensus.",
+    "native_bound_measurements": "c-readability-measurements-linux.json",
+    "reveal_review": "c-blind-review-revealed.json"
+  },
+  "local_freeze_commit": "07ccee81573c3a2d025d61ffb82c6bf9d9b1351f",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45721790366",
+  "source_publication_scope": "Actual final Linux execution source and exact original capture hashes are admitted. Windows corpus, package qualification and physical owner acceptance are separate gates.",
+  "candidate_history": [
+    {
+      "source_commit": "88d6a7c5194876c998ded0b6061429a11f3ac118",
+      "source_tree": "4dd90196509fad85c94ffda9ac49a0a340c4ed01",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45718951534",
+      "scope": "Earlier full campaign; historical evidence only until image/configuration source is reconciled."
+    },
+    {
+      "source_commit": "146cead1ac41147efa993b0bf8b634da08695182",
+      "source_tree": "822866601a062d44969c462d951a40b4d4daf93d",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45720008446",
+      "scope": "Linux full graphical shader run exposed an exact partial-opacity Classic-wipe failure; do not mark this application qualified."
+    }
+  ],
+  "pending_shader_scope": "Final Linux campaign and strict reader passed; artistic lens findings use actual fd-source images rather than earlier sparse-kernel scores. Further Windows and motion review remain separately scoped.",
+  "review_date_utc": "2026-11-26T00:47:58.422587+00:00",
+  "actual_platform": "linux",
+  "campaign_sha256": "34c26fd2953c5d605bf1aec37a55da186880d1a5548d9fdbbca8451fd44c22ff",
+  "artifact_id": 15075800269,
+  "artifact_zip_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
+  "functional_corpus_admission": {
+    "command": "python3 tools/ci/qualify_strata3_workbench.py --verify /tmp/strata003-campaign6/linux",
+    "executed_repository_head": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "exit_code": 0,
+    "output": "STRATA3_VERIFIED /tmp/strata003-campaign6/linux",
+    "strict_gallery_build_passed": true,
+    "matched_profile_captures": 99,
+    "additional_captures": 74,
+    "performance_acceptance_implied": false
+  },
+  "independent_renderer_review": {
+    "commit": "69ea28c2",
+    "record": "renderer-campaign-06-review-a.md",
+    "reviewer": "Specialist A",
+    "scope": "Actual final Linux synthetic alpha/dense filtering and native Abyss graphical review; separate from B visual observations."
+  }
+}

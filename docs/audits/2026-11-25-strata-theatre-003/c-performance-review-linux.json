@@ -1,0 +1,565 @@
+{
+  "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "source_report_sha256": "999e061358c09ae67e7011e4d26c6887550439f38c8bd15727c2c2d8618e2b9e",
+  "campaign_sha256": "34c26fd2953c5d605bf1aec37a55da186880d1a5548d9fdbbca8451fd44c22ff",
+  "checks": 1689,
+  "all_raw_90_step_sequences_recomputed": true,
+  "profiles": [
+    {
+      "profile": "classic",
+      "quality": "balanced",
+      "repeats": [
+        {
+          "profile": "classic",
+          "repeat": 0,
+          "quality": "balanced",
+          "elapsed_usec": 10287190,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 8.65153652260724,
+          "rapier_ticks_per_second": 8.74874479814216,
+          "physical_p95_usec": 129152,
+          "physical_p99_usec": 143257,
+          "physical_max_usec": 143257,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1784,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "classic",
+          "repeat": 1,
+          "quality": "balanced",
+          "elapsed_usec": 9770337,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 9.10920472855747,
+          "rapier_ticks_per_second": 9.21155534348508,
+          "physical_p95_usec": 119827,
+          "physical_p99_usec": 132797,
+          "physical_max_usec": 132797,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1999,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "classic",
+          "repeat": 2,
+          "quality": "balanced",
+          "elapsed_usec": 10102382,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 8.8098034701123,
+          "rapier_ticks_per_second": 8.90879002595625,
+          "physical_p95_usec": 137829,
+          "physical_p99_usec": 166650,
+          "physical_max_usec": 166650,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1799,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        }
+      ],
+      "native_rate_min_median_max": [
+        8.65153652260724,
+        8.8098034701123,
+        9.10920472855747
+      ],
+      "median_native_rate_ratio_to_classic": 1.0,
+      "median_rapier_rate_ratio_to_classic": 1.0,
+      "median_physical_p95_usec": 129152,
+      "physical_p95_limit_usec": 154982.4,
+      "observed_native_rate_target_met": true,
+      "observed_rapier_rate_target_met": true,
+      "observed_physical_p95_target_met": true,
+      "range_percent_of_median_rate": 5.194987691869557,
+      "max_physical_interval_usec": 166650
+    },
+    {
+      "profile": "architectural",
+      "quality": "balanced",
+      "repeats": [
+        {
+          "profile": "architectural",
+          "repeat": 0,
+          "quality": "balanced",
+          "elapsed_usec": 12754044,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 6.97817884272628,
+          "rapier_ticks_per_second": 7.05658534657713,
+          "physical_p95_usec": 156245,
+          "physical_p99_usec": 176117,
+          "physical_max_usec": 176117,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1811,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "architectural",
+          "repeat": 1,
+          "quality": "balanced",
+          "elapsed_usec": 12561266,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 7.08527309269623,
+          "rapier_ticks_per_second": 7.16488290272652,
+          "physical_p95_usec": 156087,
+          "physical_p99_usec": 162880,
+          "physical_max_usec": 162880,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1497,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "architectural",
+          "repeat": 2,
+          "quality": "balanced",
+          "elapsed_usec": 12636138,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 7.0432912334449,
+          "rapier_ticks_per_second": 7.12242933719147,
+          "physical_p95_usec": 161111,
+          "physical_p99_usec": 191846,
+          "physical_max_usec": 191846,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1892,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        }
+      ],
+      "native_rate_min_median_max": [
+        6.97817884272628,
+        7.0432912334449,
+        7.08527309269623
+      ],
+      "median_native_rate_ratio_to_classic": 0.7994833548035003,
+      "median_rapier_rate_ratio_to_classic": 0.7994833548035007,
+      "median_physical_p95_usec": 156245,
+      "physical_p95_limit_usec": 154982.4,
+      "observed_native_rate_target_met": false,
+      "observed_rapier_rate_target_met": false,
+      "observed_physical_p95_target_met": false,
+      "range_percent_of_median_rate": 1.5205142939626868,
+      "max_physical_interval_usec": 191846
+    },
+    {
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced",
+      "repeats": [
+        {
+          "profile": "cinematic_deep_focus",
+          "repeat": 0,
+          "quality": "balanced",
+          "elapsed_usec": 12306004,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 7.23224208280771,
+          "rapier_ticks_per_second": 7.31350322980555,
+          "physical_p95_usec": 153975,
+          "physical_p99_usec": 167962,
+          "physical_max_usec": 167962,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1786,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "repeat": 1,
+          "quality": "balanced",
+          "elapsed_usec": 12391064,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 7.18259545750066,
+          "rapier_ticks_per_second": 7.26329877724786,
+          "physical_p95_usec": 156745,
+          "physical_p99_usec": 185262,
+          "physical_max_usec": 185262,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1655,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "cinematic_deep_focus",
+          "repeat": 2,
+          "quality": "balanced",
+          "elapsed_usec": 12875873,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 6.91215267500697,
+          "rapier_ticks_per_second": 6.9898173118048,
+          "physical_p95_usec": 167016,
+          "physical_p99_usec": 187060,
+          "physical_max_usec": 187060,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1809,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        }
+      ],
+      "native_rate_min_median_max": [
+        6.91215267500697,
+        7.18259545750066,
+        7.23224208280771
+      ],
+      "median_native_rate_ratio_to_classic": 0.8152957647543416,
+      "median_rapier_rate_ratio_to_classic": 0.8152957647543425,
+      "median_physical_p95_usec": 156745,
+      "physical_p95_limit_usec": 154982.4,
+      "observed_native_rate_target_met": false,
+      "observed_rapier_rate_target_met": false,
+      "observed_physical_p95_target_met": false,
+      "range_percent_of_median_rate": 4.456458806495587,
+      "max_physical_interval_usec": 187060
+    },
+    {
+      "profile": "gameplay_clarity",
+      "quality": "balanced",
+      "repeats": [
+        {
+          "profile": "gameplay_clarity",
+          "repeat": 0,
+          "quality": "balanced",
+          "elapsed_usec": 13650610,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 6.519855156656,
+          "rapier_ticks_per_second": 6.59311195616899,
+          "physical_p95_usec": 165640,
+          "physical_p99_usec": 196132,
+          "physical_max_usec": 196132,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1625,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "gameplay_clarity",
+          "repeat": 1,
+          "quality": "balanced",
+          "elapsed_usec": 13261180,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 6.7113182989749,
+          "rapier_ticks_per_second": 6.7867263697499,
+          "physical_p95_usec": 163072,
+          "physical_p99_usec": 196867,
+          "physical_max_usec": 196867,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1927,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "gameplay_clarity",
+          "repeat": 2,
+          "quality": "balanced",
+          "elapsed_usec": 13459044,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 6.61265391509234,
+          "rapier_ticks_per_second": 6.68695339728438,
+          "physical_p95_usec": 169934,
+          "physical_p99_usec": 233633,
+          "physical_max_usec": 233633,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1905,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        }
+      ],
+      "native_rate_min_median_max": [
+        6.519855156656,
+        6.61265391509234,
+        6.7113182989749
+      ],
+      "median_native_rate_ratio_to_classic": 0.7506017515062736,
+      "median_rapier_rate_ratio_to_classic": 0.7506017515062734,
+      "median_physical_p95_usec": 165640,
+      "physical_p95_limit_usec": 154982.4,
+      "observed_native_rate_target_met": false,
+      "observed_rapier_rate_target_met": false,
+      "observed_physical_p95_target_met": false,
+      "range_percent_of_median_rate": 2.895405457132967,
+      "max_physical_interval_usec": 233633
+    },
+    {
+      "profile": "diorama",
+      "quality": "high",
+      "repeats": [
+        {
+          "profile": "diorama",
+          "repeat": 0,
+          "quality": "high",
+          "elapsed_usec": 13332021,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 6.6756570515453,
+          "rapier_ticks_per_second": 6.75066443414693,
+          "physical_p95_usec": 166191,
+          "physical_p99_usec": 222679,
+          "physical_max_usec": 222679,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1829,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "diorama",
+          "repeat": 1,
+          "quality": "high",
+          "elapsed_usec": 13521104,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 6.58230274687629,
+          "rapier_ticks_per_second": 6.65626120470636,
+          "physical_p95_usec": 170566,
+          "physical_p99_usec": 201794,
+          "physical_max_usec": 201794,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 1949,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        },
+        {
+          "profile": "diorama",
+          "repeat": 2,
+          "quality": "high",
+          "elapsed_usec": 13390211,
+          "completed_physical_steps": 90,
+          "actual_native_tick_delta": 89,
+          "rapier_tick_delta": 90,
+          "native_ticks_per_second": 6.64664656890022,
+          "rapier_ticks_per_second": 6.7213279910227,
+          "physical_p95_usec": 163903,
+          "physical_p99_usec": 174479,
+          "physical_max_usec": 174479,
+          "stalls_at_least250ms": 0,
+          "actor_distance_cells": 125.500831604004,
+          "scene_admission_elapsed_ms": 2010,
+          "native_capture_delta": 0,
+          "decorative_upload_delta": 0
+        }
+      ],
+      "native_rate_min_median_max": [
+        6.58230274687629,
+        6.64664656890022,
+        6.6756570515453
+      ],
+      "median_native_rate_ratio_to_classic": 0.7544602545844866,
+      "median_rapier_rate_ratio_to_classic": 0.754460254584488,
+      "median_physical_p95_usec": 166191,
+      "physical_p95_limit_usec": 154982.4,
+      "observed_native_rate_target_met": false,
+      "observed_rapier_rate_target_met": false,
+      "observed_physical_p95_target_met": false,
+      "range_percent_of_median_rate": 1.4045324014340739,
+      "max_physical_interval_usec": 222679
+    }
+  ],
+  "schema": "strata003-independent-linux-performance-review-v1",
+  "reviewed_utc": "2026-11-26T00:44:45.605991+00:00",
+  "source_run_id": 45721790366,
+  "scope": "Final immutable fd0830ab hosted Linux llvmpipe. Raw completion populations independently recomputed. All 3 fresh-process original 002 versus 003 Classic pairs independently passed the frozen strict reader. Separate cases/scenes and scopes remain explicit.",
+  "disposition": "ENABLED OPTICS PERFORMANCE HOLD; CLASSIC COMPARATIVE TARGETS MET WITHIN THIS HOSTED SCOPE.",
+  "predecessor_comparison": {
+    "scene": "industrial-underworks",
+    "source_report_sha256": "6a4646209386ab9020e8ee3dcab5a47d1f3a7113844a2b654722e9bdc69fe57c",
+    "baseline_source": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+    "candidate_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "independent_strict_reader_passed": true,
+    "summary": {
+      "classic_world_rgba8_identical": true,
+      "comparative_gate": "observed-targets-met",
+      "criteria": {
+        "native_progression": true,
+        "physical_p95": true,
+        "rapier_progression": true
+      },
+      "matched_actual_native_geometry_actor_camera": true,
+      "medians": {
+        "candidate": {
+          "admission_elapsed_ms": 13752,
+          "native_ticks_per_second": 9.18077282095131,
+          "physical_p95_usec": 122098,
+          "rapier_ticks_per_second": 9.28392757174851
+        },
+        "predecessor": {
+          "admission_elapsed_ms": 12993,
+          "native_ticks_per_second": 9.14458753954392,
+          "physical_p95_usec": 122337,
+          "rapier_ticks_per_second": 9.24733571414554
+        }
+      },
+      "physical_owner_acceptance": "pending",
+      "populations": {
+        "candidate": [
+          {
+            "admission_elapsed_ms": 14409,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.30638858480468,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 128162,
+              "p50": 104816,
+              "p95": 117706,
+              "p99": 128162,
+              "stalls_at_least_usec": {
+                "100000": 84,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.41095474867888
+          },
+          {
+            "admission_elapsed_ms": 13720,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.11308208531893,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 145941,
+              "p50": 106222,
+              "p95": 125188,
+              "p99": 145941,
+              "stalls_at_least_usec": {
+                "100000": 84,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.21547626605285
+          },
+          {
+            "admission_elapsed_ms": 13752,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.18077282095131,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 131676,
+              "p50": 104394,
+              "p95": 122098,
+              "p99": 131676,
+              "stalls_at_least_usec": {
+                "100000": 89,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.28392757174851
+          }
+        ],
+        "predecessor": [
+          {
+            "admission_elapsed_ms": 13077,
+            "admission_target_met": true,
+            "native_ticks_per_second": 8.98998979787675,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 160448,
+              "p50": 106034,
+              "p95": 133065,
+              "p99": 160448,
+              "stalls_at_least_usec": {
+                "100000": 89,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.0910009192012
+          },
+          {
+            "admission_elapsed_ms": 12027,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.14458753954392,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 144448,
+              "p50": 104443,
+              "p95": 122337,
+              "p99": 144448,
+              "stalls_at_least_usec": {
+                "100000": 86,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.24733571414554
+          },
+          {
+            "admission_elapsed_ms": 12993,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.51733325605401,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 125910,
+              "p50": 102249,
+              "p95": 114244,
+              "p99": 125910,
+              "stalls_at_least_usec": {
+                "100000": 76,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.62426958477372
+          }
+        ]
+      },
+      "scope": "Paired hosted observations; no physical Windows/NVIDIA acceptance. Median rates and interval tails are distinct. All original admission misses remain failures.",
+      "short_window_limit": "Three fresh processes per source and90display callbacks each; tails and host-load spread remain visible. This is not sustained hardware qualification."
+    }
+  },
+  "interpretation": [
+    "All four enabled profiles fail both registered median progression ratios and median physical p95 criterion. Do not describe functional check completion as performance acceptance.",
+    "The fastest observed enabled native rate is below 90% of the slowest observed Classic native rate, so the throughput miss is materially larger than the observed three-repeat spread. This is a bounded repeat-spread observation, not a statistical confidence interval or proof of host independence.",
+    "Architectural and Deep Focus median p95 misses are comparatively small, but their 20%/18% throughput losses remain material. No gate is weakened because one tail result is close.",
+    "No physical interval exceeded 250 ms in this short profile cohort. That negative observation cannot erase the longer tails in the separate sustained annex or establish absence of rare stalls.",
+    "Each profile window contains 90actual complete Rapiersteps and89native tick delta, with 89 physical intervals. These actual counters, not nominal rendering FPS, determine the rates.",
+    "Timed native capture and decorative upload deltas are 0. The actual rendering/presentation cost still reduced physical progression on the software renderer; zero additional capture work is not zero cost.",
+    "The paired original 002 versus 003 Classic case is Industrial Underworks, while the five-profile cost cohort is the readability challenge. Do not divide timings across these different scenes or merge their baselines.",
+    "The source-pinned original 002 versus 003 Classic world RGBA is exact and median comparative criteria pass in the paired case. This preserves a useful disabled fallback without qualifying enabled profiles.",
+    "All results are hosted Linux software-renderer observations. Windows results, physical Windows 11/NVIDIA acceptance, human readability and owner artistic acceptance remain separate.",
+    "A prospective external shader experiment may test a lower-cost equivalent implementation, but it does not change this frozen application result or evaluator identity."
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "schema": "strata3-graphical-checkpoint-v1",
+  "source_commit": "12b6beedf5db0caba326266b577b6c9c4f7e597d",
+  "source_tree": "329824985795de0286c2eecd5b15c9572c798f41",
+  "workflow_run": 45711742479,
+  "suite": "shader",
+  "status": "passed",
+  "platforms": {
+    "linux": {
+      "artifact_id": 15066339610,
+      "renderer": "Mesa llvmpipe LLVM20.1.2 software OpenGL4.5",
+      "graphical_renderer_checks": 59,
+      "campaign_seconds": 20.575
+    },
+    "win32": {
+      "artifact_id": 15066274858,
+      "renderer": "ANGLE Microsoft Basic Render Driver Direct3D11 software OpenGL ES3.0",
+      "graphical_renderer_checks": 59,
+      "campaign_seconds": 32.047
+    }
+  },
+  "scope": [
+    "Actual alpha coverage and premultiplication",
+    "Pixel aperture and silhouette-preserving detail sampling",
+    "Transparent texture bounds",
+    "Native solid-family masks",
+    "Exact Classic return and single-pass wipe",
+    "Focus interpolation and material reuse",
+    "Native configuration/persistence and existing compatibility regression scripts"
+  ],
+  "not_established": [
+    "Scene-level aesthetic or gameplay legibility",
+    "Full lifecycle and optical scene reopening",
+    "Matched physical progression",
+    "Physical Windows11 NVIDIA acceptance",
+    "Final Windows package"
+  ]
+}

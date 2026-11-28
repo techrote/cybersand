@@ -1,0 +1,13 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+WARNING: Your video card drivers seem not to support the required OpenGL 3.3 version, switching to ANGLE.
+   at: DisplayServerWindows (platform/windows/display_server_windows.cpp:8059)
+OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+STRATA_PROGRESS instantiate ordinary Main
+STRATA_PROGRESS ordinary Main ready; wait for512canvas
+STRATA_PROGRESS ordinary Workbench admitted
+STRATA_PROGRESS four native planes admitted
+STRATA_PROGRESS all native material cells
+STRATA_WORKBENCH {"checks":162,"failures":[],"phase":"reopen","scene":"arcology"}

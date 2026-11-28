@@ -1,0 +1,114 @@
+{
+  "schema": "strata3-c-cold-first-command-review-v1",
+  "reviewer": "Specialist C — gameplay readability, authoring UX and independent qualification",
+  "review_date_utc": "2026-11-26",
+  "disposition": "HOSTED COLD FIRST-COMMAND CHECK PASSED; PRINCIPAL APPLICATION PERFORMANCE HOLD UNCHANGED",
+  "application": {
+    "source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499"
+  },
+  "observer": {
+    "source": "92ec0280bba341b49345f292c4f89331b11a341b",
+    "tree": "25dbd1371fa052e5f02de32c57e585d1b4846981",
+    "parent": "3f37d27bb7637e6ef7107e968d6e27fb4128ce2e",
+    "workflow": ".github/workflows/strata-theatre-003-cold-launch.yml",
+    "runner": "tools/ci/strata3_cold_launcher.py"
+  },
+  "hosted_execution": {
+    "run_id": 45743337775,
+    "job_id": 139653387374,
+    "conclusion": "success",
+    "created_at": "2026-11-26T02:34:37Z",
+    "job_completed_at": "2026-11-26T02:38:22Z",
+    "controls": 23,
+    "controls_seconds": 0.152,
+    "cold_step_started_at": "2026-11-26T02:35:51Z",
+    "cold_step_completed_at": "2026-11-26T02:38:17Z",
+    "step_duration_is_not_startup_measurement": true
+  },
+  "package": {
+    "run_id": 45721790366,
+    "artifact_id": 15080761776,
+    "filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+    "bytes": 477296145,
+    "sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "manifest_sha256": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+    "outer_artifact_sha256": "cc6d27dbf377cb62ac397c2db0b3ba6f9b2f3b3b294a3bc89b7fbbc18767b1ee"
+  },
+  "evidence_artifact": {
+    "id": 15082655904,
+    "name": "strata3-cold-windows-fd0830ab-92ec0280bba341b49345f292c4f89331b11a341b-1",
+    "bytes": 635667,
+    "sha256": "8bae9a314d010f5bbe09637bd217c6d15948316a783437d24bfeb76208311e9e",
+    "includes_hidden_files": true,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45743337775/artifacts/15082655904"
+  },
+  "strict_reader_json_from_original_completed_job_log": {
+    "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "observation": {
+      "admission": {
+        "extent": [
+          2048,
+          2048
+        ],
+        "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "strata_enabled": false,
+        "workbench_script": "res://scripts/shared_workbench.gd",
+        "worker_id": "-9223371959310481934",
+        "world_generation": 2
+      },
+      "cmd_process_seconds": 90.025416,
+      "cold_import_command_seconds": 11.1453828,
+      "console_process_ids": [
+        3196,
+        5840
+      ],
+      "engine_process_ids": [
+        3432,
+        6572
+      ],
+      "godot_headers": [
+        "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+        "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org"
+      ],
+      "observed_process_tree_cpu_seconds": 152.171875,
+      "ordinary_workbench_command_seconds": 78.8635987,
+      "peak_observed_process_tree_rss_bytes": 757346304,
+      "rendering_backend": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    },
+    "observer_source": "92ec0280bba341b49345f292c4f89331b11a341b",
+    "package_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "schema": "strata3-cold-first-command-verification-v1",
+    "scope": "First shipped CMD on a new extraction with no prior Godot invocation. Cold import command lifetime and ordinary native Workbench admission/shutdown; no nine-scene rerun or physical GPU acceptance.",
+    "verified": true
+  },
+  "review_basis": {
+    "source_and_final_job_log_independently_read": true,
+    "job_and_artifact_metadata_independently_read": true,
+    "strict_reader_executed_on_host": true,
+    "local_post_outage_artifact_download_or_reader_rerun": false,
+    "reason": "Local execution environment was unavailable. This review records the source-reviewed hosted reader outcome and original decoded job log; it does not claim a new local read of the evidence ZIP."
+  },
+  "unchanged_boundaries": [
+    "Exact delivered application, native runtime, package, manifest and owner CMD; observer-only correction.",
+    "No Godot invocation before the first shipped CMD in this new extraction.",
+    "Static payload verification before and after, with original payload hashes unchanged and generated runtime state separately retained.",
+    "Held Windows process handles bind ordered cold import and ordinary graphical Workbench stages; all processes exit successfully.",
+    "Strata remains disabled at ordinary native 2048-square Workbench admission."
+  ],
+  "prior_negative": {
+    "observer": "3f37d27bb7637e6ef7107e968d6e27fb4128ce2e",
+    "run_id": 45741693665,
+    "job_id": 139647997400,
+    "artifact_id": 15081990856,
+    "artifact_sha256": "00595d7c3830b17ba2d5eceb0a9539d960fbc9553f19d7a2095def295c8b5cfc",
+    "disposition": "Rejected before Godot invocation because the dynamic frozen package verifier was missing from the mandatory sys.modules source inventory; retained without relabeling."
+  },
+  "limits": [
+    "Cold import command lifetime includes startup, import and teardown; it is not pure import CPU time.",
+    "Ordinary Workbench command lifetime includes the bounded 180-callback session and shutdown; it is not scene-admission latency or a frame-rate measurement.",
+    "Whole-process tree CPU and sampled RSS are host observations, not physical NVIDIA measurements.",
+    "This annex adds no new nine-scene visual, native progression or optical performance cohort.",
+    "Enabled-optics PERFORMANCE HOLD, unchanged 45-second scene-admission target and physical owner acceptance remain in force."
+  ]
+}

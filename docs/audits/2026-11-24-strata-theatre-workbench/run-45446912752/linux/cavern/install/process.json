@@ -1,0 +1,21 @@
+{
+  "command": [
+    "/home/runner/work/_temp/godot47/Godot_v4.7-stable_linux.x86_64",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--path",
+    "/home/runner/work/cybersand/cybersand/godot",
+    "--script",
+    "res://tools/qualify_workbench_strata.gd"
+  ],
+  "exit_code": 0,
+  "log_sha256": "c3fdee5abf7eabe345731f2e774ab0f81eb688da5f1a8260899fb6fe7b240214",
+  "pid": 3374,
+  "seconds": 61.858,
+  "status": "passed",
+  "timeout_seconds": 420
+}

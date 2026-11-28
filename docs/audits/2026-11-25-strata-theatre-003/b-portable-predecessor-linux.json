@@ -1,0 +1,317 @@
+{
+  "comparison_sha256": "6a4646209386ab9020e8ee3dcab5a47d1f3a7113844a2b654722e9bdc69fe57c",
+  "original_frozen_reader_outcome": {
+    "status": "passed",
+    "summary": {
+      "classic_world_rgba8_identical": true,
+      "comparative_gate": "observed-targets-met",
+      "criteria": {
+        "native_progression": true,
+        "physical_p95": true,
+        "rapier_progression": true
+      },
+      "matched_actual_native_geometry_actor_camera": true,
+      "medians": {
+        "candidate": {
+          "admission_elapsed_ms": 13752,
+          "native_ticks_per_second": 9.18077282095131,
+          "physical_p95_usec": 122098,
+          "rapier_ticks_per_second": 9.28392757174851
+        },
+        "predecessor": {
+          "admission_elapsed_ms": 12993,
+          "native_ticks_per_second": 9.14458753954392,
+          "physical_p95_usec": 122337,
+          "rapier_ticks_per_second": 9.24733571414554
+        }
+      },
+      "physical_owner_acceptance": "pending",
+      "populations": {
+        "candidate": [
+          {
+            "admission_elapsed_ms": 14409,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.30638858480468,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 128162,
+              "p50": 104816,
+              "p95": 117706,
+              "p99": 128162,
+              "stalls_at_least_usec": {
+                "100000": 84,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.41095474867888
+          },
+          {
+            "admission_elapsed_ms": 13720,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.11308208531893,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 145941,
+              "p50": 106222,
+              "p95": 125188,
+              "p99": 145941,
+              "stalls_at_least_usec": {
+                "100000": 84,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.21547626605285
+          },
+          {
+            "admission_elapsed_ms": 13752,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.18077282095131,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 131676,
+              "p50": 104394,
+              "p95": 122098,
+              "p99": 131676,
+              "stalls_at_least_usec": {
+                "100000": 89,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.28392757174851
+          }
+        ],
+        "predecessor": [
+          {
+            "admission_elapsed_ms": 13077,
+            "admission_target_met": true,
+            "native_ticks_per_second": 8.98998979787675,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 160448,
+              "p50": 106034,
+              "p95": 133065,
+              "p99": 160448,
+              "stalls_at_least_usec": {
+                "100000": 89,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.0910009192012
+          },
+          {
+            "admission_elapsed_ms": 12027,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.14458753954392,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 144448,
+              "p50": 104443,
+              "p95": 122337,
+              "p99": 144448,
+              "stalls_at_least_usec": {
+                "100000": 86,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.24733571414554
+          },
+          {
+            "admission_elapsed_ms": 12993,
+            "admission_target_met": true,
+            "native_ticks_per_second": 9.51733325605401,
+            "physical_intervals_usec": {
+              "count": 89,
+              "maximum": 125910,
+              "p50": 102249,
+              "p95": 114244,
+              "p99": 125910,
+              "stalls_at_least_usec": {
+                "100000": 76,
+                "1000000": 0,
+                "250000": 0,
+                "500000": 0
+              }
+            },
+            "rapier_ticks_per_second": 9.62426958477372
+          }
+        ]
+      },
+      "scope": "Paired hosted observations; no physical Windows/NVIDIA acceptance. Median rates and interval tails are distinct. All original admission misses remain failures.",
+      "short_window_limit": "Three fresh processes per source and90display callbacks each; tails and host-load spread remain visible. This is not sustained hardware qualification."
+    }
+  },
+  "portable_reader_summary": {
+    "classic_world_rgba8_identical": true,
+    "comparative_gate": "observed-targets-met",
+    "criteria": {
+      "native_progression": true,
+      "physical_p95": true,
+      "rapier_progression": true
+    },
+    "matched_actual_native_geometry_actor_camera": true,
+    "medians": {
+      "candidate": {
+        "admission_elapsed_ms": 13752,
+        "native_ticks_per_second": 9.18077282095131,
+        "physical_p95_usec": 122098,
+        "rapier_ticks_per_second": 9.28392757174851
+      },
+      "predecessor": {
+        "admission_elapsed_ms": 12993,
+        "native_ticks_per_second": 9.14458753954392,
+        "physical_p95_usec": 122337,
+        "rapier_ticks_per_second": 9.24733571414554
+      }
+    },
+    "physical_owner_acceptance": "pending",
+    "populations": {
+      "candidate": [
+        {
+          "admission_elapsed_ms": 14409,
+          "admission_target_met": true,
+          "native_ticks_per_second": 9.30638858480468,
+          "physical_intervals_usec": {
+            "count": 89,
+            "maximum": 128162,
+            "p50": 104816,
+            "p95": 117706,
+            "p99": 128162,
+            "stalls_at_least_usec": {
+              "100000": 84,
+              "1000000": 0,
+              "250000": 0,
+              "500000": 0
+            }
+          },
+          "rapier_ticks_per_second": 9.41095474867888
+        },
+        {
+          "admission_elapsed_ms": 13720,
+          "admission_target_met": true,
+          "native_ticks_per_second": 9.11308208531893,
+          "physical_intervals_usec": {
+            "count": 89,
+            "maximum": 145941,
+            "p50": 106222,
+            "p95": 125188,
+            "p99": 145941,
+            "stalls_at_least_usec": {
+              "100000": 84,
+              "1000000": 0,
+              "250000": 0,
+              "500000": 0
+            }
+          },
+          "rapier_ticks_per_second": 9.21547626605285
+        },
+        {
+          "admission_elapsed_ms": 13752,
+          "admission_target_met": true,
+          "native_ticks_per_second": 9.18077282095131,
+          "physical_intervals_usec": {
+            "count": 89,
+            "maximum": 131676,
+            "p50": 104394,
+            "p95": 122098,
+            "p99": 131676,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 0,
+              "250000": 0,
+              "500000": 0
+            }
+          },
+          "rapier_ticks_per_second": 9.28392757174851
+        }
+      ],
+      "predecessor": [
+        {
+          "admission_elapsed_ms": 13077,
+          "admission_target_met": true,
+          "native_ticks_per_second": 8.98998979787675,
+          "physical_intervals_usec": {
+            "count": 89,
+            "maximum": 160448,
+            "p50": 106034,
+            "p95": 133065,
+            "p99": 160448,
+            "stalls_at_least_usec": {
+              "100000": 89,
+              "1000000": 0,
+              "250000": 0,
+              "500000": 0
+            }
+          },
+          "rapier_ticks_per_second": 9.0910009192012
+        },
+        {
+          "admission_elapsed_ms": 12027,
+          "admission_target_met": true,
+          "native_ticks_per_second": 9.14458753954392,
+          "physical_intervals_usec": {
+            "count": 89,
+            "maximum": 144448,
+            "p50": 104443,
+            "p95": 122337,
+            "p99": 144448,
+            "stalls_at_least_usec": {
+              "100000": 86,
+              "1000000": 0,
+              "250000": 0,
+              "500000": 0
+            }
+          },
+          "rapier_ticks_per_second": 9.24733571414554
+        },
+        {
+          "admission_elapsed_ms": 12993,
+          "admission_target_met": true,
+          "native_ticks_per_second": 9.51733325605401,
+          "physical_intervals_usec": {
+            "count": 89,
+            "maximum": 125910,
+            "p50": 102249,
+            "p95": 114244,
+            "p99": 125910,
+            "stalls_at_least_usec": {
+              "100000": 76,
+              "1000000": 0,
+              "250000": 0,
+              "500000": 0
+            }
+          },
+          "rapier_ticks_per_second": 9.62426958477372
+        }
+      ]
+    },
+    "scope": "Paired hosted observations; no physical Windows/NVIDIA acceptance. Median rates and interval tails are distinct. All original admission misses remain failures.",
+    "short_window_limit": "Three fresh processes per source and90display callbacks each; tails and host-load spread remain visible. This is not sustained hardware qualification."
+  },
+  "reader_identity": {
+    "adapter_sha256": "acc4b927e4e1addd053aedd9d505673818a84398326bca5d4bc86f9d6c031dda",
+    "all_other_frozen_gate_code_unchanged": true,
+    "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+    "frozen_reader_path": "tools/ci/strata3_predecessor_compare.py",
+    "frozen_reader_sha256": "f01dbdd2f616f5bfb45e4295dd5a4f2a0001a2bc29c5035c2d1bf6c5f2e99568",
+    "frozen_verify_function_sha256": "e1022a145a4a5c26319364cb69f2abb4f6ec9dc41229552f355e5adf37179e60",
+    "new_expression": "_recorded_command_name(command[-1], record.get('host', {}).get('platform'))",
+    "old_expression": "Path(command[-1]).name",
+    "portable_verify_function_sha256": "cc37284f8f026ad65366abc953830ba9df13b0671fb87fcdc3916557778d018a",
+    "substitution_count": 1
+  },
+  "recorded_platform": "linux",
+  "schema": "strata3-portable-predecessor-verification-v1",
+  "scope": "Cross-host retained-command basename correction only; original observations and all frozen gates remain unchanged. No application mutation or new runtime execution.",
+  "status": "passed"
+}

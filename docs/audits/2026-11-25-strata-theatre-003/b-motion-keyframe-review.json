@@ -1,0 +1,620 @@
+{
+  "schema": "strata3-b-motion-keyframe-review-v1",
+  "reviewer": "Specialist B",
+  "reviewed_utc": "2026-11-26T00:55:47.931819+00:00",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "source_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "platform": "linux",
+  "artifact_id": 15075800269,
+  "artifact_zip_sha256": "d9ebf833c049af25280fc1af142e6eea59bb5de0f88a7e1a959d055ba4657011",
+  "report_relative_path": "optics-readability-challenge/motion/result.json",
+  "report_sha256": "aa498cb1cccd31bb44c91af6a843578fcf518b572d065759f48055a51f07db3e",
+  "review_scope": "Named-profile inspection of original frames00,04,09 for four sequences. Twelve stills inspected, not continuous playback or all40 frames. C separately reviewed the sequence corpus.",
+  "performance_measurement": false,
+  "human_perceptual_study": false,
+  "initial_static_still_review": "b-final-corpus-review.json",
+  "frames": [
+    {
+      "profile": "classic",
+      "quality": "balanced",
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "index": 0,
+      "relative_path": "optics-readability-challenge/motion/motion-classic-00.png",
+      "sha256": "db8d554343f7c36e25fe319eaf9ce62e5525488d0f8c5ea1e212337cd780d24e",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          272.009765625,
+          532.325134277344
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          1.36303734779358,
+          -11.3372087478638
+        ],
+        "position": [
+          410.058349609375,
+          599.361877441406
+        ],
+        "rapier_tick": 9,
+        "rotation": 0.156157910823822
+      },
+      "native_tick": 9,
+      "rapier_tick": 9,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "classic",
+      "quality": "balanced",
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "index": 4,
+      "relative_path": "optics-readability-challenge/motion/motion-classic-04.png",
+      "sha256": "758df922150495f8e25818e5efbafc0d5e138295322527eb3e051a8c75e79780",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          177.735763549805,
+          437.856323242188
+        ],
+        "view_size": [
+          480,
+          270
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          25.6120185852051,
+          -86.7929763793945
+        ],
+        "position": [
+          418.331176757812,
+          568.605895996094
+        ],
+        "rapier_tick": 45,
+        "rotation": 0.13166318833828
+      },
+      "native_tick": 45,
+      "rapier_tick": 45,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "classic",
+      "quality": "balanced",
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "index": 9,
+      "relative_path": "optics-readability-challenge/motion/motion-classic-09.png",
+      "sha256": "f9668d1a718ad09a01db492c6c80500df238e389ecac4e987d4ea6dfa1f7f166",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          337.549682617188,
+          416.430725097656
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          15.4362764358521,
+          -138.792633056641
+        ],
+        "position": [
+          434.320068359375,
+          476.990936279297
+        ],
+        "rapier_tick": 90,
+        "rotation": 0.103567831218243
+      },
+      "native_tick": 90,
+      "rapier_tick": 90,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "gameplay_clarity",
+      "quality": "balanced",
+      "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+      "index": 0,
+      "relative_path": "optics-readability-challenge/motion/motion-gameplay_clarity-00.png",
+      "sha256": "5a9ecd5c893271283901994a1893b88408ad9f8a3a66545e414f3bf3112104b2",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          272.009765625,
+          532.325134277344
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          1.36303734779358,
+          -11.3372087478638
+        ],
+        "position": [
+          410.058349609375,
+          599.361877441406
+        ],
+        "rapier_tick": 9,
+        "rotation": 0.156157910823822
+      },
+      "native_tick": 9,
+      "rapier_tick": 9,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "gameplay_clarity",
+      "quality": "balanced",
+      "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+      "index": 4,
+      "relative_path": "optics-readability-challenge/motion/motion-gameplay_clarity-04.png",
+      "sha256": "a5d84b8b14ad82c554282b125b9b50dfacb1b83c8ba0250a125145faa0cb72ed",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          177.735763549805,
+          437.856323242188
+        ],
+        "view_size": [
+          480,
+          270
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          25.6120185852051,
+          -86.7929763793945
+        ],
+        "position": [
+          418.331176757812,
+          568.605895996094
+        ],
+        "rapier_tick": 45,
+        "rotation": 0.13166318833828
+      },
+      "native_tick": 45,
+      "rapier_tick": 45,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "gameplay_clarity",
+      "quality": "balanced",
+      "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+      "index": 9,
+      "relative_path": "optics-readability-challenge/motion/motion-gameplay_clarity-09.png",
+      "sha256": "680a0a75345b96c827757e950856fc5179b7855571c8e8ef1daa96387b209801",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          337.549682617188,
+          416.430725097656
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          15.4362764358521,
+          -138.792633056641
+        ],
+        "position": [
+          434.320068359375,
+          476.990936279297
+        ],
+        "rapier_tick": 90,
+        "rotation": 0.103567831218243
+      },
+      "native_tick": 90,
+      "rapier_tick": 90,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced",
+      "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+      "index": 0,
+      "relative_path": "optics-readability-challenge/motion/motion-cinematic_deep_focus-00.png",
+      "sha256": "53d256392f981d1ad07f7850f21dbff7e59ce3420213fcf010324390e6ab5fc7",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          272.009765625,
+          532.325134277344
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          1.36303734779358,
+          -11.3372087478638
+        ],
+        "position": [
+          410.058349609375,
+          599.361877441406
+        ],
+        "rapier_tick": 9,
+        "rotation": 0.156157910823822
+      },
+      "native_tick": 9,
+      "rapier_tick": 9,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced",
+      "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+      "index": 4,
+      "relative_path": "optics-readability-challenge/motion/motion-cinematic_deep_focus-04.png",
+      "sha256": "40950a7a4bdec4ed83ae0cd790ac0730a12e8ba80dbc1ab24316120348254614",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          177.735763549805,
+          437.856323242188
+        ],
+        "view_size": [
+          480,
+          270
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          25.6120185852051,
+          -86.7929763793945
+        ],
+        "position": [
+          418.331176757812,
+          568.605895996094
+        ],
+        "rapier_tick": 45,
+        "rotation": 0.13166318833828
+      },
+      "native_tick": 45,
+      "rapier_tick": 45,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced",
+      "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+      "index": 9,
+      "relative_path": "optics-readability-challenge/motion/motion-cinematic_deep_focus-09.png",
+      "sha256": "1f54835160ae7f80c67a1bab73ad45852a392fdb57b97f1f0799977fa410bd8e",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          337.549682617188,
+          416.430725097656
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          15.4362764358521,
+          -138.792633056641
+        ],
+        "position": [
+          434.320068359375,
+          476.990936279297
+        ],
+        "rapier_tick": 90,
+        "rotation": 0.103567831218243
+      },
+      "native_tick": 90,
+      "rapier_tick": 90,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "diorama",
+      "quality": "high",
+      "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+      "index": 0,
+      "relative_path": "optics-readability-challenge/motion/motion-diorama-00.png",
+      "sha256": "fd774f245916c9b7b766f758e40ed3573b5a36c7aa9c50f353b0ac2d3f5bba37",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          272.009765625,
+          532.325134277344
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          1.36303734779358,
+          -11.3372087478638
+        ],
+        "position": [
+          410.058349609375,
+          599.361877441406
+        ],
+        "rapier_tick": 9,
+        "rotation": 0.156157910823822
+      },
+      "native_tick": 9,
+      "rapier_tick": 9,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "diorama",
+      "quality": "high",
+      "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+      "index": 4,
+      "relative_path": "optics-readability-challenge/motion/motion-diorama-04.png",
+      "sha256": "439dd569c038896d0241cf416ffcc95faf2d527829535d89664a3cf15e2d7153",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          177.735763549805,
+          437.856323242188
+        ],
+        "view_size": [
+          480,
+          270
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          25.6120185852051,
+          -86.7929763793945
+        ],
+        "position": [
+          418.331176757812,
+          568.605895996094
+        ],
+        "rapier_tick": 45,
+        "rotation": 0.13166318833828
+      },
+      "native_tick": 45,
+      "rapier_tick": 45,
+      "picking_error": 0.0
+    },
+    {
+      "profile": "diorama",
+      "quality": "high",
+      "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+      "index": 9,
+      "relative_path": "optics-readability-challenge/motion/motion-diorama-09.png",
+      "sha256": "288d34485770624dd7e7d56f25ab48702e422c083389ed9913b579ef7256689a",
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          337.549682617188,
+          416.430725097656
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976562
+        ]
+      },
+      "actor_state": {
+        "linear_velocity": [
+          15.4362764358521,
+          -138.792633056641
+        ],
+        "position": [
+          434.320068359375,
+          476.990936279297
+        ],
+        "rapier_tick": 90,
+        "rotation": 0.103567831218243
+      },
+      "native_tick": 90,
+      "rapier_tick": 90,
+      "picking_error": 0.0
+    }
+  ],
+  "findings": [
+    {
+      "profile": "classic",
+      "observation": "All three mint actor bodies are resolved in frames00 and04; frame09 follows the selected actor at closer scale. Bright equal-material rear grids and bars compete with the bodies, but the mint rectangles remain identifiable. The body claim is limited to these scales; it does not transfer to the Overview captures."
+    },
+    {
+      "profile": "gameplay_clarity",
+      "observation": "The bodies remain crisp while nearby rear construction is substantially attenuated. The background competes less at both view sizes. No broad circular reveal void or conspicuous local attenuation boundary is apparent in the sampled stills. The profile also changes decorative parallax, so identical camera metadata does not imply identical decorative screen positions."
+    },
+    {
+      "profile": "cinematic_deep_focus",
+      "observation": "The three actors are resolved at the sampled close/wide scales, but detailed bright rear grids remain near Classic in visual competition. This is consistent with construction retention and is not a stronger ownership result than Clarity."
+    },
+    {
+      "profile": "diorama",
+      "observation": "Actual actors remain crisp while rear fine texture, thin bars and larger panel edges become visibly soft. The softness is much stronger at240x135 than in the Lunar whole-environment Overview; retain this as an optional scene- and scale-dependent treatment. All shapes remain recognizable in these samples, but complete temporal stability is not established."
+    }
+  ],
+  "limitations": [
+    "The image cadence is instrumented readback, not actual rendering FPS.",
+    "Only three sample indices per sequence were visually inspected by B.",
+    "A moving Play world is allowed to evolve; no whole-frame or Play image hash equality is inferred across these separate sequences.",
+    "No sampled-image review proves absence of flicker between captures or sustained responsiveness.",
+    "Exact native progression and immutable decorative hashes are separately admitted by the source-bound motion harness.",
+    "The registered profile-cost regression remains HOLD and is not overridden by the resolved actor bodies."
+  ]
+}

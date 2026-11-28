@@ -10,6 +10,14 @@ related-documents: [reference/retrieval-index.md, reference/status-and-roadmap.m
 
 # CyberSand documentation
 
+**RAMCACHE and Strata accepted-feature integration:** [mission boundaries, native custody, qualification and portable delivery](operations/ramcache-strata-integration.md), [RAMCACHE controls](operations/persistent-area-ramcache-evaluation.md), and [Strata Optics Lab](operations/strata-optics-evaluation.md). The owner accepted both original evaluators; final integrated evidence remains source-specific. Classic stays default; ObjectShard M4 and ongoing PUBPRES are excluded.
+
+## Persistent authored areas · GEN-006
+
+The owner-accepted [RAMCACHE integration #745](https://github.com/techrote/cybersand/pull/745) preserves the #725/#734 predecessor lineage and provides [actual native HOT residency, WARM/COLD tiers, bounded write-behind and predictive preparation](systems/persistent-area-residency.md). Use the [RAM-cache owner guide](operations/persistent-area-ramcache-evaluation.md) and [source/performance ledger](audits/2026-11-22-gen006-ramcache.md). The broader #194 actor, streaming and recipe programme remains unfinished.
+
+The opt-in [three-area native continuation contract](systems/persistent-authored-areas.md) owns retained dynamic state, completed game-time debt and conservative dependency refusal. The [desktop evaluator guide](operations/persistent-areas-evaluation.md) explains travel, Simulate Ahead, isolated profiles and recovery. The [dated qualification ledger](audits/2026-11-21-gen006-persistent-areas.md) separates actual platform results from physical NVIDIA owner acceptance and the broader unfinished #194 programme.
+
 **Current SWARM-004/005/006 consolidated delivery:** [canonical decision packet](audits/swarm456-definitive-001/final-decision-packet.md), [machine-readable decision](audits/swarm456-definitive-001/final-decision-packet.json), [unified runbook](operations/swarm456-unified-mainline.md) and [physical owner procedure](operations/swarm456-owner-acceptance.md). The same principal #729 preserves both donor histories and accepted Art session logging. Q7 qualifies application/runtime/evaluator source `5e34e0dd`; guarded publication `5323b837` and fresh remote LFS materialization passed. Complete Native, full Documentation and current PLAY identity passed their reviewed scopes; final full GDExtension review passes at `5fd9985e` with 344 Linux/321 Windows cases and complete original coverage. **Draft/HOLD; physical Windows 11/NVIDIA acceptance remains owner-pending.**
 
 The [definitive evidence review](operations/swarm456-unified-mainline.md#definitive-transaction-evidence-review) preserves Q1–Q5 failures and independently binds actual native transactions, material readback and Save/fresh-Reopen files. Q7 supplied the required new original witnesses. The [ordinary budget-test correction](audits/swarm456-definitive-001/ordinary-budget-test-correction.md) and [same-byte Linux download correction](audits/swarm456-definitive-001/ordinary-linux-download-correction.md) preserve qualified product/scientific/runtime identities and all mandatory gates; their affected ordinary executions are recorded separately.
@@ -51,6 +59,31 @@ GIP-014-goblin-002 Draft/HOLD: start with the [owner decision packet](research/g
 **AMBIENT-001, opt-in Draft/HOLD:** [procedural actor contract and module authoring](systems/ambient-actors.md),
 [Workbench profiles, personalities and playable examples](operations/ambient-workbench.md),
 and [exact-source qualification and remaining acceptance](research/ambient-001/mission-ledger.md).
+
+## Strata Theatre in ordinary Workbench
+
+**STRATA-THEATRE-003, owner-accepted for optional use,** adds the integrated [Strata Optics Lab](systems/strata-optics.md),
+eleven editable profiles and presentation-only depth, atmosphere and clarity controls.
+Use the [optical composition guide](operations/strata-optical-composition.md) and
+[portable owner walkthrough](operations/strata-optics-evaluation.md). The original
+five native layouts and exact Classic presentation remain the reference; actual
+source-bound graphical evidence remains separate from the owner acceptance of the original evaluator. The [integration policy](operations/ramcache-strata-integration.md) records the narrow optical performance waiver and final-source gates.
+
+The incorporated **STRATA-THEATRE-002 predecessor** adds a
+[native environment and atmosphere library](systems/strata-environments.md).
+Its five scenes, reusable parts and explicit raster masks are preserved in the integrated application;
+the original #769 and #776 evidence retains its recorded source scope.
+The [native authoring contract](systems/strata-authoring.md) explains PNG/native
+import, bounded preview and approval, reusable parts, Stop and historical records.
+
+The [four-plane composition contract](systems/strata-workbench.md)
+owns the borrowed play presentation, three static native decorative Worlds,
+input/history boundaries and versioned authored envelope. Use the
+[owner evaluation guide](operations/strata-workbench-evaluation.md) for the three
+native example scenes, controls and Save/fresh-process reopen. The
+[decision packet](audits/2026-11-24-strata-theatre-workbench/decision-packet.md)
+binds the source, original qualification evidence and evaluator custody. Physical
+owner acceptance remains separate from source and hosted graphical evidence.
 
 For waves travelling under a floating Oil slick, see the [impingement tank comparison](audits/2026-11-20-wave-oil-impinge.md).
 

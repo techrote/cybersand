@@ -18,6 +18,29 @@ source/engine/PID custody, first-read pixel oracle and acceptance limits, retrie
 The [focused questions](retrieval-questions-pubpres-render-probes.json) are additive;
 the general frozen evaluation set and earlier mission questions remain unchanged.
 
+## RAMCACHE and Strata integration
+
+| Question | Canonical route |
+| --- | --- |
+| What did the owner accept, which optical target is waived, and what is excluded? | [Combined integration policy](../operations/ramcache-strata-integration.md) |
+| Can persistent profiles contain Strata layers, and which native runtime does the integrated application use? | [Ownership boundaries and native identity](../operations/ramcache-strata-integration.md#source-and-ownership-boundaries) |
+
+## Persistent authored areas · GEN-006
+
+| Question | Canonical route |
+| --- | --- |
+| Is a HOT area a real retained World, and who owns it? | [Native residency and handoff](../systems/persistent-area-residency.md#independent-state-and-authority) |
+| Does travel imply a durable Save? | [Asynchronous durability](../systems/persistent-area-residency.md#asynchronous-persistence-and-explicit-save) |
+| What do cache memory and predictive preparation actually bound? | [Residency contract](../systems/persistent-area-residency.md), [owner controls](../operations/persistent-area-ramcache-evaluation.md) |
+| Which source and platforms were actually qualified? | [RAM-cache evidence ledger](../audits/2026-11-22-gen006-ramcache.md) |
+
+[Additional RAM-cache retrieval questions](retrieval-questions-ramcache.json) cover the successor; the original frozen evaluation remains unchanged.
+
+The opt-in Draft/HOLD [three-area native continuation contract](../systems/persistent-authored-areas.md) owns retained dynamic state, completed game-time debt and conservative dependency refusal. The [desktop evaluator guide](../operations/persistent-areas-evaluation.md) explains travel, Simulate Ahead, isolated profiles and recovery. The [dated qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) separates actual platform results from physical NVIDIA owner acceptance and the broader unfinished #194 programme.
+
+The [three focused retrieval questions](retrieval-questions-persistent-areas.json)
+are additive to the unchanged frozen evaluation set.
+
 ## Unified SWARM-004/005/006 delivery
 
 For combined source, conflict decisions, V1–V4/schema-5/6 compatibility, final inspector, scientific distinctions, source-matched evaluator and owner admission, read the [unified runbook](../operations/swarm456-unified-mainline.md). [Focused questions](retrieval-questions-swarm456.json) supplement the unchanged frozen set. Predecessor runbooks retain their original evidence scope.
@@ -41,6 +64,27 @@ Use the [owner workflow](../operations/world-steer-architecture.md) for harvesti
 ## Native Workbench Batch Lab
 
 For independent native tiles, 2×2/4×4 operation, Stop/replay, P0–P3 controls, source-grounded references, blinded review and Windows evaluator custody, use the [Batch Lab guide](../operations/world-steer-batch-lab.md). This is an M0–M2 Draft/HOLD candidate; model-quality and physical owner acceptance are separate. [Focused questions](retrieval-questions-batch-lab.json) are additive.
+
+## Editable Strata layers in ordinary Workbench
+
+For **STRATA-THEATRE-003 Draft/HOLD**, retrieve the [optical rendering and persistence contract](../systems/strata-optics.md),
+[composition guide](../operations/strata-optical-composition.md) and [owner walkthrough](../operations/strata-optics-evaluation.md).
+Optical depth is independent of native geometry; Play stays unprocessed, old documents open in Classic,
+and temporary inspection is excluded from scene saves. Hosted evidence does not decide physical GPU acceptance.
+
+For the **STRATA-THEATRE-002 Draft/HOLD successor** native scenes, reusable
+composition library, bounded presentation-only atmosphere and exact reference
+image/mask provenance, retrieve [Strata environments](../systems/strata-environments.md).
+For PNG alpha/mask policy, native modules, finite construction, exact approval
+fences, Stop/history and provenance, retrieve [native Strata authoring](../systems/strata-authoring.md).
+
+For the single play authority, three static native decorative planes, exact
+view/edit transforms, visibility/lock/solo, per-plane history and the authored
+save domain, retrieve [the Strata Workbench contract](../systems/strata-workbench.md).
+For industrial, arcology and cavern examples, launch and physical Windows owner
+checks, retrieve [the evaluation guide](../operations/strata-workbench-evaluation.md).
+This Draft/HOLD successor does not adopt PUBPRES branches or the standalone
+prototype's independent simulation clocks.
 
 ## World Art inspection, capture and Windows evaluation
 

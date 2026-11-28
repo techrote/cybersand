@@ -10,6 +10,10 @@ related-documents: [status-and-roadmap.md, ../decisions/ADR-008-bounded-approxim
 
 # Product intent and priorities
 
+## RAMCACHE and optional Strata optics acceptance — 2026-11-28
+
+**Approved owner decision:** RAMCACHE persistent travel and durability were physically accepted on Windows 11 / NVIDIA TITAN RTX; the remaining Waterworks catch-up delay is accepted for this integration. Optional Strata enhanced optics were artistically and practically accepted despite the original failure to retain 90% of Classic progression. Classic remains the global default. **Diorama, Rear architecture optical depth 1.3** is a reproducible personal preference, not a silent default change. The [bounded integration policy](../operations/ramcache-strata-integration.md) preserves original measurements, final-source qualification, safe persistence boundaries and the explicit ObjectShard/PUBPRES exclusions.
+
 ## Owner clarification — 2026-11-14
 
 The [dated owner clarification](../decisions/2026-11-14-owner-authoring-intent.md)

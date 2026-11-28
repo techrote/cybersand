@@ -1,0 +1,542 @@
+{
+  "all40_original_frame_hashes_and_actual_dimensions_checked": true,
+  "artifact_id": 15078368890,
+  "artifact_zip_sha256": "84671ae068d7a759112cd6ca84a5485ec555db3aa3a04342f3c7a9bd2927ee13",
+  "claims_scope": "Selected actual Windows still-sequence inspection and all-frame custody/native receipts. Not real-time video, smoothness, FPS, input-to-photon, physical GPU acceptance or a second blind score.",
+  "motion_report_checks": 2090,
+  "motion_report_failures": [],
+  "motion_report_sha256": "b6f93b249015d021549867aae0d8a7ba88250137dd58c6cd5f86c777888b01b4",
+  "optics_lab": {
+    "actual_image_size": [
+      817,
+      607
+    ],
+    "filename": "industrial-underworks/install/optics-lab.png",
+    "sha256": "a1f80e4ff529149355f6a2ff0f6ecc23b02ec6ed8079fa3d93046f36ba3b5943",
+    "visually_inspected": true
+  },
+  "run_id": 45721790366,
+  "schema": "strata3-c-windows-owner-ui-motion-review-v1",
+  "sequences": [
+    {
+      "actor_count": 3,
+      "completed_physical_steps": 96,
+      "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+      "decorative_upload_delta": 0,
+      "extra_worlds": 0,
+      "native_capture_delta": 0,
+      "native_delta": 96,
+      "native_pose_injected": false,
+      "picking_max_error": 0.0,
+      "plane_native_hashes_after": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "ad2c867289b3067bcc8eed86a1338c280bb981a83b0d9bef1a627bdf81584481",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "plane_native_hashes_before": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "293530a25a28e7fa305c9276b90b6b67fe2bb6535416699483abe6631217a162",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "profile": "classic",
+      "quality": "balanced",
+      "rapier_delta": 96,
+      "review_scope": "Three actual framebuffers at indices0,6,9 visually inspected; all10 original image hashes and reported actual dimensions independently checked."
+    },
+    {
+      "actor_count": 3,
+      "completed_physical_steps": 103,
+      "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+      "decorative_upload_delta": 0,
+      "extra_worlds": 0,
+      "native_capture_delta": 0,
+      "native_delta": 104,
+      "native_pose_injected": false,
+      "picking_max_error": 0.0,
+      "plane_native_hashes_after": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "0712cef3f3b05a6cd1854d3fe5c155b0c1a0650f1687fd106e4da291105b9f19",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "plane_native_hashes_before": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "293530a25a28e7fa305c9276b90b6b67fe2bb6535416699483abe6631217a162",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "profile": "gameplay_clarity",
+      "quality": "balanced",
+      "rapier_delta": 103,
+      "review_scope": "Three actual framebuffers at indices0,6,9 visually inspected; all10 original image hashes and reported actual dimensions independently checked."
+    },
+    {
+      "actor_count": 3,
+      "completed_physical_steps": 99,
+      "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+      "decorative_upload_delta": 0,
+      "extra_worlds": 0,
+      "native_capture_delta": 0,
+      "native_delta": 100,
+      "native_pose_injected": false,
+      "picking_max_error": 3.0517578125e-05,
+      "plane_native_hashes_after": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "26412023af1e8776c7ca94b6b2c5e19a74b4106218098c01cb6e867429fea62d",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "plane_native_hashes_before": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "293530a25a28e7fa305c9276b90b6b67fe2bb6535416699483abe6631217a162",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "profile": "cinematic_deep_focus",
+      "quality": "balanced",
+      "rapier_delta": 99,
+      "review_scope": "Three actual framebuffers at indices0,6,9 visually inspected; all10 original image hashes and reported actual dimensions independently checked."
+    },
+    {
+      "actor_count": 3,
+      "completed_physical_steps": 109,
+      "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+      "decorative_upload_delta": 0,
+      "extra_worlds": 0,
+      "native_capture_delta": 0,
+      "native_delta": 109,
+      "native_pose_injected": false,
+      "picking_max_error": 0.0,
+      "plane_native_hashes_after": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "6f8f98926008b728f4bed0dab6365dddc74671041d4fee6bf33dad23f23069d1",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "plane_native_hashes_before": {
+        "background": "ab26ce47cc3cd06697fb3c4403f270320b32f175ca8c85e85d1f785af2c77a3b",
+        "effects": "7598e758cf4c967c81beb2d4e958aa9e1fbd513ef45f5b91f02fd081ae6fea72",
+        "play": "293530a25a28e7fa305c9276b90b6b67fe2bb6535416699483abe6631217a162",
+        "scripted": "b42ac1e80f51bc83932841f8175a9a41c5d9228cb0ea9bfd60369376f1e57fe5"
+      },
+      "profile": "diorama",
+      "quality": "high",
+      "rapier_delta": 109,
+      "review_scope": "Three actual framebuffers at indices0,6,9 visually inspected; all10 original image hashes and reported actual dimensions independently checked."
+    }
+  ],
+  "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "unchanged_frozen_motion_validator_passed": true,
+  "visually_inspected_frames": [
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          272.009765625,
+          532.325134277344
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 121219836,
+      "filename": "motion-classic-00.png",
+      "index": 0,
+      "native_tick": 11,
+      "profile": "classic",
+      "rapier_tick": 10,
+      "sha256": "f7c7ef3ee58e0640b39301c0aed418b2b58bf744f855ddcb72ae7f50e487e600"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          196.901245117188,
+          397.720886230469
+        ],
+        "view_size": [
+          480,
+          270
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 140385790,
+      "filename": "motion-classic-06.png",
+      "index": 6,
+      "native_tick": 67,
+      "profile": "classic",
+      "rapier_tick": 67,
+      "sha256": "b117198c2d037b0f3dc45bf776b63dac1801850efc0b8e148ae8ba645cc2f162"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          339.071899414063,
+          402.519653320313
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 150662369,
+      "filename": "motion-classic-09.png",
+      "index": 9,
+      "native_tick": 96,
+      "profile": "classic",
+      "rapier_tick": 96,
+      "sha256": "1e6e0e0412da6cb11df22daaaa78fe30c7dcf833c25a125d602f047287cafb35"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          272.019775390625,
+          532.209289550781
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 173539028,
+      "filename": "motion-gameplay_clarity-00.png",
+      "index": 0,
+      "native_tick": 11,
+      "profile": "gameplay_clarity",
+      "rapier_tick": 11,
+      "sha256": "1644015f357008e4a848a99d63805e371f627a86a408f04720ca8ac596c07bee"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          197.635375976563,
+          393.523864746094
+        ],
+        "view_size": [
+          480,
+          270
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 199409915,
+      "filename": "motion-gameplay_clarity-06.png",
+      "index": 6,
+      "native_tick": 72,
+      "profile": "gameplay_clarity",
+      "rapier_tick": 72,
+      "sha256": "012a50b1d6d0bfc497edca2de5ed7ba2bf22ccb85106680d0b7dc7d527f2ef4f"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          339.667602539063,
+          397.834289550781
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 213197278,
+      "filename": "motion-gameplay_clarity-09.png",
+      "index": 9,
+      "native_tick": 104,
+      "profile": "gameplay_clarity",
+      "rapier_tick": 103,
+      "sha256": "f55a8da933b2a77584559a3fe665a230ff7abc3cccbe9d6f74e74a5bf7c1436f"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          272.036010742188,
+          532.054870605469
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 237404741,
+      "filename": "motion-cinematic_deep_focus-00.png",
+      "index": 0,
+      "native_tick": 12,
+      "profile": "cinematic_deep_focus",
+      "rapier_tick": 12,
+      "sha256": "d8db8e59172cefc053fdf39049f0f4c9312d7dd7bc909326851d008525f3823d"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          197.876953125,
+          395.855285644531
+        ],
+        "view_size": [
+          480,
+          270
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 262742528,
+      "filename": "motion-cinematic_deep_focus-06.png",
+      "index": 6,
+      "native_tick": 70,
+      "profile": "cinematic_deep_focus",
+      "rapier_tick": 69,
+      "sha256": "0382a687bcc011fd97bd3858c4b9fb96e4208c31892283e81206dbe1aa85c0c2"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          340.6142578125,
+          393.429992675781
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 275114314,
+      "filename": "motion-cinematic_deep_focus-09.png",
+      "index": 9,
+      "native_tick": 100,
+      "profile": "cinematic_deep_focus",
+      "rapier_tick": 99,
+      "sha256": "844696790130db2e7f560fefbb35788cd99ca8b7bce1cf5c092839062084376c"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          272.019775390625,
+          532.209289550781
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 297552288,
+      "filename": "motion-diorama-00.png",
+      "index": 0,
+      "native_tick": 13,
+      "profile": "diorama",
+      "rapier_tick": 13,
+      "sha256": "3d0e39e4ee40342b3cc21844391cde9077f03d10f8e6516686e73585f7578d85"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          200.418823242188,
+          385.516052246094
+        ],
+        "view_size": [
+          480,
+          270
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 326069273,
+      "filename": "motion-diorama-06.png",
+      "index": 6,
+      "native_tick": 75,
+      "profile": "diorama",
+      "rapier_tick": 75,
+      "sha256": "a7b173022cc555896a1970dd1a21027f5b6797bc08e34acf7af29a0a6f6cac17"
+    },
+    {
+      "actual_image_size": [
+        1600,
+        900
+      ],
+      "camera": {
+        "content_scale_factor": 1.0,
+        "origin": [
+          342.258056640625,
+          384.541625976563
+        ],
+        "view_size": [
+          240,
+          135
+        ],
+        "window_size": [
+          1600,
+          1000
+        ],
+        "world_rect": [
+          131.851852416992,
+          135.0,
+          1336.29626464844,
+          751.666625976563
+        ]
+      },
+      "captured_usec": 339309613,
+      "filename": "motion-diorama-09.png",
+      "index": 9,
+      "native_tick": 109,
+      "profile": "diorama",
+      "rapier_tick": 109,
+      "sha256": "e4cd552215ec57236e28e3ed3535c5656e2333c6615c541116c175b0bb8b5cab"
+    }
+  ]
+}
