@@ -1,0 +1,652 @@
+name: PUBPRES original Fire evidence inspection
+
+on:
+  push:
+    branches: [codex/pubpres-mainline-evidence-001-20261128]
+    paths: ['.github/workflows/pubpres-mainline-fire-inspect.yml']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pubpres-fire-original-inspection-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    name: Inspect original Fire evidence (${{ matrix.scene }})
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/pubpres-mainline-evidence-001-20261128'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        scene: [wave512, mixed2048]
+    steps:
+      - name: Authenticate original archives and replay data only
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          INSPECT_SCENE: ${{ matrix.scene }}
+          INSPECT_IMAGE: fire
+        run: |
+          python3 - <<'PY'
+          """Read only authenticated original Fire patrol/contact and held evidence.
+          
+          This program never imports repository Python, launches the application, or
+          changes an original receipt. The wrapper supplies two fixed artifact identities.
+          """
+          import base64
+          import collections
+          import hashlib
+          import json
+          import math
+          import os
+          import pathlib
+          import re
+          import stat
+          import struct
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          import zipfile
+          import zlib
+          
+          REPOSITORY = "techrote/cybersand"
+          SOURCE = "65f71aaf4be3a67896bafac7f5220a0cb25a8fb7"
+          TREE = "f6b7b8d3d613b70cdcdf3643fb906934b3887173"
+          RUN, ATTEMPT = 46144440297, 1
+          ARTIFACTS = {
+              "fire": (15264102315, 4674965, "506901c2c7499cae30dc45fb0c920fce4738448602683678b00f8bcfd651fba6",
+                       "pubpres-mainline-fire-on-windows-46144440297-1"),
+              "held": (15262949798, 16385168, "c6351f67cfc1d7dd71b3dd8d42d4e031828a08e8c05af5a64e69be498bd57c9e",
+                       "pubpres-mainline-qualified-windows-held-placement-46144440297-1"),
+          }
+          ENGINE = "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8"
+          NATIVE = "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8"
+          RAPIER = "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+          SCENE = os.environ["INSPECT_SCENE"]
+          if SCENE not in ("wave512", "mixed2048"):
+              raise ValueError("Unregistered original scene")
+          OUTPUT = pathlib.Path(os.environ["RUNNER_TEMP"]) / ("pubpres-fire-inspection-" + SCENE)
+          OUTPUT.mkdir(exist_ok=False)
+          HEADERS = {"Authorization": "Bearer " + os.environ["GITHUB_TOKEN"],
+                     "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+          MAX_ARCHIVE = 512 * 1024**2
+          
+          
+          def need(condition, message):
+              if not condition:
+                  raise ValueError(message)
+          
+          
+          def sha(data):
+              return hashlib.sha256(data).hexdigest()
+          
+          
+          def api(path):
+              request = urllib.request.Request("https://api.github.com/repos/" + REPOSITORY + path, headers=HEADERS)
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  raw = response.read(2 * 1024**2 + 1)
+              need(len(raw) <= 2 * 1024**2, "Metadata response exceeds bound")
+              return json.loads(raw)
+          
+          
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, request, fp, code, message, response_headers, newurl):
+                  return None
+          
+          
+          def acquire(role):
+              artifact_id, expected_bytes, expected_sha, expected_name = ARTIFACTS[role]
+              need(0 < expected_bytes <= MAX_ARCHIVE and re.fullmatch("[0-9a-f]{64}", expected_sha),
+                   "Fixed original artifact identity is not installed")
+              metadata = api("/actions/artifacts/" + str(artifact_id))
+              need(metadata["id"] == artifact_id and metadata["name"] == expected_name
+                   and metadata["size_in_bytes"] == expected_bytes
+                   and metadata["digest"] == "sha256:" + expected_sha and not metadata["expired"]
+                   and metadata["workflow_run"]["id"] == RUN
+                   and metadata["workflow_run"]["head_sha"] == SOURCE, "Original artifact metadata differs")
+              request = urllib.request.Request("https://api.github.com/repos/" + REPOSITORY
+                                               + "/actions/artifacts/" + str(artifact_id) + "/zip", headers=HEADERS)
+              try:
+                  urllib.request.build_opener(NoRedirect).open(request, timeout=60)
+              except urllib.error.HTTPError as response:
+                  need(response.code in (301, 302, 303, 307, 308), "Expected signed artifact redirect")
+                  location = response.headers["Location"]
+              else:
+                  raise ValueError("Expected separate signed artifact download")
+              parsed = urllib.parse.urlsplit(location)
+              need(parsed.scheme == "https" and not parsed.username and not parsed.password,
+                   "Invalid signed storage URL")
+              # This separate storage request contains no GitHub authorization header.
+              archive = OUTPUT / (role + "-original.zip")
+              total, digest = 0, hashlib.sha256()
+              with urllib.request.urlopen(urllib.request.Request(location), timeout=90) as response, archive.open("xb") as stream:
+                  while block := response.read(1024**2):
+                      total += len(block)
+                      need(total <= expected_bytes, "Archive exceeds authenticated size")
+                      digest.update(block)
+                      stream.write(block)
+              need(total == expected_bytes and digest.hexdigest() == expected_sha, "Original archive bytes differ")
+              bundle = zipfile.ZipFile(archive)
+              members = bundle.infolist()
+              need(0 < len(members) <= 20000 and sum(m.file_size for m in members) <= MAX_ARCHIVE,
+                   "Original ZIP population or expansion exceeds bound")
+              names, folded = set(), set()
+              for member in members:
+                  path = pathlib.PurePosixPath(member.filename)
+                  mode = (member.external_attr >> 16) & 0o170000
+                  need(not path.is_absolute() and not any(part in ("", ".", "..") for part in path.parts)
+                       and "\\" not in member.filename and ":" not in member.filename
+                       and path.as_posix() == member.filename.rstrip("/")
+                       and member.filename not in names and member.filename.casefold() not in folded
+                       and mode in (0, stat.S_IFREG, stat.S_IFDIR)
+                       and not member.flag_bits & 1 and member.file_size <= 64 * 1024**2,
+                       "Unsafe, duplicated or oversized original ZIP member")
+                  names.add(member.filename)
+                  folded.add(member.filename.casefold())
+              need(bundle.testzip() is None, "Original ZIP CRC failure")
+              return bundle, {"id": artifact_id, "name": expected_name, "bytes": total,
+                              "sha256": expected_sha, "source": SOURCE, "run": RUN, "attempt": ATTEMPT}
+          
+          
+          def read(bundle, path, maximum=16 * 1024**2):
+              member = bundle.getinfo(path)
+              need(not member.is_dir() and member.file_size <= maximum, "Record exceeds bound: " + path)
+              return bundle.read(member)
+          
+          
+          def document(bundle, path, maximum=16 * 1024**2):
+              return json.loads(read(bundle, path, maximum))
+          
+          
+          def source_bytes(path):
+              # Contents API returns immutable bytes at SOURCE. This is data, never code execution.
+              record = api("/contents/" + urllib.parse.quote(path, safe="/") + "?ref=" + SOURCE)
+              need(record.get("type") == "file" and record.get("encoding") == "base64", "Source file is not inline data")
+              raw = base64.b64decode(record["content"], validate=False)
+              need(hashlib.sha1(b"blob " + str(len(raw)).encode() + b"\0" + raw).hexdigest() == record["sha"],
+                   "Git source blob identity differs")
+              return raw
+          
+          
+          def distribution(values):
+              values = sorted(values)
+              if not values:
+                  return {"count": 0, "p50": None, "p95": None, "p99": None, "max": None}
+              return {"count": len(values), **{name: values[max(0, math.ceil(q * len(values)) - 1)]
+                                             for name, q in (("p50", .5), ("p95", .95), ("p99", .99))},
+                      "max": values[-1]}
+          
+          
+          def png_pixels(raw):
+              """Decode original 8-bit RGB/RGBA non-interlaced PNG using only stdlib."""
+              need(raw.startswith(b"\x89PNG\r\n\x1a\n"), "Not an original PNG")
+              offset, header, compressed, ended = 8, None, bytearray(), False
+              while offset < len(raw):
+                  need(offset + 12 <= len(raw), "Truncated PNG chunk")
+                  size = struct.unpack(">I", raw[offset:offset + 4])[0]
+                  kind = raw[offset + 4:offset + 8]
+                  payload = raw[offset + 8:offset + 8 + size]
+                  need(offset + size + 12 <= len(raw)
+                       and zlib.crc32(kind + payload) & 0xffffffff == struct.unpack(">I", raw[offset + 8 + size:offset + 12 + size])[0],
+                       "PNG chunk length or CRC differs")
+                  if kind == b"IHDR":
+                      need(header is None and size == 13, "Invalid PNG header population")
+                      header = struct.unpack(">IIBBBBB", payload)
+                  elif kind == b"IDAT":
+                      compressed.extend(payload)
+                  elif kind == b"IEND":
+                      need(size == 0, "Invalid PNG end")
+                      ended = True
+                      offset += 12
+                      break
+                  offset += size + 12
+              need(ended and offset == len(raw) and header is not None, "Incomplete PNG")
+              width, height, depth, color, compression, filtering, interlace = header
+              need((width, height) == (1280, 720) and depth == 8 and color in (2, 6)
+                   and compression == filtering == interlace == 0, "Unexpected original framebuffer encoding")
+              channels = 3 if color == 2 else 4
+              stride = width * channels
+              expected = (stride + 1) * height
+              inflater = zlib.decompressobj()
+              decoded = inflater.decompress(bytes(compressed), expected + 1)
+              need(len(decoded) == expected and inflater.eof and not inflater.unconsumed_tail and not inflater.unused_data,
+                   "PNG decoded population differs")
+              rows, previous = [], bytearray(stride)
+              for y in range(height):
+                  start = y * (stride + 1)
+                  method = decoded[start]
+                  need(0 <= method <= 4, "Invalid PNG filter")
+                  row = bytearray(decoded[start + 1:start + 1 + stride])
+                  for x in range(stride):
+                      a = row[x - channels] if x >= channels else 0
+                      b = previous[x]
+                      c = previous[x - channels] if x >= channels else 0
+                      if method == 1:
+                          row[x] = (row[x] + a) & 255
+                      elif method == 2:
+                          row[x] = (row[x] + b) & 255
+                      elif method == 3:
+                          row[x] = (row[x] + (a + b) // 2) & 255
+                      elif method == 4:
+                          prediction = a + b - c
+                          distances = (abs(prediction - a), abs(prediction - b), abs(prediction - c))
+                          predictor = a if distances[0] <= distances[1] and distances[0] <= distances[2] else (b if distances[1] <= distances[2] else c)
+                          row[x] = (row[x] + predictor) & 255
+                  rows.append(row)
+                  previous = row
+              def pixel(x, y):
+                  need(type(x) is int and type(y) is int and 0 <= x < width and 0 <= y < height, "Pixel outside original frame")
+                  return list(rows[y][x * channels:x * channels + 3])
+              return pixel
+          
+          
+          def framebuffer(bundle, folder, name, witness, contact=False):
+              raw = read(bundle, folder + "/" + name, 2 * 1024**2)
+              need(sha(raw) == witness["sha256"] and witness["file"] == name, "Original framebuffer hash differs")
+              pixel = png_pixels(raw)
+              samples = witness["samples_xy_rgb"] if contact else witness["samples"]
+              need(len(samples) >= 2 and witness["movement_cells"] > .01 and witness["world"] > 0
+                   and witness["session"] > 0 and witness["epoch"] >= 0 and witness["step"] > 0 and witness["upload"] > 0,
+                   "Moving original pixel witness lacks an accepted owner")
+              points = set()
+              for sample in samples:
+                  x, y = sample[:2] if contact else sample["pixel"]
+                  rgb = sample[2:] if contact else sample["rgb"]
+                  fill = witness["fill_rgb"] if contact else sample["fill"]
+                  need(pixel(x, y) == rgb and len(rgb) == len(fill) == 3
+                       and max(abs(a - b) for a, b in zip(rgb, fill)) <= 2, "Original PNG disagrees with actor pixel sample")
+                  points.add((x, y))
+              need(len(points) >= 2, "Repeated single pixel is not the original witness")
+              if contact:
+                  pick = witness["pick"]
+                  need(witness["selected"] == pick["instance_id"] == 1
+                       and pick["epoch"] == witness["epoch"], "Actual contact Select identity differs")
+              return {"file": name, "bytes": len(raw), "sha256": sha(raw), "pixels_checked": len(points),
+                      "world": witness["world"], "session": witness["session"], "epoch": witness["epoch"],
+                      "step": witness["step"], "upload": witness["upload"], "movement_cells": witness["movement_cells"]}, raw
+          
+          
+          def close_number(a, b):
+              return isinstance(a, (int, float)) and isinstance(b, (int, float)) and abs(a - b) <= max(1e-5, abs(b) * 1e-6)
+          
+          
+          def distance(a, b):
+              return math.hypot(a[0] - b[0], a[1] - b[1])
+          
+          
+          def contact_timing(trace):
+              value = {"repeat_while_moving": 0, "stale_moving_draws": 0, "worst_frozen_usec": 0,
+                       "worst_frozen_travel_cells": 0.0, "max_lag_cells": 0.0, "max_draw_jump_cells": 0.0,
+                       "max_excess_jump_cells": 0.0, "catchups": 0, "max_step_lag": 0}
+              previous_pose = previous_live = None
+              last_change_step, last_change_usec, live_at_change = -1, 0, [0, 0]
+              for row in trace:
+                  shown, live, step, selected, now = row["shown_xy"], [row["x"], row["y"]], row["step"], row["shown_step"], row["clock_usec"]
+                  if shown is None:
+                      previous_pose = None
+                  elif previous_pose is not None:
+                      jump, physical_delta = distance(previous_pose, shown), distance(previous_live, live)
+                      excess = jump - physical_delta
+                      value["max_draw_jump_cells"] = max(value["max_draw_jump_cells"], jump)
+                      value["max_excess_jump_cells"] = max(value["max_excess_jump_cells"], excess)
+                      if last_change_step >= 0 and jump <= .01:
+                          drift = distance(live_at_change, live)
+                          if step > last_change_step and drift > .1:
+                              value["repeat_while_moving"] += 1
+                              value["worst_frozen_usec"] = max(value["worst_frozen_usec"], now - last_change_usec)
+                              value["worst_frozen_travel_cells"] = max(value["worst_frozen_travel_cells"], drift)
+                              if step - last_change_step >= 2 and drift > 2:
+                                  value["stale_moving_draws"] += 1
+                      if jump > .01:
+                          if excess > 8 and distance(previous_pose, previous_live) > 8:
+                              value["catchups"] += 1
+                          last_change_step = -1
+                  if shown is not None:
+                      if previous_pose is None or last_change_step < 0:
+                          last_change_step, last_change_usec, live_at_change = step, now, live
+                      previous_pose = shown
+                      value["max_lag_cells"] = max(value["max_lag_cells"], distance(shown, live))
+                      value["max_step_lag"] = max(value["max_step_lag"], step - selected)
+                  previous_live = live
+              return value
+          
+          
+          def recorder(bundle, folder, startup, fields, began, ended):
+              names = [n for n in bundle.namelist() if pathlib.PurePosixPath(n).parent.as_posix() == folder
+                       and re.fullmatch(r"segment-[0-3]\.jsonl", pathlib.PurePosixPath(n).name)]
+              need(1 <= len(names) <= 4, "Original bounded recorder segments missing")
+              segments, events = [], []
+              identity = None
+              for name in names:
+                  raw = read(bundle, name, 2 * 1024**2)
+                  need(raw.endswith(b"\n"), "Truncated original recorder line")
+                  lines = raw.splitlines()
+                  need(len(lines) >= 2 and all(len(line) <= 256 * 1024 for line in lines), "Recorder row bound exceeded")
+                  header, schema = json.loads(lines[0]), json.loads(lines[1])
+                  need(header.get("schema") == "pubpres-owner-gameplay-v1" and header["source_commit"] == SOURCE
+                       and header["scene"] == SCENE and header["pid"] == startup["process_id"]
+                       and schema["fields"] == fields and schema["segment_count"] == 4 and schema["segment_bytes"] == 2 * 1024**2,
+                       "Original recorder identity/schema differs")
+                  current = {k: v for k, v in header.items() if k != "sequence"}
+                  need(identity is None or current == identity, "Original segments have different process identities")
+                  identity = current
+                  sequence = header["sequence"]
+                  need(type(sequence) is int and sequence >= 0
+                       and pathlib.PurePosixPath(name).name == "segment-%d.jsonl" % (sequence % 4), "Recorder rotation identity differs")
+                  segments.append({"file": name, "sequence": sequence, "bytes": len(raw), "sha256": sha(raw)})
+                  for line in lines[2:]:
+                      value = json.loads(line)
+                      need(type(value) is list and value and value[0] in fields and len(value) == len(fields[value[0]]),
+                           "Original recorder row differs from exact declared fields")
+                      event = dict(zip(fields[value[0]], value))
+                      event["_clock"] = value[1]
+                      events.append(event)
+              need(len(events) <= 300000, "Recorder event population exceeds bound")
+              segments.sort(key=lambda r: r["sequence"])
+              need(len({r["sequence"] for r in segments}) == len(segments)
+                   and all(b["sequence"] == a["sequence"] + 1 for a, b in zip(segments, segments[1:])),
+                   "Retained recorder segment sequence has an internal gap")
+              events.sort(key=lambda r: r["_clock"])
+              selected = [r for r in events if began <= r["_clock"] <= ended]
+              steps = [r for r in selected if r["type"] == "step"]
+              draws = [r for r in selected if r["type"] == "draw"]
+              losses = [r for r in events if r["type"] == "loss"]
+              overlapping_loss = [r for r in losses if r["first_drop_usec"] <= ended and r["last_drop_usec"] >= began]
+              closes = [r for r in events if r["type"] == "close"]
+              need(events and steps and draws, "Original requested interval has no real steps/draws")
+              owner = lambda r: (r["session"], r["epoch"], r["physics_world"])
+              gaps, adjacency_gaps, discontinuities = [], [], []
+              need(all(r["manual_steps"] == r["step"] and close_number(r["fixed_delta_sec"], 1 / 60) for r in steps),
+                   "Actual bridge/session completion counters or fixed timestep differ")
+              for before, after in zip(steps, steps[1:]):
+                  consecutive = (owner(before) == owner(after) and after["step"] == before["step"] + 1
+                                 and after["manual_steps"] == before["manual_steps"] + 1)
+                  elapsed = after["usec"] - before["usec"]
+                  if consecutive and not before["single_step"] and not after["single_step"]:
+                      need(elapsed > 0 and elapsed == after["gap_usec"], "Recorded completion clock disagrees with actual adjacent steps")
+                      gaps.append(elapsed / 1000)
+                      adjacency_gaps.append(elapsed / 1000)
+                  else:
+                      adjacency_gaps.append(None)
+                      discontinuities.append({"previous_step": before["step"], "step": after["step"],
+                                              "same_owner": owner(before) == owner(after),
+                                              "single_step": bool(before["single_step"] or after["single_step"])})
+              draw_gaps = [(b["usec"] - a["usec"]) / 1000 for a, b in zip(draws, draws[1:])]
+              need(all(g > 0 for g in draw_gaps), "Original draw callback clock is not increasing")
+              chains = {}
+              for threshold in (100, 250, 500, 1000):
+                  longest = current = 0
+                  for gap in adjacency_gaps:
+                      current = current + 1 if gap is not None and gap > threshold else 0
+                      longest = max(longest, current)
+                  chains[str(threshold)] = {"gaps": sum(g > threshold for g in gaps), "longest_consecutive": longest}
+              all_steps = [r for r in events if r["type"] == "step"]
+              context_gaps, boundary_intervals = [], []
+              for before, after in zip(all_steps, all_steps[1:]):
+                  if after["usec"] < began or before["usec"] > ended:
+                      continue
+                  if (owner(before) != owner(after) or after["step"] != before["step"] + 1
+                          or after["manual_steps"] != before["manual_steps"] + 1
+                          or before["single_step"] or after["single_step"]):
+                      continue
+                  elapsed = after["usec"] - before["usec"]
+                  need(elapsed > 0 and elapsed == after["gap_usec"], "Boundary completion clock differs")
+                  context_gaps.append(elapsed / 1000)
+                  if before["usec"] < began or after["usec"] > ended:
+                      boundary_intervals.append({"completed_from_usec": before["usec"], "completed_to_usec": after["usec"],
+                                                 "gap_ms": elapsed / 1000, "owner": list(owner(after)),
+                                                 "from_step": before["step"], "to_step": after["step"]})
+              previous = [r for r in all_steps if r["usec"] <= began]
+              before_end = [r for r in all_steps if r["usec"] <= ended]
+              after_end = [r for r in all_steps if r["usec"] > ended]
+              all_draws = [r for r in events if r["type"] == "draw"]
+              prior_draws = [r for r in all_draws if r["usec"] <= ended]
+              context_draw_gaps = [(b["usec"] - a["usec"]) / 1000 for a, b in zip(all_draws, all_draws[1:])
+                                  if b["usec"] >= began and a["usec"] <= ended]
+              boundary = {"previous_completion_before_start": ({key: previous[-1][key] for key in
+                           ("usec", "session", "epoch", "physics_world", "step", "manual_steps", "single_step")} if previous else None),
+                          "overlapping_complete_physical_gap_ms": distribution(context_gaps),
+                          "crossing_complete_physical_intervals": boundary_intervals,
+                          "unfinished_physical_suffix_usec": ended - before_end[-1]["usec"] if before_end else None,
+                          "next_completion_after_end": ({key: after_end[0][key] for key in
+                           ("usec", "session", "epoch", "physics_world", "step", "manual_steps", "single_step")} if after_end else None),
+                          "overlapping_complete_draw_gap_ms": distribution(context_draw_gaps),
+                          "unfinished_draw_suffix_usec": ended - prior_draws[-1]["usec"] if prior_draws else None,
+                          "scope": "Complete intervals may cross either measurement boundary and retain their full observed duration. "
+                                   "The unfinished suffix is right-censored at the requested end, never credited as a completed gap. "
+                                   "Manual-step or foreign-owner adjacency is excluded from playing physical gaps."}
+              coverage = (events[0]["_clock"] <= began and events[-1]["_clock"] >= ended
+                          and not overlapping_loss and any(r["usec"] >= ended for r in closes))
+              return {"segments": segments, "header": identity, "retained_sequences": [r["sequence"] for r in segments],
+                      "earliest_retained_event_usec": events[0]["_clock"], "latest_retained_event_usec": events[-1]["_clock"],
+                      "requested_interval_usec": [began, ended], "covers_requested_interval_without_retained_loss": coverage,
+                      "start_rotated_before_retained_suffix": segments[0]["sequence"] > 0,
+                      "close_rows": len(closes), "loss_rows": losses, "overlapping_loss_rows": overlapping_loss,
+                      "step_rows_in_interval": len(steps), "draw_rows_in_interval": len(draws),
+                      "owners": [list(item) for item in sorted({owner(r) for r in steps})],
+                      "observed_native_tick_range": [steps[0]["native_tick"], steps[-1]["native_tick"]],
+                      "observed_fixed_delta_seconds": sorted({r["fixed_delta_sec"] for r in steps}),
+                      "consecutive_playing_physical_gap_ms": distribution(gaps), "draw_callback_gap_ms": distribution(draw_gaps),
+                      "boundary_context": boundary, "quantiles": "nearest rank: ceil(q*n)-1",
+                      "severe_physical_gap_chains_ms": chains, "step_discontinuities": discontinuities,
+                      "scope": "Internal gaps require both endpoints inside the requested interval. Only retained, same-owner, genuinely consecutive completion timestamps. "
+                               "Severe-gap chains reset across every excluded adjacency. Draw delivery is a CPU callback. "
+                               "Rotation, losses and unmatched steps remain explicit; no missing interval receives fabricated credit."}
+          
+          
+          def inspect_case(bundle, held, prefix, contact, fields, source_inputs):
+              folder = prefix + "/" + SCENE
+              startup = document(bundle, folder + "/startup.json", 256 * 1024)
+              report_name = "fire-contact.json" if contact else "flight.json"
+              raw = read(bundle, folder + "/" + report_name)
+              report = json.loads(raw)
+              observer = "tools/pubpres_final_recovery/" + ("flight_fire_contact.gd" if contact else "flight_visibility.gd")
+              expected = {"schema": "pubpres-recovery-owner-start-v1", "ready": True, "source_commit": SOURCE,
+                          "display_server": "Windows", "platform": "Windows", "scene": SCENE,
+                          "engine_sha256": ENGINE, "native_sha256": NATIVE, "rapier_sha256": RAPIER,
+                          "render_driver": "opengl3_angle", "render_thread_inline": True,
+                          "main_sha256": source_inputs["godot/scripts/main.gd"],
+                          "observer_sha256": source_inputs[observer]}
+              need(all(startup.get(k) == v for k, v in expected.items()), "Actual original startup source/runtime differs")
+              for key in ("flight_pacing", "coupling_clock", "empty_effects"):
+                  need(startup.get(key + "_requested") == "1" and startup.get(key + "_enabled") is True,
+                       "Selected owner policy not actually enabled")
+              need(startup["engine"]["major"] == 4 and startup["engine"]["minor"] == 7
+                   and startup["engine"]["patch"] == 0 and startup["engine"]["hash"] == "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88"
+                   and startup["material_publication"]["backend"] == "full"
+                   and startup["material_publication"]["full_image_slots"] == 2
+                   and startup["recovery"]["water_enabled"] is True
+                   and startup["recovery"]["actual_submission_enabled"] is False
+                   and startup["recovery"]["task_completion"]["mode"] == "all_workers",
+                   "Original selected architecture differs")
+              side, bodies = (512, 1) if SCENE == "wave512" else (2048, 4)
+              need(startup["extent"] == [side, side] and startup["authored_actor_count"] == bodies
+                   and startup["wave_flow"]["enabled"] is True and report["source"] == SOURCE and report["scene"] == SCENE,
+                   "Original scene population differs")
+              held_prefix = next(n.rsplit("/", 1)[0] for n in held.namelist() if n.endswith("/SUMMARY.json"))
+              for field, relative in (("project_sha256", "project.godot"), ("override_sha256", "override.cfg")):
+                  need(startup[field] == sha(read(held, held_prefix + "/project/" + relative)),
+                       "Actual original staged project/override differs")
+              proof, frames = [], {}
+              if contact:
+                  columns = report["trace_columns"]
+                  required = ["step", "x", "y", "water_skin_cells", "rapier_wall", "presented", "source", "reason",
+                              "upload", "clock_usec", "shown_step", "shown_xy", "revision", "epoch", "world"]
+                  need(columns[:len(required)] == required and len(columns) == len(set(columns)), "Contact trace schema differs")
+                  need(report["trace"] and all(len(r) == len(columns) for r in report["trace"]), "Incomplete contact trace")
+                  trace = [dict(zip(columns, row)) for row in report["trace"]]
+                  need(report["draws"] == len(trace) and all(b["clock_usec"] > a["clock_usec"] and b["step"] >= a["step"]
+                       for a, b in zip(trace, trace[1:])), "Contact draw/step chronology differs")
+                  wall = sum(bool(r["rapier_wall"]) for r in trace)
+                  water = sum(r["water_skin_cells"] > 0 for r in trace)
+                  missing = dict.fromkeys(("dry", "wall", "water"), 0)
+                  for row in trace:
+                      need(row["presented"] is (row["shown_xy"] is not None), "Contact shown flag disagrees with pose")
+                      if not row["presented"]:
+                          kind = "water" if row["water_skin_cells"] > 0 else ("wall" if row["rapier_wall"] else "dry")
+                          missing[kind] += 1
+                  timing = contact_timing(trace)
+                  need(report["contact_draws"] == {"wall": wall, "water": water} and report["missing"] == missing
+                       and all(close_number(report["timing"][k], v) for k, v in timing.items())
+                       and report["reason_counts"] == dict(collections.Counter(r["reason"] for r in trace)),
+                       "Original contact counters differ from original trace")
+                  need(report["pass"] is True and report["fire"] is True and report["fire_writes"] > 0
+                       and report["fire_skin_draws"] == sum(r["fire_skin_cells"] > 0 for r in trace) > 0
+                       and report["hidden_fire_draws"] == sum(r["fire_skin_cells"] > 0 and not r["presented"] for r in trace)
+                       and len(report["keys"]) == 4 and wall > 0 and water > 0 and not any(missing.values())
+                       and timing["stale_moving_draws"] == timing["catchups"] == 0, "Original contact acceptance failed")
+                  for kind in ("wall", "water", "fire"):
+                      record, image = framebuffer(bundle, folder, kind + "-moving.png", report["witnesses"][kind], True)
+                      if kind == "water":
+                          need(report["witnesses"][kind]["shown_water_skin_cells"] > 0, "Water witness lacks actual shown water contact")
+                      if kind == "fire":
+                          need(report["witnesses"][kind]["fire_cells"] > 0, "Fire witness lacks actual material contact")
+                      proof.append(record)
+                      frames[kind] = image
+                  began, ended = trace[0]["clock_usec"], trace[-1]["clock_usec"]
+                  observation = {k: report[k] for k in ("draws", "steps", "elapsed_msec", "travel_cells", "first_wall_step",
+                                 "first_water_step", "fire_writes", "fire_skin_draws", "fire_hull_draws", "hidden_fire_draws",
+                                 "contact_draws", "missing", "reason_counts", "timing")}
+                  observation["range_scope"] = "Recorder metrics cover first through last original contact trace observation; setup and pre-first-draw time excluded."
+              else:
+                  samples = report["samples"]
+                  need(report["elapsed_usec"] >= 90_000_000 and report["patrol"] is True and report["framebuffer_requested"] is True
+                       and report["thruster_fire"] is True and report["observed_fire_writes"] > 0
+                       and report["physical_steps"] >= 12 and report["travel_cells"] > 2
+                       and report["moved_draws"] >= 6 and report["conservatively_dry_hidden"] == report["invalid_frames"] == 0
+                       and report["hidden_draws"] == 0 and report["paused_ok"] is True and report["manual_step_ok"] is True
+                       and report["camera_travel_cells"] > 32 and report["camera_moved_draws"] > len(samples) * .1
+                       and report["moved_draws"] > len(samples) * .75 and report["airborne_draws"] > len(samples) * .9,
+                       "Original 90-second patrol acceptance failed")
+                  began, ended = report["timed_start_usec"], report["timed_start_usec"] + report["elapsed_usec"]
+                  need(len(samples) == report["sampled_draws"] and samples
+                       and all(began <= r["time_usec"] <= ended and r["visible"] is True for r in samples)
+                       and all(b["time_usec"] > a["time_usec"] and b["tick"] >= a["tick"] for a, b in zip(samples, samples[1:]))
+                       and report["sources"] == dict(collections.Counter(r["source"] for r in samples))
+                       and report["reasons"] == dict(collections.Counter(r["reason"] for r in samples)),
+                       "Original patrol sample chronology/counters differ")
+                  pans = [distance(a["camera_xy"], b["camera_xy"]) for a, b in zip(samples, samples[1:])]
+                  need(close_number(sum(pans), report["camera_travel_cells"])
+                       and sum(p > .05 for p in pans) == report["camera_moved_draws"], "Original Follow-camera counters differ")
+                  rate = report["physical_steps"] / (report["elapsed_usec"] / 1e6)
+                  need(close_number(rate / 60, report["flight_seconds_per_wall_second"]), "Original real simulated-time ratio differs")
+                  record, image = framebuffer(bundle, folder, "moving-flyer.png", report["moving_pixels"])
+                  proof.append(record)
+                  frames["patrol"] = image
+                  observation = {k: report[k] for k in ("elapsed_usec", "physical_steps", "flight_seconds_per_wall_second",
+                                 "observed_fire_writes", "travel_cells", "sampled_draws", "hidden_draws", "invalid_frames",
+                                 "moved_draws", "airborne_draws", "camera_travel_cells", "camera_moved_draws", "paused_ok", "manual_step_ok")}
+                  observation["physical_steps_per_wall_second"] = rate
+                  observation["draw_callback_sample_gap_ms"] = distribution([(b["time_usec"] - a["time_usec"]) / 1000
+                                                                            for a, b in zip(samples, samples[1:])])
+              telemetry = recorder(bundle, folder, startup, fields, began, ended)
+              if not contact:
+                  telemetry["reported_interval_physical_steps"] = report["physical_steps"]
+                  telemetry["recorded_step_count_matches_reported_interval"] = telemetry["step_rows_in_interval"] == report["physical_steps"]
+                  telemetry["full_interval_consecutive_completion_capture"] = (
+                      telemetry["covers_requested_interval_without_retained_loss"]
+                      and telemetry["recorded_step_count_matches_reported_interval"]
+                      and not telemetry["step_discontinuities"] and len(telemetry["owners"]) == 1)
+              return {"original_report": {"path": folder + "/" + report_name, "sha256": sha(raw), "bytes": len(raw)},
+                      "startup": startup, "observations": observation, "framebuffers": proof,
+                      "recorder": telemetry, "original_acceptance_replayed": True}, frames
+          
+          
+          need(re.fullmatch("[0-9a-f]{40}", SOURCE) and re.fullmatch("[0-9a-f]{40}", TREE), "Fixed source/tree missing")
+          run = api("/actions/runs/" + str(RUN))
+          need(run["id"] == RUN and run["run_attempt"] == ATTEMPT and run["head_sha"] == SOURCE
+               and run["event"] == "push" and run["head_branch"] == "codex/pubpres-playability-final-001-20261124"
+               and run["path"] == ".github/workflows/pubpres-mainline.yml", "Original run/attempt/source/workflow differs")
+          jobs_reply = api("/actions/runs/%d/attempts/%d/jobs?per_page=100" % (RUN, ATTEMPT))
+          need(jobs_reply["total_count"] == len(jobs_reply["jobs"]) <= 100, "Original attempt jobs are not fully enumerated")
+          jobs = jobs_reply["jobs"]
+          def original_job(name):
+              matches = [job for job in jobs if job["name"] == name]
+              need(len(matches) == 1 and matches[0]["run_id"] == RUN and matches[0]["head_sha"] == SOURCE
+                   and matches[0]["status"] == "completed", "Original job identity/completion differs: " + name)
+              job = matches[0]
+              return {key: job[key] for key in ("id", "name", "status", "conclusion", "started_at", "completed_at")} | {
+                  "steps": [{key: step[key] for key in ("name", "status", "conclusion")} for step in job["steps"]]}
+          fire_job = original_job("Windows original 90-second Fire-on owner patrols")
+          held_job = original_job("qualification-windows-held-placement")
+          need(held_job["conclusion"] == "success", "Original held job was not successful")
+          commit = api("/git/commits/" + SOURCE)
+          need(commit["sha"] == SOURCE and commit["tree"]["sha"] == TREE, "Original commit/tree differs")
+          fire, fire_custody = acquire("fire")
+          held, held_custody = acquire("held")
+          custody = document(fire, "mainline-fire-custody.json")
+          held_inventory = {m.filename: sha(held.read(m)) for m in held.infolist() if not m.is_dir()}
+          need(custody["schema"] == "pubpres-fire-original-custody-v1" and custody["original_unchanged"] is True
+               and custody["source"]["source_commit"] == SOURCE and custody["source"]["source_tree"] == TREE
+               and custody["original_files_sha256"] == held_inventory,
+               "Pristine held artifact custody inventory differs from independent original ZIP")
+          summaries = [n for n in held.namelist() if n.endswith("/SUMMARY.json")]
+          need(len(summaries) == 1, "Ambiguous original held prerequisite")
+          summary = document(held, summaries[0])
+          need(summary["complete"] is True and summary["focus"] == "held-placement"
+               and summary["source"]["source_commit"] == SOURCE and summary["source"]["source_tree"] == TREE
+               and summary["engine_sha256"] == ENGINE and summary["native"]["binary_sha256"] == NATIVE
+               and summary["rapier_sha256"] == RAPIER, "Original held prerequisite source/runtime differs")
+          paths = ["godot/scripts/main.gd", "godot/scripts/workbench_owner_gameplay.gd",
+                   "tools/pubpres_recovery_windows/run_owner_follow.py", "tools/pubpres_recovery_windows/owner_start.gd",
+                   "tools/pubpres_final_recovery/flight_visibility.gd", "tools/pubpres_final_recovery/flight_fire_contact.gd"]
+          sources = {path: source_bytes(path) for path in paths}
+          source_hashes = {path: sha(raw) for path, raw in sources.items()}
+          fields_match = re.search(rb"const FIELDS := (\{.*?\n\})", sources["godot/scripts/workbench_owner_gameplay.gd"], re.S)
+          need(fields_match is not None, "Exact recorder field declaration unavailable")
+          fields = json.loads(fields_match[1])
+          result = {"schema": "pubpres-original-fire-independent-v1", "source": SOURCE, "tree": TREE,
+                    "original_run": RUN, "original_attempt": ATTEMPT, "scene": SCENE,
+                    "original_artifacts": {"fire": fire_custody, "held": held_custody},
+                    "original_jobs": {"fire": fire_job, "held": held_job},
+                    "original_held_files_verified": len(held_inventory), "source_files_sha256": source_hashes,
+                    "application_executed": False, "physical_owner_acceptance": "HOLD", "failures": [], "arms": {},
+                    "scope": "Read-only original data replay. Hosted Windows ANGLE observations, not TITAN RTX scanout. "
+                             "Original fixture acceptance is separate from 60 steps/s or 100ms p95/250ms maximum objectives. "
+                             "No application, test, watchdog, original receipt, runtime pointer or branch mutation."}
+          required_steps = [
+              "Run unchanged Wave512 and Mixed2048 90-second patrols with real Thruster fire",
+              "Run original Fire, wall-contact and Water-contact observations",
+              "Prove the original raw qualification was never mutated",
+          ]
+          if fire_job["conclusion"] != "success" or any(
+                  len([step for step in fire_job["steps"] if step["name"] == name and step["conclusion"] == "success"]) != 1
+                  for name in required_steps):
+              result["failures"].append({"arm": "original_processes", "error": "Original Fire job or mandatory runner/custody step did not succeed; original failure remains"})
+          frames = {}
+          for label, prefix, contact in (("patrol", "mainline-fire-patrol", False), ("contact", "mainline-fire-contact", True)):
+              try:
+                  result["arms"][label], images = inspect_case(fire, held, prefix, contact, fields, source_hashes)
+                  frames.update(images)
+              except Exception as error:
+                  result["failures"].append({"arm": label, "error": str(error)})
+          (OUTPUT / "INSPECTION.json").write_text(json.dumps(result, indent=2) + "\n", encoding="utf-8")
+          print("ORIGINAL_FIRE_INSPECTION " + json.dumps(result, separators=(",", ":")), flush=True)
+          # One image per scene keeps the original console payload below connector limits.
+          # All original images/reports/segments remain intact in the two preserved ZIPs.
+          chosen = os.environ.get("INSPECT_IMAGE", "fire")
+          if chosen in frames:
+              raw = frames[chosen]
+              if len(raw) <= 384 * 1024:
+                  print("ORIGINAL_FIRE_FRAMEBUFFER " + json.dumps({"scene": SCENE, "kind": chosen, "bytes": len(raw),
+                        "sha256": sha(raw), "png_base64": base64.b64encode(raw).decode()}, separators=(",", ":")), flush=True)
+              else:
+                  print("ORIGINAL_FIRE_FRAMEBUFFER_ARTIFACT_ONLY " + json.dumps({"scene": SCENE, "kind": chosen,
+                        "bytes": len(raw), "sha256": sha(raw)}), flush=True)
+          fire.close()
+          held.close()
+          if result["failures"]:
+              raise SystemExit(1)
+          PY
+      - name: Retain immutable originals and independent observation
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-original-fire-inspection-${{ matrix.scene }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pubpres-fire-inspection-${{ matrix.scene }}/
+          if-no-files-found: warn
+          retention-days: 90
