@@ -196,7 +196,12 @@ individual process retains its 240-second watchdog.
 The delivery workflow explicitly skips the general three-source performance
 matrix until the observer/input contract is repaired and its controls pass.
 Skipped comparison jobs provide no performance acceptance. This does not remove
-any application, packaging or independent extraction prerequisite. See the
+any application, packaging or independent extraction prerequisite. The
+[observer repair boundaries](../audits/pubpres-delivery-recovery-20261128/performance-observer-repair-boundaries.json)
+record the exact step/input-admission, semantic tick, physics-only publication,
+held-completion origin and reader-role corrections still needed. That adapter
+and its negative controls are unimplemented; no new comparative result exists.
+See the
 [initial recovery review](../audits/2026-11-28-pubpres-delivery-recovery-review.md)
 for local validation limits and the
 [residual correctness review](../audits/pubpres-delivery-recovery-20261128/residual-correctness-review.md)

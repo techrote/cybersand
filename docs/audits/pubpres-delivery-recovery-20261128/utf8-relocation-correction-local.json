@@ -42,7 +42,7 @@
     }
   ],
   "historical_failure_preserved": "utf8-resource-insertion-diagnostic.json",
-  "independent_review": "pending final integrated review",
+  "independent_review": "No concrete blocker to focused execution; independently reviewed prepare/static verifier binding and adversarial alias/payload/header/directory/resource controls. A raw-pointer-only repack may conservatively refuse and requires actual evidence before admitting another transition.",
   "focused_hosted_correction": "pending",
   "complete_extracted_package": "pending",
   "physical_owner_acceptance": "HOLD",

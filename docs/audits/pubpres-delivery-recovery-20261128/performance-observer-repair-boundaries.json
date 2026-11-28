@@ -1,0 +1,254 @@
+{
+  "schema": "pubpres-performance-observer-repair-boundaries-v1",
+  "date": "2026-11-28",
+  "mission": "PUBPRES-DELIVERY-RECOVERY-001",
+  "inspection": {
+    "repository": "https://github.com/techrote/cybersand",
+    "inspected_source_commit": "f803eacc017dabb415b30d908352e8aff018dee7",
+    "inspected_source_tree": "5012a25f5eb2f369b9aadf777452b134fd224acf",
+    "later_tip_at_recording": "4232a25995650e1846c1ee7cc8d550c1210e5a13",
+    "later_tip_tree": "c108244a670106469dffee26bfd069d3f9e8e5e5",
+    "later_tip_relevant_source_check": "No differences between inspected commit and later tip in the listed implementation, observer, registration, or reducer source files.",
+    "working_tree_source_files": "All inspected source files listed below were clean at inspection.",
+    "registered_campaign": {
+      "path": "tools/pubpres_mainline/performance-registration.json",
+      "sha256": "986688d685af6745fc6b7366a9929c8f0b52af2e0311ce3e233d398771e3d164",
+      "order": ["M", "P", "C", "C", "P", "M"],
+      "cases": ["wave_512_follow", "wave_1024_follow_4", "wave_gameplay_2048_follow"]
+    },
+    "source_file_sha256": {
+      "tools/pubpres_mainline/run_performance.py": "e5c7b2d194efff72c04f97ab059dcd5ea5c027c8b2c1be8607a04a2753368f2b",
+      "tools/pubpres_mainline/gameplay.gd": "56c728b8facc547135f2d759598103714bd218f792c396b53d876f1d28d8fda2",
+      "tools/pubpres003/pubpres_causal_gameplay.gd": "24e61a18db9748f3cdef11e62f28e2e3ee26c030ad83d9cb200a66aec3a7c37e",
+      "tools/pubpres_final/results_registered_renderer.py": "85d3706be03317959aea715ca6cee74a88a02bd4d24e798d8521c7d3c480a1b2",
+      "tools/pubpres_final/run_comparison.py": "756f68cc73dbda0678a30431ed1d69d529b49455191aa7fc50be1f527e3cac4a",
+      "tools/pubpres_final_recovery/identity.py": "fac9cc140f45b993e8864ff333d15d03d562b194da747f13b197c3275ca16a8d",
+      "godot/scripts/main.gd": "91dd50d2d208bd9f57f454d97e2d2c6f0848a8356f87d69816e0efb6c2666e3f"
+    }
+  },
+  "original_failed_campaign": {
+    "run": 46148434896,
+    "run_url": "https://github.com/techrote/cybersand/actions/runs/46148434896",
+    "artifacts": [
+      {
+        "case": "wave_512_follow",
+        "artifact_id": 15265030436,
+        "url": "https://github.com/techrote/cybersand/actions/runs/46148434896/artifacts/15265030436",
+        "recorded_failures": [
+          "P indices 1 and 4: input segment used exact completed-step index; the latter was also rejected by the reduction boundary as reused/skipped native completion or body sample.",
+          "C indices 2 and 3: input segment used exact completed-step index."
+        ]
+      },
+      {
+        "case": "wave_1024_follow_4",
+        "artifact_id": 15264802243,
+        "url": "https://github.com/techrote/cybersand/actions/runs/46148434896/artifacts/15264802243",
+        "recorded_failures": [
+          "P indices 1 and 4: input segment used exact completed-step index.",
+          "C index 3: all registered input segments admitted failed.",
+          "C index 2: Physical progression reused or skipped its native completion/body sample failed."
+        ]
+      },
+      {
+        "case": "wave_gameplay_2048_follow",
+        "artifact_id": 15264238348,
+        "url": "https://github.com/techrote/cybersand/actions/runs/46148434896/artifacts/15264238348",
+        "recorded_failures": [
+          "C index 2: Physical packet generation source differs.",
+          "C index 3: Physical progression reused or skipped its native completion/body sample.",
+          "P index 4: Ordinary step is not inside its real callback."
+        ]
+      }
+    ],
+    "disposition": "Historical adverse evidence retained. These are incomplete or rejected arms, not a valid matched comparison."
+  },
+  "boundaries_and_required_adapter_corrections": [
+    {
+      "id": "step-addressed-input",
+      "priority": "P1-after-P0-evaluator-delivery",
+      "source_boundaries": [
+        {
+          "path": "tools/pubpres003/pubpres_causal_gameplay.gd",
+          "symbol": "ObservedMain._publish_workbench_keyboard",
+          "lines": "220-268",
+          "sha256": "24e61a18db9748f3cdef11e62f28e2e3ee26c030ad83d9cb200a66aec3a7c37e"
+        },
+        {
+          "path": "tools/pubpres003/pubpres_causal_gameplay.gd",
+          "symbol": "capture input-tape assertions",
+          "lines": "781-783",
+          "sha256": "24e61a18db9748f3cdef11e62f28e2e3ee26c030ad83d9cb200a66aec3a7c37e"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "symbol": "Main._complete_physics_callback / rapier_bridge.step",
+          "lines": "2634-2691",
+          "sha256": "91dd50d2d208bd9f57f454d97e2d2c6f0848a8356f87d69816e0efb6c2666e3f"
+        }
+      ],
+      "finding": "The observer samples the physical tick, selects one latest tape row with tick <= sampled tick, submits one command, and records a transition only when that selected index changes. If genuine completions occur between observations, a segment can be skipped or admitted after its requested step. The final assertions correctly refuse missing segments and late acceptance; they must remain strict.",
+      "smallest_required_correction": "Add a source-bound observer admission adapter at a verified pre-step command-consumption seam. For every genuine completed Rapier step, retain the selected tape index, requested boundary, successful submit_workbench_action result, accepted tick, actor/slot/epoch, sequence/deadline, and the command actually consumed by that step. Preserve the production session API and owner checks. For a held flight completion, retain the command and ticket that were admitted when its callback was held; do not refresh or relabel input during deferred service. If exact admission cannot be proved, refuse the arm.",
+      "controls": {
+        "positive": "Cause at least two genuine physical completions between observer sampling points across registered tape transitions; every segment must be accepted at its exact intended boundary and each step must name its consumed command.",
+        "negative": [
+          "Omitted transition is refused.",
+          "Duplicated or reordered segment is refused.",
+          "Acceptance at a later physical tick is refused even if all tape values eventually appear.",
+          "A stale/foreign actor, slot, epoch, command sequence, or lease is refused."
+        ]
+      }
+    },
+    {
+      "id": "physical-sample-versus-native-semantic-tick",
+      "priority": "P1-after-P0-evaluator-delivery",
+      "source_boundaries": [
+        {
+          "path": "tools/pubpres_final/results_registered_renderer.py",
+          "symbol": "validate_measurement_trace progression and step packet checks",
+          "lines": "60-72, 79-100",
+          "sha256": "85d3706be03317959aea715ca6cee74a88a02bd4d24e798d8521c7d3c480a1b2"
+        },
+        {
+          "path": "tools/pubpres003/pubpres_causal_gameplay.gd",
+          "symbol": "ObservedMain._record_completed_playable_course_step",
+          "lines": "316-366",
+          "sha256": "24e61a18db9748f3cdef11e62f28e2e3ee26c030ad83d9cb200a66aec3a7c37e"
+        }
+      ],
+      "finding": "The reducer requires native_tick_used to increase exactly by one for every physical step, although the production contract can legitimately reuse one semantic native tick while a new physical body sample advances. The reducer already checks distinct increasing body samples, accepted sample identity, manual steps, actor ownership, and native completion observations; those checks remain required.",
+      "smallest_required_correction": "Validate every actual Rapier completion using physical step/manual-step progression and a unique increasing accepted body sample. Permit an unchanged semantic native tick only when the packet proves a new accepted body sample under the same current World/session/epoch and valid hard-surface/response fences. Reject semantic tick regression, reused sample, missing completion, stale packet, foreign owner, and any mismatch between accepted sample and the sample consumed by the physical step.",
+      "controls": {
+        "positive": "Same semantic native tick plus a distinct advancing body sample and independently observed genuine Rapier completion is accepted.",
+        "negative": [
+          "Same tick with a reused body sample is refused.",
+          "Native tick regression is refused.",
+          "Missing or duplicate physical completion is refused.",
+          "Foreign World/session/epoch/body, stale response, or mismatched accepted sample is refused."
+        ]
+      }
+    },
+    {
+      "id": "absent-material-publication-generation",
+      "priority": "P1-after-P0-evaluator-delivery",
+      "source_boundaries": [
+        {
+          "path": "tools/pubpres_final/results_registered_renderer.py",
+          "symbol": "validate_measurement_trace owner_field and generation checks",
+          "lines": "60-72",
+          "sha256": "85d3706be03317959aea715ca6cee74a88a02bd4d24e798d8521c7d3c480a1b2"
+        },
+        {
+          "path": "tools/pubpres003/pubpres_causal_gameplay.gd",
+          "symbol": "ObservedMain._record_completed_playable_course_step packet fields",
+          "lines": "316-366",
+          "sha256": "24e61a18db9748f3cdef11e62f28e2e3ee26c030ad83d9cb200a66aec3a7c37e"
+        }
+      ],
+      "finding": "For sources that expose physics_world_generation, the packet can have that valid physical owner while render_world_generation is -1 because no material/render publication exists yet. The reducer still requires an integer render_world_generation unconditionally, conflating physical ownership with material-publication availability.",
+      "smallest_required_correction": "Use physics_world_generation as physical owner where the registered source capability provides it. Treat render/material generation -1 as absent only when explicit packet evidence says no material/render publication or payload exists. Require positive matching generation and payload ownership when publication is present. Preserve the legacy M path where render_world_generation is the owner field; absence must not bypass its owner checks.",
+      "controls": {
+        "positive": [
+          "Physics-only packet with valid positive physical generation, render generation -1, and explicit absent material payload is accepted.",
+          "Material publication with positive matching physical/render generation and payload is accepted."
+        ],
+        "negative": [
+          "Render generation -1 with a material/render payload is refused.",
+          "Wrong physical owner or mismatched published generation is refused.",
+          "Legacy owner packet with absent or mismatched render generation is refused."
+        ]
+      }
+    },
+    {
+      "id": "retained-completion-origin-and-execution",
+      "priority": "P1-after-P0-evaluator-delivery",
+      "source_boundaries": [
+        {
+          "path": "godot/scripts/main.gd",
+          "symbol": "Main._ready signal connections",
+          "lines": "2159-2165",
+          "sha256": "91dd50d2d208bd9f57f454d97e2d2c6f0848a8356f87d69816e0efb6c2666e3f"
+        },
+        {
+          "path": "godot/scripts/main.gd",
+          "symbol": "Main._service_held_flight_callback",
+          "lines": "2729-2754",
+          "sha256": "91dd50d2d208bd9f57f454d97e2d2c6f0848a8356f87d69816e0efb6c2666e3f"
+        },
+        {
+          "path": "tools/pubpres003/pubpres_causal_gameplay.gd",
+          "symbol": "ObservedMain._physics_process / _record_completed_playable_course_step",
+          "lines": "270-366",
+          "sha256": "24e61a18db9748f3cdef11e62f28e2e3ee26c030ad83d9cb200a66aec3a7c37e"
+        },
+        {
+          "path": "tools/pubpres_final/results_registered_renderer.py",
+          "symbol": "validate_callback_credit continuation and ordinary callback checks",
+          "lines": "264-306",
+          "sha256": "85d3706be03317959aea715ca6cee74a88a02bd4d24e798d8521c7d3c480a1b2"
+        }
+      ],
+      "finding": "A held physical completion may be serviced later from a deferred worker signal or frame_post_draw. The observer records the retained origin callback/ticket identity, but a completion serviced outside that callback can be labeled with stale callback start/serial and fail the original callback interval. Existing reducer refusal is correct when execution provenance is unknown; it must not be weakened to nearest-callback credit.",
+      "smallest_required_correction": "Record both the original held callback/ticket identity and the actual service/execution callback identity and timestamps. Prove immutable World/body sample/terrain revision/actor control generation/sequence/lease against the held ticket, and prove the step executed during the callback that serviced it. Do not equate late observation with late execution or refresh command authority during a held completion.",
+      "controls": {
+        "positive": "A genuine held completion serviced in a later event-loop callback is accepted only when exact origin ticket identity and actual execution callback/time both match.",
+        "negative": [
+          "Stale, reused, or foreign ticket identity is refused.",
+          "Execution outside the claimed service callback interval is refused.",
+          "An observation arriving later while execution was timely is not mislabeled as delayed execution.",
+          "A delayed execution is not credited to the original callback."
+        ]
+      }
+    },
+    {
+      "id": "per-arm-source-role-reader-admission",
+      "priority": "P1-after-P0-evaluator-delivery",
+      "source_boundaries": [
+        {
+          "path": "tools/pubpres_mainline/run_performance.py",
+          "symbol": "source and native runtime admission",
+          "lines": "107-119",
+          "sha256": "e5c7b2d194efff72c04f97ab059dcd5ea5c027c8b2c1be8607a04a2753368f2b"
+        },
+        {
+          "path": "tools/pubpres_mainline/run_performance.py",
+          "symbol": "reduce_receipt call and cohort source check",
+          "lines": "192-199, 53-64",
+          "sha256": "e5c7b2d194efff72c04f97ab059dcd5ea5c027c8b2c1be8607a04a2753368f2b"
+        },
+        {
+          "path": "tools/pubpres_final/results_registered_renderer.py",
+          "symbol": "reduce_receipt source-letter and treatment selection",
+          "lines": "345-379",
+          "sha256": "85d3706be03317959aea715ca6cee74a88a02bd4d24e798d8521c7d3c480a1b2"
+        },
+        {
+          "path": "tools/pubpres_final_recovery/identity.py",
+          "symbol": "driver_identity",
+          "lines": "20-31",
+          "sha256": "fac9cc140f45b993e8864ff333d15d03d562b194da747f13b197c3275ca16a8d"
+        }
+      ],
+      "finding": "The driver admits distinct M/P/C source roots and native runtimes and checks registered source commit/tree before launch; the cohort later checks each reduced receipt against its role. However, P is passed to reduce_receipt as arm_letter C, and the reducer's C path does not compare the receipt to a per-arm expected source identity before producing statistics. P and C intentionally share the selected treatment, so treatment selection and source role must be separate concepts. The committed central driver identity includes the final reader files; that custody should remain enforced.",
+      "smallest_required_correction": "Pass explicit source role and expected source commit/tree/native receipt to per-arm receipt admission before computing statistics, while separately selecting the C treatment for both P and C where registered. Keep reader implementation path/hash bound to committed driver identity. Refuse a swapped P/C receipt before reduction rather than relying only on the later cohort check.",
+      "controls": {
+        "positive": "M, P, and C receipts each reduce only against their registered source commit/tree/native identity and intended role/treatment pair.",
+        "negative": [
+          "Swap P and C receipt source identity: refuse before producing arm statistics.",
+          "Foreign or shadowed reader module bytes: fail source-bound driver identity admission.",
+          "Keep P's treatment mapping equal to C where registered; do not relabel P as a C source."
+        ]
+      }
+    }
+  ],
+  "qualification_status": {
+    "observer_adapter_implemented": false,
+    "focused_positive_and_negative_controls_executed": false,
+    "matched_campaign_reenabled": false,
+    "matched_performance_comparison_qualified": false,
+    "performance_conclusion": "None. The original campaigns remain incomplete/rejected and do not establish candidate non-regression or a matched performance result.",
+    "priority_boundary": "The focused Windows portable authoring and complete extracted-package qualification are P0. This larger measurement-adapter correction is subsequent P1 work and must not delay delivery of the first evaluator.",
+    "scope_of_this_record": "Read-only source/evidence review. No application, native, observer, reducer, or performance-driver code changed and no performance cohort was rerun.",
+    "owner_acceptance": "HOLD",
+    "promotion_authorized": false
+  }
+}
