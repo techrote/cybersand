@@ -190,13 +190,20 @@ not establish an end-to-end turnaround percentage.
 
 ## Shared capacity and concurrency
 
-The GDExtension matrices each use `max-parallel: 8`. Together with Native's six
-families, the routine regression phase can use 22 slots before small auxiliary
-jobs. This leaves capacity within the owner's stated 40 standard hosted slots,
-but is not an account-wide cap: multiple PRs and other repositories add demand.
-Physical stress has its own smaller matrix budgets. Launch exceptional campaigns
-deliberately and use the [workflow audit](../audits/2026-11-01-ci-workflow-audit.md)
-and machine inventory when changing independent fan-out.
+The GDExtension Linux and Windows regression matrices each use
+`max-parallel: 16` in the CI-OPT-004 candidate. Only these two named matrices
+may exceed the ordinary scheduling-policy ceiling of eight jobs; all other
+matrix caps and `fail-fast: false` evidence requirements remain enforced.
+These two matrices can occupy 32 hosted jobs concurrently, or up to 38 with
+Native's six families, before auxiliary workflow jobs. The owner's 40-runner
+account limit is shared across PRs, other workflows and repositories; it is
+not reserved by this per-matrix setting, and contention can delay job start.
+The CI-OPT-004 trial retained all 24 Linux and 23 Windows shard obligations,
+but across-run wall-clock comparisons remain sensitive to host, queue and
+network variation. Physical stress retains its own smaller matrix budgets.
+Launch exceptional campaigns deliberately and use the
+[workflow audit](../audits/2026-11-01-ci-workflow-audit.md) and machine
+inventory when changing independent fan-out.
 
 Automatic GDExtension, Native and Documentation PR runs group by PR identity and
 cancel superseded checks. Main pushes and manual qualification use run identity,
