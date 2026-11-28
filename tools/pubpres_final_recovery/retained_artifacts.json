@@ -1,0 +1,18 @@
+{
+  "schema":"pubpres-recovery-retained-native-artifacts-v1",
+  "runtime_source":"4bde032f27e90e6e974b3ddc123264afa8fa5012",
+  "frozen_donor":"c90dbc46e1f57f28e06b1f4205b83467335ff657",
+  "linux":{
+    "id":14960688100,"run":45477483707,"attempt":1,
+    "source":"4bde032f27e90e6e974b3ddc123264afa8fa5012",
+    "name":"pubpres-final-runtime-linux-45477483707-1",
+    "sha256":"2304fc1f1ecdd26d2bf0132e41163ed79a978c45bd9672ccee38b0588b539f93"
+  },
+  "windows":{
+    "id":14961530992,"run":45477483707,"attempt":1,
+    "source":"4bde032f27e90e6e974b3ddc123264afa8fa5012",
+    "name":"pubpres-final-runtime-windows-45477483707-1",
+    "sha256":"6d0d9895947bc96082275d789146a86bc6a220cc26abcbdd608e90d011b17f6c"
+  },
+  "scope":"Only exact unchanged native/build-input reuse is admitted. Original build source, runtime bytes, build logs and dependency receipts remain unchanged. No prior gameplay qualification is inherited. Any native or build-policy change requires a new build."
+}

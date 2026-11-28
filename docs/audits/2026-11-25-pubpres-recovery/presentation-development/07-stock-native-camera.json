@@ -1,0 +1,591 @@
+{
+	"checks": 1705,
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+	"failures": [],
+	"mounted_bounds_receipt": {
+		"content": [
+			52.3333435058594,
+			0.0,
+			325.333312988281,
+			183.0
+		],
+		"inverse_sample": [
+			52.3333282470703,
+			9.0
+		],
+		"physical_basis": [
+			1.5,
+			1.5
+		],
+		"physical_origin": [
+			251.0,
+			17.0
+		],
+		"sample": [
+			329.5,
+			30.5
+		]
+	},
+	"moving_follow_receipts": [
+		{
+			"camera_origin": [
+				180.75,
+				193.015991210938
+			],
+			"physics_step": 1,
+			"position": [
+				300.75,
+				260.515991210938
+			],
+			"presented_origin": [
+				180.731704711914,
+				193.070938110352
+			],
+			"selected": [
+				300.75,
+				260.515991210938
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				193.070938110352
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				193.057464599609
+			],
+			"physics_step": 2,
+			"position": [
+				300.75,
+				260.557464599609
+			],
+			"presented_origin": [
+				180.731704711914,
+				193.070938110352
+			],
+			"selected": [
+				300.75,
+				260.557464599609
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				193.070938110352
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				193.124298095703
+			],
+			"physics_step": 3,
+			"position": [
+				300.75,
+				260.624298095703
+			],
+			"presented_origin": [
+				180.731704711914,
+				193.070938110352
+			],
+			"selected": [
+				300.75,
+				260.624298095703
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				193.070938110352
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				193.216400146484
+			],
+			"physics_step": 4,
+			"position": [
+				300.75,
+				260.716400146484
+			],
+			"presented_origin": [
+				180.731704711914,
+				193.270492553711
+			],
+			"selected": [
+				300.75,
+				260.716400146484
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				193.270492553711
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				193.333679199219
+			],
+			"physics_step": 5,
+			"position": [
+				300.75,
+				260.833679199219
+			],
+			"presented_origin": [
+				180.731704711914,
+				193.270492553711
+			],
+			"selected": [
+				300.75,
+				260.833679199219
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				193.270492553711
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				193.476043701172
+			],
+			"physics_step": 6,
+			"position": [
+				300.75,
+				260.976043701172
+			],
+			"presented_origin": [
+				180.731704711914,
+				193.470062255859
+			],
+			"selected": [
+				300.75,
+				260.976043701172
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				193.470062255859
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				193.643341064453
+			],
+			"physics_step": 7,
+			"position": [
+				300.75,
+				261.143341064453
+			],
+			"presented_origin": [
+				180.731704711914,
+				193.669616699219
+			],
+			"selected": [
+				300.75,
+				261.143341064453
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				193.669616699219
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				193.835510253906
+			],
+			"physics_step": 8,
+			"position": [
+				300.75,
+				261.335510253906
+			],
+			"presented_origin": [
+				180.731704711914,
+				193.869171142578
+			],
+			"selected": [
+				300.75,
+				261.335510253906
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				193.869171142578
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				194.052429199219
+			],
+			"physics_step": 9,
+			"position": [
+				300.75,
+				261.552429199219
+			],
+			"presented_origin": [
+				180.731704711914,
+				194.068725585938
+			],
+			"selected": [
+				300.75,
+				261.552429199219
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				194.068725585938
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				194.294006347656
+			],
+			"physics_step": 10,
+			"position": [
+				300.75,
+				261.794006347656
+			],
+			"presented_origin": [
+				180.731704711914,
+				194.268280029297
+			],
+			"selected": [
+				300.75,
+				261.794006347656
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				194.268280029297
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				194.560119628906
+			],
+			"physics_step": 11,
+			"position": [
+				300.75,
+				262.060119628906
+			],
+			"presented_origin": [
+				180.731704711914,
+				194.467834472656
+			],
+			"selected": [
+				300.75,
+				262.060119628906
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				194.467834472656
+			]
+		},
+		{
+			"camera_origin": [
+				180.75,
+				194.850677490234
+			],
+			"physics_step": 12,
+			"position": [
+				300.75,
+				262.350677490234
+			],
+			"presented_origin": [
+				180.731704711914,
+				194.866958618164
+			],
+			"selected": [
+				300.75,
+				262.350677490234
+			],
+			"source": "live",
+			"terrain_origin": [
+				180.731704711914,
+				194.866958618164
+			]
+		}
+	],
+	"native_receipts": [
+		{
+			"backend": "CyberNativeCellWorld",
+			"generation": 3,
+			"materials_sha256": "a7690a77c880c32e3d53aa6a09bb09d19d0ba1b7e9eff29132e54ab55617069b",
+			"region": [
+				62,
+				62,
+				5,
+				5
+			],
+			"revision": 12
+		},
+		{
+			"backend": "CyberNativeCellWorld",
+			"generation": 3,
+			"materials_sha256": "4f3f06af6588195cd1a6582b614ad020e1f3c90f81b93334a4a5d302c6ed9dcf",
+			"region": [
+				90,
+				80,
+				3,
+				3
+			],
+			"revision": 21
+		},
+		{
+			"backend": "CyberNativeCellWorld",
+			"generation": 3,
+			"materials_sha256": "c8b61e850892b75fa72f120a6bf36ae02a0ba97e1aae65abac4c97c94956d9de",
+			"region": [
+				75,
+				75,
+				1,
+				1
+			],
+			"revision": 22
+		},
+		{
+			"backend": "CyberNativeCellWorld",
+			"generation": 3,
+			"materials_sha256": "868b2ab19b8a4bf2eeaea27d67cfe77015d4c43c5049aa311ddb14f4d432bd95",
+			"region": [
+				62,
+				99,
+				9,
+				9
+			],
+			"revision": 29
+		},
+		{
+			"backend": "CyberNativeCellWorld",
+			"generation": 3,
+			"materials_sha256": "28e8e62b3adf6894bc6c690baac289104d7a10a90ac711ccee58264989131f2a",
+			"region": [
+				62,
+				99,
+				9,
+				9
+			],
+			"revision": 30
+		},
+		{
+			"backend": "CyberNativeCellWorld",
+			"generation": 3,
+			"materials_sha256": "c15ca9d5cdf02ee666b2ef5da6af2d7c5924f5363dbbcb0890aa3d593d4247b3",
+			"region": [
+				110,
+				90,
+				7,
+				7
+			],
+			"revision": 79
+		}
+	],
+	"native_runtime_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+	"platform": "Linux",
+	"root_stretch_receipts": [
+		{
+			"legacy_sample_mismatches": 8,
+			"physical_basis": [
+				3.34074068069458,
+				3.34074068069458
+			],
+			"physical_content": [
+				79.1111145019531,
+				171.0,
+				801.777770996094,
+				451.0
+			],
+			"root_offset": [
+				0.0,
+				90.0
+			],
+			"root_scale": [
+				0.5,
+				0.5
+			],
+			"sample_count": 8,
+			"window": [
+				960,
+				720
+			],
+			"world_zero": [
+				-2.0,
+				104.0
+			]
+		},
+		{
+			"legacy_sample_mismatches": 8,
+			"physical_basis": [
+				4.45432138442993,
+				4.45432138442993
+			],
+			"physical_content": [
+				105.481491088867,
+				228.0,
+				1069.037109375,
+				601.333374023438
+			],
+			"root_offset": [
+				0.0,
+				120.0
+			],
+			"root_scale": [
+				0.666666686534882,
+				0.666666686534882
+			],
+			"sample_count": 8,
+			"window": [
+				1280,
+				960
+			],
+			"world_zero": [
+				-2.0,
+				138.0
+			]
+		},
+		{
+			"legacy_sample_mismatches": 0,
+			"physical_basis": [
+				6.68148136138916,
+				6.68148136138916
+			],
+			"physical_content": [
+				158.222229003906,
+				162.0,
+				1603.55554199219,
+				902.0
+			],
+			"root_offset": [
+				0.0,
+				0.0
+			],
+			"root_scale": [
+				1.0,
+				1.0
+			],
+			"sample_count": 8,
+			"window": [
+				1920,
+				1080
+			],
+			"world_zero": [
+				-3.0,
+				27.0
+			]
+		},
+		{
+			"ambient_gui_input_disabled": true,
+			"attempted_ambient_window_pointer": [
+				512.0,
+				384.0
+			],
+			"cursor": [
+				156,
+				96
+			],
+			"expected_cursor": [
+				156,
+				96
+			],
+			"hover_window": [
+				960,
+				720
+			],
+			"observed_physical_pointer": [
+				519.725524902344,
+				425.230010986328
+			],
+			"stationary_physical_pointer": [
+				519.725524902344,
+				425.230010986328
+			]
+		},
+		{
+			"ambient_gui_input_disabled": true,
+			"attempted_ambient_window_pointer": [
+				512.0,
+				384.0
+			],
+			"cursor": [
+				117,
+				64
+			],
+			"expected_cursor": [
+				117,
+				64
+			],
+			"hover_window": [
+				1280,
+				960
+			],
+			"observed_physical_pointer": [
+				519.725524902344,
+				425.230010986328
+			],
+			"stationary_physical_pointer": [
+				519.725524902344,
+				425.230010986328
+			]
+		},
+		{
+			"ambient_gui_input_disabled": true,
+			"attempted_ambient_window_pointer": [
+				512.0,
+				384.0
+			],
+			"cursor": [
+				78,
+				59
+			],
+			"expected_cursor": [
+				78,
+				59
+			],
+			"hover_window": [
+				1920,
+				1080
+			],
+			"observed_physical_pointer": [
+				519.725524902344,
+				425.230010986328
+			],
+			"stationary_physical_pointer": [
+				519.725524902344,
+				425.230010986328
+			]
+		}
+	],
+	"schema": "native-pixel-camera-v1",
+	"source_hashes": {
+		"res://scripts/main.gd": "79abeed3d467d918ba180535bce95924cc984bb6cbab90c61f599b4aa628e55f",
+		"res://scripts/pixel_camera_transform.gd": "7afe5eb19e24bad3986db567d5da2a3967e3a463f86e1f15f797f98565bd4e7b",
+		"res://scripts/shared_workbench.gd": "700e70c976c0db87312e2ca7a5237eae0329b71d5e7e395ac6ce7dee7cd6f269",
+		"res://scripts/workbench_paint_editor_controller.gd": "100d51ffc701555b2098e872aca32c2077fa13bbf9f7bd35953ea4c54c8d3b37",
+		"res://scripts/workbench_paint_editor_overlay.gd": "23b182e46738a94995dcc96b9f2619c395db27d809d8f4d4ce8cdc530da9d6c6",
+		"res://shaders/material_palette.gdshader": "b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f",
+		"res://tests/test_native_pixel_camera.gd": "8c758277ff7070714ed8697e5d7718a8b823f29acd6bc6c5f6afb7c1c194775f"
+	},
+	"source_revision": "ba52babd3acf425b46ff3c9bdae960d8b2870055",
+	"transform_sha256": "7afe5eb19e24bad3986db567d5da2a3967e3a463f86e1f15f797f98565bd4e7b"
+}

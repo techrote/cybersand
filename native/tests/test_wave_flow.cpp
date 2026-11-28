@@ -1004,6 +1004,60 @@ void mask_overlap_at_signed_bounds_preserves_bodies() {
     check({maximum - 512, maximum - 512, 1024, 1024}, true);
 }
 
+void sparse_mask_bounds_follow_clear_move_and_reconfigure() {
+    const auto run = [](std::uint32_t workers) {
+        World world(config(workers));
+        const std::array<std::int64_t, 3> xs{-100, 127, 220};
+        const std::array<std::int64_t, 3> ys{-20, 64, 160};
+        // Full canvas storage is deliberately much larger than the sparse
+        // occupancy. The middle shaft straddles a chunk boundary.
+        world.configure_transient_obstacles({-128, -128, 512, 512});
+        for (std::size_t shaft = 0; shaft < xs.size(); ++shaft) {
+            rect(world, static_cast<int>(xs[shaft] - 1), static_cast<int>(ys[shaft] - 2), 1, 10, Material::Wall);
+            rect(world, static_cast<int>(xs[shaft] + 1), static_cast<int>(ys[shaft] - 2), 1, 10, Material::Wall);
+            world.set(xs[shaft], ys[shaft] + 7, Material::Wall);
+        }
+        std::vector<std::uint64_t> hashes;
+        // Shrink, expand, remove, then reconfigure the actual mask. No retained
+        // bounds may hide the newly selected far-away body or preserve a ghost.
+        const std::array<unsigned, 7> patterns{1U, 4U, 5U, 2U, 0U, 7U, 1U};
+        for (std::size_t stage = 0; stage < patterns.size(); ++stage) {
+            world.clear_transient_obstacles();
+            if (stage == 5U) world.configure_transient_obstacles({-120, -64, 400, 300});
+            for (std::size_t shaft = 0; shaft < xs.size(); ++shaft) {
+                for (int dy = -1; dy < 7; ++dy) world.set(xs[shaft], ys[shaft] + dy, Material::Empty);
+                require(world.set_cell_state(xs[shaft], ys[shaft] - 1, Material::Water, 255, 0),
+                        "sparse moving mask Water preparation refused");
+                const auto body = static_cast<std::uint16_t>(shaft + 1U);
+                if ((patterns[stage] & (1U << shaft)) != 0U) {
+                    require(world.set_transient_obstacle(xs[shaft], ys[shaft], body), "new sparse body refused");
+                    require(!world.set_transient_obstacle(xs[shaft], ys[shaft], body), "duplicate body was admitted");
+                }
+            }
+            require(!world.set_transient_obstacle(-1000, -1000, 1) &&
+                        !world.set_transient_obstacle(xs[0], ys[0], 0),
+                    "invalid/outside body changed the occupancy field");
+            (void)world.tick();
+            require(!world.has_failed(), "sparse moving mask failed native World");
+            for (std::size_t shaft = 0; shaft < xs.size(); ++shaft) {
+                const auto body = static_cast<std::uint16_t>(shaft + 1U);
+                const bool occupied = (patterns[stage] & (1U << shaft)) != 0U;
+                require(world.transient_obstacle_at(xs[shaft], ys[shaft]) == (occupied ? body : 0),
+                        "clear/move retained an old body or lost a new one");
+                require(world.stored_material(xs[shaft], ys[shaft]) == (occupied ? Material::Empty : Material::Water),
+                        "sparse bound omitted a real blocker or invented a ghost blocker");
+                require((world.transient_contact_count(body) > 0U) == occupied &&
+                            (world.transient_contact_impulse_y(body) > 0) == occupied,
+                        "sparse bound changed real downward body contact");
+            }
+            hashes.push_back(world.physical_state_hash());
+            hashes.push_back(world.state_hash());
+        }
+        return hashes;
+    };
+    require(run(1) == run(4), "sparse mask bounds depend on worker count");
+}
+
 void tall_extreme_column_preserves_head_sign() {
     auto cfg = config(1);
     cfg.chunk_size = 8;
@@ -1383,6 +1437,7 @@ int main(int argc, char** argv) {
         {"distant positive masks preserve Wave transport", distant_positive_masks_preserve_wave_transport},
         {"distant negative masks preserve Wave transport", distant_negative_masks_preserve_wave_transport},
         {"mask overlap at signed bounds preserves bodies", mask_overlap_at_signed_bounds_preserves_bodies},
+        {"sparse mask bounds follow clear move and reconfigure", sparse_mask_bounds_follow_clear_move_and_reconfigure},
         {"tall extreme column preserves head sign", tall_extreme_column_preserves_head_sign},
         {"disturbed water reaches exact rest", disturbed_water_reaches_exact_rest},
         {"films level and rest", films_level_and_rest},

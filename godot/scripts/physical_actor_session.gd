@@ -202,10 +202,13 @@ static func valid_definitions(definitions: Array) -> bool:
 	return parts <= int(limits.body_limit) and proxies <= int(limits.proxy_limit)
 
 
-func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
+func configure(definitions: Array, space: RID, new_epoch: int = 1, diagnostic_observer: Callable = Callable()) -> bool:
+	var configuration_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 	if _active or not is_inside_tree() or not valid_definitions(definitions) or new_epoch < 1:
 		last_error = "Invalid physical actor configuration or live owner"
 		return false
+	if diagnostic_observer.is_valid():
+		diagnostic_observer.call("session_validation",configuration_started,{"expected_epoch":new_epoch})
 	epoch = new_epoch
 	tick = 0
 	_completed_time_seconds = 0.0
@@ -232,6 +235,7 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	var all_bodies: Array[RigidBody2D] = []
 	var sizes := PackedVector2Array()
 	for index: int in range(definitions.size()):
+		var actor_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 		var definition: Dictionary = definitions[index]
 		_has_flight = _has_flight or StringName(str(definition.model)) in Flight.IDS
 		var loadout: Dictionary = Loadouts.entry(StringName(str(definition.model)))
@@ -240,6 +244,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		if fleet_index >= 0:
 			data = Equipment.definition(Fleet.definition(fleet_index))
 		_catalogue.append(data)
+		if diagnostic_observer.is_valid():
+			diagnostic_observer.call("actor_definition",actor_started,{"slot":index,"model":str(definition.model)})
+		var rig_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 		var rig = Rig.new()
 		add_child(rig)
 		_body_offsets.append(all_bodies.size())
@@ -250,6 +257,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 			last_error = "Physical rig refused: " + str(definition.model)
 			close()
 			return false
+		if diagnostic_observer.is_valid():
+			diagnostic_observer.call("actor_bodies_shapes",rig_started,{"slot":index,"bodies":rig.bodies().size()})
+		var adapters_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 		if definition.has("retained_motion"):
 			var body: RigidBody2D = rig.bodies()[0]
 			body.global_rotation = float(definition.retained_motion.rotation)
@@ -300,6 +310,9 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		history.resize(MAX_LEASE + 1)
 		history.fill(-1)
 		_issued.append(history)
+		if diagnostic_observer.is_valid():
+			diagnostic_observer.call("actor_adapters_and_retained_motion",adapters_started,{"slot":index})
+	var bridge_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 	var error: Error = bridge.initialize(space, all_bodies, sizes)
 	if error == OK and bridge is WorkbenchBridge:
 		error = bridge.configure_instances(_definitions, _rigs, epoch)
@@ -311,6 +324,8 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 		for index: int in range(_equipment.size()):
 			if _equipment[index].body_id > 0:
 				_equipment[index].body_id = bridge.proxy_for_body(_equipment[index].body_id - 1)
+	if diagnostic_observer.is_valid():
+		diagnostic_observer.call("physical_bridge",bridge_started,{"bodies":all_bodies.size(),"actors":_rigs.size()})
 	_sequences.resize(_rigs.size())
 	_sequences.fill(-1)
 	_deadlines.resize(_rigs.size())
@@ -321,6 +336,8 @@ func configure(definitions: Array, space: RID, new_epoch: int = 1) -> bool:
 	_ambient_completed_physics_step = bridge.manual_step_count()
 	_flight_pause_step = _flight_completed_step
 	_active = true
+	if diagnostic_observer.is_valid():
+		diagnostic_observer.call("session_configuration",configuration_started,{"expected_epoch":new_epoch,"bodies":all_bodies.size()})
 	return true
 
 
@@ -522,11 +539,15 @@ func ingest_ambient_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# World identity is required even when a profile requests no material IDs.
 	# Read only the accepted owner's immutable envelope; do not invent a World
 	# generation from a render frame counter, missing cache or wall-clock time.
+	var native_generation := -1
+	if snapshot != null:
+		native_generation = int(snapshot.physics_world_generation) if snapshot.physics_world_generation >= 0 \
+			else int(snapshot.render_world_generation)
 	if snapshot != null and snapshot.rigid_body_epoch == epoch \
 		and snapshot.serial >= 0 and snapshot.tick_index >= 0 \
-		and snapshot.render_world_generation >= 0 and snapshot.serial >= _ambient_world_serial \
-		and snapshot.render_world_generation >= _ambient_world_generation:
-		_ambient_world_generation = int(snapshot.render_world_generation)
+		and native_generation >= 0 and snapshot.serial >= _ambient_world_serial \
+		and native_generation >= _ambient_world_generation:
+		_ambient_world_generation = native_generation
 		_ambient_world_serial = int(snapshot.serial)
 	var needed := false
 	for slot: int in _ambient_slots:
@@ -545,7 +566,11 @@ func ingest_ambient_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	if not _ambient_sensor_active:
 		_ambient_sensor_active = _ambient_perception.configure(extent, epoch)
 	if _ambient_sensor_active and snapshot != null:
-		_ambient_perception.ingest_snapshot(snapshot, extent, epoch)
+		if snapshot.render_world_generation < 0 and snapshot.render_snapshot_serial == 0 \
+			and snapshot.render_patch_rectangles.is_empty() and snapshot.render_patch_cells.is_empty():
+			_ambient_perception.observe_native_owner(snapshot, extent, epoch)
+		else:
+			_ambient_perception.ingest_snapshot(snapshot, extent, epoch)
 		if not _ambient_perception.wants_full_refresh(): _ambient_refresh_requested = false
 
 
@@ -650,13 +675,38 @@ func manipulator() -> RefCounted:
 	return _manipulator
 
 
-func pick_workbench_part(point: Vector2) -> Dictionary:
+func pick_workbench_part(point: Vector2, presentation: Variant = null, padding: float = 0.0) -> Dictionary:
 	if not _active or not bridge is WorkbenchBridge or not point.is_finite(): return {}
 	# Match the draw order: the last actor/part is visually above earlier ones.
 	for slot: int in range(_rigs.size() - 1, -1, -1):
-		var hit: Dictionary = _rigs[slot].pick_part(point)
+		var accepted: Variant = null
+		if presentation is Dictionary:
+			accepted = {}
+			var first: int = bridge.actor_body_index(slot)
+			for part: int in range(bridge.actor_body_count(slot)):
+				var body_slot := first + part
+				if body_slot < 0 or body_slot >= bridge._members.size(): continue
+				var member: Dictionary = bridge._members[body_slot]
+				if member.actor_slot != slot or member.actor_instance_id != _definitions[slot].instance_id or member.part_index != part: continue
+				var receipt: Dictionary = presentation.mask_frame.instances.get(int(member.instance_id), {})
+				var pose: Variant = presentation.poses.get(body_slot)
+				if receipt.get("generation",-1) == member.generation and receipt.get("pose") is Transform2D \
+						and receipt.pose.is_finite() and pose is Transform2D and pose.is_finite():
+					# Padded mouse aid must not select a fully covered member via
+					# adjacent Empty sky. Check that exact accepted material pixel
+					# and the same unpadded physical part before enabling the hit.
+					if presentation.get("contact_clips",{}).has(body_slot):
+						if not preload("res://scripts/workbench_presentation_coherence.gd").contact_point_visible(
+								point,presentation.contact_clips[body_slot]): continue
+						if padding>0.0 and _rigs[slot].pick_part(point,{part:pose},0.0).is_empty(): continue
+					accepted[part] = pose
+		var hit: Dictionary = _rigs[slot].pick_part(point, accepted, padding)
 		if hit.is_empty(): continue
-		hit.merge({"instance_id":int(_definitions[slot].instance_id), "actor_slot":slot,
+		var member_index: int = bridge.actor_body_index(slot) + int(hit.part_index)
+		if member_index < 0 or member_index >= bridge._members.size(): continue
+		var picked_member: Dictionary = bridge._members[member_index]
+		hit.merge({"member_id":picked_member.instance_id, "member_generation":picked_member.generation,
+			"instance_id":int(_definitions[slot].instance_id), "actor_slot":slot,
 			"run_id":run_id, "epoch":epoch, "extent":_definitions[slot].canvas_extent})
 		return hit
 	return {}
@@ -670,7 +720,12 @@ func workbench_grab_body(hit: Dictionary) -> RigidBody2D:
 	if slot < 0 or slot != int(hit.get("actor_slot", -1)) or not str(_rigs[slot].fault).is_empty(): return null
 	var parts: Array = _rigs[slot].bodies()
 	var index := int(hit.get("part_index", -1))
-	if index < 0 or index >= parts.size(): return null
+	if index < 0 or index >= parts.size() or not bridge is WorkbenchBridge: return null
+	var member_index: int = bridge.actor_body_index(slot) + index
+	if member_index < 0 or member_index >= bridge._members.size(): return null
+	var member: Dictionary = bridge._members[member_index]
+	if member.instance_id != hit.get("member_id",-1) or member.generation != hit.get("member_generation",-1) \
+			or member.actor_slot != slot or member.part_index != index: return null
 	var body: RigidBody2D = parts[index]
 	if not is_instance_valid(body) or body.get_instance_id() != int(hit.get("body_identity", -1)) \
 		or not body.get_rid().is_valid() or body.freeze: return null
@@ -1289,8 +1344,19 @@ func accept_equipment_feedback(snapshot_value: Dictionary) -> int:
 	return accepted
 
 
-func render_parts(display_frame: Dictionary = {}) -> Array:
+func render_parts(display_frame: Dictionary = {}, presentation_poses: Dictionary = {},
+		require_mask_receipt: bool = false) -> Array:
 	var result: Array = []
+	# Direct callers historically use render_parts() for geometry inspection
+	# without a display receipt. Preserve that API. Main's Workbench overlay
+	# explicitly opts into strict validation; ONLY that path can be rendered
+	# ahead of a material texture and must never use live fallback on refusal.
+	var strict_workbench: bool = require_mask_receipt and bridge is WorkbenchBridge
+	var workbench_frame_ok: bool = true
+	if strict_workbench:
+		workbench_frame_ok = display_frame.get("session",-1) == bridge._session \
+			and display_frame.get("epoch",-1) == bridge._epoch \
+			and display_frame.get("instances") is Dictionary
 	for index: int in range(_rigs.size()):
 		var parts: Array = _catalogue[index].parts
 		var actor_bodies: Array[RigidBody2D] = _rigs[index].bodies()
@@ -1298,7 +1364,29 @@ func render_parts(display_frame: Dictionary = {}) -> Array:
 		for part_index: int in range(actor_bodies.size()):
 			var body: RigidBody2D = actor_bodies[part_index]
 			var body_index: int = _body_offsets[index]+part_index
-			var physical_pose: Transform2D = bridge.display_pose(body_index,display_frame) if bridge is WorkbenchBridge else bridge.body_transform(body_index)
+			# Missing/stale body receipts suppress this overlay part. Only Main
+			# may admit an optional visual-only live transform after clearance.
+			var physical_pose: Transform2D
+			if strict_workbench:
+				if not workbench_frame_ok or body_index >= bridge._members.size():
+					continue
+				var member: Dictionary = bridge._members[body_index]
+				var instance: Dictionary = display_frame.instances.get(int(member.instance_id),{})
+				if instance.get("generation",-1) != member.generation \
+						or not instance.get("pose") is Transform2D:
+					continue
+				physical_pose = instance.pose
+				if not physical_pose.is_finite():
+					continue
+				if presentation_poses.has(body_index):
+					var candidate: Variant = presentation_poses[body_index]
+					if candidate is Transform2D and candidate.is_finite():
+						physical_pose = candidate
+			else:
+				physical_pose = (
+					presentation_poses[body_index] if presentation_poses.has(body_index)
+					else (bridge.display_pose(body_index,display_frame)
+						if bridge is WorkbenchBridge else bridge.body_transform(body_index)))
 			if str(parts[part_index].get("shape","rectangle"))=="rectangle_union":
 				var shape_index: int=0
 				for child in body.get_children():
@@ -1312,6 +1400,9 @@ func render_parts(display_frame: Dictionary = {}) -> Array:
 			var shape: Shape2D = body.get_child(0).shape
 			var dimensions: Vector2 = Vector2(shape.radius * 2.0, shape.radius * 2.0) if shape is CircleShape2D else shape.size
 			var presented: Dictionary = {"actor_id": index, "part_id": str(parts[part_index].id),
+				# Preserve the direct-geometry branch's historical metadata. The
+				# explicit association below serves only Water layer composition.
+				"water_body_index": body_index,
 				"transform": physical_pose,
 				"size": dimensions, "color": parts[part_index].color,
 				"shape": "circle" if shape is CircleShape2D else "rectangle"}

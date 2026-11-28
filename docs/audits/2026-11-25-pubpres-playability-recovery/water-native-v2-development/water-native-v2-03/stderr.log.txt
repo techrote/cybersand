@@ -1,0 +1,1046 @@
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+ERROR: WATER_COMPOSITION_NATIVE: initialized_paused_history paused submerged Needle is never omitted during retained authority
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_water_composition_native.gd:67)
+       [1] paused_history_retention (res://tests/test_workbench_water_composition_native.gd:261)
+       [2] until (res://tests/test_workbench_water_composition_native.gd:73)
+ERROR: WATER_COMPOSITION_NATIVE: initial_authoring_framebuffer restored same-state draw reproduces those pixels
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_water_composition_native.gd:67)
+       [1] framebuffer_visibility (res://tests/test_workbench_water_composition_native.gd:412)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: WATER_COMPOSITION_NATIVE: completed_paused_history paused submerged Needle is never omitted during retained authority
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_water_composition_native.gd:67)
+       [1] paused_history_retention (res://tests/test_workbench_water_composition_native.gd:261)
+       [2] until (res://tests/test_workbench_water_composition_native.gd:73)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: WATER_COMPOSITION_NATIVE: water_refill_framebuffer selected submerged actor remains admitted after Free camera
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_water_composition_native.gd:67)
+       [1] framebuffer_visibility (res://tests/test_workbench_water_composition_native.gd:360)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _close_physical_actors (res://scripts/main.gd:5658)
+       [1] _adopt_prepared_physical_candidate (res://scripts/main.gd:5557)
+       [2] _microscenario_installed (res://scripts/main.gd:1141)
+       [3] consume_worker_snapshot (res://scripts/main.gd:3639)
+       [4] _process (res://scripts/main.gd:2227)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _capture_workbench_water_dependencies (res://scripts/main.gd:3835)
+       [1] _capture_workbench_water_dependencies (res://tests/test_workbench_water_composition_native.gd:16)
+       [2] _complete_physics_callback (res://scripts/main.gd:2488)
+       [3] _physics_process (res://scripts/main.gd:2429)
+ERROR: WATER_COMPOSITION_NATIVE: initialized, completed submerged and rewet actual framebuffer controls all execute
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_workbench_water_composition_native.gd:67)
+       [1] _run (res://tests/test_workbench_water_composition_native.gd:528)
+       [2] edits_and_lifecycle (res://tests/test_workbench_water_composition_native.gd:495)
+       [3] pause_owner (res://tests/test_workbench_water_composition_native.gd:86)
+       [4] until (res://tests/test_workbench_water_composition_native.gd:73)
+ERROR: Dictionary is in read-only state.
+   at: clear (core/variant/dictionary.cpp:311)
+   GDScript backtrace (most recent call first):
+       [0] _close_physical_actors (res://scripts/main.gd:5658)
+       [1] _exit_tree (res://scripts/main.gd:2195)

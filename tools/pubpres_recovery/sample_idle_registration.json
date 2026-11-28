@@ -1,0 +1,21 @@
+{
+  "schema": "pubpres-recovery-sample-idle-registration-v1",
+  "registered_before_execution": "2026-11-25",
+  "base_application_source": "f4089809c7294336db26cf576b0ac3c57fc54775",
+  "selector": "CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE",
+  "default": "0",
+  "order": ["0", "1", "1", "0"],
+  "hypothesis": "An unpaused Workbench whose body sample has already completed is prohibited from another material turn. Rebuilding all immutable status dictionaries every16.7ms while Main is stalled adds unnecessary allocation, CPU and mailbox-lock activity. Parking this already-fenced owner until new work or a bounded250ms heartbeat may reduce resource contention without changing required native evolution, physical dependencies or material deadlines.",
+  "distinct_from_rejected_controls": "No material upload/coalescing policy, history depth, rendering mode, native law, or extra Rapier-step credit is changed. The treatment omits only status-only owner turns for an already completed body sample, and retains prompt due-render capture.",
+  "correctness_admission": [
+    "Native and real Rapier counters cannot advance without a fresh body sample while Main is deliberately held.",
+    "Retained immutable material payload bytes cannot change during ACK or waiting.",
+    "Fresh body sample, pause/resume, editing, reset, World replacement, render ACK, resync, camera origin, settings, tracing and retirement interrupt or bypass the wait through ordinary authority paths.",
+    "No-body and paused authoring controls retain their original cadence.",
+    "Normal native-sample, terrain, owner, image-history and publication acknowledgement gates remain unchanged."
+  ],
+  "primary_cases": ["wave_512_follow", "wave_gameplay_2048_follow"],
+  "comparison": "Same source/runtime/engine/renderer/scene/observer, serial0/1/1/0. Preserve original V3 real-step/native/terrain/Water/current-image gates. Require treatment enabled readback and nonzero waits in candidate arms; control waits must remain zero.",
+  "direction_rule": "Retain every arm. A physical improvement is selected only if each candidate real-step rate exceeds both controls, candidate p95/p99 physical intervals are each below both controls, and candidate maxima/severe-gap counts do not exceed the worse control. Material and visible-pose age must not materially regress. Failure to meet this remains unselected, even if status publications or CPU fall.",
+  "scope": "Default-off engineering candidate. No simulated display, owner-NVIDIA or public-default acceptance is implied. Deliberately held-Main lifecycle tests are correctness tests, never performance comparisons."
+}

@@ -1,0 +1,720 @@
+{
+  "schema": "pubpres-final-six-arm-supplement-v1",
+  "source": "00478f29b9abaccb1e358137e8a9a48894c1690b",
+  "workflow_marker": "4035243c2b6ad449f3af9652578c33de7abdcfb2",
+  "original_artifact": "https://github.com/techrote/cybersand/actions/runs/46060454634/artifacts/15229833054",
+  "sha256": "da2ae0f3c528304c66e6703d422334acc1944d3480cd3c3e393a22c1a6a95fed",
+  "water_composition": 0,
+  "source_qualification_run": 46046627411,
+  "scope": "Supplemental interpretation of original capture data. Hosted Windows ANGLE on Microsoft Basic Render Driver; no physical display qualification.",
+  "body_comparison": "Only xy and velocity originate as single-precision Vector2. Preserve every other field exactly. Unequal printed components must be adjacent decimal representations with one exact binary32 midpoint. No epsilon.",
+  "body_source": [
+    "godot/scripts/main.gd::_cadence_rapier_completed",
+    "godot/scripts/workbench_pose_trace.gd::xy",
+    "tools/pubpres_recovery_engine/engine.lock.json::precision=single"
+  ],
+  "observer_calibration": {
+    "calibration-stock": {
+      "wave_512_follow": {
+        "order": "off/on/on/off",
+        "on_over_off_rate_ratios": [
+          1.05651,
+          0.93896,
+          1.0927,
+          0.97112
+        ],
+        "on_over_off_gap_p95_ratios": [
+          0.9864,
+          1.02763,
+          0.96358,
+          1.00386
+        ]
+      },
+      "wave_gameplay_2048_follow": {
+        "order": "off/on/on/off",
+        "on_over_off_rate_ratios": [
+          1.02016,
+          1.004,
+          1.0726,
+          1.05561
+        ],
+        "on_over_off_gap_p95_ratios": [
+          0.75419,
+          1.0789,
+          0.77704,
+          1.11158
+        ]
+      }
+    },
+    "calibration-bounded": {
+      "wave_512_follow": {
+        "order": "off/on/on/off",
+        "on_over_off_rate_ratios": [
+          0.8842,
+          1.0955,
+          0.97214,
+          1.20445
+        ],
+        "on_over_off_gap_p95_ratios": [
+          1.00155,
+          0.56138,
+          1.00443,
+          0.56299
+        ]
+      },
+      "wave_gameplay_2048_follow": {
+        "order": "off/on/on/off",
+        "on_over_off_rate_ratios": [
+          0.92089,
+          0.98542,
+          0.98406,
+          1.05302
+        ],
+        "on_over_off_gap_p95_ratios": [
+          1.18063,
+          1.01541,
+          0.73312,
+          0.63053
+        ]
+      }
+    }
+  },
+  "order": [
+    "Stock Safe",
+    "Separate0",
+    "Separate4",
+    "Separate4",
+    "Separate0",
+    "Stock Safe"
+  ],
+  "cases": {
+    "wave_512_follow": {
+      "raw_body_sha256_by_engine": {
+        "stock": "07410910f5d2dc49194bf1bba37d7a34c7846c687d4cfd6c2d848f6ac04a4ffc",
+        "bounded": "33177eca76cfd711934f17f5337bef0ce0a343884c85ed6506543c7b1a121997"
+      },
+      "vector_bits_body_sha256": "414715f8a6bfe9330d2b0a58a211d4e8c489d15acb950aceab2d568ac4e8bfd6",
+      "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+      "unequal_midpoint_components_vs_stock": [
+        {
+          "xy": 0,
+          "velocity": 0
+        },
+        {
+          "xy": 14,
+          "velocity": 1
+        },
+        {
+          "xy": 14,
+          "velocity": 1
+        },
+        {
+          "xy": 14,
+          "velocity": 1
+        },
+        {
+          "xy": 14,
+          "velocity": 1
+        },
+        {
+          "xy": 0,
+          "velocity": 0
+        }
+      ],
+      "first_unequal_xy": {
+        "observed_step": 18,
+        "axis": 0,
+        "stock": "200.002075195313",
+        "bounded": "200.002075195312",
+        "exact_binary32": "200.0020751953125"
+      },
+      "arms": [
+        {
+          "steps_per_s": 16.984,
+          "physical_p95_p99_max_ms": [
+            154.966,
+            157.709,
+            161.224
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            53,
+            0,
+            0,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            11.018,
+            0.421
+          ],
+          "material_p95_max_ms": [
+            159.445,
+            263.832
+          ],
+          "verified_pose_p95_max_ms": [
+            153.597,
+            157.006
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 63,
+          "whole_process_peak_rss_mib": 891.76,
+          "whole_process_mean_cpu_cores": 1.705,
+          "in_capture_deferrals": null,
+          "engine_application_probe_joins": null
+        },
+        {
+          "steps_per_s": 9.415,
+          "physical_p95_p99_max_ms": [
+            160.274,
+            311.703,
+            312.11
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            92,
+            6,
+            0,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            10.008,
+            1.144
+          ],
+          "material_p95_max_ms": [
+            309.092,
+            448.318
+          ],
+          "verified_pose_p95_max_ms": [
+            300.474,
+            310.805
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 99,
+          "whole_process_peak_rss_mib": 878.11,
+          "whole_process_mean_cpu_cores": 1.873,
+          "in_capture_deferrals": 0,
+          "engine_application_probe_joins": 99
+        },
+        {
+          "steps_per_s": 9.459,
+          "physical_p95_p99_max_ms": [
+            159.671,
+            308.393,
+            310.809
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            93,
+            5,
+            0,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            7.932,
+            6.963
+          ],
+          "material_p95_max_ms": [
+            307.077,
+            316.792
+          ],
+          "verified_pose_p95_max_ms": [
+            182.098,
+            309.445
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 99,
+          "whole_process_peak_rss_mib": 881.29,
+          "whole_process_mean_cpu_cores": 1.951,
+          "in_capture_deferrals": 5,
+          "engine_application_probe_joins": 99
+        },
+        {
+          "steps_per_s": 9.585,
+          "physical_p95_p99_max_ms": [
+            160.351,
+            302.684,
+            305.857
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            93,
+            3,
+            0,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            8.815,
+            6.633
+          ],
+          "material_p95_max_ms": [
+            302.203,
+            312.57
+          ],
+          "verified_pose_p95_max_ms": [
+            160.406,
+            304.186
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 97,
+          "whole_process_peak_rss_mib": 881.55,
+          "whole_process_mean_cpu_cores": 1.896,
+          "in_capture_deferrals": 2,
+          "engine_application_probe_joins": 97
+        },
+        {
+          "steps_per_s": 9.544,
+          "physical_p95_p99_max_ms": [
+            164.554,
+            305.133,
+            307.504
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            89,
+            7,
+            0,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            10.183,
+            1.037
+          ],
+          "material_p95_max_ms": [
+            306.239,
+            432.742
+          ],
+          "verified_pose_p95_max_ms": [
+            297.15,
+            306.122
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 97,
+          "whole_process_peak_rss_mib": 883.08,
+          "whole_process_mean_cpu_cores": 1.946,
+          "in_capture_deferrals": 0,
+          "engine_application_probe_joins": 97
+        },
+        {
+          "steps_per_s": 16.514,
+          "physical_p95_p99_max_ms": [
+            157.443,
+            160.444,
+            161.228
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            54,
+            0,
+            0,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            10.18,
+            1.342
+          ],
+          "material_p95_max_ms": [
+            159.054,
+            248.59
+          ],
+          "verified_pose_p95_max_ms": [
+            155.236,
+            156.932
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 63,
+          "whole_process_peak_rss_mib": 888.54,
+          "whole_process_mean_cpu_cores": 1.775,
+          "in_capture_deferrals": null,
+          "engine_application_probe_joins": null
+        }
+      ],
+      "supplemental_registered_comparisons": {
+        "bounded_same_engine_0_4_4_0": {
+          "window": "first_144_steps",
+          "reference_role": "D",
+          "all_candidate_rates_higher": false,
+          "all_candidate_gap_quantiles_lower": {
+            "p95": false,
+            "p99": false
+          },
+          "all_candidate_max_gaps_within_worst_reference": true,
+          "all_candidate_severe_counts_within_worst_reference": {
+            "100": false,
+            "250": true,
+            "500": true,
+            "1000": true
+          },
+          "repeatable_direction": false,
+          "disposition": "NOT_ESTABLISHED"
+        },
+        "stock_safe_to_selected_bounded": {
+          "window": "first_144_steps",
+          "reference_role": "D",
+          "all_candidate_rates_higher": false,
+          "all_candidate_gap_quantiles_lower": {
+            "p95": false,
+            "p99": false
+          },
+          "all_candidate_max_gaps_within_worst_reference": false,
+          "all_candidate_severe_counts_within_worst_reference": {
+            "100": false,
+            "250": false,
+            "500": true,
+            "1000": true
+          },
+          "repeatable_direction": false,
+          "disposition": "NOT_ESTABLISHED"
+        }
+      },
+      "product": [
+        {
+          "index": 2,
+          "passed": false,
+          "reasons": [
+            "physical p95 unavailable or above prospective limit",
+            "physical observed max including censored boundaries unavailable or above prospective limit",
+            "material p95 unavailable or above prospective limit",
+            "pose p95 unavailable or above prospective limit",
+            "pose max unavailable or above prospective limit",
+            "material_generation_age_at_submission_ms regressed against worse stock Safe reference or unavailable",
+            "verified_first_part_completion_age_ms regressed against worse stock Safe reference or unavailable"
+          ],
+          "withheld_fraction": 0.0,
+          "memory_scope": "Whole process actual Godot RSS including setup; not aligned to capture clocks."
+        },
+        {
+          "index": 3,
+          "passed": false,
+          "reasons": [
+            "physical p95 unavailable or above prospective limit",
+            "physical observed max including censored boundaries unavailable or above prospective limit",
+            "material p95 unavailable or above prospective limit",
+            "pose p95 unavailable or above prospective limit",
+            "pose max unavailable or above prospective limit",
+            "material_generation_age_at_submission_ms regressed against worse stock Safe reference or unavailable",
+            "verified_first_part_completion_age_ms regressed against worse stock Safe reference or unavailable"
+          ],
+          "withheld_fraction": 0.0,
+          "memory_scope": "Whole process actual Godot RSS including setup; not aligned to capture clocks."
+        }
+      ]
+    },
+    "wave_gameplay_2048_follow": {
+      "raw_body_sha256_by_engine": {
+        "stock": "b5c4b7a55f66406cbd99e71db72f6569124c06f51bdf5a8460593d1280674a46",
+        "bounded": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b"
+      },
+      "vector_bits_body_sha256": "ce4cf3fea5ab12298f21f8b267f4ee5dd2b81c5f485da1bffa97fb9671fe1a8f",
+      "admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+      "unequal_midpoint_components_vs_stock": [
+        {
+          "xy": 0,
+          "velocity": 0
+        },
+        {
+          "xy": 13,
+          "velocity": 1
+        },
+        {
+          "xy": 13,
+          "velocity": 1
+        },
+        {
+          "xy": 13,
+          "velocity": 1
+        },
+        {
+          "xy": 13,
+          "velocity": 1
+        },
+        {
+          "xy": 0,
+          "velocity": 0
+        }
+      ],
+      "first_unequal_xy": {
+        "observed_step": 18,
+        "axis": 0,
+        "stock": "200.002075195313",
+        "bounded": "200.002075195312",
+        "exact_binary32": "200.0020751953125"
+      },
+      "arms": [
+        {
+          "steps_per_s": 5.112,
+          "physical_p95_p99_max_ms": [
+            344.939,
+            512.656,
+            531.398
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            118,
+            13,
+            2,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            564.574,
+            10.851
+          ],
+          "material_p95_max_ms": [
+            492.85,
+            675.681
+          ],
+          "verified_pose_p95_max_ms": [
+            349.081,
+            525.186
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 140,
+          "whole_process_peak_rss_mib": 1080.86,
+          "whole_process_mean_cpu_cores": 3.039,
+          "in_capture_deferrals": null,
+          "engine_application_probe_joins": null
+        },
+        {
+          "steps_per_s": 5.904,
+          "physical_p95_p99_max_ms": [
+            227.544,
+            338.279,
+            379.999
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            111,
+            5,
+            0,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            717.505,
+            0.488
+          ],
+          "material_p95_max_ms": [
+            360.605,
+            615.132
+          ],
+          "verified_pose_p95_max_ms": [
+            227.393,
+            375.6
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 119,
+          "whole_process_peak_rss_mib": 1071.93,
+          "whole_process_mean_cpu_cores": 3.014,
+          "in_capture_deferrals": 0,
+          "engine_application_probe_joins": 119
+        },
+        {
+          "steps_per_s": 5.985,
+          "physical_p95_p99_max_ms": [
+            309.264,
+            376.507,
+            520.248
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            104,
+            15,
+            1,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            119.414,
+            7.444
+          ],
+          "material_p95_max_ms": [
+            343.898,
+            523.446
+          ],
+          "verified_pose_p95_max_ms": [
+            321.492,
+            516.068
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 120,
+          "whole_process_peak_rss_mib": 1080.67,
+          "whole_process_mean_cpu_cores": 2.684,
+          "in_capture_deferrals": 7,
+          "engine_application_probe_joins": 120
+        },
+        {
+          "steps_per_s": 5.957,
+          "physical_p95_p99_max_ms": [
+            352.17,
+            541.623,
+            555.726
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            101,
+            12,
+            4,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            134.278,
+            0.432
+          ],
+          "material_p95_max_ms": [
+            397.051,
+            700.37
+          ],
+          "verified_pose_p95_max_ms": [
+            356.857,
+            551.333
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 114,
+          "whole_process_peak_rss_mib": 1073.17,
+          "whole_process_mean_cpu_cores": 2.737,
+          "in_capture_deferrals": 11,
+          "engine_application_probe_joins": 114
+        },
+        {
+          "steps_per_s": 5.71,
+          "physical_p95_p99_max_ms": [
+            343.349,
+            513.62,
+            548.157
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            102,
+            13,
+            2,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            426.362,
+            0.433
+          ],
+          "material_p95_max_ms": [
+            441.599,
+            575.993
+          ],
+          "verified_pose_p95_max_ms": [
+            359.551,
+            543.588
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 124,
+          "whole_process_peak_rss_mib": 1070.27,
+          "whole_process_mean_cpu_cores": 3.04,
+          "in_capture_deferrals": 0,
+          "engine_application_probe_joins": 124
+        },
+        {
+          "steps_per_s": 4.761,
+          "physical_p95_p99_max_ms": [
+            386.272,
+            534.02,
+            542.149
+          ],
+          "gaps_above_100_250_500_1000_ms": [
+            127,
+            18,
+            6,
+            0
+          ],
+          "whole_capture_no_step_prefix_suffix_ms": [
+            264.449,
+            7.725
+          ],
+          "material_p95_max_ms": [
+            502.723,
+            668.111
+          ],
+          "verified_pose_p95_max_ms": [
+            379.488,
+            536.035
+          ],
+          "withheld_body_submissions": 0,
+          "total_body_submissions": 151,
+          "whole_process_peak_rss_mib": 1080.27,
+          "whole_process_mean_cpu_cores": 3.011,
+          "in_capture_deferrals": null,
+          "engine_application_probe_joins": null
+        }
+      ],
+      "supplemental_registered_comparisons": {
+        "bounded_same_engine_0_4_4_0": {
+          "window": "first_144_steps",
+          "reference_role": "D",
+          "all_candidate_rates_higher": true,
+          "all_candidate_gap_quantiles_lower": {
+            "p95": false,
+            "p99": false
+          },
+          "all_candidate_max_gaps_within_worst_reference": false,
+          "all_candidate_severe_counts_within_worst_reference": {
+            "100": true,
+            "250": false,
+            "500": false,
+            "1000": true
+          },
+          "repeatable_direction": false,
+          "disposition": "NOT_ESTABLISHED"
+        },
+        "stock_safe_to_selected_bounded": {
+          "window": "first_144_steps",
+          "reference_role": "D",
+          "all_candidate_rates_higher": true,
+          "all_candidate_gap_quantiles_lower": {
+            "p95": false,
+            "p99": false
+          },
+          "all_candidate_max_gaps_within_worst_reference": false,
+          "all_candidate_severe_counts_within_worst_reference": {
+            "100": true,
+            "250": true,
+            "500": true,
+            "1000": true
+          },
+          "repeatable_direction": false,
+          "disposition": "NOT_ESTABLISHED"
+        }
+      },
+      "product": [
+        {
+          "index": 2,
+          "passed": false,
+          "reasons": [
+            "physical p95 unavailable or above prospective limit",
+            "physical observed max including censored boundaries unavailable or above prospective limit",
+            "material p95 unavailable or above prospective limit",
+            "material max unavailable or above prospective limit",
+            "pose p95 unavailable or above prospective limit",
+            "pose max unavailable or above prospective limit"
+          ],
+          "withheld_fraction": 0.0,
+          "memory_scope": "Whole process actual Godot RSS including setup; not aligned to capture clocks."
+        },
+        {
+          "index": 3,
+          "passed": false,
+          "reasons": [
+            "physical p95 unavailable or above prospective limit",
+            "physical observed max including censored boundaries unavailable or above prospective limit",
+            "material p95 unavailable or above prospective limit",
+            "material max unavailable or above prospective limit",
+            "pose p95 unavailable or above prospective limit",
+            "pose max unavailable or above prospective limit",
+            "material_generation_age_at_submission_ms regressed against worse stock Safe reference or unavailable",
+            "verified_first_part_completion_age_ms regressed against worse stock Safe reference or unavailable"
+          ],
+          "withheld_fraction": 0.0,
+          "memory_scope": "Whole process actual Godot RSS including setup; not aligned to capture clocks."
+        }
+      ]
+    }
+  },
+  "rehydration": {
+    "inventory_sha256": "4b64023a0e5d9ee464872a3b8a50b063cd9fd38221880ac2fd7bdb70b3f14959",
+    "water_off_sha256": "3f2f8926791db77d84f7e269f05765e90af310eeaf98f0946501c94a01a7da47",
+    "native_sha256": "91998791a44a7eddad0300f646835b006be42a3d9bf6187846b681e8e3f04a9b",
+    "stock_engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "custom_engine_sha256": "39928036d0acf292139ea4dde47d3a5cda9765406be13497fa78b99ad9da95ff"
+  },
+  "original_refusals": [
+    {
+      "case": "wave_512_follow",
+      "reason": "Equal-step body or admitted input outcomes diverged; causal comparison refused"
+    },
+    {
+      "case": "wave_gameplay_2048_follow",
+      "reason": "Equal-step body or admitted input outcomes diverged; causal comparison refused"
+    }
+  ],
+  "selection": "Keep qualified Stock Safe. Both lookahead4 repeats actually deferred in both workloads, but neither workload meets either registered relative direction or both product targets. The original cross-engine JSON-hash refusal stands."
+}

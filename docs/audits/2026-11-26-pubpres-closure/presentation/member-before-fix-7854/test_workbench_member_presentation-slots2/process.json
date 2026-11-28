@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/9cef565acfec/presentation-runtime/owned_xorg.py",
+    "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/9cef565acfec/presentation-evidence/member-adversary-7854/project",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--render-thread",
+    "safe",
+    "--script",
+    "res://tests/test_workbench_member_presentation.gd"
+  ],
+  "timeout_seconds": 600,
+  "returncode": 1,
+  "timed_out": false,
+  "elapsed_seconds": 51.66274512700011,
+  "log_sha256": "f8c6a8d9ecefaad3f5ed8cf67000e22811f7680c67bf9243a1a2e4b1fc7c85ab"
+}

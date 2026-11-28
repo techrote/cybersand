@@ -1,0 +1,392 @@
+name: PUBPRES Windows evaluation package
+
+on:
+  push:
+    branches: [codex/pubpres-integration-001]
+    paths-ignore:
+      - '.github/workflows/pubpres-integration-windows.yml'
+      - '.github/workflows/pubpres-warp-transition.yml'
+      - 'docs/operations/pubpres-integration-evaluation.md'
+      - 'godot/tests/pubpres_transition.gd'
+      - 'godot/tests/pubpres_warp_transition_oracle.gd'
+      - 'tools/pubpres_integration/warp_transition.py'
+  workflow_dispatch:
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  package:
+    if: github.ref == 'refs/heads/codex/pubpres-integration-001'
+    runs-on: windows-2022
+    timeout-minutes: 35
+    outputs:
+      package_sha256: ${{ steps.package.outputs.sha256 }}
+    env:
+      PUBPRES_ACCEPTED_MAIN: de109d0131641d6adc8d25bb9ced7ca3d4991105
+      PUBPRES_SOURCE: ${{ github.sha }}
+      GIT_LFS_SKIP_SMUDGE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Materialize accepted runtimes and stage signed dependencies
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          function Fetch([string]$Url, [string]$File) {
+            curl.exe --fail --location --retry 3 --max-time 300 --output $File $Url
+            if ($LASTEXITCODE -ne 0) { throw ('Dependency capture failed: ' + $Url) }
+          }
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'Git LFS initialization failed' }
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Accepted Windows runtime materialization failed' }
+          $Notices = Join-Path $env:RUNNER_TEMP 'pubpres-notices'
+          [void][IO.Directory]::CreateDirectory($Notices)
+          Fetch 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip' (Join-Path $env:RUNNER_TEMP 'pubpres-godot.zip')
+          $GodotNotices = 'https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88/'
+          foreach ($File in @('LICENSE.txt','COPYRIGHT.txt')) { Fetch ($GodotNotices+$File) (Join-Path $Notices $File) }
+          $RuntimeLicense = Join-Path $Notices 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $DeveloperLicense = Join-Path $Notices 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          Fetch 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx' $RuntimeLicense
+          Fetch 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx' $DeveloperLicense
+          ./tools/ci/stage_windows_vc_runtime.ps1 -Output (Join-Path $env:RUNNER_TEMP 'pubpres-vc') -License $RuntimeLicense -DeveloperLicense $DeveloperLicense
+      - name: Build the source-matched Windows x64 evaluation ZIP
+        id: package
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Zip = Join-Path $PWD ('delivery\CyberSand-Workbench-Windows-' + $env:PUBPRES_SOURCE.Substring(0,12) + '.zip')
+          python tools/pubpres_integration/package_windows.py `
+            --source-sha $env:PUBPRES_SOURCE --accepted-main $env:PUBPRES_ACCEPTED_MAIN `
+            --godot-zip (Join-Path $env:RUNNER_TEMP 'pubpres-godot.zip') `
+            --notices (Join-Path $env:RUNNER_TEMP 'pubpres-notices') `
+            --vc (Join-Path $env:RUNNER_TEMP 'pubpres-vc') `
+            --output (Join-Path $env:RUNNER_TEMP 'pubpres-build') --archive $Zip
+          if ($LASTEXITCODE -ne 0) { throw 'Source-matched evaluation ZIP build failed' }
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          Expand-Archive -LiteralPath $Zip -DestinationPath $Installed
+          python tools/pubpres_integration/package_windows.py --source-sha $env:PUBPRES_SOURCE --output $Installed --verify
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted evaluation payload did not match its manifest' }
+          'sha256=' + (Get-FileHash -LiteralPath $Zip -Algorithm SHA256).Hash.ToLower() | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding ascii -Append
+      - name: Verify default sparse histories with actual WARP readback
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          $Project = Join-Path $env:RUNNER_TEMP 'pubpres-warp-oracle'
+          $Evidence = Join-Path $PWD 'installed-evidence\default-sparse-history'
+          [void][IO.Directory]::CreateDirectory($Evidence)
+          Copy-Item -LiteralPath (Join-Path $Installed 'godot') -Destination $Project -Recurse
+          $Engine = Join-Path $Installed 'Godot_v4.7-stable_win64_console.exe'
+          $env:APPDATA = Join-Path $env:RUNNER_TEMP 'pubpres-warp-oracle-profile'
+          $env:LOCALAPPDATA = $env:APPDATA
+          [void][IO.Directory]::CreateDirectory($env:APPDATA)
+          $env:CYBERSAND_SOURCE_REVISION = $env:PUBPRES_SOURCE
+          $env:CYBERSAND_MATERIAL_PUBLICATION = 'blit'
+          & $Engine --headless --path $Project --editor --quit *> (Join-Path $Evidence 'import.log')
+          if ($LASTEXITCODE -ne 0) { throw 'WARP history fixture import failed' }
+          $Receipt = Join-Path $Evidence 'receipt.json'
+          & $Engine --path $Project --rendering-method gl_compatibility --rendering-driver opengl3_angle --render-thread safe --audio-driver Dummy --script res://tests/pubpres_warp_transition_oracle.gd -- --material=blit "--receipt=$Receipt" *> (Join-Path $Evidence 'history.log')
+          if ($LASTEXITCODE -ne 0) { throw 'WARP sparse history fixture failed' }
+          $Json = Get-Content -LiteralPath $Receipt -Raw | ConvertFrom-Json
+          if (-not $Json.complete -or $Json.mode -ne 'clone' -or
+              $Json.context.source_revision -ne $env:PUBPRES_SOURCE -or
+              $Json.current_matches -ne 180 -or $Json.previous_matches -ne 180 -or $Json.sparse_entries -ne 15) {
+            throw 'WARP history receipt is incomplete'
+          }
+      - name: Verify the portable PowerShell entry points
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          foreach ($File in Get-ChildItem -LiteralPath (Join-Path $Installed 'tools\pubpres_integration') -Filter '*.ps1') {
+            $Tokens = $null
+            $Errors = $null
+            [void][Management.Automation.Language.Parser]::ParseFile($File.FullName,[ref]$Tokens,[ref]$Errors)
+            if ($Errors.Count -ne 0) { throw ($File.Name+': '+($Errors | Out-String)) }
+          }
+          & (Join-Path $Installed 'Verify Package.cmd')
+          if ($LASTEXITCODE -ne 0) { throw 'Portable manifest verification failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-windows-package-${{ github.run_id }}-${{ github.run_attempt }}
+          path: delivery/
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-windows-package-checks-${{ github.run_id }}-${{ github.run_attempt }}
+          path: installed-evidence/
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90
+
+  comparison:
+    needs: package
+    runs-on: windows-2022
+    timeout-minutes: 110
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        case:
+          - needle_wave_follow_landscape_w4
+          - needle_wave_free_landscape_w4
+          - needle_wave_follow_2048_w4
+          - needle_wave_free_2048_w4
+          - needle_freemass_follow_2048_w1
+          - needle_freemass_free_2048_w4
+          - transition_2048_w1
+    env:
+      PUBPRES_SOURCE: ${{ github.sha }}
+      PUBPRES_CASE: ${{ matrix.case }}
+    steps:
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-windows-package-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pubpres-package
+      - name: Install the identical hash-bound evaluation package
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Zip = Join-Path $env:RUNNER_TEMP ('pubpres-package\CyberSand-Workbench-Windows-' + $env:PUBPRES_SOURCE.Substring(0,12) + '.zip')
+          $Expected = '${{ needs.package.outputs.package_sha256 }}'
+          if ($Expected -notmatch '^[0-9a-f]{64}$' -or (Get-FileHash -LiteralPath $Zip -Algorithm SHA256).Hash -ne $Expected) {
+            throw 'Downloaded package differs from the package job checksum'
+          }
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          Expand-Archive -LiteralPath $Zip -DestinationPath $Installed
+          $Manifest = Get-Content -LiteralPath (Join-Path $Installed 'PUBPRES-MANIFEST.json') -Raw | ConvertFrom-Json
+          if ($Manifest.source_commit -ne $env:PUBPRES_SOURCE -or $Manifest.physical_acceptance -ne 'HOLD') {
+            throw 'Installed source or acceptance state differs'
+          }
+          & (Join-Path $Installed 'Verify Package.cmd')
+          if ($LASTEXITCODE -ne 0) { throw 'Installed package manifest verification failed' }
+          $Evidence = Join-Path $PWD 'installed-evidence'
+          [void][IO.Directory]::CreateDirectory($Evidence)
+          @{ source=$env:PUBPRES_SOURCE; package_sha256=$Expected; runner_name=$env:RUNNER_NAME;
+             machine_name=[Environment]::MachineName; job=$env:GITHUB_JOB;
+             case=$env:PUBPRES_CASE; run_id=$env:GITHUB_RUN_ID; run_attempt=$env:GITHUB_RUN_ATTEMPT;
+             scope='Compare complete MICCIM arms only within this case host; do not pool absolute times across hosts';
+             physical_acceptance='HOLD' } | ConvertTo-Json -Depth 5 |
+            Set-Content -LiteralPath (Join-Path $Evidence 'job-context.json') -Encoding UTF8
+      - name: Run one complete registered MICCIM case on this host
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          $Launcher = Join-Path $Installed 'Quick A-B Test.cmd'
+          $Limit = if ($env:PUBPRES_CASE -eq 'transition_2048_w1') { 480 } else { 900 }
+          $ProcessInfo = [Diagnostics.ProcessStartInfo]::new()
+          $ProcessInfo.FileName = Join-Path $env:SystemRoot 'System32\cmd.exe'
+          $ProcessInfo.Arguments = '/d /s /c ""' + $Launcher + '" -Case ' + $env:PUBPRES_CASE + ' -TimeoutSeconds ' + $Limit + ' -RenderingDriver opengl3_angle -RenderThread safe"'
+          $ProcessInfo.WorkingDirectory = $Installed
+          $ProcessInfo.UseShellExecute = $false
+          $Process = [Diagnostics.Process]::Start($ProcessInfo)
+          $Process.WaitForExit()
+          @{ source=$env:PUBPRES_SOURCE; case=$env:PUBPRES_CASE; render='hosted Windows ANGLE';
+             command=$ProcessInfo.Arguments; exit_code=$Process.ExitCode; physical_acceptance='HOLD' } |
+            ConvertTo-Json -Depth 8 | Set-Content -LiteralPath (Join-Path $PWD 'installed-evidence\hosted-receipt.json') -Encoding UTF8
+          if ($Process.ExitCode -ne 0) { throw 'Installed case incomplete; original evidence retained' }
+      - name: Qualify the portable complete-results collector
+        if: always()
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          $Results = Join-Path $Installed 'Test-It-Results'
+          $Evidence = Join-Path $PWD 'installed-evidence'
+          [void][IO.Directory]::CreateDirectory($Evidence)
+          if (Test-Path -LiteralPath $Results) {
+            $Captured = @(Get-ChildItem -LiteralPath $Results -Directory | Where-Object {
+              Test-Path -LiteralPath (Join-Path $_.FullName 'summary.json') -PathType Leaf
+            })
+            if ($Captured.Count -gt 0) {
+              & (Join-Path $Installed 'Pack Results.cmd')
+              if ($LASTEXITCODE -ne 0) { throw 'Portable result collection failed' }
+              $Collection = Get-ChildItem -LiteralPath $Results -File -Filter 'All-Results-*.zip' |
+                Sort-Object -Property Name -Descending | Select-Object -First 1
+              if ($null -eq $Collection) { throw 'Portable result collection did not create its ZIP' }
+              Add-Type -AssemblyName System.IO.Compression,System.IO.Compression.FileSystem
+              $Archive = [IO.Compression.ZipFile]::OpenRead($Collection.FullName)
+              try {
+                $Entry = $Archive.GetEntry('COLLECTION.json')
+                if ($null -eq $Entry) { throw 'Result collection lacks its run index' }
+                $Reader = [IO.StreamReader]::new($Entry.Open())
+                try { $Index = $Reader.ReadToEnd() | ConvertFrom-Json } finally { $Reader.Dispose() }
+                if ($Index.physical_acceptance -ne 'HOLD' -or $Index.runs.Count -ne $Captured.Count -or
+                    $null -eq $Archive.GetEntry('ACCEPTANCE.md') -or
+                    $null -eq $Archive.GetEntry('CURRENT-PACKAGE-MANIFEST.json')) {
+                  throw 'Result collection omitted a captured run or owner/source context'
+                }
+                foreach ($Folder in $Captured) {
+                  if ($Folder.Name -notin $Index.runs -or $null -eq $Archive.GetEntry('runs/'+$Folder.Name+'/summary.json')) {
+                    throw 'Result collection omitted an original run summary'
+                  }
+                }
+              } finally { $Archive.Dispose() }
+              @{ complete=$true; source=$env:PUBPRES_SOURCE; captured_runs=$Captured.Count;
+                 archive=$Collection.Name; sha256=(Get-FileHash -LiteralPath $Collection.FullName -Algorithm SHA256).Hash.ToLower();
+                 physical_acceptance='HOLD' } | ConvertTo-Json -Depth 5 |
+                Set-Content -LiteralPath (Join-Path $Evidence 'portable-result-collection.json') -Encoding UTF8
+            }
+          }
+      - name: Retain original installed evidence and failure receipts
+        if: always()
+        shell: powershell
+        run: |
+          $Evidence = Join-Path $PWD 'installed-evidence'
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          $Results = Join-Path $Installed 'Test-It-Results'
+          [void][IO.Directory]::CreateDirectory($Evidence)
+          if (Test-Path -LiteralPath $Results) {
+            Get-ChildItem -LiteralPath $Results -File -Filter '*.zip' | Copy-Item -Destination $Evidence
+            foreach ($Folder in Get-ChildItem -LiteralPath $Results -Directory) {
+              if (Test-Path -LiteralPath ($Folder.FullName+'.zip')) { continue }
+              $Prefix = $Folder.FullName.Length+1
+              foreach ($File in Get-ChildItem -LiteralPath $Folder.FullName -Recurse -File) {
+                $Relative = $File.FullName.Substring($Prefix)
+                if ($Relative -match '(^|\\)profile(\\|$)|^project\\') { continue }
+                $Destination = Join-Path (Join-Path $Evidence $Folder.Name) $Relative
+                [void][IO.Directory]::CreateDirectory([IO.Path]::GetDirectoryName($Destination))
+                Copy-Item -LiteralPath $File.FullName -Destination $Destination
+              }
+            }
+          }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-windows-case-${{ matrix.case }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: installed-evidence/
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90
+
+  installed:
+    needs: package
+    runs-on: windows-2022
+    timeout-minutes: 90
+    env:
+      PUBPRES_SOURCE: ${{ github.sha }}
+      PUBPRES_CASE: installed-regressions
+      GIT_LFS_SKIP_SMUDGE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-windows-package-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pubpres-package
+      - name: Install the identical hash-bound evaluation package
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Zip = Join-Path $env:RUNNER_TEMP ('pubpres-package\CyberSand-Workbench-Windows-' + $env:PUBPRES_SOURCE.Substring(0,12) + '.zip')
+          $Expected = '${{ needs.package.outputs.package_sha256 }}'
+          if ($Expected -notmatch '^[0-9a-f]{64}$' -or (Get-FileHash -LiteralPath $Zip -Algorithm SHA256).Hash -ne $Expected) {
+            throw 'Downloaded package differs from the package job checksum'
+          }
+          $Installed = Join-Path $env:RUNNER_TEMP 'pubpres installed'
+          Expand-Archive -LiteralPath $Zip -DestinationPath $Installed
+          $Manifest = Get-Content -LiteralPath (Join-Path $Installed 'PUBPRES-MANIFEST.json') -Raw | ConvertFrom-Json
+          if ($Manifest.source_commit -ne $env:PUBPRES_SOURCE -or $Manifest.physical_acceptance -ne 'HOLD') {
+            throw 'Installed source or acceptance state differs'
+          }
+          & (Join-Path $Installed 'Verify Package.cmd')
+          if ($LASTEXITCODE -ne 0) { throw 'Installed package manifest verification failed' }
+          $Evidence = Join-Path $PWD 'installed-evidence'
+          [void][IO.Directory]::CreateDirectory($Evidence)
+          @{ source=$env:PUBPRES_SOURCE; package_sha256=$Expected; runner_name=$env:RUNNER_NAME;
+             machine_name=[Environment]::MachineName; job=$env:GITHUB_JOB;
+             case=$env:PUBPRES_CASE; run_id=$env:GITHUB_RUN_ID; run_attempt=$env:GITHUB_RUN_ATTEMPT;
+             scope='Compare complete MICCIM arms only within this case host; do not pool absolute times across hosts';
+             physical_acceptance='HOLD' } | ConvertTo-Json -Depth 5 |
+            Set-Content -LiteralPath (Join-Path $Evidence 'job-context.json') -Encoding UTF8
+      - name: Qualify installed histories, queue lifetime, gameplay and recovery
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_integration/qualify_installed.py `
+            --installed (Join-Path $env:RUNNER_TEMP 'pubpres installed') --source-sha $env:PUBPRES_SOURCE `
+            --output (Join-Path $PWD 'installed-evidence\regressions')
+          if ($LASTEXITCODE -ne 0) { throw 'Installed focused regression gate failed; original logs retained' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-windows-installed-${{ github.run_id }}-${{ github.run_attempt }}
+          path: installed-evidence/
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90
+
+  reader-replay:
+    if: github.ref == 'refs/heads/codex/pubpres-integration-001'
+    runs-on: windows-2022
+    timeout-minutes: 35
+    env:
+      GIT_LFS_SKIP_SMUDGE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          lfs: false
+      - name: Verify the pinned original Windows campaign artifact
+        shell: powershell
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Artifact = gh api repos/${{ github.repository }}/actions/artifacts/14652413186 | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or $Artifact.expired -or
+              $Artifact.workflow_run.id -ne 44762581512 -or
+              $Artifact.workflow_run.head_sha -ne '9018d09d298217dbc11ab3ced3b5de8a58a32968' -or
+              $Artifact.digest -ne 'sha256:8d21bba5bf22bbc274cad45df962cbba2f9a449fbb3e9eea29ff91fc7c8e45e1') {
+            throw 'The original Windows campaign differs from its pinned identity'
+          }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 44762581512
+          name: pubpres-windows-installed-44762581512-1
+          path: ${{ runner.temp }}/pubpres-reader-original-artifact
+      - name: Replay all 108 original analysis windows on PowerShell 5.1
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Zip = Join-Path $env:RUNNER_TEMP 'pubpres-reader-original-artifact\20261120-152602-source-bec4b874.zip'
+          if ((Get-FileHash -LiteralPath $Zip -Algorithm SHA256).Hash -ne '6584fc56f900b4a7f7fd473c7d3c2fa4495d53f52a3ed43fcefa0a66dd83e8c4') {
+            throw 'Original nested gameplay archive differs'
+          }
+          $Originals = Join-Path $env:RUNNER_TEMP 'pubpres-reader-originals'
+          Expand-Archive -LiteralPath $Zip -DestinationPath $Originals
+          & tools/pubpres_integration/Test-Source-Results-Replay.ps1 `
+            -InputRoot $Originals -OutputRoot (Join-Path $PWD 'reader-replay-evidence') `
+            -ExpectedSource '9018d09d298217dbc11ab3ced3b5de8a58a32968'
+          if (-not $?) { throw 'Windows PowerShell original-evidence replay failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-windows-reader-replay-${{ github.run_id }}-${{ github.run_attempt }}
+          path: reader-replay-evidence/
+          if-no-files-found: warn
+          compression-level: 0
+          retention-days: 90

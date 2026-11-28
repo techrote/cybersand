@@ -111,6 +111,25 @@ for ordinary UI controls, policy testing and authored saves; the
 [dated qualification record](audits/2026-11-20-workbench-actor-composition.md)
 separates actual platform evidence from owner playfeel acceptance.
 
+The [Workbench publication and progression evaluation](operations/pubpres-integration-evaluation.md) tracks PUBPRES-INTEGRATION-001 and its Draft/HOLD gates.
+
+The separate [PUBPRES-PLAYABILITY-001 evaluation](operations/pubpres-playability-evaluation.md)
+owns the opt-in staging change, default-off same-frame continuation, prospective
+v3 matched progression campaign and new Windows evaluator. The original negative
+v2 results remain preserved. Draft/HOLD; continuation graphical timing and
+physical NVIDIA acceptance remain pending.
+
+The current [PUBPRES mainline convergence](operations/pubpres-mainline-convergence.md)
+reconciles the positively evaluated #767 architecture with accepted RAMCACHE and
+Strata main. It owns the bounded spawn repair, retained Water endpoint correction,
+source-exact native publication and independently extracted Windows evaluator.
+Draft/HOLD: current-source qualification and physical owner acceptance remain
+separate. The [preceding continuation](operations/pubpres-playability-final-001.md)
+retains its original experiments and negative evidence.
+
+For native-independent font/startup and queued-history diagnosis before native
+builds, use [isolated render diagnostics](operations/pubpres-playability-evaluation.md#isolated-render-diagnostics).
+
 For deliberate historical research, use the isolated
 [engineering archaeology index](history/engineering/README.md). It is excluded
 from default current-answer retrieval and grants no implementation authority.

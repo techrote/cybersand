@@ -1,0 +1,15 @@
+{
+  "schema": "pubpres-recovery-native-stage-attribution-v1",
+  "registered_before_execution": "2026-11-25",
+  "application_and_original_driver": "0bd275a36669a18217f7861372bbf54a837af750",
+  "native_build_source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+  "native_binary_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "workload": "wave_gameplay_2048_follow",
+  "motivation": "The complete quiet sample-idle0/1/1/0 comparison is unselected. Its joined native world tick profiler medians are95-118ms on this local software-rendering host, unlike the previous Windows dominant post-native delay. Inspect the existing native stage clocks before changing native code.",
+  "only_observer_change": "CYBERSAND_PLAYABILITY_WAVE_COLUMN_PROBE=1 exposes existing cumulative prepare/column/flux/apply/merge/launch nanosecond counters. No per-cell clock, native physics treatment, material policy, worker-idle, observer mode, scene, renderer or input change.",
+  "authority": "Complete frozenV3 physical reader and source-exact retained project/runtime validation remain mandatory. Exact144-step actor trajectory and admitted-move hashes must equal the original comparison control. Each stage delta joins one matching healthy World/tick/body-sample packet to one actual completed physical step.",
+  "interpretation": "Sum only existing sequential Wave brackets. Report native world tick bracket minus those stages as elapsed outside Wave stage brackets, including remaining work and scheduling; do not label it non-Water CPU. Do not derive native starts from profiler values or attribute gaps to GPU/driver execution.",
+  "resource_scope": "A run during engine compilation is development attribution only. A quiet same-host repeat is required before credible stage-cost prioritization. CPU remains whole-owned-process setup+capture because its external clock is not joined to Godot capture boundaries.",
+  "selection": "No performance selection or default change is possible from this diagnostic. This resolves where to investigate next. Preserve every failed or adverse run. Any resulting native treatment needs prospective matched semantic, physical, freshness and lifecycle qualification."
+}

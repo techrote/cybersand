@@ -290,8 +290,9 @@ func _desktop_selector_and_labs() -> void:
 		_expect(not desktop.toggle_sampled_runtime_recovery(), "F7 changed provisional burial semantics")
 		_expect(desktop.player_representation_identity() == "actor-prototype/" + str(model), "desktop labels the wrong actor model")
 
-	# Verify the overlay uses the same letterbox and integer camera grid as the
-	# terrain and pointer transform, even on a non-16:9 available surface.
+	# Verify the overlay uses aspect-fit content and preserves the caller's
+	# fractional presented origin without quantizing it again, even on a
+	# non-16:9 available surface.
 	desktop.world_view.size = Vector2(800, 800)
 	desktop.current_view_size = Vector2i(320, 180)
 	var content: Rect2 = desktop.view_content_rect()
@@ -301,8 +302,8 @@ func _desktop_selector_and_labs() -> void:
 	_expect(content == Rect2(0, 175, 800, 450), "non-16:9 transform fixture did not letterbox as expected")
 	_expect(desktop.actor_prototype_overlay.position == content.position
 		and desktop.actor_prototype_overlay.size == content.size
-		and desktop.actor_prototype_overlay._origin == origin.floor(),
-		"actor overlay differs from aspect-fit terrain or integer camera origin")
+		and desktop.actor_prototype_overlay._origin == origin,
+		"actor overlay differs from aspect-fit content or supplied fractional camera origin")
 
 	desktop.actor_prototype_panel.configure_selection(&"", &"human", false)
 	desktop.actor_prototype_panel._apply()

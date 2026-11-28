@@ -44,7 +44,8 @@ func _blank() -> Image:
 
 
 func _render(current: Image, previous: Image, time: float, blend: float = 1.0,
-		camera: Vector2i = Vector2i.ZERO, view: Vector2i = SIDE, extra: Dictionary = {}) -> Image:
+		camera: Vector2i = Vector2i.ZERO, view: Vector2i = SIDE, extra: Dictionary = {},
+		keep_raw: bool = false) -> Image:
 	var viewport: SubViewport = SubViewport.new()
 	viewport.size = view
 	viewport.disable_3d = true
@@ -80,14 +81,14 @@ func _render(current: Image, previous: Image, time: float, blend: float = 1.0,
 	await RenderingServer.frame_post_draw
 	await RenderingServer.frame_post_draw
 	var result: Image = viewport.get_texture().get_image()
-	result.convert(Image.FORMAT_RGBA8)
+	if not keep_raw: result.convert(Image.FORMAT_RGBA8)
 	viewport.queue_free()
 	await process_frame
 	return result
 
 
 func _render_emission(world: Image, time: float, output: Vector2i = SIDE,
-		camera: Vector2i = Vector2i.ZERO) -> Image:
+		camera: Vector2i = Vector2i.ZERO, simple_materials: bool = false, extra: Dictionary = {}) -> Image:
 	var viewport: SubViewport = SubViewport.new()
 	viewport.size = output
 	viewport.use_hdr_2d = true
@@ -96,6 +97,7 @@ func _render_emission(world: Image, time: float, output: Vector2i = SIDE,
 	root.add_child(viewport)
 	var material: ShaderMaterial = ShaderMaterial.new()
 	material.shader = emission_shader
+	material.set_shader_parameter("ambient_sources_absent",simple_materials)
 	material.set_shader_parameter("world_texture", ImageTexture.create_from_image(world))
 	material.set_shader_parameter("material_program_lut", program_lut)
 	material.set_shader_parameter("world_size_px", Vector2(world.get_size()))
@@ -103,6 +105,7 @@ func _render_emission(world: Image, time: float, output: Vector2i = SIDE,
 	material.set_shader_parameter("camera_origin_px", Vector2(camera))
 	material.set_shader_parameter("condition_projection_enabled", 1.0)
 	material.set_shader_parameter("presentation_time_override", time)
+	for key: String in extra: material.set_shader_parameter(key,extra[key])
 	var source: ColorRect = ColorRect.new()
 	source.size = Vector2(output)
 	source.material = material
@@ -113,6 +116,34 @@ func _render_emission(world: Image, time: float, output: Vector2i = SIDE,
 	viewport.queue_free()
 	await process_frame
 	return result
+
+
+# The emission pass must retain authored light even if the entire actual
+# material image belongs to the four IDs whose other ambient effects are absent.
+func _check_simple_material_emission() -> void:
+	var world := _blank()
+	var ids: Array[int] = [0,2,3,58]
+	for i in ids.size():
+		_block(world,Rect2i(i*12,0,12,SIDE.y),ids[i],180)
+	var ordinary := await _render_emission(world,3.0)
+	var certified := await _render_emission(world,3.0,SIDE,Vector2i.ZERO,true)
+	_expect(ordinary.get_data() == certified.get_data(),
+		"certified normal four-material emission differs in the raw render target")
+	var original_program := program_lut
+	for i in ids.size():
+		var program := original_program.get_image()
+		var id := ids[i]
+		program.set_pixel(1,id,Color(0,1,0,0))
+		program.set_pixel(2,id,Color(1,1,0.75 if i % 2 == 0 else 0.0,0.0 if i % 2 == 0 else 0.75))
+		program.set_pixel(3,id,Color(1.0,0.7,0.2,0.0))
+		program_lut = ImageTexture.create_from_image(program)
+		ordinary = await _render_emission(world,3.0)
+		certified = await _render_emission(world,3.0,SIDE,Vector2i.ZERO,true)
+		_expect(_mean_luma(ordinary,Rect2i(i*12+4,4,4,4)) > 0.005,
+			"custom material %d actually emits in the ordinary source" % id)
+		_expect(ordinary.get_data() == certified.get_data(),
+			"certified draw changed the custom material %d emission" % id)
+	program_lut = original_program
 
 
 func _difference(a: Image, b: Image, rect: Rect2i, offset: Vector2i = Vector2i.ZERO) -> float:
@@ -274,10 +305,152 @@ func _run() -> void:
 	_expect(invalid.r > 0.6 and invalid.b > 0.6 and invalid.g < 0.35, "reserved ID 10 is not visibly invalid")
 
 	await _check_fidelity_pass_two(full)
+	await _check_spatial_ambient()
 
 	if failures == 0:
 		print("MATERIAL_PRESENTATION_RENDER: actual pixels passed (time override, still scenery, anchoring, crossfade endpoints, conditions, all 132 ID slots, invalid bounds, growth blockers, vapour footprint, half-resolution single-cell fireworks)")
 	quit(failures)
+
+
+func _same_raw(reference: Image, bounded: Image, label: String) -> void:
+	var same := reference.get_size() == bounded.get_size() and reference.get_format() == bounded.get_format() \
+		and reference.get_data() == bounded.get_data()
+	_expect(same,"bounded ambient pixels differ from unrestricted same-time render: "+label)
+	Context.capture(reference,label+"-reference")
+	Context.capture(bounded,label+"-bounded")
+
+
+func _proof(area: Rect2i, valid: bool = true) -> Dictionary:
+	return {"ambient_source_bounds":Vector4(area.position.x,area.position.y,area.end.x,area.end.y),
+		"ambient_bounds_valid":valid}
+
+
+func _check_ambient_publications() -> void:
+	var owner: Control = preload("res://scripts/main.gd").new()
+	owner.shared_workbench = Control.new()
+	owner._check_ambient_sources = true
+	owner._workbench_submission_requested = false
+	for format: Image.Format in [Image.FORMAT_R8,Image.FORMAT_RG8]:
+		var channels := 1 if format == Image.FORMAT_R8 else 2
+		var extent := Vector2i(31,17)
+		var plane := Image.create_empty(extent.x,extent.y,false,format)
+		plane.fill(Color(3.0/255.0,6.0/255.0,0,1))
+		owner.world_extent = extent
+		owner.render_image_format = format
+		owner.render_channels = channels
+		owner.image = plane.duplicate()
+		var full := PackedInt32Array([0,0,extent.x,extent.y,0,extent.x*channels])
+		_expect(owner.apply_render_patches_to_image(full,plane.get_data(),channels) and owner._ambient_bounds_valid
+			and owner._ambient_sources_absent,"texture refresh recognizes material IDs independently from condition bytes")
+		for cell: Vector2i in [Vector2i(0,0),extent-Vector2i.ONE]:
+			var delta := PackedByteArray([6,210]) if channels==2 else PackedByteArray([6])
+			var patch := PackedInt32Array([cell.x,cell.y,1,1,0,channels])
+			_expect(owner.apply_render_patches_to_image(patch,delta,channels) and not owner._ambient_sources_absent
+				and owner._ambient_source_bounds.has_point(cell),"incremental Fire at a World edge expands the published proof")
+		_expect(owner._ambient_source_bounds.encloses(Rect2i(Vector2i.ZERO,extent)),
+			"adding a distant source retains the first published bound")
+		_cell(plane,28,15,CyberCellWorld.FIRE,255)
+		_expect(owner.apply_render_patches_to_image(full,plane.get_data(),channels)
+			and owner._ambient_source_bounds.has_point(Vector2i(28,15))
+			and not owner._ambient_source_bounds.has_point(Vector2i.ZERO),
+			"a full material replacement retires a now-empty source region")
+	owner._check_ambient_sources = false
+	owner._reset_ambient_bounds(owner.image)
+	_expect(not owner._ambient_bounds_valid and not owner._ambient_sources_absent,"disabling the evaluator retires its proof")
+	owner.shared_workbench.free()
+	owner.free()
+
+
+# Keep a narrow exact source rectangle and compare complete GPU targets. The
+# Fire moves across scan and camera edges, including outside the viewport where
+# its neighbouring pixels can still receive an ember or a downsampled glow.
+func _check_spatial_ambient() -> void:
+	for shader: Shader in [palette_shader,emission_shader]:
+		var uniforms: Array = shader.get_shader_uniform_list().map(func(row: Dictionary): return str(row.name))
+		_expect("ambient_bounds_valid" in uniforms and "ambient_source_bounds" in uniforms,
+			"actual renderer compiled the spatial ambient proof uniforms")
+	_check_ambient_publications()
+	var camera := Vector2i(10,10)
+	var full := Rect2i(Vector2i.ZERO,SIDE)
+	var dry := Image.create_empty(72,48,false,Image.FORMAT_RG8)
+	var output := SIDE/2
+	var previous := dry
+	var dark := await _render_emission(dry,1.25,output,camera)
+	var placements: Array[Rect2i] = [Rect2i(4,18,6,5),Rect2i(9,18,6,5),Rect2i(22,20,16,4),
+		Rect2i(54,18,6,5),Rect2i(58,18,6,5),Rect2i(25,5,10,5),Rect2i(25,34,10,5)]
+	for i in placements.size():
+		var area := placements[i]
+		var world := dry.duplicate()
+		_block(world,area,CyberCellWorld.FIRE,255)
+		var settings := _proof(area)
+		var ref := await _render(world,previous,1.25,0.65,camera,SIDE,{},true)
+		var bounded := await _render(world,previous,1.25,0.65,camera,SIDE,settings,true)
+		_same_raw(ref,bounded,"ambient-fire-palette-%d"%i)
+		var glow := await _render_emission(world,1.25,output,camera)
+		var crop := await _render_emission(world,1.25,output,camera,false,settings)
+		_same_raw(glow,crop,"ambient-fire-emission-%d"%i)
+		_expect(_difference(glow,dark,Rect2i(Vector2i.ZERO,output))>0.005,
+			"authored Fire reaches the actual low-resolution target at position %d"%i)
+		if i == 2:
+			# Exclude the Fire row: prove the neighbouring Empty pixels really
+			# rendered particles, independently of the material's own colour.
+			var without_particles := await _render(world,previous,1.25,0.65,camera,SIDE,
+				{"ambient_sources_absent":true},true)
+			_expect(_difference(ref,without_particles,Rect2i(0,0,SIDE.x,area.position.y-camera.y))>0.01,
+				"authored Fire produces a visible ember outside its source rectangle")
+			var invalid := await _render_emission(world,1.25,output,camera,false,_proof(Rect2i(0,0,1,1),false))
+			_same_raw(glow,invalid,"ambient-invalid-emission-proof")
+		previous = world
+	# On a cropped/clamped camera, material sampling also clamps at the actual
+	# World edge. The negative origin keeps part of this viewport beyond it.
+	var shore := dry.duplicate()
+	var edge := Rect2i(0,13,4,7)
+	_block(shore,edge,CyberCellWorld.FIRE,255)
+	var edge_camera := Vector2i(-20,4)
+	var edge_ref := await _render(shore,shore,1.25,1.0,edge_camera,SIDE,{},true)
+	var edge_test := await _render(shore,shore,1.25,1.0,edge_camera,SIDE,_proof(edge),true)
+	_same_raw(edge_ref,edge_test,"ambient-world-edge-palette")
+	var bright_edge := await _render_emission(shore,1.25,output,edge_camera)
+	var bounded_edge := await _render_emission(shore,1.25,output,edge_camera,false,_proof(edge))
+	_same_raw(bright_edge,bounded_edge,"ambient-world-edge-emission")
+
+	# A LUT edit can make a nominally non-emitting material light up far
+	# outside the Fire rectangle. Both low/high condition endpoints are live.
+	var original := program_lut
+	var program := original.get_image()
+	program.set_pixel(1,3,Color(0,1,0,0))
+	program.set_pixel(2,3,Color(1,1,0,0.9))
+	program.set_pixel(3,3,Color(0.9,0.6,0.2,0))
+	program_lut = ImageTexture.create_from_image(program)
+	var edited := dry.duplicate()
+	_block(edited,Rect2i(12,17,7,7),CyberCellWorld.WATER,255)
+	var fire := Rect2i(51,22,4,4)
+	_block(edited,fire,CyberCellWorld.FIRE,255)
+	var edited_glow := await _render_emission(edited,1.25,output,camera)
+	var edited_bounded := await _render_emission(edited,1.25,output,camera,false,_proof(fire))
+	_same_raw(edited_glow,edited_bounded,"ambient-live-water-glow")
+	_expect(_mean_luma(edited_glow,Rect2i(2,4,2,2))>0.02,"live Water glow is visible outside the Fire bounds")
+	program_lut = original
+
+	# Record Steam/Smoke in the real ping-pong shader, then advance a dry
+	# material plane. Both histories survive outside the current Fire bounds.
+	var vapour := dry.duplicate()
+	_block(vapour,Rect2i(13,14,7,6),CyberCellWorld.STEAM,255)
+	_block(vapour,Rect2i(26,21,7,6),CyberCellWorld.SMOKE,255)
+	var black := ImageTexture.create_from_image(Image.create_empty(SIDE.x,SIDE.y,false,Image.FORMAT_RGBAH))
+	var seed := await _render_trail(vapour,black,camera,camera,0.0)
+	var retained := await _render_trail(dry,ImageTexture.create_from_image(seed),camera,camera,0.15)
+	var trail := {"vapour_trail_texture":ImageTexture.create_from_image(retained),"vapour_trail_strength":1.0,
+		"vapour_trail_origin_px":Vector2(camera),"vapour_trail_size_px":Vector2(SIDE)}
+	var moved := dry.duplicate()
+	_block(moved,fire,CyberCellWorld.FIRE,255)
+	var unlit := await _render(moved,moved,1.25,1.0,camera,SIDE,{},true)
+	var trail_ref := await _render(moved,moved,1.25,1.0,camera,SIDE,trail,true)
+	trail.merge(_proof(fire))
+	var trail_bounded := await _render(moved,moved,1.25,1.0,camera,SIDE,trail,true)
+	_same_raw(trail_ref,trail_bounded,"ambient-retained-vapour")
+	for sample: Rect2i in [Rect2i(3,4,7,6),Rect2i(16,11,7,6)]:
+		_expect(_difference(unlit,trail_ref,sample.intersection(full))>0.01,"retained vapour changes actual Empty pixels")
 
 
 # Second fidelity pass (MAT-002): building catalogue stillness, Empty-cell
@@ -358,6 +531,15 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 		{"vapour_trail_texture": trail, "vapour_trail_strength": 0.0})
 	var on: Image = await _render(scene, scene, 2.0, 1.0, Vector2i.ZERO, SIDE,
 		{"vapour_trail_texture": trail, "vapour_trail_strength": 1.0})
+	var certified_plane := _blank()
+	for index in 3:
+		_block(certified_plane, Rect2i(index * 16, 12, 16, 12), [2, 3, 58][index], 150)
+	for strength in [0.0, 1.0]:
+		var settings := {"vapour_trail_texture": trail, "vapour_trail_strength": strength}
+		var reference := await _render(certified_plane, scene, 2.0, 0.5, Vector2i.ZERO, SIDE, settings)
+		settings["ambient_sources_absent"] = true
+		var certified := await _render(certified_plane, scene, 2.0, 0.5, Vector2i.ZERO, SIDE, settings)
+		_expect(reference.get_data() == certified.get_data(), "Empty shortcut changed the palette or retained vapour history")
 	_expect(_difference(plain, off, full) <= TOLERANCE, "disabled vapour trail changed the output")
 	_expect(_mean_luma(on, Rect2i(0, 0, 48, 12)) > _mean_luma(plain, Rect2i(0, 0, 48, 12)) + 0.2,
 		"vapour afterimage did not appear over Empty cells")
@@ -387,6 +569,7 @@ func _check_fidelity_pass_two(full: Rect2i) -> void:
 
 	await _check_vapour_trail_feedback()
 	await _check_single_cell_emission()
+	await _check_simple_material_emission()
 	await _check_catalogue_rendering()
 
 	# Colour intent: Toxic Sludge is darker than Acid; Steam is near-white.

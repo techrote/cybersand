@@ -1,0 +1,21 @@
+{
+  "manifest_path": "/workspace/scratch/9cef565acfec/native-runtime-b695/PUBPRES-RUNTIME.json",
+  "manifest_sha256": "8a80718ee5bc1692244350ee520d3373f50c96eede1d24ca1ada8efe12c2b047",
+  "binary_path": "/workspace/scratch/9cef565acfec/native-runtime-b695/libcybersand_native.linux.x86_64.so",
+  "binary_sha256": "a908b78028bd7e0ebe173b3f75a9ac143f863e20be66589b224cac3bbfd205b4",
+  "staged_relative_path": "addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+  "build_commit": "b6956cd94382218a270ad85df7bc84f30a66776f",
+  "checked_source_files": 106,
+  "source_inputs_sha256": "d49329c8892a53fe4974e05124d4c2369f64eddbe7646d1f3f084f5037410b58",
+  "dependency_builder_commit": "b6956cd94382218a270ad85df7bc84f30a66776f",
+  "toolchain": {
+    "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+    "godot_cpp_library_sha256": "007a8e0048aca9b1680390e12f7fa0c34e1ee96ae6baf512526cad55910e486a",
+    "godot_cpp_dependency_sha256": "cd90c4857b17a087dc27f9833d35a974fcfc5cfea6ff6fa84cd18c05cde4f3df",
+    "compiler_command": "/usr/bin/g++",
+    "compiler_version": "g++ (Debian 14.2.0-19) 14.2.0\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "toolchain_drift_allowed": true
+  },
+  "experimental_build": true,
+  "qualification": "DEVELOPMENT_TOOLCHAIN_DRIFT"
+}

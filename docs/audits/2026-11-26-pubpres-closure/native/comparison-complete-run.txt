@@ -1,0 +1,9 @@
+wave_512_follow 0 {'role': 'C', 'slots': 2, 'task_completion': False, 'presentation_observer': True}
+wave_512_follow 1 {'role': 'C', 'slots': 2, 'task_completion': True, 'presentation_observer': True}
+wave_512_follow 2 {'role': 'C', 'slots': 2, 'task_completion': True, 'presentation_observer': True}
+wave_512_follow 3 {'role': 'C', 'slots': 2, 'task_completion': False, 'presentation_observer': True}
+wave_gameplay_2048_follow 0 {'role': 'C', 'slots': 2, 'task_completion': False, 'presentation_observer': True}
+wave_gameplay_2048_follow 1 {'role': 'C', 'slots': 2, 'task_completion': True, 'presentation_observer': True}
+wave_gameplay_2048_follow 2 {'role': 'C', 'slots': 2, 'task_completion': True, 'presentation_observer': True}
+wave_gameplay_2048_follow 3 {'role': 'C', 'slots': 2, 'task_completion': False, 'presentation_observer': True}
+{"output": "/workspace/scratch/9cef565acfec/native-task-abba-55dea-retry01", "complete": true, "failures": [], "physical_acceptance": "HOLD"}

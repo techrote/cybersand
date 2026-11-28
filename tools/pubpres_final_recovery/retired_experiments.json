@@ -1,0 +1,33 @@
+{
+  "schema": "pubpres-recovery-prospective-experiment-retirement-v1",
+  "status": "Draft/HOLD",
+  "effective_scope": "Subsequent hosted campaigns; no original registration, receipt, workflow outcome or performance rule is changed.",
+  "experiments": [
+    {
+      "name": "Unchanged completed-step count2 material-coalescing performance repeats",
+      "retired_executions": [
+        "material-completed-steps"
+      ],
+      "original_run": 45477483707,
+      "original_source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+      "artifacts": [
+        {
+          "platform": "windows",
+          "id": 14966741716,
+          "sha256": "4a469346e11d2533293012904072a228d4199240f5f4d70423ec91e54260a4f1"
+        }
+      ],
+      "reason": "Original Windows graphical campaign correctly failed the prospective treatment-execution gate: first Wave512 count2 arm accepted all 43 offers with no deferred turn or replacement. Other Wave512 arm coalesced once and neither primary workload established the registered performance direction. Large Wave count2 did execute but reduced rates and increased upper-tail gaps relative to its matched controls. A no-op is not a treatment improvement; an adverse executed treatment remains adverse.",
+      "selection": "Unselected/default off; original FAIL remains unchanged. A new recovery campaign does not rerun this unchanged timing arm.",
+      "preserved_gates": [
+        "Actual count-policy owner, material/pose identity and latest independently completed-step attribution",
+        "All seven-pair/14-boundary GPU/history/ACK and retirement correctness gates",
+        "Original complete 0/2/2/0 raw receipts, no-op outcome, adverse large-world outcome and original failed workflow",
+        "Independent original-byte replay and native/real-Rapier/terrain/body/input witnesses"
+      ],
+      "independent_review": "Recovery qualification independently reproduced all eight original raw count-policy reductions, physical-step witnesses and first-144 measurements; see docs/audits/2026-11-25-pubpres-recovery/windows-progression-failure-review.json.",
+      "reopen_only_for": "A distinct source-supported scheduling mechanism that changes opportunities for count2 coalescing, registered before results. Preserve this original failed/no-op/adverse cohort."
+    }
+  ],
+  "predecessor_retirements": "tools/pubpres_final/retired_experiments.json"
+}

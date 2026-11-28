@@ -1,0 +1,202 @@
+{
+  "schema": "pubpres-local-spawn-evidence-v1",
+  "scope": "Local Linux headless diagnostics; not integrated or Windows/physical owner qualification",
+  "files": {
+    "headless-wave512-01/IDENTITY.json": {
+      "sha256": "89762a8acaf5b8f1b88e1ee04c321cdc4af72d3d1168065ceb76685bd9462dba",
+      "bytes": 1207
+    },
+    "headless-wave512-01/SUMMARY.json": {
+      "sha256": "c77c461db6fd480b8b7f2295d09de669d3cc9d58df64d408a40051436226c5b1",
+      "bytes": 1538
+    },
+    "headless-wave512-01/wave512-on/REDUCED-adverse.json": {
+      "sha256": "1424a9c145654ed559dc06661fe6bd8fb20703cb374ba65b0fcc5e4ebd8ba3f2",
+      "bytes": 24824
+    },
+    "headless-wave512-01/wave512-on/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "sha256": "d049b0894ad7e37a458c77036d830862a14a6955de5287804533c9b8046548a6",
+      "bytes": 6355
+    },
+    "headless-wave512-01/wave512-on/profile/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/pubpres-gameplay/segment-0.jsonl": {
+      "sha256": "38c07525bd7a3af2a7302b6fcf9f85b9662da60f64a7a4de9107698ea2c2f58a",
+      "bytes": 1221817
+    },
+    "headless-wave512-01/wave512-on/segment-0.jsonl": {
+      "sha256": "38c07525bd7a3af2a7302b6fcf9f85b9662da60f64a7a4de9107698ea2c2f58a",
+      "bytes": 1221817
+    },
+    "headless-wave512-01/wave512-on/spawn.json": {
+      "sha256": "fc1a86a86042ed6d4657cd411432c6e9dbc840cc6277602e43a321120ea0d6f6",
+      "bytes": 11570
+    },
+    "headless-wave512-01/wave512-on/startup.json": {
+      "sha256": "f6b0f99b9dd8d02befd8fc0168806c4708b92827347b543ccba3014e0f16bc50",
+      "bytes": 7619
+    },
+    "headless-wave512-01/wave512-on/stdout.log": {
+      "sha256": "76e5d35050d099bb570f0adec982f9dac5f45021950d11f2303a3b7c29328b70",
+      "bytes": 6469
+    },
+    "headless-wave512-02/IDENTITY.json": {
+      "sha256": "36323b2f38b6098da7b84684038080c9a7979f496285630371820d8812bd4cf1",
+      "bytes": 1305
+    },
+    "headless-wave512-02/SUMMARY.json": {
+      "sha256": "7e33ea011dd77dfd7ab804c6b00a3f805402a0073ccf65bdc8cebf77054a4810",
+      "bytes": 1878
+    },
+    "headless-wave512-02/application-delta.patch": {
+      "sha256": "2b562e2ffe8e5e0dc9645b956e14e7557b26093f5df7dedfd5964e1c058bd642",
+      "bytes": 18156
+    },
+    "headless-wave512-02/wave512-off/REDUCED.json": {
+      "sha256": "b9712f062ef7e5292170e08460eaff9254d489179e315c2324a410d94f03193a",
+      "bytes": 3296
+    },
+    "headless-wave512-02/wave512-off/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "sha256": "0eb9ca5c43f169b581f14ef47fc3b8c035744d0146c9465faf0962e03341a81a",
+      "bytes": 6358
+    },
+    "headless-wave512-02/wave512-off/profile/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/pubpres-gameplay/segment-0.jsonl": {
+      "sha256": "238682340eef03c84d6e4e059080eb7a5705ade925fd04bcc4d3a74cd38b75e1",
+      "bytes": 3373
+    },
+    "headless-wave512-02/wave512-off/segment-0.jsonl": {
+      "sha256": "238682340eef03c84d6e4e059080eb7a5705ade925fd04bcc4d3a74cd38b75e1",
+      "bytes": 3373
+    },
+    "headless-wave512-02/wave512-off/spawn.json": {
+      "sha256": "425d01b58d180c68ca7818560fbc97a69a78e81674d55b17764cede4d14a8de8",
+      "bytes": 22226
+    },
+    "headless-wave512-02/wave512-off/startup.json": {
+      "sha256": "833cbe9f9fcacce02a577c9916096881c95894a4dd0ac9f64d9a81f2b8022081",
+      "bytes": 7622
+    },
+    "headless-wave512-02/wave512-off/stdout.log": {
+      "sha256": "b669c025d87a74fc2a214ee2245a91584ab13f56f698ff4965b20f5d2727c7a9",
+      "bytes": 6472
+    },
+    "headless-wave512-02/wave512-on/REDUCED.json": {
+      "sha256": "7bff59d059791a6706f4b347ab972555e9e3c5a122a7240d0a3373582ef79925",
+      "bytes": 39899
+    },
+    "headless-wave512-02/wave512-on/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "sha256": "c4b8c39ee32f9d8ddd8bbe477f3c26b4f5ceffbc126da428caff8e1702c34b58",
+      "bytes": 6355
+    },
+    "headless-wave512-02/wave512-on/profile/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/pubpres-gameplay/segment-0.jsonl": {
+      "sha256": "4643adbdcce951084b140e77b65108cf72d1b862ba9230f807124d85445d24cc",
+      "bytes": 2096597
+    },
+    "headless-wave512-02/wave512-on/profile/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/pubpres-gameplay/segment-1.jsonl": {
+      "sha256": "da220223312ecf5da11ac3b4817d33426488009aac77f5bf9ef43a751c8df8cb",
+      "bytes": 255084
+    },
+    "headless-wave512-02/wave512-on/segment-0.jsonl": {
+      "sha256": "4643adbdcce951084b140e77b65108cf72d1b862ba9230f807124d85445d24cc",
+      "bytes": 2096597
+    },
+    "headless-wave512-02/wave512-on/segment-1.jsonl": {
+      "sha256": "da220223312ecf5da11ac3b4817d33426488009aac77f5bf9ef43a751c8df8cb",
+      "bytes": 255084
+    },
+    "headless-wave512-02/wave512-on/spawn.json": {
+      "sha256": "ba27b4b5f374b3fbf220f0c47219a54d1c2c9525881c68dada2564ebbbe48a59",
+      "bytes": 22224
+    },
+    "headless-wave512-02/wave512-on/startup.json": {
+      "sha256": "03e2432625f389463e1febeed8e8c8ad64372a987144a70bce7f67cde8b30c31",
+      "bytes": 7620
+    },
+    "headless-wave512-02/wave512-on/stdout.log": {
+      "sha256": "d6cec6aa46401f6f70cfa098970a62d82d7e5a5bfb96b6a81c7280a67f277766",
+      "bytes": 6469
+    },
+    "headless-wave512-cache-01/IDENTITY.json": {
+      "sha256": "b783f9f4b4f8721489124cb032bb0a3a2933d4c87796172c01225fe22ad04cf1",
+      "bytes": 1275
+    },
+    "headless-wave512-cache-01/SUMMARY.json": {
+      "sha256": "079f471c60faaa3e63c032acee5e4d66e66fde0a31a7afeb364b43971462e3a4",
+      "bytes": 1848
+    },
+    "headless-wave512-cache-01/application-delta.patch": {
+      "sha256": "aaf51805bbeb0a246f9241ab8cfa63f6b3bf913939aeb5c1dd99a856a7648f07",
+      "bytes": 4039
+    },
+    "headless-wave512-cache-01/wave512-off/REDUCED.json": {
+      "sha256": "5912aa810cd297cdd8031220c59c0ebbce02c7e8d0f9df9b31893f535786863e",
+      "bytes": 3297
+    },
+    "headless-wave512-cache-01/wave512-off/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "sha256": "c9e0acfda2f570393a4c6d78db01a37c6c5b2a095cbd57b6fcc41fd26282eba6",
+      "bytes": 6340
+    },
+    "headless-wave512-cache-01/wave512-off/spawn.json": {
+      "sha256": "e88be3d19bf848393fa90899f6fb675a69e148dee7bcd9dd4f9cd4ccee6fb896",
+      "bytes": 22009
+    },
+    "headless-wave512-cache-01/wave512-off/startup.json": {
+      "sha256": "93132942dd347cd95bcded1d705a915d08e61f69d3297d58d72dfad74adbf75f",
+      "bytes": 7598
+    },
+    "headless-wave512-cache-01/wave512-off/stdout.log": {
+      "sha256": "ce059ae5623081c217188e7c368c693a330a446089f60bbdf1716d5504502784",
+      "bytes": 6454
+    },
+    "headless-wave512-cache-01/wave512-on/REDUCED.json": {
+      "sha256": "f761d90903f106b3696e37173fc06cb7f84a4a4bf84efe183a689a77389409e1",
+      "bytes": 39870
+    },
+    "headless-wave512-cache-01/wave512-on/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "sha256": "d9c27a609b736cf9fe1fc0e8d6e49b785cbe466263bdad1a65a6678fc70e627b",
+      "bytes": 6338
+    },
+    "headless-wave512-cache-01/wave512-on/profile/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/pubpres-gameplay/segment-0.jsonl": {
+      "sha256": "a7d658e5cd9fd168b9fb30cb55a305cedfc759c96b7b6ce14d6191507df9bd96",
+      "bytes": 2096972
+    },
+    "headless-wave512-cache-01/wave512-on/profile/godot/app_userdata/Cyber Sand Reference Sandbox/workbench/pubpres-gameplay/segment-1.jsonl": {
+      "sha256": "2382a95c6a8ee338c7b8fc929fd5c9df875c3e94af774ee0d096c8e44e4d3e01",
+      "bytes": 64287
+    },
+    "headless-wave512-cache-01/wave512-on/segment-0.jsonl": {
+      "sha256": "a7d658e5cd9fd168b9fb30cb55a305cedfc759c96b7b6ce14d6191507df9bd96",
+      "bytes": 2096972
+    },
+    "headless-wave512-cache-01/wave512-on/segment-1.jsonl": {
+      "sha256": "2382a95c6a8ee338c7b8fc929fd5c9df875c3e94af774ee0d096c8e44e4d3e01",
+      "bytes": 64287
+    },
+    "headless-wave512-cache-01/wave512-on/spawn.json": {
+      "sha256": "77a02f99f80b19e3930789b814bb068cecb29e2195c5263a554b5b73c69403b4",
+      "bytes": 22101
+    },
+    "headless-wave512-cache-01/wave512-on/startup.json": {
+      "sha256": "033a1f99b51d826fb7fe1a3d5b33fd2acb06a0636185b896f8f3f60a1ec36f8c",
+      "bytes": 7597
+    },
+    "headless-wave512-cache-01/wave512-on/stdout.log": {
+      "sha256": "616443cecfd732593e8bef1f167771b955e112bb74174e791349b7f3b14d230b",
+      "bytes": 6452
+    },
+    "transport-baseline.json": {
+      "sha256": "c32a27039b6891b09b28b68fe0ff0ff72bc3fce40d406f9dacea81806a95a33b",
+      "bytes": 3671
+    },
+    "transport-candidate.json": {
+      "sha256": "7557e0517f539d1799da1e29364fa642e83c21be46c6d1277ece73c64edbccac",
+      "bytes": 3631
+    },
+    "wave512-on/profile/godot/app_userdata/Cyber Sand Reference Sandbox/logs/godot.log": {
+      "sha256": "0704af3bd7170d415d3c694c1942394f00370015218778adba607eb75763efef",
+      "bytes": 107
+    },
+    "wave512-on/stdout.log": {
+      "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "bytes": 221
+    }
+  }
+}

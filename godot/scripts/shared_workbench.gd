@@ -6,6 +6,8 @@ const GeneratedMaps = preload("res://scripts/workbench_generated_map.gd")
 const MaterialBaseline = preload("res://scripts/workbench_material_baseline.gd")
 const PaintEditor = preload("res://scripts/workbench_paint_editor_controller.gd")
 const ArtBatchPanel = preload("res://scripts/art_batch_panel.gd")
+const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
+
 const StrataDocument = preload("res://scripts/depth/workbench_layer_document.gd")
 const StrataController = preload("res://scripts/depth/workbench_strata_controller.gd")
 const Fleet = Setup.Fleet
@@ -38,6 +40,7 @@ var _flatten_status: Dictionary = {"status":"idle"}
 var _flatten_button: Button
 var _flatten_confirmation := ConfirmationDialog.new()
 var art_batches: Window
+var engine_lab: Window
 # A small session association is read once without constructing Art or opening
 # any traffic archive. It binds native completions through profile outages.
 var _art_history_session: Dictionary = {}
@@ -72,6 +75,7 @@ var _instances := OptionButton.new()
 var _material := OptionButton.new()
 var _response := OptionButton.new()
 var _camera := OptionButton.new()
+var _focus_pending: bool = false
 var _brush := SpinBox.new()
 var _fire := CheckButton.new()
 var _stream := CheckButton.new()
@@ -127,11 +131,11 @@ func open_materials_lab() -> void:
 		_materials_lab_window = Window.new()
 		_materials_lab_window.hide()
 		_materials_lab_window.title = "CyberSand / Materials Lab"
-		_materials_lab_window.min_size = Vector2i(1000,650)
 		_materials_lab_window.transient = true
-		# A desktop Lab owns physical pixels instead of inheriting the game's
-		# stretched canvas. Keep embedded fallback for headless/Web displays.
-		_materials_lab_window.force_native = not OS.has_feature("web") and DisplayServer.has_feature(DisplayServer.FEATURE_SUBWINDOWS)
+		# Separate rendering keeps secondary UI in the existing rendering
+		# context. The shared policy compensates the game's canvas scaling.
+		preload("res://scripts/workbench_lab_window_policy.gd").configure(
+			_materials_lab_window,get_window(),Vector2i(1520,900),Vector2i(1000,650))
 		_materials_lab_window.content_scale_mode = Window.CONTENT_SCALE_MODE_DISABLED
 		_materials_lab_window.handle_input_locally = true
 		add_child(_materials_lab_window)
@@ -148,11 +152,29 @@ func open_materials_lab() -> void:
 		_materials_lab_panel = panel
 		panel.name = "MaterialsLabPanel"
 		margin.add_child(panel)
+		if preload("res://scripts/workbench_lab_window_policy.gd").uses_separate_rendering():
+			# These pickers are constructed with the panel; catalogue/candidate
+			# refreshes repopulate them without replacing their popup resources.
+			for picker: OptionButton in panel.find_children("*","OptionButton",true,false):
+				preload("res://scripts/workbench_lab_window_policy.gd").configure_popup_font(picker.get_popup())
+			# FileDialog also embeds in the game root, rather than in the Lab's
+			# compensated viewport. Give that existing picker the same pixel scale.
+			var parent_scale: Vector2 = get_window().get_stretch_transform().get_scale()
+			var available: Vector2 = get_window().get_visible_rect().size * minf(parent_scale.x,parent_scale.y)
+			preload("res://scripts/workbench_lab_window_policy.gd").configure(panel._file,get_window(),
+				Vector2i(available * 0.7),panel._file.min_size.max(panel._file.get_contents_minimum_size()))
+			panel._file.about_to_popup.connect(func() -> void:
+				preload("res://scripts/workbench_lab_window_policy.gd").fit_embedded(panel._file))
 		panel.close_requested.connect(_materials_lab_window.hide)
 		_materials_lab_window.close_requested.connect(_materials_lab_window.hide)
 	_materials_lab_panel.set_policy_readback(host.tower_context.get("liquid_solver_policy",{}),"Workbench owner snapshot at opening; reopen to refresh")
 	if _materials_lab_window.force_native: _materials_lab_window.current_screen = get_window().current_screen
-	_materials_lab_window.popup_centered_clamped(Vector2i(1520,900),0.95)
+	if _materials_lab_window.force_native:
+		_materials_lab_window.popup_centered_clamped(Vector2i(1520,900),0.95)
+	else:
+		if not preload("res://scripts/workbench_lab_window_policy.gd").open(_materials_lab_window):
+			refuse("Materials Lab needs a 1000×650 client plus its title bar inside the game window.")
+			return
 	if _materials_lab_window.force_native:
 		var usable: Rect2i = DisplayServer.screen_get_usable_rect(get_window().current_screen)
 		if not _fit_materials_lab_native(usable,Vector2i(1520,900)):
@@ -257,6 +279,14 @@ func setup(controller: Control, recovery: Dictionary = {}) -> void:
 	_button(row,"Materials Lab…",open_materials_lab)
 	_button(row,"Strata Theatre…",open_strata)
 	_button(row,"Water Lab…",water_lab.open)
+	engine_lab = preload("res://scripts/workbench_engine_lab.gd").new()
+	engine_lab.name = "EngineLab"
+	# Window nodes default visible. Keep it hidden *before* entering
+	# the scene tree so mount() may select force_native without Godot refusal.
+	engine_lab.hide()
+	add_child(engine_lab)
+	engine_lab.mount(host,self)
+	_button(row,"Engine Lab…",func() -> void: engine_lab.open())
 	_picker(row,_camera,["Free camera","Follow selected","Overview"],func(i: int) -> void: set_camera(i))
 	_button(row,"−",func() -> void: zoom_by(1))
 	_button(row,"+",func() -> void: zoom_by(-1))
@@ -538,6 +568,8 @@ func commit_actor_placement(source: Dictionary, proposed: Dictionary) -> bool:
 	var session = host.physical_actor_session
 	if session == null or session.run_id != str(source.get("run_id","")) or session.epoch != int(source.get("epoch",-1)):
 		return refuse("The physical owner changed during placement; no authored data was modified.")
+	if source.has("pointer_hit") and session.workbench_grab_body(source.pointer_hit) == null:
+		return refuse("The displayed part changed during placement; start a new preview.")
 	var id := int(source.get("instance_id",0))
 	var next := applied.duplicate(true)
 	var selected := actor(next,id)
@@ -1015,6 +1047,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		retain_layers: bool = false) -> bool:
 	if is_instance_valid(strata) and strata.authoring_busy(): return refuse("Finish or stop Strata native authoring before replacing its source.")
 	if busy(): return refuse("Wait for the current owner transaction.")
+	var observed: bool = host._owner_gameplay != null
+	var request_serial: int = host._microscenario_request_serial+1
+	var started_usec: int = Time.get_ticks_usec() if observed else 0
 	if not authoring_patch.is_empty() and (not preserve or reciprocal_panel == null \
 			or not reciprocal_panel.attests(candidate,authoring_patch)):
 		return refuse("Construction history must match the current validated experimental proposal.")
@@ -1028,6 +1063,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 			candidate = candidate.duplicate()
 			candidate.edits = applied.edits
 	var error := Setup.validate(candidate,not preserve)
+	if observed:
+		host._owner_gameplay.spawn_phase("authored_validation",started_usec,
+			{"accepted":error.is_empty(),"retained_cells":preserve,"actors":candidate.get("actors",[]).size()},request_serial,host)
 	if not error.is_empty(): return refuse(error)
 	if candidate.has("ambient_authoring"):
 		candidate = candidate.duplicate()
@@ -1065,6 +1103,7 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 			return refuse("This installed native runtime cannot reopen that detailed authored start; rebuild its GDExtension.")
 	# Retained authoring transfers the current native cells. Stamp replay and
 	# its rectangle limit apply only when constructing an authored start.
+	var definitions_started_usec: int = Time.get_ticks_usec() if observed else 0
 	var definitions := Setup.physical_definitions(candidate)
 	if preserve:
 		for a: Dictionary in definitions:
@@ -1089,6 +1128,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		_saved_view = {"origin":host.camera_origin,"size":host.current_view_size}
 	else:
 		_saved_view.clear()
+	if observed:
+		host._owner_gameplay.spawn_phase("actor_recipe_and_retained_motion",definitions_started_usec,
+			{"actors":definitions.size(),"reset_id":reset_id},request_serial,host)
 	if art_batches != null: art_batches.executor.canvas_changed(false)
 	_cancel()
 	# Publish the current owner view before preparation captures its settings
@@ -1099,6 +1141,9 @@ func apply(candidate: Dictionary, preserve: bool = false, reset_id: int = 0,
 		retained_selection = {"policy":_liquids.requested_policy.duplicate(),
 			"normalize":_liquids.normalize_water.button_pressed,"geometry":_liquids.geometry_picker.selected,
 			"dirty":_liquids._dirty}
+	if observed:
+		host._owner_gameplay.spawn_phase("workbench_request_assembly",started_usec,
+			{"retained_cells":preserve,"authored_runs":runs.size()/5},request_serial,host)
 	var ok: bool = host.workbench_apply(candidate,definitions,runs,Setup.extent_of(candidate),
 		PackedInt32Array(candidate.liquid_policy),candidate.normalize,int(candidate.rule_radius),
 		str(candidate.response),preserve,convert_liquid_inventory,resume_play,generation,material_packet,apply_staged_water,authoring_patch)
@@ -1174,6 +1219,11 @@ func load_material_audition_demo(scene_id: String) -> Dictionary:
 	return {"ok":true,"status":"pending","scene_id":scene_id}
 
 func installed(candidate: Dictionary) -> void:
+	if host._owner_gameplay != null:
+		host._owner_gameplay.spawn_phase("owner_installed",0,
+			{"actor_count":candidate.actors.size(),"selected_actor":candidate.selected,
+			"native_tick":host.latest_snapshot.tick_index if host.latest_snapshot != null else -1},
+			int(host.pending_microscenario_apply.get("serial",-1)),host)
 	if art_batches != null: art_batches.executor.canvas_changed()
 	_pending_request_serial = 0
 	set_ambient_overlay(0, false)
@@ -1455,7 +1505,19 @@ func _reveal_selected() -> void:
 
 
 func _change_actor(candidate: Dictionary, id: int, label: String) -> bool:
-	if not apply(candidate,true,id,false,not host.paused,{},{},false): return false
+	var observed := host._owner_gameplay != null
+	var started_usec := Time.get_ticks_usec() if observed else 0
+	var request_serial: int = host._microscenario_request_serial + 1
+	if observed:
+		host._owner_gameplay.spawn_phase("request",0,{"action":label,"actor_instance":id,
+			"model":str(actor(candidate,id).get("model","")),"retained_cells":true,
+			"actor_count":candidate.actors.size(),"fire_enabled":fire_enabled,
+			"extent":[host.world_extent.x,host.world_extent.y],"paused":host.paused},request_serial,host)
+	var accepted := apply(candidate,true,id,false,not host.paused,{},{},false)
+	if observed:
+		host._owner_gameplay.spawn_phase("request_return",started_usec,
+			{"accepted":accepted,"actor_instance":id,"expected_epoch":host._physical_epoch+1},request_serial,host)
+	if not accepted: return false
 	_actor_action = label
 	message = "Preparing %s #%d…" % [str(actor(candidate,id).model).capitalize(),id]
 	return true
@@ -1858,28 +1920,56 @@ func _set_view(origin: Vector2, size: Vector2i) -> void:
 	var extent := Setup.extent_of(applied)
 	host.current_view_size = size.min(extent)
 	host.camera_origin = origin.clamp(Vector2.ZERO,Vector2(extent-host.current_view_size))
-	host.update_worker_frame_state()
+	# Panning/zooming only changes presentation. The Workbench's native active
+	# region is the fixed authored canvas, published once by Main each frame.
 
-func focus_selected() -> void:
+func focus_selected(presentation: Dictionary = {}) -> void:
+	if presentation.is_empty() and host != null:
+		presentation = host.workbench_presentation_frame
+	if presentation.is_empty() and host != null and host._workbench_presentation_mode() == "coherent":
+		_focus_pending = selected_id() > 0
+		return
+	if not presentation.is_empty() and str(presentation.get("policy","")) == "coherent":
+		if int(presentation.get("follow_instance_id",-1)) != selected_id():
+			_focus_pending = selected_id() > 0
+			return
+		var selected: Vector2 = presentation.get("follow_target",Vector2.INF)
+		_focus_pending = not selected.is_finite() and selected_id() > 0
+		if selected.is_finite(): _set_view(selected-Vector2(host.current_view_size)*0.5,host.current_view_size)
+		return
+	_focus_pending = false
 	var state := body_state(selected_id())
 	if not state.is_empty(): _set_view(Vector2(state.position)-Vector2(host.current_view_size)*0.5,host.current_view_size)
 
 func set_camera(index: int) -> void:
 	if applied.is_empty(): return
+	_focus_pending = false
 	if index == 2:
 		_set_view(Vector2.ZERO,Setup.extent_of(applied))
 	elif index == 1:
 		_set_view(host.camera_origin,ZOOMS[_zoom])
-		focus_selected()
+		focus_selected(host.workbench_presentation_frame)
 	else:
 		_set_view(host.camera_origin,ZOOMS[_zoom])
 
-func zoom_by(direction: int) -> void:
+func zoom_by(direction: int, local_anchor: Vector2 = Vector2.INF) -> void:
 	if applied.is_empty(): return
-	var centre := Vector2(host.camera_origin) + Vector2(host.current_view_size)*0.5
+	_focus_pending = false
+	var old_content: Rect2 = host.view_content_rect()
+	if not old_content.has_area(): return
+	if not local_anchor.is_finite() or not old_content.has_point(local_anchor):
+		local_anchor = old_content.get_center()
+	# Anchor the continuous camera, retaining its subpixel remainder. Feeding
+	# the snapped presentation back into camera state accumulates zoom drift.
+	var anchor: Vector2 = host.PixelCamera.local_to_world(local_anchor,host.camera_origin,
+		host.current_view_size,old_content)
 	_zoom = clampi(_zoom+direction,0,ZOOMS.size()-1)
 	_camera.select(0)
-	_set_view(centre-Vector2(ZOOMS[_zoom])*0.5,ZOOMS[_zoom])
+	_set_view(host.camera_origin,ZOOMS[_zoom])
+	# Extent clamping can change the aspect ratio, hence the content rectangle.
+	var origin: Vector2 = host.PixelCamera.origin_for_anchor(anchor,local_anchor,
+		host.current_view_size,host.view_content_rect())
+	_set_view(origin,host.current_view_size)
 
 func _input(event: InputEvent) -> void:
 	if actor_interaction != null and actor_interaction.global_input(event):
@@ -1917,15 +2007,40 @@ func _input(event: InputEvent) -> void:
 	else: return
 	get_viewport().set_input_as_handled()
 
-func _pick(pos: Vector2i) -> void:
-	for a: Dictionary in applied.actors:
-		var state := body_state(int(a.id))
-		if state.is_empty(): continue
-		var local := (Vector2(pos)-Vector2(state.position)).rotated(-float(state.rotation))
-		if Setup.bounds(str(a.model)).grow(2).has_point(local):
-			select_instance(int(a.id))
-			return
-	select_instance(0)
+func _submitted_pick_frame_valid(presentation: Dictionary) -> bool:
+	if not host.workbench_presentation_submission_enabled():
+		return host._valid_workbench_mask_frame(presentation.get("mask_frame",{}))
+	# An upload can precede actual draw admission. Its newer revision cannot
+	# invalidate the actor still visible in the last submitted framebuffer.
+	# Keep the receipt's own material join, its actual submission serial and
+	# every live owner fence; retired Worlds never gain a live-pose fallback.
+	if not presentation.is_read_only() or not bool(presentation.get("valid",false)) \
+			or host.physical_actor_session == null \
+			or not host._workbench_submission.connected() or not host._workbench_submission.source_valid(): return false
+	var bridge: Variant = host.physical_actor_session.bridge
+	if not bridge is WorkbenchBridge: return false
+	var mask: Dictionary = presentation.get("mask_frame",{})
+	var serial: Variant = presentation.get("submission_serial")
+	return serial is int and int(serial)>0 and int(serial)==host._workbench_submission.committed_count \
+		and presentation.get("submission_scope")=="actual_cpu_draw_admission_no_gpu_or_display_completion" \
+		and presentation.get("session",-1)==bridge._session and presentation.get("epoch",-1)==bridge._epoch \
+		and mask.get("session",-1)==bridge._session and mask.get("epoch",-1)==bridge._epoch \
+		and presentation.get("world_generation",-1)==host.last_uploaded_world_generation \
+		and mask.get("world_generation",-1)==presentation.get("world_generation",-2) \
+		and mask.get("revision",-1)==presentation.get("material_revision",-2) \
+		and mask.get("instances") is Dictionary
+
+
+func presented_part_at(point: Vector2, padding: float = 0.0) -> Dictionary:
+	var frame: Dictionary = host.workbench_presentation_frame
+	if not frame.get("poses") is Dictionary or not _submitted_pick_frame_valid(frame): return {}
+	return host.physical_actor_session.pick_workbench_part(point, frame, padding)
+
+
+func _pick(pos: Vector2) -> void:
+	var hit := presented_part_at(pos, 2.0)
+	select_instance(int(hit.get("instance_id", 0)))
+
 
 func _world_input(event: InputEvent) -> void:
 	# An external reciprocal job owns this source until it settles, including
@@ -1940,10 +2055,13 @@ func _world_input(event: InputEvent) -> void:
 	if event is InputEventMouseButton:
 		if event.button_index == MOUSE_BUTTON_MIDDLE:
 			_pan = event.pressed
-			if _pan: _camera.select(0)
+			if _pan:
+				_camera.select(0)
+				_focus_pending = false
 			return
 		if event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
-			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
+			zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1,event.position)
+			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position)
 			return
 		if event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]: return
 		_commit_field()
@@ -1953,11 +2071,11 @@ func _world_input(event: InputEvent) -> void:
 		if _pan:
 			var area: Rect2 = host.view_content_rect()
 			if area.has_area(): _set_view(Vector2(host.camera_origin)-event.relative*Vector2(host.current_view_size)/area.size,host.current_view_size)
+			if paint_editor != null: paint_editor.cursor = host.world_cell_from_local_point(event.position)
 			return
 	else: return
-	var pixel: Vector2i = host.view_pixel_from_local_point(event.position)
-	if pixel.x < 0: return
-	var pos := Vector2i(host.camera_origin.floor()) + pixel
+	var pos: Vector2i = host.world_cell_from_local_point(event.position, true)
+	if pos.x < 0: return
 	if _drag_button == 0 or pos == _last_cell: return
 	_last_cell = pos
 	if _drag_button == MOUSE_BUTTON_RIGHT or _tool.selected == 0:
@@ -1966,12 +2084,18 @@ func _world_input(event: InputEvent) -> void:
 	_drag_button = 0
 	match _tool.selected:
 		1: place(model_choice(),Vector2(pos))
-		2: _pick(pos)
+		# Actor contact is continuous geometry. Rounding the accepted pointer
+		# to a material cell can move it outside a thin or clipped visible part.
+		# Keep the same submitted camera and the picker's exact material fences.
+		2: _pick(host.world_position_from_local_point(event.position, true))
 		3:
 			_position[0].value = pos.x
 			_position[1].value = pos.y
 			move_selected()
 		4: place_source(pos)
+
+func update_camera(presentation: Dictionary = {}) -> void:
+	if not applied.is_empty() and (_camera.selected == 1 or _focus_pending): focus_selected(presentation)
 
 func _process(_delta: float) -> void:
 	if host == null: return
@@ -2009,11 +2133,9 @@ func _process(_delta: float) -> void:
 	if not _reload_rollback.is_empty() and host.pending_microscenario_apply.is_empty():
 		Fleet.restore_registry(_reload_rollback)
 		_reload_rollback.clear()
-	if not applied.is_empty() and _camera.selected == 1: focus_selected()
 	if Time.get_ticks_msec()-_last_status_ms < 150: return
 	_last_status_ms = Time.get_ticks_msec()
-	var cursor: Vector2i = host.view_pixel_from_local_point(host.world_view.get_local_mouse_position())
-	if cursor.x >= 0: cursor += Vector2i(host.camera_origin.floor())
+	var cursor: Vector2i = host.world_cell_from_local_point(host.world_view.get_local_mouse_position(), true)
 	var context: Dictionary = host.tower_context
 	var source: Dictionary = context.get("workbench_source",{})
 	if _stream_was_active and not source.get("stream_enabled",false):

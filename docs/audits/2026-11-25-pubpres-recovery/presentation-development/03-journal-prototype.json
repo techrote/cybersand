@@ -1,0 +1,345 @@
+{
+  "checks": 40,
+  "display": "X11",
+  "engine": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "failures": [],
+  "input_hashes": {
+    "res://scripts/main.gd": "9e20f228bfd54c419fc25302bcd71114a9a87bc21dd2474e72f7cd6831a53d1e",
+    "res://scripts/workbench_presentation_submission.gd": "f8781e1c0f4cfe74d4bf30d6f026df29e98f188f7a707d472fde934bee7e4fbd",
+    "res://tests/test_workbench_presentation_submission.gd": "accf1f65e6dc2c7124714c5cc2a6bbfb025e3be4e757dc33fb870228c88f1fb6"
+  },
+  "observations": [
+    {
+      "fairness_turn": 1,
+      "frame_process": 32,
+      "label": "initial",
+      "material_serial": 3,
+      "process_frame": 32,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 33,
+        "connected": true,
+        "draw_notifications": 33,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80916514290,
+        "prepared_count": 33,
+        "process_frame": 32,
+        "rejected_count": 0,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 0,
+        "unprepared_draws": 0
+      },
+      "submission_serial": 33,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 0,
+      "frame_process": 33,
+      "label": "superseded_and_duplicate",
+      "material_serial": 3,
+      "process_frame": 34,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 34,
+        "connected": true,
+        "draw_notifications": 35,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80916514290,
+        "prepared_count": 38,
+        "process_frame": 34,
+        "rejected_count": 0,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 4,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 34,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 1,
+      "frame_process": 39,
+      "label": "draw_resume",
+      "material_serial": 3,
+      "process_frame": 39,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 35,
+        "connected": true,
+        "draw_notifications": 36,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80916514290,
+        "prepared_count": 43,
+        "process_frame": 39,
+        "rejected_count": 0,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 8,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 35,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 1,
+      "frame_process": 39,
+      "label": "stale_camera",
+      "material_serial": 3,
+      "process_frame": 40,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 35,
+        "connected": true,
+        "draw_notifications": 37,
+        "enabled": true,
+        "last_rejection": "camera_changed",
+        "owner_instance": 80916514290,
+        "prepared_count": 44,
+        "process_frame": 40,
+        "rejected_count": 1,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 8,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 35,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 1,
+      "frame_process": 39,
+      "label": "stale_policy",
+      "material_serial": 3,
+      "process_frame": 41,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 35,
+        "connected": true,
+        "draw_notifications": 38,
+        "enabled": true,
+        "last_rejection": "policy_changed",
+        "owner_instance": 80916514290,
+        "prepared_count": 45,
+        "process_frame": 41,
+        "rejected_count": 2,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 8,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 35,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 1,
+      "frame_process": 39,
+      "label": "stale_material",
+      "material_serial": 3,
+      "process_frame": 42,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 35,
+        "connected": true,
+        "draw_notifications": 39,
+        "enabled": true,
+        "last_rejection": "material_changed",
+        "owner_instance": 80916514290,
+        "prepared_count": 46,
+        "process_frame": 42,
+        "rejected_count": 3,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 8,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 35,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 1,
+      "frame_process": 39,
+      "label": "stale_lifecycle",
+      "material_serial": 3,
+      "process_frame": 43,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 35,
+        "connected": true,
+        "draw_notifications": 40,
+        "enabled": true,
+        "last_rejection": "lifecycle_changed",
+        "owner_instance": 80916514290,
+        "prepared_count": 47,
+        "process_frame": 43,
+        "rejected_count": 4,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 8,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 35,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 0,
+      "frame_process": 44,
+      "label": "picking",
+      "material_serial": 3,
+      "process_frame": 44,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 36,
+        "connected": true,
+        "draw_notifications": 41,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80916514290,
+        "prepared_count": 48,
+        "process_frame": 44,
+        "rejected_count": 4,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 8,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 36,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "camera_mapping": "[X: (4.454321, 0.0), Y: (0.0, 4.454321), O: (-429.0, -262.0)]",
+      "expected": [
+        0.459843158721924,
+        0.649568617343903,
+        0.819999992847443
+      ],
+      "image_size": [
+        1280,
+        720
+      ],
+      "label": "first_read",
+      "observed": [
+        0.459716796875,
+        0.6494140625,
+        0.81982421875
+      ],
+      "pixel": [
+        646,
+        412
+      ],
+      "root_screen_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (0.0, 40.0)]",
+      "root_size": [
+        1280,
+        800
+      ],
+      "root_stretch_transform": "[X: (0.666667, 0.0), Y: (0.0, 0.666667), O: (0.0, 0.0)]",
+      "submission_serial": 37
+    },
+    {
+      "fairness_turn": 1,
+      "frame_process": 81,
+      "label": "ordinary_lifecycle",
+      "material_serial": 18,
+      "process_frame": 82,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 73,
+        "connected": true,
+        "draw_notifications": 78,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80916514290,
+        "prepared_count": 85,
+        "process_frame": 82,
+        "rejected_count": 4,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 8,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 73,
+      "visible_parts": 2,
+      "world_generation": 4
+    }
+  ],
+  "platform": "Linux",
+  "schema": "workbench-actual-submission-graphical-v1",
+  "scope": "native mounted graphical draw admission; first framebuffer read; no GPU completion or physical NVIDIA acceptance",
+  "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+  "submission_events": 73
+}

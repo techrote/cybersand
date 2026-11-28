@@ -35,6 +35,7 @@ var _failed := false
 var _backend := ""
 var _reason := "not configured"
 var _blocked_reason := "not configured"
+var _owner_blocked_reason := ""
 var _ingestions := 0
 var _patches := 0
 var _bytes := 0
@@ -68,6 +69,7 @@ func _clear_publication() -> void:
 	_failed = false
 	_backend = ""
 	_blocked_reason = "full material baseline required"
+	_owner_blocked_reason = ""
 
 
 func configure(extent: Vector2i, expected_epoch: int) -> bool:
@@ -85,54 +87,80 @@ func wants_full_refresh() -> bool:
 	return _extent != Vector2i.ZERO and not _primed
 
 
-func ingest_snapshot(snapshot: CyberSimulationSnapshot, extent: Vector2i, expected_epoch: int) -> bool:
+# Native completion and material publication are separate immutable envelopes.
+# Observing a completion advances freshness and retires a replaced World without
+# allocating material bytes or claiming that a render publication exists.
+func observe_native_owner(snapshot: CyberSimulationSnapshot, extent: Vector2i, expected_epoch: int) -> bool:
 	if snapshot == null or not configure(extent, expected_epoch): return false
 	if snapshot.rigid_body_epoch != _epoch:
-		_reason = "physical owner epoch mismatch"
-		_blocked_reason = _reason
-		return false
-	if snapshot.render_world_generation < _generation:
-		_reason = "older World generation refused"
-		_blocked_reason = _reason
-		return false
-	if snapshot.render_world_generation < 0 or snapshot.serial < 0 or snapshot.tick_index < 0 \
+		return _refuse_owner("physical owner epoch mismatch")
+	var generation := int(snapshot.physics_world_generation) if snapshot.physics_world_generation >= 0 \
+		else int(snapshot.render_world_generation)
+	if generation < _generation:
+		return _refuse_owner("older World generation refused")
+	if generation < 0 or snapshot.serial < 0 or snapshot.tick_index < 0 \
 		or snapshot.simulation_world_revision < 0:
-		_reason = "invalid native publication identity"
-		_blocked_reason = _reason
-		return false
-	if snapshot.render_world_generation == _generation:
-		# The render callback may retain an older envelope than the physical
-		# completion callback. Ignore it without rolling freshness backward.
+		return _refuse_owner("invalid native owner identity")
+	if generation == _generation:
 		if snapshot.serial < _owner_serial:
 			_ignored_older_publications += 1
 			return false
 		if snapshot.tick_index < _latest_tick or snapshot.simulation_world_revision < _current_revision \
 			or (snapshot.serial == _owner_serial and (snapshot.tick_index != _latest_tick \
-				or snapshot.simulation_world_revision != _current_revision)):
-			_reason = "native publication progression regressed or immutable identity changed"
-			_blocked_reason = _reason
-			return false
+				or snapshot.simulation_world_revision != _current_revision \
+				or snapshot.backend_name != _backend or snapshot.simulation_failed != _failed)):
+			return _refuse_owner("native publication progression regressed or immutable identity changed")
+	if not str(snapshot.backend_name).begins_with("native"):
+		return _refuse_owner("native material identity unavailable for this backend")
+	if generation != _generation:
+		_clear_publication()
+		_generation = generation
+	_owner_serial = int(snapshot.serial)
 	_latest_tick = int(snapshot.tick_index)
 	_current_revision = int(snapshot.simulation_world_revision)
 	_failed = bool(snapshot.simulation_failed)
 	_backend = str(snapshot.backend_name)
-	if _failed:
-		_reason = "native simulation failed"
-		return false
-	if not _backend.begins_with("native"):
-		_reason = "native material identity unavailable for this backend"
-		_blocked_reason = _reason
-		return false
+	_owner_blocked_reason = ""
+	_reason = _freshness_reason()
+	return not _failed
+
+
+func _refuse_owner(reason: String) -> bool:
+	_reason = reason
+	_owner_blocked_reason = reason
+	return false
+
+
+func ingest_snapshot(snapshot: CyberSimulationSnapshot, extent: Vector2i, expected_epoch: int) -> bool:
+	if snapshot == null or not configure(extent, expected_epoch): return false
+	var owner_admitted := observe_native_owner(snapshot, extent, expected_epoch)
+	if not owner_admitted:
+		# Main may see an early completion before the corresponding material
+		# copy, or several completions before its next render callback. A newer
+		# genuine material publication may still repair/prime that same World.
+		# Its older owner metadata cannot roll current native freshness backward.
+		var generation := int(snapshot.physics_world_generation) if snapshot.physics_world_generation >= 0 \
+			else int(snapshot.render_world_generation)
+		if snapshot.rigid_body_epoch != _epoch or generation != _generation \
+			or snapshot.serial < 0 or snapshot.serial >= _owner_serial \
+			or snapshot.tick_index < 0 or snapshot.tick_index > _latest_tick \
+			or snapshot.simulation_world_revision < 0 or snapshot.simulation_world_revision > _current_revision \
+			or snapshot.simulation_failed or snapshot.backend_name != _backend \
+			or _failed or not _owner_blocked_reason.is_empty():
+			return false
 	if snapshot.render_world_generation != _generation:
-		_cache = null
-		_primed = false
-		_serial = -1
-		_generation = int(snapshot.render_world_generation)
-	_owner_serial = int(snapshot.serial)
+		_blocked_reason = "material publication World generation mismatch"
+		_reason = _blocked_reason
+		return false
 	if snapshot.render_snapshot_serial <= _serial:
+		if not owner_admitted: return false
 		_blocked_reason = ""
 		_reason = _freshness_reason()
 		return _reason.is_empty()
+	if snapshot.render_tick_index < 0 or snapshot.render_tick_index > snapshot.tick_index \
+		or snapshot.world_revision < 0 or snapshot.world_revision > snapshot.simulation_world_revision \
+		or (_primed and (snapshot.render_tick_index < _sample_tick or snapshot.world_revision < _revision)):
+		return _refuse("material sampling identity regressed or exceeds its native owner")
 	var channels := int(snapshot.render_channels)
 	var metadata: PackedInt32Array = snapshot.render_patch_rectangles
 	var payload: PackedByteArray = snapshot.render_patch_cells
@@ -201,6 +229,7 @@ func _refuse(reason: String) -> bool:
 
 func _freshness_reason() -> String:
 	if _failed: return "native simulation failed"
+	if not _owner_blocked_reason.is_empty(): return _owner_blocked_reason
 	if not _blocked_reason.is_empty(): return _blocked_reason
 	if not _primed or _cache == null: return "full material baseline required"
 	if _sample_tick < 0 or _latest_tick < _sample_tick: return "invalid native sampling tick"
@@ -432,6 +461,7 @@ func diagnostics() -> Dictionary:
 		"reason":_freshness_reason(), "extent":_extent, "owner_epoch":_epoch,
 		"world_generation":_generation, "publication_serial":_serial, "revision":_revision,
 		"owner_snapshot_serial":_owner_serial,"ignored_older_publications":_ignored_older_publications,
+		"owner_refusal":_owner_blocked_reason, "material_refusal":_blocked_reason,
 		"sample_tick":_sample_tick, "current_tick":_latest_tick, "backend":_backend,
 		"cache_bytes":_extent.x * _extent.y * _channels if _cache != null else 0,
 		"ingestions":_ingestions, "patches":_patches, "source_bytes":_bytes,

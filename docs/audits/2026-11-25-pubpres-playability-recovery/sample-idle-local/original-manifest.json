@@ -1,0 +1,1526 @@
+{
+  "schema": "pubpres-recovery-local-evidence-manifest-v1",
+  "local_evidence_root": "/workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-comparison-03",
+  "files": [
+    {
+      "path": "campaign/SUMMARY.json",
+      "bytes": 2364795,
+      "sha256": "9d0d239e7d1648ab522ab611a6f75e75116dfc8bffea35a9ac005e23cc1165bc",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/campaign.json",
+      "bytes": 13580,
+      "sha256": "483773657855b496bb8d619442a3501faeede4b9e488c49dda6b85555122d067",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/a-frame-hall.style.json",
+      "bytes": 439,
+      "sha256": "1c62851c7c1eff93e49bf5a5a3c1122ed0e788b73e6b5a4d1f42af966fe9524c",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/arched-viaduct.style.json",
+      "bytes": 431,
+      "sha256": "9aee72a6511ce73b99f03f110ebce1e54dba57d2b90d475976cf144977809782",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/barrel-arcade.style.json",
+      "bytes": 437,
+      "sha256": "b79eb401a19950b22f4b505d51888ef33dbea01a0b74b4bb0e737f52fc90edcf",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/basalt-archive.style.json",
+      "bytes": 436,
+      "sha256": "9ba3ff94dd06b8f4a6083ab36ad5e3c9ff44a6a33dc53f869f12e9b75fce0bd8",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/basilica.style.json",
+      "bytes": 423,
+      "sha256": "6622e20bd758a89eb9fe109ef9c97be643717653e0890b79d534b16a6971f5a5",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/bowstring-truss.style.json",
+      "bytes": 448,
+      "sha256": "7984e2be5aa499e942da29b86d8bf6e217543ac0bed025ca3a3f0161fb1ce9b3",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/bridgehouse.style.json",
+      "bytes": 431,
+      "sha256": "3664afbcc20d09506afff3559ebeb22eecd85dd405f186888852028bf5d3d2e3",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/butterfly-hall.style.json",
+      "bytes": 446,
+      "sha256": "c8be8b5d54a58555d6b30d325dfa7cd25924461e0d00225033e458c6c127b458",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/buttress-crown.style.json",
+      "bytes": 440,
+      "sha256": "63378ac00f460bb7b2b8c4e10e0b5a04f18a59a9ec22a30d6f307b5d0b93f9e0",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/buttress-wall.style.json",
+      "bytes": 437,
+      "sha256": "c7c17fbf7c3d08eca2c682263218a6c9f6af592a50712e11a83f24390090e19b",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/cable-gallery.style.json",
+      "bytes": 444,
+      "sha256": "3bdc4aaf9beaf264b9ef969768ef24b5bff718704747dbb374efa0cf09aa5ea1",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/cantilever-spine.style.json",
+      "bytes": 452,
+      "sha256": "6976d6caac7c3f100e457664bf296c43eab21d4b0fad067057320e0d27e44596",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/cascade-terrace.style.json",
+      "bytes": 444,
+      "sha256": "ff5ac0f87c176056c15b8c937eaaa5a3f7133ac0c003750496e0b9c09826b181",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/cathedral-megaframe.style.json",
+      "bytes": 455,
+      "sha256": "79a0722afeee05c7399541ac4198965a83f8d2df07a286ac8b055bdc1769c874",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/cellular-hive.style.json",
+      "bytes": 437,
+      "sha256": "56f7f1db8ca798986674a761d28c814d34734c3c29a161023526970a150829a4",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/chain-vault.style.json",
+      "bytes": 433,
+      "sha256": "2b22c9714349d72c664a638d28ccf2ab642dca10adfd0f145168b7fa0e20d6da",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/chevron-hall.style.json",
+      "bytes": 439,
+      "sha256": "2a1176fea07d55889ed2ca520fa0cd0f0f07e4e9bf12604ab44c2163772dde25",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/civic-atrium.style.json",
+      "bytes": 430,
+      "sha256": "406b14e532c2e681be807ad78e3feca2bb9ffb2711c83a081f7d51ae466eb15a",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/clerestory-hall.style.json",
+      "bytes": 448,
+      "sha256": "e107b34706b9067fb7be0b0dee54eb6ce92e5db20faab9a20de54b1e2a33486e",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/colonnade.style.json",
+      "bytes": 425,
+      "sha256": "0ed356bd4413adf2e48dc07aa2c51faae0d535742533bad960264e37ec665853",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/corbel-arcade.style.json",
+      "bytes": 437,
+      "sha256": "06c29ac145feb8420d19fe7eccb0423b9dbb741ab00d1c978439b20d0997f068",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/cranked-beam.style.json",
+      "bytes": 440,
+      "sha256": "cc09fcf5cf0ae17aff511d20503e12399e6d5738113525eb81e2317752d8fde0",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/crenellated-bridge.style.json",
+      "bytes": 453,
+      "sha256": "9e3fdd8c25ae461918ecf50274394ece8c66febacd699b337fea7813d50ebae3",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/crossbeam-stack.style.json",
+      "bytes": 447,
+      "sha256": "f44dd2435dbdf24d237ad76ec14903e407c25bdfe7ebf27f5556fc9b620e0985",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/crown-bridge.style.json",
+      "bytes": 435,
+      "sha256": "3b6c364d5aead77b8c31b4f14ff6924708f8d11261d656a09e01f6505fb4df92",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/custom-masonry-court.style.json",
+      "bytes": 480,
+      "sha256": "5d335b31ad602d337f98ccbd57fb51e8af00d45906edde534e9410d5b2bca9e8",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/diamond-truss.style.json",
+      "bytes": 443,
+      "sha256": "6a1d82c057f270d7fe0f07eb75be15fcac7f85c434d619220f024a5545da4e1a",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/double-cantilever.style.json",
+      "bytes": 453,
+      "sha256": "3e2b45960530bacc8db69504ce3229a47566ea2104332678ab162e2a3e736491",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/drum-vault.style.json",
+      "bytes": 430,
+      "sha256": "4a93e6e1dee754a6496f243fd10c32ae6cba73d170674197187e22bf2192083c",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/earthen-terraces.style.json",
+      "bytes": 441,
+      "sha256": "2b1476bcec819539c4bdecdf10ce3bd961ae9d80d9f3be6f0eb27294cde4f20f",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/fan-truss.style.json",
+      "bytes": 431,
+      "sha256": "5fe779eb53d69a55bca37a1f49774d7d84c86eed4352100ed5db87a173762382",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/flying-buttress.style.json",
+      "bytes": 444,
+      "sha256": "e2f594fbe9114fea6410a0db84d8a4899ddf12478ed81396ae4f8a19a0837574",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/folded-plate-hall.style.json",
+      "bytes": 455,
+      "sha256": "dad59da9ff8a66974256d644c8f6377a8c3648ef8215e3e48ace63618e70c061",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/forked-gantry.style.json",
+      "bytes": 442,
+      "sha256": "e97035791015b359b5473f584f27c441d1efa6a36c7cb9d790044a3af1a2b6b9",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/habitation-arcology.style.json",
+      "bytes": 453,
+      "sha256": "6862e046a840828327f68ad75479eccbc150b11c28644a0e6aaa3dde603871da",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/hanging-arcade.style.json",
+      "bytes": 440,
+      "sha256": "b614694b7eded9d88343fb524b045c8fee0f677a93115399cceb71b261d1474e",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/harp-bridge.style.json",
+      "bytes": 438,
+      "sha256": "9e0be9567f96e395f9eb8c6d453312c76e5dae86dccf77552cdf72d5832d93da",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/hourglass-pier.style.json",
+      "bytes": 441,
+      "sha256": "ecfb0a4ee5483d90afb7c9cb5a6385155c0ff6dad1f34e7a106d9ede67872516",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/industrial-service.style.json",
+      "bytes": 444,
+      "sha256": "19e489a62898654f0ea18c8053e6733e0502e50dcbf70d5c19e1da33a1cd7df8",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/interlaced-viaduct.style.json",
+      "bytes": 451,
+      "sha256": "e1424f5dae913ba047d6661ab73a3cdf067a8b0693868c61cd6cd435e42b21fe",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/interlock-brutalism.style.json",
+      "bytes": 460,
+      "sha256": "5dfb60bab7c532691bd9c8688a5f5a619d956198cd49b76880700912cfd097f4",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/inverted-arch.style.json",
+      "bytes": 442,
+      "sha256": "d7a25289741abedaca3fa1fe4a1b785b662eb1a473c50c101f9204b869e0f481",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/inverted-trestle.style.json",
+      "bytes": 451,
+      "sha256": "088839a229f32a6e0731df9dcb940ef96efe50f7963857ca7805f1f3e57b3837",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/kingpost-frame.style.json",
+      "bytes": 441,
+      "sha256": "1fbd2e96480e79b53d02454ce0e2093c83a7374e94926b4c326a8b8830a6622c",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/ladder-bridge.style.json",
+      "bytes": 443,
+      "sha256": "c61045106b40f88f068042077243dfc1dbe6317c051e1ea91ee8c3d651913e22",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/lantern-tower.style.json",
+      "bytes": 443,
+      "sha256": "eeb207fbd6cbc7b5178a9db4195cf21538768fa8a69b6670cda802827353658e",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/lattice-tower.style.json",
+      "bytes": 443,
+      "sha256": "09a9820e7e96ee51f8dfba14d77eed2b851949bc890ff1e651de131699f1bd01",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/lenticular-bridge.style.json",
+      "bytes": 456,
+      "sha256": "0d690583cf755bf86e950e2145552c9f3e616264ea957b9e773a2cf706ba4da0",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/megatruss-station.style.json",
+      "bytes": 453,
+      "sha256": "56f631a9f0dfe1f50c03ccd83ab1077a58f76552e313dbae7445308b50f7f97f",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/metabolist-spine.style.json",
+      "bytes": 450,
+      "sha256": "21944fc25adc6cbe33ecf4f04fda8bab37d4945706cc0a8bf0023d62aa0e261d",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/monopod-tower.style.json",
+      "bytes": 443,
+      "sha256": "29abfe477198a066226298d34ce9746d1f0fc1403449f7e269a77a8859637298",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/mushroom-deck.style.json",
+      "bytes": 441,
+      "sha256": "2b26bd1f29c8c6a3cedbfe07026534205e0114af76ee1cf35a62e70620a39ccc",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/nested-arcade.style.json",
+      "bytes": 438,
+      "sha256": "dc57be34c1f7757dd6e037965f2c234793709a4d2148fe033c2ead0881b3a683",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/offset-arcade.style.json",
+      "bytes": 438,
+      "sha256": "93c958bcbdb90802491c032d7aa868151602d0c9f6663c7b283f811c4bdb6c9d",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/orbital-observatory.style.json",
+      "bytes": 451,
+      "sha256": "e371f821bafc37cde36f06cd04431e99e73793533d563888e576ae0248c12a3a",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/overgrown-ruins.style.json",
+      "bytes": 454,
+      "sha256": "80bd42a1372e2320344c297a843fefd0e1f9cc97577604d2b65dfd1be6db6f27",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/pointed-arcade.style.json",
+      "bytes": 440,
+      "sha256": "6c71ad908120af023a0e16a73822665833347975e6704d60074a7e00914798c8",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/portal-frame.style.json",
+      "bytes": 438,
+      "sha256": "bd27a12451612bc32636f3ad31a06920f45d85f076fb32ee1aa0be98eeab9fa9",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/pratt-truss.style.json",
+      "bytes": 436,
+      "sha256": "521a01c1e343f0e8521398387eb9519c4d2c29990ed1f6c5f3020a049145ed76",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/pyramidal-frame.style.json",
+      "bytes": 449,
+      "sha256": "fa699fd534b13b9a9ee02946f787845c567c138628c9258d23d26be21fe84df8",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/queenpost-frame.style.json",
+      "bytes": 443,
+      "sha256": "bd3ff70b8cceca97bb85668b9d3953d563664ab54974eed937f067d49ad044ca",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/radial-stay-bridge.style.json",
+      "bytes": 459,
+      "sha256": "555039d613246e946080f9142fe61261eaccfd120563d7287ce9a7655b1b84af",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/rib-vault.style.json",
+      "bytes": 427,
+      "sha256": "da405f4ffe164a349cdf2cfd66baf55bf9942a8285bfd0999444a078a22984d2",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/ring-pier.style.json",
+      "bytes": 431,
+      "sha256": "959504cb2fd0862a4c1162957f0618321d8610d71535052faa9c831468328f85",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/rosework-gatehouse.style.json",
+      "bytes": 453,
+      "sha256": "a822093c1c71b3bc5707c6af6260d5839c3933d443898108bbfc8b0b7e5f9903",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/sawtooth-gallery.style.json",
+      "bytes": 452,
+      "sha256": "f77c35b12c555200b81fadf6a06900b2932c507b0b49840f097badb6fb5e33bf",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/scalloped-vault.style.json",
+      "bytes": 443,
+      "sha256": "a50052742dfe4de57e88374469122b94ad66e37547374c971048abace1b0acdc",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/seeded-typology-megablock.style.json",
+      "bytes": 477,
+      "sha256": "ac33f5b9f4cd7cdc616d31adaca213707d26baa8666498a645bb07454e7a9703",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/shelf-stack.style.json",
+      "bytes": 435,
+      "sha256": "49af13577686e6ea1f1365b14cd23ecd93eeaa511248b834d60ad7d6fd2dd0bb",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/skyline-terraces.style.json",
+      "bytes": 442,
+      "sha256": "d447729b16f514aa8ac5549a73b02220ac04de03a9958224b212e3510b56aaae",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/solar-conservatory.style.json",
+      "bytes": 447,
+      "sha256": "97314dd862b3601cbde9cfca23ccda93ab7e4aba4a63d57760eea39cf54c4e15",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/space-frame.style.json",
+      "bytes": 437,
+      "sha256": "9c9021f209124fb8684fcdc5bceca2fd2c80d3f90a0b090672e66a0796122ff1",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/spine-arcade.style.json",
+      "bytes": 434,
+      "sha256": "bee3d55836f0323b5452a7e56d7f3e6645a31c7af65a9804a19197ae69f46c89",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/split-pier.style.json",
+      "bytes": 429,
+      "sha256": "98eb3a51edfed50c97d8658fc72a4b71e55c49fa966544f32d40e1d5eba10b96",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/stacked-arcade.style.json",
+      "bytes": 440,
+      "sha256": "c4740e19ded05f808a1c17e134ce46ada36737e4d50e2ba4d4f89b8ce551a4f2",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/staggered-balcony.style.json",
+      "bytes": 454,
+      "sha256": "f226d5627f06d99f74b164a1b1dc88d3810a4ddefccc76623bbb318e4a2fe855",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/steel-trestle.style.json",
+      "bytes": 435,
+      "sha256": "07d03070bb9d03c8f83e69459321090d5e898f8e04280cefec1fe5ced39e69da",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/stepped-aqueduct.style.json",
+      "bytes": 446,
+      "sha256": "cbc32329bffbde34721750fb410369f7f308ae4ce63a67803dc1a51cf21791b6",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/stepped-buttress.style.json",
+      "bytes": 446,
+      "sha256": "9ec9a1bff84ad01a256e84421cf1fd71a66c73f95fbde9473a041376aeef8d1a",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/suspended-arcology.style.json",
+      "bytes": 456,
+      "sha256": "2371205bd82359c7c0efef9d32fc5c307cdbc9f84b9416120e2b7e6b873d715c",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/suspended-deck.style.json",
+      "bytes": 444,
+      "sha256": "60a51620baa24352bbd033c0bb63d8c803d123a41260244370aa6b548b2e6d5a",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/suspension-pylon.style.json",
+      "bytes": 453,
+      "sha256": "9c829e9bb352bd38d0f594a3cbd2a1fe935f7dcc0dba048e40628a2f97ad6618",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/thermal-foundry.style.json",
+      "bytes": 437,
+      "sha256": "7301a011bf0fee289f972c5ccec485993beabbb0987c49ea293d9a4fb2e62287",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/three-algorithms.project.json",
+      "bytes": 2258,
+      "sha256": "6e9b8025ee2404bc09043610edbaa7a489b78a9d37868f00b04cf0d121086299",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/three-style.project.json",
+      "bytes": 2304,
+      "sha256": "04da6b7ab511132cc0ec2aed5cc9bf2b3a6310b7391878946a4ac1ae5d2d434f",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/transit-spine.style.json",
+      "bytes": 438,
+      "sha256": "f0fd9aed98c2912dedc795b0322e9d613027b6d9a35291e470939f8fe64c5a1b",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/tripod-frame.style.json",
+      "bytes": 440,
+      "sha256": "64a5c2f1be57f58e8cc8b77cd20e370f14c2a90c01c8404ef9b1ec64864bde37",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/triptych-arcade.style.json",
+      "bytes": 444,
+      "sha256": "7d35102461185bc544d290edda11127b578229b032380e61f2c78b2371cda34a",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/twin-mast-bridge.style.json",
+      "bytes": 452,
+      "sha256": "80059d77277faf474c21971fb8239ee5da4a4542fb71ea6b14990893dcaedb2f",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/vierendeel-frame.style.json",
+      "bytes": 450,
+      "sha256": "74b442400609553d2c21ae5a87753c41d0f315cfd6d2ae0f013fb3a348a34030",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/warren-truss.style.json",
+      "bytes": 440,
+      "sha256": "a00d6c9ef39d24e32cf2233466e96669e242eaf75a943e1ff903d74c447c5135",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/wedge-gallery.style.json",
+      "bytes": 443,
+      "sha256": "9a73e6a52d9be71389528237b568c564ce1118e01239e1b2c7cfb0b564a15c6a",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/yoke-bridge.style.json",
+      "bytes": 432,
+      "sha256": "b24471a544d77d6984194ac78ee73a1fbd764692ee048de9d063bc7bd31e4ae6",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/ziggurat-arcade.style.json",
+      "bytes": 443,
+      "sha256": "ed6d05d52c4a0b8471c3ddc5adf6e51333621b58c2ff8e88495657235ef97da1",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/zigzag-bridge.style.json",
+      "bytes": 442,
+      "sha256": "8896b695cb960138832753ad12e9622dcf2a320105113ce39548f426dd4b6c70",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural/zigzag-pier.style.json",
+      "bytes": 436,
+      "sha256": "e03efeca0d791307c55336ef455419660693f3a9df53335765f630e3f36fa67c",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/architectural-three-style.json",
+      "bytes": 7517,
+      "sha256": "b875540d53c0c43309808383868c0ca20d0163185d6b75aa921ea4754361b0fa",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/custom_module.cpp",
+      "bytes": 2330,
+      "sha256": "d4162959581ceb6cf973c763d4d69973bf60608f27d0ddbafcd476669f843abe",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/district-arcology.json",
+      "bytes": 1448,
+      "sha256": "3838962ee2cbccc76b8e7a5634efab055631ec3b3c85a6296b12d8c22e3885da",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/flow-ruins.json",
+      "bytes": 1417,
+      "sha256": "5e7d952d3490b72cf80ae492aed319050428524e77145ae7af4ae90cec1017b7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/gen007-deepworks.json",
+      "bytes": 61845,
+      "sha256": "688e5ee0cddf630109219030821baf38a82ef6f06afe8002fc720bd4c319186b",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/gen007-qualification.json",
+      "bytes": 3755,
+      "sha256": "e2f8055cbd99addb6ca52979650d66aa8b942e580eb097c03e839ce0f27fea33",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/hierarchy-multi-district.json",
+      "bytes": 14045,
+      "sha256": "e5aae69f28ba96add7bc3dbfdfad6f954954b389df7241ad16382122f76705d1",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/hilbert-seams.json",
+      "bytes": 2157,
+      "sha256": "efbcad5dfbf057f50f7c72f0478740d682b6b1e822c9dde6e79c48ce79cc7552",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/schemas/grammar-v1.schema.json",
+      "bytes": 16145,
+      "sha256": "7b2fbef3f275e847a07a2a23f7f338d022ef51d2e00ee2507955b0d4639220c7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/schemas/semantic-planes-v1.schema.json",
+      "bytes": 15403,
+      "sha256": "e50a48882408c35f4be29b2196b29e40d17aeceda1aa97f42432b88295760a05",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/semantic-flooded-cavern.json",
+      "bytes": 29553,
+      "sha256": "5c191c90c3c6daf61a0bff00806ae0c99340d339ae5de4e0fdac8370da8fb370",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/semantic-refinery.json",
+      "bytes": 28948,
+      "sha256": "e6872ef1bf8a8919a195cf9d4670a1a346e7ce09ab23c6abe94cf53a1b8ba52d",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/sidechained-arcology.json",
+      "bytes": 1914,
+      "sha256": "0b5791a9e79b4519952c2b5a2f723de6e6277cbcd527a266b929620abd22a3d3",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/strata-natural.json",
+      "bytes": 940,
+      "sha256": "f25ab6aa8c17b8473a9c84bf8c8de7f108f6ea0aab66f396dea80f91f2a15172",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/typed-categorical-districts.json",
+      "bytes": 2288,
+      "sha256": "3b0288fb2f10e66314b0d1f6e32cb386e0195424ba3314f8af3894afbd82e5c5",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/typed-industrial-structure.json",
+      "bytes": 2724,
+      "sha256": "0451176da2312ae44a9339f864dab45c722cc0ac0fbe95e5c16bcf8ecd4985d7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/typed-multiscale-seeds.json",
+      "bytes": 1796,
+      "sha256": "e5c6edfa52413df802f4fd7aeafaf3ae9f189893ec363bbf6d4d020a13ff158e",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/typed-reusable-decay.json",
+      "bytes": 2061,
+      "sha256": "f896da97d7aad502207de2798d4f99acb09a47c1d2a916c8b04a2d620455c972",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/typed-vector-utilities.json",
+      "bytes": 3013,
+      "sha256": "bd80dd4e7a58aaff739af0ee73e74df2e74d06af9aa557b1eb3127dc24fae511",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/examples/worldgen/weathered-aggregate.json",
+      "bytes": 2175,
+      "sha256": "0f91dca73e5920722d0d30fc078cfb5faaaa7ff7d9726b9ea03527cd572b37a7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/import/process-memory.json",
+      "bytes": 4344,
+      "sha256": "23a08bb93f55c6c2813dca085eb6f2646d860e55925686e17b161e0fe9538464",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/import/process.json",
+      "bytes": 818,
+      "sha256": "e18c09039d69c608ce2cd0007e96280ea07997c1239834675f24b2ffb22f8fea",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/import/stderr.log",
+      "bytes": 0,
+      "sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/import/stdout.log",
+      "bytes": 49097,
+      "sha256": "ccbefb5f938ffdf5a42c7be38330d171b8f890add1c5a327a87e57fad3b8138b",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/template-C/source-custody.json",
+      "bytes": 348989,
+      "sha256": "1ed9b142347ef6d5c1d2d8ed4ebf4625842b085b6d4ba13139f69690aca8711f",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/analysis.json",
+      "bytes": 198481,
+      "sha256": "6b7f298d6c8ab1e0610b7d1d54860d67154068321aeb20df1887cc77d6dac2c8",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/arm.json",
+      "bytes": 20222,
+      "sha256": "a661cc83971cdcb1c57f6d254dc82199ec49732b7fed89318a9f70cae23fcc8b",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/observers.json",
+      "bytes": 13593,
+      "sha256": "17e0ecbd9f4e8a863bea2306c07480ef558ac6937bbc55bb81bc346f954a005b",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/process-cpu.json",
+      "bytes": 45604,
+      "sha256": "9b1a85e5cdab1ac654975827714a095efca872b4e96c85d808132318951954d4",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/process-memory.json",
+      "bytes": 17542,
+      "sha256": "3f60e65b8a071f3107641da720f7eeb29412d0f5fc9e75b23c912c0cc795d991",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/process.json",
+      "bytes": 3283,
+      "sha256": "0f505427ec3c0e3a17cde390640f0b4f90c4ae1ee7e48820a68dcd033e40b912",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/receipt-after.png",
+      "bytes": 109822,
+      "sha256": "2697afda13746e7d8c6007cd8cac197c4849c5d3cb5a2e26a055bcbf32db3d3f",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/receipt-before.png",
+      "bytes": 90696,
+      "sha256": "0efdacf2acff6f548de2ee9c59e3cf572c4f2bc7aea85a540178fbe1b0d5541b",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4414,
+      "sha256": "aee7e2b07fc118f909960dbfff8ee873a18065efc24f6f7203e049eeb2843e3f",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/receipt-events.jsonl",
+      "bytes": 1805778,
+      "sha256": "847639d59b96d9b408b0f3fa2820bcfa840278aaa5284d8554ccac69d0a56c02",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/receipt-presentation.json",
+      "bytes": 605263,
+      "sha256": "71cda1dec55c867e0e5027a619334b66d9069ea189fa576dd9b07d7837731235",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/receipt.json",
+      "bytes": 87606,
+      "sha256": "1364ea99927adaea8217375939195f68d16abeab750c822a316490c3e8dca2e2",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/stderr.log",
+      "bytes": 171,
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/stdout.log",
+      "bytes": 408,
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/0-C-slots2/supplementary.json",
+      "bytes": 7928,
+      "sha256": "4b344ad6081a94f1d8c34e01e5f6395167252d7df27d3a9d2a16af84dbe200b1",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/analysis.json",
+      "bytes": 197451,
+      "sha256": "8a84acf19844217c6e141918611455dc9cb0a98a296459309c9901d378634efe",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/arm.json",
+      "bytes": 20221,
+      "sha256": "bac31f593efb23e5f1807d406dda0a6a0d304cc820086c7fd6549f49bb386811",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/observers.json",
+      "bytes": 14163,
+      "sha256": "6d0313942beb055f393ae3cb2e405fc680f0fb9c3926f5778e8c49724657df94",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/process-cpu.json",
+      "bytes": 46401,
+      "sha256": "e618a9bd08dc6e76130cc2f990defa49beec7865d9e8074fee36d5a7505c433d",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/process-memory.json",
+      "bytes": 17840,
+      "sha256": "058b129ca2213d085c8e005471b0572ef2a515730a3b37a33d9b34010935daec",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/process.json",
+      "bytes": 3283,
+      "sha256": "5a56f7139b46236febb8719262545cbb64c42ab0502ae79373d6e17075f75447",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/receipt-after.png",
+      "bytes": 110082,
+      "sha256": "e5586a0b5e41aa4e8bc7f31c003d7a3438bf6f12e7e6bef27f1fb924cb5bae51",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/receipt-before.png",
+      "bytes": 90692,
+      "sha256": "49641b08535978b401405655d90dde3a3caf1baa75ad49ee703c503cc104d66b",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4414,
+      "sha256": "d8077591700ba10d6db9315730f9d940fbb16bdf15e1ce29a716b164667d0c21",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/receipt-events.jsonl",
+      "bytes": 1354713,
+      "sha256": "f376021d8de5eee233c77c2d5c70e843d0718dcede6a6a4f6a26b922ba3e25e2",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/receipt-presentation.json",
+      "bytes": 609533,
+      "sha256": "fe8d92da4a66a3d4dff7ebf7319ce32f44b06e1881631dc32a121f8d3254e3af",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/receipt.json",
+      "bytes": 87621,
+      "sha256": "0695843ba17143b764f0ed4026758b7329d5e288dd0842f46df4cbfdc6163e9a",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/stderr.log",
+      "bytes": 171,
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/stdout.log",
+      "bytes": 408,
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/1-C-slots2/supplementary.json",
+      "bytes": 7830,
+      "sha256": "285954778ba430171bf6ea8f039e62a53d3c5b82831a242060c596b64a338c07",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/analysis.json",
+      "bytes": 197311,
+      "sha256": "8bf053f9983140e6a87989d269bdf47ff2ea9303eca650cf408339e7db50311c",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/arm.json",
+      "bytes": 20221,
+      "sha256": "2f59fff71f1b3a47a25588c57fa9f66ef08f259eee07d5f31cce45c2fc1b43f5",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/observers.json",
+      "bytes": 13915,
+      "sha256": "c289b649f4e7f905eb6cb837c0c81179ad8e1a74578ada41bee837a1cd215361",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/process-cpu.json",
+      "bytes": 44827,
+      "sha256": "d9d6b3b1a4345629e92106e79f14d5daeeaffa432439a544242ea966db48040c",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/process-memory.json",
+      "bytes": 17227,
+      "sha256": "3ef9111914f524f26b6c34acf625f70d129d461d7d52e7c31615803d6d986172",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/process.json",
+      "bytes": 3285,
+      "sha256": "02591f5b9396ec4580ab3e900b807010ce3d0a7d93617e444b5e314596263423",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/receipt-after.png",
+      "bytes": 109772,
+      "sha256": "31187abdb0906b1a3d353ee8a00dd84616c7f7bfd853816d2c41fa966d8ee29c",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/receipt-before.png",
+      "bytes": 90760,
+      "sha256": "14a96215b9d190bf092c004bcaa98412d81cf192f70130a16a71cf9579b5a0db",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4414,
+      "sha256": "797d369dcc9ebb732c4e0a437863294a6eefea6e8ab08c04a9c04c807d355414",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/receipt-events.jsonl",
+      "bytes": 1350860,
+      "sha256": "bfb1943d80c9f46e05f4325bbfce855dc81c15af588e0669011d34f8305e717c",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/receipt-presentation.json",
+      "bytes": 609505,
+      "sha256": "fc8b408d7835c91d23c9685c7777e4980857128c4b06dcbeca771c8eefba981f",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/receipt.json",
+      "bytes": 87622,
+      "sha256": "8addb65bcdd97247c763a3ac384c9efe92eacfaab80037f78ae3a615c592cd30",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/stderr.log",
+      "bytes": 171,
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/stdout.log",
+      "bytes": 408,
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/2-C-slots2/supplementary.json",
+      "bytes": 7759,
+      "sha256": "0d7f7d451da4a59cf6835e528f1eb5b7e96d980ea59679581e66699d3530e8cd",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/analysis.json",
+      "bytes": 198189,
+      "sha256": "be75111d5732ce4b2cddea84ec2136d01202537fde65a3997bf18339e91590e7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/arm.json",
+      "bytes": 20222,
+      "sha256": "b536e9ee42bb9af9d218c66fa3e8fcd9b53b33033d376e835f318ff6f1eb17c2",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/observers.json",
+      "bytes": 13617,
+      "sha256": "a10ee0d2a6f4acfe8a46333bd461e671752852618750d3a8c26b3deb4b0b61f0",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/process-cpu.json",
+      "bytes": 46026,
+      "sha256": "1c1c76befc300ac3796a91bc89644d7451cedccfdf7596f03d80e217fcb03753",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/process-memory.json",
+      "bytes": 17670,
+      "sha256": "e9ea6181de7baf596d42d747eea3694db9b4fb46d5eab87e02528d2f6858df6d",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/process.json",
+      "bytes": 3287,
+      "sha256": "48edbed1722aded89462bfb9a75eb907f45d91d99250417d22d3a3d8767d181e",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/receipt-after.png",
+      "bytes": 109787,
+      "sha256": "a37b3afbf448538244df3a0b56bb59e094526fb6957931a7fd3d327b8edf74c1",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/receipt-before.png",
+      "bytes": 90721,
+      "sha256": "8ab6822f411fc1ea6aed941ea8d6e9aa4f23cc3226cee96dedc0922757a1a0de",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4414,
+      "sha256": "1935d061dafc03eb4228c76bf9b3a06deebf55ec9f62b876f50f5442a8c4e050",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/receipt-events.jsonl",
+      "bytes": 1799054,
+      "sha256": "59f1e69d6635a909198102d9cc0bf04ddc0630b7a85c77d40a4e78c37c3faf69",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/receipt-presentation.json",
+      "bytes": 602708,
+      "sha256": "90f0c252041222d8e3d4f057069728be9db6be856cc268480b12da94d3a04b21",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/receipt.json",
+      "bytes": 87606,
+      "sha256": "e7bcd464970b7d010af21439df35753cb77ea40f01775f3a6b9b79bf422494e1",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/stderr.log",
+      "bytes": 171,
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/stdout.log",
+      "bytes": 408,
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_512_follow/3-C-slots2/supplementary.json",
+      "bytes": 7859,
+      "sha256": "9344b5efa81e203f522b208c12755304811995a0a27c13fee74dd4dd276e518b",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/analysis.json",
+      "bytes": 203203,
+      "sha256": "700eb8be98e5b0d83da408d6769506132f06a98b6f210eeeac72da151958e82e",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/arm.json",
+      "bytes": 21025,
+      "sha256": "1d21f18772aeb1bc93c288aa66ddc5600f783010c0ccaf26dc3c58410d2a4c2b",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/observers.json",
+      "bytes": 14130,
+      "sha256": "4e9d0695eda09f267be3598a5176b17eb554ccd28a59ec65d2cf863e30db96a4",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/process-cpu.json",
+      "bytes": 87395,
+      "sha256": "b1af264b26ac1d8689e6287c70258333239e7ad53785aa2e663f9135f3db8009",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/process-memory.json",
+      "bytes": 34153,
+      "sha256": "79384452e2ac52c328bfc4b42c2107c8de341f106fc5d38f12944cbb5f7c047e",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/process.json",
+      "bytes": 3297,
+      "sha256": "a75f30dfc9a8dd94843ebe0e6188ab0c7e2868857350e454c959a6fa36fc9fd0",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/receipt-after.png",
+      "bytes": 455455,
+      "sha256": "54e4f7a279991607c38efe2dbbc086514d642403b555d330e683b5ce678d8480",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/receipt-before.png",
+      "bytes": 343782,
+      "sha256": "2ca2b110144d75f0c29c196152a4edef7d41d5dc4683877ae9af7e8312b894d2",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4553,
+      "sha256": "fe073ebfd2e54e5e1a0a836c3b39649a90e1f527c04427f2674ea08c35f07bc7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/receipt-events.jsonl",
+      "bytes": 1454530,
+      "sha256": "626a428d735b16cbd71f8bf3d87cc59ffc3ecfe5b198a79e643e09b6b8aaa854",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/receipt-presentation.json",
+      "bytes": 675150,
+      "sha256": "6af6bd59341e71daa49e69db0b89f04062ee0778a9c36fabee3dbac1b1d64b10",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/receipt.json",
+      "bytes": 104678,
+      "sha256": "78b42081f65d004bac7b2db7b63b0cdc74bfc34d1840a62745a2b2ef6dd76ee1",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/stderr.log",
+      "bytes": 171,
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/stdout.log",
+      "bytes": 408,
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/0-C-slots2/supplementary.json",
+      "bytes": 7895,
+      "sha256": "413bfcda8ad8321f9d187035080c134a95800021063a7e2db0596ab8919f22a2",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/analysis.json",
+      "bytes": 201485,
+      "sha256": "8c52a6157c71a0f5d7bee0344049e2aa66a34531c33d4bd9324e53de8228d2b3",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/arm.json",
+      "bytes": 21024,
+      "sha256": "21d1b84b8bfa28d9b7518ba9377682f9d14b0c96069763f8ac6bba6b044c4d6e",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/observers.json",
+      "bytes": 13581,
+      "sha256": "5836a7e07111a4378ac314aff3ba61872ab9366f441fd7338b0e257b9198660e",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/process-cpu.json",
+      "bytes": 85383,
+      "sha256": "7558bd15e44cec7ebbd45ae1ddfd41118f89f211742554b79949d1b047909e62",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/process-memory.json",
+      "bytes": 33367,
+      "sha256": "f3aee4559983991fa43117c4f2883e21906996ec5a8ae3ad4a928df635410c15",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/process.json",
+      "bytes": 3297,
+      "sha256": "fb6b94507df5f3772c5c1325f6a0aa22ec18434be4e682cbcf914bfecbdd6c4d",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/receipt-after.png",
+      "bytes": 455162,
+      "sha256": "e1d77e85ec3901d585d09954e6442a316846bd7823c8521eaf18eef18cd07a3f",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/receipt-before.png",
+      "bytes": 343179,
+      "sha256": "8123b73a969adbec71515bb0a13e2259419954b57b94f6aa18bdf633ff47493b",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4553,
+      "sha256": "9028dd77f0e656527444f471ff928c6b196c823922c10265218e9a4d5ef12f22",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/receipt-events.jsonl",
+      "bytes": 1291240,
+      "sha256": "25b38a97f0ddaaf5bc3b75f3745d9ac9f799d50fbaebb31885afe2f5f0d0af5e",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/receipt-presentation.json",
+      "bytes": 684467,
+      "sha256": "37096c3f1ebff14f543819c1be6de7bb419174a33652e9e903e0ddb3c913d5d9",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/receipt.json",
+      "bytes": 104697,
+      "sha256": "80599365d72faee2375da85e74ffaff5a6aeb9d9584febe8432eaf844f22ec6d",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/stderr.log",
+      "bytes": 171,
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/stdout.log",
+      "bytes": 408,
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/1-C-slots2/supplementary.json",
+      "bytes": 7777,
+      "sha256": "52311128452d3e791fff02019100037bd7957a8588ffac3361eceb1b95cb0d27",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/analysis.json",
+      "bytes": 201797,
+      "sha256": "c198d311265570f7b6b124006e2542a3de2c4c56eef286c8c5c03565969b1e33",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/arm.json",
+      "bytes": 21024,
+      "sha256": "57afe744e35e545cf6ab324be0b7d4127594e31375528204b9932cd592ec86e7",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/observers.json",
+      "bytes": 14127,
+      "sha256": "203f7b41aef6899d3b05ca99ff0d028fffed409901683b69aefd4882f67d7cd3",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/process-cpu.json",
+      "bytes": 88613,
+      "sha256": "a08df8389ca8cb8e88f74b52eda9c53b4eaaf41aaa49b91994c1d501304232c6",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/process-memory.json",
+      "bytes": 34657,
+      "sha256": "5ca4bc37c43492974aba6604994553265e353d3b85e0a59ba6496bbe6cf982fb",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/process.json",
+      "bytes": 3296,
+      "sha256": "aaabb004829308a1a0cbe7edd6d84a8fe1c3ebed7d475d04cba54a834b4196a7",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/receipt-after.png",
+      "bytes": 455980,
+      "sha256": "952ae0a8c6c2acd32ccdbf0ec2087e8eab5e60cbddf003e744abffb8e8bd210e",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/receipt-before.png",
+      "bytes": 343660,
+      "sha256": "12ab396e76bee559f8ecce63b91eed899c582b0a7468ac743e177ff1229e4016",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4553,
+      "sha256": "bfde81a2e411a5bc6c0dac53860dea68e4c026b4c5a040df77769af0e929bdfa",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/receipt-events.jsonl",
+      "bytes": 1306486,
+      "sha256": "b187316d40339110a7e2961c8503ae34372144a1fe8612049ebd52a65584c466",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/receipt-presentation.json",
+      "bytes": 693599,
+      "sha256": "038a85bb26edbfbc4d0e575cad94bbc49b876c285a80f16be08db5639cecab01",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/receipt.json",
+      "bytes": 104695,
+      "sha256": "63864ed606cfc55e63d9992b833a18acefb99a971f3f60993e35387f30a34d04",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/stderr.log",
+      "bytes": 171,
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/stdout.log",
+      "bytes": 408,
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/2-C-slots2/supplementary.json",
+      "bytes": 7867,
+      "sha256": "9a7360252a58e8200ee202330cda61aeae174f86e6978fa6862230a146fadd66",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/analysis.json",
+      "bytes": 207596,
+      "sha256": "bbc7f005f0a57b243343352531576c87511c90717fdbd052a916ec4fc59de453",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/arm.json",
+      "bytes": 21025,
+      "sha256": "06c20abc64cd3c7097a771b0d09805bc1a2434f78c60c8f3d5cb1540cdf79b7c",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/godot.log",
+      "bytes": 463,
+      "sha256": "9a26a8a459934cf63ffb78c31e298b37e6b823ef2e1b02e985b5e137298d49ae",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/observers.json",
+      "bytes": 14160,
+      "sha256": "d85aa6d2bebba6697824a9dacf2075a5875eb6ddbdfed961e519c6fb3ed14b8c",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/process-cpu.json",
+      "bytes": 98514,
+      "sha256": "edaa5837ea48997d718c5a415f6d446c187c85a25c1a3fcd0d87f5ee69abb555",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/process-memory.json",
+      "bytes": 38560,
+      "sha256": "d98a0895c3c4f961e1c8fc3b22a8cd3e9003940cb7de61e29b5230422a73de89",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/process.json",
+      "bytes": 3295,
+      "sha256": "defb9598bdcedc3b3adaad264c14d13035890a152e5c2b705e75c4ae483c27a8",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/receipt-after.png",
+      "bytes": 453850,
+      "sha256": "97479d266677f939afe6f70fe0ac8044d169d129195a04d524d6fe7a766d22f6",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/receipt-before.png",
+      "bytes": 343568,
+      "sha256": "267594a7596d7358ef3e90be68f027f323fd3fdfab67a09fa634e48d37b61378",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/receipt-causal-events.jsonl",
+      "bytes": 4553,
+      "sha256": "13e910852572ee419a11af1ae6f1beaa402fc5111a71a001dc78f13135706265",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/receipt-events.jsonl",
+      "bytes": 1606777,
+      "sha256": "5e447cb09bde5ae871b90a098a7758466bb91a6f5bed818074a2ffad43e40340",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/receipt-presentation.json",
+      "bytes": 669453,
+      "sha256": "e62977e14beb8304d09c1451481942e8fe514d809fe3b283d5ea59d58bd0e404",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/receipt.json",
+      "bytes": 104672,
+      "sha256": "386bdab3432d23bb2c8cdefaefdbe71454ae3594e307077748b7c118c0486df0",
+      "retained_in_repository": true
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/stderr.log",
+      "bytes": 171,
+      "sha256": "afb1f5fc2b66a934a3065a96218b0e267afe77f117083274512da2a3a15b1cb7",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/stdout.log",
+      "bytes": 408,
+      "sha256": "9f986b566b0a5d398b075368946a2f1f8f66ae6e6f937adf634ec37274061e43",
+      "retained_in_repository": false
+    },
+    {
+      "path": "campaign/wave_gameplay_2048_follow/3-C-slots2/supplementary.json",
+      "bytes": 7799,
+      "sha256": "fbfaea981eaf7d79082c525c57b0886f86e257e653ffafeb2c1ba43566932c3a",
+      "retained_in_repository": false
+    },
+    {
+      "path": "display.json",
+      "bytes": 2301,
+      "sha256": "7137070d615c9a8f6a04f50ef752176135c09f431b9373e75e8c136c125ee6e4",
+      "retained_in_repository": false
+    },
+    {
+      "path": "causal-intervals.json",
+      "bytes": 2077986,
+      "sha256": "577131ab7f686d73f9806607ee8ceddcaeb508db3ae7bc90ab801a269688fbfa",
+      "retained_in_repository": true
+    }
+  ],
+  "raw_trace_custody": "Original complete raw event/presentation traces, screenshots and process outputs remain in this source directory. Source/process/CPU/memory/observer receipts and the complete causal reduction are retained here; final mission artifact must include the full original directory excluding generated project/profile caches.",
+  "scope": "No binary, cache or original receipt identity is rewritten."
+}

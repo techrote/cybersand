@@ -1,0 +1,143 @@
+name: PUBPRES portable Windows authoring witness
+
+on:
+  push:
+    branches:
+      - codex/pubpres-delivery-recovery-001
+      - codex/pubpres-playability-final-001-20261124
+    paths:
+      - '.github/workflows/pubpres-portable-authoring-witness.yml'
+      - 'tools/pubpres_mainline/portable*.py'
+      - 'tools/pubpres_mainline/test_portable*.py'
+      - 'tools/pubpres_mainline/package.py'
+      - 'tools/pubpres_mainline/extracted.py'
+      - 'tools/ci/ramcache_strata_lab_package.py'
+      - 'tools/ci/portable_compiler_utf8.py'
+      - 'tools/ci/test_portable_compiler_utf8.py'
+      - 'tools/ci/portable_lld.py'
+      - 'tools/ci/test_portable_lld.py'
+      - 'tools/ci/test_ramcache_strata_lab_package.py'
+      - 'tools/package_materials_lab_candidate.py'
+      - 'tools/material_catalogue/**'
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pubpres-portable-authoring-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  portable-authoring:
+    name: Compiler and Materials Lab portability controls
+    runs-on: windows-2022
+    timeout-minutes: 60
+    defaults:
+      run:
+        shell: pwsh
+    env:
+      GIT_LFS_SKIP_SMUDGE: '1'
+      PYTHONUTF8: '1'
+      PYTHONDONTWRITEBYTECODE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          persist-credentials: false
+          fetch-depth: 0
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Exercise invocation custody and executable guard controls
+        run: |
+          python -B -m unittest discover -s tools/pubpres_mainline -p 'test_portable*.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Portable witness positive/negative controls failed' }
+          python -B -m unittest discover -s tools/ci -p 'test_portable_compiler_utf8.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Compiler metadata preservation controls failed' }
+          python -B -m unittest discover -s tools/ci -p 'test_portable_lld.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned linker custody controls failed' }
+          python -B -m unittest discover -s tools/material_catalogue -p 'test_portable_linker.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Production compiler-linker selection controls failed' }
+          python -B tools/ci/test_ramcache_strata_lab_package.py DependencyReceiptTests -v
+          if ($LASTEXITCODE -ne 0) { throw 'Nested portable compiler receipt integration controls failed' }
+          python -B -m unittest discover -s tools/ci -p 'test_portable_authoring_environment.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Portable compiler environment isolation controls failed' }
+      - name: Acquire original failed package custody manifest
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46147576269
+          name: pubpres-mainline-package-custody-46147576269-1
+          path: ${{ runner.temp }}/original-package-custody
+      - name: Admit complete original bundled compiler population
+        run: |
+          @'
+          import hashlib, json, os, pathlib
+          temporary = pathlib.Path(os.environ['RUNNER_TEMP'])
+          matches = list((temporary / 'original-package-custody').rglob('PUBPRES-MAINLINE-EVALUATOR.json'))
+          assert len(matches) == 1, 'Missing or ambiguous original archive manifest'
+          raw = matches[0].read_bytes()
+          expected_manifest = '3384839616bdced47a97c67811b0b31269fd2410d50d146a508aa994466daef6'
+          assert hashlib.sha256(raw).hexdigest() == expected_manifest, 'Original package manifest changed'
+          manifest = json.loads(raw)
+          assert manifest['source_commit'] == '65f71aaf4be3a67896bafac7f5220a0cb25a8fb7'
+          prefix = 'dependencies/cxx/'
+          expected = {name.removeprefix(prefix): value for name, value in manifest['files_sha256'].items() if name.startswith(prefix)}
+          root = pathlib.Path('C:/mingw64')
+          actual = {}
+          for path in root.rglob('*'):
+              if path.is_file() and '__pycache__' not in path.relative_to(root).parts:
+                  with path.open('rb') as stream:
+                      actual[path.relative_to(root).as_posix()] = hashlib.file_digest(stream, 'sha256').hexdigest()
+          missing = sorted(expected.keys() - actual.keys())
+          extra = sorted(actual.keys() - expected.keys())
+          changed = sorted(name for name in expected.keys() & actual.keys() if expected[name] != actual[name])
+          record = {'status': 'passed' if expected and actual == expected else 'failed',
+                    'original_run': 46147576269, 'original_manifest_sha256': expected_manifest,
+                    'original_compiler_files': len(expected), 'observed_compiler_files': len(actual),
+                    'missing': missing, 'extra': extra, 'changed': changed,
+                    'omission': 'embedded Python __pycache__; production copier separately validates these omissions'}
+          (temporary / 'original-compiler-admission.json').write_text(json.dumps(record, indent=2)+'\n', encoding='utf-8')
+          print(json.dumps(record))
+          assert record['status'] == 'passed', 'Hosted compiler differs from original bundled compiler; no same-toolchain reproduction credit'
+          '@ | python -B -
+          if ($LASTEXITCODE -ne 0) { throw 'Original compiler population admission failed' }
+      - name: Record hosted compiler population before packaging
+        run: |
+          $root = 'C:\mingw64'
+          if (-not (Test-Path -LiteralPath (Join-Path $root 'bin\g++.exe'))) { throw 'Expected the registered Windows authoring compiler root is absent' }
+          $programs = Get-ChildItem -LiteralPath $root -Recurse -File -ErrorAction Stop | Where-Object { $_.Name -in @('g++.exe','gcc.exe','cc1plus.exe','collect2.exe','ld.exe','as.exe') } | ForEach-Object { [pscustomobject]@{ path = $_.FullName; bytes = $_.Length; sha256 = (Get-FileHash -LiteralPath $_.FullName -Algorithm SHA256).Hash.ToLowerInvariant() } }
+          $programs | ConvertTo-Json -Depth 4 | Set-Content -Encoding utf8 "$env:RUNNER_TEMP\compiler-population.json"
+          g++ --version | Select-Object -First 1
+          & "$root\bin\g++.exe" -dumpmachine
+          & "$root\bin\g++.exe" -print-search-dirs
+      - name: Acquire pinned offline GNU-compatible linker input
+        run: |
+          $env:CYBERSAND_PORTABLE_LLD_ARCHIVE = Join-Path $env:RUNNER_TEMP 'pubpres-llvm-mingw-20260826-ucrt-x86_64.zip'
+          "CYBERSAND_PORTABLE_LLD_ARCHIVE=$env:CYBERSAND_PORTABLE_LLD_ARCHIVE" | Out-File -Append -Encoding utf8 -FilePath $env:GITHUB_ENV
+          curl.exe --fail --location --retry 3 --connect-timeout 30 --max-time 300 --silent --show-error --output $env:CYBERSAND_PORTABLE_LLD_ARCHIVE https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-x86_64.zip
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned linker archive acquisition failed' }
+          $archive = Get-Item -LiteralPath $env:CYBERSAND_PORTABLE_LLD_ARCHIVE
+          $digest = (Get-FileHash -LiteralPath $archive.FullName -Algorithm SHA256).Hash.ToLowerInvariant()
+          if ($archive.Length -ne 190721391 -or $digest -ne 'ae601f4e0f72bbdf441ad2df8bb16f037e2e9251559ea6b37b4057aef39c06c3') { throw 'Pinned linker archive identity differs' }
+      - name: Execute production-path compiler and Materials Lab witnesses
+        run: |
+          python tools/pubpres_mainline/portable_authoring.py --compiler-root C:\mingw64 --git-root 'C:\Program Files\Git' --python-root $env:pythonLocation --parent $env:RUNNER_TEMP --output "$env:RUNNER_TEMP\portable-authoring-output" --run-id "$env:GITHUB_RUN_ID-$env:GITHUB_RUN_ATTEMPT" --block-network
+          if ($LASTEXITCODE -ne 0) { throw 'Portable compiler or actual Materials Lab witness failed' }
+      - name: Remove any remaining witness egress rules
+        if: always()
+        run: |
+          Get-NetFirewallRule -Name 'PUBPRES-Portable-Authoring-*' -ErrorAction SilentlyContinue | Remove-NetFirewallRule -ErrorAction SilentlyContinue
+      - name: Preserve compiler and authoring evidence even after refusal
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-portable-authoring-witness-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/original-compiler-admission.json
+            ${{ runner.temp }}/compiler-population.json
+            ${{ runner.temp }}/portable-authoring-output/portable-authoring-witness.json
+          if-no-files-found: warn
+          retention-days: 90

@@ -1,0 +1,282 @@
+{
+  "schema": "pubpres-unsubmitted-material-picking-result-v1",
+  "disposition": "LINUX_CUSTOM_SAFE0_RESULTING_COMPONENT_QUALIFIED",
+  "reports": {
+    "atomic-first-negative-d1": {
+      "source": {
+        "root": "/workspace/scratch/9cef565acfec/presentation-negative-d1",
+        "source_commit": "d1d08a10559a31a8f6c103e3e57a280b2458fea4",
+        "source_tree": "9a981f6d5a090871e44f8e2266a07eb734a3e8ce",
+        "working_tree_changes": [],
+        "untracked_source_files": [],
+        "qualified_exact_head": true
+      },
+      "checks": 107,
+      "failures": [
+        "actual mouse still selects the submitted actor while newer material remains unsubmitted",
+        "first-read has two actually submitted dry actor parts",
+        "fresh genuine actor receipt restores the ordinary overlay after invalid-frame UI draw"
+      ],
+      "complete": false,
+      "unsubmitted_material_picking": {
+        "actor_id": 1,
+        "before_sha256": "b11aee4db0d73b3fa45ae9ee3e38c2f38719d3a4d458d528a7569c876a70008d",
+        "body_slot": 0,
+        "cell": [
+          240,
+          159
+        ],
+        "held_sha256": "b11aee4db0d73b3fa45ae9ee3e38c2f38719d3a4d458d528a7569c876a70008d",
+        "local": [
+          512.555419921875,
+          454.080993652344
+        ],
+        "mapping_unchanged": true,
+        "next_material_revision": 6,
+        "next_submission_delta": 1,
+        "paint_cell": [
+          180,
+          120
+        ],
+        "pre_draw_delta": 0,
+        "previous_uploaded_revision": 3,
+        "previous_uploaded_serial": 3,
+        "refusal_controls": [
+          {
+            "fixture_injected_refusal": true,
+            "kind": "future_submission",
+            "selected_id": 0
+          },
+          {
+            "fixture_injected_refusal": true,
+            "kind": "foreign_world",
+            "selected_id": 0
+          },
+          {
+            "fixture_injected_refusal": true,
+            "kind": "material_join",
+            "selected_id": 0
+          }
+        ],
+        "selected_id": 0,
+        "step_after": 1,
+        "step_before": 1,
+        "submission_delta": 0,
+        "submitted_revision": 3,
+        "uploaded_material_id": 2,
+        "uploaded_revision": 6,
+        "uploaded_serial": 6
+      }
+    },
+    "atomic-first-fixed-554": {
+      "source": {
+        "root": "/workspace/scratch/9cef565acfec/presentation",
+        "source_commit": "55460cb228de5508450d8c7e647935e29b4d6e72",
+        "source_tree": "8465d7fb75c4852b42031adbd22249aebf0256ff",
+        "working_tree_changes": [],
+        "untracked_source_files": [],
+        "qualified_exact_head": true
+      },
+      "checks": 107,
+      "failures": [
+        "first-read has two actually submitted dry actor parts",
+        "fresh genuine actor receipt restores the ordinary overlay after invalid-frame UI draw"
+      ],
+      "complete": false,
+      "unsubmitted_material_picking": {
+        "actor_id": 1,
+        "before_sha256": "efd1e758a4987c1a6fefc83cb3069bf8859ab7373c82f5cb55beeed22a7c5fac",
+        "body_slot": 0,
+        "cell": [
+          240,
+          159
+        ],
+        "held_sha256": "efd1e758a4987c1a6fefc83cb3069bf8859ab7373c82f5cb55beeed22a7c5fac",
+        "local": [
+          512.555419921875,
+          454.080993652344
+        ],
+        "mapping_unchanged": true,
+        "next_material_revision": 6,
+        "next_submission_delta": 1,
+        "paint_cell": [
+          180,
+          120
+        ],
+        "pre_draw_delta": 0,
+        "previous_uploaded_revision": 3,
+        "previous_uploaded_serial": 3,
+        "refusal_controls": [
+          {
+            "fixture_injected_refusal": true,
+            "kind": "future_submission",
+            "selected_id": 0
+          },
+          {
+            "fixture_injected_refusal": true,
+            "kind": "foreign_world",
+            "selected_id": 0
+          },
+          {
+            "fixture_injected_refusal": true,
+            "kind": "material_join",
+            "selected_id": 0
+          }
+        ],
+        "selected_id": 1,
+        "step_after": 1,
+        "step_before": 1,
+        "submission_delta": 0,
+        "submitted_revision": 3,
+        "uploaded_material_id": 2,
+        "uploaded_revision": 6,
+        "uploaded_serial": 6
+      }
+    },
+    "atomic-corrected-negative-1daf": {
+      "source": {
+        "root": "/workspace/scratch/9cef565acfec/presentation-negative-d1",
+        "source_commit": "1dafd3bc5250ba44ad9038c7ab022272eb51fbce",
+        "source_tree": "3490f81a5965347271dc08d6a7857bc40ec8df15",
+        "working_tree_changes": [],
+        "untracked_source_files": [],
+        "qualified_exact_head": true
+      },
+      "checks": 110,
+      "failures": [
+        "actual mouse still selects the submitted actor while newer material remains unsubmitted"
+      ],
+      "complete": false,
+      "unsubmitted_material_picking": {
+        "actor_id": 1,
+        "before_sha256": "efd1e758a4987c1a6fefc83cb3069bf8859ab7373c82f5cb55beeed22a7c5fac",
+        "body_slot": 0,
+        "cell": [
+          240,
+          159
+        ],
+        "held_sha256": "efd1e758a4987c1a6fefc83cb3069bf8859ab7373c82f5cb55beeed22a7c5fac",
+        "local": [
+          512.555419921875,
+          454.080993652344
+        ],
+        "mapping_unchanged": true,
+        "next_material_revision": 6,
+        "next_submission_delta": 1,
+        "paint_cell": [
+          180,
+          120
+        ],
+        "pre_draw_delta": 0,
+        "previous_uploaded_revision": 3,
+        "previous_uploaded_serial": 3,
+        "refusal_controls": [
+          {
+            "fixture_injected_refusal": true,
+            "kind": "future_submission",
+            "selected_id": 0
+          },
+          {
+            "fixture_injected_refusal": true,
+            "kind": "foreign_world",
+            "selected_id": 0
+          },
+          {
+            "fixture_injected_refusal": true,
+            "kind": "material_join",
+            "selected_id": 0
+          }
+        ],
+        "selected_id": 0,
+        "step_after": 1,
+        "step_before": 1,
+        "submission_delta": 0,
+        "submitted_revision": 3,
+        "uploaded_material_id": 2,
+        "uploaded_revision": 6,
+        "uploaded_serial": 6
+      }
+    },
+    "atomic-corrected-fixed-1163": {
+      "source": {
+        "root": "/workspace/scratch/9cef565acfec/presentation",
+        "source_commit": "1163ca1d4599b1d1b9e4572cd3ce4f08d7993ab9",
+        "source_tree": "6e732d155000e53517461e7c08313b79d96f7093",
+        "working_tree_changes": [],
+        "untracked_source_files": [],
+        "qualified_exact_head": true
+      },
+      "checks": 110,
+      "failures": [],
+      "complete": true,
+      "unsubmitted_material_picking": {
+        "actor_id": 1,
+        "before_sha256": "efd1e758a4987c1a6fefc83cb3069bf8859ab7373c82f5cb55beeed22a7c5fac",
+        "body_slot": 0,
+        "cell": [
+          240,
+          159
+        ],
+        "held_sha256": "efd1e758a4987c1a6fefc83cb3069bf8859ab7373c82f5cb55beeed22a7c5fac",
+        "local": [
+          512.555419921875,
+          454.080993652344
+        ],
+        "mapping_unchanged": true,
+        "next_material_revision": 6,
+        "next_submission_delta": 1,
+        "paint_cell": [
+          180,
+          120
+        ],
+        "pre_draw_delta": 0,
+        "previous_uploaded_revision": 3,
+        "previous_uploaded_serial": 3,
+        "refusal_controls": [
+          {
+            "fixture_injected_refusal": true,
+            "kind": "future_submission",
+            "selected_id": 0
+          },
+          {
+            "fixture_injected_refusal": true,
+            "kind": "foreign_world",
+            "selected_id": 0
+          },
+          {
+            "fixture_injected_refusal": true,
+            "kind": "material_join",
+            "selected_id": 0
+          }
+        ],
+        "selected_id": 1,
+        "step_after": 1,
+        "step_before": 1,
+        "submission_delta": 0,
+        "submitted_revision": 3,
+        "uploaded_material_id": 2,
+        "uploaded_revision": 6,
+        "uploaded_serial": 6
+      }
+    }
+  },
+  "production_fix": "f8e233c5",
+  "fixture_isolation": "1163ca1d4599b1d1b9e4572cd3ce4f08d7993ab9",
+  "engine_sha256": "674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745",
+  "native_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+  "native_source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+  "native_reuse": "113 exact byte-identical application/build inputs; not a rebuild at either application",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "fixture_failure_explanation": "Initial additive real edit ran before the old dry framebuffer checks while normal Main processing was deliberately disabled. Its actual newer material invalidated the previous body dependency and legitimately left no current actor receipt. Test-only relocation preserves original assertions and lets ordinary lifecycle reconcile afterward. Initial failures retained, not relabeled as product passes.",
+  "comparison_scope": "The unchanged corrected pending-upload fixture distinguishes old and repaired picking. Additional Main Water repair is present in fixed application, but Water is explicitly OFF in this gate; no timing or whole-application causal claim.",
+  "original_controls": {
+    "stale_framebuffer_cases": 8,
+    "fallback_cases": 4
+  },
+  "outstanding": [
+    "Integrated selected source with fresh candidate native runtime",
+    "Separate0 and Separate4 exact graphical replay",
+    "Windows resulting-source replay",
+    "Sustained ordinary play and physical owner acceptance"
+  ]
+}

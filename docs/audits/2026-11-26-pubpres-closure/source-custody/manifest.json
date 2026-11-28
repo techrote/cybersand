@@ -1,0 +1,24 @@
+{
+  "schema": "pubpres-closure-source-custody-v1",
+  "created_utc": "2026-11-26T08:00:44.075730+00:00",
+  "bundle": "source-checkpoint-01.bundle",
+  "sha256": "bf0fc70e1d586e26df2e822547feb696e818761b9a3a6793259b23ea3ce25ac0",
+  "bytes": 84943,
+  "prerequisites": [
+    "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+    "67c1413a2a84077b47fa542cf91d2bd6ba5520ee"
+  ],
+  "sources": [
+    {
+      "ref": "refs/mission/pubpres-closure/integrated-original",
+      "commit": "64a4a744e6a44299b9860260e9e3b219ad9e6c62",
+      "tree": "b22ed398febf33d234dfe46c70b1f34537f04cf8"
+    },
+    {
+      "ref": "refs/mission/pubpres-closure/publication-input",
+      "commit": "03c477c624f4386d458cbc47ddb33755dd0a8ccb",
+      "tree": "32d4df54e616bb8271633035f9fa57f578b5bc76"
+    }
+  ],
+  "scope": "Preserves exact original executed local integration/source commits before GitHub API tree-equivalent publication; API cannot retain local author/committer timestamps. No original measurement is relabeled."
+}

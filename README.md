@@ -158,6 +158,15 @@ infer order from GitHub issue numbers; use the
 [Current validation and retained M11 integrity](docs/operations/current-and-historical-validation.md)
 explain the independent source/runtime and historical checks.
 
+The [PUBPRES-PLAYABILITY-001 evaluation](docs/operations/pubpres-playability-evaluation.md)
+routes the opt-in staging change, matched progression measurements and new
+Windows evaluator. Draft/HOLD; graphical and physical NVIDIA acceptance remain pending.
+
+The [PUBPRES physical playability successor](docs/operations/pubpres-playability-final-001.md)
+continues frozen #757 with occupied-mask bounds, an explicit three-slot publication
+experiment and source-exact physical comparisons. Qualification is in progress;
+the recovered negative controls and physical NVIDIA acceptance remain separate.
+
 The active Windows workspace is `C:/kybersand`; from there:
 
 ```text

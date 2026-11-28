@@ -1,0 +1,38 @@
+{
+  "schema": "pubpres-atomic-template-launch-rejections-v1",
+  "application_source": "e43c1a157e36c39af5033db461dd0de6b5a0d64d",
+  "engine_sha256": "a4c50c8df34062162e2d755168d39d70fd13cc0e51ce1438f88cbbc9da09ad15",
+  "engine_version": "4.7.stable.cybersand_egl_font_atomic.5b4e0cb0f",
+  "engine_build": "Linux GCC14.2 template_debug development-only; disable_path_overrides=yes",
+  "native_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+  "disposition": "INFRASTRUCTURE / NO V2 FIXTURE EXECUTION; rebuild with disable_path_overrides=no required",
+  "launches": [
+    {
+      "log": "v2-safe0.log.gz",
+      "raw_sha256": "c786c09387e117ee5e33698180bd63361d08d6ecde5eeae3775a395d9f96df5b",
+      "raw_bytes": 260,
+      "gzip_sha256": "bff65b94378f22f6b537285480c5d70d1e69101819dda4369abd71a720271af2",
+      "reason": "--path explicitly refused by development template",
+      "fixture_executed": false,
+      "qualified": false
+    },
+    {
+      "log": "v2-safe0-cwd.log.gz",
+      "raw_sha256": "65793aef1a3d240ff52ba2fd69a324e5f0e9b22a69c9196a86ec857a9f9000b4",
+      "raw_bytes": 469,
+      "gzip_sha256": "ec2b2d3faae0f990a53b00aaf25b7ba9fb7d98f50cd4d38aa656b5da114e6932",
+      "reason": "project CWD refused because executable directory differs",
+      "fixture_executed": false,
+      "qualified": false
+    },
+    {
+      "log": "v2-safe0-adjacent.log.gz",
+      "raw_sha256": "ab6d4e23219965cd9b726f93221bf7fd8839b26b04923cc92ebb959ff9366341",
+      "raw_bytes": 2237444,
+      "gzip_sha256": "ce7d37b2378a1742a14fa197af262c91b80f57d5baed8923baa71158e0f00990",
+      "reason": "--script silently discarded by disable_path_overrides=yes; ordinary main scene ran without fixture",
+      "fixture_executed": false,
+      "qualified": false
+    }
+  ]
+}

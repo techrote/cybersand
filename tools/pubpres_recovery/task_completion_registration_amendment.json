@@ -1,0 +1,15 @@
+{
+  "schema": "pubpres-task-completion-registration-amendment-v1",
+  "registered_before_comparative_execution": "2026-11-26",
+  "original_registration_sha256": "4d8c113532c0770ead9ab39ae3224cc9f3182411c6d7cf799e27d3efa4144ebe",
+  "workload_identifiers": {
+    "wave512_follow": "wave_512_follow"
+  },
+  "reason": "The original task-completion registration omitted the underscore in the existing small-world case identifier. The frozen campaign and final registration both name wave_512_follow. Without this correction neither name passes all original runner guards.",
+  "unchanged": [
+    "Exact frozen fixture content, dimensions, actors, input and camera.",
+    "Original 0/1/1/0 order, actual native task exercise, 144-step physical authority, timing windows and selection criteria.",
+    "Original registration bytes and all historical evidence."
+  ],
+  "selection": "No comparative result has been examined for this candidate; this is an identifier-only execution correction."
+}

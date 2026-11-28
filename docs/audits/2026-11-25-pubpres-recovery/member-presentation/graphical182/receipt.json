@@ -1,0 +1,26 @@
+{
+  "source_revision": "c4b5c778f414ac8bfe9a43a8ea6daed8d24742be",
+  "scope": "functional actual multipart owner/physical history/Follow/framebuffer checks only; no performance claim",
+  "command": [
+    "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/8a0b6cd48416/cybersand/godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--script",
+    "res://tests/test_workbench_member_presentation.gd"
+  ],
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "input_hashes": {
+    "scripts/main.gd": "2f50d3b35742521148307f1068767b5c746ea6d0d4dcac1725078c8270f1bde2",
+    "scripts/physical_actor_session.gd": "ac711b05343caf53ed649ad03cab2fa9dbede9f59838be6b525a06e68a701d46",
+    "scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+    "scripts/workbench_presentation_history.gd": "3fb5d9c73ac6e56454353e6703f7d6deb21700e5829056428f22634e8ad1d3d8",
+    "tests/test_workbench_member_presentation.gd": "265156b1a7cea48c8d6e49c4cf7d07404cf3727322167d905f07ba901a07cea8"
+  },
+  "returncode": 0
+}

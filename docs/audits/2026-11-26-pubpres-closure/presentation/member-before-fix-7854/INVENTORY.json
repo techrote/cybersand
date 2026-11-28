@@ -1,0 +1,15 @@
+{
+  "SUMMARY.json": "3c52f6795817f110e8c11c89876a8a643607980718111eb32bca5701db01c7d0",
+  "test_workbench_presentation_history-slots2/process.json": "e25feb75733e0689779a7eedad50118a4ae24363747ea7f61f79d84aaf29b34c",
+  "test_workbench_presentation_history-slots2/stdout.log": "6a12da50778e2dd6053e4c29be9664819929809fa70eb6ca4229e11e8402db57",
+  "import-slots2/process.json": "981f2daad0358e93a72f2bcc10009a54c90d13e68a0642b247f7b26a49ebd765",
+  "import-slots2/stdout.log": "81da412d1f1dffc623783a7cf37e7a1ff62dd157de74dc0db35adccd98a4ede5",
+  "test_workbench_member_presentation-slots2/display-owner.xorg.log": "79608c06e47d696207db0d26ead6304ada19ab7db920cb4cade0bf1550756f7e",
+  "test_workbench_member_presentation-slots2/receipt.png": "c3fd18baef7d623f24e6936f791ab9101288f8a0e37facd8c3ba5f67a50ec91e",
+  "test_workbench_member_presentation-slots2/process.json": "3ef829eab96b52deceeea5887ed88e77c5ba52b936dd0aa3f42970c776e33727",
+  "test_workbench_member_presentation-slots2/receipt.json": "a265762810d82d9f7478c8fca4516a62b877a92c75e70b0655fc87dc3de8b0c7",
+  "test_workbench_member_presentation-slots2/stdout.log": "f8c6a8d9ecefaad3f5ed8cf67000e22811f7680c67bf9243a1a2e4b1fc7c85ab",
+  "test_workbench_member_presentation-slots2/display-owner.json": "51bcd75a421ea667d7d78d56bc7bb75e77bf16597b7c1cd49e2308575ba12e52",
+  "test_workbench_presentation_member_history-slots2/process.json": "1f10d02d263795788bf8874a5a3d247ad87812e4c7d4e09fb82b44dd270e5eb9",
+  "test_workbench_presentation_member_history-slots2/stdout.log": "5cb5d8eed65631460f190b27473f42df762f7a0e58c469e3b8f9a092497e5583"
+}

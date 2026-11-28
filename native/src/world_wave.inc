@@ -76,6 +76,12 @@ struct World::WaveChunk {
     // state. A face at the selected-region boundary can retain paused flux.
     // Its interior needs no work until something writes into it.
     std::array<bool, 2> clean{};
+    // Derived cache only: actual cells are all Empty and weight/meta are zero.
+    // Unlike clean, this makes no promise about retained or paused flux. The
+    // allocated body-mask region may prevent clean/dry retirement even when
+    // this half contains no occupied body cells. Never hash/serialize this
+    // redundant certificate or use it to skip flux, apply or column physics.
+    std::array<bool, 2> empty_derived{};
     // Per column: 0 unknown, 1 holds no Water (derived state is current),
     // 2 additionally holds nothing but Empty. A strip skips columns that are
     // dry in every chunk of its group. Each half owns its own columns.
@@ -134,6 +140,12 @@ struct World::WaveState {
     [[nodiscard]] std::int32_t oil_drop_threshold() const noexcept { return maximum / 4; }
     std::uint32_t round = 0;
     bool mask_present = false;
+    // Exact occupied bounds, rebuilt by the exclusive owner before dispatch.
+    // The configured mask region is storage capacity, often the whole canvas;
+    // probing every cell of that allocation for one small body is redundant.
+    // Keep the original region for dry/clean classification so this elides
+    // only lookups known to return zero, without changing derived state.
+    RectI64 occupied_mask_bounds{};
     // Hybrid release. `launch` and `final_round` are tick-local; `launch_backoff`
     // is carried state: the tick after a refused or deferred launch spills natively.
     bool launch = false, final_round = false, launch_backoff = false;
@@ -425,10 +437,45 @@ void World::wake_wave_chunk(Chunk& chunk) noexcept {
     if (chunk.wave == nullptr) return;
     chunk.wave->woken = true;
     chunk.wave->clean = {};
+    chunk.wave->empty_derived = {};
     chunk.wave->dry_reset = {true, true};
 }
 
 void World::wave_column_task(std::size_t task_index) noexcept {
+    // The extra certificate addresses allocated mask coverage suppressing the
+    // original dry/clean shortcuts. It adds no skip when no configured mask
+    // column crosses this strip. Choose once per task; compile all redundant
+    // per-column certificate bookkeeping out of the ordinary unmasked path.
+    bool mask_covered = false;
+    if (wave_->mask_present) {
+        const auto& task = wave_->tasks[task_index];
+        const auto size = config_.chunk_size;
+        const auto& origin = wave_->sorted[task.first].coord;
+        const auto& mask = transient_obstacles_->region;
+        const auto ys = wave_clip_mask_axis(origin.y * size, static_cast<std::int32_t>(task.count) * size,
+                                            mask.y, mask.height);
+        const auto xs = wave_clip_mask_axis(origin.x * size, size, mask.x, mask.width);
+        const auto first_x = task.half == 0U ? 0 : size / 2;
+        const auto last_x = task.half == 0U ? size / 2 : size;
+        mask_covered = ys[0] < ys[1] && xs[0] < last_x && xs[1] > first_x;
+    }
+    if (mask_covered) {
+        wave_column_task_impl<true>(task_index);
+    } else {
+        // Retire older mask-era certificates once per owned half, including
+        // partial selections and long groups. The original column path need
+        // not maintain them, and a returning mask must recertify actual data.
+        const auto& task = wave_->tasks[task_index];
+        for (std::uint32_t c = 0; c < task.count; ++c) {
+            auto& certificate = wave_->sorted[task.first + c].chunk->wave->empty_derived[task.half];
+            if (certificate) certificate = false;
+        }
+        wave_column_task_impl<false>(task_index);
+    }
+}
+
+template <bool WithEmptyDerived>
+void World::wave_column_task_impl(std::size_t task_index) noexcept {
     using P = WaveFlowParameters;
     auto& state = *wave_;
     const auto& task = state.tasks[task_index];
@@ -455,6 +502,8 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     const auto& mask = transient_obstacles_->region;
     std::int32_t mask_first = 0, mask_last = 0;
     std::int32_t mask_first_x = 0, mask_last_x = 0;
+    std::int32_t occupied_first = 0, occupied_last = 0;
+    std::int32_t occupied_first_x = 0, occupied_last_x = 0;
     if (state.mask_present) {
         const auto clipped_y = wave_clip_mask_axis(origin_y, rows, mask.y, mask.height);
         mask_first = clipped_y[0];
@@ -462,15 +511,53 @@ void World::wave_column_task(std::size_t task_index) noexcept {
         const auto clipped_x = wave_clip_mask_axis(origin_x, size, mask.x, mask.width);
         mask_first_x = clipped_x[0];
         mask_last_x = clipped_x[1];
+        const auto& occupied = state.occupied_mask_bounds;
+        const auto occupied_y = wave_clip_mask_axis(origin_y, rows, occupied.y, occupied.height);
+        occupied_first = occupied_y[0];
+        occupied_last = occupied_y[1];
+        const auto occupied_x = wave_clip_mask_axis(origin_x, size, occupied.x, occupied.width);
+        occupied_first_x = occupied_x[0];
+        occupied_last_x = occupied_x[1];
     }
     constexpr std::uint32_t kMaximumGroup = 64;
     bool skip[kMaximumGroup] = {}, empty[kMaximumGroup] = {};
-    for (std::uint32_t c = 0; c < task.count && c < kMaximumGroup; ++c) {
+    [[maybe_unused]] bool reuse_empty[kMaximumGroup] = {};
+#if defined(CYBERSAND_WAVE_VERIFY_EMPTY_DERIVED)
+    // Retained safety apparatus, deliberately absent from ordinary timing.
+    // Check the actual storage, not another derived mark; remain effective
+    // even if a diagnostic build also defines NDEBUG. Flux is not certified.
+    [[maybe_unused]] const auto verify_empty_derived = [&](const Chunk& chunk) {
+        for (std::int32_t ly = 0; ly < size; ++ly)
+            for (auto lx = first_x; lx < last_x; ++lx) {
+                const auto at = static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) +
+                                static_cast<std::size_t>(lx);
+                if (chunk.cells[at].material_value() != Material::Empty ||
+                    chunk.wave->weight[at] != 0 || chunk.wave->meta[at] != 0U)
+                    std::terminate();
+            }
+    };
+#endif
+    for (std::uint32_t c = 0; c < task.count && (WithEmptyDerived || c < kMaximumGroup); ++c) {
         const auto base = static_cast<std::int32_t>(c) * size;
-        const auto& wave = *entries[c].chunk->wave;
-        skip[c] = wave.clean[task.half] && wave.min_y == 0 && wave.max_y == size &&
-                  wave.min_x <= first_x && wave.max_x >= last_x &&
+        auto& wave = *entries[c].chunk->wave;
+        const bool full = wave.min_y == 0 && wave.max_y == size &&
+                          wave.min_x <= first_x && wave.max_x >= last_x;
+        if constexpr (WithEmptyDerived) {
+            // A partial pass cannot certify untouched cells, even if old dry
+            // marks skip all selected columns. Tall groups retain fallback.
+            if (!full || c >= kMaximumGroup) wave.empty_derived[task.half] = false;
+            if (c >= kMaximumGroup) continue;
+        }
+        skip[c] = wave.clean[task.half] && full &&
                   !(base < mask_last && base + size > mask_first);
+        if constexpr (WithEmptyDerived) {
+            const bool occupied = base < occupied_last && base + size > occupied_first &&
+                                  first_x < occupied_last_x && last_x > occupied_first_x;
+            reuse_empty[c] = wave.empty_derived[task.half] && full && !occupied;
+#if defined(CYBERSAND_WAVE_VERIFY_EMPTY_DERIVED)
+            if (reuse_empty[c]) verify_empty_derived(*entries[c].chunk);
+#endif
+        }
         empty[c] = true;
     }
 
@@ -503,8 +590,10 @@ void World::wave_column_task(std::size_t task_index) noexcept {
         constexpr std::int32_t oil_lid = -2;
         for (std::uint32_t c = 0; c < task.count; ++c) {
             const auto& chunk = *entries[c].chunk;
-            if (c < kMaximumGroup && skip[c]) {
-                // A clean half is all Empty by definition: no cell is read.
+            if (c < kMaximumGroup && (skip[c] || (WithEmptyDerived && reuse_empty[c]))) {
+                // Both certificates prove Empty cells and zero derived flags.
+                // All column physics still runs, so inflow from above may
+                // invalidate the certificate before scatter.
                 const auto base = static_cast<std::size_t>(c) * static_cast<std::size_t>(size);
                 std::fill_n(mass + base, size, 0);
                 std::fill_n(flags + base, size, std::uint8_t{0});
@@ -526,8 +615,8 @@ void World::wave_column_task(std::size_t task_index) noexcept {
                 flags[base + ly] = meta[static_cast<std::size_t>(ly) * static_cast<std::size_t>(size)] & WaveChunk::kFull;
             }
         }
-        if (masked_column) {
-            for (auto r = mask_first; r < mask_last; ++r) {
+        if (masked_column && lx >= occupied_first_x && lx < occupied_last_x) {
+            for (auto r = occupied_first; r < occupied_last; ++r) {
                 const auto body = transient_obstacle_at(origin_x + lx, origin_y + r);
                 if (body == 0U) continue;
                 // Water resting on a body presses it down (the existing contract).
@@ -730,8 +819,16 @@ void World::wave_column_task(std::size_t task_index) noexcept {
             wave.dry[static_cast<std::size_t>(lx)] = mark;
             if (c < kMaximumGroup) {
                 // A clean half stays untouched unless liquid settled into it.
-                if (skip[c] && !any) continue;
-                if (any) { empty[c] = false; wave.clean[task.half] = false; skip[c] = false; }
+                if ((skip[c] || (WithEmptyDerived && reuse_empty[c])) && !any) continue;
+                if (any) {
+                    empty[c] = false;
+                    wave.clean[task.half] = false;
+                    skip[c] = false;
+                    if constexpr (WithEmptyDerived) {
+                        if (wave.empty_derived[task.half]) wave.empty_derived[task.half] = false;
+                        reuse_empty[c] = false;
+                    }
+                }
             }
             for (std::int32_t ly = 0; ly < size; ++ly) {
                 const auto at = static_cast<std::size_t>(ly) * static_cast<std::size_t>(size) + static_cast<std::size_t>(lx);
@@ -762,6 +859,15 @@ void World::wave_column_task(std::size_t task_index) noexcept {
     for (std::uint32_t c = 0; c < task.count && c < kMaximumGroup; ++c) {
         auto& wave = *entries[c].chunk->wave;
         if (wave.min_y != 0 || wave.max_y != size || wave.min_x > first_x || wave.max_x < last_x) continue;
+        if constexpr (WithEmptyDerived) {
+            // Zero post-column mass unconditionally clears scratch weight/meta
+            // in the head pass. Every visited column scattered those zeros or
+            // already had a valid certificate; old dry==2 retains its zeros.
+            wave.empty_derived[task.half] = empty[c];
+#if defined(CYBERSAND_WAVE_VERIFY_EMPTY_DERIVED)
+            if (wave.empty_derived[task.half]) verify_empty_derived(*entries[c].chunk);
+#endif
+        }
         if (!empty[c] || wave.clean[task.half]) continue;
         const auto base = static_cast<std::int32_t>(c) * size;
         if (base < mask_last && base + size > mask_first) continue;
@@ -826,7 +932,12 @@ void World::wave_write_mass(Chunk& chunk, std::size_t at, std::int32_t before, s
         return;
     }
     const auto column = at % static_cast<std::size_t>(config_.chunk_size);
-    chunk.wave->clean[column < static_cast<std::size_t>(config_.chunk_size / 2) ? 0U : 1U] = false;
+    const auto half_index = column < static_cast<std::size_t>(config_.chunk_size / 2) ? 0U : 1U;
+    chunk.wave->clean[half_index] = false;
+    // Wet halves normally already have no certificate. Avoid another shared
+    // header store for every positive cell update, but invalidate a retained
+    // certificate even while this tick is using the no-mask specialization.
+    if (chunk.wave->empty_derived[half_index]) chunk.wave->empty_derived[half_index] = false;
     chunk.wave->dry[column] = 0;
     if (before == 0) {
         cell = Chunk::Cell::for_material(Material::Water);
@@ -1433,6 +1544,26 @@ void World::advance_wave_flow(TickStats& stats) {
             scratch.launch_overflow = 0;
         }
     state.mask_present = !transient_obstacles_->occupied_indices.empty();
+    state.occupied_mask_bounds = {};
+    if (state.mask_present) {
+        const auto& mask = transient_obstacles_->region;
+        const auto mask_width = static_cast<std::size_t>(mask.width);
+        auto min_x = mask_width, min_y = static_cast<std::size_t>(mask.height);
+        std::size_t max_x = 0, max_y = 0;
+        for (const auto index : transient_obstacles_->occupied_indices) {
+            const auto x = index % mask_width, y = index / mask_width;
+            min_x = std::min(min_x, x); max_x = std::max(max_x, x);
+            min_y = std::min(min_y, y); max_y = std::max(max_y, y);
+        }
+        // Entries were admitted by set_transient_obstacle from representable
+        // global coordinates, even if the allocated region extends beyond an
+        // int64 endpoint. Do not form the allocated region's endpoint here.
+        state.occupied_mask_bounds = {
+            mask.x + static_cast<std::int64_t>(min_x),
+            mask.y + static_cast<std::int64_t>(min_y),
+            static_cast<std::int64_t>(max_x - min_x + 1U),
+            static_cast<std::int64_t>(max_y - min_y + 1U)};
+    }
     diagnostics.prepare_nanoseconds += elapsed(started);
     diagnostics.last_falling_units = diagnostics.last_falling_cells = 0;
     diagnostics.last_tasks = static_cast<std::uint32_t>(state.tasks.size());

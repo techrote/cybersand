@@ -1,0 +1,146 @@
+{
+  "artifact_id": 15271386911,
+  "artifact_sha256": "d4672baa044661adb1e12f80e7fcc6e8141c7ce43c4b5be7fccc2e9e40f8696c",
+  "cases": [
+    {
+      "all_resolved_programs_inside_bundle": true,
+      "compiler_error": null,
+      "executable_exit": 0,
+      "executable_stdout": "offline-material-ok",
+      "label": "short_ascii",
+      "material_lab_error": null,
+      "material_lab_status": null,
+      "missing_actual_processes": [],
+      "observer_errors": [],
+      "original_status": "passed"
+    },
+    {
+      "all_resolved_programs_inside_bundle": true,
+      "compiler_error": null,
+      "executable_exit": 0,
+      "executable_stdout": "offline-material-ok",
+      "label": "spaces",
+      "material_lab_error": null,
+      "material_lab_status": null,
+      "missing_actual_processes": [
+        "as.exe"
+      ],
+      "observer_errors": [
+        "PermissionError: [WinError 5] Access is denied."
+      ],
+      "original_status": "failed"
+    },
+    {
+      "all_resolved_programs_inside_bundle": true,
+      "compiler_error": null,
+      "executable_exit": 0,
+      "executable_stdout": "offline-material-ok",
+      "label": "parentheses",
+      "material_lab_error": null,
+      "material_lab_status": null,
+      "missing_actual_processes": [],
+      "observer_errors": [],
+      "original_status": "passed"
+    },
+    {
+      "all_resolved_programs_inside_bundle": true,
+      "compiler_error": "LabError: /compile_test: process returned 1: collect2.exe: fatal error: cannot find 'ld'\ncompilation terminated.",
+      "executable_exit": null,
+      "executable_stdout": "",
+      "label": "unicode",
+      "material_lab_error": null,
+      "material_lab_status": null,
+      "missing_actual_processes": [
+        "collect2.exe",
+        "ld.exe"
+      ],
+      "observer_errors": [
+        "PermissionError: [WinError 5] Access is denied."
+      ],
+      "original_status": "failed"
+    },
+    {
+      "all_resolved_programs_inside_bundle": true,
+      "compiler_error": null,
+      "executable_exit": 0,
+      "executable_stdout": "offline-material-ok",
+      "label": "nested",
+      "material_lab_error": null,
+      "material_lab_status": null,
+      "missing_actual_processes": [],
+      "observer_errors": [
+        "PermissionError: [WinError 31] A device attached to the system is not functioning."
+      ],
+      "original_status": "failed"
+    },
+    {
+      "all_resolved_programs_inside_bundle": true,
+      "compiler_error": "LabError: /compile_test: process returned 1: collect2.exe: fatal error: cannot find 'ld'\ncompilation terminated.",
+      "executable_exit": null,
+      "executable_stdout": "",
+      "label": "combined_adverse",
+      "material_lab_error": "/compile_test: process returned 1: collect2.exe: fatal error: cannot find 'ld'\ncompilation terminated.",
+      "material_lab_status": "failed",
+      "missing_actual_processes": [
+        "as.exe",
+        "ld.exe"
+      ],
+      "observer_errors": [
+        "PermissionError: [WinError 5] Access is denied."
+      ],
+      "original_status": "failed"
+    }
+  ],
+  "conclusion": "Exact original compiler population reproduced collect2 linker discovery failure on Unicode-only and combined paths, including real Materials Lab World compilation. Empty inherited GNU search overrides. Spaces/nested actual binaries ran, but observer refused qualification; no observer refusal is relabelled as a pass. No corrected compiler/package qualification yet.",
+  "date": "2026-11-28",
+  "firewall_cleanup_status": "passed",
+  "firewall_preflight": {
+    "all_profiles_enabled": true,
+    "profiles": [
+      {
+        "Enabled": true,
+        "EnabledRaw": "True",
+        "Name": "Domain"
+      },
+      {
+        "Enabled": true,
+        "EnabledRaw": "True",
+        "Name": "Private"
+      },
+      {
+        "Enabled": true,
+        "EnabledRaw": "True",
+        "Name": "Public"
+      }
+    ],
+    "required_profiles": [
+      "Domain",
+      "Private",
+      "Public"
+    ],
+    "service": "Running",
+    "status": "passed"
+  },
+  "job": 141039491686,
+  "merge_authorized": false,
+  "next_candidate": "Per-process UTF-8 activeCodePage metadata on copied UCRT compiler executables; hypothesis pending A/B execution.",
+  "original_compiler_admission": {
+    "changed": [],
+    "extra": [],
+    "missing": [],
+    "observed_compiler_files": 13764,
+    "omission": "embedded Python __pycache__; production copier separately validates these omissions",
+    "original_compiler_files": 13764,
+    "original_manifest_sha256": "3384839616bdced47a97c67811b0b31269fd2410d50d146a508aa994466daef6",
+    "original_run": 46147576269,
+    "status": "passed"
+  },
+  "original_report_bytes": 1110612,
+  "original_report_sha256": "be4c46bfd1089c93db4dfe22d91eaf8f2c6acf34e64913393144862170c3b95b",
+  "physical_owner_acceptance": "HOLD",
+  "run": 46164685636,
+  "source": {
+    "source_commit": "f8280881295a414511a1e1a9c356fdc838e0cc67",
+    "source_tree": "92969eac9accfaf5924bada80da45ecdbeb50c85"
+  }
+}

@@ -3,6 +3,21 @@ extends Control
 const Trial = preload("res://scripts/physical_actor_trial.gd")
 
 func _ready() -> void:
+	# A worker-count request only applies at the next new Workbench process.
+	# Read before Main constructs its SimulationWorker; defaults are unchanged.
+	var lab_path: String = "user://cybersand-engine-lab-workers.json"
+	if FileAccess.file_exists(lab_path):
+		var candidate: Variant = JSON.parse_string(FileAccess.get_file_as_string(lab_path))
+		if candidate is Dictionary:
+			var saved: Variant = candidate.get("native_threads")
+			# JSON numbers are floats after parsing, including values saved by
+			# Engine Lab as integers. Refuse fractional, non-finite and invalid
+			# values before conversion instead of silently truncating them.
+			if saved is int or saved is float:
+				var requested: float = float(saved)
+				if is_finite(requested) and requested >= 0.0 and requested <= 32.0 \
+						and requested == floor(requested):
+					ProjectSettings.set_setting("cybersand/native_worker_threads",int(requested))
 	# Keep existing direct-launch arguments compatible with the desktop wrapper.
 	var first_launch: bool = not get_tree().has_meta("cybersand_launch_args_consumed")
 	get_tree().set_meta("cybersand_launch_args_consumed", true)

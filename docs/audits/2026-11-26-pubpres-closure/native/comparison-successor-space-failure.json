@@ -1,0 +1,20 @@
+{
+  "schema": "pubpres-native-comparison-pre-execution-space-failure-v1",
+  "utc": "2026-11-26T08:37:29.993402+00:00",
+  "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+  "failed_output": "/workspace/scratch/9cef565acfec/native-task-abba-55dea",
+  "timed_arms_launched": 0,
+  "reason": "ENOSPC while copying source-matched Rapier into prepared template; no Godot arm was launched.",
+  "original_failed_evidence_archive_reverified": true,
+  "removed_regenerable_directories": [
+    "/workspace/scratch/9cef565acfec/native-task-abba-b695/projects",
+    "/workspace/scratch/9cef565acfec/native-task-abba-b695/template-C",
+    "/workspace/scratch/9cef565acfec/native-mounted-23fb/godot",
+    "/workspace/scratch/9cef565acfec/native-mounted-55dea/project",
+    "/workspace/scratch/9cef565acfec/native-task-abba-55dea/template-C"
+  ],
+  "all_original_raw_receipts_retained": true,
+  "free_bytes_after_owned_cleanup": 3871883264,
+  "total_filesystem_bytes": 20957446144,
+  "retry": "Same source55, runtime, engine, native0/1/1/0, physical criteria and corrected process-discovery apparatus; new output directory required. No timing claimed across cleanup."
+}

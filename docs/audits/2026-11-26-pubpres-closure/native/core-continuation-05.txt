@@ -1,0 +1,2 @@
+[pass] Hard-surface invalidation matches across worker counts
+1 tests passed

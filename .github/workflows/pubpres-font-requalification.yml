@@ -1,0 +1,80 @@
+name: PUBPRES retained font engine new execution
+
+on:
+  push:
+    branches: [codex/pubpres-playability-final-001-20261124]
+    paths: ['.github/pubpres-font-requalification-run.json']
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  PUBPRES_FIXED_APPLICATION: c2f8a73d34448bc1496ecd84bca02f0812c80d27
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 1, persist-credentials: false}
+      - name: Validate new qualifier and unchanged physical gates
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/pubpres_final_requalification/contract.py
+          python3 -m unittest discover -s tools/pubpres_final_requalification -p 'test_*.py' -v
+          python3 -m unittest discover -s tools/pubpres_final_engine -p 'test_*.py' -v
+          python3 tools/pubpres_final_engine/engine_contract.py --verify
+          python3 tools/pubpres_final_observers/bundle.py --verify
+
+  retained-font-windows:
+    needs: plan
+    runs-on: windows-2022
+    timeout-minutes: 150
+    steps:
+      - name: Canonical Windows source bytes
+        shell: powershell
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Fixed application and exact Rapier runtime
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git fetch --no-tags origin $env:PUBPRES_FIXED_APPLICATION
+          if ($LASTEXITCODE -ne 0) { throw 'Retained application fetch failed' }
+          git worktree add --detach (Join-Path $env:RUNNER_TEMP 'pubpres-fixed-application') $env:PUBPRES_FIXED_APPLICATION
+          if ($LASTEXITCODE -ne 0) { throw 'Retained application checkout failed' }
+          git lfs install --local
+          git -C (Join-Path $env:RUNNER_TEMP 'pubpres-fixed-application') lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Exact retained Rapier materialization failed' }
+      - name: Restore original and repaired engines and independently built native runtime
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_final_requalification/restore_artifacts.py --output (Join-Path $env:RUNNER_TEMP 'pubpres-retained-inputs') --evidence build/pubpres-font-requalification/custody
+          if ($LASTEXITCODE -ne 0) { throw 'Retained exact input restoration failed' }
+          python tools/ci/restore_workbench_godot.py --download --archive (Join-Path $env:RUNNER_TEMP 'engine609.zip') --output (Join-Path $env:RUNNER_TEMP 'engine609') --evidence build/pubpres-font-requalification/original-engine-custody
+          if ($LASTEXITCODE -ne 0) { throw 'Original engine control restoration failed' }
+      - name: New actual font startup and matched render-owner execution
+        run: python tools/pubpres_final_requalification/run.py --source "${{ runner.temp }}/pubpres-fixed-application" --inputs "${{ runner.temp }}/pubpres-retained-inputs" --original-engine-root "${{ runner.temp }}/engine609" --output build/pubpres-font-requalification/execution
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-font-requalification-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pubpres-font-requalification/
+            !build/pubpres-font-requalification/**/projects/**
+            !build/pubpres-font-requalification/**/startup-projects/**
+            !build/pubpres-font-requalification/**/oracle-projects/**
+            !build/pubpres-font-requalification/**/startup-template/project/**
+            !build/pubpres-font-requalification/**/template-*/**
+            !build/pubpres-font-requalification/**/template/project/**
+          retention-days: 90
+          if-no-files-found: warn

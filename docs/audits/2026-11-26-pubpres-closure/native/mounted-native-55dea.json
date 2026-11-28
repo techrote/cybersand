@@ -1,0 +1,95 @@
+{
+	"checks": 150,
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+	"failures": [],
+	"native_descriptor_sha256": "9f02ab03e73abbe65eed39c55dd6af9bd7c35953893165067e0dcafa570297c7",
+	"native_resource": "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+	"native_sha256": "a908b78028bd7e0ebe173b3f75a9ac143f863e20be66589b224cac3bbfd205b4",
+	"observations": [
+		{
+			"candidate": {
+				"completed_dispatches": 204,
+				"completed_tasks": 810,
+				"mode": "actual_tasks",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"candidate_completed_tick": 32,
+			"control": {
+				"completed_dispatches": 204,
+				"completed_tasks": 810,
+				"mode": "all_workers",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"control_completed_tick": 32,
+			"physical_hash": "863aaf46ed19ed6b",
+			"stage": "matched_native"
+		},
+		{
+			"after": {
+				"completed_dispatches": 36,
+				"completed_tasks": 132,
+				"mode": "all_workers",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"before": {
+				"completed_dispatches": 0,
+				"completed_tasks": 0,
+				"mode": "all_workers",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"completed_tick": 8,
+			"enabled": false,
+			"physical_hash": "53474db831f0c384",
+			"stage": "prepared_owner"
+		},
+		{
+			"after": {
+				"completed_dispatches": 36,
+				"completed_tasks": 132,
+				"mode": "actual_tasks",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"before": {
+				"completed_dispatches": 0,
+				"completed_tasks": 0,
+				"mode": "actual_tasks",
+				"schema": "PUBPRES-TASK-COMPLETION-V1"
+			},
+			"completed_tick": 8,
+			"enabled": true,
+			"physical_hash": "53474db831f0c384",
+			"stage": "prepared_owner"
+		},
+		{
+			"error": "World initialization failed: PUBPRES task completion barrier setting must be boolean",
+			"stage": "refused_selector",
+			"type": 2
+		},
+		{
+			"error": "World initialization failed: PUBPRES task completion barrier setting must be boolean",
+			"stage": "refused_selector",
+			"type": 4
+		},
+		{
+			"error": "World initialization failed: PUBPRES task completion barrier setting must be boolean",
+			"stage": "refused_selector",
+			"type": 3
+		}
+	],
+	"platform": "Linux",
+	"process_id": 953,
+	"schema": "pubpres-task-completion-native-v1",
+	"source_revision": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+	"test_sha256": "a1291e0ef2485b9dba1eb18e4241ce76648dba91502b8107e7a1e0e8f526e684"
+}

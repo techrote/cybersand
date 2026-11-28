@@ -19,6 +19,7 @@ var bench: Control
 var host: Control
 var selection := Rect2i()
 var cursor := Vector2i(-1,-1)
+var _pointer_screen := Vector2.INF
 var anchor := Vector2i(-1,-1)
 var dragging := false
 var drag_erase := false
@@ -59,6 +60,7 @@ var history_notice := ""
 func mount(workbench: Control) -> void:
 	bench = workbench
 	host = bench.host
+	host.world_view.mouse_exited.connect(_clear_pointer)
 	add_theme_constant_override("h_separation",5)
 	for text: String in TOOLS: _tools.add_item(text)
 	_tools.tooltip_text = "Brush / Eraser also work while running. Pause for shapes, selection, Fill and Undo/Redo. B Brush · E Eraser · L Line · R Rectangle · O Outline · S Select · G Fill · V Paste"
@@ -376,17 +378,29 @@ func _ready_to_author(allow_hold: bool = false, continuing_history: bool = false
 	return true
 
 func _pixel(event: InputEventMouse) -> Vector2i:
-	var pixel: Vector2i = host.view_pixel_from_local_point(event.position)
-	if pixel.x < 0: return Vector2i(-1,-1)
-	return pixel+Vector2i(host.camera_origin.floor())
+	return host.world_cell_from_local_point(event.position, true)
+
+func _clear_pointer() -> void:
+	_pointer_screen = Vector2.INF
+	if not dragging: cursor = Vector2i(-1,-1)
+
+func refresh_pointer() -> void:
+	if dragging or not _pointer_screen.is_finite(): return
+	# Keep the pointer in screen space so stationary hover previews also follow
+	# toolbar zoom, camera follow, window stretch and layout changes. No input
+	# is synthesized and active stroke/selection anchors remain untouched.
+	var local: Vector2 = host._world_view_screen_transform().affine_inverse() * _pointer_screen
+	cursor = host.world_cell_from_local_point(local)
 
 func world_input(event: InputEvent) -> bool:
 	if not paint_mode_active() or not event is InputEventMouse: return false
+	_pointer_screen = host._world_view_pointer_screen_position(event.position, host._world_view_screen_transform())
 	if event is InputEventMouseButton and event.button_index not in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]:
 		if event.pressed: cancel_preview()
 		return false
 	if event is InputEventMouseMotion and bench._pan: return false
-	var position := _pixel(event)
+	var position: Vector2i = _pixel(event) if dragging or event is InputEventMouseButton \
+		else host.world_cell_from_local_point(event.position)
 	if position.x >= 0: cursor = position
 	if not host.paused:
 		if dragging and not _live_stroke: cancel_preview()
@@ -750,11 +764,14 @@ func _consume_plan() -> void:
 		_finish_deferred(job,{"status":"refused","applied":0,"reason":_message})
 		_notify_history(job,{"status":"refused","reason":_message},false)
 		return
+	if host.has_method("material_edit_admitted"):
+		host.material_edit_admitted()
 	_operation = {"kind":"edit","operation_id":admitted.operation_id,"job":job,"planned":planned}
 	_say(str(job.label)+" queued · awaiting native confirmation…")
 
 func _process(_delta: float) -> void:
 	if host == null: return
+	refresh_pointer()
 	_consume_plan()
 	var state := _current()
 	var receipt_id: int = int(state.get("result_operation_id",0))
@@ -1014,8 +1031,7 @@ func _start_reverse(action: String, continuing_history: bool = false) -> bool:
 	return _start_planner(job)
 
 func local_to_cell(position: Vector2) -> Vector2i:
-	var pixel: Vector2i = host.view_pixel_from_local_point(position)
-	return pixel+Vector2i(host.camera_origin.floor()) if pixel.x >= 0 else Vector2i(-1,-1)
+	return host.world_cell_from_local_point(position)
 
 func _exit_tree() -> void:
 	if host != null and is_instance_valid(host) and not _operation.is_empty(): host.simulation_worker.paint_stop()

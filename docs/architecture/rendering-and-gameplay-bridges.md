@@ -6,7 +6,7 @@ status: Current
 scope: Native publication outcomes, Godot render consumption and current gameplay commands; resource lifetime and wire layouts are linked
 keywords: [RenderBridge, GameplayBridge, RG8, immutable snapshot, full texture upload, backpressure, emission queue]
 related-documents: [data-ownership-and-lifetimes.md, rigid-body-and-cellular-coupling.md, ../reference/interfaces-and-message-contracts.md, ../systems/material-appearance-and-rendering.md]
-last-reviewed: 2026-10-19
+last-reviewed: 2026-11-24
 ---
 
 # Rendering and gameplay bridges
@@ -76,6 +76,88 @@ change leaves retention, overflow, publication and ACK policy unchanged.
 
 ## Does a small dirty patch mean a small GPU upload?
 
+The [Completion candidate](../operations/pubpres-completion-001.md) also fences
+material blending by the accepted World generation. A same-size replacement may
+retain the old physical texture in the dual-history pair, but neither requested
+nor measured timing may give it visual weight without a qualified same-World
+predecessor. This does not change the accepted revision sequence, upload ACK or
+history bytes. The focused production-intake regression is
+[`test_workbench_material_world_blend.gd`](../../godot/tests/test_workbench_material_world_blend.gd).
+
+The [desktop evaluation candidate](../operations/pubpres-integration-evaluation.md) adds opt-in tile staging and persistent drawable history. Large transitions that first copy the accepted history use dedicated bounded staging rings. The ordinary full-only path continues to submit the complete backing image.
+
+**PUBPRES candidate:** `auto` and `blit` use the existing checked sparse
+publisher on supported graphical backends, including Windows software ANGLE.
+Explicit `full` retains the complete R8/RG8 ImageTexture pair, and structural
+or capacity refusal still selects the verified full fallback. Engine Lab shows
+requested and active modes. The temporary automatic WARP full-upload override
+is Rejected: its detached transition benefit did not hold across matched actual
+Wave and FreeMass gameplay. No replacement adapter or workload heuristic is
+introduced. Retained compact re-entry, fresh whole storage and fresh sparse
+staging comparisons are also negative; lower upload-call duration alone did not
+remove the later stalls. See
+[`supported_driver`](../../godot/scripts/blit_material_publisher.gd),
+[`_create_material_texture_pair`](../../godot/scripts/main.gd), and the linked
+evaluation for exact source/platform evidence and remaining acceptance gates.
+
+**PUBPRES-PLAYABILITY-FINAL experiment, default off:** with explicit Full
+publication and `CYBERSAND_DIAG_FULL_IMAGE_SLOTS=3`,
+[`CyberFullImageRingPublisher`](../../godot/scripts/full_image_ring_publisher.gd)
+owns exactly three persistent R8/RG8 ImageTextures. Main updates the spare that
+was absent from its preceding current/previous pair, then rotates the exact
+current and previous histories. A queued upload owns an immutable Image copy.
+The selector does not change native ticks, physics admission, ACKs, material
+timing, camera or World-generation blending. Missing or other selector values
+retain the ordinary two-slot Full path; Blit remains separately selected.
+Structural refusal rebuilds the exact two CPU histories before ACK.
+
+The additional declared logical storage is one full plane (8 MiB for 2048-square
+RG8). Three slots provide reuse distance, not a GPU fence or bounded driver wait.
+Source identity, slot count, stable resource IDs, logical byte count and upload
+destination are exposed in `material_publication_status()`. The distinct
+[ring transition oracle](../../godot/tests/pubpres_full_image_ring_oracle.gd)
+retains the 180-admission tape and first current/previous GPU read comparisons;
+the original two-slot oracle stays unchanged. The
+[queued publication fixture](../../godot/tests/test_full_image_ring_publication.gd)
+also wraps and poisons caller Images, tests R8/RG8 and NPOT sizes, and rejects
+foreign owners and invalid shape/format. These are correctness requirements;
+the experiment remains Draft/HOLD until matched actual Rapier and ordinary
+Workbench evidence establishes its end-to-end effect.
+
+**PUBPRES-PLAYABILITY-FINAL presentation deadline, default off:**
+[`MaterialPublicationDeadline`](../../godot/scripts/material_publication_deadline.gd)
+lets Main retain one immutable, cumulative worker publication before any CPU
+image mutation. The explicit 30/60 Hz diagnostic selector has its exact values
+in the [configuration reference](../reference/configuration-reference.md#workbench-material-deadline-experiment).
+Newer eligible packets replace the offer without postponing its first deadline.
+Every ordinary process turn attempts to drain it, including a paused World with
+no newer mailbox. This controls material consumption only; native sample and
+Rapier admission remain independently authoritative.
+
+Consumption calls the existing complete upload, history and acknowledgement
+path. If uploaded material serials jump from 20 to 24, the histories are 20 and
+24; deferred serials receive no ACK or pose authority. A pending offer is bound
+to the live actor session, epoch and authoritative World generation. Owner
+replacement, failure, texture recreation or rejected material cancels it. A new
+World requires its complete frame and bypasses the prior deadline; transition
+transactions retain their existing immediate path. Structural refusal requests
+the existing full-refresh recovery. This experiment is source implemented,
+but graphical correctness and comparative playability remain unqualified in the
+[implementation checkpoint](../audits/2026-11-24-pubpres-playability-final/material-deadline-implementation.md).
+
+**Separate completed-step experiment, default off:**
+[`MaterialPublicationSteps`](../../godot/scripts/material_publication_steps.gd)
+can hold one cumulative Full2 packet until two genuine completed session/Rapier
+steps beyond the last accepted upload, or the first-offer scheduled hold
+deadline. It is mutually exclusive with the time policy. Paused/ownerless
+operation, new Worlds and admitted painting preserve immediate publication.
+Exact owner/bridge identity and paired counter deltas gate the count; only the
+unchanged accepted transaction grants an ACK. The 16,667us scheduled deadline
+does not bound actual visible age during a Main stall. The
+[configuration](../reference/configuration-reference.md#workbench-completed-step-material-experiment)
+and [implementation/qualification record](../audits/2026-11-24-pubpres-playability-final/completion-count-architecture.md)
+separate source correctness from still-unqualified graphical and physical gains.
+
 No. **Current:** [main `apply_render_patches_to_image`](../../godot/scripts/main.gd)
 validates dimensions, channel count, offsets and exact byte sizes for the full
 packet before constructing/blitting patches. It updates a persistent CPU Image.
@@ -119,6 +201,31 @@ publication cadence. Neither is a strict simulation-accuracy switch.
 compression/coalescing and tuned production snapshot defaults. Lower native
 copy volume does not establish any of those features.
 
+### PUBPRES explicit Water composition clearance
+
+**Current candidate, default OFF:** the closure keeps actual completed
+native/physical pose authority separate from uploaded current/previous material
+identity. With that authority, Main asks the Water-compatible swept-footprint
+guard directly, avoiding an empty-only scan and refinement that necessarily
+reject the same Water before composition can run. Unknown authority retains the
+ordinary clearance path. Initial or actually withheld parts may use explicit
+endpoint reentry; consecutive visible parts retain continuous swept clearance.
+
+The guard may prove that its entire bounded swept AABB contains only material
+IDs Empty(0)/Water(3) in both active uploaded images. Bounded Image copies and
+R8 conversion/counting perform this stronger proof; RG8's second state byte
+cannot impersonate a material. Hard or other material falls back to the existing
+continuous geometry proof. The same shared 24,000-cell/2 ms budget, 12,000-cell
+fine-pass cap, world/rigidity checks and post-copy deadline remain. A complete
+Empty result keeps its ordinary certificate and draw layer. A Water result still
+requires the actual native/physical dependency and Water-only shader clipping.
+No solver, completion, actor ownership or production default changes.
+
+The [closure evidence](../audits/2026-11-26-pubpres-closure/README.md) retains the
+original 151-assertion replay with 214 omitted body-frames as a moving-visibility
+HOLD; component assertions alone did not close this defect. Resulting-source
+graphical, resource, progression and owner hardware gates remain separate.
+
 ## Which gameplay command path exists today?
 
 **Current desktop:** main-thread methods replace frame state and copied body
@@ -126,6 +233,16 @@ samples or enqueue generic disc emissions under a mutex. The pacing owner
 latches/drains them before stepping. Paint is one wrapper around emission;
 material IDs cross the boundary, not UI slot numbers. Reset and camera-window
 changes are handled by that owner too. Emissions remain allowed while paused.
+
+**PUBPRES candidate scheduling:** after a long owner turn, an overdue timer
+cannot authorize another native tick for a body sample that already completed.
+Only in that unpaused sample-fenced case, the existing owner rebases its idle
+deadline and polls for the next real sample or admitted work. Stop, reset,
+pause/settings changes, queued commands and render ACK/resync interrupt the
+same wait. No-body simulation and paused authoring keep their original timer
+cadence. Native health checks and the physical sample/terrain admission gates
+remain in the ordinary owner turn; no completion or simulation time is invented.
+Source: [`_worker_loop` and `_workbench_owner_work_pending`](../../godot/scripts/simulation_worker.gd).
 
 **Current Web:** the main-thread controller applies window changes and armed
 painting synchronously before its pause guard; it does not use the desktop

@@ -1,0 +1,19 @@
+{
+  "schema": "pubpres-final-causal-completion-registration-v1",
+  "platform": "windows",
+  "cases": ["wave_512_follow"],
+  "order": [false, true, true, false],
+  "material": "full",
+  "full_image_slots": 2,
+  "render_thread": "safe",
+  "physics": "early",
+  "presentation": "coherent",
+  "same_frame_continuation": false,
+  "material_deadline_hz": 0,
+  "material_step_interval": 0,
+  "presentation_observer": true,
+  "minimum_capture_usec": 10000000,
+  "minimum_real_steps": 144,
+  "maximum_capture_usec": 90000000,
+  "scope": "New exact-source Windows Wave512 diagnostic of sample admission, worker/native execution, terrain/publication and Main callback opportunity. Reuse the existing bounded causal observer and unchanged physical/causal reducers. Only causal tracing varies in OFF/ON/ON/OFF order; identical actual-process CPU and submitted-pose observation in all arms. Every actual Rapier completion and exact native application/transaction-exit join remains mandatory. Missing producer boundary joins remain explicit. ON timings are diagnostic with measured perturbation, never winner evidence; no inferred native-start, GPU-completion, scanout or physical NVIDIA credit. Add a large-workload diagnostic only if this result leaves a concrete distinct question. Draft/HOLD."
+}

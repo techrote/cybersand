@@ -1,0 +1,23 @@
+{
+  "schema": "pubpres-final-material-deadline-registration-v1",
+  "order": [0, 30, 60, 60, 30, 0],
+  "comparisons": {
+    "off_vs_30_abba": [0, 1, 4, 5],
+    "off_vs_60_abba": [0, 2, 3, 5],
+    "rate_30_vs_60_abba": [1, 2, 3, 4]
+  },
+  "primary_cases": ["wave_512_follow", "wave_gameplay_2048_follow"],
+  "confirmation_cases": ["wave_1024_follow_4"],
+  "material": "full",
+  "full_image_slots": 2,
+  "render_thread": "safe",
+  "physics": "early",
+  "presentation": "coherent",
+  "same_frame_continuation": false,
+  "minimum_capture_usec": 10000000,
+  "minimum_real_steps": 144,
+  "maximum_capture_usec": 90000000,
+  "maximum_deadline_samples": 6000,
+  "presentation_observer": true,
+  "scope": "One exact application/native/Rapier/official Godot4.7 and one host per cohort. Only the explicit material deadline0/30/60 selector varies. The complete unchanged frozen V3 native/terrain/real-callback/body/input/Water/current-GPU oracle remains mandatory. Status counters and pending observations measure presentation scheduling only; actual Rapier completions are independently witnessed. Both negative rates and all controls are retained. If other Main/render work already exceeds the interval, this deadline may suppress no uploads. Submitted-pose instrumentation is identical across arms. No default promotion or physical Windows/NVIDIA acceptance; always Draft/HOLD."
+}

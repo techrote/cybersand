@@ -1,0 +1,39 @@
+{
+  "source": "e14c94c1f1ccdf02508a5e9e3ebce45b45f03b3d",
+  "result": "FAIL_REPRODUCED",
+  "checks": 129,
+  "failed_checks": 56,
+  "physical_members": 24,
+  "authored_actors": 6,
+  "missing_history_slots": [
+    8,
+    9,
+    10,
+    11,
+    12,
+    13,
+    14,
+    15,
+    16,
+    17,
+    18,
+    19,
+    20,
+    21,
+    22,
+    23
+  ],
+  "follow_wrong_selected_actor_ids": [
+    3,
+    4,
+    5,
+    6,
+    60
+  ],
+  "scope": "Real native/Rapier initialized, twelve completed steps and owner replacement; headless original. Graphical correction qualification remains required.",
+  "files_sha256": {
+    "launch.json": "7e44445a77b96d7f3b79d07eb7ee8da4356e0785d720f6b7a10213932ebcfb1e",
+    "result.json": "e081545b84267ccce2d7872d243d5e303f892f8fbc2e03b1095988d85cd412f8",
+    "stdout.txt": "60620c7d71504fadafc63b6b0df610ad7526ea17e254031be48e088e7f77a4bb"
+  }
+}

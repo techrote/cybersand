@@ -1,0 +1,30 @@
+{
+  "schema": "pubpres-independent-source-review-v1",
+  "reviewer": "Specialist B, atomic presentation and physical ownership",
+  "source_commit": "c7a1fc398c8f1c8092d7498822b95d9904de13f1",
+  "source_tree": "ceaed099818d62a45222ff1a7022c87f090d29b3",
+  "files": {
+    "native/src/persistent_worker_pool.hpp": "9db7274e80edb54eea106e6876ad2c66a843a029b90583a2bd72d6546af7b793"
+  },
+  "disposition": "SOURCE_OWNERSHIP_REVIEW_PASS_PERFORMANCE_UNSELECTED",
+  "findings": [
+    "Task index, function and borrowed context are acquired under the dispatch mutex as one current-generation claim.",
+    "Actual-task completion decreases only after the noexcept callback returns, under the same mutex used by the dispatch waiter. No callback/context access follows the completion edge.",
+    "A worker arriving late holds no previous context and can only claim a real task from the current dispatch. Idle workers do not grant or withhold task completion.",
+    "Nonzero overlapping and nested calls fail before replacing active dispatch storage; RAII release leaves subsequent valid dispatch possible.",
+    "Worker counts outside1..256 and a missing nonzero-work callback fail before worker admission or context mutation.",
+    "Constructor failure stops and joins the initialized worker prefix while synchronization members remain alive.",
+    "The all-worker control remains present; its context cannot retire until every awakened worker acknowledges."
+  ],
+  "limits": [
+    "Exclusive external object lifetime remains required: concurrent destruction or use after destruction is not an admitted operation.",
+    "Completion statistics are owner-only; unsynchronized concurrent readers of non-atomic completed counters are not admitted.",
+    "A zero-task dispatch is an explicit no-op and grants no completion counters.",
+    "This is source cross-review, not an independent sanitizer rerun, full World proof, or performance adoption. Native Specialist A owns those recorded gates."
+  ],
+  "required_before_selection": [
+    "Source-bound full World equal-step semantics and actual mounted native module",
+    "Normal and applicable sanitizer lifetime gates with leak-check limitations retained",
+    "Registered interleaved physical progression with actualtask exercise and resource/freshness assessment"
+  ]
+}

@@ -1,0 +1,274 @@
+{
+  "schema": "pubpres-source-campaign-v1",
+  "design": "Fresh sequential M-I-C-C-I-M processes on one host and pinned engine. M is accepted main production source; I is the last qualified integrated production source; C is this candidate. Only the identical registered test files are overlaid on isolated copies. Gameplay is capped at60 FPS; the separate transition case is uncapped. Neither is physical Windows/NVIDIA acceptance.",
+  "order": [
+    "M",
+    "I",
+    "C",
+    "C",
+    "I",
+    "M"
+  ],
+  "source_commits": {
+    "main": "de109d0131641d6adc8d25bb9ced7ca3d4991105",
+    "integration": "8503ec19e4d620e125dc6df2c5c6571b1256cb92"
+  },
+  "overlay_sha256": {
+    "tests/pubpres_source_gameplay.gd": "3a0d8ec233863b01ee3423decd59fd83df9f8f64c306efd364a0b08972ff28d6",
+    "scripts/engine_lab_reference_fixture.gd": "b5b10d5de557395066aa07802c40e43c6bf47df6b997f5dcd1510c63aaed9934",
+    "tests/fixtures/engine_lab/setup-gate-canvas.json": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954"
+  },
+  "arms": {
+    "M": {
+      "reference": "main",
+      "material": "full",
+      "physics": "combined",
+      "presentation": "legacy",
+      "timing": "legacy",
+      "cadence": "source-default",
+      "rendezvous": "0"
+    },
+    "I": {
+      "reference": "integration",
+      "material": "blit",
+      "physics": "early",
+      "presentation": "coherent",
+      "timing": "measured",
+      "cadence": "repaired",
+      "rendezvous": "0"
+    },
+    "C": {
+      "reference": "candidate",
+      "material": "blit",
+      "physics": "early",
+      "presentation": "coherent",
+      "timing": "measured",
+      "cadence": "repaired",
+      "rendezvous": "0"
+    }
+  },
+  "measurement": {
+    "fps_cap": 60,
+    "window": [
+      1600,
+      900
+    ],
+    "vsync_requested": "disabled",
+    "physics_callbacks_hz": 60,
+    "minimum_capture_usec": 10000000,
+    "minimum_real_steps": 144,
+    "maximum_capture_usec": 90000000,
+    "setup_timeout_msec": 240000,
+    "windows": [
+      "first_10s",
+      "first_144_steps",
+      "whole_capture"
+    ],
+    "quantiles": "linear interpolation at (n-1)*q; maxima and consecutive gaps retained",
+    "input_tape_sha256": "1bc8bd338b220cfd5ec97a8746dbfee1eb1b32e9ad7ebfbf5cf76813d2139298",
+    "input_tape_hash_encoding": "UTF-8 canonical JSON, keys sorted, no spaces",
+    "limits": [
+      "Native completion common clock is existing post-tick result-capture entry; exact legacy completion timestamp is unavailable.",
+      "frame_post_draw is callback delivery, not hardware GPU completion or scanout.",
+      "Final gameplay state endpoints may have different tick counts; only first-144-step trajectories have equal physical-step endpoints.",
+      "Current GPU bytes are compared with source CPU bytes. Both-plane history parity is a separate retained transition oracle.",
+      "This fixed actor-input test does not replace human contact, painting, camera movement, authoring, save/reopen or physical Windows/NVIDIA acceptance."
+    ],
+    "input_tape": [
+      {
+        "move": [
+          0.0,
+          0.0
+        ],
+        "tick": 0
+      },
+      {
+        "move": [
+          1.0,
+          0.0
+        ],
+        "tick": 2
+      },
+      {
+        "move": [
+          0.0,
+          -1.0
+        ],
+        "tick": 4
+      },
+      {
+        "move": [
+          -1.0,
+          0.0
+        ],
+        "tick": 6
+      },
+      {
+        "move": [
+          0.0,
+          1.0
+        ],
+        "tick": 8
+      },
+      {
+        "move": [
+          0.0,
+          0.0
+        ],
+        "tick": 10
+      },
+      {
+        "move": [
+          0.70710678,
+          -0.70710678
+        ],
+        "tick": 12
+      },
+      {
+        "move": [
+          0.0,
+          0.0
+        ],
+        "tick": 14
+      },
+      {
+        "move": [
+          1.0,
+          0.0
+        ],
+        "tick": 30
+      },
+      {
+        "move": [
+          0.0,
+          -1.0
+        ],
+        "tick": 90
+      },
+      {
+        "move": [
+          1.0,
+          0.0
+        ],
+        "tick": 120
+      }
+    ],
+    "invariant_amendment": {
+      "reason": "The original c24875d observer incorrectly demanded constant global Water in the reacting reference. Its failed original receipts remain incomplete; no native failure fence was changed. This corrected registration must precede final matching captures.",
+      "reaction_sources": [
+        "native/include/cybersand/interaction_rules.hpp::int.pair.lava-water.quench.v1",
+        "native/src/world.cpp::RuleKernel::Acid",
+        "godot/native_extension/water_spray_coupling.inc::get_water_spray"
+      ],
+      "ledger_source": "Existing immutable snapshot.lab_context.water_spray. No new native query or reordered read."
+    }
+  },
+  "fixtures": {
+    "landscape2048x1024": {
+      "extent": [
+        2048,
+        1024
+      ],
+      "setup_sha256": "4be9cdcda8a4554b7dd03ef850da7585e6e2c56b028ddda4d2305bac7715fc52",
+      "kind": "authored_setup_v2",
+      "water_invariant": "Closed authored Water/steel fixture: healthy ledger, visible+overfill+ballistic=total=expected, and initial=final total."
+    },
+    "reference2048": {
+      "extent": [
+        2048,
+        2048
+      ],
+      "json_sha256": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+      "generated_sha256": "71610b37531531e284f069cf1e07c151283a441c9b0ff32a4fcc1dbb6c997a7a",
+      "receipts": 256,
+      "water_invariant": "Reacting owner fixture (Water3, Lava8, Acid12): healthy ledger, visible+overfill+ballistic=total=expected baseline+produced-consumed; record quantities by native tick. Global initial=final Water is not a valid invariant."
+    }
+  },
+  "cases": [
+    {
+      "id": "needle_wave_follow_landscape_w4",
+      "fixture": "landscape2048x1024",
+      "camera": "follow",
+      "workers": 4,
+      "water_law": "wave_flow_v1",
+      "quick": true
+    },
+    {
+      "id": "needle_wave_free_landscape_w4",
+      "fixture": "landscape2048x1024",
+      "camera": "free",
+      "workers": 4,
+      "water_law": "wave_flow_v1",
+      "quick": false
+    },
+    {
+      "id": "needle_wave_follow_2048_w4",
+      "fixture": "reference2048",
+      "camera": "follow",
+      "workers": 4,
+      "water_law": "wave_flow_v1",
+      "quick": true
+    },
+    {
+      "id": "needle_wave_free_2048_w4",
+      "fixture": "reference2048",
+      "camera": "free",
+      "workers": 4,
+      "water_law": "wave_flow_v1",
+      "quick": false
+    },
+    {
+      "id": "needle_freemass_follow_2048_w1",
+      "fixture": "reference2048",
+      "camera": "follow",
+      "workers": 1,
+      "water_law": "freemass_v1",
+      "quick": false
+    },
+    {
+      "id": "needle_freemass_free_2048_w4",
+      "fixture": "reference2048",
+      "camera": "free",
+      "workers": 4,
+      "water_law": "freemass_v1",
+      "quick": false
+    }
+  ],
+  "transition_case": {
+    "id": "transition_2048_w1",
+    "kind": "transition",
+    "window": [
+      960,
+      720
+    ],
+    "fps_cap": 0,
+    "vsync": 0,
+    "size": [
+      2048,
+      2048
+    ],
+    "channels": 2,
+    "warmup": 30,
+    "samples": 180,
+    "oracle_sources": [
+      "M",
+      "I",
+      "C"
+    ],
+    "oracle_before_timing": true,
+    "initial_plane_sha256": "20ad8501b542f948305b5979ed20180264726a8259766bf5ccd401339fce6959",
+    "history": {
+      "current_sha256": "14f53c3a4451cdd0b64ae87457c71ae9366cabe609a51be1d180491a4c0011d9",
+      "previous_sha256": "75f6f9c13da5687b4c5197741b1e96c3f223a29feaba32d3ff324b92cc8da90f"
+    },
+    "warmup_history": {
+      "current_sha256": "34899f9afac5f9626be3ba2d44852ca37650ab8e42744169bf2e6670bbd860bb",
+      "previous_sha256": "c5645572e1bd5e439b94d656234b09efc2dbe958f1ba8f75d02e58a15b258aa5"
+    },
+    "scope": "Retained2-dense/10-sparse tape through actual Main renderers. Every history byte is read back in separate untimed processes. Timed arms compare exact original framebuffer PNGs. No native or Rapier owner runs in this lane."
+  },
+  "transition_overlay_sha256": {
+    "tests/pubpres_transition.gd": "706f6813a77835d7a394e846039a9cfb9c7b53d07b3b9315248b55eb3babcb25",
+    "tests/pubpres_source_transition_oracle.gd": "7fd61a414cbe961fa1f24151d3e1f5e2560fe281d6e60e83752c9975438b81f1"
+  }
+}

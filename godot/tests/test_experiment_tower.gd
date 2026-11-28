@@ -60,6 +60,7 @@ func _run() -> void:
 	# Retained desktop acknowledgements must not discard a replacement whose
 	# new native snapshot exchange starts serial numbering from one again.
 	var previous_serial: int = snapshot.render_snapshot_serial
+	owner._workbench_extent = Vector2i.ONE # Actual extent represented by this synthetic complete frame.
 	owner._append_native_render_packet({"serial":1,"channels":2,"full_refresh":true,"cells":PackedByteArray([1,0]),"rectangles":PackedInt32Array([0,0,1,1,0,2])})
 	assert(owner._pending_render_snapshot_serial>previous_serial)
 	# Load both real controllers; catches script inheritance/scene errors.

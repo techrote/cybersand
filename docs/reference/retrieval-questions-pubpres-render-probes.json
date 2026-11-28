@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-21",
+  "scope": "Additive native-independent renderer diagnostic questions, authored with this bounded implementation; a development set, not held-out evaluation. Existing general and mission questions remain unchanged.",
+  "questions": [
+    {
+      "id": "PUBPRESRENDER-01",
+      "query": "Can isolated PUBPRES renderer diagnostics run before native builds, what finite Linux and Windows controls run, and do they qualify gameplay or a package?",
+      "canonical": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "facts": [
+        "Only the pinned engine, Python process owner and Linux owned display are needed; no GDExtension or native build is loaded.",
+        "Linux has four font controls and Windows has two empty startup controls; both have Safe reachable R8 slots2/3 and Separate slots2/1, with 60 seconds per actual Godot child plus bounded cleanup.",
+        "Native-independent diagnostic results do not establish gameplay, pacing, performance, package or physical Windows/NVIDIA acceptance; Draft/HOLD and Separate qualification remain separate."
+      ],
+      "sources": [
+        "operations/pubpres-playability-evaluation.md",
+        "../tools/pubpres_render_probes/run_probes.py"
+      ],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESRENDER-02",
+      "query": "Can later correct queued material pixels erase a failed first read, and what happens when a Separate diagnostic crashes or times out?",
+      "canonical": [
+        "operations/pubpres-playability-evaluation.md"
+      ],
+      "facts": [
+        "The frozen a707 publisher/shader/base fixture and original first current/previous byte assertions are preserved; all added reads happen after the publication burst and original oracle.",
+        "Later exact pixels cannot erase the first-read failure, and selected diagnostics cannot replace the original complete fixture.",
+        "Ordinary failed arms retain raw process/receipt evidence and the matrix continues before aggregate nonzero; cancellation or uncertain ownership is terminal and remaining arms are recorded not run.",
+        "Source, engine, script, PID, nonce and empty loaded extensions are joined; a startup failure never receives an invented completed script receipt."
+      ],
+      "sources": [
+        "operations/pubpres-playability-evaluation.md",
+        "../tools/pubpres_render_probes/projects/material/tests/diagnose_queued_material.gd"
+      ],
+      "revision_sensitive": true
+    }
+  ]
+}

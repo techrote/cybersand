@@ -1,0 +1,68 @@
+{
+  "files": {
+    "Xorg-output.txt": {
+      "bytes": 2260,
+      "sha256": "7ec14e7482ff7fb2f8b55874c9705a9012bf349933ed54bb3de88206d96eb6f2"
+    },
+    "Xorg.log": {
+      "bytes": 41688,
+      "sha256": "58f74126565e34c46e08aac1d7ccd30f5e8d95eb1a947bf87470e682169902a2"
+    },
+    "godot.log": {
+      "bytes": 67914,
+      "sha256": "b62bbcb9c0b21ee18ab89f925e8c4aaa628e538e2b9ec5390c95ecc17480d89b"
+    },
+    "initial_authoring_framebuffer-hidden-control.png": {
+      "bytes": 87310,
+      "sha256": "1817fce1a838bd4a8f00e6da5e49ac83686c897da08d465ef00c95454b381da2"
+    },
+    "initial_authoring_framebuffer-restored.png": {
+      "bytes": 87233,
+      "sha256": "dd3e7e964f83ba1a00df53d4c5b2ac789939190162f60528466efc4f8d43519e"
+    },
+    "initial_authoring_framebuffer-shown.png": {
+      "bytes": 89799,
+      "sha256": "6027acb4b0dc08f32efdf69b2a5bac077ae7f021160c981553d1d5c3a9d4b888"
+    },
+    "launch.json": {
+      "bytes": 1432,
+      "sha256": "510576385c0900b1e7f7158d1db6581c114fc4dbbfc5472ff25b38efa5b4518a"
+    },
+    "process-cpu.json": {
+      "bytes": 146791,
+      "sha256": "edd04fb90396e0749f1a565f5a60e2730dc2c325ec0f6b265ae21c5d035164db"
+    },
+    "process-memory.json": {
+      "bytes": 57252,
+      "sha256": "25dbdc59722ba6e2c0aa74a4fd299432c2275773199ab672672c4612cf9d5cdb"
+    },
+    "process.json": {
+      "bytes": 2663,
+      "sha256": "1d08334bace00f12c560136a37a328cbe66fd5c00c685389f60c6b9b50fce668"
+    },
+    "result.json": {
+      "bytes": 1124530,
+      "sha256": "19c4c45f9278bcee11838763e70ca9eb1594c2704972062ef792479e9048b4b3"
+    },
+    "stderr.log": {
+      "bytes": 67174,
+      "sha256": "ea2778b39503d634df92b2b537989e831a27c7ac59e43b8d84c93313c460335b"
+    },
+    "stdout.log": {
+      "bytes": 856,
+      "sha256": "bba97219c8df75c3a24c0835a3cc9c87ed6ed12d0640de11f483fe18ba5a265e"
+    },
+    "submerged_framebuffer-hidden-control.png": {
+      "bytes": 90506,
+      "sha256": "d7031735fd417d7195fc152830d0d38ee27fcfeb0e2ff87f4a78cf3a0b711c81"
+    },
+    "submerged_framebuffer-restored.png": {
+      "bytes": 92434,
+      "sha256": "59964446c7bd536335b2b27b55a83880cf794b3d03fcdf8b25ba625ddea2c1f2"
+    },
+    "submerged_framebuffer-shown.png": {
+      "bytes": 92342,
+      "sha256": "cf7d6d9f4b17d75fbedef4220ddba423b74334d89e82b6b12fabd0138b2772f2"
+    }
+  }
+}

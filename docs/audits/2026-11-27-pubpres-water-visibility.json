@@ -1,0 +1,580 @@
+{
+  "source_revision": "be01cc37f0833455ae3390ad41440da4c9de2df7",
+  "native_build_commit": "13c0b731b0659d4a8bd00cbd5d85e5e5b66fc72b",
+  "raw_receipt_sha256": "95d3a4fffc2799597a697831d2477acac6ad4e821909f95a2c7c58860d4c9171",
+  "display": "X11",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "checks": 203,
+  "failures": [],
+  "observed_frames": 4906,
+  "hidden_body_frames": 22,
+  "composed_body_frames": 17111,
+  "moving_wet_distinct_poses": 41,
+  "observed_frames_by_stage": {
+    "completed_paused_history": 2338,
+    "dry_large_erase": 1,
+    "dry_step": 1,
+    "dry_to_wet_entry": 81,
+    "initial_authoring_framebuffer": 4,
+    "initialized_paused_history": 2338,
+    "install": 1,
+    "mixed_sand_small_edit": 1,
+    "mixed_step": 1,
+    "moving_submerged": 44,
+    "multipart_install": 15,
+    "multipart_limb_framebuffer": 2,
+    "multipart_motion": 10,
+    "repair_step": 1,
+    "restore": 13,
+    "restored_authoring_framebuffer": 4,
+    "restored_paused": 32,
+    "restored_step": 7,
+    "single_step": 2,
+    "submerged_framebuffer": 4,
+    "water_refill_framebuffer": 3,
+    "water_small_repair": 1,
+    "wet_large_fill": 1,
+    "wet_step": 1
+  },
+  "omission_reasons": {
+    "dry_to_wet_entry:0:shared_budget": 4,
+    "dry_to_wet_entry:0:time_budget": 1,
+    "dry_to_wet_entry:1:shared_budget": 2,
+    "dry_to_wet_entry:2:shared_budget": 4,
+    "dry_to_wet_entry:3:shared_budget": 3,
+    "dry_to_wet_entry:3:time_budget": 3,
+    "moving_submerged:0:shared_budget": 1,
+    "moving_submerged:0:time_budget": 1,
+    "moving_submerged:1:shared_budget": 1,
+    "moving_submerged:3:time_budget": 1,
+    "multipart_motion:0:time_budget": 1
+  },
+  "frames": [
+    {
+      "label": "initial_authoring_framebuffer",
+      "slot": 3,
+      "pixel_point": [
+        640,
+        418
+      ],
+      "maximum_visible_difference": 0.441650390625,
+      "maximum_restored_error": 0.0
+    },
+    {
+      "label": "submerged_framebuffer",
+      "slot": 2,
+      "pixel_point": [
+        639,
+        418
+      ],
+      "maximum_visible_difference": 0.839202880859375,
+      "maximum_restored_error": 0.0
+    },
+    {
+      "label": "water_refill_framebuffer",
+      "slot": 1,
+      "pixel_point": [
+        639,
+        575
+      ],
+      "maximum_visible_difference": 0.62841796875,
+      "maximum_restored_error": 0.0
+    },
+    {
+      "label": "restored_authoring_framebuffer",
+      "slot": 0,
+      "pixel_point": [
+        640,
+        418
+      ],
+      "maximum_visible_difference": 0.5906982421875,
+      "maximum_restored_error": 0.0
+    },
+    {
+      "label": "multipart_limb_framebuffer",
+      "slot": 4,
+      "pixel_point": [
+        639,
+        417
+      ],
+      "maximum_visible_difference": 0.34228515625,
+      "maximum_restored_error": 0.0
+    }
+  ],
+  "schema": "pubpres-mounted-water-visibility-20261127-v1",
+  "source_tree": "f393540616a6670eaaf3761fe10ec08b37cba007",
+  "native_so_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+  "rapier_so_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "runner": "Ubuntu 24.04 on WSL2, private Xvfb, Mesa llvmpipe OpenGL, Godot 4.7 stock Safe. Other independent local work ran concurrently. No matched timing claim.",
+  "process": {
+    "timeout_seconds": 1150,
+    "returncode": 0,
+    "command": [
+      "xvfb-run",
+      "-a",
+      "-s",
+      "-screen 0 1280x800x24 +extension GLX",
+      "Godot_v4.7-stable_linux.x86_64",
+      "--path",
+      "<staged source>/godot",
+      "--audio-driver",
+      "Dummy",
+      "--rendering-method",
+      "gl_compatibility",
+      "--rendering-driver",
+      "opengl3",
+      "--render-thread",
+      "safe",
+      "--script",
+      "res://tests/test_workbench_water_composition_native.gd"
+    ],
+    "selectors": {
+      "actual_submission": "0",
+      "actual_submission_status": {
+        "candidate_ready": false,
+        "committed_count": 0,
+        "connected": false,
+        "enabled": false,
+        "engine_atomic_admission": false,
+        "refusal": "",
+        "requested": false,
+        "schema": "pubpres-actual-submission-v1"
+      },
+      "water_composition": "1"
+    },
+    "full_image_slots": 2,
+    "physics_publication": "early",
+    "full_image_publication": true
+  },
+  "source_verification": "125 native, build and focused script inputs matched Git after CRLF normalization. The staged bytes matched every independently re-read input hash in the native receipt.",
+  "partial_coverage": "The shader clips incompatible current/active-previous material fragments and attenuates Water. hidden_body_frames counts entirely missing selected member poses, independently of fragment clipping and explicitly tagged held poses.",
+  "held_total": null,
+  "held_total_scope": "The original fixture at this source retained sampled selected steps and poses without an aggregate held-pose counter.",
+  "withheld_evidence": {
+    "recorded": 22,
+    "dropped": 0,
+    "all_current_footprints_empty_or_water": true,
+    "all_latest_native_responses_accepted": true,
+    "counts_by_refusal": {
+      "shared_budget": 15,
+      "time_budget": 7
+    }
+  },
+  "input_hashes": {
+    "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+    "res://scripts/main.gd": "6a7252171712c7a20fa6b2ff0cf576ba5d414bba585a7e563e53a428aed409e9",
+    "res://scripts/physical_actor_overlay.gd": "e27096267383a4c0ef437852667770047c2b7e57c8f43be96aeea71dfffe7a36",
+    "res://scripts/physical_actor_session.gd": "8ac01eca5ad696dcddc02af85a8483d0fd00c9ff4e39dfd462bdf5923c5141cd",
+    "res://scripts/shared_workbench.gd": "f32faf02db09cc0a89b56721be9d340baf0ea3c2875d4d425c6cb55b9d96f090",
+    "res://scripts/simulation_worker.gd": "a1483dd2a0b60842ea9c4be36bf9d63e4927bd69c4c46db201d10fe1ef6eb76e",
+    "res://scripts/workbench_physics_bridge.gd": "005cb66e6cea4337420e22453984c78ff32d75aa74ccf7722ae84e2fb0da04d8",
+    "res://scripts/workbench_presentation_coherence.gd": "4d6bfe581b666bb2121989a163a5d12ce87760c4dfe37c080d1bb920ebe4fced",
+    "res://scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+    "res://scripts/workbench_water_composition.gd": "f50cb53285e7317e6a182609c66f042683b3b79f87cd0b333513255a85e1abbd",
+    "res://shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+    "res://tests/test_workbench_water_composition_native.gd": "3c2f84e8bac475593987e65ee6daa5a46adef0eeb6adb67f667fd1dd2c284043"
+  },
+  "evidence_sha256": {
+    "moving-runner.png": "0566d1998d3eca896ff9ac679fb2109e89b27e0db9e673ffd0c70bff0b411026",
+    "submerged_framebuffer-shown.png": "f3492bead2519117d9e555c7ff951a35c522f9414140e960380807ca0dfafa7f",
+    "multipart_limb_framebuffer-hidden-control.png": "b4ff5ca7e8718c23f320e355edd5c295c9b17ddba6d4862a3b26a63555b40b87",
+    "submerged_framebuffer-restored.png": "f3492bead2519117d9e555c7ff951a35c522f9414140e960380807ca0dfafa7f",
+    "restored_authoring_framebuffer-restored.png": "cd1b06b0b151923a9d982a22660b8600144308f72da3562d320fd50e519846dd",
+    "water_refill_framebuffer-shown.png": "a6c44628940701baec8ad80eb539dfec4a27f81c506d2c1ab4415e9a624fc135",
+    "receipt.json": "95d3a4fffc2799597a697831d2477acac6ad4e821909f95a2c7c58860d4c9171",
+    "restored_authoring_framebuffer-hidden-control.png": "71007d3db920041b940b31e5fc0e7a64fba09c4e7cea056c390b9791288ff5f2",
+    "initial_authoring_framebuffer-shown.png": "5e414af3a68aea8c9c1310d4d3e25d0edd75c23ee5cb7e6b0ff9c257df63dfa6",
+    "water_refill_framebuffer-restored.png": "a6c44628940701baec8ad80eb539dfec4a27f81c506d2c1ab4415e9a624fc135",
+    "initial_authoring_framebuffer-hidden-control.png": "fe044eac6c325d7a5294f7c537da00bd6d524f9cdb643b6e92013aae62e33a63",
+    "initial_authoring_framebuffer-restored.png": "5e414af3a68aea8c9c1310d4d3e25d0edd75c23ee5cb7e6b0ff9c257df63dfa6",
+    "water_refill_framebuffer-hidden-control.png": "31e6cf4b321e060e33f0c519699e50e4455db66d594babeadcf7a536245604f7",
+    "multipart_limb_framebuffer-restored.png": "d696a4d277f931862868c82a7743e56dbb850d3d7276f5ec25dbeb31e3cb6eb7",
+    "submerged_framebuffer-hidden-control.png": "9d72a762ba629869b17d9c0c87bac4d331bf868801f6647055110ee223b80b1a",
+    "multipart_limb_framebuffer-shown.png": "d696a4d277f931862868c82a7743e56dbb850d3d7276f5ec25dbeb31e3cb6eb7",
+    "stdout.log": "d8afffa30ef2907fc0507aeb95e74f4fd6f12634555bfc57dd94fcc004322282",
+    "restored_authoring_framebuffer-shown.png": "cd1b06b0b151923a9d982a22660b8600144308f72da3562d320fd50e519846dd"
+  },
+  "raw_custody": "Mission workspace C:/cs-pubdef/evidence/water-be01. The following SHA-256 values identify the original receipt, stdout and 16 first-read PNGs.",
+  "row_classification_comparison": {
+    "base_commit": "40d21f2899941e957fb0fb1197c135d1638bf8ed",
+    "hypothesis": "Where a cropped region contains a hard material, classify individual rows and skip polygon tests on rows containing only Empty or Water. Charge all scanned cells at the existing shared limits.",
+    "decision": "Rejected. Whole-member losses and selection duration tails increased in the row arms. Retain the existing whole-region fast path and bounds.",
+    "scope": "Sequential short diagnostic arms at stock Safe on private Xvfb, llvmpipe with 2 threads, nice 17 and CPU affinity 9-11. Each launched a fresh process and ran the mounted native fixture install, submerged movement and dry-to-wet entry. Each passed the same 20 assertions. Distinct submitted steps are counted by the draw observer. Held totals excluded. No architecture throughput inference.",
+    "patch_sha256": "6b504967e3f79bd65dac598affd8b9cfb22e9f47726366738bb011a94451cc35",
+    "focus_driver_sha256": "73403d748bb35c9a91efa64dabcf079fe91e34b210587397a37af8d3fa5960e1",
+    "arm_driver_sha256": "95382153f2bc1875169e8581cd353fbc392e26379a229a39562b376f8329a9a8",
+    "stock_coherence_sha256": "4d6bfe581b666bb2121989a163a5d12ce87760c4dfe37c080d1bb920ebe4fced",
+    "row_coherence_sha256": "e00a9d4d2b69cf714900ca3cd8791473c99aa9001e1dbf05e6218a971e6dbfdf",
+    "native_so_sha256": "56ecc606e0f8111816ec96e4022789aeb280feef52e73292f5e9d2b9026da6b1",
+    "raw_custody": "Mission workspace C:/cs-pubdef/evidence/water-rows.",
+    "arms": [
+      {
+        "arm": "control1",
+        "receipt_sha256": "5f84d7dbb10781d17f8e57ac11b9d6252f49c1eef91d7705d040b7e52e8849c0",
+        "observed_moving_draws": 102,
+        "distinct_submitted_rapier_steps": 98,
+        "omissions": 0,
+        "selection_usec_p50_p95_p99_max": [
+          989,
+          1510,
+          2053,
+          3247
+        ],
+        "cells_p50_p95_p99_max": [
+          1274,
+          1320,
+          1652,
+          1764
+        ]
+      },
+      {
+        "arm": "rows1",
+        "receipt_sha256": "4d9a0edd51a9117a9cb81f074801408409234a9165dba5800111bb2ba9bf4f6a",
+        "observed_moving_draws": 104,
+        "distinct_submitted_rapier_steps": 100,
+        "omissions": 4,
+        "selection_usec_p50_p95_p99_max": [
+          948,
+          1733,
+          3068,
+          3100
+        ],
+        "cells_p50_p95_p99_max": [
+          1258,
+          1274,
+          1282,
+          1748
+        ]
+      },
+      {
+        "arm": "rows2",
+        "receipt_sha256": "c5e990a9d887f0b133d3504d2b2ff97442f868db2e35993660017eda2118dfcc",
+        "observed_moving_draws": 98,
+        "distinct_submitted_rapier_steps": 94,
+        "omissions": 9,
+        "selection_usec_p50_p95_p99_max": [
+          917,
+          2621,
+          5814,
+          5814
+        ],
+        "cells_p50_p95_p99_max": [
+          1250,
+          1282,
+          1866,
+          1866
+        ]
+      },
+      {
+        "arm": "control2",
+        "receipt_sha256": "de39ac65248f8c61c18e514e8da7468958f08dcc2f908989feb164bf92118f8d",
+        "observed_moving_draws": 107,
+        "distinct_submitted_rapier_steps": 103,
+        "omissions": 7,
+        "selection_usec_p50_p95_p99_max": [
+          940,
+          2036,
+          2681,
+          4126
+        ],
+        "cells_p50_p95_p99_max": [
+          1258,
+          1282,
+          1578,
+          1756
+        ]
+      }
+    ]
+  },
+  "deadline_refusals": {
+    "source": "Existing original omitted_observations. cells_examined is monotonic within a frame. A final charge below the shared ceiling proves the ceiling was never reached on that frame. Per-query start times were not emitted on this revision.",
+    "pre_entry_time": 15,
+    "in_query_time": 7,
+    "pre_entry_cell_exhaustion": 0,
+    "shared_cell_limit": 24000,
+    "time_limit_usec": 2000,
+    "columns": [
+      "engine_frame",
+      "phase",
+      "slot",
+      "raw_reason",
+      "final_frame_cells_charged",
+      "final_selection_usec",
+      "upload_cache_usec",
+      "total_elapsed_usec"
+    ],
+    "observations": [
+      [2393,"moving_submerged",0,"shared_budget",700,5026,26,5052],
+      [2418,"moving_submerged",1,"shared_budget",2541,2264,37,2301],
+      [2424,"moving_submerged",3,"time_budget",1024,5666,28,5694],
+      [2425,"moving_submerged",0,"time_budget",1269,2306,36,2342],
+      [2437,"dry_to_wet_entry",0,"shared_budget",832,2712,90,2802],
+      [2437,"dry_to_wet_entry",3,"time_budget",832,2712,90,2802],
+      [2441,"dry_to_wet_entry",0,"shared_budget",1104,4728,31,4759],
+      [2444,"dry_to_wet_entry",3,"time_budget",1638,2026,146,2172],
+      [2445,"dry_to_wet_entry",0,"shared_budget",300,3092,41,3133],
+      [2445,"dry_to_wet_entry",2,"shared_budget",300,3092,41,3133],
+      [2445,"dry_to_wet_entry",3,"shared_budget",300,3092,41,3133],
+      [2462,"dry_to_wet_entry",1,"shared_budget",1012,3345,32,3377],
+      [2472,"dry_to_wet_entry",2,"shared_budget",360,3769,40,3809],
+      [2472,"dry_to_wet_entry",3,"shared_budget",360,3769,40,3809],
+      [2473,"dry_to_wet_entry",0,"time_budget",1186,2536,28,2564],
+      [2492,"dry_to_wet_entry",2,"shared_budget",350,3173,50,3223],
+      [2492,"dry_to_wet_entry",3,"shared_budget",350,3173,50,3223],
+      [2493,"dry_to_wet_entry",0,"shared_budget",840,6733,35,6768],
+      [2493,"dry_to_wet_entry",3,"time_budget",840,6733,35,6768],
+      [2503,"dry_to_wet_entry",1,"shared_budget",964,7430,48,7478],
+      [2503,"dry_to_wet_entry",2,"shared_budget",964,7430,48,7478],
+      [4963,"multipart_motion",0,"time_budget",138,2102,59,2161]
+    ]
+  },
+  "query_timing_control": {
+    "base_commit": "40d21f2899941e957fb0fb1197c135d1638bf8ed",
+    "test_driver_sha256": "899caf80d3b938f922f47e1df75fc255456cf2df92c8e03fe32e1e52d3c90f23",
+    "scope": "Two additional serial stock Safe installs and native movements. Fixture subclass timed the unchanged production dependency and clearance methods with monotonic wall clocks, at the same CPU affinity and renderer as the four matched arms. Other local tasks and scheduler preemption could affect individual durations. No CPU attribution.",
+    "query_columns": [
+      "slot",
+      "raw_result",
+      "start_usec_from_selection",
+      "cells_charged_before",
+      "cells_charged_by_call"
+    ],
+    "traces": [
+      {
+        "receipt_sha256": "38316f0053dfefb8662f29df2127bf98a5ad9a7c62853ea64b88df04bdd79169",
+        "active_draws": 129,
+        "fully_withheld": 0,
+        "intentional_holds": 0,
+        "slow_draws": []
+      },
+      {
+        "receipt_sha256": "a0791c7ad7a6841f5e1c56797e85882d1bb076c225c14fa5d375aee36d43b7f4",
+        "active_draws": 124,
+        "fully_withheld": 11,
+        "intentional_holds": 0,
+        "slow_draws": [
+          {
+            "withheld": 1,
+            "selection_usec": 2114,
+            "cache_usec": 22,
+            "charged_cells": 676,
+            "dependency_usec": 156,
+            "water_sweep_usec": 194,
+            "ordinary_sweep_usec": 4,
+            "queries": [
+              [
+                2,
+                "shared_budget",
+                1980,
+                676,
+                0
+              ]
+            ]
+          },
+          {
+            "withheld": 2,
+            "selection_usec": 2211,
+            "cache_usec": 69,
+            "charged_cells": 1062,
+            "dependency_usec": 163,
+            "water_sweep_usec": 1598,
+            "ordinary_sweep_usec": 6,
+            "queries": [
+              [
+                0,
+                "time_budget",
+                1906,
+                992,
+                70
+              ],
+              [
+                1,
+                "shared_budget",
+                2057,
+                1062,
+                0
+              ]
+            ]
+          },
+          {
+            "withheld": 1,
+            "selection_usec": 2260,
+            "cache_usec": 26,
+            "charged_cells": 1232,
+            "dependency_usec": 237,
+            "water_sweep_usec": 1610,
+            "ordinary_sweep_usec": 5,
+            "queries": [
+              [
+                0,
+                "shared_budget",
+                2079,
+                1232,
+                0
+              ]
+            ]
+          },
+          {
+            "withheld": 3,
+            "selection_usec": 7652,
+            "cache_usec": 35,
+            "charged_cells": 884,
+            "dependency_usec": 6504,
+            "water_sweep_usec": 483,
+            "ordinary_sweep_usec": 8,
+            "queries": [
+              [
+                0,
+                "shared_budget",
+                7092,
+                884,
+                0
+              ],
+              [
+                1,
+                "shared_budget",
+                7328,
+                884,
+                0
+              ],
+              [
+                2,
+                "shared_budget",
+                7472,
+                884,
+                0
+              ]
+            ]
+          },
+          {
+            "withheld": 4,
+            "selection_usec": 2513,
+            "cache_usec": 31,
+            "charged_cells": 56,
+            "dependency_usec": 175,
+            "water_sweep_usec": 1857,
+            "ordinary_sweep_usec": 17,
+            "queries": [
+              [
+                2,
+                "time_budget",
+                209,
+                0,
+                56
+              ],
+              [
+                3,
+                "shared_budget",
+                2192,
+                56,
+                0
+              ],
+              [
+                0,
+                "shared_budget",
+                2298,
+                56,
+                0
+              ],
+              [
+                1,
+                "shared_budget",
+                2430,
+                56,
+                0
+              ]
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  "worker_failure_read_probe": {
+    "driver_sha256": "43e218d175b1aa177943ab1d12fb1125fe0a6e47e735533dd268786f4803ffe1",
+    "receipt_sha256": "49850bd78a79e8d77dfe143ba4ebfe2f68c40e5c02be68d02fcc4b6fbfeaa32b",
+    "checks": 20,
+    "active_draws": 109,
+    "withheld_member_draws": 15,
+    "live_worker_failure_reads": 435,
+    "read_usec_p50_p95_p99_max": [
+      1,
+      2,
+      7,
+      146
+    ],
+    "withheld_draw_columns": [
+      "members_withheld",
+      "total_selection_usec",
+      "all_live_failure_reads_usec"
+    ],
+    "withheld_draws": [
+      [
+        1,
+        2217,
+        150
+      ],
+      [
+        1,
+        3107,
+        11
+      ],
+      [
+        1,
+        3035,
+        4
+      ],
+      [
+        2,
+        2742,
+        3
+      ],
+      [
+        4,
+        2300,
+        2
+      ],
+      [
+        2,
+        3824,
+        7
+      ],
+      [
+        4,
+        6299,
+        3
+      ]
+    ],
+    "decision": "The publication mutex can be changed by the independent SimulationWorker during selection. The stock Safe resolver mutates held pose state per member and has no post-selection failed-owner admission fence before submitting. Batching failure reads would widen this interval. Individual reads accounted for little time on these misses so no change was selected."
+  },
+  "independent_png_pixel_replay": {
+    "library": "Pillow 13.0.0",
+    "method": "Decode all three PNGs in each phase and compare each captured RGB channel to 255 times its raw floating-point value (one quantization level tolerance). Deltas below are measured on the decoded PNG bytes.",
+    "stages": {
+      "initial_authoring_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 113,
+        "restored_delta_RGB8": 0
+      },
+      "submerged_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 214,
+        "restored_delta_RGB8": 0
+      },
+      "water_refill_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 160,
+        "restored_delta_RGB8": 0
+      },
+      "restored_authoring_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 150,
+        "restored_delta_RGB8": 0
+      },
+      "multipart_limb_framebuffer": {
+        "sample_points": 25,
+        "hidden_delta_RGB8": 88,
+        "restored_delta_RGB8": 0
+      }
+    }
+  }
+}

@@ -1,0 +1,173 @@
+{
+	"checks": 23,
+	"composed_body_frames": 0,
+	"compound_model": "scooper",
+	"display": "headless",
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+	"failures": [
+		"ordinary initial paused submerged Needle is visibly admitted",
+		"initialized_paused_history actual admitted body samples turn over the bounded history",
+		"initialized_paused_history exact submerged Needle authority survives history eviction",
+		"initialized_paused_history paused submerged Needle is never omitted during retained authority",
+		"initialized_paused_history full refresh preserves independently valid paused native authority",
+		"moving submerged actor has multiple distinct actual completed poses in composed submissions",
+		"Water treatment actually executes on mounted native Workbench"
+	],
+	"framebuffer": [],
+	"graphical": false,
+	"hidden_body_frames": 849,
+	"input_hashes": {
+		"res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+		"res://scripts/main.gd": "ae011e7acee553d0bacb23d618d7e7eb9513b52698dd0e90687d3243f67c1fa9",
+		"res://scripts/physical_actor_overlay.gd": "4cb588f0c29cede6a22e7f84cebc7afc7b07a7fdd3f39755bf99cc9b3e42cb9a",
+		"res://scripts/physical_actor_session.gd": "0d655e16fead03f99aab6428221f203f84c213494680fc818a2eaa440ec7f99d",
+		"res://scripts/shared_workbench.gd": "700e70c976c0db87312e2ca7a5237eae0329b71d5e7e395ac6ce7dee7cd6f269",
+		"res://scripts/simulation_worker.gd": "217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674",
+		"res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+		"res://scripts/workbench_presentation_coherence.gd": "312e6611a1c279ba0e8ef93a65cb2ca875dff7f13669be3b1d35432a5c258d85",
+		"res://scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+		"res://scripts/workbench_water_composition.gd": "f50cb53285e7317e6a182609c66f042683b3b79f87cd0b333513255a85e1abbd",
+		"res://shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+		"res://tests/test_workbench_water_composition_native.gd": "ed7e606864011000fc0b896b1d4e06a06162fa63c6562d8259ba659a243b9dc0"
+	},
+	"lifecycle": [
+		{
+			"completed_step": -1,
+			"completed_usec": 0,
+			"manual_steps": 0,
+			"rows": [
+				{
+					"footprint": {
+						"cells": 32,
+						"empty": 0,
+						"materials": {
+							"3": 32
+						},
+						"other": 0,
+						"water": 32
+					},
+					"pose": {
+						"radians": 0.0,
+						"xy": [
+							120.0,
+							430.0
+						]
+					},
+					"proof": {},
+					"reason": "material_in_swept_mask",
+					"shown": false,
+					"slot": 0
+				},
+				{
+					"footprint": {
+						"cells": 112,
+						"empty": 0,
+						"materials": {
+							"3": 112
+						},
+						"other": 0,
+						"water": 112
+					},
+					"pose": {
+						"radians": 0.0,
+						"xy": [
+							220.0,
+							430.0
+						]
+					},
+					"proof": {},
+					"reason": "material_in_swept_mask",
+					"shown": false,
+					"slot": 1
+				},
+				{
+					"footprint": {
+						"cells": 212,
+						"empty": 0,
+						"materials": {
+							"3": 212
+						},
+						"other": 0,
+						"water": 212
+					},
+					"pose": {
+						"radians": 0.0,
+						"xy": [
+							350.0,
+							430.0
+						]
+					},
+					"proof": {},
+					"reason": "material_in_swept_mask",
+					"shown": false,
+					"slot": 3
+				}
+			],
+			"session_step": 0,
+			"stage": "initial_paused_full_submersion"
+		},
+		{
+			"closure_cache_hits": 0,
+			"frames_observed": 282,
+			"omitted_needle_frames": 282,
+			"proof": {},
+			"sample_after": -1,
+			"sample_before": -1,
+			"stage": "initialized_paused_history",
+			"step": 0,
+			"upload_after": 4,
+			"upload_before": 3
+		}
+	],
+	"moving_wet_distinct_poses": 0,
+	"observations": [],
+	"observed_frames": 283,
+	"omission_reasons": {
+		"initialized_paused_history:0:material_in_swept_mask": 281,
+		"initialized_paused_history:0:shared_budget": 1,
+		"initialized_paused_history:1:material_in_swept_mask": 281,
+		"initialized_paused_history:1:shared_budget": 1,
+		"initialized_paused_history:3:material_in_swept_mask": 281,
+		"initialized_paused_history:3:shared_budget": 1,
+		"install:0:material_in_swept_mask": 1,
+		"install:1:material_in_swept_mask": 1,
+		"install:3:material_in_swept_mask": 1
+	},
+	"omitted_by_stage_and_slot": {
+		"initialized_paused_history:0": 282,
+		"initialized_paused_history:1": 282,
+		"initialized_paused_history:3": 282,
+		"install:0": 1,
+		"install:1": 1,
+		"install:3": 1
+	},
+	"proof_kinds": {},
+	"schema": "pubpres-water-composition-native-v1",
+	"scope": "Actual mounted Main/native/Rapier and first-read framebuffer visibility controls; explicit injected ordinary keyboard input. No comparative performance, compositor, physical scanout or owner NVIDIA acceptance.",
+	"selectors": {
+		"actual_submission": "0",
+		"actual_submission_status": {
+			"candidate_ready": false,
+			"committed_count": 0,
+			"connected": false,
+			"enabled": false,
+			"engine_atomic_admission": false,
+			"refusal": "",
+			"requested": false,
+			"schema": "pubpres-actual-submission-v1"
+		},
+		"water_composition": "1"
+	},
+	"source_revision": "dc9070436f0f04846f02f98666d890367af1462b"
+}

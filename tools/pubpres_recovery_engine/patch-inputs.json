@@ -1,0 +1,20 @@
+{
+  "patch_sha256": "f17555f97681bb1c843ade738c738405789f21aa4a487c70a0c778bf83cfb085",
+  "combined_sha256": "0f4491e7211f58e2b39d7a37878148e8bc0d94451f356c51796e26c15eda0571",
+  "files": {
+    "main/main.cpp": {
+      "before_sha256": "2ea67893e1bf2e7d629546294d0be3934cecf81ea26eb6e7f68f31cff2ec2491",
+      "after_sha256": "3bacaf979be7ff2b69c0bc0b0414d8b45ea6646f8f938332b1c30e0ce0eb45b7"
+    },
+    "servers/rendering/rendering_server_default.cpp": {
+      "before_sha256": "ae0e2700ab0ea7c64ba486fc95bb2e47000851dc7f178d2ad6735b79851c3f32",
+      "after_sha256": "38df3aeed8b72db4251c948734daf39976f04da8d16dd98682bafabef04fa89c"
+    },
+    "servers/rendering/rendering_server_default.h": {
+      "before_sha256": "2b5af7ef8b4b3fdf760ba2eb3d7ee7e18977e01257f2a2c7cbd71f9137b873ed",
+      "after_sha256": "0b9c4f7d12c284b7b743ae1161f1c8c67483ea0ee1afabb444d73d397afa671d"
+    }
+  },
+  "helper": "admission_clock.h",
+  "test": "test_admission_clock.cpp"
+}

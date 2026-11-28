@@ -1,0 +1,6 @@
+{
+  "schema": "pubpres-font-new-execution-request-v1",
+  "application": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "purpose": "New actual Windows font, ordinary startup, two-slot GPU history and same-executable Safe/Separate qualification of the exact retained c2 application/native/engine; corrected and separately identified qualifier, original failure retained, no rebuild or acceptance promotion.",
+  "payload_sha256": "cb62c37028ae8f4a58f1ee2b88b642e7440836c6c1ce8337467da4c5902c0c63"
+}

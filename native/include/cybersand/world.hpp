@@ -49,6 +49,9 @@ struct WorldConfig {
     std::int32_t maximum_rule_radius = 2;
     std::uint32_t worker_threads = 1;
     std::size_t parallel_job_threshold = 8;
+    // PUBPRES recovery: execution-only, default-off actual-task completion.
+    // Does not alter physical laws, task geometry, saves or physical hashes.
+    bool pubpres_task_completion_barrier = false;
     std::size_t active_core_capacity = 4'096;
     std::size_t active_chunk_capacity = 4'096;
     std::size_t maximum_chunk_count = 4'096;
@@ -83,6 +86,12 @@ struct WorldConfig {
     // WAVE-MT-001 wave_flow_v1 (experimental): opt-in bulk strip-parallel Water
     // law. Disabled leaves every Current kernel, hash and format unchanged.
     WaveFlowConfig wave_flow{};
+};
+
+struct WorkerPoolDiagnostics {
+    bool task_completion_barrier = false;
+    std::uint64_t completed_dispatches = 0;
+    std::uint64_t completed_tasks = 0;
 };
 
 struct ChunkCoord {
@@ -214,6 +223,10 @@ public:
     World& operator=(World&&) noexcept;
 
     [[nodiscard]] const WorldConfig& config() const noexcept;
+    // Exclusive owner readback after dispatch completion; no timing or fake
+    // progress credit. A selected one-worker World can legitimately report0.
+    [[nodiscard]] WorkerPoolDiagnostics worker_pool_diagnostics() const noexcept;
+
     // All audition calls require the same exclusive external-owner boundary as
     // tick/set. Pool workers do not call them and cannot race a transition.
     // A host session token is checked by the owning desktop adapter; this native
@@ -622,6 +635,8 @@ private:
     void advance_wave_flow(TickStats& stats);
     void advance_floating_oil();
     void wave_column_task(std::size_t task_index) noexcept;
+    template <bool WithEmptyDerived>
+    void wave_column_task_impl(std::size_t task_index) noexcept;
     void wave_flux_task(std::size_t task_index) noexcept;
     void wave_apply_task(std::size_t task_index) noexcept;
     void wake_wave_chunk(Chunk& chunk) noexcept;

@@ -1,0 +1,5769 @@
+{
+	"checks": 23,
+	"composed_body_frames": 88,
+	"compound_model": "scooper",
+	"display": "headless",
+	"engine": {
+		"build": "official",
+		"hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+		"hex": 263936,
+		"major": 4,
+		"minor": 7,
+		"patch": 0,
+		"status": "stable",
+		"string": "4.7-stable (official)",
+		"timestamp": 0
+	},
+	"engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+	"failures": [
+		"previously dry actual actor enters retained native Water"
+	],
+	"framebuffer": [],
+	"graphical": false,
+	"hidden_body_frames": 286,
+	"input_hashes": {
+		"res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+		"res://scripts/main.gd": "e0d5a83daa6bde5a041eb1092bd0d0f04c7a2297d2d41361b495274469d1d77e",
+		"res://scripts/physical_actor_overlay.gd": "9e233afa3591761ba9baacde9548f40c64e01da571ad37a567e439021f707f51",
+		"res://scripts/physical_actor_session.gd": "0d655e16fead03f99aab6428221f203f84c213494680fc818a2eaa440ec7f99d",
+		"res://scripts/shared_workbench.gd": "700e70c976c0db87312e2ca7a5237eae0329b71d5e7e395ac6ce7dee7cd6f269",
+		"res://scripts/simulation_worker.gd": "217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674",
+		"res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+		"res://scripts/workbench_presentation_coherence.gd": "312e6611a1c279ba0e8ef93a65cb2ca875dff7f13669be3b1d35432a5c258d85",
+		"res://scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+		"res://scripts/workbench_water_composition.gd": "dd7deabc0532ace124df0784d5e3720da7ebd63c7a5c044a91bbf7fba87798c0",
+		"res://shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+		"res://tests/test_workbench_water_composition_native.gd": "891a180c3190d34cfef354e42c7eac0a3220a2e3e6346d383449f3c36de75ac2"
+	},
+	"lifecycle": [],
+	"moving_wet_distinct_poses": 3,
+	"observations": [
+		{
+			"actual_manual_steps": 2,
+			"actual_session_step": 2,
+			"current": {
+				"cells": 24,
+				"empty": 0,
+				"materials": {
+					"3": 24
+				},
+				"other": 0,
+				"water": 24
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 154,
+			"graphical_submission_observed": false,
+			"instance_id": 1,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					120.0,
+					430.10888671875
+				]
+			},
+			"previous": {
+				"cells": 24,
+				"empty": 0,
+				"materials": {
+					"3": 24
+				},
+				"other": 0,
+				"water": 24
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 64,
+					"steps": 1,
+					"water_contacts": 48
+				},
+				"generation": 1,
+				"instance_id": 1,
+				"kind": "consumed_native_dependency",
+				"native_tick": 1,
+				"sample": 2,
+				"schema": "workbench-water-composition-v1",
+				"step": 1
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 1,
+			"session": 1,
+			"slot": 0,
+			"stage": "moving_submerged",
+			"upload_serial": 4,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 2,
+			"actual_session_step": 2,
+			"current": {
+				"cells": 212,
+				"empty": 0,
+				"materials": {
+					"3": 212
+				},
+				"other": 0,
+				"water": 212
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 154,
+			"graphical_submission_observed": false,
+			"instance_id": 4,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					350.0,
+					430.006591796875
+				]
+			},
+			"previous": {
+				"cells": 212,
+				"empty": 0,
+				"materials": {
+					"3": 212
+				},
+				"other": 0,
+				"water": 212
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 884,
+					"steps": 1,
+					"water_contacts": 436
+				},
+				"generation": 1,
+				"instance_id": 4,
+				"kind": "consumed_native_dependency",
+				"native_tick": 1,
+				"sample": 2,
+				"schema": "workbench-water-composition-v1",
+				"step": 1
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 1,
+			"session": 1,
+			"slot": 3,
+			"stage": "moving_submerged",
+			"upload_serial": 4,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 4,
+			"actual_session_step": 4,
+			"current": {
+				"cells": 24,
+				"empty": 0,
+				"materials": {
+					"3": 24
+				},
+				"other": 0,
+				"water": 24
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 156,
+			"graphical_submission_observed": false,
+			"instance_id": 1,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					120.0,
+					430.664001464844
+				]
+			},
+			"previous": {
+				"cells": 24,
+				"empty": 0,
+				"materials": {
+					"3": 24
+				},
+				"other": 0,
+				"water": 24
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 64,
+					"steps": 1,
+					"water_contacts": 48
+				},
+				"generation": 1,
+				"instance_id": 1,
+				"kind": "consumed_native_dependency",
+				"native_tick": 3,
+				"sample": 4,
+				"schema": "workbench-water-composition-v1",
+				"step": 3
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 3,
+			"session": 1,
+			"slot": 0,
+			"stage": "moving_submerged",
+			"upload_serial": 5,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 4,
+			"actual_session_step": 4,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 156,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					430.164184570312
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 3,
+				"sample": 4,
+				"schema": "workbench-water-composition-v1",
+				"step": 3
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 3,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 5,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 6,
+			"actual_session_step": 6,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 158,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					430.433135986328
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 5,
+				"sample": 6,
+				"schema": "workbench-water-composition-v1",
+				"step": 5
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 5,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 6,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 6,
+			"actual_session_step": 6,
+			"current": {
+				"cells": 212,
+				"empty": 0,
+				"materials": {
+					"3": 212
+				},
+				"other": 0,
+				"water": 212
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 158,
+			"graphical_submission_observed": false,
+			"instance_id": 4,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					350.0,
+					431.027709960938
+				]
+			},
+			"previous": {
+				"cells": 212,
+				"empty": 0,
+				"materials": {
+					"3": 212
+				},
+				"other": 0,
+				"water": 212
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 884,
+					"steps": 1,
+					"water_contacts": 436
+				},
+				"generation": 1,
+				"instance_id": 4,
+				"kind": "consumed_native_dependency",
+				"native_tick": 5,
+				"sample": 6,
+				"schema": "workbench-water-composition-v1",
+				"step": 5
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 5,
+			"session": 1,
+			"slot": 3,
+			"stage": "moving_submerged",
+			"upload_serial": 6,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 7,
+			"actual_session_step": 7,
+			"current": {
+				"cells": 21,
+				"empty": 0,
+				"materials": {
+					"3": 21
+				},
+				"other": 0,
+				"water": 21
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 159,
+			"graphical_submission_observed": false,
+			"instance_id": 1,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0381797626614571,
+				"xy": [
+					119.975616455078,
+					432.335540771484
+				]
+			},
+			"previous": {
+				"cells": 21,
+				"empty": 0,
+				"materials": {
+					"3": 21
+				},
+				"other": 0,
+				"water": 21
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 64,
+					"steps": 1,
+					"water_contacts": 42
+				},
+				"generation": 1,
+				"instance_id": 1,
+				"kind": "consumed_native_dependency",
+				"native_tick": 6,
+				"sample": 7,
+				"schema": "workbench-water-composition-v1",
+				"step": 6
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 6,
+			"session": 1,
+			"slot": 0,
+			"stage": "moving_submerged",
+			"upload_serial": 7,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 7,
+			"actual_session_step": 7,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 159,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					430.615081787109
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.090972900390625,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 232
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 6,
+				"sample": 7,
+				"schema": "workbench-water-composition-v1",
+				"step": 6
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 6,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 7,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 7,
+			"actual_session_step": 7,
+			"current": {
+				"cells": 212,
+				"empty": 0,
+				"materials": {
+					"3": 212
+				},
+				"other": 0,
+				"water": 212
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 159,
+			"graphical_submission_observed": false,
+			"instance_id": 4,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					350.0,
+					431.531677246094
+				]
+			},
+			"previous": {
+				"cells": 212,
+				"empty": 0,
+				"materials": {
+					"3": 212
+				},
+				"other": 0,
+				"water": 212
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.251983642578125,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 952,
+					"steps": 1,
+					"water_contacts": 532
+				},
+				"generation": 1,
+				"instance_id": 4,
+				"kind": "consumed_native_dependency",
+				"native_tick": 6,
+				"sample": 7,
+				"schema": "workbench-water-composition-v1",
+				"step": 6
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 6,
+			"session": 1,
+			"slot": 3,
+			"stage": "moving_submerged",
+			"upload_serial": 7,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 8,
+			"actual_session_step": 8,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 160,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					430.828643798828
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.106781005859375,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 7,
+				"sample": 8,
+				"schema": "workbench-water-composition-v1",
+				"step": 7
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 7,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 8,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 9,
+			"actual_session_step": 9,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 161,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					431.073547363281
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.122451782226562,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 320,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 8,
+				"sample": 9,
+				"schema": "workbench-water-composition-v1",
+				"step": 8
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 8,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 9,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 9,
+			"actual_session_step": 9,
+			"current": {
+				"cells": 212,
+				"empty": 0,
+				"materials": {
+					"3": 212
+				},
+				"other": 0,
+				"water": 212
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 161,
+			"graphical_submission_observed": false,
+			"instance_id": 4,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					350.0,
+					432.838317871094
+				]
+			},
+			"previous": {
+				"cells": 212,
+				"empty": 0,
+				"materials": {
+					"3": 212
+				},
+				"other": 0,
+				"water": 212
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 884,
+					"steps": 1,
+					"water_contacts": 436
+				},
+				"generation": 1,
+				"instance_id": 4,
+				"kind": "consumed_native_dependency",
+				"native_tick": 8,
+				"sample": 9,
+				"schema": "workbench-water-composition-v1",
+				"step": 8
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 8,
+			"session": 1,
+			"slot": 3,
+			"stage": "moving_submerged",
+			"upload_serial": 9,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 11,
+			"actual_session_step": 11,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 163,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					431.656829833984
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 10,
+				"sample": 11,
+				"schema": "workbench-water-composition-v1",
+				"step": 10
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 10,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 10,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 11,
+			"actual_session_step": 11,
+			"current": {
+				"cells": 192,
+				"empty": 0,
+				"materials": {
+					"3": 192
+				},
+				"other": 0,
+				"water": 192
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 163,
+			"graphical_submission_observed": false,
+			"instance_id": 4,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": -0.000894376134965569,
+				"xy": [
+					350.0,
+					434.582275390625
+				]
+			},
+			"previous": {
+				"cells": 192,
+				"empty": 0,
+				"materials": {
+					"3": 192
+				},
+				"other": 0,
+				"water": 192
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 884,
+					"steps": 1,
+					"water_contacts": 386
+				},
+				"generation": 1,
+				"instance_id": 4,
+				"kind": "consumed_native_dependency",
+				"native_tick": 10,
+				"sample": 11,
+				"schema": "workbench-water-composition-v1",
+				"step": 10
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 10,
+			"session": 1,
+			"slot": 3,
+			"stage": "moving_submerged",
+			"upload_serial": 10,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 13,
+			"actual_session_step": 13,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 165,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					432.364929199219
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 12,
+				"sample": 13,
+				"schema": "workbench-water-composition-v1",
+				"step": 12
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 12,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 11,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 13,
+			"actual_session_step": 13,
+			"current": {
+				"cells": 191,
+				"empty": 0,
+				"materials": {
+					"3": 191
+				},
+				"other": 0,
+				"water": 191
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 165,
+			"graphical_submission_observed": false,
+			"instance_id": 4,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": -0.00231694313697517,
+				"xy": [
+					350.006958007812,
+					436.812377929688
+				]
+			},
+			"previous": {
+				"cells": 191,
+				"empty": 0,
+				"materials": {
+					"3": 191
+				},
+				"other": 0,
+				"water": 191
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 884,
+					"steps": 1,
+					"water_contacts": 384
+				},
+				"generation": 1,
+				"instance_id": 4,
+				"kind": "consumed_native_dependency",
+				"native_tick": 12,
+				"sample": 13,
+				"schema": "workbench-water-composition-v1",
+				"step": 12
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 12,
+			"session": 1,
+			"slot": 3,
+			"stage": "moving_submerged",
+			"upload_serial": 11,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 14,
+			"actual_session_step": 14,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 166,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					432.765075683594
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.2000732421875,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 232
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 13,
+				"sample": 14,
+				"schema": "workbench-water-composition-v1",
+				"step": 13
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 13,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 12,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 14,
+			"actual_session_step": 14,
+			"current": {
+				"cells": 192,
+				"empty": 0,
+				"materials": {
+					"3": 192
+				},
+				"other": 0,
+				"water": 192
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 166,
+			"graphical_submission_observed": false,
+			"instance_id": 4,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": -0.00230394350364804,
+				"xy": [
+					350.006103515625,
+					438.100280761719
+				]
+			},
+			"previous": {
+				"cells": 192,
+				"empty": 0,
+				"materials": {
+					"3": 192
+				},
+				"other": 0,
+				"water": 192
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.322040346577503,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 1020,
+					"steps": 2,
+					"water_contacts": 750
+				},
+				"generation": 1,
+				"instance_id": 4,
+				"kind": "consumed_native_dependency",
+				"native_tick": 13,
+				"sample": 14,
+				"schema": "workbench-water-composition-v1",
+				"step": 13
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 13,
+			"session": 1,
+			"slot": 3,
+			"stage": "moving_submerged",
+			"upload_serial": 12,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 15,
+			"actual_session_step": 15,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 167,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					433.195983886719
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.2154541015625,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 320,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 14,
+				"sample": 15,
+				"schema": "workbench-water-composition-v1",
+				"step": 14
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 14,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 13,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 17,
+			"actual_session_step": 17,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 169,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					434.148956298828
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 16,
+				"sample": 17,
+				"schema": "workbench-water-composition-v1",
+				"step": 16
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 16,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 14,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 17,
+			"actual_session_step": 17,
+			"current": {
+				"cells": 192,
+				"empty": 0,
+				"materials": {
+					"3": 192
+				},
+				"other": 0,
+				"water": 192
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 169,
+			"graphical_submission_observed": false,
+			"instance_id": 4,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": -0.00310430186800659,
+				"xy": [
+					350.035400390625,
+					442.653625488281
+				]
+			},
+			"previous": {
+				"cells": 192,
+				"empty": 0,
+				"materials": {
+					"3": 192
+				},
+				"other": 0,
+				"water": 192
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 884,
+					"steps": 1,
+					"water_contacts": 384
+				},
+				"generation": 1,
+				"instance_id": 4,
+				"kind": "consumed_native_dependency",
+				"native_tick": 16,
+				"sample": 17,
+				"schema": "workbench-water-composition-v1",
+				"step": 16
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 16,
+			"session": 1,
+			"slot": 3,
+			"stage": "moving_submerged",
+			"upload_serial": 14,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 19,
+			"actual_session_step": 19,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 171,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					435.222595214844
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 18,
+				"sample": 19,
+				"schema": "workbench-water-composition-v1",
+				"step": 18
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 18,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 15,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 19,
+			"actual_session_step": 19,
+			"current": {
+				"cells": 192,
+				"empty": 0,
+				"materials": {
+					"3": 192
+				},
+				"other": 0,
+				"water": 192
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 171,
+			"graphical_submission_observed": false,
+			"instance_id": 4,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": -0.00500264391303062,
+				"xy": [
+					350.041381835938,
+					446.248229980469
+				]
+			},
+			"previous": {
+				"cells": 192,
+				"empty": 0,
+				"materials": {
+					"3": 192
+				},
+				"other": 0,
+				"water": 192
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 952,
+					"steps": 1,
+					"water_contacts": 384
+				},
+				"generation": 1,
+				"instance_id": 4,
+				"kind": "consumed_native_dependency",
+				"native_tick": 18,
+				"sample": 19,
+				"schema": "workbench-water-composition-v1",
+				"step": 18
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 18,
+			"session": 1,
+			"slot": 3,
+			"stage": "moving_submerged",
+			"upload_serial": 15,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 21,
+			"actual_session_step": 21,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 173,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					436.415954589844
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 20,
+				"sample": 21,
+				"schema": "workbench-water-composition-v1",
+				"step": 20
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 20,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 16,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 22,
+			"actual_session_step": 22,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 174,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					437.057220458984
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.320632934570312,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 320,
+					"steps": 1,
+					"water_contacts": 232
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 21,
+				"sample": 22,
+				"schema": "workbench-water-composition-v1",
+				"step": 21
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 21,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 17,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 24,
+			"actual_session_step": 24,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 176,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					438.428314208984
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 23,
+				"sample": 24,
+				"schema": "workbench-water-composition-v1",
+				"step": 23
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 23,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 18,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 26,
+			"actual_session_step": 26,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 178,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					439.916595458984
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 25,
+				"sample": 26,
+				"schema": "workbench-water-composition-v1",
+				"step": 25
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 25,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 19,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 29,
+			"actual_session_step": 29,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 181,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					442.366729736328
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 28,
+				"sample": 29,
+				"schema": "workbench-water-composition-v1",
+				"step": 28
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 28,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 21,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 32,
+			"actual_session_step": 32,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 184,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					445.075256347656
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 31,
+				"sample": 32,
+				"schema": "workbench-water-composition-v1",
+				"step": 31
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 31,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 23,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 34,
+			"actual_session_step": 34,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 186,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					219.999938964844,
+					447.022888183594
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 33,
+				"sample": 34,
+				"schema": "workbench-water-composition-v1",
+				"step": 33
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 33,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 24,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 35,
+			"actual_session_step": 35,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 187,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					219.999938964844,
+					448.038452148438
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.253890991210938,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 340,
+					"steps": 2,
+					"water_contacts": 344
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 34,
+				"sample": 35,
+				"schema": "workbench-water-composition-v1",
+				"step": 34
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 34,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 25,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 36,
+			"actual_session_step": 36,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 188,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					219.999755859375,
+					449.080810546875
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.260589599609375,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 340,
+					"steps": 2,
+					"water_contacts": 344
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 35,
+				"sample": 36,
+				"schema": "workbench-water-composition-v1",
+				"step": 35
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 35,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 26,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 38,
+			"actual_session_step": 38,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 190,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					219.999755859375,
+					451.249969482422
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 37,
+				"sample": 38,
+				"schema": "workbench-water-composition-v1",
+				"step": 37
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 37,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 27,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 40,
+			"actual_session_step": 40,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 192,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					219.999450683594,
+					453.532440185547
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 39,
+				"sample": 40,
+				"schema": "workbench-water-composition-v1",
+				"step": 39
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 39,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 29,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 42,
+			"actual_session_step": 42,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 194,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					219.999633789062,
+					455.924621582031
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 41,
+				"sample": 42,
+				"schema": "workbench-water-composition-v1",
+				"step": 41
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 41,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 30,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 44,
+			"actual_session_step": 44,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 196,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.0,
+					458.425811767578
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 300,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 43,
+				"sample": 44,
+				"schema": "workbench-water-composition-v1",
+				"step": 43
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 43,
+			"session": 1,
+			"slot": 1,
+			"stage": "moving_submerged",
+			"upload_serial": 31,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 46,
+			"actual_session_step": 46,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 198,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.000244140625,
+					461.035003662109
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 45,
+				"sample": 46,
+				"schema": "workbench-water-composition-v1",
+				"step": 45
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 45,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 32,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 47,
+			"actual_session_step": 47,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 199,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.000610351562,
+					462.3798828125
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.336219787597656,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 340,
+					"steps": 2,
+					"water_contacts": 352
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 46,
+				"sample": 47,
+				"schema": "workbench-water-composition-v1",
+				"step": 46
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 46,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 33,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 48,
+			"actual_session_step": 48,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 200,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.000732421875,
+					463.748321533203
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.342109680175781,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 340,
+					"steps": 2,
+					"water_contacts": 352
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 47,
+				"sample": 48,
+				"schema": "workbench-water-composition-v1",
+				"step": 47
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 47,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 34,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 49,
+			"actual_session_step": 49,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 201,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.001586914062,
+					465.146514892578
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.349548399448395,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 340,
+					"steps": 2,
+					"water_contacts": 352
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 48,
+				"sample": 49,
+				"schema": "workbench-water-composition-v1",
+				"step": 48
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 48,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 35,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 51,
+			"actual_session_step": 51,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 204,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.003662109375,
+					468.022277832031
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 50,
+				"sample": 51,
+				"schema": "workbench-water-composition-v1",
+				"step": 50
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 50,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 36,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 52,
+			"actual_session_step": 52,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 205,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.004943847656,
+					469.499664306641
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.369346767663956,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 340,
+					"steps": 2,
+					"water_contacts": 352
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 51,
+				"sample": 52,
+				"schema": "workbench-water-composition-v1",
+				"step": 51
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 51,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 37,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 54,
+			"actual_session_step": 54,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 207,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.00732421875,
+					472.533233642578
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 53,
+				"sample": 54,
+				"schema": "workbench-water-composition-v1",
+				"step": 53
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 53,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 38,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 55,
+			"actual_session_step": 55,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 208,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.009033203125,
+					474.089202880859
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.388992547988892,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 340,
+					"steps": 2,
+					"water_contacts": 352
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 54,
+				"sample": 55,
+				"schema": "workbench-water-composition-v1",
+				"step": 54
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 54,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 39,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 57,
+			"actual_session_step": 57,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 210,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.014038085938,
+					477.278411865234
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 56,
+				"sample": 57,
+				"schema": "workbench-water-composition-v1",
+				"step": 56
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 56,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 40,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 58,
+			"actual_session_step": 58,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 211,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.016967773438,
+					478.911468505859
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.408264815807343,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 360,
+					"steps": 2,
+					"water_contacts": 352
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 57,
+				"sample": 58,
+				"schema": "workbench-water-composition-v1",
+				"step": 57
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 57,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 41,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 60,
+			"actual_session_step": 60,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 213,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.022888183594,
+					482.253570556641
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 59,
+				"sample": 60,
+				"schema": "workbench-water-composition-v1",
+				"step": 59
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 59,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 42,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 62,
+			"actual_session_step": 62,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 215,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.028747558594,
+					485.696319580078
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 61,
+				"sample": 62,
+				"schema": "workbench-water-composition-v1",
+				"step": 61
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 61,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 43,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 63,
+			"actual_session_step": 63,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 216,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0,
+				"xy": [
+					220.031677246094,
+					487.455291748047
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.439743667840958,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 340,
+					"steps": 2,
+					"water_contacts": 360
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 62,
+				"sample": 63,
+				"schema": "workbench-water-composition-v1",
+				"step": 62
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 62,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 44,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 65,
+			"actual_session_step": 65,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 218,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0000104500531961094,
+				"xy": [
+					220.035125732422,
+					489.187133789062
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 64,
+				"sample": 65,
+				"schema": "workbench-water-composition-v1",
+				"step": 64
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 64,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 45,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 66,
+			"actual_session_step": 66,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 219,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0000049494838094688,
+				"xy": [
+					220.034286499023,
+					489.139709472656
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0237380439590368,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 65,
+				"sample": 66,
+				"schema": "workbench-water-composition-v1",
+				"step": 65
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 65,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 46,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 67,
+			"actual_session_step": 67,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 220,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000214060810321826,
+				"xy": [
+					220.034759521484,
+					489.104370117188
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0176825839227411,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 66,
+				"sample": 67,
+				"schema": "workbench-water-composition-v1",
+				"step": 66
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 66,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 47,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 69,
+			"actual_session_step": 69,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 222,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000270568193627696,
+				"xy": [
+					220.034622192383,
+					489.058410644531
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 68,
+				"sample": 69,
+				"schema": "workbench-water-composition-v1",
+				"step": 68
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 68,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 48,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 71,
+			"actual_session_step": 71,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 224,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000293887842417462,
+				"xy": [
+					220.034652709961,
+					489.032958984375
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 70,
+				"sample": 71,
+				"schema": "workbench-water-composition-v1",
+				"step": 70
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 70,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 49,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 72,
+			"actual_session_step": 72,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 225,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000287962234324368,
+				"xy": [
+					220.034652709961,
+					489.024871826172
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.00404381797046186,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 71,
+				"sample": 72,
+				"schema": "workbench-water-composition-v1",
+				"step": 71
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 71,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 50,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 73,
+			"actual_session_step": 73,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 226,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000291616447611887,
+				"xy": [
+					220.034652709961,
+					489.018829345703
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.00302138754042229,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 72,
+				"sample": 73,
+				"schema": "workbench-water-composition-v1",
+				"step": 72
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 72,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 51,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 74,
+			"actual_session_step": 74,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 227,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290446450890158,
+				"xy": [
+					220.034652709961,
+					489.014343261719
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.00224308915626328,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 73,
+				"sample": 74,
+				"schema": "workbench-water-composition-v1",
+				"step": 73
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 73,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 52,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 76,
+			"actual_session_step": 76,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 229,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290714797301916,
+				"xy": [
+					220.034652709961,
+					489.008483886719
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 75,
+				"sample": 76,
+				"schema": "workbench-water-composition-v1",
+				"step": 75
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 75,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 53,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 78,
+			"actual_session_step": 78,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 231,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290622574539157,
+				"xy": [
+					220.034652709961,
+					489.005187988281
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 77,
+				"sample": 78,
+				"schema": "workbench-water-composition-v1",
+				"step": 77
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 77,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 54,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 79,
+			"actual_session_step": 79,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 232,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290620164378197,
+				"xy": [
+					220.034652709961,
+					489.004180908203
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.000503540136219195,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 78,
+				"sample": 79,
+				"schema": "workbench-water-composition-v1",
+				"step": 78
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 78,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 55,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 80,
+			"actual_session_step": 80,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 233,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290605726149806,
+				"xy": [
+					220.034652709961,
+					489.00341796875
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.000381470308586095,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 79,
+				"sample": 80,
+				"schema": "workbench-water-composition-v1",
+				"step": 79
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 79,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 56,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 84,
+			"actual_session_step": 84,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 237,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290620255327667,
+				"xy": [
+					220.034652709961,
+					489.001861572266
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 83,
+				"sample": 84,
+				"schema": "workbench-water-composition-v1",
+				"step": 83
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 83,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 58,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 86,
+			"actual_session_step": 86,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 239,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290637399302796,
+				"xy": [
+					220.034652709961,
+					489.001556396484
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 85,
+				"sample": 86,
+				"schema": "workbench-water-composition-v1",
+				"step": 85
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 85,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 59,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 87,
+			"actual_session_step": 87,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 240,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290644879896718,
+				"xy": [
+					220.034652709961,
+					489.00146484375
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0000457766687398822,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 86,
+				"sample": 87,
+				"schema": "workbench-water-composition-v1",
+				"step": 86
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 86,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 60,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 89,
+			"actual_session_step": 89,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 242,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290651223622262,
+				"xy": [
+					220.034652709961,
+					489.001373291016
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 88,
+				"sample": 89,
+				"schema": "workbench-water-composition-v1",
+				"step": 88
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 88,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 61,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 90,
+			"actual_session_step": 90,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 243,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290666184810107,
+				"xy": [
+					220.034652709961,
+					489.001342773438
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0000152593921672645,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 89,
+				"sample": 90,
+				"schema": "workbench-water-composition-v1",
+				"step": 89
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 89,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 62,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 93,
+			"actual_session_step": 93,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 246,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290642105937877,
+				"xy": [
+					220.034652709961,
+					489.001251220703
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 92,
+				"sample": 93,
+				"schema": "workbench-water-composition-v1",
+				"step": 92
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 92,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 64,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 95,
+			"actual_session_step": 95,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 248,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.000002906409690695,
+				"xy": [
+					220.034652709961,
+					489.001190185547
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 94,
+				"sample": 95,
+				"schema": "workbench-water-composition-v1",
+				"step": 94
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 94,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 65,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 96,
+			"actual_session_step": 96,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 249,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0000029064235604892,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.000015258844973428,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 95,
+				"sample": 96,
+				"schema": "workbench-water-composition-v1",
+				"step": 95
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 95,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 66,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 97,
+			"actual_session_step": 97,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 250,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290632806354552,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.000000000384960487966046,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 96,
+				"sample": 97,
+				"schema": "workbench-water-composition-v1",
+				"step": 96
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 96,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 67,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 99,
+			"actual_session_step": 99,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 252,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290611160380649,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 98,
+				"sample": 99,
+				"schema": "workbench-water-composition-v1",
+				"step": 98
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 98,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 68,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 100,
+			"actual_session_step": 100,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 253,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290616594611492,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.000000000219060849104488,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 99,
+				"sample": 100,
+				"schema": "workbench-water-composition-v1",
+				"step": 99
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 99,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 69,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 101,
+			"actual_session_step": 101,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 254,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290610205411213,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.000000000257556897901093,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 100,
+				"sample": 101,
+				"schema": "workbench-water-composition-v1",
+				"step": 100
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 100,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 70,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 103,
+			"actual_session_step": 103,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 256,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290599791696877,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 102,
+				"sample": 103,
+				"schema": "workbench-water-composition-v1",
+				"step": 102
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 102,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 71,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 104,
+			"actual_session_step": 104,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 257,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290602383756777,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.00000000010448927530507,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 103,
+				"sample": 104,
+				"schema": "workbench-water-composition-v1",
+				"step": 103
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 103,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 72,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 106,
+			"actual_session_step": 106,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 259,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290594152829726,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 105,
+				"sample": 106,
+				"schema": "workbench-water-composition-v1",
+				"step": 105
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 105,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 73,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 107,
+			"actual_session_step": 107,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 260,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290591196971945,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.000000000119154436751395,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 106,
+				"sample": 107,
+				"schema": "workbench-water-composition-v1",
+				"step": 106
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 106,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 74,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 108,
+			"actual_session_step": 108,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 261,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290583670903288,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.00000000030338552742086,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 107,
+				"sample": 108,
+				"schema": "workbench-water-composition-v1",
+				"step": 107
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 107,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 75,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 110,
+			"actual_session_step": 110,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 263,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290584603135358,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 109,
+				"sample": 110,
+				"schema": "workbench-water-composition-v1",
+				"step": 109
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 109,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 76,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 111,
+			"actual_session_step": 111,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 264,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290578032036137,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.000000000264889478624256,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 110,
+				"sample": 111,
+				"schema": "workbench-water-composition-v1",
+				"step": 110
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 110,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 77,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 113,
+			"actual_session_step": 113,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 266,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290567550109699,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 112,
+				"sample": 113,
+				"schema": "workbench-water-composition-v1",
+				"step": 112
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 112,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 78,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 114,
+			"actual_session_step": 114,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 267,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290570142169599,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.00000000010448927530507,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 113,
+				"sample": 114,
+				"schema": "workbench-water-composition-v1",
+				"step": 113
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 113,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 79,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 116,
+			"actual_session_step": 116,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 269,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.00000290561911242548,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 115,
+				"sample": 116,
+				"schema": "workbench-water-composition-v1",
+				"step": 115
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 115,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 80,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 118,
+			"actual_session_step": 118,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 271,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0000029055142931611,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 117,
+				"sample": 118,
+				"schema": "workbench-water-composition-v1",
+				"step": 117
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 117,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 81,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 119,
+			"actual_session_step": 119,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 272,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0000029055402137601,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.00000000010448927530507,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 118,
+				"sample": 119,
+				"schema": "workbench-water-composition-v1",
+				"step": 118
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 118,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 82,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 120,
+			"actual_session_step": 120,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 273,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": false,
+			"pose": {
+				"radians": 0.0000029055236154818,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0000000000669097990988604,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 119,
+				"sample": 120,
+				"schema": "workbench-water-composition-v1",
+				"step": 119
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 119,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 83,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 120,
+			"actual_session_step": 120,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 274,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": true,
+			"pose": {
+				"radians": 0.00000290545790448959,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.000000000264889478624256,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 120,
+				"sample": 121,
+				"schema": "workbench-water-composition-v1",
+				"step": 120
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 120,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 84,
+			"world": 3
+		},
+		{
+			"actual_manual_steps": 120,
+			"actual_session_step": 120,
+			"current": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"direct_local_com": [
+				0.0,
+				0.0
+			],
+			"epoch": 1,
+			"frame": 275,
+			"graphical_submission_observed": false,
+			"instance_id": 2,
+			"layer_visible": true,
+			"live_pose_still_equals_selection": true,
+			"pose": {
+				"radians": 0.00000290545790448959,
+				"xy": [
+					220.034652709961,
+					489.001159667969
+				]
+			},
+			"previous": {
+				"cells": 112,
+				"empty": 0,
+				"materials": {
+					"3": 112
+				},
+				"other": 0,
+				"water": 112
+			},
+			"previous_active": true,
+			"proof": {
+				"consumed_by_step": true,
+				"coverage": {
+					"dilation_cells": 0.0,
+					"reason": "water_composed_swept_mask",
+					"safe": true,
+					"scanned": 270,
+					"steps": 1,
+					"water_contacts": 224
+				},
+				"generation": 1,
+				"instance_id": 2,
+				"kind": "consumed_native_dependency",
+				"native_tick": 120,
+				"sample": 121,
+				"schema": "workbench-water-composition-v1",
+				"step": 120
+			},
+			"selected_is_actual_completed_pose": true,
+			"selected_step": 120,
+			"session": 1,
+			"slot": 1,
+			"stage": "dry_to_wet_entry",
+			"upload_serial": 84,
+			"world": 3
+		}
+	],
+	"observed_frames": 124,
+	"proof_kinds": {
+		"consumed_native_dependency": 88
+	},
+	"schema": "pubpres-water-composition-native-v1",
+	"scope": "Actual mounted Main/native/Rapier and first-read framebuffer visibility controls; explicit injected ordinary keyboard input. No comparative performance, compositor, physical scanout or owner NVIDIA acceptance.",
+	"source_revision": "bad31d68"
+}

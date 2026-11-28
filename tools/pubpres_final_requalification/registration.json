@@ -1,0 +1,100 @@
+{
+  "schema": "pubpres-retained-font-new-execution-v1",
+  "application": {
+    "source_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+    "source_tree": "351b947a50ce054361660eba9379006122527547"
+  },
+  "engine_identity": {
+    "build_source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+    "build_run": 45452580606,
+    "build_attempt": 1,
+    "proof_sha256": "0f1d6059578d4505043fe11f1286cd7395c5cc64df7aa379106f7a0bcafdf1c5"
+  },
+  "native_binary_sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b",
+  "native_manifest_sha256": "f1d8e97e923eb8c03a9ae3592bd9a45b2784ca70eee2cdd15e0a85cd63f51be1",
+  "native_files": {
+    "GODOT-CPP-BUILD.log": {
+      "bytes": 60046,
+      "sha256": "926883e41bf7a28b2879311ea65af78153bd6a2489a7795ec86948648e93b468"
+    },
+    "GODOT-CPP-BUILD.sh": {
+      "bytes": 6807,
+      "sha256": "72552f5aa59e418b4fd84b21e27d3e35c0217603ba0d553d58bdeb70c49520ea"
+    },
+    "GODOT-CPP-CXX.sh": {
+      "bytes": 668,
+      "sha256": "eda84507126d2e657dfd20386a0da6eecc5ebe8d650102075f5b539da8334b09"
+    },
+    "GODOT-CPP-DEPENDENCY.json": {
+      "bytes": 277485,
+      "sha256": "c4df34a516b645985b5c65f5167d0221bf3b187b13f19cfff96b7a1453c669f2"
+    },
+    "PUBPRES-RUNTIME.json": {
+      "bytes": 14598,
+      "sha256": "f1d8e97e923eb8c03a9ae3592bd9a45b2784ca70eee2cdd15e0a85cd63f51be1"
+    },
+    "build.log": {
+      "bytes": 1952,
+      "sha256": "2018ac9c24503b347ffc20869446aa612a9b2dce1cf2fd355c95c3de9e77be28"
+    },
+    "cybersand_native.windows.x86_64.dll": {
+      "bytes": 5825024,
+      "sha256": "1cdcbf4f72204d79b22d1a9551e46f9ccf02f6785d3141503e90e27feda28f1b"
+    }
+  },
+  "artifacts": {
+    "native": {
+      "repository": "techrote/cybersand",
+      "id": 14949381822,
+      "workflow_run": 45452580606,
+      "source_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+      "bytes": 4444574,
+      "sha256": "0669d547096b8c5cc8e1b96acff4f0fc0f5de944f0fa9044b359be77651be75c"
+    },
+    "engine": {
+      "repository": "techrote/cybersand",
+      "id": 14952148161,
+      "workflow_run": 45452580606,
+      "source_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+      "bytes": 79642211,
+      "sha256": "fe4440d0975b4121d037c50477facb1d1596c76eb759199e26e0cff250e2cfd1"
+    },
+    "engine-proof": {
+      "repository": "techrote/cybersand",
+      "id": 14952637070,
+      "workflow_run": 45452580606,
+      "source_commit": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+      "bytes": 1141472,
+      "sha256": "af2b64b2557649d4ef9536a0d809540fc64cffc1e3e7efb8f393533f28d00439"
+    }
+  },
+  "engine_gui_sha256": "b0c608bc47bdc05cdd2083df4dfd67861c5d36b876a1ccf7086374059c7bad15",
+  "original_engine": "Unchanged third_party/workbench-godot-evaluation.lock.json and its original strict restorer.",
+  "same_head_qualifiers": {
+    "font": {
+      "path": "tools/pubpres_final_engine/run_font_qualification.py",
+      "sha256": "3094d8b5d9284a3b6ce54a4d6c43363c14f53858b0c6181dce902254cf48f613",
+      "functions": {
+        "main": "3005f4daff3017d72bb6a6c95dc105569ecef16ce3efadb35754e587c68cc042",
+        "verify_qualification": "4213f8aef098087db385492fdf8044a6cfe7414fd7736aca911423047771804f"
+      }
+    },
+    "renderer": {
+      "path": "tools/pubpres_final/run_font_renderer_comparison.py",
+      "sha256": "de1fd27a2ed5fb2deff34cbc4592c1a34526aa33391b48e739918afc0feebf90",
+      "functions": {
+        "main": "4fbfaa0e68629d7bfb428341ce144ced747a1a20aff5bb80bebdfa5666adb1ca"
+      }
+    }
+  },
+  "physical_acceptance": "HOLD",
+  "reason": "Original run45452580606 rejected the valid combined patch representation before any font/startup process. This is new execution with a corrected, separately committed qualifier; all original binaries and source identities are retained. The original failure is not rewritten.",
+  "execution_order": [
+    "exact artifact/archive/member and engine payload admission",
+    "four original/repaired Safe/Separate font controls",
+    "both repaired ordinary paused Workbench startup owners",
+    "both repaired two-slot180-admission GPU history oracles",
+    "same repaired executable Safe/Separate/Separate/Safe, Wave512 and current Wave2048"
+  ],
+  "scope": "No native, engine, application, source-exact physical predicate or original same-head qualifier is changed to admit this run. Only the explicitly registered application-to-driver join differs. Every observer is staged from and hashed into the new committed driver. No physical NVIDIA or production activation claim."
+}

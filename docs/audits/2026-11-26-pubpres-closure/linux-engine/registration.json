@@ -1,0 +1,51 @@
+{
+  "schema": "pubpres-recovery-local-engine-v1",
+  "started_utc": "2026-11-26T07:54:55.861305+00:00",
+  "source_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "patch_sha256": "f17555f97681bb1c843ade738c738405789f21aa4a487c70a0c778bf83cfb085",
+  "combined_patch_sha256": "0f4491e7211f58e2b39d7a37878148e8bc0d94451f356c51796e26c15eda0571",
+  "patched_source_files_sha256": {
+    "drivers/egl/egl_manager.cpp": "9faf74aa030f0b11b59f82bc0eca1373c781cef9372a2f9ba43c576f8869321e",
+    "modules/text_server_adv/text_server_adv.cpp": "12e8c7e36b6845a82cc2db5a514b7b97e051c23f6783c560bf2a3fe15caa9a5b",
+    "modules/text_server_fb/text_server_fb.cpp": "637d19f1e4cd55a0f3b10fa307646dc2d72d0a637de827d8be86e6d4132c35a1",
+    "main/main.cpp": "3bacaf979be7ff2b69c0bc0b0414d8b45ea6646f8f938332b1c30e0ce0eb45b7",
+    "servers/rendering/rendering_server_default.cpp": "38df3aeed8b72db4251c948734daf39976f04da8d16dd98682bafabef04fa89c",
+    "servers/rendering/rendering_server_default.h": "0b9c4f7d12c284b7b743ae1161f1c8c67483ea0ee1afabb444d73d397afa671d"
+  },
+  "scons_command": [
+    "/workspace/scratch/b5ff5c354306/toolchain/scons/bin/python",
+    "-m",
+    "SCons",
+    "-j3",
+    "platform=linuxbsd",
+    "arch=x86_64",
+    "threads=yes",
+    "target=template_debug",
+    "disable_path_overrides=no",
+    "production=yes",
+    "optimize=speed",
+    "lto=none",
+    "debug_symbols=no",
+    "dev_build=no",
+    "precision=single",
+    "opengl3=yes",
+    "vulkan=no",
+    "x11=yes",
+    "wayland=no",
+    "alsa=no",
+    "pulseaudio=no",
+    "dbus=no",
+    "speechd=no",
+    "udev=no",
+    "fontconfig=no",
+    "tests=no",
+    "scu_build=yes",
+    "scu_limit=8"
+  ],
+  "build_environment": {
+    "BUILD_NAME": "cybersand_egl_font_atomic"
+  },
+  "build_log": "/workspace/scratch/9cef565acfec/engine-build-closure/build.log",
+  "engine_qualified": false,
+  "scope": "Fresh reconstruction of retained exact four-patch Linux development source and original flags, with three compiler workers. Separate identity from lost binary674a6324. No Windows or physical GPU acceptance."
+}

@@ -1,0 +1,4657 @@
+{
+  "checks": 573,
+  "display_server": "headless",
+  "engine": "4.7-stable (official)",
+  "expect_legacy": false,
+  "failures": [],
+  "observations": [
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        232.583160400391
+      ],
+      "camera_requested": [
+        120.0,
+        232.5
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 120,
+        "elapsed_usec": 138,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "free-clear-ahead",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 3,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          662.308532714844,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          662.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 138,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 3
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        232.583160400391
+      ],
+      "camera_requested": [
+        120.0,
+        232.5
+      ],
+      "desired_step": 2,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 474,
+        "elapsed_usec": 213,
+        "intentional_holds": 1,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": true,
+      "label": "free-genuine-wall-veto",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 3,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          662.308532714844,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          662.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 2,
+      "reason": "material_in_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 213,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "held",
+      "upload_serial": 3
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        232.583160400391
+      ],
+      "camera_requested": [
+        120.0,
+        232.5
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        247.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 112,
+        "elapsed_usec": 123,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "free-clear-resume",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 3,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          671.217224121094,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          671.21728515625,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "paced_observed_recovery",
+      "recovery_attempts": 1,
+      "resolve_usec": 123,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "live",
+      "upload_serial": 3
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        232.583160400391
+      ],
+      "camera_requested": [
+        120.0,
+        232.5
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        247.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 74,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "free-pause",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 3,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          671.217224121094,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          671.21728515625,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 74,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "live",
+      "upload_serial": 3
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        232.583160400391
+      ],
+      "camera_requested": [
+        120.0,
+        232.5
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        247.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 63,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "free-resume",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 3,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          671.217224121094,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          671.21728515625,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 63,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "live",
+      "upload_serial": 3
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 120,
+        "elapsed_usec": 117,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "follow-clear-ahead",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 4,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 117,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 4
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 2,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 474,
+        "elapsed_usec": 270,
+        "intentional_holds": 1,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": true,
+      "label": "follow-genuine-wall-veto",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 4,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 2,
+      "reason": "material_in_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 270,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "held",
+      "upload_serial": 4
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        126.951232910156,
+        232.583160400391
+      ],
+      "camera_requested": [
+        127.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        247.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 112,
+        "elapsed_usec": 151,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "follow-clear-resume",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 4,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.217224121094,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.21728515625,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "paced_observed_recovery",
+      "recovery_attempts": 1,
+      "resolve_usec": 151,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "live",
+      "upload_serial": 4
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        126.951232910156,
+        232.583160400391
+      ],
+      "camera_requested": [
+        127.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        247.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 73,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "follow-pause",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 4,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.217224121094,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.21728515625,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 73,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "live",
+      "upload_serial": 4
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        126.951232910156,
+        232.583160400391
+      ],
+      "camera_requested": [
+        127.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        247.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 60,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "follow-resume",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 4,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.217224121094,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.21728515625,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 60,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          247.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "live",
+      "upload_serial": 4
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        228.542144775391
+      ],
+      "camera_requested": [
+        120.0,
+        228.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        296.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 120,
+        "elapsed_usec": 116,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-1",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          296.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          448.50830078125
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          0.0
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.036987304688,
+          448.50830078125
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 116,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          296.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        224.501113891602
+      ],
+      "camera_requested": [
+        120.0,
+        224.506591796875
+      ],
+      "desired_step": 2,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        292.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 104,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-2",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          292.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          448.691070556641
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          0.000030517578125
+        ],
+        "residual_magnitude_px": 0.0000682393801980652,
+        "shader_px": [
+          640.036987304688,
+          448.691040039062
+        ]
+      },
+      "rapier_step": 2,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 104,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          292.006591796875
+        ]
+      },
+      "selected_step": 2,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        220.460098266602
+      ],
+      "camera_requested": [
+        120.0,
+        220.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        288.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 98,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-3",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          288.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          448.873779296875
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          0.0
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.036987304688,
+          448.873779296875
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 98,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          288.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        216.419082641602
+      ],
+      "camera_requested": [
+        120.0,
+        216.506591796875
+      ],
+      "desired_step": 4,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        284.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 117,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-4",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          284.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          449.056457519531
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          449.056518554688
+        ]
+      },
+      "rapier_step": 4,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 117,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          284.006591796875
+        ]
+      },
+      "selected_step": 4,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        212.602554321289
+      ],
+      "camera_requested": [
+        120.0,
+        212.506591796875
+      ],
+      "desired_step": 5,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        280.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 94,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-5",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          280.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          448.239227294922
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.000030517578125
+        ],
+        "residual_magnitude_px": 0.0000682393801980652,
+        "shader_px": [
+          640.036987304688,
+          448.2392578125
+        ]
+      },
+      "rapier_step": 5,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 94,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          280.006591796875
+        ]
+      },
+      "selected_step": 5,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        208.561538696289
+      ],
+      "camera_requested": [
+        120.0,
+        208.506591796875
+      ],
+      "desired_step": 6,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        276.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 89,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-6",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          276.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          448.421936035156
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          448.421875
+        ]
+      },
+      "rapier_step": 6,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 89,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          276.006591796875
+        ]
+      },
+      "selected_step": 6,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        204.520523071289
+      ],
+      "camera_requested": [
+        120.0,
+        204.506591796875
+      ],
+      "desired_step": 7,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        272.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 91,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-7",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          272.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          448.604614257812
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          0.0
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.036987304688,
+          448.604614257812
+        ]
+      },
+      "rapier_step": 7,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 91,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          272.006591796875
+        ]
+      },
+      "selected_step": 7,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        200.4794921875
+      ],
+      "camera_requested": [
+        120.0,
+        200.506591796875
+      ],
+      "desired_step": 8,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        268.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 138,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-8",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          268.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          448.787414550781
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          448.787353515625
+        ]
+      },
+      "rapier_step": 8,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 138,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          268.006591796875
+        ]
+      },
+      "selected_step": 8,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        196.4384765625
+      ],
+      "camera_requested": [
+        120.0,
+        196.506591796875
+      ],
+      "desired_step": 9,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        264.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 91,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-9",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          264.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          448.970092773438
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          0.0
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.036987304688,
+          448.970092773438
+        ]
+      },
+      "rapier_step": 9,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 91,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          264.006591796875
+        ]
+      },
+      "selected_step": 9,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        192.3974609375
+      ],
+      "camera_requested": [
+        120.0,
+        192.506591796875
+      ],
+      "desired_step": 10,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        260.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 85,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "clear-flight-step-10",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          449.152770996094
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          449.15283203125
+        ]
+      },
+      "rapier_step": 10,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 85,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "selected_step": 10,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        192.3974609375
+      ],
+      "camera_requested": [
+        120.0,
+        192.506591796875
+      ],
+      "desired_step": -1,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        260.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 35,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "invalid_frame",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "invalid-epoch",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "rapier_step": 10,
+      "reason": "",
+      "recovery_attempts": 0,
+      "resolve_usec": 35,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        192.3974609375
+      ],
+      "camera_requested": [
+        120.0,
+        192.506591796875
+      ],
+      "desired_step": 10,
+      "explicit_reentry": true,
+      "follow_target": [
+        240.0,
+        260.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 69,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "rejoin-epoch",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          449.152770996094
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          449.15283203125
+        ]
+      },
+      "rapier_step": 10,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 69,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "selected_step": 10,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        192.3974609375
+      ],
+      "camera_requested": [
+        120.0,
+        192.506591796875
+      ],
+      "desired_step": -1,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        260.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 18,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "invalid_frame",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "invalid-world_generation",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "rapier_step": 10,
+      "reason": "",
+      "recovery_attempts": 0,
+      "resolve_usec": 18,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        192.3974609375
+      ],
+      "camera_requested": [
+        120.0,
+        192.506591796875
+      ],
+      "desired_step": 10,
+      "explicit_reentry": true,
+      "follow_target": [
+        240.0,
+        260.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 62,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "rejoin-world_generation",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          449.152770996094
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          449.15283203125
+        ]
+      },
+      "rapier_step": 10,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 62,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "selected_step": 10,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        192.3974609375
+      ],
+      "camera_requested": [
+        120.0,
+        192.506591796875
+      ],
+      "desired_step": -1,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        260.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 19,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "invalid_frame",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "invalid-revision",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "rapier_step": 10,
+      "reason": "",
+      "recovery_attempts": 0,
+      "resolve_usec": 19,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        192.3974609375
+      ],
+      "camera_requested": [
+        120.0,
+        192.506591796875
+      ],
+      "desired_step": 10,
+      "explicit_reentry": true,
+      "follow_target": [
+        240.0,
+        260.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 61,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "rejoin-revision",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          449.152770996094
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          449.15283203125
+        ]
+      },
+      "rapier_step": 10,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 61,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "selected_step": 10,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        192.3974609375
+      ],
+      "camera_requested": [
+        120.0,
+        192.506591796875
+      ],
+      "desired_step": 10,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        260.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 36,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "invalid-actor-generation",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "rapier_step": 10,
+      "reason": "actor_receipt_invalid",
+      "recovery_attempts": 0,
+      "resolve_usec": 36,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        192.3974609375
+      ],
+      "camera_requested": [
+        120.0,
+        192.506591796875
+      ],
+      "desired_step": 10,
+      "explicit_reentry": true,
+      "follow_target": [
+        240.0,
+        260.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 49,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "rejoin-actor-generation",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "material_revision": 5,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          449.152770996094
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          449.15283203125
+        ]
+      },
+      "rapier_step": 10,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 49,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          260.006591796875
+        ]
+      },
+      "selected_step": 10,
+      "source": "live",
+      "upload_serial": 5
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 120,
+        "elapsed_usec": 158,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "history-initial-clear",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 6,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 158,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 6
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        128.971740722656,
+        232.583160400391
+      ],
+      "camera_requested": [
+        129.0,
+        232.506591796875
+      ],
+      "desired_step": 4,
+      "explicit_reentry": false,
+      "follow_target": [
+        249.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 1142,
+        "elapsed_usec": 331,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "history-translating-rotating-prefix",
+      "live": {
+        "radians": 1.16350054740906,
+        "xy": [
+          259.096374511719,
+          300.006591796875
+        ]
+      },
+      "material_revision": 6,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.125915527344,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.125854492188,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 4,
+      "reason": "safe_observed_prefix",
+      "recovery_attempts": 2,
+      "resolve_usec": 331,
+      "selected": {
+        "radians": 0.5,
+        "xy": [
+          249.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "history",
+      "upload_serial": 6
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 120,
+        "elapsed_usec": 139,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "history-expiry-first-live",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 7,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 139,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 7
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        128.971740722656,
+        232.583160400391
+      ],
+      "camera_requested": [
+        129.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        249.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 602,
+        "elapsed_usec": 202,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "history-expiry-clear-prefix",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 7,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.125915527344,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.125854492188,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "safe_observed_prefix",
+      "recovery_attempts": 1,
+      "resolve_usec": 202,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          249.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 2,
+      "source": "history",
+      "upload_serial": 7
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        128.971740722656,
+        232.583160400391
+      ],
+      "camera_requested": [
+        129.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        249.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 394,
+        "elapsed_usec": 478,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "history-expiry-withheld-0",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 7,
+      "native_tick": 0,
+      "rapier_step": 3,
+      "reason": "held_observation_age_expired",
+      "recovery_attempts": 1,
+      "resolve_usec": 478,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 7
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        128.971740722656,
+        232.583160400391
+      ],
+      "camera_requested": [
+        129.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        249.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 471,
+        "elapsed_usec": 174,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "history-expiry-withheld-1",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 7,
+      "native_tick": 0,
+      "rapier_step": 3,
+      "reason": "material_in_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 174,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 7
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        128.971740722656,
+        232.583160400391
+      ],
+      "camera_requested": [
+        129.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        249.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 471,
+        "elapsed_usec": 184,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "history-expiry-withheld-2",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 7,
+      "native_tick": 0,
+      "rapier_step": 3,
+      "reason": "material_in_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 184,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 7
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        128.971740722656,
+        232.583160400391
+      ],
+      "camera_requested": [
+        129.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        249.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 471,
+        "elapsed_usec": 156,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "history-expiry-withheld-3",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 7,
+      "native_tick": 0,
+      "rapier_step": 3,
+      "reason": "material_in_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 156,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 7
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 120,
+        "elapsed_usec": 111,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "native-expiry-first-live",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 8,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 111,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 8
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          248.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 474,
+        "elapsed_usec": 1167,
+        "intentional_holds": 1,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": true,
+      "label": "native-expiry-first-refusal",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 8,
+      "native_tick": 1,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "material_in_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 1167,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "held",
+      "upload_serial": 8
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          248.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 1,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 374,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 127632,
+      "intentional_hold": false,
+      "label": "native-expiry-held-cap-0",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 8,
+      "native_tick": 1,
+      "rapier_step": 3,
+      "reason": "hold_expired:recovery_age_expired",
+      "recovery_attempts": 0,
+      "resolve_usec": 374,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 8
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          248.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 551,
+        "elapsed_usec": 309,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "native-expiry-held-cap-1",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 8,
+      "native_tick": 1,
+      "rapier_step": 3,
+      "reason": "material_in_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 309,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 8
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          248.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 551,
+        "elapsed_usec": 169,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "native-expiry-held-cap-2",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 8,
+      "native_tick": 1,
+      "rapier_step": 3,
+      "reason": "material_in_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 169,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 8
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 120,
+        "elapsed_usec": 119,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paced-initial-clear",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 9,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 119,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 9
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        229.440139770508
+      ],
+      "camera_requested": [
+        125.0,
+        229.506591796875
+      ],
+      "desired_step": 11,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        297.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 1180,
+        "elapsed_usec": 326,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paced-genuine-contact",
+      "live": {
+        "radians": 0.609147548675537,
+        "xy": [
+          258.625335693359,
+          300.006591796875
+        ]
+      },
+      "material_revision": 9,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.962677001953
+        ],
+        "projection_residual_px": [
+          0.0,
+          0.000030517578125
+        ],
+        "residual_magnitude_px": 0.000030517578125,
+        "shader_px": [
+          640.30859375,
+          448.962646484375
+        ]
+      },
+      "rapier_step": 11,
+      "reason": "safe_observed_prefix",
+      "recovery_attempts": 3,
+      "resolve_usec": 326,
+      "selected": {
+        "radians": 0.0900000035762787,
+        "xy": [
+          245.0,
+          297.006591796875
+        ]
+      },
+      "selected_step": 4,
+      "source": "history",
+      "upload_serial": 9
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        227.419631958008
+      ],
+      "camera_requested": [
+        125.0,
+        227.506591796875
+      ],
+      "desired_step": 12,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        295.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 144,
+        "elapsed_usec": 136,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paced-clear-contact-0",
+      "live": {
+        "radians": 0.300000011920929,
+        "xy": [
+          245.0,
+          282.006591796875
+        ]
+      },
+      "material_revision": 9,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          449.054016113281
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          449.054077148438
+        ]
+      },
+      "rapier_step": 12,
+      "reason": "paced_observed_recovery",
+      "recovery_attempts": 1,
+      "resolve_usec": 136,
+      "selected": {
+        "radians": 0.150000005960464,
+        "xy": [
+          245.0,
+          295.006591796875
+        ]
+      },
+      "selected_step": 6,
+      "source": "history",
+      "upload_serial": 9
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        226.521621704102
+      ],
+      "camera_requested": [
+        125.0,
+        226.506591796875
+      ],
+      "desired_step": 12,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        294.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 132,
+        "elapsed_usec": 89,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paced-clear-contact-1",
+      "live": {
+        "radians": 0.300000011920929,
+        "xy": [
+          245.0,
+          282.006591796875
+        ]
+      },
+      "material_revision": 9,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.599731445312
+        ],
+        "projection_residual_px": [
+          0.0,
+          0.0
+        ],
+        "residual_magnitude_px": 0.0,
+        "shader_px": [
+          640.30859375,
+          448.599731445312
+        ]
+      },
+      "rapier_step": 12,
+      "reason": "paced_observed_recovery",
+      "recovery_attempts": 1,
+      "resolve_usec": 89,
+      "selected": {
+        "radians": 0.180000007152557,
+        "xy": [
+          245.0,
+          294.006591796875
+        ]
+      },
+      "selected_step": 7,
+      "source": "history",
+      "upload_serial": 9
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        225.399124145508
+      ],
+      "camera_requested": [
+        125.0,
+        225.506591796875
+      ],
+      "desired_step": 12,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        293.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 132,
+        "elapsed_usec": 82,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paced-clear-contact-2",
+      "live": {
+        "radians": 0.300000011920929,
+        "xy": [
+          245.0,
+          282.006591796875
+        ]
+      },
+      "material_revision": 9,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          449.145385742188
+        ],
+        "projection_residual_px": [
+          0.0,
+          0.0
+        ],
+        "residual_magnitude_px": 0.0,
+        "shader_px": [
+          640.30859375,
+          449.145385742188
+        ]
+      },
+      "rapier_step": 12,
+      "reason": "paced_observed_recovery",
+      "recovery_attempts": 1,
+      "resolve_usec": 82,
+      "selected": {
+        "radians": 0.209999993443489,
+        "xy": [
+          245.0,
+          293.006591796875
+        ]
+      },
+      "selected_step": 8,
+      "source": "history",
+      "upload_serial": 9
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 120,
+        "elapsed_usec": 118,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "rejoin-initial-clear",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 10,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 118,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 10
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [
+        {
+          "blocked_material": 0,
+          "blocked_other": 1,
+          "blocked_unknown": 0,
+          "budget_vetoes": 2,
+          "cells_examined": 0,
+          "elapsed_usec": 2808,
+          "intentional_holds": 1,
+          "refined_clear": 0,
+          "refined_queries": 0,
+          "safe_live": 0,
+          "status": "coherent",
+          "withheld": 0
+        }
+      ],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 2,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 1,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 885,
+        "intentional_holds": 1,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 5138,
+      "intentional_hold": true,
+      "label": "native-endpoint-cannot-teleport",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 10,
+      "native_tick": 1,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 2,
+      "reason": "bounded_pose_delta",
+      "recovery_attempts": 1,
+      "resolve_usec": 885,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "held",
+      "upload_serial": 10
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 2,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 1,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 343,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 127278,
+      "intentional_hold": false,
+      "label": "native-rejoin-hold-expired",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 10,
+      "native_tick": 1,
+      "rapier_step": 2,
+      "reason": "hold_expired:bounded_pose_delta",
+      "recovery_attempts": 1,
+      "resolve_usec": 343,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 10
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        159.952896118164,
+        232.583160400391
+      ],
+      "camera_requested": [
+        160.0,
+        232.506591796875
+      ],
+      "desired_step": 2,
+      "explicit_reentry": true,
+      "follow_target": [
+        280.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 1,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 70,
+        "elapsed_usec": 278,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "native-rejoin-after-suppression",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 10,
+      "native_tick": 1,
+      "projection": {
+        "overlay_px": [
+          640.209838867188,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.209838867188,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 2,
+      "reason": "native_receipt_reentry",
+      "recovery_attempts": 0,
+      "resolve_usec": 278,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 2,
+      "source": "mask_bound",
+      "upload_serial": 10
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        159.952896118164,
+        232.583160400391
+      ],
+      "camera_requested": [
+        160.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        280.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 1,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 161,
+        "intentional_holds": 1,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": true,
+      "label": "rejoin-missing-native-history",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          320.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 10,
+      "native_tick": 1,
+      "projection": {
+        "overlay_px": [
+          640.209838867188,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.209838867188,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "bounded_pose_delta",
+      "recovery_attempts": 0,
+      "resolve_usec": 161,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 2,
+      "source": "held",
+      "upload_serial": 10
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        159.952896118164,
+        232.583160400391
+      ],
+      "camera_requested": [
+        160.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": false,
+      "follow_target": [
+        280.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 1,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 293,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 127133,
+      "intentional_hold": false,
+      "label": "rejoin-stopped-physics-suppressed",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          320.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 10,
+      "native_tick": 1,
+      "rapier_step": 3,
+      "reason": "hold_expired:bounded_pose_delta",
+      "recovery_attempts": 1,
+      "resolve_usec": 293,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 10
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          280.0,
+          300.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        199.914093017578,
+        232.583160400391
+      ],
+      "camera_requested": [
+        200.0,
+        232.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": true,
+      "follow_target": [
+        320.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 1,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 70,
+        "elapsed_usec": 144,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "rejoin-stopped-physics-endpoint",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          320.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 10,
+      "native_tick": 1,
+      "projection": {
+        "overlay_px": [
+          640.382629394531,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.382690429688,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "explicit_live_reentry",
+      "recovery_attempts": 0,
+      "resolve_usec": 144,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          320.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "live",
+      "upload_serial": 10
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        227.419631958008
+      ],
+      "camera_requested": [
+        120.0,
+        227.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": true,
+      "follow_target": [
+        240.0,
+        295.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 130,
+        "elapsed_usec": 489,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "unknown-expired-clear",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          295.006591796875
+        ]
+      },
+      "material_revision": 11,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          449.054016113281
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          449.054077148438
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 489,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          295.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 12
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        227.419631958008
+      ],
+      "camera_requested": [
+        120.0,
+        227.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        240.0,
+        295.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 1,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 138,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 1
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "unknown-active-veto",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          295.006591796875
+        ]
+      },
+      "material_revision": 11,
+      "native_tick": 0,
+      "rapier_step": 1,
+      "reason": "previous_texture_unbounded",
+      "recovery_attempts": 0,
+      "resolve_usec": 138,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 12
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        227.419631958008
+      ],
+      "camera_requested": [
+        120.0,
+        227.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": true,
+      "follow_target": [
+        240.0,
+        295.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 87,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "unknown-expired-rejoin",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          295.006591796875
+        ]
+      },
+      "material_revision": 11,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          449.054016113281
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.0000863167442730628,
+        "shader_px": [
+          640.036987304688,
+          449.054077148438
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 87,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          295.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 12
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 120,
+        "elapsed_usec": 119,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paint-before-clear",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "material_revision": 12,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 1,
+      "reason": "empty_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 119,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "live",
+      "upload_serial": 13
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": 2,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 1,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 474,
+        "elapsed_usec": 186,
+        "intentional_holds": 1,
+        "refined_clear": 0,
+        "refined_queries": 1,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": true,
+      "label": "paint-before-hold",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 12,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          640.30859375,
+          448.325622558594
+        ],
+        "projection_residual_px": [
+          0.0,
+          -0.00006103515625
+        ],
+        "residual_magnitude_px": 0.00006103515625,
+        "shader_px": [
+          640.30859375,
+          448.32568359375
+        ]
+      },
+      "rapier_step": 2,
+      "reason": "material_in_swept_mask",
+      "recovery_attempts": 0,
+      "resolve_usec": 186,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          245.0,
+          300.006591796875
+        ]
+      },
+      "selected_step": 1,
+      "source": "held",
+      "upload_serial": 13
+    },
+    {
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": -1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 73,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "invalid_frame",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paint-occupied-held-footprint",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 13,
+      "native_tick": 0,
+      "rapier_step": 2,
+      "reason": "",
+      "recovery_attempts": 0,
+      "resolve_usec": 73,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 14
+    },
+    {
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": -1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 39,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "invalid_frame",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paint-old-fire-crossfade-active",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 14,
+      "native_tick": 0,
+      "rapier_step": 2,
+      "reason": "",
+      "recovery_attempts": 0,
+      "resolve_usec": 39,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 15
+    },
+    {
+      "budget_retries": [],
+      "camera_presented": [
+        124.930717468262,
+        232.583160400391
+      ],
+      "camera_requested": [
+        125.0,
+        232.506591796875
+      ],
+      "desired_step": -1,
+      "explicit_reentry": false,
+      "follow_target": [
+        245.0,
+        300.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 31,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "invalid_frame",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paint-old-fire-crossfade-expired",
+      "live": {
+        "radians": -0.0000000076389303771407,
+        "xy": [
+          258.8544921875,
+          300.006591796875
+        ]
+      },
+      "material_revision": 14,
+      "native_tick": 0,
+      "rapier_step": 2,
+      "reason": "",
+      "recovery_attempts": 0,
+      "resolve_usec": 31,
+      "selected": null,
+      "selected_step": -1,
+      "source": "hidden",
+      "upload_serial": 15
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          220.006591796875
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        119.99169921875,
+        152.436264038086
+      ],
+      "camera_requested": [
+        120.0,
+        152.506591796875
+      ],
+      "desired_step": 3,
+      "explicit_reentry": true,
+      "follow_target": [
+        240.0,
+        220.006591796875
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 1,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 70,
+        "elapsed_usec": 330,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 0,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "paint-cleared-resume",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          220.006591796875
+        ]
+      },
+      "material_revision": 14,
+      "native_tick": 1,
+      "projection": {
+        "overlay_px": [
+          640.036926269531,
+          448.979949951172
+        ],
+        "projection_residual_px": [
+          -0.00006103515625,
+          -0.000030517578125
+        ],
+        "residual_magnitude_px": 0.0000682393801980652,
+        "shader_px": [
+          640.036987304688,
+          448.97998046875
+        ]
+      },
+      "rapier_step": 3,
+      "reason": "native_receipt_reentry",
+      "recovery_attempts": 0,
+      "resolve_usec": 330,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          240.0,
+          220.006591796875
+        ]
+      },
+      "selected_step": 3,
+      "source": "mask_bound",
+      "upload_serial": 15
+    },
+    {
+      "bound": {
+        "radians": 0.0,
+        "xy": [
+          5.0,
+          300.0
+        ]
+      },
+      "budget_retries": [],
+      "camera_presented": [
+        0.108095288276672,
+        232.583160400391
+      ],
+      "camera_requested": [
+        0.0,
+        232.5
+      ],
+      "desired_step": 0,
+      "explicit_reentry": false,
+      "follow_target": [
+        5.0,
+        300.0
+      ],
+      "guard": {
+        "blocked_material": 0,
+        "blocked_other": 0,
+        "blocked_unknown": 0,
+        "budget_vetoes": 0,
+        "cells_examined": 0,
+        "elapsed_usec": 144,
+        "intentional_holds": 0,
+        "refined_clear": 0,
+        "refined_queries": 0,
+        "safe_live": 1,
+        "status": "coherent",
+        "withheld": 0
+      },
+      "hold_age_usec": 0,
+      "intentional_hold": false,
+      "label": "session-reset-valid-world-edge",
+      "live": {
+        "radians": 0.0,
+        "xy": [
+          5.0,
+          300.0
+        ]
+      },
+      "material_revision": 15,
+      "native_tick": 0,
+      "projection": {
+        "overlay_px": [
+          127.271598815918,
+          448.296264648438
+        ],
+        "projection_residual_px": [
+          -0.00000762939453125,
+          0.0
+        ],
+        "residual_magnitude_px": 0.00000762939453125,
+        "shader_px": [
+          127.271606445312,
+          448.296264648438
+        ]
+      },
+      "rapier_step": 0,
+      "reason": "same_presented_pose",
+      "recovery_attempts": 0,
+      "resolve_usec": 144,
+      "selected": {
+        "radians": 0.0,
+        "xy": [
+          5.0,
+          300.0
+        ]
+      },
+      "selected_step": 0,
+      "source": "live",
+      "upload_serial": 16
+    }
+  ],
+  "platform": "Linux",
+  "receipts": [
+    {
+      "after": [
+        6
+      ],
+      "cell": [
+        245,
+        300
+      ],
+      "material": 6,
+      "status": "completed"
+    },
+    {
+      "after": [
+        0
+      ],
+      "cell": [
+        245,
+        300
+      ],
+      "material": 0,
+      "status": "completed"
+    },
+    {
+      "bound_rapier_step": 3,
+      "native_tick": 1,
+      "published_rapier_step": 3,
+      "sample": 2
+    }
+  ],
+  "schema": "workbench-temporal-presentation-v1",
+  "scope": "Mounted Main/native World/material receipts and real Rapier RID with completed steps. Controlled causal pose stimuli; not physical GPU acceptance.",
+  "source_commit": "df480e6d29118e0512303e26f10efc2249d02370"
+}

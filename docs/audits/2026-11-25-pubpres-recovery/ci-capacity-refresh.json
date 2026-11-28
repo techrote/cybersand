@@ -1,0 +1,114 @@
+{
+  "schema": "pubpres-recovery-ci-capacity-read-v1",
+  "observed_utc": "2026-11-25 21:58:34 UTC",
+  "main": {
+    "name": "main",
+    "commit": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+    "url": "https://github.com/techrote/cybersand/commit/be87b18b30506ccead610c7035ae1ffa8e65a347"
+  },
+  "queries": [
+    {
+      "status": "in_progress",
+      "total": 12,
+      "runs": [
+        {
+          "id": 45708901656,
+          "name": "Documentation and provenance",
+          "event": "pull_request",
+          "branch": "codex/pubpres-playability-final-001-20261124",
+          "source": "12a614e80a7c33ca232551994119ffa519d74f80",
+          "started": "2026-11-25T21:56:44Z",
+          "status": "in_progress"
+        },
+        {
+          "id": 45708901834,
+          "name": "Art session-only logging qualification",
+          "event": "pull_request",
+          "branch": "codex/pubpres-playability-final-001-20261124",
+          "source": "12a614e80a7c33ca232551994119ffa519d74f80",
+          "started": "2026-11-25T21:56:44Z",
+          "status": "in_progress"
+        },
+        {
+          "id": 45708901641,
+          "name": "World-art integrated preview real GUI qualification",
+          "event": "pull_request",
+          "branch": "codex/pubpres-playability-final-001-20261124",
+          "source": "12a614e80a7c33ca232551994119ffa519d74f80",
+          "started": "2026-11-25T21:56:44Z",
+          "status": "in_progress"
+        },
+        {
+          "id": 45708901703,
+          "name": "World-art integrated unattended capture qualification",
+          "event": "pull_request",
+          "branch": "codex/pubpres-playability-final-001-20261124",
+          "source": "12a614e80a7c33ca232551994119ffa519d74f80",
+          "started": "2026-11-25T21:56:44Z",
+          "status": "in_progress"
+        },
+        {
+          "id": 45708901695,
+          "name": "Native",
+          "event": "pull_request",
+          "branch": "codex/pubpres-playability-final-001-20261124",
+          "source": "12a614e80a7c33ca232551994119ffa519d74f80",
+          "started": "2026-11-25T21:56:44Z",
+          "status": "in_progress"
+        },
+        {
+          "id": 45708175470,
+          "name": "Documentation and provenance",
+          "event": "pull_request",
+          "branch": "integration/mergedown-renaissance-001",
+          "source": "5e4e76a195ffa45b583b297561a3a60d34411735",
+          "started": "2026-11-25T21:51:45Z",
+          "status": "in_progress"
+        },
+        {
+          "id": 45706972873,
+          "name": "Native C++ validation",
+          "event": "pull_request",
+          "branch": "codex/ci-engineering-closure-001",
+          "source": "0da970283d076ae4660a9d93efd0e5180d313247",
+          "started": "2026-11-25T21:43:41Z",
+          "status": "in_progress"
+        },
+        {
+          "id": 45706427271,
+          "name": "Native C++ validation",
+          "event": "push",
+          "branch": "main",
+          "source": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+          "started": "2026-11-25T21:40:05Z",
+          "status": "in_progress"
+        },
+        {
+          "id": 45706427647,
+          "name": "GDExtension build and current Godot regression",
+          "event": "push",
+          "branch": "main",
+          "source": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+          "started": "2026-11-25T21:40:05Z",
+          "status": "in_progress"
+        }
+      ]
+    },
+    {
+      "status": "queued",
+      "total": 1,
+      "runs": [
+        {
+          "id": 45706973071,
+          "name": "GDExtension build and current Godot regression",
+          "event": "pull_request",
+          "branch": "codex/ci-engineering-closure-001",
+          "source": "0da970283d076ae4660a9d93efd0e5180d313247",
+          "started": "2026-11-25T21:43:41Z",
+          "status": "queued"
+        }
+      ]
+    }
+  ],
+  "scope": "Read-only GitHub returned active run inventory. Other programmes are independently owned; no cancellation or runner reservation is inferred. A hosted engine build is not application qualification."
+}

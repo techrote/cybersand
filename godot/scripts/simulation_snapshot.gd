@@ -7,6 +7,24 @@ extends RefCounted
 var serial: int = 0
 var lab_context: Dictionary = {} # Copied owner values; immutable after publication.
 var published_usec: int = 0
+# Actual worker-to-Main handoff boundary, after value assembly. Neither this
+# nor published_usec is a native tick completion or GPU-present timestamp.
+var worker_handoff_usec: int = 0
+# Workbench native/terrain completion identity, published before material work.
+# No render bytes or upload permission are implied by the physical mailbox.
+var physics_world_generation: int = -1
+var physics_handoff_usec: int = 0
+# First admitted mailbox packet for this exact owner, sample, native completion
+# and terrain revision. Later status-only republications retain that clock.
+var first_physics_handoff_usec: int = 0
+# Last successfully completed native tick in this World. Status-only/paused
+# publications retain it; -1 means no completion for this World yet.
+var last_native_tick_started_usec: int = -1
+var last_native_tick_completed_usec: int = -1
+var last_native_tick_world_generation: int = -1
+var last_native_tick_body_sample: int = -1
+var last_native_tick_body_publication: int = -1
+var last_native_tick_lateness_usec: int = 0
 # Revision represented by the retained material render publication.
 var world_revision: int = -1
 # Current authoritative cellular revision at this worker publication. Equality
@@ -18,6 +36,16 @@ var cells: PackedByteArray = PackedByteArray()
 # x, y, width, height, data offset, row stride. Data is R8 for the script
 # fallback and RG8 (material ID + read-only visual condition) for native.
 var render_snapshot_serial: int = 0
+# Diagnostic CPU upload acknowledgement, not a GPU fence. Offered body sample
+# serials identify a latest-value mailbox; their distance is not queue depth.
+var render_acknowledged_serial: int = 0
+var render_ack_observed_usec: int = 0
+var render_publication_ack_gated: bool = false
+var render_publication_gate_holds: int = 0
+var render_pending_patch_count: int = 0
+var render_pending_patch_bytes: int = 0
+var offered_body_sample: int = -1
+var offered_body_publication: int = 0
 # Accepted World/reset generation represented by these exact render bytes.
 # Full refresh is a transport choice (always true for R8 fallback), not a reset.
 var render_world_generation: int = 0
@@ -103,6 +131,7 @@ var rigid_body_results: PackedFloat32Array = PackedFloat32Array()
 var rigid_body_contacts_last_tick: int = 0
 var rigid_body_displaced_last_tick: int = 0
 var rigid_body_unresolved_last_tick: int = 0
+# Wall duration of the most recent native tick; not elapsed simulation time.
 var simulation_time_ms: float = 0.0
 var worker_step_time_ms: float = 0.0
 var snapshot_copy_time_ms: float = 0.0

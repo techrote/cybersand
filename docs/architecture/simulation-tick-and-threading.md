@@ -260,6 +260,42 @@ Geometry and write restrictions are defined in
 and hash limits belong in [determinism](determinism-and-boundary-transfers.md).
 `SerialInPlace` is executable. `Buffered` throws as unimplemented.
 
+### Experimental actual-task completion barrier
+
+The PUBPRES recovery candidate adds an explicit default-off execution policy,
+`WorldConfig::pubpres_task_completion_barrier`. Its
+[private production pool](../../native/src/persistent_worker_pool.hpp) keeps the
+original all-worker completion path as control. In that path every awakened
+worker borrows the dispatch context, so the caller must wait even for workers
+that claim no task. The alternative acquires a real task and its current
+context together under the existing mutex. It releases the lock while that
+task runs, then decrements the actual unfinished-task count only after the
+callback and its destructors have returned. The caller reacquires the same
+mutex after all actual tasks finish before retiring or reusing context.
+
+A late idle thread cannot retain an old dispatch context. Task decomposition,
+region ownership, random keys, deterministic merges, required physical work,
+worker capacity and physical hash/save formats remain unchanged. Participant
+masks count actual task workers. Owner-only completed dispatch/task counters
+report whether a treatment executed; they supply no physical completion credit.
+Prepared/replacement Worlds inherit the immutable policy, while their counters
+start at zero. One-worker Worlds do not create a pool and report no pool work.
+
+The pool admits only 1..256 workers, matching its fixed participant mask, and
+requires a non-null callback for nonempty dispatches. An overlapping or reentrant
+dispatch is explicitly refused before any borrowed context or counters change;
+it does not wait for the active task. Empty dispatches remain storage-free and
+receive no completion credit. World mutation, diagnostics and destruction still
+require the external owner's serialized access. The admission guard does not
+make concurrent World access or concurrent object destruction valid.
+
+The [prospective registration](../../tools/pubpres_recovery/task_completion_registration.json)
+requires exact native semantic parity, production-class adversarial lifetime
+tests, scoped sanitizers, independent review and matched physical progression
+experiments. Component execution is not a performance selection or gameplay
+qualification. See the [implementation checkpoint](../audits/2026-11-25-pubpres-playability-recovery/task-completion.md)
+for exact scope and remaining gates.
+
 ## What happens when a tick fails or overloads?
 
 **Current, chosen for issue #1:** a thrown tick latches `World::has_failed()`.
@@ -350,6 +386,8 @@ viewport semantics.
 
 
 ## Desktop development workbench on #394
+
+The [publication/progression evaluation](../operations/pubpres-integration-evaluation.md) describes the optional early immutable mailbox and the same strict terrain and sample fences used in the combined comparison.
 
 The main-thread Rapier owner takes its completion acknowledgement and body wrench from the same immutable worker publication in the physics callback. Render can retain its previous publication independently. Owner epoch, sample and result serial checks still guard delivery. The physics callback confirms the current native hard-surface revision and drains the bounded Rapier collider queue before stepping against edited terrain. This check advances even while the renderer holds a frame. The desktop simulation owner drives the native World, whose persistent pool handles eligible phased material jobs. The workbench also dispatches independent chunk columns for vertical head preparation in every PressureFlow variant when the pool has enough work. Columns have disjoint output storage, task-local counters and private row-dirty records, which the owner OR-merges after the join. Row interpolation and wake decisions then run as (chunk row, activity-block row) sub-bands. Each sub-band owns its heads, wake bits and block activation flags. Physics wake events and counts are replayed in serial order, and certificate invalidation is applied by the owner as coalesced runs. Gas topology remains serial. While the workbench lock-step is active, the worker wakes on the next body sample in 250 µs polls instead of sleeping out a free-running 60 Hz interval. That interval's phase drift had produced exact 30 Hz plateaus. It still advances one tick per sample. See the [2026-11-06 tick-cost evidence](../audits/2026-11-06-workbench-pf-tick-cost.md). Under the lock-step, Rapier also steps only against the current hard-surface revision. The worker therefore publishes every changed hard-surface packet; other modes keep the 250 ms throttle. A blocked physics callback installs it with a 4 ms/128-chunk budget ([whole-engine benchmark](../audits/2026-11-06-whole-engine-bench.md)). The default outside the workbench retains its existing execution policy.
 

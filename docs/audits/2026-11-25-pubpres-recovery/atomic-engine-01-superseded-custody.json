@@ -1,0 +1,140 @@
+{
+  "schema": "pubpres-recovery-superseded-atomic-engine-custody-v1",
+  "run": 45709374785,
+  "source_commit": "c2ec38d1240b238dcf7d61db653d45903ab5d4b2",
+  "disposition": "BUILD_COMPONENT_PASS / SUPERSEDED / NOT_SELECTED",
+  "reason": "Built before required missing-metadata guards and refusal of manual draws while the Main message queue is flushing. Final component requires fourth-patch SHA f17555f97681bb1c843ade738c738405789f21aa4a487c70a0c778bf83cfb085.",
+  "artifacts": [
+    {
+      "kind": "payload",
+      "artifact_id": 15068104998,
+      "archive_sha256": "0b7b6b7d2e871cdc2bc3559c90e79cbeff76a432ddbbc9b5e4329b1ac59570a1",
+      "archive_bytes": 79665196,
+      "members": 11,
+      "crc": "PASS",
+      "provenance_sha256": "938d3a8cc6312a6cd1a7cfa90c1f6110632ecd42f552a4235c6899655d4352ae",
+      "provenance_summary": {
+        "schema": "workbench-godot-build-provenance-v1",
+        "source_commit": null,
+        "application_source": "c2ec38d1240b238dcf7d61db653d45903ab5d4b2",
+        "complete": true,
+        "version": "4.7.stable.cybersand_egl_font_atomic.5b4e0cb0f",
+        "patch_sha256": null,
+        "combined_patch_sha256": null,
+        "gui_executable": "bin/godot.windows.editor.x86_64.exe",
+        "console_executable": "bin/godot.windows.editor.x86_64.console.exe",
+        "payload_files": {
+          "api-equivalence.json": {
+            "bytes": 729,
+            "sha256": "1505c95e982cf7b7e5ee1dbf93346dfc5ab545c325a60186b269bb0c8d83ed6a"
+          },
+          "bin/godot.windows.editor.x86_64.console.exe": {
+            "bytes": 293376,
+            "sha256": "cf242e8c8f95e8c2d40889796853fb308a11f66593701bb75bccab81f9bbc77c"
+          },
+          "bin/godot.windows.editor.x86_64.exe": {
+            "bytes": 159844352,
+            "sha256": "314e1441dd9ac5693d43870ec628ee39bdadac5e388229096735233fe4ce1c0b"
+          },
+          "engine-source.patch": {
+            "bytes": 35880,
+            "sha256": "7d931daede8c08b6331916160d52a545bc5666d42a4aae0d39c5f63c8f064798"
+          },
+          "notices/COPYRIGHT.txt": {
+            "bytes": 100108,
+            "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d"
+          },
+          "notices/LICENSE.txt": {
+            "bytes": 1149,
+            "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80"
+          },
+          "notices/accesskit/accesskit-c-0.21.2/LICENSE-APACHE": {
+            "bytes": 9723,
+            "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+          },
+          "notices/accesskit/accesskit-c-0.21.2/LICENSE-MIT": {
+            "bytes": 1023,
+            "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+          },
+          "notices/accesskit/accesskit-c-0.21.2/LICENSE.chromium": {
+            "bytes": 1559,
+            "sha256": "845022e0c1db1abb41a6ba4cd3c4b674ec290f3359d9d3c78ae558d4c0ed9308"
+          },
+          "workbench-godot.lock.json": {
+            "bytes": 6824,
+            "sha256": "e756c70b86cb29298fe9b758522ad4eb864c5822dfd1ed3096cd647fc08b8fb7"
+          }
+        }
+      }
+    },
+    {
+      "kind": "proof",
+      "artifact_id": 15068543804,
+      "archive_sha256": "663b040f5275b165a068410d78bedac114c1036d45f5b517cd44e23a2cf92147",
+      "archive_bytes": 1153451,
+      "members": 67,
+      "crc": "PASS",
+      "provenance_sha256": "938d3a8cc6312a6cd1a7cfa90c1f6110632ecd42f552a4235c6899655d4352ae",
+      "provenance_summary": {
+        "schema": "workbench-godot-build-provenance-v1",
+        "source_commit": null,
+        "application_source": "c2ec38d1240b238dcf7d61db653d45903ab5d4b2",
+        "complete": true,
+        "version": "4.7.stable.cybersand_egl_font_atomic.5b4e0cb0f",
+        "patch_sha256": null,
+        "combined_patch_sha256": null,
+        "gui_executable": "bin/godot.windows.editor.x86_64.exe",
+        "console_executable": "bin/godot.windows.editor.x86_64.console.exe",
+        "payload_files": {
+          "api-equivalence.json": {
+            "bytes": 729,
+            "sha256": "1505c95e982cf7b7e5ee1dbf93346dfc5ab545c325a60186b269bb0c8d83ed6a"
+          },
+          "bin/godot.windows.editor.x86_64.console.exe": {
+            "bytes": 293376,
+            "sha256": "cf242e8c8f95e8c2d40889796853fb308a11f66593701bb75bccab81f9bbc77c"
+          },
+          "bin/godot.windows.editor.x86_64.exe": {
+            "bytes": 159844352,
+            "sha256": "314e1441dd9ac5693d43870ec628ee39bdadac5e388229096735233fe4ce1c0b"
+          },
+          "engine-source.patch": {
+            "bytes": 35880,
+            "sha256": "7d931daede8c08b6331916160d52a545bc5666d42a4aae0d39c5f63c8f064798"
+          },
+          "notices/COPYRIGHT.txt": {
+            "bytes": 100108,
+            "sha256": "cb1980c88089573bcacd7221d777c689bb8bbd778799f24c27fca0fe5f774d6d"
+          },
+          "notices/LICENSE.txt": {
+            "bytes": 1149,
+            "sha256": "b0435e3b3e4e55238f05f4b306f30524a1b2e20147810d436eaa554fa6855c80"
+          },
+          "notices/accesskit/accesskit-c-0.21.2/LICENSE-APACHE": {
+            "bytes": 9723,
+            "sha256": "62c7a1e35f56406896d7aa7ca52d0cc0d272ac022b5d2796e7d6905db8a3636a"
+          },
+          "notices/accesskit/accesskit-c-0.21.2/LICENSE-MIT": {
+            "bytes": 1023,
+            "sha256": "23f18e03dc49df91622fe2a76176497404e46ced8a715d9d2b67a7446571cca3"
+          },
+          "notices/accesskit/accesskit-c-0.21.2/LICENSE.chromium": {
+            "bytes": 1559,
+            "sha256": "845022e0c1db1abb41a6ba4cd3c4b674ec290f3359d9d3c78ae558d4c0ed9308"
+          },
+          "workbench-godot.lock.json": {
+            "bytes": 6824,
+            "sha256": "e756c70b86cb29298fe9b758522ad4eb864c5822dfd1ed3096cd647fc08b8fb7"
+          }
+        }
+      }
+    }
+  ],
+  "independent_payload_member_hash_size_and_pe_x64_verification": "PASS",
+  "actual_combined_patch_sha256": "7d931daede8c08b6331916160d52a545bc5666d42a4aae0d39c5f63c8f064798",
+  "provenance_fields": {
+    "application_source": "c2ec38d1240b238dcf7d61db653d45903ab5d4b2",
+    "public_api_equivalent": true,
+    "upstream_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88"
+  }
+}

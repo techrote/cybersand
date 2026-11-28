@@ -1,0 +1,71 @@
+{
+  "complete_extracted_package": "pending",
+  "date": "2026-11-28",
+  "documentation_context": {
+    "check_docs": "passed in compound layout",
+    "check_repository": "passed identity with explicit unmaterialized LFS pointers; no runtime execution credit",
+    "companion": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "source": "f8280881295a414511a1e1a9c356fdc838e0cc67"
+  },
+  "hosted_candidate": "pending",
+  "implementation": "Candidate packaging-only per-process UTF-8 Fusion manifests on pinned copied GNU14.2 UCRT executables; no system locale/PATH change, production native runtime or Lab World backend change. Resource payloads/metadata and nonresource PE sections checked; originals and derived files bound separately.",
+  "local_checks": [
+    {
+      "command": "python -B -m unittest discover -s tools/pubpres_mainline -p 'test_*.py'",
+      "elapsed_seconds": 6.932,
+      "status": "passed",
+      "tests": 52,
+      "timeout_seconds": 120
+    },
+    {
+      "command": "python -B -m unittest discover -s tools/ci -p test_portable_compiler_utf8.py",
+      "status": "passed",
+      "tests": 14,
+      "timeout_seconds": 120
+    },
+    {
+      "command": "python -B -m unittest discover -s tools/ci -p test_portable_authoring_environment.py",
+      "status": "passed",
+      "tests": 1,
+      "timeout_seconds": 120
+    },
+    {
+      "command": "python -B -m unittest discover -s tools/ci -p test_ramcache_strata_lab_package.py",
+      "elapsed_seconds": 32.16,
+      "skipped": 2,
+      "status": "passed except explicit skips",
+      "tests": 17,
+      "timeout_seconds": 120
+    }
+  ],
+  "local_delta_sha256": {
+    ".github/workflows/pubpres-mainline.yml": "7246e670d1a1a254ea1a33bfc304906f2e66025ff775f37c3bb4362c73754c77",
+    ".github/workflows/pubpres-portable-authoring-witness.yml": "c230dc4f6b5b3ffccacac567fec645fa32af1bc76e502b1b518ca04b17a83f24",
+    "tools/ci/portable_compiler_utf8.py": "cf0f6d3c15232e07e10f884faa5b8684e5e555b56b2528b874931eb32fc0bcd2",
+    "tools/ci/ramcache_strata_lab_package.py": "17335cfbee04bc042438a54399c989ea78955d7e57e948ef5ba4cad316fa083f",
+    "tools/ci/test_portable_authoring_environment.py": "9ea7c95eb444e49366474a1b9994c93b72277e290e9959c2f38f9563cba9e15f",
+    "tools/ci/test_portable_compiler_utf8.py": "4fa170f01003563bdce3f1d528d8398aefb9b1086fff6d0dcd2877b06c80a113",
+    "tools/package_materials_lab_candidate.py": "2b333ae5ca3224080675b2810c55c29ca6b18b38513055c66ad7cad21948577d",
+    "tools/pubpres_mainline/portable_authoring.py": "b793fbf4bef0f0221aa4e2370b5a46a5bb4261ebd4855ea7f89b7e49440dfbb7",
+    "tools/pubpres_mainline/test_portable_authoring_observer.py": "9f135406b9e0b2d28720c9884191a9ff5ae22cd614e65a234c22fc4de6ffd9f4"
+  },
+  "merge_authorized": false,
+  "mission": "PUBPRES-DELIVERY-RECOVERY-001",
+  "observer": "Per-process query races retained without credit as bounded sampling warnings; missing required correlated roles and root/snapshot failures still refuse. Real generated assembler work is a diagnostic, not representative performance. Matched original Unicode negative control retains every retry independently.",
+  "physical_owner_acceptance": "HOLD",
+  "primary_sources": [
+    "https://learn.microsoft.com/en-us/windows/apps/design/globalizing/use-utf8-code-page",
+    "https://learn.microsoft.com/en-us/windows/win32/sbscs/application-manifests#activecodepage",
+    "https://github.com/gcc-mirror/gcc/blob/releases/gcc-14.2.0/gcc/collect2.cc#L980-L1040"
+  ],
+  "real_windows_primitive_control": {
+    "checksum_after_mapped_view_recompute": 127253,
+    "code_sections": "unchanged",
+    "fixture": "temporary disposable copy of installed Python executable under Unicode temp path; original unchanged",
+    "non_target_resource_rows_and_metadata_preserved": 14,
+    "process_GetACP": 65001,
+    "scope": "Windows resource/checksum primitive only; no GNU or application qualification"
+  },
+  "review": "Independent agent review of metadata/resource preservation, original/derived hashes, static verification and mapped-view ImageHlp API; XML namespace contradiction reconciled against both primary Microsoft Fusion examples.",
+  "source_parent": "fe8aa063e8ac9ac71dc8e005c633540e457f767e"
+}

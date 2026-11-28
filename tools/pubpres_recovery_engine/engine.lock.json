@@ -1,0 +1,141 @@
+{
+  "schema": "workbench-godot-build-lock-v1",
+  "source_repository": "https://github.com/godotengine/godot.git",
+  "source_commit": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "build_name": "cybersand_egl_font_atomic",
+  "version": "4.7.stable.cybersand_egl_font_atomic.5b4e0cb0f",
+  "patches": [
+    {
+      "path": "third_party/patches/godot-egl-current-window.patch",
+      "sha256": "29a74947a3128ed93eeea0c6ab7274d10f45c194627fb516d7db6b511413e9a1",
+      "files": {
+        "drivers/egl/egl_manager.cpp": {
+          "before_sha256": "65f6cb972cd6f8d3242663589e213f96d3a51dcf9f65e745d5d0ca34986d8de7",
+          "after_sha256": "9faf74aa030f0b11b59f82bc0eca1373c781cef9372a2f9ba43c576f8869321e"
+        }
+      }
+    },
+    {
+      "path": "tools/pubpres_final_engine/godot-font-image-snapshot.patch",
+      "sha256": "49f06da6478582499adf5f466daec1d20981c5facbd2ef5a0acfa61cc6f788a6",
+      "files": {
+        "modules/text_server_adv/text_server_adv.cpp": {
+          "before_sha256": "f156a5b0100ab39d588a3abc09a013c468b49dbff0ed085b7cb9c2a3e577cfcf",
+          "after_sha256": "12e8c7e36b6845a82cc2db5a514b7b97e051c23f6783c560bf2a3fe15caa9a5b"
+        },
+        "modules/text_server_fb/text_server_fb.cpp": {
+          "before_sha256": "b1a6a009a89007bcbf48f3c70a8a02da037e9aef6d9cf9fa22b9f003c756a6d7",
+          "after_sha256": "637d19f1e4cd55a0f3b10fa307646dc2d72d0a637de827d8be86e6d4132c35a1"
+        }
+      }
+    },
+    {
+      "path": "tools/pubpres_final_frame_budget/godot-bounded-main-turns.patch",
+      "sha256": "23b6b04ea228a8ec7da73eae3802840f9d21e472459ba152fa41e634c7c74087",
+      "files": {
+        "main/main.cpp": {
+          "before_sha256": "2fa6ef2736aa28e2feced47ca872bce1a95e3e6c56bb6002a96660a008df8992",
+          "after_sha256": "2ea67893e1bf2e7d629546294d0be3934cecf81ea26eb6e7f68f31cff2ec2491"
+        },
+        "servers/rendering/rendering_server_default.cpp": {
+          "before_sha256": "60cdf149a4cb8c8c7b49d562edcce2273e028e4a0a6cb067c7c478054a3dc3c9",
+          "after_sha256": "ae0e2700ab0ea7c64ba486fc95bb2e47000851dc7f178d2ad6735b79851c3f32"
+        },
+        "servers/rendering/rendering_server_default.h": {
+          "before_sha256": "eff3cdd80dcfdb7643d5651f3a96fac12011414e4d5f8ecb3645638dfb43481b",
+          "after_sha256": "2b5af7ef8b4b3fdf760ba2eb3d7ee7e18977e01257f2a2c7cbd71f9137b873ed"
+        }
+      }
+    },
+    {
+      "path": "tools/pubpres_recovery_engine/godot-atomic-submission.patch",
+      "sha256": "f17555f97681bb1c843ade738c738405789f21aa4a487c70a0c778bf83cfb085",
+      "files": {
+        "main/main.cpp": {
+          "before_sha256": "2ea67893e1bf2e7d629546294d0be3934cecf81ea26eb6e7f68f31cff2ec2491",
+          "after_sha256": "3bacaf979be7ff2b69c0bc0b0414d8b45ea6646f8f938332b1c30e0ce0eb45b7"
+        },
+        "servers/rendering/rendering_server_default.cpp": {
+          "before_sha256": "ae0e2700ab0ea7c64ba486fc95bb2e47000851dc7f178d2ad6735b79851c3f32",
+          "after_sha256": "38df3aeed8b72db4251c948734daf39976f04da8d16dd98682bafabef04fa89c"
+        },
+        "servers/rendering/rendering_server_default.h": {
+          "before_sha256": "2b5af7ef8b4b3fdf760ba2eb3d7ee7e18977e01257f2a2c7cbd71f9137b873ed",
+          "after_sha256": "0b9c4f7d12c284b7b743ae1161f1c8c67483ea0ee1afabb444d73d397afa671d"
+        }
+      }
+    }
+  ],
+  "scons": {
+    "version": "4.10.1",
+    "filename": "scons-4.10.1-py3-none-any.whl",
+    "url": "https://files.pythonhosted.org/packages/ce/bf/931fb9fbb87234c32b8b1b1c15fba23472a10777c12043336675633809a7/scons-4.10.1-py3-none-any.whl",
+    "bytes": 4136069,
+    "sha256": "bd9d1c52f908d874eba92a8c0c0a8dcf2ed9f3b88ab956d0fce1da479c4e7126"
+  },
+  "angle": {
+    "tag": "chromium/7219",
+    "release_asset_id": 262261050,
+    "filename": "godot-angle-static-x86_64-msvc-release.zip",
+    "url": "https://github.com/godotengine/godot-angle-static/releases/download/chromium/7219/godot-angle-static-x86_64-msvc-release.zip",
+    "bytes": 31123250,
+    "sha256": "ccca7ac3d989858f853ad1a84d1a791f10ae5ced0b3b88cadc27204ffe34147b"
+  },
+  "accesskit": {
+    "tag": "0.21.2",
+    "release_asset_id": 372219312,
+    "filename": "accesskit-c-0.21.2.zip",
+    "url": "https://github.com/godotengine/godot-accesskit-c-static/releases/download/0.21.2/accesskit-c-0.21.2.zip",
+    "bytes": 95929259,
+    "sha256": "02a08691b78fc6f8f88f6546e997b9f90b4ecbedf5ca5c621dbab144a4b18964"
+  },
+  "official_reference": {
+    "filename": "Godot_v4.7-stable_win64.exe.zip",
+    "url": "https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip",
+    "sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "gui": "Godot_v4.7-stable_win64.exe",
+    "console": "Godot_v4.7-stable_win64_console.exe",
+    "gui_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "scons_flags": [
+    "platform=windows",
+    "arch=x86_64",
+    "target=editor",
+    "windows_subsystem=gui",
+    "use_mingw=no",
+    "use_llvm=no",
+    "msvc_version=14.3",
+    "production=yes",
+    "optimize=speed",
+    "lto=none",
+    "debug_symbols=no",
+    "dev_build=no",
+    "precision=single",
+    "use_static_cpp=yes",
+    "opengl3=yes",
+    "angle=yes",
+    "vulkan=yes",
+    "use_volk=yes",
+    "d3d12=no",
+    "accesskit=yes",
+    "winrt=yes",
+    "scu_build=yes",
+    "scu_limit=8",
+    "threads=yes",
+    "disable_3d=no",
+    "tests=no",
+    "compiledb=yes"
+  ],
+  "output_gui": "godot.windows.editor.x86_64.exe",
+  "output_console": "godot.windows.editor.x86_64.console.exe",
+  "scope": {
+    "custom_engine": true,
+    "official_binary_reproduction": false,
+    "d3d12": "Explicitly disabled to avoid unrelated Mesa/DXC/Agility dependencies. Vulkan, native OpenGL and static ANGLE remain enabled; no module is disabled.",
+    "gdextension": "Single precision public API equivalence and actual native/Rapier loading must both be checked; API equivalence alone does not qualify gameplay or physical hardware.",
+    "source_fix": "Preserves the exact original EGL, font and bounded Main/render component. Adds engine-owned atomic application admission after message flush and before any actual draw serial or signal. A stale application candidate rejects the entire draw, conserves elapsed render time, and cannot grant completion or physical credit. Source/owner/candidate/submission identities join every admitted application frame to actual render-owner CPU evidence. No GPU/scanout, performance, gameplay or physical-device acceptance is implied.",
+    "performance": "No build-time or runtime performance claim is made by this lock."
+  }
+}

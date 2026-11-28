@@ -1,0 +1,74 @@
+{
+  "schema": "pubpres-recovery-sample-idle-independent-review-v1",
+  "review_source": "qualification continuation",
+  "original_source": "0bd275a36669a18217f7861372bbf54a837af750",
+  "original_summary_sha256": "9d0d239e7d1648ab522ab611a6f75e75116dfc8bffea35a9ac005e23cc1165bc",
+  "rows": [
+    {
+      "case": "wave_512_follow",
+      "index": 0,
+      "receipt_sha256": "1364ea99927adaea8217375939195f68d16abeab750c822a316490c3e8dca2e2",
+      "original_full_V3_replayed": true,
+      "physical_statistics_equal": true,
+      "trace_sha256": "847639d59b96d9b408b0f3fa2820bcfa840278aaa5284d8554ccac69d0a56c02"
+    },
+    {
+      "case": "wave_512_follow",
+      "index": 1,
+      "receipt_sha256": "0695843ba17143b764f0ed4026758b7329d5e288dd0842f46df4cbfdc6163e9a",
+      "original_full_V3_replayed": true,
+      "physical_statistics_equal": true,
+      "trace_sha256": "f376021d8de5eee233c77c2d5c70e843d0718dcede6a6a4f6a26b922ba3e25e2"
+    },
+    {
+      "case": "wave_512_follow",
+      "index": 2,
+      "receipt_sha256": "8addb65bcdd97247c763a3ac384c9efe92eacfaab80037f78ae3a615c592cd30",
+      "original_full_V3_replayed": true,
+      "physical_statistics_equal": true,
+      "trace_sha256": "bfb1943d80c9f46e05f4325bbfce855dc81c15af588e0669011d34f8305e717c"
+    },
+    {
+      "case": "wave_512_follow",
+      "index": 3,
+      "receipt_sha256": "e7bcd464970b7d010af21439df35753cb77ea40f01775f3a6b9b79bf422494e1",
+      "original_full_V3_replayed": true,
+      "physical_statistics_equal": true,
+      "trace_sha256": "59f1e69d6635a909198102d9cc0bf04ddc0630b7a85c77d40a4e78c37c3faf69"
+    },
+    {
+      "case": "wave_gameplay_2048_follow",
+      "index": 0,
+      "receipt_sha256": "78b42081f65d004bac7b2db7b63b0cdc74bfc34d1840a62745a2b2ef6dd76ee1",
+      "original_full_V3_replayed": true,
+      "physical_statistics_equal": true,
+      "trace_sha256": "626a428d735b16cbd71f8bf3d87cc59ffc3ecfe5b198a79e643e09b6b8aaa854"
+    },
+    {
+      "case": "wave_gameplay_2048_follow",
+      "index": 1,
+      "receipt_sha256": "80599365d72faee2375da85e74ffaff5a6aeb9d9584febe8432eaf844f22ec6d",
+      "original_full_V3_replayed": true,
+      "physical_statistics_equal": true,
+      "trace_sha256": "25b38a97f0ddaaf5bc3b75f3745d9ac9f799d50fbaebb31885afe2f5f0d0af5e"
+    },
+    {
+      "case": "wave_gameplay_2048_follow",
+      "index": 2,
+      "receipt_sha256": "63864ed606cfc55e63d9992b833a18acefb99a971f3f60993e35387f30a34d04",
+      "original_full_V3_replayed": true,
+      "physical_statistics_equal": true,
+      "trace_sha256": "b187316d40339110a7e2961c8503ae34372144a1fe8612049ebd52a65584c466"
+    },
+    {
+      "case": "wave_gameplay_2048_follow",
+      "index": 3,
+      "receipt_sha256": "386bdab3432d23bb2c8cdefaefdbe71454ae3594e307077748b7c118c0486df0",
+      "original_full_V3_replayed": true,
+      "physical_statistics_equal": true,
+      "trace_sha256": "5e447cb09bde5ae871b90a098a7758466bb91a6f5bed818074a2ffad43e40340"
+    }
+  ],
+  "conclusion": "All8 complete original physical oracles reproduce exactly. Both prospectively registered directions remain NOT_ESTABLISHED; treatment executed but timing/upper-tail results do not justify selection. Linux llvmpipe only, physical owner HOLD.",
+  "unchanged_process_ownership": "All original process receipts report no surviving children. Earlier DBus zombie failures remain separate retained originals; explicit absent local bus endpoint was identical for every arm."
+}

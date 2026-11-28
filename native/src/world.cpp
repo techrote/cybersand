@@ -9,6 +9,7 @@
 #include "cybersand/render_snapshot.hpp"
 
 #include "render_snapshot_internal.hpp"
+#include "persistent_worker_pool.hpp"
 
 #include <algorithm>
 #include <array>
@@ -164,116 +165,7 @@ struct CopyLayout {
     return {row_bytes, required};
 }
 
-class PersistentWorkerPool final {
-public:
-    using TaskFunction = void (*)(void*, std::size_t) noexcept;
-
-    explicit PersistentWorkerPool(std::uint32_t worker_count) {
-        try {
-            workers_.reserve(worker_count);
-            for (std::uint32_t index = 0; index < worker_count; ++index) {
-                workers_.emplace_back([this,index] { worker_loop(index); });
-            }
-        } catch (...) {
-            // A throwing constructor does not run our destructor. Wake/join
-            // the already-started prefix while mutex/CVs and state still live;
-            // jthread's stop token alone cannot wake this predicate-based wait.
-            stop_and_join();
-            throw;
-        }
-    }
-
-    ~PersistentWorkerPool() { stop_and_join(); }
-
-    PersistentWorkerPool(const PersistentWorkerPool&) = delete;
-    PersistentWorkerPool& operator=(const PersistentWorkerPool&) = delete;
-
-    void dispatch(std::size_t task_count, void* context, TaskFunction function) {
-        if (task_count == 0) return;
-        {
-            std::lock_guard lock(mutex_);
-            context_ = context;
-            function_ = function;
-            task_count_ = task_count;
-            next_task_.store(0, std::memory_order_relaxed);
-            workers_remaining_ = workers_.size();
-            for (auto& mask:participants_) mask.store(0,std::memory_order_relaxed);
-            ++generation_;
-        }
-        start_condition_.notify_all();
-
-        std::unique_lock lock(mutex_);
-        done_condition_.wait(lock, [this] { return workers_remaining_ == 0; });
-    }
-
-    [[nodiscard]] std::uint32_t participating_workers() const noexcept {
-        std::uint32_t count=0;
-        for (const auto& mask:participants_)
-            count+=static_cast<std::uint32_t>(std::popcount(mask.load(std::memory_order_relaxed)));
-        return count;
-    }
-    [[nodiscard]] std::size_t resident_storage_bytes() const noexcept {
-        return sizeof(*this) + workers_.capacity() * sizeof(std::jthread);
-    }
-private:
-    void stop_and_join() noexcept {
-        {
-            std::lock_guard lock(mutex_);
-            stopping_ = true;
-            ++generation_;
-        }
-        start_condition_.notify_all();
-        workers_.clear();
-    }
-
-    void worker_loop(std::uint32_t worker_index) noexcept {
-        std::uint64_t observed_generation = 0;
-        for (;;) {
-            TaskFunction function = nullptr;
-            void* context = nullptr;
-            std::size_t task_count = 0;
-            {
-                std::unique_lock lock(mutex_);
-                start_condition_.wait(lock, [this, &observed_generation] {
-                    return stopping_ || generation_ != observed_generation;
-                });
-                if (stopping_) return;
-                observed_generation = generation_;
-                function = function_;
-                context = context_;
-                task_count = task_count_;
-            }
-
-            bool participated=false;
-            for (;;) {
-                const auto task = next_task_.fetch_add(1, std::memory_order_relaxed);
-                if (task >= task_count) break;
-                if (!participated) {
-                    participants_[worker_index/64U].fetch_or(std::uint64_t{1}<<(worker_index%64U),std::memory_order_relaxed);
-                    participated=true;
-                }
-                function(context, task);
-            }
-            {
-                std::lock_guard lock(mutex_);
-                if (--workers_remaining_ == 0) done_condition_.notify_one();
-            }
-        }
-    }
-
-    std::vector<std::jthread> workers_;
-    std::mutex mutex_;
-    std::condition_variable start_condition_;
-    std::condition_variable done_condition_;
-    std::atomic<std::size_t> next_task_{0};
-    std::array<std::atomic<std::uint64_t>,4> participants_{};
-    std::uint64_t generation_ = 0;
-    std::size_t task_count_ = 0;
-    std::size_t workers_remaining_ = 0;
-    void* context_ = nullptr;
-    TaskFunction function_ = nullptr;
-    bool stopping_ = false;
-};
+using detail::PersistentWorkerPool;
 
 }  // namespace
 
@@ -713,7 +605,7 @@ struct World::ParallelState {
         }
         phase_job_indices.reserve(config.active_core_capacity);
         if (config.worker_threads > 1)
-            pool = std::make_unique<PersistentWorkerPool>(config.worker_threads);
+            pool = std::make_unique<PersistentWorkerPool>(config.worker_threads, config.pubpres_task_completion_barrier);
     }
 
     std::vector<std::uint8_t> activity_flags;
@@ -1681,6 +1573,16 @@ std::size_t ChunkCoordHash::operator()(const ChunkCoord& coord) const noexcept {
 }
 
 const WorldConfig& World::config() const noexcept { return config_; }
+
+WorkerPoolDiagnostics World::worker_pool_diagnostics() const noexcept {
+    WorkerPoolDiagnostics result;
+    result.task_completion_barrier = config_.pubpres_task_completion_barrier;
+    if (parallel_ && parallel_->pool) {
+        result.completed_dispatches = parallel_->pool->completed_dispatches();
+        result.completed_tasks = parallel_->pool->completed_tasks();
+    }
+    return result;
+}
 SimulationBackend World::backend() const noexcept { return config_.backend; }
 
 World::Address World::address(std::int64_t x, std::int64_t y) const noexcept {

@@ -1,0 +1,188 @@
+{
+  "schema": "pubpres-recovery-ledger-v1",
+  "mission": "PUBPRES-PLAYABILITY-FINAL-RECOVERY-001",
+  "updated_utc": "2026-11-25T23:31:56.929246+00:00",
+  "disposition": "ENGINEERING_IN_PROGRESS_DRAFT_HOLD",
+  "principal_pr": 767,
+  "source": {
+    "intake": "f4089809c7294336db26cf576b0ac3c57fc54775",
+    "intake_tree": "2f130ccd838ebdefd9f6dfee85a421ca2b9d38e9",
+    "accepted_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+    "donor_D": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+    "current_checkpoint": "1290c31dc262cdc6d31e9d53bde80fe3527585d7",
+    "current_checkpoint_tree": "7ef7e76c8d6fdf59dabd4669da5ca2688b2cfe37",
+    "intake_accepted_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "accepted_main_refreshed_utc": "2026-11-25T21:58:00Z",
+    "accepted_main_runtime_equivalence": "1135 common production/native source files identical to historical main; one new qualification script. Existing M/C runtime dependency binaries differ and do not satisfy shared-toolchain comparative gates.",
+    "local_implementation_checkpoint": "dd7162c14"
+  },
+  "owners": {
+    "lead": "Water composition, integration, engine execution, final decisions",
+    "native": "sample-gated worker progression and native semantics",
+    "presentation": "prepared/actual-submitted transaction, camera and picking",
+    "qualification": "independent original failure, strict evidence, Windows campaign and package"
+  },
+  "protected_evaluator": {
+    "source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+    "run": 45452580606,
+    "artifact": 14952245528,
+    "inner_sha256": "56a9218fe7e041abea7941b9866114b0d96514abda6e5c40b308ac00b76c3b01",
+    "mutation": "none"
+  },
+  "recovered": {
+    "progression_campaign": {
+      "run": 45477483707,
+      "application": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+      "windows": "FAIL",
+      "cause": "count2 treatment failed prospective actual-exercise gate on Wave512; first candidate had no deferred or replaced offers; no correctness crash inferred",
+      "correctness": "Original19 correctness and actual Windows process/presentation observer gates independently inspected; original failed actual-exercise arm retained.",
+      "large_count2": "executed but adverse; unchanged treatment retired prospectively; original FAIL retained"
+    },
+    "bounded_component": {
+      "run": 45483865013,
+      "source": "f4089809c7294336db26cf576b0ac3c57fc54775",
+      "plan": "PASS",
+      "windows_build": "PASS",
+      "application_transaction": "MISSING_AT_INTAKE",
+      "playability": "UNQUALIFIED"
+    },
+    "startup_diagnostic": {
+      "pr": 782,
+      "application": "bcc92927ce3894a16d5544923cfbf7b1d0339fda",
+      "diagnostic": "60a0db0206a6e7ef24b97d44e7cc1db60918dbca",
+      "run": 45550363681,
+      "first_render_seconds": 47.889,
+      "reused_profile_first_render_seconds": 0.207,
+      "scope": "hosted ANGLE first-render/profile correlation; separate from sustained native progression; no imported Art implementation"
+    }
+  },
+  "credible_avenues": [
+    "Actual atomic draw admission with bounded0/4; local calibration demonstrates genuine physical callbacks and completed Rapier steps during outstanding render CPU work, interleaved selection pending.",
+    "Default-off exact Water coverage reuse plus admitted physical/image identities; paused multipart visibility repaired, corrected resulting-source Water/Sand framebuffer replay pending.",
+    "Actual-task native completion barrier864cf7dc, source lifetime reviewed; full World/native/runtime and matched0/1/1/0 pending.",
+    "Separately registered custom Safe0 atomic admission if performance/correctness evidence supports it; no inference from Separate0."
+  ],
+  "retired_unchanged_treatments": [
+    "Separate renderer alone",
+    "material30Hz deadline",
+    "count2 coalescing",
+    "three full-image slots",
+    "target publication",
+    "Combined/Early repeat",
+    "native zero-carry"
+  ],
+  "pending": [
+    "Corrected resulting-source native Water/Sand lifecycle framebuffer and multipart ordinary picking gates",
+    "Bounded0/4/4/0 with stock Safe, observer controls, full freshness/resource and product gates",
+    "Full World/mounted native actual-task candidate qualification, then matched0/1/1/0 decision",
+    "Hosted resulting-source atomic Windows application integration using exact completed engine02",
+    "Shared-dependency accepted-main/C/D native and scoped sanitizer/platform gates",
+    "Ordinary substantial sustained512/1024/2048/mixed authoring, persistence and resources",
+    "New pristine extracted self-contained Windows Workbench evaluator and actual commands/collector",
+    "Physical owner Windows11/NVIDIA acceptance"
+  ],
+  "authority": {
+    "merge": false,
+    "ready": false,
+    "default_promotion": false,
+    "release": false
+  },
+  "implemented": {
+    "water": "Default-off coherent physical/image authority, initial accepted owner sample capture, immutable completion context replacement and exact full-coverage reuse. Pure103/graphical112 pass (original fixture material1 was Wall; corrected Sand2 replay pending). Actual native v3 f2f9cab:144 checks,143 pass/one selection-label-control framebuffer failure independently established;4,878 actual draws, both2,338-frame paused intervals have zero omissions across ALL members,7,011 coverage reuses/9,348 queries,29 distinct moving completed wet Needle poses, actual2,048-entry Main history evicted without physical credit. Corrected label/mapping and Sand2 fixture integrated; resulting-source replay pending. All original errors/failures retained.",
+    "worker_idle": "Executed full matched eight-arm 0/1/1/0 Wave512/2048 with identical trajectories; prospective benefit NOT_ESTABLISHED, default-off/unselected. Interval causal reduction preserved.",
+    "atomic_engine": "Corrected additive fourth patch f17555f9 / combined0f4491e7. Actual Linux development Safe0/Separate0/Separate4 each98 checks pass;403 real deferrals/max4. Runtime674a6324. New exact Windows build02 requested; build01 PASS but superseded.",
+    "actual_transaction": "Engine-owned whole-draw admission with exact queued-canvas flush marker, immutable owner/material/physical/camera/policy fence, last-submitted picking and source-aware fallback. Eight actual rejected framebuffer cases and four restart/fallback cases executed. No timing improvement claimed.",
+    "multipart": "Actual24-member native fixture reproduced56 failures; explicit64-capacity exact-owner bound history and actual root-body Follow repair passed unchanged frozen17, newbound23, native177 and graphical182. Actual body23 shown/removed/restored pixel retained. Independent review found same actor/body identity mistake in ordinary picking; dd7162c14 repairs root/member mapping, a870f6c12 adds actual mouse and owner-refusal adversaries. Picking replay pending.",
+    "native_task_completion": "Default-off candidate864cf7dc: actual tasks borrow dispatch storage under mutex and complete before context retirement; unchanged all-worker mode retained.495 normal/ASan+UBSan(noLSan)/TSan lifetime checks passed; full World and mounted resulting native binary not yet executed, not integrated or selected.",
+    "owner_package": "Additive fresh-native source-exact Stock/Safe/two-slot packaging foundation, explicit Selected/Fallback/frozen command identities and actual profile readback; no final selection and no new evaluator yet. Independent B source review retained. Actual pristine extracted Windows commands/authoring/reopen/collector pending."
+  },
+  "campaigns": {
+    "atomic_component_01": {
+      "run": 45709374785,
+      "source": "c2ec38d1240b238dcf7d61db653d45903ab5d4b2",
+      "purpose": "Build and independently admit exact fourth-patch Windows engine; application/performance gates remain separate.",
+      "status": "PASS_SUPERSEDED",
+      "requested_workers": 2,
+      "reason": "New guarded metadata access and actual Main message-flush rejection require new resulting-source engine build. Original compiler/artifact evidence retained."
+    },
+    "sample_idle_local": {
+      "status": "COMPLETED_NOT_ESTABLISHED",
+      "source": "0bd275a36669a18217f7861372bbf54a837af750",
+      "arms": 8,
+      "trajectories": "MATCH",
+      "wave512_rates": [
+        22.99,
+        23.06,
+        22.55,
+        22.33
+      ],
+      "wave2048_rates": [
+        8.826,
+        8.9329,
+        8.6809,
+        7.3754
+      ],
+      "wave2048_max_gap_ms": [
+        297.245,
+        285.659,
+        387.151,
+        353.588
+      ],
+      "disposition": "Default-off; no repeatable primary benefit, some candidate tail regressions",
+      "original_infrastructure_failures": "Strict actual-owner failures retained; display-associated dbus-launch child removed through explicit matched unavailable DBUS session address. No ownership predicate changed."
+    },
+    "atomic_component_02": {
+      "status": "PASS_COMPONENT_ONLY",
+      "purpose": "Build the corrected atomic admission component after actual Safe0/Separate0/Separate4 graphical correctness passed locally. Preserve optional-metadata guards and reject manual draw during the real Main message flush. Retain exact four-patch compiler/dependency/API/PE gates and rejected-time conservation. Supersedes build01 without replacing its original evidence; application and physical performance qualification remain separately required.",
+      "payload_sha256": "2aa47dde3576bbf9b8b19d20d9df9d838f384dfc3fee2ebcf673947934043560",
+      "local_engine_sha256": "674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745",
+      "application_graphical_source": "f8e0fb7cd4c770a31ecb43dd0161717d21cbf17b",
+      "application_graphical": "Safe0/Separate0/Separate4 PASS98 each; development llvmpipe only",
+      "run": 45716469250,
+      "source": "1290c31dc262cdc6d31e9d53bde80fe3527585d7",
+      "payload_artifact": 15072815424,
+      "proof_artifact": 15072590485,
+      "payload_zip_sha256": "462e7d06bdcb44420019724d7bb0c015e5e7c30f99898cca0ef357752320bd12",
+      "provenance_sha256": "21904131d3d27f982604ff90cd8cc60263fcf242d84dcda945ae371d89e23003",
+      "gui_sha256": "39928036d0acf292139ea4dde47d3a5cda9765406be13497fa78b99ad9da95ff",
+      "scope": "Locked Windows component compile/independent payload admission PASS; actual application integration and comparative physical performance not established."
+    },
+    "bounded_local_f197": {
+      "source": "f197d0010699682ab7a7ed4e593a718857c9ed47",
+      "tree": "3d3a9d4f2d5915f8689924d03cc81cdf5ae009bc",
+      "status": "RUNNING_QUIET_HOST",
+      "stock_observer_calibration": "8/8 admitted; unchanged frozen physical, native input and geometry gates",
+      "stock_wave512_off_on_on_off_rates": [
+        23.697,
+        23.808,
+        23.925,
+        23.574
+      ],
+      "stock_wave2048_off_on_on_off_rates": [
+        9.21,
+        9.392,
+        8.809,
+        9.22
+      ],
+      "bounded_wave512_observer_off_on_on_off_rates": [
+        46.188,
+        49.601,
+        51.79,
+        46.246
+      ],
+      "scope": "Calibration only, not interleaved architecture selection. Large calibration and registered stock/0/4/4/0/stock comparisons pending. Supplementary prospective offline attribution is separate from physical acceptance."
+    }
+  },
+  "rejected_new_architectures": [
+    {
+      "architecture": "journal-only frame_pre_draw stale candidate refusal",
+      "disposition": "FALSIFIED",
+      "reason": "Actual framebuffer changed to staged camera while journal and picking remained previous mapping; whole-draw veto is required."
+    },
+    {
+      "architecture": "sample-idle worker status suppression",
+      "disposition": "NOT_ESTABLISHED_UNSELECTED",
+      "reason": "All eight matched arms executed with exact trajectory parity, but no repeatable registered progression improvement and adverse upper-tail cases."
+    }
+  ]
+}

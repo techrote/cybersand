@@ -1,0 +1,22 @@
+{
+  "schema": "pubpres-native-count-independent-peer-v1",
+  "files": {
+    "count_reader.py": {
+      "bytes": 3986,
+      "sha256": "eafe6db0c5003c604ad73f95fa24cb09f9621b8c9a083374351ef88d0a83798a"
+    },
+    "count-review.json": {
+      "bytes": 2947,
+      "sha256": "badb2b705beb284a90b636d47706f6974084e9fdee19f11bb0262103201fdeba"
+    },
+    "zero_carry_reader.py": {
+      "bytes": 11964,
+      "sha256": "b82ff25d43482f32fdbd6d444888a493f71e524ed11527fc29a951da533cb495"
+    },
+    "zero-carry-replay.json": {
+      "bytes": 33187,
+      "sha256": "a7df21ab426d9f5060b7d7121d3c4751fd30c5b8896e523ad4f3547db03630d2"
+    }
+  },
+  "physical_acceptance": "HOLD"
+}

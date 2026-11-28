@@ -1,0 +1,7 @@
+{
+  "schema": "pubpres-playability-final-request-v1",
+  "phase": "progression",
+  "purpose": "Corrected progression request after run45476755989 stopped before all experiments: materialize exact c2 legacy-control commit in shallow plan checkout, retain unchanged strict source/physical gates. Qualify configured-mask native applicability, default-off count0/2/2/0 with latest-real-completion witnesses, full native/sanitizers and nineteen correctness gates, observer calibration, source D/C/C/D, mixed eight-actor authoring, and Windows512 causal OFF/ON/ON/OFF. Preserve independently verified font repair and adverse Separate timings. Draft/HOLD; no default activation or release.",
+  "frozen_reference": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+  "payload_sha256": "d453b4eeb8a30ff30a68f3297bd3e0289d9dfea0e3061a7f897ee1d0beeaf173"
+}

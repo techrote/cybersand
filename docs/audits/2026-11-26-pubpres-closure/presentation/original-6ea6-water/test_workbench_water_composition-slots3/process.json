@@ -1,0 +1,24 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/9cef565acfec/presentation-runtime/owned_xorg.py",
+    "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/9cef565acfec/presentation-evidence/water-stock-6ea6c85c/project",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--render-thread",
+    "safe",
+    "--script",
+    "res://tests/test_workbench_water_composition.gd"
+  ],
+  "timeout_seconds": 600,
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 3.345307520999995,
+  "log_sha256": "77849411ee57ab264a43e5f1163181a4e8273054ef3ea07668640ee775414b9e"
+}

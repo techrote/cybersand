@@ -1,0 +1,22 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.cybersand_egl_font_atomic, safeguards balanced)
+Godot Engine v4.7.stable.cybersand_egl_font_atomic.5b4e0cb0f (2026-06-17 18:46:02 UTC) - https://godotengine.org
+WARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.
+     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)
+WARNING: Keeping screen on not supported by this display server.
+     at: screen_set_keep_on (./servers/display/display_server.cpp:588)
+WARNING: The separate rendering thread feature is experimental. Feel free to try it since it will eventually become a stable feature.
+However, bear in mind that at the moment it can lead to project crashes or instability.
+So, unless you want to test the engine, set the "rendering/driver/threads/thread_model" project setting to 'Safe'.
+     at: setup2 (main/main.cpp:3514)
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+WARNING: Feature `register-docs` is enabled in an exported (non-editor) build.
+Doing so embeds plaintext documentation of your Rust #[class], #[func] etc. into the binary.
+This has no runtime benefit, but can bloat binary size and make reverse-engineering easier.
+Consider disabling `register-docs` for exported builds.
+(Suppress this warning with env-var `GDRUST_SUPPRESSED_WARNINGS=RegisterDocsInExport,...`)
+     at: godot_core::init (/home/runner/.cargo/registry/src/index.crates.io-1949cf8c6b5b557f/godot-core-0.5.5/src/init/mod.rs:735)
+ACTUAL_SUBMISSION_STARTED {"engine_atomic_admission":true,"requested_render_lookahead":"0","script_sha256":"1f599edc47b86fd422f57bc6dee2d2b2652821fdf691c2d5d4cccdf78376ddf6","source_revision":"f8e0fb7cd4c770a31ecb43dd0161717d21cbf17b"}
+ACTUAL_SUBMISSION_RESULT {"checks":98,"failures":[]}
+PUBPRES_FRAME_BUDGET_RESULT {"actual_draw_submissions":182,"actual_render_cpu_completions":182,"application_admission_faults":0,"application_source_revision":"f8e0fb7cd4c770a31ecb43dd0161717d21cbf17b","completion_fault":false,"consumed_rejected_render_step":1.15375266666667,"consumed_render_step_total":0.0,"deferred_render_step_total":0.0,"deferred_turns":0,"eligibility_checks":213,"eligible_checks":166,"limit":4,"maximum_deferred_per_draw":0,"pending_rejected_render_step":0.0,"pending_render_step":0.0,"rejected_draw_opportunities":28,"rejected_render_step_total":1.15375266666667,"render_thread_created":true,"requested":"0","schema":"pubpres-engine-frame-budget-v2","scope":"whole_process_actual_draw_cpu_only_no_gpu_fence_no_scanout_no_physics_credit","sync_calls":237,"sync_max_usec":675056,"sync_total_usec":5567957,"trace_capacity":32768,"trace_overflow":false,"trace_rows":182,"trace_sha256":"8083292c97f54f4aae4d0bf201d0c125c317d6427d098d1a6d6a1343d5bc50a3","trace_write_error":0}

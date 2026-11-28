@@ -11,6 +11,10 @@ var equipment_markers: Dictionary = {}
 var actor_labels: Dictionary = {}
 var _origin: Vector2 = Vector2.ZERO
 var _view_size: Vector2 = Vector2.ONE
+var _water_layer: CyberPhysicalActorOverlay = null
+var _water_state: Dictionary = {}
+var _is_water_layer: bool = false
+const WATER_COMPOSITION_SHADER = preload("res://shaders/workbench_water_actor_composition.gdshader")
 
 
 func _ready() -> void:
@@ -18,15 +22,65 @@ func _ready() -> void:
 	clip_contents = true
 
 
-func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2) -> void:
+func present(parts: Array, origin: Vector2, view_size: Vector2i, content: Rect2, water_state: Variant = null) -> void:
 	_parts = parts.duplicate(true)
-	_origin = origin.floor()
+	_origin = origin
 	_view_size = Vector2(view_size)
 	position = content.position
 	size = content.size
 	visible = not _parts.is_empty() or source_origin.is_finite() or not equipment_markers.is_empty()
+	var water_parts: Array = []
+	if not _is_water_layer and (not _water_state.is_empty() or (water_state is Dictionary and not water_state.is_empty())):
+		for part: Dictionary in _parts:
+			if part.get("water_composed", false) and _may_draw_part(part): water_parts.append(part)
+	if water_state is Dictionary:
+		# Bind only for this submission's drawable Water parts. A camera change
+		# re-evaluates them against its own mapping before any polygon is drawn.
+		set_water_composition(water_state if not water_parts.is_empty() else {})
+	if not _is_water_layer and _water_layer != null and not _water_state.is_empty():
+		_water_layer.outlines = outlines
+		var shader: ShaderMaterial = _water_layer.material
+		shader.set_shader_parameter("world_origin", _origin)
+		shader.set_shader_parameter("view_size", _view_size)
+		shader.set_shader_parameter("overlay_size", size.max(Vector2.ONE))
+		_water_layer.present(water_parts, origin, view_size, Rect2(Vector2.ZERO, size))
 	queue_redraw()
 
+
+func set_water_composition(state: Dictionary) -> void:
+	if _is_water_layer: return
+	var enabled: bool = state.get("enabled", false) and state.get("current_texture") is Texture2D \
+		and state.get("previous_texture") is Texture2D and state.get("world_size") is Vector2i
+	if not enabled:
+		# Proof availability can alternate on consecutive admitted frames. Keep
+		# one bounded layer/material rather than allocate and retire GPU resources
+		# on every transition. Drop texture references while it is inactive.
+		if not _water_state.is_empty() and _water_layer != null:
+			_water_layer._parts.clear()
+			_water_layer.hide()
+			var shader: ShaderMaterial = _water_layer.material
+			shader.set_shader_parameter("current_material", null)
+			shader.set_shader_parameter("previous_material", null)
+			_water_layer.queue_redraw()
+		_water_state.clear()
+		return
+	if _water_layer == null:
+		_water_layer = CyberPhysicalActorOverlay.new()
+		_water_layer.name = "ProvenWaterActors"
+		_water_layer._is_water_layer = true
+		_water_layer.show_behind_parent = true
+		var shader := ShaderMaterial.new()
+		shader.shader = WATER_COMPOSITION_SHADER
+		_water_layer.material = shader
+		add_child(_water_layer)
+	if state == _water_state: return
+	_water_state = state.duplicate()
+	var shader: ShaderMaterial = _water_layer.material
+	shader.set_shader_parameter("current_material", state.current_texture)
+	shader.set_shader_parameter("previous_material", state.previous_texture)
+	shader.set_shader_parameter("world_size", Vector2(state.world_size))
+	shader.set_shader_parameter("previous_active", bool(state.get("previous_active", false)))
+	shader.set_shader_parameter("snapshot_blend", float(state.get("snapshot_blend", 1.0)))
 
 func presentation_bounds(limit: int = 8) -> Array[Rect2]:
 	# Evaluated only when a caller needs visual assistance. Reuses the displayed
@@ -104,6 +158,27 @@ func _point(world: Vector2) -> Vector2:
 	return (world - _origin) * size / _view_size
 
 
+# Conservative overlay-local raster bounds. Labels, source and equipment
+# markers have their own draw paths and keep using the full accepted part list.
+func _may_draw_part(part: Dictionary) -> bool:
+	if not clip_contents: return true
+	if _view_size.x <= 0 or _view_size.y <= 0 or size.x <= 0 or size.y <= 0: return false
+	var pose: Transform2D = part.transform
+	var half: Vector2 = Vector2(part.size).abs() * 0.5
+	if str(part.get("shape","rectangle")) == "circle": half = Vector2.ONE * half.x
+	var scale_px := size / _view_size
+	var centre := _point(pose.origin)
+	var radius := (pose.x.abs() * half.x + pose.y.abs() * half.y) * scale_px
+	if part.get("markings","") == "science":
+		# This particular arc uses horizontal pixel scale on both axes.
+		radius = radius.max(Vector2.ONE * (minf(half.x,half.y) * 0.65 * scale_px.x))
+	# The longest live flight cue extends 10 pixels from the centre. Wide
+	# markings and antialiasing may reach beyond the geometric footprint.
+	if bool(part.get("flight_live",false)): radius = radius.max(Vector2(10,10))
+	radius += Vector2(3,3)
+	return Rect2(centre - radius, 2.0 * radius).intersects(Rect2(Vector2.ZERO, size), true)
+
+
 func _draw_markings(part: Dictionary) -> void:
 	var pose: Transform2D = part.transform
 	var half: Vector2 = Vector2(part.size)*0.5
@@ -135,6 +210,7 @@ func _draw() -> void:
 		draw_polyline(outline,Color("80e9d1"),1.0)
 	if not equipment_markers.is_empty(): _draw_equipment()
 	for part: Dictionary in _parts:
+		if not _is_water_layer and (part.get("water_composed", false) or not _may_draw_part(part)): continue
 		var vertices: PackedVector2Array = polygon(part)
 		var color: Color = part.color
 		draw_colored_polygon(vertices, color.darkened(0.18))

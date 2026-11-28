@@ -1,0 +1,76 @@
+{
+  "schema": "pubpres-material-steps-driver-parse-v1",
+  "scope": "Exact Godot4.7 headless script parsing only; application scripts from B count checkout, independent c2 native runtime. No graphical, physical, GPU-history or performance qualification.",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "stage_source": "fa29a658347f90b299f46dd76b594a373361a96a",
+  "main_sha256": "fc303860a47dcb95a422892af58095fa8e3b2d90470aaddd6eb1921729de5010",
+  "policy_sha256": "a20ccad2c447c88df08e709a8e25d799604377ff1c731248f1504d65dd342ff1",
+  "overlays": {
+    "tests/pubpres_final_gameplay.gd": {
+      "input_sha256": "60b20395f37df035bbce420502ccce187c240905fca4eecb9803aa8841c3299d",
+      "previous_sha256": "5443b3391e948ff5352e0d310a5fde1326917fb0c11a63c6d9182fb07c409fd6"
+    },
+    "tests/pubpres_final_material_steps_gameplay.gd": {
+      "input_sha256": "5225dc25b7f191e5e4122400ae8d28e9c24e638dace91b869778bd782d0fa4b7",
+      "previous_sha256": null
+    },
+    "tests/pubpres_final_material_steps_registration.json": {
+      "input_sha256": "6e87d603fa00016ac13a7d5367f473085c8081e677174df131d17fc218e40dc1",
+      "previous_sha256": null
+    },
+    "tests/pubpres_final_mixed_gameplay.gd": {
+      "input_sha256": "1500067aefd48ed8f82d036b7afc0f8aa3567b976c3dcf1195da693720ea9dde",
+      "previous_sha256": "cb0f68241fd1bcf782d7696d8fb6fa0b41c3d3ba94294db00551c2a9c3d91627"
+    }
+  },
+  "outcomes": [
+    {
+      "script": "pubpres_final_gameplay.gd",
+      "argv": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand-physics/godot",
+        "--check-only",
+        "--script",
+        "res://tests/pubpres_final_gameplay.gd"
+      ],
+      "returncode": 0,
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "passed": true
+    },
+    {
+      "script": "pubpres_final_material_steps_gameplay.gd",
+      "argv": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand-physics/godot",
+        "--check-only",
+        "--script",
+        "res://tests/pubpres_final_material_steps_gameplay.gd"
+      ],
+      "returncode": 0,
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "passed": true
+    },
+    {
+      "script": "pubpres_final_mixed_gameplay.gd",
+      "argv": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand-physics/godot",
+        "--check-only",
+        "--script",
+        "res://tests/pubpres_final_mixed_gameplay.gd"
+      ],
+      "returncode": 0,
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8",
+      "passed": true
+    }
+  ],
+  "main_unchanged": true,
+  "policy_unchanged": true,
+  "complete": true
+}

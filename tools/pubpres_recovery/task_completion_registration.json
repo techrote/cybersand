@@ -1,0 +1,43 @@
+{
+  "schema": "pubpres-recovery-task-completion-v1",
+  "registered_before_implementation_or_execution": "2026-11-25",
+  "reference_application": "0bd275a36669a18217f7861372bbf54a837af750",
+  "reference_native_build_source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+  "reference_native_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+  "reference_engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "mechanism": "The present PersistentWorkerPool lends a dispatch context to every awakened worker and therefore must wait for every configured worker, including workers which claim no task. The new default-off path claims a task and its current context together under the existing pool mutex; only actual task borrowers may access the context. The caller waits for every real task to return and reacquires that same mutex before retiring context. A late idle worker may only claim a task from the currently published dispatch. No task, phase, physical step or required material evolution is removed.",
+  "source_supported_motivation": "The quiet existing-clock 2048 diagnostic joined all144 real physical steps and retained exact original actor trajectory and admitted movement. Mean native elapsed was97.4197ms, including46.2411ms column,16.7811ms flux,6.3276ms apply and27.3331ms outside the Wave stage brackets. These elapsed brackets include execution and descheduling. Multiple whole-pool rendezvous occur per native turn. The diagnosis does not establish that idle-worker acknowledgements dominate; this experiment tests that narrower mechanism.",
+  "selector": {
+    "native_world_config": "pubpres_task_completion_barrier",
+    "project_setting": "cybersand/pubpres_task_completion_barrier",
+    "default": false,
+    "type": "strict boolean",
+    "lifetime": "immutable per native owner; propagated into replacement/prepared Worlds"
+  },
+  "non_changes": [
+    "No solver, task decomposition, task order within a region, random key, material, body sample, physical completion or publication semantics change.",
+    "No additional worker threads, per-cell locks, clocks, queues or heap allocations during dispatch.",
+    "The current all-worker completion implementation remains the source-matched control. No old negative experiment is reselected.",
+    "No physical save/hash format change: the new option is execution policy, like worker count. Active policy and actual dispatch/task counts are reported independently.",
+    "Native source changes require a new exact-source binary. The retained4bde runtime is only a reference, never reused as the treatment."
+  ],
+  "correctness_prerequisites": [
+    "Exercise the actual production pool class with deliberately held idle workers and held final tasks. Count tasks exactly once, verify no return before final task writes, retire old context immediately after return, and release late workers through many reused dispatch generations.",
+    "Preserve truthful actual-task participant masks and no-op behavior for zero tasks; safe stop/join and repeated construction/retirement.",
+    "Normal and scoped ASan/UBSan pool lifecycle tests; TSan where the execution host supports it, otherwise preserve the exact infrastructure failure.",
+    "Exact per-tick content, state and physical hashes plus physical quantity/body-contact outputs for control and treatment across one and four workers, Wave, mixed Sand/Water, PressureFlow, FreeMass, repeated edits, bounded simulation regions and paused/re-entry work.",
+    "Independent presentation-specialist review of claim/context/lifetime edges before application integration.",
+    "Mounted native strict selector type, actual active mode/readback, nonzero actual dispatch/task counts, reset/restore/prepared owner propagation and original frozen correctness gates."
+  ],
+  "comparison": {
+    "order": [0, 1, 1, 0],
+    "workloads": ["wave512_follow", "wave_gameplay_2048_follow"],
+    "source_engine_scene_observer": "Same resulting source, newly built native binary, stock Safe engine, scene, input, observer and explicit local environment on every arm; quiet serial same-host execution.",
+    "minimum_actual_steps": 144,
+    "physical_authority": "Unchanged full frozenV3 reducer, source-bound receipts, native dependencies and equal-step actor/movement hashes.",
+    "required_exercise": "Candidate must report actual_tasks and positive completed dispatch/task counters on the actual native World. Configuring a flag or a one-worker/no-dispatch run is not treatment evidence.",
+    "selection": "Both candidate trials must improve actual physical steps per elapsed second over both controls, without worse maximum/p99 gaps or material/selected-pose age than the worse matched control. All correctness, actual actor visibility, memory/resource and ownership gates remain mandatory. A treatment with inconsistent primary improvement is NOT_ESTABLISHED, even if one native stage or CPU metric improves.",
+    "later_gates": "Any promising result needs medium/mixed/reference workloads, resulting-source Linux/Windows qualification, larger accepted-main and frozen-donor comparisons as applicable, and sustained ordinary authoring before owner-facing selection. Physical Windows11/NVIDIA acceptance remains a separate HOLD."
+  },
+  "disposition_at_registration": "PROPOSED / DEFAULT OFF / NO PERFORMANCE OR CORRECTNESS CLAIM"
+}

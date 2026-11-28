@@ -62,6 +62,10 @@ func run() -> void:
 	if not check(await wait_for(func(): return old.latest_snapshot.simulation_failed),"active-core limit quarantines actual native owner"):
 		finish()
 		return
+	check(worker.take_latest_physics_snapshot() != null
+		and worker.take_latest_physics_snapshot().simulation_failed
+		and worker.take_latest_physics_snapshot().serial == worker.take_latest_snapshot(0).serial,
+		"native failure atomically quarantines both physical and graphical publications")
 	check(old.latest_snapshot.last_tick_error.contains("active scheduling-core capacity exhausted")
 		and old.latest_snapshot.tick_failure_count==1,"record reason and failure count")
 	var retained: Dictionary = ui.applied.duplicate(true)
@@ -79,6 +83,7 @@ func run() -> void:
 	var fresh = current_scene
 	var fresh_ui = fresh.shared_workbench
 	check(not worker._thread.is_started() and not is_instance_valid(old_session),"failed worker joined and old Rapier graph retired")
+	check(worker.take_latest_physics_snapshot() == null,"joined owner cannot revive its retained graphical frame as physics authority")
 	check(fresh.paused and fresh.latest_snapshot.tick_index==0 and not fresh.simulation_worker.has_failed(),"fresh owner awaits play")
 	check(fresh_ui.applied == retained and fresh_ui.body_state(4).position == Vector2(240,120),"selected identity, spawn, options, edits and source retained")
 	check(await wait_for(func(): return fresh.image.get_pixel(440,40).r8 == 14 and fresh.image.get_pixel(40,40).r8 == 2),

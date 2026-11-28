@@ -1,0 +1,22 @@
+{
+  "schema": "pubpres-playability-run-v1",
+  "phase": "final",
+  "request_id": "final-01-same-frame",
+  "registered_at": "2026-11-21T23:48:09.235901+00:00",
+  "local_review_checkpoint": "d0ffbb71b577b6b950c947049be0510732c89f21",
+  "campaign_sha256": "42b0fa3569e3df3cb4f06330c2f24f0c913ef8d1196e494900f59ae1134220ef",
+  "frozen_payload_tree_sha256": "e70ee019ab1b0e7f90f87adfb5e8871cbd70797f9524f98d59360fdec637ea4a",
+  "payload_scope": "Every exact Git tree entry except this run-control file; published GITHUB_SHA is the actual source identity for builds and captures.",
+  "purpose": "One full source-matched campaign after independent continuation safety, v3 measurement and Windows delivery reviews. First v3 graphical capture; all native/physics/measurement deadlines unchanged. Retain every negative, invalid, exhausted and incomplete arm, including the original renderer correctness controls. New Windows evaluator and separate source/pristine OFF/ON authoring qualification.",
+  "measurement_protocol": "pubpres-playability-campaign-v3",
+  "planned_comparisons": {
+    "windows": 20,
+    "linux": 16
+  },
+  "planned_timing_arms": {
+    "windows": 100,
+    "linux": 76
+  },
+  "physical_nvidia_acceptance": "HOLD",
+  "production_defaults_changed": false
+}

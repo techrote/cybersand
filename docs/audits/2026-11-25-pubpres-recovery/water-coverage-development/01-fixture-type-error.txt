@@ -1,0 +1,16 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+SCRIPT ERROR: Invalid assignment of property or key '_presentation_current_content_shape' with value of type 'Array' on a base object of type 'Control (main.gd)'.
+          at: coverage_cache_checks (res://tests/test_workbench_water_composition.gd:154)
+          GDScript backtrace (most recent call first):
+              [0] coverage_cache_checks (res://tests/test_workbench_water_composition.gd:154)
+              [1] _run (res://tests/test_workbench_water_composition.gd:307)
+PUBPRES_WATER_COMPOSITION_RESULT {"checks":82,"failures":[],"graphical":false}
+WARNING: 2 RIDs of type "CanvasItem" were leaked.
+   at: _free_rids (servers/rendering/renderer_canvas_cull.cpp:2735)
+WARNING: 87 ObjectDB instances were leaked at exit (run with `--verbose` for details).
+   at: cleanup (core/object/object.cpp:2535)
+ERROR: 27 resources still in use at exit (run with --verbose for details).
+   at: clear (core/io/resource.cpp:822)

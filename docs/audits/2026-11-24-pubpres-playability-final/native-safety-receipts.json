@@ -1,0 +1,75 @@
+{
+  "schema": "pubpres-native-safety-receipts-v1",
+  "native_source": "7e983d170aabb06c1b9d48788d5a8e416c3afd3e",
+  "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+  "normal_flags": "Makefile COMMON_FLAGS plus -O2 -g -pthread",
+  "sanitizer_flags": "Makefile COMMON_FLAGS plus -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined",
+  "qualification": "Local development, separate from source-exact hosted platform/runtime acceptance",
+  "normal": [
+    {
+      "log_file": "wave-flow.log",
+      "log_sha256": "e5e746975b1c6729cebcfab81562aab1b7ab388eaa2b5f08e1973e8d3c9f982a",
+      "output": "PASS disabled default and typed refusal\nPASS coherent Water edits refuse before zero-mass normalization\nPASS dam break conserves and spreads\nPASS worker counts are cell identical\nPASS waves propagate and interfere\nPASS quiet water sleeps and wakes\nPASS sealed passage equalises\nPASS bodies block water and receive contacts\nPASS other materials still interact\nPASS documented Water-owned chemistry is disabled\nPASS ledger population follows spreading\nPASS chunk capacity is an explicit outcome\nPASS tiny drops cross sleep and chunk boundaries\nPASS erasing support reactivates a dormant film\nPASS region pause freezes cells and reentry resumes\nPASS fixed-seed edits masks and seams conserve\nPASS physical identity names Wave and substeps\nPASS paused flux is retained and edits retire faces\nPASS region boundary flux freezes while source falls\nPASS C API construction and overfill are lossless\nPASS extreme legal overfill conserves and remains editable\nPASS coordinate extrema refuse before mutation\nPASS distant positive masks preserve Wave transport\nPASS distant negative masks preserve Wave transport\nPASS mask overlap at signed bounds preserves bodies\nPASS sparse mask bounds follow clear move and reconfigure\nPASS tall extreme column preserves head sign\nPASS disturbed water reaches exact rest\nPASS films level and rest\nPASS supported film uses an adhesion threshold\nPASS state hash binds retained momentum\nPASS prepared uint16 payload and quantity are lossless\nPASS slosh short ripples and shallow front\nPASS slosh admission identity and worker parity\nWAVE_FLOW: 34 tests; 0 failures (34 registered)\n",
+      "binary_file": "build/test_wave_flow",
+      "binary_sha256": "64117e1c3433d9990ac4f424fd8cb15e6f49a945f95d5486b523e9ef482fa2bf",
+      "disposition": "PASS34/34"
+    },
+    {
+      "log_file": "wave-spill.log",
+      "log_sha256": "9915fd1b21b5a14b78b59f3803059ec85629dbe7cef564667301f7db3d6a6473",
+      "output": "PASS wave crosses a floating Oil blanket\nPASS mobile Oil only rises into accessible headroom\nPASS warm Oil surface move carries its tuple across chunks\nthick Oil t=300 workers=1 columns=249 deepest=14 surfaced=1793 spray=1038 live=0\nthick Oil t=540 workers=1 columns=323 deepest=9 surfaced=1793 spray=1038 live=0\nthick Oil t=900 workers=1 columns=359 deepest=8 surfaced=1793 spray=1038 live=0\nthick Oil t=300 workers=6 columns=249 deepest=14 surfaced=1793 spray=1038 live=0\nthick Oil t=540 workers=6 columns=323 deepest=9 surfaced=1793 spray=1038 live=0\nthick Oil t=900 workers=6 columns=359 deepest=8 surfaced=1793 spray=1038 live=0\nPASS thick Oil brush spreads on Water\nPASS floating Oil preserves paused face momentum\nOil tank t=600 workers=1 sand=0 surfaced=48 supported=48 columns=48 longest_run=48 late_throw=0 live=0\nOil tank gate t=600 workers=1 sand=0 fresh_throw=47729\nOil tank t=600 workers=6 sand=0 surfaced=48 supported=48 columns=48 longest_run=48 late_throw=0 live=0\nOil tank gate t=600 workers=6 sand=0 fresh_throw=47729\nOil tank t=600 workers=1 sand=112 surfaced=48 supported=48 columns=42 longest_run=17 late_throw=0 live=0\nOil tank gate t=600 workers=1 sand=112 fresh_throw=53481\nOil tank t=600 workers=6 sand=112 surfaced=48 supported=48 columns=42 longest_run=17 late_throw=0 live=0\nOil tank gate t=600 workers=6 sand=112 fresh_throw=53481\nOil tank t=3600 workers=1 sand=112 surfaced=48 supported=48 columns=44 longest_run=12 late_throw=0 live=0\nOil tank gate t=3600 workers=1 sand=112 fresh_throw=52714\nPASS buried Oil surfaces and disturbed tank settles\nPASS Oil exchange preserves partial overfull and paused cells\nPASS Oil exchange moves Water only once per tick\nPASS Oil lid pressure respects walls and masks\nPASS dry Oil keeps its cellular spread\nPASS deep draw limits opposing pool faces\nPASS floor gain requires real level terrain and conserves both shares\nPASS crest Apply adopts the replacement flight law\nPASS sheet starts with zero ordinary gain\nPASS sheet releases deep rows and keeps crest spray\nFULL_FACE curtain=0 workers=1 rows=96 previous=2 units=9207 grid=2973\nFULL_FACE curtain=0 workers=6 rows=96 previous=2 units=9207 grid=2973\nFULL_FACE curtain=1 workers=1 rows=96 previous=0 units=9207 grid=24480\nFULL_FACE curtain=1 workers=6 rows=96 previous=0 units=9207 grid=24480\nPASS full face covers dry and falling receivers\nPASS full face curtain head is independent of slots\nPASS full face respects paused receivers and maximal overfill\nPASS full face shares slots across tall walls\nPASS sheet and coyote budget each side of a ridge\nPASS coyote flight pauses expires and leaves jets alone\nPASS spill is off by default and admission is typed\nPASS disabled spill reproduces the base law\nPASS disabled spill preserves Wave identity\nPASS cleared World matches a fresh World\nPASS paused floor is solid to spill\nPASS parcels are not born in paused cores\nPASS full parcel pool is counted and clamped\nPASS diagonal one-cell wall holds\nPASS wet and dry corners stop ballistic Water\nPASS automatic spill bounds parcel coordinates\nPASS blobs and stream share conserve and are deterministic\nPASS body push scales with water amount\nPASS generic Ballistic Water runs under Wave\nPASS face release without spill conserves\nPASS stream draw keeps the throw and conserves\nPASS stream draw zero is the earlier spill World\nPASS exposed reservoir collapses and conserves\nPASS worker counts and repeats are identical\nPASS waterfall lands fills and rejoins\nPASS sealed reservoir is untouched\nPASS contained pool still waves and rests\nPASS capacity and budget are explicit outcomes\nPASS overfilled cells never wrap or overfill parcels\nPASS thin walls and masks stop spill\nPASS paused region does not spill\nPASS thin film is not thrown\nWAVE_SPILL: 47 tests; 0 failures (47 registered)\n",
+      "binary_file": "build/test_wave_spill",
+      "binary_sha256": "e1eb7dfda8b87aff0d52ef95a542bba43c0415bb721862310d74ca3d0fee3758",
+      "disposition": "PASS47/47"
+    },
+    {
+      "log_file": "wave-body-boundary.log",
+      "log_sha256": "09ccd797ec85342aed249953b5d7f4e9707325125426d066157ee5475e0a2161",
+      "output": "PASS boundary mode=0 seed=0 substeps=1 workers=1,2,4,6 ticks=120\nPASS boundary mode=0 seed=0 substeps=3 workers=1,2,4,6 ticks=120\nPASS boundary mode=1 seed=0 substeps=1 workers=1,2,4,6 ticks=120\nPASS boundary mode=1 seed=0 substeps=3 workers=1,2,4,6 ticks=120\nPASS boundary mode=2 seed=0 substeps=1 workers=1,2,4,6 ticks=120\nPASS boundary mode=2 seed=0 substeps=3 workers=1,2,4,6 ticks=120\nPASS boundary mode=0 seed=1 substeps=1 workers=1,2,4,6 ticks=120\nPASS boundary mode=0 seed=1 substeps=3 workers=1,2,4,6 ticks=120\nPASS boundary mode=1 seed=1 substeps=1 workers=1,2,4,6 ticks=120\nPASS boundary mode=1 seed=1 substeps=3 workers=1,2,4,6 ticks=120\nPASS boundary mode=2 seed=1 substeps=1 workers=1,2,4,6 ticks=120\nPASS boundary mode=2 seed=1 substeps=3 workers=1,2,4,6 ticks=120\nPASS push-observation-only substeps=8 workers=1,6 push=0,1024 by_mass=0,1\nWAVE_BODY_BOUNDARY: seeds=2 runs=50 ticks=6000 scripted_waterline_crossings=350 relocations=438578 launches=26950 masked_refusals=6000 capacity_refusals=78442 paused_refusals=9204 region_changes=186 overfill_edits=150 drains=100 maximum_live=4096 parity=checkpoints failures=0\n",
+      "binary_file": "build/test_wave_body_boundary",
+      "binary_sha256": "0a633312ab6d8493f76702c5a79d112f658d5b96e54968be466db7eba2157a33",
+      "disposition": "PASS50runs/6000ticks"
+    }
+  ],
+  "complete_sanitizer": {
+    "log_file": "wave-flow-sanitized.log",
+    "log_sha256": "696395195ca93252922a9efc5f81aa7161e727a9fbb4516cced60a0ca6220e25",
+    "output": "PASS disabled default and typed refusal\nPASS coherent Water edits refuse before zero-mass normalization\nPASS dam break conserves and spreads\nPASS worker counts are cell identical\nPASS waves propagate and interfere\nPASS quiet water sleeps and wakes\nPASS sealed passage equalises\nPASS bodies block water and receive contacts\nPASS other materials still interact\nPASS documented Water-owned chemistry is disabled\nPASS ledger population follows spreading\nPASS chunk capacity is an explicit outcome\nPASS tiny drops cross sleep and chunk boundaries\nPASS erasing support reactivates a dormant film\nPASS region pause freezes cells and reentry resumes\nPASS fixed-seed edits masks and seams conserve\nPASS physical identity names Wave and substeps\nPASS paused flux is retained and edits retire faces\nPASS region boundary flux freezes while source falls\nPASS C API construction and overfill are lossless\nPASS extreme legal overfill conserves and remains editable\nPASS coordinate extrema refuse before mutation\nPASS distant positive masks preserve Wave transport\nPASS distant negative masks preserve Wave transport\nPASS mask overlap at signed bounds preserves bodies\nPASS sparse mask bounds follow clear move and reconfigure\nPASS tall extreme column preserves head sign\nPASS disturbed water reaches exact rest\nPASS films level and rest\nPASS supported film uses an adhesion threshold\nPASS state hash binds retained momentum\nPASS prepared uint16 payload and quantity are lossless\nPASS slosh short ripples and shallow front\nPASS slosh admission identity and worker parity\n==7==LeakSanitizer has encountered a fatal error.\n==7==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1\n==7==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)\n",
+    "binary_file": "build/test_wave_flow_sanitized",
+    "binary_sha256": "01486a97e2e3d6176716892a85fe492bec10a13f641ea69b5ac6baceee46d3e5",
+    "disposition": "NOT_PASS:34 fixture PASS lines followed by LeakSanitizer ptrace-environment fatal error; no clean process completion"
+  },
+  "complete_sanitizer_environment": {
+    "ASAN_OPTIONS": "detect_leaks=1:strict_string_checks=1",
+    "UBSAN_OPTIONS": "halt_on_error=1"
+  },
+  "scoped_sanitizers": {
+    "schema": "pubpres-native-scoped-sanitizer-v1",
+    "native_source": "7e983d170aabb06c1b9d48788d5a8e416c3afd3e",
+    "compiler": "g++ (Debian 14.2.0-19) 14.2.0",
+    "executable_sha256": "01486a97e2e3d6176716892a85fe492bec10a13f641ea69b5ac6baceee46d3e5",
+    "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+    "UBSAN_OPTIONS": "halt_on_error=1",
+    "scope": "Only two changed-risk fixtures, no leak acceptance; original complete-suite LeakSanitizer environmental failure retained",
+    "executed_utc": "2026-11-24T15:59:10.644954+00:00",
+    "results": [
+      {
+        "label": "sparse",
+        "filter": "sparse mask bounds",
+        "returncode": 0,
+        "log_sha256": "d2438563aeb2037cec4f6aa37a23843ed607841a6ab10725b147307111867bb0",
+        "stdout": "PASS sparse mask bounds follow clear move and reconfigure\nWAVE_FLOW: 1 tests; 0 failures (34 registered)\n",
+        "stderr": ""
+      },
+      {
+        "label": "signed",
+        "filter": "mask overlap at signed bounds",
+        "returncode": 0,
+        "log_sha256": "5e73495880ab6e58e2bffd92d9a319302b75802f8d47d356bc40ce7605ed8fe9",
+        "stdout": "PASS mask overlap at signed bounds preserves bodies\nWAVE_FLOW: 1 tests; 0 failures (34 registered)\n",
+        "stderr": ""
+      }
+    ]
+  },
+  "remaining": "Full sanitizer/leak acceptance requires hosted execution; no failed or unexecuted gate is waived."
+}

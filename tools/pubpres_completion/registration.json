@@ -1,0 +1,72 @@
+{
+  "schema": "pubpres-completion-campaign-v1",
+  "reference_sources": {
+    "M": {
+      "source_commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+      "source_tree": "06b62d73138028d1f7615b83edc9810491bf6287"
+    },
+    "I": {
+      "source_commit": "8503ec19e4d620e125dc6df2c5c6571b1256cb92",
+      "source_tree": "ece848ad77c06fafb60d597d87f9f53f7bc211f1"
+    },
+    "D": {
+      "source_commit": "d316c281e0abb575eb6302afc12ec44f211460ba",
+      "source_tree": "7a57dc0873dd161abe165f3a60e14e64886d04a8"
+    }
+  },
+  "predecessor_registration": {
+    "path": "tools/pubpres_playability/campaign.json",
+    "sha256": "42b0fa3569e3df3cb4f06330c2f24f0c913ef8d1196e494900f59ae1134220ef"
+  },
+  "ordinary_defaults": {
+    "material_publication": "full",
+    "staging_pools": "eager",
+    "render_thread": "safe",
+    "wave_column_tiles": false,
+    "same_frame_continuation": "off"
+  },
+  "source_order": ["D", "C", "C", "D"],
+  "source_material": "full",
+  "continuation_order": ["off", "on", "on", "off"],
+  "renderer_order": ["full", "blit", "blit", "full"],
+  "main_baseline": {
+    "order": ["M", "C", "C", "M"],
+    "cases": ["wave_gameplay_2048_follow", "wave_512_follow"],
+    "direction_rule": "Apply source_gain_criteria with M in place of D within this independent cohort.",
+    "M": "Full material publication, combined physics delivery, legacy presentation and source-default cadence. No integrated continuation.",
+    "C": "Full material publication, early physics delivery, coherent presentation, repaired cadence and continuation Off.",
+    "I": "Untimed incompatibility preflight for the current Wave profile; no substituted performance arm."
+  },
+  "sustained_minimum_usec": 60000000,
+  "source_gain_criteria": {
+    "window": "first_144_steps",
+    "steps_per_second": "Each C arm exceeds each D arm.",
+    "p95_and_p99_physical_gaps": "Each C arm is lower than each D arm for both quantiles.",
+    "maximum_and_severe_counts": "Each C maximum inter-step gap and threshold count is at most the worse of the two D arms for that metric.",
+    "reported_gap_thresholds_ms": [100, 250, 500, 1000]
+  },
+  "development_cases": ["wave_gameplay_2048_follow"],
+  "additional_cases": [
+    {
+      "id": "wave_512_stationary_1",
+      "base": "wave_512_neutral",
+      "camera": "free",
+      "workers": 1
+    },
+    {
+      "id": "wave_1024_follow_4",
+      "base": "wave_512_follow",
+      "fixture": "basin1024"
+    }
+  ],
+  "final_cases": [
+    "wave_512_stationary_1",
+    "wave_1024_follow_4",
+    "wave_landscape_follow",
+    "wave_gameplay_2048_follow",
+    "wave_2048_free",
+    "pressure_512_follow",
+    "freemass_2048_follow"
+  ],
+  "scope": "Primary D/C/C/D source comparison with full publication, continuation Off, early physics and coherent presentation. The final phase adds a separate M/C/C/M whole-source comparison. Candidate-only continuation and renderer diagnostics have separate ordered cohorts. Preserve all attempts and admit only matching software-renderer workloads and exact equal-step physical/input outcomes. I receives an explicit untimed incompatibility preflight. Physical Windows/NVIDIA acceptance is HOLD."
+}

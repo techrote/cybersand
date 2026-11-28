@@ -1,0 +1,7 @@
+{
+  "source": "1998d9a7c0406bf75de6b794d39e5ba048ca3454",
+  "result": "FAIL",
+  "stage": "coverage-cache unit fixture",
+  "reason": "Fixture assigned Array to actual Vector3i shape field; runtime script error aborted new coverage function even though terminal old82checks reported no assertions. Strict ERROR scan rejects this result; no implementation pass claimed.",
+  "stdout_sha256": "d92ec61086368ed509e7f99136c71b985032a7264ce7d391388c03926f2f752f"
+}

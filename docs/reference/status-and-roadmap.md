@@ -244,6 +244,45 @@ helper without importing its simulation owner. The
 [dated evidence](../audits/2026-11-20-workbench-actor-composition.md) owns exact
 source/runtime identities, platform results, failures and remaining owner checks.
 
+## Workbench publication and progression candidate
+
+The active [PUBPRES mainline convergence](../operations/pubpres-mainline-convergence.md)
+reconciles accepted main `50e3bcb839211eac2abe1e065750cbcba4d36f8c` with the owner-evaluated
+#767 architecture. It preserves Stock Safe/Full2/Water/all-worker completion,
+adds bounded unchanged-profile reuse and spawn diagnostics, and repairs retained
+Water endpoint visibility without extending its 100 ms proof lifetime. Hosted,
+extracted-package and physical-owner gates are separate; no merge is authorized.
+The [predecessor](../operations/pubpres-playability-final-001.md) and its rejected
+experiments remain reproducible.
+
+The [PUBPRES-INTEGRATION-001 evaluation](../operations/pubpres-integration-evaluation.md) joins sparse publication, strict physical feedback and a bounded presentation timeline. Matched actual gameplay rejected the temporary automatic Windows software-ANGLE full-upload override; the repair removes it while retaining explicit full selection. The candidate also removes overdue non-progressing owner turns after a completed body sample. Native health fences and real physical admission remain intact. It remains Draft/HOLD pending fresh source-matched long-tail, freshness and owner gameplay evidence; rejected renderer treatments and policies are retained separately.
+
+## Workbench playability successor — 2026-11-21
+
+[PUBPRES-PLAYABILITY-001 / #717 / Draft #719](../operations/pubpres-playability-evaluation.md)
+adds default-off reachable staging pools, reviewed adapter diagnostics and a new
+M/I/C campaign with separately built runtimes. The four-column native experiment
+was reverted. Logical allocation savings do not establish playability, and the
+original 2048²/2048 × 1024 controls save nothing. The first exact-source a707
+Windows software-renderer campaign has valid negative progression results:
+Wave512 Follow C averages 9.248 completed steps/s against M 11.414, with
+approximately 0.82-second physical gaps. Actual queued-pixel failures and
+Separate-renderer crashes remain open; Linux process qualification failed.
+Source-reviewed harness repairs do not requalify those original results.
+Final graphical qualification and physical NVIDIA acceptance remain pending.
+Keep Draft/HOLD; #682 and its prior negative evidence remain preserved.
+
+A new default-off same-frame continuation is implemented and independently
+source-reviewed. It reuses one genuinely withheld callback within its original
+process frame, retaining native/terrain/actor/input fences and no wait or carried
+physics credit. Prospective v3 observation preserves the v2 campaign and adds
+same-source OFF/ON/ON/OFF controls. Correctness/compatibility evidence is headless;
+new graphical timing and exact-HEAD Linux/Windows qualification remain pending.
+
+The [isolated render diagnostics](../operations/pubpres-playability-evaluation.md#isolated-render-diagnostics)
+add bounded engine-only controls with frozen publisher inputs. They preserve
+first-read pixel failures and are separate from native, package and playability acceptance.
+
 ## Experimental Gentek catalogue integration — Draft/HOLD, 2026-11-17
 
 The stacked [GENTEK-SHOWCASE-INTEGRATION-001 #671](https://github.com/techrote/cybersand/pull/671)

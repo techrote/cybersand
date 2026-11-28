@@ -1,0 +1,17 @@
+{
+  "schema": "pubpres-independent-extraction-request-v1",
+  "purpose": "Independent complete archive execution with canonical existing-file compiler identity",
+  "application_commit": "a621611baeb6ff442954e402300c6e576b8a010c",
+  "application_tree": "b138e9361826ec6f7e0f73196c08021ed2540f9b",
+  "run_id": 46175797719,
+  "run_attempt": 1,
+  "artifact_id": 15276792408,
+  "artifact_name": "pubpres-mainline-windows-evaluator-46175797719-1",
+  "outer_bytes": 1480355965,
+  "outer_sha256": "bad355ef6316441b15139ca9ab264d6de04f5cd45acb79aba13ab470e50e509b",
+  "inner_bytes": 1480354691,
+  "inner_sha256": "407a2de491af081bc7542fab0a1ff32fa6c9e3291fd744e5e35ba0e121a00d13",
+  "manifest_sha256": "e79c9de8c1e94debfe1d599afc79046d3f5d8a1f8e2e278647de86e5e47ef89a",
+  "physical_acceptance": "HOLD",
+  "promotion": "DRAFT_ONLY"
+}

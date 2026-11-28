@@ -64,10 +64,30 @@ func until(predicate: Callable, label: String) -> bool:
 		if predicate.call(): return true
 		if host != null and host.simulation_worker != null and host.simulation_worker.has_failed(): break
 		if Time.get_ticks_msec() >= progress_at:
-			print("AMBIENT_DEFAULT_OFF_WAIT ", label)
+			print("AMBIENT_DEFAULT_OFF_WAIT ", label, " ", JSON.stringify(Catalog._json_value(ambient_state())))
 			progress_at = Time.get_ticks_msec() + 10000
 		await process_frame
+	phases.append({"phase":label + " watchdog", "ambient":ambient_state()})
 	return check(false, label + " did not complete within the existing operation watchdog")
+
+
+# Bounded immutable scalar observations only; no worker mutation or extra query.
+func ambient_state() -> Dictionary:
+	if host == null or host.physical_actor_session == null: return {}
+	var session: CyberPhysicalActorSession = host.physical_actor_session
+	var snapshot: CyberSimulationSnapshot = host.simulation_worker.take_latest_snapshot(0)
+	var result := {"sensor":session._ambient_perception.diagnostics(),
+		"sensor_active":session._ambient_sensor_active, "refresh_requested":session._ambient_refresh_requested,
+		"policy_world_generation":session._ambient_world_generation, "policy_owner_serial":session._ambient_world_serial,
+		"physical_tick":session.tick}
+	if snapshot != null:
+		result["latest_material_envelope"] = {"serial":snapshot.serial,
+			"physics_world_generation":snapshot.physics_world_generation, "render_world_generation":snapshot.render_world_generation,
+			"native_tick":snapshot.tick_index, "native_revision":snapshot.simulation_world_revision,
+			"render_serial":snapshot.render_snapshot_serial, "render_tick":snapshot.render_tick_index,
+			"material_revision":snapshot.world_revision, "patch_bytes":snapshot.render_patch_cells.size(),
+			"backend":snapshot.backend_name, "failed":snapshot.simulation_failed}
+	return result
 
 
 func native_tick() -> int:
@@ -154,6 +174,7 @@ func exercise() -> void:
 		var state: Dictionary = session._ambient_perception.diagnostics()
 		return state.cache_bytes > 0 and state.ingestions > 0 and state.queries > 0,
 		"explicitly activated sensor and policy"): return
+	phases.append({"phase":"explicitly activated sensor and policy", "ambient":ambient_state()})
 	var active: Dictionary = session.workbench_policy_observation(101)
 	var stale := Session.make_command(active, int(active.last_sequence) + 1,
 		{"move":Vector2.RIGHT,"effort":0.25}, 6)

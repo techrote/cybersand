@@ -1,0 +1,1069 @@
+{
+  "schema": "pubpres-native-mask-applicability-receipts-v1",
+  "manifest": {
+    "schema": "pubpres-native-mask-applicability-screen-v1",
+    "order": [
+      "A",
+      "B",
+      "C",
+      "C",
+      "B",
+      "A"
+    ],
+    "cohorts": [
+      [
+        "current512-one",
+        512,
+        1,
+        0
+      ],
+      [
+        "current2048-zero",
+        2048,
+        0,
+        0
+      ],
+      [
+        "current2048-one",
+        2048,
+        1,
+        0
+      ]
+    ],
+    "ticks": 72,
+    "workers": 4,
+    "builds": {
+      "A": {
+        "source_commit": "27a08efb4a78186c0e2b19176576752e2503b998",
+        "source_tree": "24a69fea61a7f5ef02f533280a07a3c8f3e67741",
+        "cwd": "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/control-src",
+        "compiler": {
+          "path": "/usr/bin/x86_64-linux-gnu-g++-14",
+          "sha256": "6b3696e4dcb85e1c949c732a02befa50e3983ecf94ce7e8e58d9d503b954b79d",
+          "version": "x86_64-linux-gnu-g++-14 (Debian 14.2.0-19) 14.2.0"
+        },
+        "flags": [
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include"
+        ],
+        "arguments": [
+          "/usr/bin/x86_64-linux-gnu-g++-14",
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "native/src/world.cpp",
+          "native/src/material_rules.cpp",
+          "native/src/scheduler_geometry.cpp",
+          "native/src/settled_world_discovery.cpp",
+          "native/src/render_snapshot.cpp",
+          "native/src/c_api.cpp",
+          "native/bench/pubpres_empty_derived.cpp",
+          "-o",
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A"
+        ],
+        "benchmark_sha256": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8",
+        "source_inputs_sha256": {
+          "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "native/src/world_wave.inc": "679edc84be60e6dfd5b2e8896032a8f19a98b0a0866d576bd527fb1af955420b",
+          "native/bench/pubpres_empty_derived.cpp": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8"
+        },
+        "started_utc": "2026-11-24T17:25:01.697511+00:00",
+        "finished_utc": "2026-11-24T17:26:26.631108+00:00",
+        "exit_code": 0,
+        "log_sha256": "5111e8faf78fa808a82f40a87d24db93c386a5611b285a038cc3d5b0ee39a43d",
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "binary_path": "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+        "verified_source_overlays_sha256": {
+          "native/bench/pubpres_empty_derived.cpp": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8"
+        }
+      },
+      "B": {
+        "source_commit": "fa34fc2129125d77a5255c95bfa82af91eff05a5",
+        "source_tree": "bf7603054b69023a87d5c14902358c3d4d8c0478",
+        "cwd": "/workspace/scratch/0b2a9bdf7883/cybersand-native",
+        "compiler": {
+          "path": "/usr/bin/x86_64-linux-gnu-g++-14",
+          "sha256": "6b3696e4dcb85e1c949c732a02befa50e3983ecf94ce7e8e58d9d503b954b79d",
+          "version": "x86_64-linux-gnu-g++-14 (Debian 14.2.0-19) 14.2.0"
+        },
+        "flags": [
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include"
+        ],
+        "arguments": [
+          "/usr/bin/x86_64-linux-gnu-g++-14",
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "native/src/world.cpp",
+          "native/src/material_rules.cpp",
+          "native/src/scheduler_geometry.cpp",
+          "native/src/settled_world_discovery.cpp",
+          "native/src/render_snapshot.cpp",
+          "native/src/c_api.cpp",
+          "native/bench/pubpres_empty_derived.cpp",
+          "-o",
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B"
+        ],
+        "benchmark_sha256": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8",
+        "source_inputs_sha256": {
+          "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "native/include/cybersand/world.hpp": "6a1e5e89fe988301b56920ae8b23f723fdc1045c396ccc05f67f9be17f8cc45e",
+          "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "native/src/world_wave.inc": "514ba4062fecf114406d7761cd4720dc0353684048da386c05a981381065e0bb",
+          "native/bench/pubpres_empty_derived.cpp": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8"
+        },
+        "started_utc": "2026-11-24T17:26:26.723352+00:00",
+        "finished_utc": "2026-11-24T17:27:53.822939+00:00",
+        "exit_code": 0,
+        "log_sha256": "5111e8faf78fa808a82f40a87d24db93c386a5611b285a038cc3d5b0ee39a43d",
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "binary_path": "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+        "verified_source_overlays_sha256": {}
+      },
+      "C": {
+        "source_commit": "3e027cdb71ec97a6719fbd3580f552d500349075",
+        "source_tree": "e7d4b47900ed6f178c7cf0e9e4ed083bd2542cb2",
+        "cwd": "/workspace/scratch/0b2a9bdf7883/cybersand-native",
+        "compiler": {
+          "path": "/usr/bin/x86_64-linux-gnu-g++-14",
+          "sha256": "6b3696e4dcb85e1c949c732a02befa50e3983ecf94ce7e8e58d9d503b954b79d",
+          "version": "x86_64-linux-gnu-g++-14 (Debian 14.2.0-19) 14.2.0"
+        },
+        "flags": [
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include"
+        ],
+        "arguments": [
+          "/usr/bin/x86_64-linux-gnu-g++-14",
+          "-std=c++20",
+          "-O3",
+          "-DNDEBUG",
+          "-pthread",
+          "-Wall",
+          "-Wextra",
+          "-Wpedantic",
+          "-Wconversion",
+          "-Wshadow",
+          "-Inative/include",
+          "native/src/world.cpp",
+          "native/src/material_rules.cpp",
+          "native/src/scheduler_geometry.cpp",
+          "native/src/settled_world_discovery.cpp",
+          "native/src/render_snapshot.cpp",
+          "native/src/c_api.cpp",
+          "native/bench/pubpres_empty_derived.cpp",
+          "-o",
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/mask-applicability/timing-C"
+        ],
+        "benchmark_sha256": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8",
+        "source_inputs_sha256": {
+          "native/include/cybersand/ballistic_water.hpp": "a278129b53d3fe5d67f8fcfc73af6b40d5603fbdda32ddacef27a9460ae2d534",
+          "native/include/cybersand/bounded_ordered_index.hpp": "79105fd5fe6f3a7f1bda463984aec01b2d067400957c60f88e38db86cc180147",
+          "native/include/cybersand/c_api.h": "2b92b5b79176ffc92d9d7e67f0ee087cd7200586d9024caa4e8dc46b0b600b45",
+          "native/include/cybersand/default_demo_recipe.hpp": "1ca54bd4939c2e7e458279fbd928c700cf835be5f72772472f7f01e911c69df4",
+          "native/include/cybersand/demo_snapshot.hpp": "d0110a269002fcc001619bb363c9ca83ec36de4e45517eebe525f40a46ffbc8d",
+          "native/include/cybersand/generation_fields.hpp": "e405c49a96e912ce07535c57fc42467849384eddb43d405718bbefa98356da79",
+          "native/include/cybersand/generation_grammar.hpp": "c44524b7523b93f403fb5e8cf751040197e7689850c980fe21bb9dd8a8c922a0",
+          "native/include/cybersand/generation_numeric.hpp": "231fd8547985397103388d863297009aee8df944d3be453e6a88ca24ee18bb3a",
+          "native/include/cybersand/generation_planes.hpp": "b0a2cf2c045664cff32818f0e3a6a36b64e95a61d52923091fe1201673968947",
+          "native/include/cybersand/generation_spatial.hpp": "8e02a001775915dc8d8fe9b79c0a1ffb65b51989ffd424a7b847d741a49065e2",
+          "native/include/cybersand/generation_typed_fields.hpp": "012dc286192086b134b1b0e21811aac25ca4cb62b20fd742895698c90d13f151",
+          "native/include/cybersand/granular_contact_response.hpp": "32877bbd6fc7eb85feabab5452250f4a318388cd7b5e7a64b93576123c7caedb",
+          "native/include/cybersand/inertial_cellular.hpp": "826af4e7b9c8d3d2ba0f7d7a6be98e4bbb7575bc12525fc6e7818f499a6c44f8",
+          "native/include/cybersand/interaction_policy.hpp": "d959a2ef74afee0f9c2f794ef5ee5362f1d8cfe6fc86a733acf2a17fec54d5ff",
+          "native/include/cybersand/interaction_rules.hpp": "aaffab99ddc7413f82a77de69b9d97aea37bd8cf46211b867ed303a6776448a5",
+          "native/include/cybersand/liquid_comparison.hpp": "9212e0833cd5d2ff07ec37584a1579440991e87bcba7ee4aae88e4fc798e3105",
+          "native/include/cybersand/liquid_construction_refusal.hpp": "542db1338fc6bb86abf8d7b5c9eda664a4f172e19c99c94c9ee0da737d9f0c61",
+          "native/include/cybersand/liquid_policy_catalogue.hpp": "ec9153f5cf921d2834116831908e9feb16148695aa433a21b0e62a0981072303",
+          "native/include/cybersand/liquid_run_receipt.hpp": "0279b397afef4363122e67ffe3f4f543559b60d140232f7e188722c23498ac5c",
+          "native/include/cybersand/liquid_run_receipt_native_capture.hpp": "2c67c60aacb4ed160d69deef995f4d628fdc1714cdaadfadda80492b035901c2",
+          "native/include/cybersand/liquid_solver_policy.hpp": "c1f2e6b19ad57313eb1c5dd1a4ad56501140d4574f15b26463b4fb513a53827e",
+          "native/include/cybersand/material.hpp": "3e40f970e3205853a43643b4163041935ccd64d8a018d35a7473c3f95a1d0375",
+          "native/include/cybersand/material_appearance.hpp": "512ae47aeb6e4d3d88d9e5388c6954ae1150cc1ebdfd5bef01483984da9fb0a0",
+          "native/include/cybersand/material_baseline.hpp": "f30727779d12bdcf7dd00f7fb7dc126b2c4d69ad9f289e3c94d4cf65398bc345",
+          "native/include/cybersand/material_capabilities.hpp": "564c15e56a7bbed737d5a495e24d311e3522bd57bcdff9a2d2752500532492c8",
+          "native/include/cybersand/material_rules.hpp": "175b44abd8585b909cb1a85f31b0ba810cf2f7050898bf8b6006a8cc17577362",
+          "native/include/cybersand/paint_fill_planner.hpp": "ea2296d9cc3bfb57c506af4abcccef57bd92447e24ff4aa72aed33f1cf0f7cd1",
+          "native/include/cybersand/physics_diagnostics.hpp": "f027346b04b12ca67a1d38d1e772ff3992ab0a1807f710ca4b709631dac7f0e4",
+          "native/include/cybersand/precision_storage.hpp": "7b7bbdfa6ac5618665b22cf619bbba64c03caeea997a24c94ebdff9902dd4266",
+          "native/include/cybersand/prepared_setup_identity.hpp": "c923cf352014e143abca6ce8837e536edf3b9d69ea444a6cef805ddc8ea034ee",
+          "native/include/cybersand/prepared_world.hpp": "bf1fb2f551c54ab8818dcc6bb4486c0ecbf5997b98debd3b964e899bc159b8f2",
+          "native/include/cybersand/pressure_flow.hpp": "a01e3a6f8f95d52f6e370edacb29cc7408f5dc151b280acf7ad241b46e49627d",
+          "native/include/cybersand/pressure_optimization.hpp": "4ecc1609b07fd4ecbd50c752e11d8722c3353e3e6bbc17097c7a59967d9b6d33",
+          "native/include/cybersand/pressure_setup_capacity.hpp": "8461ef15f8603a39ae1c45d9a983370131f90c28f646173d03927cc3689c0239",
+          "native/include/cybersand/quantity_ledger.hpp": "d8c6463c7cea7193e8257115f6eddee911cc85467d5f2ab9be830f6ee7756a79",
+          "native/include/cybersand/render_snapshot.hpp": "116733aa9b0a384bd739764fb099bc2a95ac19022ba6688e085229898c0db7a3",
+          "native/include/cybersand/scheduler_geometry.hpp": "69ad265aa5cb9823131b46c533a511c71fe089c2f2e3cae3d9950086f6f51460",
+          "native/include/cybersand/settled_discovery.hpp": "e98d772de9ed42397da48b30dc20cd8527ef1100a71757cf0b8a0a6811b150c3",
+          "native/include/cybersand/settled_regions.hpp": "05577c38da9e7fa6f2bbf1e6d589ee104dba71a840974843ff582326900493a1",
+          "native/include/cybersand/settled_world_discovery.hpp": "ab71dc2e0e13b0cc580ba3ce981a321f36b7b83d7904dd899f8746fd0e8d7138",
+          "native/include/cybersand/sha256.hpp": "0dd46c3dd8d3222c659b6b602e0c798f3c22afc034a7f1587d6ca7bcb5b1fcf7",
+          "native/include/cybersand/soliding_lifecycle.hpp": "044335712b4bfcec62a239a57092f11bc5598cc1b9a2427ef0ddbaf1d1d214cd",
+          "native/include/cybersand/transport_policy.hpp": "5943ae6a9479813768d1a62f54895e468288fc19ccb9c2f4b29f4a13aa41dd29",
+          "native/include/cybersand/water_cellular_yield.hpp": "64166e69983a5373a5d61539126e813d7797a69b61abd2d314f723bedd4fdd85",
+          "native/include/cybersand/water_experiment_policy.hpp": "60b6ef5e611ba39eb0d6220115eb2f0662bc58e02b56c0966a239e30ad57dfaf",
+          "native/include/cybersand/water_normalization.hpp": "5f33817ee4b1600e8d16efb861b5a532222c8b8f95c05e05333c371518158d49",
+          "native/include/cybersand/wave_flow.hpp": "4166f4622ce64ced588afc7bac8e4c6c52aa68134d4bc983e28a8cd56341200b",
+          "native/include/cybersand/world.hpp": "3a918b7d1cf565f88cfce029ef0894115041cfaf17bfc0912e28569721fc40e9",
+          "native/include/cybersand/world_generation.hpp": "48df4a3434ea9253527c8df3a315c5b52909aedc7ca95d2c827d63ba3c4d8d4d",
+          "native/src/c_api.cpp": "b5be05c36810bbb08268e81d1ecd093dd5970288a51346dd36ba3c6048dc1344",
+          "native/src/generation_architecture_classic.inc": "ae2ce0a5540619d3d81dfb6f6d075d11c13822d36d8e2848047adcf238937c6a",
+          "native/src/generation_architecture_megablock.inc": "d623a38d484c6b4a6d252c3404854a58f8297dfb7d5878bd226b5ac8b68da8b8",
+          "native/src/generation_architecture_metabolist.inc": "82c8431eb007ff864b8b56408d63f7ec42afb2f02728f756b7e5d7aab5cf2101",
+          "native/src/generation_architecture_modules.inc": "3bab22d7ab5430d083991c6dcfdafc2ae74fff64f57b042ccd04c4f4ba6fb732",
+          "native/src/generation_architecture_rosework.inc": "9782c6c9b5e7f90a74f0282c467c2206c50ceac93211d5f34435665dd8ea3823",
+          "native/src/generation_fields.cpp": "0f4139421792d9e17c069b542620356a2978a09f7254bc4f11c1b725729a4df3",
+          "native/src/generation_grammar.cpp": "9c0367c885f1107c00cc143334c57b49617bb7b0e7a02f5373fdd4d4bdf40453",
+          "native/src/generation_interlaced_viaduct.inc": "b5e48c47fced9c916b62334ba8805d5a3f291900d17d58f0c1c1c6c68c001986",
+          "native/src/generation_interlock_brutalism.inc": "83ef2033d7ac84f77a16aae871c23144f841836f46210a0402c51f1c655cec03",
+          "native/src/generation_megablock_programme.hpp": "578100da73227831b1da418bed63ef6e4931565cd56cc04971926aa73b3cb369",
+          "native/src/generation_planes.cpp": "fde22fa3495dacefc779a6187dd954289c9e0fc4c5ba83036a036f42d537a7cb",
+          "native/src/generation_spatial.cpp": "8f99e577b7bec07142daf7c0e273146991528cdc3a13e6bf2301f14a7f049961",
+          "native/src/generation_suspended_arcology.inc": "e4210a8e9401621c8aa12c2781218dc77842dcaa4d50afcf05ca0b72aed12258",
+          "native/src/generation_typed_fields.cpp": "c3d2c2767cd0a10af967e8c975f11cbad9761e2b819d013fc5f7cf91bd832f5d",
+          "native/src/material_rules.cpp": "94928fa8f16010efaa3326750a3e951101e6905f3eafe8f99c0935ab33f0de8d",
+          "native/src/render_snapshot.cpp": "b905363461d4aa31ffbeb94bd6717993597b9da23b5ea5d8fc717a56662dbf04",
+          "native/src/render_snapshot_internal.hpp": "c36e3b4f41db0f4ac96788a74f66b92407690dccc8609951428ec7b54c292998",
+          "native/src/scheduler_geometry.cpp": "6ddfd5c5601a63edbcc1a8c430dcfe6332cbe54109c6b1d3763f933a6be38764",
+          "native/src/settled_world_discovery.cpp": "5f56ab11ac22eb6af105f52a3abca4ef91a0db1d0046855793123fa941e728b6",
+          "native/src/world.cpp": "ec3034850af97e790dfc3855411bba5be60c820cb623a6df62ca09c70aeb761a",
+          "native/src/world_ballistic.inc": "71bfdbc843cd0fc0ee76d8cc7cab919b19fa18aba08c856af6d52f5dfd35796a",
+          "native/src/world_generation.cpp": "9d9d6e672f689b5824ab8869232070aa2bef61cd8c42869cc41430bc2f67cb52",
+          "native/src/world_inertial.inc": "51fa78b33df7ea5e7e468c670b348ae24a19fd41905e2e78d9e841fa99af1491",
+          "native/src/world_pressure.inc": "fca639dfbf6274c590fb38283207aa838d6aa659e3ed0e95b397f6a7d8ab5be1",
+          "native/src/world_pressure_cache.inc": "9a90d1cae841fbb151658c4ed130d3f7b7fdb2bc883d2d2bfec54715476511b7",
+          "native/src/world_pressure_cache_state.inc": "cf516d4d6d3363563c2273e29ee0ef2525654cf552031c74efb923ed4ac062b3",
+          "native/src/world_pressure_column_failure.inc": "103cd884f1fd1ed6ca279be47aa6b8ba9f848f1c1205c632fa176c02e182a268",
+          "native/src/world_pressure_gas_cache.inc": "a93ee3fbd9911a4eba673ce3f5af573f8df8c66fe7f0dce7053921ebd22b4962",
+          "native/src/world_pressure_state.inc": "e7444b96c7e03cbd83b352707e55d999fb939859b41783f5bf51bb40b4d2caa2",
+          "native/src/world_quantity.inc": "4ff7dd56d93d389cb3451dae82619edf0934d2bed5703ce673e1a5d95310d489",
+          "native/src/world_wave.inc": "9993b94ef76fcbab33dd332952b009fda29fdb3b7ae4ba6712aab1672f071585",
+          "native/bench/pubpres_empty_derived.cpp": "0ee16b0592fd2be58543020c258dab23801e4b89318469bf0e94b1b393a6a2f8"
+        },
+        "binary_path": "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/mask-applicability/timing-C",
+        "started_utc": "2026-11-24T18:10:20.919520+00:00",
+        "finished_utc": "2026-11-24T18:11:17.857010+00:00",
+        "exit_code": 0,
+        "log_sha256": "5111e8faf78fa808a82f40a87d24db93c386a5611b285a038cc3d5b0ee39a43d",
+        "binary_sha256": "a39aa0a831f97f0eda3291079a292c13851f8014f52d38fbbccc36a34bf4cf5b",
+        "verified_source_overlays_sha256": {}
+      }
+    },
+    "runs": [
+      {
+        "name": "current512-one-1-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T18:12:52.864579+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 0.427011,
+          "system_seconds": 0.699371
+        },
+        "pid": 251,
+        "whole_process_wall_nanoseconds": 1760759044,
+        "children_cpu_after": {
+          "user_seconds": 2.072882,
+          "system_seconds": 0.832587
+        },
+        "finished_utc": "2026-11-24T18:12:54.625436+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current512-one-2-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T18:12:54.639589+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 2.072882,
+          "system_seconds": 0.832587
+        },
+        "pid": 256,
+        "whole_process_wall_nanoseconds": 1771118373,
+        "children_cpu_after": {
+          "user_seconds": 3.6372299999999997,
+          "system_seconds": 0.9885919999999999
+        },
+        "finished_utc": "2026-11-24T18:12:56.410758+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current512-one-3-C",
+        "arm": "C",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/mask-applicability/timing-C",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "a39aa0a831f97f0eda3291079a292c13851f8014f52d38fbbccc36a34bf4cf5b",
+        "started_utc": "2026-11-24T18:12:56.424498+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 3.6372299999999997,
+          "system_seconds": 0.9885919999999999
+        },
+        "pid": 261,
+        "whole_process_wall_nanoseconds": 1538220710,
+        "children_cpu_after": {
+          "user_seconds": 5.101921,
+          "system_seconds": 1.158204
+        },
+        "finished_utc": "2026-11-24T18:12:57.962790+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current512-one-4-C",
+        "arm": "C",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/mask-applicability/timing-C",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "a39aa0a831f97f0eda3291079a292c13851f8014f52d38fbbccc36a34bf4cf5b",
+        "started_utc": "2026-11-24T18:12:57.968776+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 5.101921,
+          "system_seconds": 1.158204
+        },
+        "pid": 266,
+        "whole_process_wall_nanoseconds": 1555362414,
+        "children_cpu_after": {
+          "user_seconds": 6.596064,
+          "system_seconds": 1.2983310000000001
+        },
+        "finished_utc": "2026-11-24T18:12:59.524241+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current512-one-5-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T18:12:59.538099+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 6.596064,
+          "system_seconds": 1.2983310000000001
+        },
+        "pid": 271,
+        "whole_process_wall_nanoseconds": 1660739808,
+        "children_cpu_after": {
+          "user_seconds": 8.11165,
+          "system_seconds": 1.4616069999999999
+        },
+        "finished_utc": "2026-11-24T18:13:01.198919+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current512-one-6-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "512",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T18:13:01.215421+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 8.11165,
+          "system_seconds": 1.4616069999999999
+        },
+        "pid": 276,
+        "whole_process_wall_nanoseconds": 1863796818,
+        "children_cpu_after": {
+          "user_seconds": 9.73385,
+          "system_seconds": 1.618503
+        },
+        "finished_utc": "2026-11-24T18:13:03.079297+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-1-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T18:13:03.090138+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 9.73385,
+          "system_seconds": 1.618503
+        },
+        "pid": 281,
+        "whole_process_wall_nanoseconds": 16275377774,
+        "children_cpu_after": {
+          "user_seconds": 26.773529,
+          "system_seconds": 5.92018
+        },
+        "finished_utc": "2026-11-24T18:13:19.365873+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-2-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T18:13:19.389917+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 26.773529,
+          "system_seconds": 5.92018
+        },
+        "pid": 286,
+        "whole_process_wall_nanoseconds": 8734954410,
+        "children_cpu_after": {
+          "user_seconds": 42.901418,
+          "system_seconds": 6.535482
+        },
+        "finished_utc": "2026-11-24T18:13:28.124993+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-3-C",
+        "arm": "C",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/mask-applicability/timing-C",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "a39aa0a831f97f0eda3291079a292c13851f8014f52d38fbbccc36a34bf4cf5b",
+        "started_utc": "2026-11-24T18:13:28.134476+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 42.901418,
+          "system_seconds": 6.535482
+        },
+        "pid": 291,
+        "whole_process_wall_nanoseconds": 8331786755,
+        "children_cpu_after": {
+          "user_seconds": 58.282576,
+          "system_seconds": 7.193851
+        },
+        "finished_utc": "2026-11-24T18:13:36.466442+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-4-C",
+        "arm": "C",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/mask-applicability/timing-C",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "a39aa0a831f97f0eda3291079a292c13851f8014f52d38fbbccc36a34bf4cf5b",
+        "started_utc": "2026-11-24T18:13:36.477042+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 58.282576,
+          "system_seconds": 7.193851
+        },
+        "pid": 296,
+        "whole_process_wall_nanoseconds": 7978167963,
+        "children_cpu_after": {
+          "user_seconds": 73.577203,
+          "system_seconds": 7.758463
+        },
+        "finished_utc": "2026-11-24T18:13:44.455317+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-5-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T18:13:44.474551+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 73.577203,
+          "system_seconds": 7.758463
+        },
+        "pid": 301,
+        "whole_process_wall_nanoseconds": 10404630985,
+        "children_cpu_after": {
+          "user_seconds": 92.999099,
+          "system_seconds": 8.54947
+        },
+        "finished_utc": "2026-11-24T18:13:54.879231+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-zero-6-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "0",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T18:13:54.911830+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 92.999099,
+          "system_seconds": 8.54947
+        },
+        "pid": 306,
+        "whole_process_wall_nanoseconds": 8060256357,
+        "children_cpu_after": {
+          "user_seconds": 109.183629,
+          "system_seconds": 9.079893
+        },
+        "finished_utc": "2026-11-24T18:14:02.972136+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-1-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T18:14:02.977810+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 109.183629,
+          "system_seconds": 9.079893
+        },
+        "pid": 311,
+        "whole_process_wall_nanoseconds": 13575821685,
+        "children_cpu_after": {
+          "user_seconds": 136.968995,
+          "system_seconds": 9.970109
+        },
+        "finished_utc": "2026-11-24T18:14:16.553676+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-2-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T18:14:16.560296+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 136.968995,
+          "system_seconds": 9.970109
+        },
+        "pid": 316,
+        "whole_process_wall_nanoseconds": 10231289127,
+        "children_cpu_after": {
+          "user_seconds": 156.668657,
+          "system_seconds": 10.549731
+        },
+        "finished_utc": "2026-11-24T18:14:26.791630+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-3-C",
+        "arm": "C",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/mask-applicability/timing-C",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "a39aa0a831f97f0eda3291079a292c13851f8014f52d38fbbccc36a34bf4cf5b",
+        "started_utc": "2026-11-24T18:14:26.802327+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 156.668657,
+          "system_seconds": 10.549731
+        },
+        "pid": 321,
+        "whole_process_wall_nanoseconds": 10357346125,
+        "children_cpu_after": {
+          "user_seconds": 175.827961,
+          "system_seconds": 11.09595
+        },
+        "finished_utc": "2026-11-24T18:14:37.159746+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-4-C",
+        "arm": "C",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/mask-applicability/timing-C",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "a39aa0a831f97f0eda3291079a292c13851f8014f52d38fbbccc36a34bf4cf5b",
+        "started_utc": "2026-11-24T18:14:37.173497+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 175.827961,
+          "system_seconds": 11.09595
+        },
+        "pid": 326,
+        "whole_process_wall_nanoseconds": 11268223191,
+        "children_cpu_after": {
+          "user_seconds": 194.970563,
+          "system_seconds": 12.001899
+        },
+        "finished_utc": "2026-11-24T18:14:48.441767+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-5-B",
+        "arm": "B",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-B",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "837e431e14a290218cfd6fb0ab6b2f8f9c4752375be603c5ffec9e013e403355",
+        "started_utc": "2026-11-24T18:14:48.451188+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 194.970563,
+          "system_seconds": 12.001899
+        },
+        "pid": 331,
+        "whole_process_wall_nanoseconds": 11804504978,
+        "children_cpu_after": {
+          "user_seconds": 215.292717,
+          "system_seconds": 13.016468
+        },
+        "finished_utc": "2026-11-24T18:15:00.255741+00:00",
+        "exit_code": 0
+      },
+      {
+        "name": "current2048-one-6-A",
+        "arm": "A",
+        "argv": [
+          "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/timing-A",
+          "2048",
+          "1",
+          "4",
+          "72",
+          "0"
+        ],
+        "binary_sha256": "b1569785ce2148c83cc3316e4109da8bf41125dcedc6d32d0ae831bcd53ae000",
+        "started_utc": "2026-11-24T18:15:00.265756+00:00",
+        "cpu_scope": "whole-child-process-including-setup-and-semantic-checks",
+        "children_cpu_before": {
+          "user_seconds": 215.292717,
+          "system_seconds": 13.016468
+        },
+        "pid": 336,
+        "whole_process_wall_nanoseconds": 12635768460,
+        "children_cpu_after": {
+          "user_seconds": 243.067176,
+          "system_seconds": 13.729461
+        },
+        "finished_utc": "2026-11-24T18:15:12.901581+00:00",
+        "exit_code": 0
+      }
+    ],
+    "host": {
+      "platform": "Linux-6.18.57-x86_64-with-glibc2.41",
+      "logical_cpus": 9,
+      "affinity": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8
+      ]
+    },
+    "scope": "native-only; development screen; three independent exact-source binaries; original A/B builds retained",
+    "started_utc": "2026-11-24T18:12:52.860084+00:00",
+    "runner_source_sha256": "95658a63e66d02f292cbcf34357174d04664c220a1deaa28969630d97e3750a4",
+    "quiet_scope": "Root/B/C explicitly suspended heavy local work. External shared-host activity is unobserved. No stationarity assumption.",
+    "cpu_collection": "Linux resource.getrusage(RUSAGE_CHILDREN), before Popen and immediately after communicate/reap. Exactly one child is launched inside each interval; no child is launched between measured intervals. Native worker threads are included.",
+    "finished_utc": "2026-11-24T18:15:12.926893+00:00"
+  },
+  "raw_runs": {
+    "current512-one-1-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":19.980048805555555,\"tick_p50_ms\":17.444744,\"tick_p95_ms\":41.124012,\"tick_p99_ms\":51.141224000000001,\"tick_max_ms\":51.141224000000001,\"column_mean_ms\":8.5998739305555567,\"flux_mean_ms\":5.2471720555555557,\"apply_mean_ms\":3.2125768333333333,\"prepare_mean_ms\":0.05154098611111111,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[41124012,18431783,16789456,16399545,24534999,23548880,18500824,24936493,28726866,13959820,12015602,12314160,23656136,15757781,11184889,10361785,28984834,21122690,15257523,10337216,16153657,17379362,24050333,19303623,24366802,22453188,16940967,10564834,10638265,13778581,51141224,10178883,21747855,15367500,12375800,9241790,28376026,20505726,17162248,16573028,25078283,13422635,9623996,33842743,26874218,18016654,10048676,16453014,23749591,15188713,44020563,9288349,16262776,19270558,36543002,17508004,16145252,17635329,20469827,47349652,12694715,20117001,29925062,20786652,15525453,17444744,36425830,21178048,15372011,20406284,11584220,14066673],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[96147,13634205,11813435,6311576],[42550,7136678,5327014,1542139],[31561,5480912,7980541,1305518],[17694,8535887,4940328,2231821],[20117,12100788,9548985,2049554],[33424,10307017,7621493,2293653],[30492,5992825,4524323,5294232],[31209,10218956,6972528,7210215],[83524,15568072,11301071,845479],[30266,6468171,5120686,1436993],[38087,6709332,2270859,2605897],[44905,5576674,3589967,2509813],[27039,15801344,3041304,4195284],[28311,7008698,3837769,4401366],[18704,5282670,4042010,549486],[27765,6829598,1411741,1552190],[27255,5835373,7397953,11974558],[27788,5227716,9714426,4634473],[27265,7172602,2577106,3144472],[27499,4535543,2593592,1663541],[18217,9082813,4204468,963614],[27249,9791103,4610571,2248319],[27608,12832723,5319834,3106195],[27660,9528030,4280902,1779127],[1505136,12138205,2743932,1571674],[28171,10241214,8022474,2125810],[19821,9645521,3774773,2860837],[28429,4786579,2754900,2188097],[18986,5208277,3385415,1544617],[27625,5515307,3350376,1370807],[27914,29872550,11187284,1622502],[27308,5027124,3449545,950317],[18617,9009367,2785491,649372],[29989,9829322,2721390,1127552],[19028,7965484,2940887,928706],[18623,5553047,1419415,1216283],[32221,8586563,4768153,4862738],[31930,14001432,2383828,1920891],[33042,6451088,3040494,5580975],[29066,12301130,2730426,852546],[29546,5301626,6571970,8996597],[20110,7253275,2437631,2613814],[19225,4872191,2176219,1667043],[30109,6543025,4836806,6225488],[29413,14271014,5240068,6420453],[20385,9389891,5114185,1614920],[19575,4802227,3308373,1099301],[19626,7261586,5098657,1960537],[33170,15759647,3411395,1548079],[29813,8161503,2874972,3132408],[34642,7714025,16633818,7822783],[31076,4708252,2018137,817740],[28481,10770197,1510920,1283528],[51388,7693737,5024133,1019607],[19053,12886569,8678085,11001886],[22358,10911056,2857779,1712705],[18635,7782629,3754368,2635775],[125548,6796034,3963383,1216246],[34493,6458911,6319705,3697860],[25713,11802958,8959874,17962745],[20214,5539465,2214054,2195762],[19996,5628899,4974449,1718903],[20673,14699943,5877229,7060293],[20721,8974353,8206305,1952911],[20422,6582344,4521822,3192700],[20324,5359016,3923238,3611130],[19764,6043027,21881619,4864850],[136914,7592014,8797322,3826944],[20521,7293803,3159771,3974536],[19932,6926253,8626217,3924434],[21083,5954582,3644112,706889],[19786,4666931,5678083,2603426]]}\n",
+      "stdout_sha256": "b89dddaab15228296de52acf778044feb2fe7667d138115699666e5e135a8c60",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current512-one-2-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":20.898097249999999,\"tick_p50_ms\":17.240939000000001,\"tick_p95_ms\":46.636797999999999,\"tick_p99_ms\":109.90505899999999,\"tick_max_ms\":109.90505899999999,\"column_mean_ms\":7.1850989027777779,\"flux_mean_ms\":5.3847946249999996,\"apply_mean_ms\":3.46273125,\"prepare_mean_ms\":0.060906527777777782,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[17240939,8645629,9989522,13009346,11746844,28703602,14227688,12678128,24083648,11636318,15059039,12164783,23503269,18203302,17390107,21012483,46636798,15578720,11022825,21362230,12421053,7218562,12114229,10048664,19058103,20184848,11182769,12936562,26306802,32871866,17057058,21873773,24810676,9015197,22324737,17120349,31666369,23268797,17837448,10073018,13281225,10458506,21804013,13886318,34455861,16974356,36675084,17526487,25510769,9461340,9461446,15135462,15589889,28573888,10729260,10298244,96302621,14331958,8318378,12235195,25711487,28892065,18234824,109905059,50209206,18739308,18314459,17266617,22832508,22234936,22215475,15810658],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[81673,5944500,3919810,940262],[20379,5004761,1981733,794881],[16592,4581251,1756415,1696562],[20753,5276522,2724721,4580484],[22575,3753166,4086272,3628149],[19967,23633050,3352866,725905],[36207,7470799,2840782,3297597],[32140,3932203,4214746,3825860],[31804,3492243,15554193,4364609],[33080,5704655,2195344,3425727],[33532,8853024,5162070,693441],[31816,4193088,3546871,2917567],[19765,6961505,10207421,1193134],[53894,10414607,5653025,1484507],[85125,7619521,4064341,3055849],[33320,11538761,5324184,2975037],[32875,7135357,30631686,3099841],[1142015,5023980,4890970,2846004],[36736,5874892,2722768,835501],[33373,13614137,3872556,779051],[33258,4637896,6305694,790967],[32447,3986603,1873811,793413],[30436,4204012,4135793,2786563],[22815,4554743,2380829,1734450],[15966,5803314,2434679,8019730],[32279,11548197,5763549,1556435],[22711,5928778,2655259,1285858],[33702,4829351,4437021,1079074],[37271,13778748,5650493,4585810],[26597,8549795,9609373,12415639],[34274,7337669,3906479,2169315],[34173,9408895,3848467,4137045],[33998,4102653,14130235,5772926],[33104,3685985,2167348,809626],[31920,8174634,8672866,3888891],[35326,7254944,6218437,1260663],[33610,6950589,7983368,11653780],[32040,6216297,4371399,11626635],[52904,4231772,6822577,4251500],[23441,5100129,2176664,1661115],[125614,5188496,5238233,865244],[34170,4134079,1541857,3946297],[21237,5593390,5832135,4536183],[30260,5123700,7196196,861109],[30202,4603692,16019667,3699421],[24903,8278226,5333535,1991885],[30565,13612430,10083416,8542886],[33749,6375356,6872930,2804186],[815507,6695553,7711177,856397],[46114,4762772,1960513,1763421],[21623,3762806,3841392,916090],[23181,7564060,3111884,2696774],[22011,8195096,2086239,2553409],[70255,5544374,5796447,6909247],[35228,5754587,2921210,1097072],[21014,5222986,2915428,1328980],[34679,22524676,8117365,8310307],[47891,5834977,2546674,2563120],[35829,4065820,2528629,958849],[21123,5486441,3003370,764496],[57664,5605712,7187272,5365398],[39980,8066521,15473159,2268593],[37981,5072365,4861023,6354222],[25263,6389618,3570623,8579729],[58412,12438712,7013324,15681031],[38557,8060622,3290228,3414629],[26253,9051690,2017355,1974615],[25076,7899178,3240498,3236962],[25534,11745826,4194057,2691941],[25139,9454476,3132463,3110208],[26764,7292665,1971716,7283957],[23599,7619193,2848083,1950589]]}\n",
+      "stdout_sha256": "9577175b327ded87561532db87d294ab8354880243bedd8c83f852a036d411ba",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current512-one-3-C": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":17.826895499999999,\"tick_p50_ms\":15.969487000000001,\"tick_p95_ms\":35.919770999999997,\"tick_p99_ms\":50.572347999999998,\"tick_max_ms\":50.572347999999998,\"column_mean_ms\":7.2398532777777778,\"flux_mean_ms\":4.5305645972222219,\"apply_mean_ms\":3.1421802638888892,\"prepare_mean_ms\":0.16908019444444444,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[15928561,26535372,16665462,25192772,17130473,17102160,15004233,35919771,19199670,15992446,20198370,14026097,15969487,15843993,26221504,16522593,17631431,9858794,7809365,16882905,13840083,14408311,9459597,23667549,15834685,10505819,17595009,34236859,12287495,12033176,10084593,16633806,11888365,12450058,17808071,17431004,19421284,14006055,12985713,8940211,10506624,7973383,17413362,10711756,13352688,24687555,9641665,12332695,25770624,23615863,14278225,14943317,10354043,17567444,11062874,18470136,26683685,17181840,39908942,12405851,12224403,17319560,17085738,28027607,14955508,50572348,47682641,14634301,13413898,16058659,26524546,15021493],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[106163,9064372,2897664,1480590],[35633,12760996,3899569,8241704],[24046,7094947,4824743,3604741],[53405,13139099,3361479,4732567],[68954,4829657,4987957,5160844],[37720,4127905,5865072,6747541],[35808,5184286,6898034,2383337],[34991,11533321,6712685,12473262],[39829,5202337,2252419,7339170],[37091,7589402,4256171,3768127],[35173,9800971,5379975,1579336],[25322,4523912,5362781,3715248],[26937,4877906,2055912,3320675],[39511,8941630,3238309,3122512],[24217,9416058,2888589,3566807],[39442,5008374,6598375,4065795],[36646,7222612,2175746,7127258],[29834,3857002,4885336,661281],[34524,5119935,1479817,564194],[33651,3231109,1513721,1333860],[36520,4384787,4138163,1857329],[37252,6041992,3282657,3716157],[41027,6208956,1481005,1009843],[35334,10614069,8580383,3456434],[30910,10558735,2642246,2037400],[43209,4764219,4464186,705197],[35543,5461579,2808482,1494567],[35896,12581016,12871457,6921176],[37273,4208683,6465849,755336],[37844,5023724,4816125,1648434],[24144,4724706,2900563,1892613],[37008,7903914,2283948,1078315],[36933,3869231,5948873,1409426],[36079,5867367,2256603,2842891],[23939,4932090,8244405,3609711],[23441,7387867,3423459,4301666],[35515,7426477,9538367,1694754],[35086,6149252,2204771,3340537],[35166,3696597,4629159,3709803],[36036,5181445,2007566,1076971],[60666,5364098,1565236,2197452],[36832,3713623,2449288,1091768],[22273,6080321,3346058,2356802],[24457,6935412,2285294,831280],[31629,8433677,2349374,1944972],[22654,17668150,2301611,2493218],[39443,4902200,1991169,1346358],[36603,4947358,2275308,1523209],[18807,5913257,9048733,1675026],[36835,9179545,9722286,3814741],[23319,5493545,4616173,3282438],[36930,5589284,5303100,1880429],[36833,4794784,2644744,965044],[34663,5365110,6878065,3245843],[38519,5356950,3533296,1144253],[41935,5333725,8963137,3260197],[36629,10415328,1999496,11259754],[23216,7200214,2302323,3692645],[40811,7069305,4923997,10524576],[22214,4087942,1468664,706223],[39136,4655412,1796572,3268592],[22040,9801840,2548300,4104438],[131682,5346468,3146841,4025313],[46812,17395442,3155403,2275760],[37360,3479290,3188392,2448463],[39032,13212721,18943828,6595148],[9488259,19820432,10681973,4716428],[79526,10453344,1544357,1012634],[39815,4251471,4787763,1382634],[40887,10573298,2151392,1773601],[25100,9536185,14240354,1073883],[25805,9387168,3525503,776448]]}\n",
+      "stdout_sha256": "27f5ee8514f472f09bb8a1c7e779645c352fd729150fc5672f3c337048eba09f",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current512-one-4-C": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":17.924453583333332,\"tick_p50_ms\":15.719916,\"tick_p95_ms\":32.830297000000002,\"tick_p99_ms\":40.586516000000003,\"tick_max_ms\":40.586516000000003,\"column_mean_ms\":7.0620929722222217,\"flux_mean_ms\":5.1187460833333329,\"apply_mean_ms\":2.4056148194444447,\"prepare_mean_ms\":0.080321277777777783,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[27327163,23251046,35348422,11773770,23800785,23045272,19959697,12183838,9331879,10412081,17556990,18369209,19445910,10335095,10498033,26296950,20329898,14307090,16941160,20820856,15708731,26105563,15705691,14177731,31941440,11303335,8477216,25668686,17522472,15719916,13181400,14845330,40586516,16096458,8201654,10146106,10202460,9274212,10277537,11419679,10788524,10535156,22888021,13478299,31943500,16902314,32830297,18292522,12165994,20045547,15456615,18520660,14417149,8933228,12078333,9736333,22546089,16524109,11561344,14017812,9508519,13305674,16073613,26830588,14906125,31086063,27846733,10509713,17555234,32723984,35178519,23476770],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[585366,10278874,3421687,2240920],[44341,7859809,3179182,776816],[35080,13732069,3376320,7084931],[31601,6049594,3761546,1679265],[28878,16309713,5847886,1270526],[35714,15946885,5238317,1533438],[50797,10656501,6770833,1247649],[1487463,7947728,1838082,627950],[26550,4656200,3532448,797049],[31854,5961620,2964664,766970],[27796,8085973,6133608,2971433],[92691,9334527,3930579,618265],[24728,5729638,4302580,1776086],[29853,6254886,2800374,779966],[18924,5493570,3753925,818761],[18705,9947078,7607256,7679523],[27402,6516242,6986957,5553593],[18859,5949840,4021348,2485785],[19566,8072798,3094216,3781050],[19905,9327625,2064406,1527499],[44365,8059815,5393607,1698877],[18998,3676412,12113525,1450431],[18938,7840245,4255664,2705047],[28668,5973124,4822460,2803167],[29532,13671864,9741002,7064077],[30805,5128548,4757563,922894],[29072,3626178,2221373,898053],[29652,5353413,5521830,1778410],[29595,4368051,8494106,1216950],[29614,9442250,4285019,1300063],[30123,5522021,5085915,1645925],[28859,3825256,5369040,2461812],[29774,10583771,8786673,6085762],[1626448,6102196,5885608,865024],[18999,4633669,2032432,795726],[29301,5379295,3189763,884474],[16273,4214697,3555780,1743511],[27630,4209144,3159924,1344774],[20067,4921938,2145646,1015364],[29708,4193947,3434253,2848355],[18950,4151639,2768382,2441858],[27582,4929755,4197164,828027],[18186,7485723,5925663,1183855],[30671,4146325,5575916,1338524],[19121,8683168,9825267,6250421],[20298,4513038,4101994,6762664],[20272,19238319,8504258,3709330],[19464,6895234,3644270,3778338],[19316,5785934,4397593,1398136],[17455,6352383,4553167,3246231],[18688,6799774,7019955,842001],[18806,3678147,4376752,2402395],[18137,4839683,4107279,2879925],[28963,4272158,1971134,1441110],[30285,6507714,2160343,1906748],[30047,5812859,1687667,626734],[19418,5885536,14868357,838020],[26123,9001025,4469154,1418378],[27609,5366125,2268836,1033718],[28149,7524338,2215835,2913968],[45567,6029898,1732238,759604],[55168,8342220,2580839,1159469],[46415,5315963,6835610,849272],[61162,7541096,4811660,7356017],[43618,5810431,6829597,1406109],[30206,5548522,2388183,4100629],[38750,5153837,3197468,6722444],[32240,3904192,1893740,1569264],[42677,4765599,7864616,2010728],[64409,9906499,19772476,2128006],[30660,8974818,12117806,9464886],[32226,10471738,11009102,891287]]}\n",
+      "stdout_sha256": "32ad1d0f341e4a6044a20c08158ef92f4d53f8325b0c5ce4c6c6214b5c3f3d2e",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current512-one-5-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":18.365783180555557,\"tick_p50_ms\":15.358150999999999,\"tick_p95_ms\":39.480868000000001,\"tick_p99_ms\":51.860207000000003,\"tick_max_ms\":51.860207000000003,\"column_mean_ms\":7.3211222638888893,\"flux_mean_ms\":5.6963549305555556,\"apply_mean_ms\":2.8586507361111111,\"prepare_mean_ms\":0.048224847222222221,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[25190051,13478177,15358151,16020254,9184409,12108118,22182023,13006258,21058269,16204061,49096686,39480868,43288276,15319349,15625909,30329081,10867133,13859508,12927926,12433855,14859838,18972865,51860207,20661411,18115375,26293519,21408876,15226171,15842725,19598461,20386778,11634723,12072959,14086309,14042834,13052226,24197465,22043406,13625275,10832665,31151872,34733568,13918803,11750153,11967415,17841633,12058406,12668696,13865470,15854201,18294637,14796744,21027201,16591468,12205974,8764864,11320744,12050873,14770751,17167683,15497795,12562926,19114201,35549710,11590036,8714941,15330642,22361536,14447872,25925660,16683761,15923703],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[119865,13701267,3140268,5868809],[29178,6590753,4322916,896274],[23814,6330728,5589248,903531],[24908,7030414,5081526,3656027],[32775,5918914,2171632,765062],[32208,6101397,1845439,2992668],[35276,10808208,5125893,5074305],[21871,6948674,3763111,1216066],[34817,9993394,4536568,3866650],[21312,8075783,4459494,2608625],[31358,26038586,15927054,3638609],[55852,9136916,18337341,7714979],[30273,19760034,20486218,1642245],[37145,6680203,3966269,2586627],[33309,6142507,6144129,2491134],[32457,13012855,8294985,776921],[37614,6829890,2442943,1177385],[778001,7248579,4382983,954775],[20384,9634199,1905850,827574],[18589,7496579,3515426,840803],[18917,5867188,4633029,2927541],[41434,5676347,2614529,2076075],[119234,6887886,21558222,11206722],[28916,8737225,3659276,4370203],[23052,7299390,2881620,4995243],[36655,5345720,6947767,1830254],[21550,4680410,11310392,4975674],[21181,5856710,8133504,827262],[20513,6144483,2784271,6186364],[19750,5878140,11510606,1456855],[19686,6489510,10226076,2979788],[20185,4569469,2100692,4419006],[19168,4175599,2764221,916897],[370217,7649330,2070799,3174001],[19679,4902853,1975046,6559788],[19936,4305186,6075777,2086050],[14198,8729930,5721338,7311804],[20097,14036094,1927077,4656535],[20470,4160756,2816364,4514848],[19845,4654607,3015182,2466485],[20135,4823497,17609388,4193434],[21117,22336209,5829032,5278504],[68860,4524627,7700620,761832],[19934,4711049,1646115,4568693],[20183,5486711,2132646,3510068],[142139,8834978,5515729,2085974],[19432,5310810,3996931,1016283],[19718,9001824,2081480,880048],[26560,4280566,6232054,2679111],[29000,6184183,8189886,889600],[20818,8722569,2629754,1033855],[30523,8348424,3363321,2079754],[19630,5210652,6766321,4758355],[20495,6347414,7280449,2240215],[20943,3751357,6591981,1081009],[29462,4346575,2948763,726002],[28774,5944607,3291581,1366272],[28882,4304559,1850937,2372562],[32430,5072483,2500345,936082],[35762,9528855,4619771,707418],[37292,7680777,3309708,1023663],[34285,5153338,2780466,3021675],[36238,9297082,4000165,3475032],[34095,5337483,10904708,3866946],[36395,5081593,2614046,2198051],[35773,4394075,2003713,1033355],[32913,4798225,4779447,3186884],[35640,5625138,5323113,1641955],[87298,5661123,3307404,4482886],[33329,3837366,15352774,3977185],[34454,5888059,7219532,2545603],[33991,7767882,5600294,1768083]]}\n",
+      "stdout_sha256": "db5245ee6c5f7de60cc3fe567273924f65c9b9acc45b4c4b85ca2bff6161258c",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current512-one-6-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":512,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":16387830,\"tick_mean_ms\":22.050099319444445,\"tick_p50_ms\":19.904693000000002,\"tick_p95_ms\":35.113432000000003,\"tick_p99_ms\":57.368183000000002,\"tick_max_ms\":57.368183000000002,\"column_mean_ms\":8.4392559861111121,\"flux_mean_ms\":6.1931022361111108,\"apply_mean_ms\":3.4826560416666665,\"prepare_mean_ms\":0.064509499999999997,\"wave_storage_bytes\":3598184,\"launched_parcels\":5098,\"checkpoints\":[16659619693403201453,13768595136821819405,9102669753015311942,0,0,0,10928028323222671036,7924102020803160862,9411109793765568673,0,0,0,7946208416862437546,9553100675841257828,3874715634014938783,0,0,0,2499708619645373006,9510243883546237377,17749476077672861369,0,0,0,4901142846472201661,2579760699848991605,10988929310067468541,0,0,0,17650846331661305474,1310990432850051190,13354432860700896299,0,0,0],\"tick_nanoseconds\":[22565223,19388949,12275776,15301681,13375300,20434816,12261798,32236111,19919122,12569365,23372432,17226714,14394196,19342058,29449967,29714349,14580543,17958785,21052548,21868858,19519061,19433723,34605801,19896120,19553977,22323480,21888360,34231752,33866825,36130932,30414025,35963105,33198904,21978968,57368183,25263021,17943867,17434989,26280176,24491641,13442480,14618674,25691854,30342861,16042662,26791895,19904693,19818203,20884062,19223434,35113432,34441922,16223757,16088836,12074738,25339290,21363256,16213954,13517917,12034178,18523637,16271763,16433121,15196372,22224100,23217548,23068954,15432400,19722461,25298694,23344637,18625865],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[109472,7620666,8423063,2244745],[36032,5353098,6191583,6919396],[28660,7991226,1668446,1646294],[27082,9911740,2757585,2316771],[29687,8823777,2016392,708814],[30053,12791343,5132074,1347320],[32532,5889805,3465114,2186700],[33982,9739217,12140155,8973184],[34705,8701954,3433105,5316107],[31368,4561389,5655587,1902534],[33957,6256632,6512488,4671164],[38164,4995591,6532963,2933184],[25839,6515049,3646820,3289960],[30952,7673252,2684820,2565835],[49938,10853357,4436948,4353294],[33228,10152763,11235395,7471977],[30689,9020977,3412049,1566427],[38604,4859751,6678436,3233295],[30763,6227487,9224983,4329760],[54394,5361860,11049423,3481792],[29165,4716748,7956196,5016677],[54434,4451599,7683229,2002476],[21243,14810096,10614035,3203702],[31015,6072156,2136009,5604151],[29127,11762992,3431565,3681452],[30465,8981833,6060026,5330252],[36404,4648912,3511018,3725490],[32164,10649321,15931788,2486628],[22911,6342710,15323514,8228917],[1364730,13274817,5569321,4842226],[38829,16796198,3383587,3894559],[40027,12748534,17145630,1919686],[67042,8847284,10524698,4926441],[24444,10591946,4963266,3641899],[39787,13462723,12419698,7043482],[651218,5926996,10451567,4885742],[33679,11299713,3416879,1171150],[65126,8899348,4407401,879334],[32372,6768943,11085107,4502711],[33308,11052556,5026774,3152019],[57527,6243464,2077628,945109],[31200,7374843,4552007,1322149],[29149,6352967,3587335,904035],[38286,7802004,11903436,3673518],[35146,5227325,4264527,1695003],[20900,6994354,12541909,6008646],[35412,9167550,5197864,1203736],[22787,9399670,7513055,1108527],[70557,13693793,3189036,1444477],[34682,10975074,3885967,3509687],[34082,14791793,5467869,3443418],[34044,9306543,8782821,10007822],[38032,9432576,4280776,1065961],[32970,8391501,5217964,1527150],[31241,6104626,1694677,637980],[20955,13051204,4343409,651989],[30590,7682816,8478740,3918942],[28200,4452369,7935452,2895548],[29856,8035550,3467858,1105381],[30523,8385289,1936222,856567],[33755,10245301,4357175,1248555],[33685,6377143,3559527,3623559],[32726,4619568,2652098,4496260],[33903,8168648,2985367,1344309],[32771,8265701,3973728,1077376],[34971,8510564,11975437,1577967],[150193,7782766,7349086,2185601],[33613,7013341,2626478,3528204],[36814,8222667,4857867,3977965],[32190,5970717,5576603,11088681],[33338,9069264,3975023,9203710],[32995,5109081,4357683,7875856]]}\n",
+      "stdout_sha256": "ff819a562c2b8c90ab3ffdf1f65b83530ef2f1e04f4c2b7f5d07f8dc74c65a05",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-1-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":179.27233448611111,\"tick_p50_ms\":117.499368,\"tick_p95_ms\":299.87991199999999,\"tick_p99_ms\":3306.39345,\"tick_max_ms\":3306.39345,\"column_mean_ms\":120.80404398611111,\"flux_mean_ms\":22.462500486111111,\"apply_mean_ms\":11.052765930555555,\"prepare_mean_ms\":4.5777774305555559,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[159257121,93853807,108895366,84609413,71459706,68012913,121845848,96406450,116471235,77129158,86741799,72063620,86289051,68426652,222279822,172213475,100664637,76387323,116891947,122498282,209230561,130521975,193651202,120719324,158959094,123658693,128661289,117499368,167739114,79412119,86687834,100648472,95970742,299879912,140992832,245969115,440703896,219555619,254173361,69473337,67201455,71872128,78867421,105960078,110320387,84612001,150240334,64570427,150198392,120436565,163362591,272250946,207373069,120951776,107193341,145499911,112225537,105786989,166610938,106735819,129621424,119686951,128500406,172779714,414139183,3306393450,123711369,88904182,109856285,82259190,124013052,88967288],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[636869,128858448,10830050,12590448],[652926,59963714,12421832,6075711],[208157,71445160,10331895,19090266],[349025,56713322,18955671,8096000],[193232,57196601,9785172,3733532],[345628,50545454,11711325,4973666],[216805,78397137,35432330,4847842],[1313104,64526594,16687973,10282166],[583420,99796020,10252538,4806273],[243817,58346548,12897253,5060759],[223617,57360351,9779651,11011352],[229054,52431712,10003968,5816934],[755656,45955800,13882370,4057280],[337078,43804492,14798737,5760377],[251606,57137828,14578040,10581528],[29654231,62283277,37285867,8137378],[636142,50693251,12398784,9192139],[228250,51547450,8866710,6354723],[4833444,42792574,10498657,4617712],[396345,76218957,17359357,12673703],[5561992,98534627,30819536,35413842],[414248,66902066,16773260,19989385],[27520022,119806508,22990204,6480296],[1339272,77321808,27910367,9930207],[588247,72288390,15357088,6190816],[7059099,87795001,17180756,8124690],[319604,81977608,29510789,10576088],[371526,89465359,12265177,10790438],[46088712,65912064,13584630,37588727],[350162,54182740,12863490,5268753],[318324,62553793,11637550,5895780],[370058,68382102,16415036,11069360],[369160,60009017,13439156,8859007],[298295,182933766,43520137,24272604],[1102762,69032489,13394152,31050389],[350615,104756334,42458566,25454559],[49325199,203894165,78360234,8882671],[331304,52889949,35904369,6347063],[12167995,91550265,15888306,7005916],[387603,51125128,11526004,4230247],[202847,49706656,11355484,4759896],[192768,48342398,12457840,7865905],[317607,59238740,11778157,5781479],[211180,72030401,21700930,5663913],[14469307,70661289,14790556,6198111],[7615736,59735541,11011585,4481547],[24220039,93870939,24585864,4873676],[7271934,43173106,8944585,3724959],[706303,84515021,29941517,7701537],[484439,78248970,16464997,13656760],[372081,105395153,26219573,29376045],[927842,166997200,56948309,8797711],[530368,126893700,37789042,21443205],[1039577,82653024,23634486,8355978],[287194,79326365,17458190,7420209],[12877145,97539442,28554474,3955858],[414157,83019413,15060130,7281175],[562227,70734352,18974167,13095255],[1416090,117563436,32819966,8661732],[1098585,65363380,25857542,4111578],[525092,78078331,33901350,8690221],[1085578,75469036,26922876,11078998],[385728,71925499,31832195,7701143],[47256764,89030822,22608494,8257104],[363338,99589553,167973872,15361441],[1681617,3199803248,25578330,73792312],[4086663,55347602,13871545,6416374],[392197,60662963,9902214,11552101],[414104,71842307,18554611,13698301],[612783,48680425,10754772,7540014],[357229,99471706,15477698,5807548],[298851,65653280,13017697,7516434]]}\n",
+      "stdout_sha256": "2a18329a7888b313b7838464cd795e9d84e2fb5758190c0a1b51ed98f840a304",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-2-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":86.41687831944445,\"tick_p50_ms\":81.467262000000005,\"tick_p95_ms\":125.971665,\"tick_p99_ms\":188.524295,\"tick_max_ms\":188.524295,\"column_mean_ms\":59.691310874999999,\"flux_mean_ms\":14.365565805555557,\"apply_mean_ms\":7.191040597222222,\"prepare_mean_ms\":0.67947522222222223,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[125971665,109925273,91227049,82973267,93738630,99871519,104300749,84551732,68643543,94691641,110963537,65762204,166108485,86295540,76310465,81148686,71727422,83429737,76290711,84809899,67232701,77891063,64909802,76260359,80664190,89214155,77307473,76470541,78579038,71518490,67798253,96901191,110944029,188524295,81705566,88885080,92683356,97803440,86390115,59538764,67122075,71893220,64330159,84845859,59744774,70414926,86930164,78442634,86839273,97177457,133471453,99057022,78653557,71717931,79248797,75005569,77042693,76511998,110840647,81467262,103679449,90013757,80613560,62521831,85686241,67227378,67656795,89154932,75797205,84332064,77951152,96659750],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[3146988,93117344,13620468,5217851],[297955,72657668,17274657,7580704],[224784,63929877,9669710,11855474],[333301,62923226,8868251,4765625],[410275,52096955,15390802,16675051],[361140,76486367,13244969,6815477],[408525,67014147,21158783,10124965],[367853,56155065,16544642,4338008],[263506,51163932,9032216,7492877],[219100,71616528,14051979,7803728],[252755,63931868,41178186,4123562],[950285,48576438,11242494,3949167],[1809793,75116898,80530129,6260127],[408019,66593391,12002865,6311104],[314211,58568192,12338811,3898812],[329807,52657296,20834872,6419502],[455399,49454188,11542312,8774211],[330563,59680918,13849932,8706421],[403122,57636485,9387555,5853967],[244737,63186690,14053370,5936198],[241800,53194345,8465941,4371990],[219491,60421777,8884005,5943898],[217740,49143035,9892193,4737766],[268795,54383872,14661579,4386218],[641329,59174340,13205064,5599571],[367098,65831332,12198145,9564822],[545943,56806547,12441718,6253386],[261220,53629160,17289306,4331797],[224156,58727821,11904554,6130934],[327020,53788083,11051193,4734245],[214076,51203259,8980008,5979672],[212499,63861272,13850676,16830455],[357442,70764219,13016782,22448605],[2001574,104427444,36376610,20680140],[4957159,50674442,11652836,5453194],[332591,59537305,15330300,6268779],[359643,73352778,11047094,5992614],[416253,78843043,10418135,5600865],[695560,62637839,10259762,10062247],[299592,42943212,10054102,5244611],[318241,49496111,11546281,3974141],[203868,51311200,15239436,4168852],[213393,45624539,8480788,8840651],[252654,54422866,20672044,7887527],[284013,46437599,8332715,3565607],[211035,52910207,11386018,4845092],[250483,55469045,14944000,7539635],[268994,55168554,10510820,6607749],[655414,58224242,14519887,6938663],[339526,62915218,21278291,7102294],[315308,57913867,14920894,4577367],[13044981,58738989,11430826,4733676],[319199,61082136,9865628,5613641],[349360,50236077,9838505,7719763],[233894,59386531,11466734,6188118],[247077,48943558,14018970,5823793],[380046,57430963,13437494,3767823],[303870,56710231,10628633,5462257],[369821,81690021,22693940,3891153],[782935,58751157,8216679,10389028],[590047,78873636,11490041,9135270],[398245,62848111,11844555,5096059],[473232,59741364,13925007,4642132],[328777,47369623,9469174,3907744],[321369,50382463,19237903,10025131],[425211,50789430,9219027,4452957],[489057,43343495,15532640,5944227],[399369,64808974,10582180,11493647],[358246,52892281,12211980,5859690],[359136,55931807,13838140,7972315],[363884,58305716,7976999,5618764],[378432,63715774,8767503,20451517]]}\n",
+      "stdout_sha256": "3181bbc2a9de652f16247171c8d25e43844d77a8c62ad0cfc8b182f6b5a12d89",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-3-C": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":81.23957847222222,\"tick_p50_ms\":79.326909999999998,\"tick_p95_ms\":113.15539800000001,\"tick_p99_ms\":123.88436900000001,\"tick_max_ms\":123.88436900000001,\"column_mean_ms\":55.626464958333337,\"flux_mean_ms\":13.683874375,\"apply_mean_ms\":6.355458416666667,\"prepare_mean_ms\":0.58773618055555554,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[115809711,105492165,81979956,102430406,67358776,81688151,62548587,69546831,57946676,68808689,69255889,66111276,91434720,65625853,108329383,73801975,86532599,81526097,86328695,75694669,84315499,79671415,73377627,59298504,79326910,72091437,79564813,68851877,73745918,78724885,77462840,87809193,73830427,62787295,113155398,116437478,101655639,88298180,80364542,84844241,83693471,93039165,74177807,76198805,76531273,88572342,74701999,73872593,75335029,57682950,67793829,57656310,74861278,70131676,76325722,99338330,123884369,104568995,91378197,84174453,91530401,93611040,80797209,71822566,74482793,90858231,79527222,83167491,66284209,84364907,70280016,84739750],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[4086478,87229926,12457261,3854226],[245367,53460317,12843079,8731789],[289828,54809978,9310600,8317691],[775648,86248765,7641898,6819316],[313018,49112409,13609323,3783449],[328151,59568010,11997733,9087605],[223078,46268710,8554882,5925880],[330056,45566778,9001290,10224248],[196729,41834753,7057187,8322871],[190276,52754190,12141729,3207931],[214792,48970628,12550013,3246695],[211522,43153846,13459738,6536731],[2913697,65050677,7681998,4289337],[429413,44185185,14346824,5767493],[352079,72124047,14505640,5075483],[286261,55105204,9900783,4558260],[301091,52731969,20193532,4401577],[409743,58497818,11448778,5360215],[462815,55075075,15135102,8442341],[252077,57798382,12072626,4521186],[247532,64836345,13881894,4375954],[240514,51995484,16211421,5369902],[239076,49110292,16362442,5749254],[238506,42341472,12417582,3334614],[689828,56368017,15084884,4532902],[344176,49500143,9814332,10283408],[357718,51900789,18390810,5468571],[453607,49841445,9619540,7700863],[270164,56334184,11442154,4472037],[265442,55503338,11530054,7557052],[287290,51458851,14713937,7005054],[303939,67615384,13694223,3734421],[266380,51828356,10705967,8546055],[250573,45605417,10152635,4618666],[614808,59254438,27534905,7618776],[5947965,74432425,13877963,5133104],[773194,68289933,19825694,8063530],[578774,58913528,12954184,6076542],[334335,55676905,12439800,10289049],[262967,57533477,13626993,10373009],[371744,55272608,16286531,4592879],[320956,60278153,22946595,4993371],[459763,52113945,8460987,8804087],[366911,50861122,8079643,14672884],[331624,55424042,11623079,5206777],[366906,65500613,10347508,9308838],[994212,57278456,9412626,4490892],[331582,43533696,20105888,5624713],[732143,54731035,10705699,4040749],[366234,45331453,7083185,3678178],[366921,48852168,11285725,3553416],[371031,40137277,11807859,3482510],[342846,55271339,12934366,4117834],[517234,48895097,13028955,4653146],[275371,47438742,22360278,3272699],[523458,74315275,13935298,5232256],[600353,85892999,25136702,8322037],[834740,57607731,13266375,21042405],[2987580,58222674,15715298,3790325],[423191,56296975,13854347,7220984],[651419,60867913,17497128,8289178],[260235,67034248,11901390,6075858],[379305,50033522,15379199,8479616],[290662,49269535,15094434,4736774],[258997,50638852,16337681,5298625],[580960,58290825,21717182,7521344],[419078,55239863,14910388,5459930],[387958,50248936,21711575,7315456],[405396,46872795,12262334,4188854],[378558,49919438,16017818,4431126],[320658,51826377,10871831,4107308],[320072,53720883,12969621,10810870]]}\n",
+      "stdout_sha256": "9ba5d0739c9ce8a6a0f35278bdcedb35d2e0f24f2cba2bafa3776a5f5c8916d9",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-4-C": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":79.312344361111101,\"tick_p50_ms\":72.873662999999993,\"tick_p95_ms\":116.413607,\"tick_p99_ms\":232.68990299999999,\"tick_max_ms\":232.68990299999999,\"column_mean_ms\":53.844978986111109,\"flux_mean_ms\":13.372187916666666,\"apply_mean_ms\":7.0385267499999999,\"prepare_mean_ms\":0.57177916666666662,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[232689903,69119801,70095583,59081476,59637667,65767146,84093224,59482750,65998376,64591103,53148071,54634965,77160746,69303297,65686824,70386082,66814841,77772145,68054938,67689213,69568851,66366909,56084397,82132397,107453405,149457957,72873663,88140010,67371434,72815954,62288074,86603610,72283397,63747741,85585560,74479463,93004872,85776124,83071238,87385935,87788036,68578509,75099960,75196512,63701947,84150675,72265452,66979938,78619342,80218900,71327060,103093197,81362397,70098266,81201257,69989065,74081140,68396367,81198259,72271719,91847528,64645525,85462163,76233736,73400259,77439264,92734146,95907361,116413607,125453137,93743099,63891829],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[2195369,139921006,57070197,16559975],[398479,44134664,8117907,6970112],[286747,43132056,10112411,4602543],[316409,42634558,9146681,6393206],[289379,44368132,9129651,3792293],[274860,47965586,13410422,3353596],[204374,45758567,28778369,7218249],[4650854,42350753,7882595,3620576],[353631,48363917,8051508,8266281],[220075,44389867,10465157,8945534],[278265,37386503,8497786,3510670],[379174,39225343,9801816,4596454],[561942,50936627,16571891,6335915],[314245,52682767,10113089,3559299],[359753,48622892,11385429,3682396],[290215,51220042,12526088,5384963],[450565,43840580,11814652,7661747],[302264,52654967,14259853,9121716],[275306,48616446,12245752,4769245],[306657,48707303,10595068,6252622],[355678,53113473,11332114,3256860],[190243,44300596,11646214,4798375],[366963,42038260,7384331,5179000],[212178,39651575,17216276,3932062],[724290,84984738,15906805,4239635],[555537,109284215,16594261,21770862],[478088,46038988,19533251,4865706],[269145,59456276,17108854,8873919],[265484,49647529,8695355,7713658],[197966,43835946,11929236,5043139],[220307,46263821,7331713,6980843],[3489776,45661200,8088963,15901637],[529706,50221232,12606461,6554743],[365445,46809233,9611469,5214974],[400960,53865862,18205015,11091005],[427171,53853318,12967226,5782356],[685843,57485803,18704024,5522310],[514919,53712723,13751732,10914622],[423312,58115235,11849590,7265124],[387793,59591800,13208105,11072772],[405564,60041758,15759753,6360737],[438449,47886594,12325854,4287128],[347485,53826413,12025330,4458599],[360705,47216057,12514145,10079515],[333231,44804994,11918948,4642153],[331678,50035663,10078268,4122533],[517784,50229074,11753275,3930511],[506868,47239719,11783476,5594216],[1112705,48614291,15683873,8094243],[509132,53393019,18783155,5630335],[389913,47434697,8773256,7402658],[426411,67859744,15982009,12402894],[296539,55076196,11461821,9280297],[513855,53739735,9784386,4089453],[502569,45118959,20712666,9778436],[471405,49689771,8988517,9219171],[2158341,51369885,8337381,7681375],[264339,45048929,10250587,9056289],[316442,60604123,11336422,4869736],[560971,53289150,9539368,7189391],[680431,64535145,11839161,12172832],[513875,43761332,13166519,5238507],[292471,59262599,15381736,8439805],[469748,52729500,9431491,8639516],[297628,54092108,12791891,4365834],[413616,56116611,8371115,4292501],[479864,66697396,16593111,3881220],[519846,59342422,16568540,9738744],[591114,84561797,18496338,5081141],[410775,73383523,24539217,15762666],[1480521,68737854,15134058,4622605],[484458,46255030,9044546,5797891]]}\n",
+      "stdout_sha256": "5c1c440e71865b725f9e36d7289730d6e54f1af97bc11255d7c65c1c4d7260d6",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-5-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":102.38513756944445,\"tick_p50_ms\":90.491314000000003,\"tick_p95_ms\":182.84029100000001,\"tick_p99_ms\":203.53742500000001,\"tick_max_ms\":203.53742500000001,\"column_mean_ms\":70.471772041666668,\"flux_mean_ms\":15.993791291666666,\"apply_mean_ms\":9.299781194444444,\"prepare_mean_ms\":0.63387075000000004,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[128036506,73984058,88082309,81476376,87058714,65376123,76024377,127645558,83910936,92992710,85566259,81629424,97191406,85372890,78883463,75920497,62781488,62233263,71092637,73756295,75244107,65989639,81052728,66702161,90491314,88310178,65052332,63406174,74441445,84184990,101728736,90098368,90019844,113909459,87704157,71318162,128771717,203537425,182840291,115705160,105668516,107563172,98415569,155113631,193884072,180141388,198507453,90031657,98045079,80044573,83071666,122525207,110497159,106293871,128600122,102121129,80110369,93618240,79127000,113933160,180460031,93095775,127489116,121009808,92749690,85896900,121464229,132494113,114303019,119846289,120034108,116050118],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[1274300,99719835,11376038,7592231],[236388,50421979,12349349,3792418],[292938,57064769,12690746,8166299],[265385,62144445,11199814,6952908],[274676,67157114,13017186,6023381],[349843,45587625,12941548,4012398],[297269,53443801,11082577,5082265],[300586,101872492,15863496,3943711],[1170793,47314079,22355076,8430354],[387796,63101698,16812977,7504739],[283082,54155356,16325544,10058069],[346403,67644033,8332031,3600818],[398726,68771731,18948299,7072361],[261313,61869120,12180773,6579398],[225588,50929025,10356620,6947774],[279445,50209428,8655890,8411021],[240465,46659183,8277337,4031279],[212236,45848477,11236308,4234026],[200743,51503929,8097764,5107238],[288585,55595249,9889879,6278483],[212189,55460933,13315610,5326103],[942186,45759940,8665576,9853657],[247138,53662546,12780369,5795099],[267300,46822246,8729802,6678908],[591005,62286144,15505097,9036587],[405707,62986736,13596550,10030442],[282633,47201025,8414201,8001715],[472483,46549115,8979594,5591152],[302462,56459422,11967077,4306337],[209892,52020953,13394619,12859951],[381359,75894009,9829327,7469557],[1258029,62904202,17823685,4262425],[397058,67339715,15141536,5306468],[300652,90125991,11466029,6048003],[252936,57092971,15473311,8563046],[352987,53473837,8720353,7431051],[756569,79943373,19332229,20472349],[6064175,135008916,37377220,11877395],[2056376,114130320,36449093,14960390],[584986,93250939,12231697,8050896],[478042,70195134,19819784,5609641],[389079,77052453,17530993,9878402],[383590,59646210,21581801,10645604],[487124,101687663,24614919,13057458],[701661,136666195,40642157,8879543],[2341264,80045629,23385443,65081393],[4458935,154033975,22458016,9902014],[435354,62191937,15295781,8323748],[758336,69576536,19169102,6506981],[382681,52750650,13534790,5967873],[330446,54038110,13730109,9647251],[342248,79616967,15850467,14419466],[482870,72046384,13358387,13697698],[450673,71375455,16116139,12788932],[396395,76408281,15701794,11803952],[294086,73397908,15980305,9619108],[413139,57536133,15334665,4265022],[386296,60798849,18762643,9928070],[389428,52997284,15536471,4983835],[348280,76908191,19950718,11050006],[2800541,141813139,12714460,8515856],[295985,57655323,14242009,7175293],[336312,81741963,25648609,12180569],[330089,72421271,14552666,13364986],[456588,64070806,12376862,13089272],[248048,58521037,16963205,8443605],[333616,87796265,17428818,12859718],[322126,89202481,30493350,9967809],[733559,78032994,21051917,7667198],[327761,89440419,14990633,8278681],[532590,73551597,21389676,16842009],[346870,81363647,20164057,9400551]]}\n",
+      "stdout_sha256": "4daa1cf6953a2e83d0db39c939fc5ab75b90b4e2d068382c29dd1351aa65de11",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-zero-6-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":0,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":79.463070097222229,\"tick_p50_ms\":75.776385000000005,\"tick_p95_ms\":109.740559,\"tick_p99_ms\":191.23951400000001,\"tick_max_ms\":191.23951400000001,\"column_mean_ms\":55.299288027777777,\"flux_mean_ms\":13.049563541666666,\"apply_mean_ms\":6.4582154999999997,\"prepare_mean_ms\":0.61689377777777776,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[6882873100889712787,9856387629576623227,8319377670905281559,1354846727769980304,5903625809586040781,8014468811358169298,1836034396315940433,7659503088043189234,11229132062158596925,1988543966355532527,4760015835172278174,14775506105928634374,17082712847428519071,3251266304478237343,7803515152014838344,4995011659206521301,13193914383137881014,11343207663238752065],\"tick_nanoseconds\":[191239514,139432362,109740559,86634323,94588173,107438670,74243527,84843589,94255801,104237524,98537247,78800521,94445754,85120385,88182740,82155410,75776385,86720206,149845709,101741485,78902441,77426678,76162240,67008197,76147990,66545144,73657330,64100835,67197644,63975661,63079946,70035771,60749484,56258187,56836400,67426113,77490915,62814228,54145661,58198035,54374388,105092151,83173325,59939874,75602771,77153649,62304849,67331212,82562198,77835002,71440284,76707738,87867590,74659184,72553503,61654433,70874501,66187218,86214677,65276992,81810652,74226416,77328727,71025755,61623621,63716984,69219966,76924327,57509928,86749945,73494356,82766047],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[3717178,143697991,18421188,6614143],[982589,83269285,19055130,18663368],[1806085,62590942,18024168,3819060],[506311,65153546,14331644,5591980],[341133,60127422,20003498,10408539],[4051130,77129830,19768739,4570020],[447683,60786276,7859961,4478400],[247059,67524554,12463762,3816783],[207429,64706016,24068330,4610094],[229435,73019412,23310917,6768481],[240890,54902946,18893488,22463028],[367641,57580351,14250015,5930625],[382432,71858537,15610636,5734436],[239323,65541742,14761091,3529431],[208891,59205959,15845176,11728581],[477938,52135958,9403795,9792561],[206877,54199008,11893303,5306435],[246463,67264626,10467287,5694719],[316921,75321263,33883619,20241714],[2652342,63805308,20292366,7014596],[244575,56381897,10071626,10962502],[250809,55883307,12909942,5326250],[407770,49706075,15042751,4407528],[329587,45020880,13978789,6625508],[625539,55519611,10578946,7134927],[364577,48882348,12158336,3631383],[362614,50598720,17471632,4081556],[354221,46103527,8596772,3520885],[340010,48820682,10885053,5826983],[323470,45222888,11173645,6054182],[337537,49206099,8704331,3492658],[233405,52367508,10324375,4925448],[336082,45074600,10181259,3859004],[305607,41718405,8259912,4386738],[200992,42983372,8685093,3834432],[347760,46535646,11803225,5709180],[712563,58841111,10797091,5476349],[240724,45040446,11295477,4067178],[268883,41466554,7830238,3373563],[255769,43260209,9052893,4534163],[301499,41502585,8139671,3208373],[280915,70465624,14461215,5618780],[7559520,50972880,8714887,4438659],[358587,43831276,8874782,4223617],[322640,51660235,7949123,8631327],[398128,49525100,9714169,12288605],[219803,47520058,9486412,3736781],[317915,47919564,7742953,9832665],[465967,51273498,8084623,17335365],[497539,54208493,9435149,4261438],[548108,50331647,12198416,5671902],[430248,50159966,15249632,5626174],[401196,62473936,13057647,10312076],[584564,51980151,12091725,5601107],[408811,50586895,14941180,4951494],[248437,46410756,8976782,4285239],[347157,50111413,11341459,6976394],[513580,44149886,14514547,3657789],[305475,55952597,16623984,10507093],[350004,46627726,11868504,4646539],[727968,60308411,12469671,5512237],[341111,55617693,11462517,4812625],[357711,55025699,11137921,4666437],[953253,49395949,12782079,5739010],[262708,45390136,9460429,4976337],[226144,47481067,10928952,3645668],[220119,49504846,13161111,4459371],[201617,43331185,17884238,10099082],[257920,41270922,10479893,3387282],[341188,57032818,18001459,4773636],[488922,53841747,13356697,3722303],[459354,57229122,12567249,5378700]]}\n",
+      "stdout_sha256": "a0a8e5ec8b2412a325d9a04520fc48fc10a3d9d9a7f20ca3e47551c2dd0555eb",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-1-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":154.24458709722222,\"tick_p50_ms\":151.07002900000001,\"tick_p95_ms\":210.44452899999999,\"tick_p99_ms\":264.35953799999999,\"tick_max_ms\":264.35953799999999,\"column_mean_ms\":104.74010340277778,\"flux_mean_ms\":31.146133194444445,\"apply_mean_ms\":12.560193763888888,\"prepare_mean_ms\":0.5661880972222223,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[151271792,129975248,132543090,116352091,128216557,111180900,149917460,112907915,127471305,122782869,109040609,119909986,110826288,142596804,94313096,109479928,200752602,151913703,158032921,139281573,179235639,228143108,189381056,166781541,151070029,120794283,137510738,129913802,133553241,118597052,140870693,181173708,141769336,157206181,134794969,139613826,177485710,204562831,180320644,248174195,264359538,210444529,182482979,179186133,156503009,140947360,155450020,154581442,171171714,185368021,192593018,186115385,153393818,168846235,156982237,142839270,168848227,120951851,189112355,162011444,203314515,158189723,163557561,142193680,152661986,137184156,117547898,128058732,140904119,134084890,148413798,157591309],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[763691,111035886,25520795,5794148],[360013,83607284,26511699,9796999],[214226,88811048,16940572,17749387],[253352,87912200,21623676,6039431],[576454,84329012,23067651,16956451],[296819,78011018,19940907,12329224],[391102,102479507,38299398,7954355],[348817,83514849,22232901,6262772],[306379,83879569,30153214,8258086],[405037,81365481,30138529,10062893],[357891,80850343,20577643,6503059],[288060,85074823,23650703,6005392],[613401,84665641,18337252,6382029],[233352,85573175,35585231,11784299],[464821,70601602,15980451,6229323],[320601,79075893,23032339,6168845],[367249,147474331,29519845,22089124],[513187,93800659,37574262,11437586],[541804,114571239,28800107,11504786],[280145,99445773,24422209,10095360],[896242,135032125,27270907,10030058],[288992,159701391,50208138,12664472],[602006,140343856,30137248,10496575],[475645,113082242,33294820,18050792],[643644,97042261,33745996,10910727],[441162,83719724,23485612,11883102],[433337,85019705,36991733,7105587],[453080,90126163,26203532,11467969],[383607,98587425,24319605,6452223],[410068,81591314,25476685,6968737],[378219,87748346,28592654,15898158],[459830,99180181,50669032,27153549],[3007446,96547381,27636265,11232561],[432093,112590508,31650397,11206998],[263716,92073644,28076356,11047508],[294960,106069490,23408771,7920916],[686798,124955485,35054238,11696130],[2615337,145521981,38632930,13441356],[429879,118217538,40694973,9507239],[400498,160718140,56386380,20641636],[379264,176552722,54405568,24524427],[562364,139887621,42917972,18151842],[824044,106347171,37278444,18945686],[597029,135594424,27550589,12248336],[456930,108184702,32424442,13227766],[407135,96994191,24671233,16922268],[429978,116652859,25051331,11259168],[449167,103426777,34056769,10713951],[1169929,99745222,43870238,18964908],[287165,128932136,31492846,20960764],[486109,112250266,35399554,28397404],[554077,107709292,42176231,12576023],[589382,103414457,33134284,13317270],[454149,124749919,29789343,7399332],[487137,99674121,33047214,13100357],[360859,105936484,26431652,7957586],[318057,100530648,31922912,25260677],[375758,91008406,21951063,5877384],[281314,107418709,51384423,28543578],[537797,110489497,29444330,16196308],[1092793,147908970,32434882,15246937],[503309,111916083,28150653,10076867],[480816,101246334,41549450,13107964],[510689,93545330,34885255,10453053],[459324,106295911,31685408,10785252],[486342,97507378,26556143,9283459],[409281,83678239,19689599,7558501],[412121,88237193,26573150,9121894],[2104733,103202642,24296157,8181696],[1635076,84190562,29186484,13759133],[454545,98482141,31984874,11603063],[315910,95628805,43283441,15431255]]}\n",
+      "stdout_sha256": "1b1db29ccbe150424a7ef347a5d9c4aac95ea92d8997660522b8e87a2044860f",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-2-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":108.32892008333333,\"tick_p50_ms\":103.38520800000001,\"tick_p95_ms\":154.67220699999999,\"tick_p99_ms\":194.23700700000001,\"tick_max_ms\":194.23700700000001,\"column_mean_ms\":60.685409486111112,\"flux_mean_ms\":28.551218291666668,\"apply_mean_ms\":14.230865736111111,\"prepare_mean_ms\":0.46919769444444442,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[145887101,98462502,134620571,105127631,103385208,119936122,107152163,101067012,94626041,104398842,107715024,98074362,158941907,100717904,99287653,93320881,93315966,78395082,83605894,85158119,92177116,87688812,79729239,95697965,117713186,119982121,154672207,145619342,97717816,194237007,98946923,89026483,86130488,81856681,93303232,81305315,99955071,91071636,109081369,90396588,104302865,82828258,105942761,88661030,101667740,90429849,100866233,89575587,113673733,111676087,101395879,99211188,109788281,108279546,112811534,115537613,85926884,117816879,119234100,108723235,113552407,133425645,166761563,125743157,98806125,122327350,117011355,124413479,136791675,134383336,123933395,114678895],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[4584658,79845793,29185527,18042902],[420968,53793455,19882818,16018732],[266325,72895225,31087223,14217871],[359940,59695289,32641559,10803107],[390952,62365363,27102695,12954640],[424352,61695981,36100246,17141843],[435803,64052957,27287111,14481369],[656571,62934789,26287594,10724743],[231370,50727953,29283713,11583196],[247918,66211732,24716553,11884422],[252602,59724469,33307974,11391174],[339328,63692944,19222326,8405454],[390416,86675263,45019989,23535287],[626007,56268617,23705600,15095115],[431025,51666337,23725383,15712338],[512543,50738167,19149077,21107464],[290716,57530067,21212986,10548229],[414467,43397384,21673877,8418813],[330241,51765887,22054751,8130283],[359630,57127378,18946250,7587995],[362499,51968935,24174496,10144441],[266188,52703907,21381846,11744733],[270787,45036435,24767888,8741129],[270071,48801158,23372756,14111546],[569669,66081783,32676612,14097753],[757475,66490998,29307039,21921620],[487193,78143157,40455616,21319221],[403848,65757526,53699563,24525461],[454683,51208778,31686763,13175815],[254095,97263163,74861071,20021048],[600716,57839919,24206242,12430653],[405645,50548585,23720375,13005088],[364581,49415342,22069379,9374998],[261386,50081243,18725832,11033916],[364821,55654557,20965979,10850955],[482265,49009321,17634763,9223045],[566524,57498318,23925291,16372263],[456080,56121746,18695959,14632051],[390926,61764386,26579558,15996867],[321110,53443959,23170244,12416741],[259187,49021220,24590521,20902265],[394644,49180942,22421805,9306351],[242948,53467304,25320954,12958065],[275060,51917883,18523065,14778672],[268853,66012481,17711419,16073449],[404406,54153055,21199496,11490692],[412771,58638830,27124587,12507054],[408821,46080621,25971366,15588910],[421850,64273069,32797565,13893708],[480096,56232421,24446815,19081476],[551444,60805357,25124363,10223406],[422721,55812511,29213333,10181156],[430851,64096722,29807182,13770196],[612431,63876938,28946175,12647046],[408230,67829819,30318329,8539763],[443835,55616872,34640603,15907023],[474093,47950360,23337072,11371193],[391469,61340626,30423707,16673619],[459455,72318987,24966208,19186027],[502599,58941791,31580347,14999743],[651086,66866545,34735605,9258394],[427683,70816568,38564214,21249593],[470921,87207626,49289089,23722969],[387623,76906677,31687128,14421183],[387458,62681035,24321841,8933926],[277326,66934874,33177077,20263788],[419109,69148074,31855795,13564656],[452417,64355341,37820535,19237384],[373052,68335934,40208883,17585160],[345913,63378211,32167030,19919904],[518157,73980148,30675427,12027897],[529331,63532375,35049657,11433344]]}\n",
+      "stdout_sha256": "368c365bcb99335136d4c35638fa6354945ffec7e12b55884499b3a6a7dd58e9",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-3-C": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":109.44862694444444,\"tick_p50_ms\":107.509281,\"tick_p95_ms\":139.58633800000001,\"tick_p99_ms\":155.24140499999999,\"tick_max_ms\":155.24140499999999,\"column_mean_ms\":63.936934125000001,\"flux_mean_ms\":28.640866500000001,\"apply_mean_ms\":10.969292069444444,\"prepare_mean_ms\":0.55869083333333336,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[155241405,86151059,120386184,104040598,100929995,96824167,104913204,107874233,93653228,96775808,88134181,96014180,91072265,110242415,117058432,148332561,118149563,120256197,119403195,116348383,109183501,110087350,125909691,105578169,111286380,139586338,98254787,90473863,102884885,122419391,107509281,110378966,105688707,111854149,101223953,102086695,132496012,122733382,119420425,102982380,85061702,91487765,113742360,109498692,109084192,129857330,109503286,97239091,131488445,123039841,93066270,102866921,104279484,112281182,95267104,100109409,101736791,106515786,106446492,113394040,143834590,99368149,116059205,101128278,96620124,123748820,91841388,118034683,105153509,111354365,102147842,111204446],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[5686284,94140944,22951493,15804272],[386291,52555869,22203042,5907755],[298350,60037965,20805848,13871855],[258200,61811010,28093364,13358866],[3267573,64757421,22390093,7588306],[244151,52659744,24096120,17374548],[243837,50404405,35791152,9505086],[337510,58456321,22514901,20967784],[411954,52544637,27583423,5949002],[393460,48996103,29890258,7750522],[339983,50316289,25350972,7373710],[379888,55110431,27191537,10583826],[577747,48757665,26675547,6178146],[444817,60025448,32809237,8575649],[323190,67627542,33564722,14687902],[563833,96609877,36867501,11482713],[536921,73795682,20055769,11004012],[477817,72557021,30775270,9459915],[313663,62877520,29298226,22526933],[418076,70695597,29556716,7797080],[423716,68738072,25065923,10732528],[411014,68056126,27701828,7758472],[366730,77301855,31769325,15487777],[1169519,64641153,29958976,8912622],[574561,61649393,31814002,15779575],[296876,91724705,34931858,11442443],[561962,59642092,28480896,7424256],[272351,53796931,25174825,9123647],[380386,63452711,26863462,10082041],[292034,59912362,42151119,13903468],[537728,72354248,20690467,11147932],[458612,58108162,35468331,13316535],[305236,66553935,23207595,14474881],[391045,69992983,31047265,9130179],[367929,63685542,25647984,9807796],[387995,56623925,36686206,7100045],[623124,79672253,36022963,13687651],[434860,71790465,26622079,15981103],[488145,70421825,35717621,9750808],[487685,55052439,25252362,20002405],[451091,51445900,22059215,9565099],[519395,55208738,24584310,6963576],[397220,52483044,49857038,8951098],[496872,62070820,32176586,11613323],[450964,70947067,25072866,8924438],[422554,77183088,34258801,14318625],[422823,64004362,31909197,7407412],[427768,62045199,21444064,10990062],[621587,83498322,31898779,13728358],[467804,65050728,31801489,9050251],[513927,60230152,21626095,7605645],[405032,49405287,21409693,7106955],[453487,64542231,26475649,10534660],[393132,64738384,32202599,12707717],[561124,60774681,21112439,10916489],[415742,61355550,22600642,13924742],[399580,62374574,30242418,6487104],[453946,60043717,29627816,13513912],[292492,70584840,21693611,11067456],[355392,61660788,37933488,7642163],[767106,63961412,33314846,9933353],[328218,55570992,25797371,8028636],[306072,77943962,24373503,9404374],[353385,61329199,22393536,12871527],[1144919,61581905,23636574,6870494],[635998,59318427,39112702,10213754],[454136,50938303,27636999,10365506],[425951,60283305,41714753,11138619],[521118,62581097,24858258,12818795],[288816,71750504,23775637,13858479],[413181,59209152,29499588,11118822],[529855,71434859,27301548,7353539]]}\n",
+      "stdout_sha256": "c618ef469dc7267aa850e1d3d792c0f2c0aa0d420132bf3bc97a8881585fd0cd",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-4-C": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":115.9307488888889,\"tick_p50_ms\":111.43481800000001,\"tick_p95_ms\":160.463042,\"tick_p99_ms\":178.41683800000001,\"tick_max_ms\":178.41683800000001,\"column_mean_ms\":67.257953583333332,\"flux_mean_ms\":30.967873444444443,\"apply_mean_ms\":12.420599333333334,\"prepare_mean_ms\":0.69389736111111111,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[178416838,153902112,128235028,137295454,134739530,114567453,98848987,125363434,101275686,110712912,102034324,120423733,112019483,110836498,104018592,108672592,174465016,100681810,111098440,96148813,120749091,92013857,106079524,91617831,150529646,117773252,92847606,116855196,91020664,115524610,105114795,112638490,108176429,127647745,129997152,96313985,111434818,98219859,100043246,95551696,116130792,92084767,103633076,97169291,107075040,97753341,111396632,89009193,110905504,122768929,122332455,160463042,117473698,120163177,102411924,127644700,127433631,132135940,159741440,165092601,142338213,118413298,114481937,114042021,114782584,89213777,131234890,102723898,96513670,97816923,128695151,110032158],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[8743815,110548371,32676450,18048344],[235501,70972834,48099510,19968144],[397018,76483096,32714385,8502793],[384183,82587361,35485349,12103982],[456214,70029530,39318675,17933500],[481444,76250554,27292082,9936540],[454330,62066352,22604691,11250697],[417493,69033922,34052148,18816938],[3890307,52245969,32604281,11019918],[370111,68162864,30703335,10418246],[378883,66140053,25908023,8833667],[316985,72737458,31750614,9501830],[558626,67615510,27598835,14910300],[411951,63842731,35469719,8868901],[695338,55032234,27481604,15065923],[456934,60116810,26960939,20160339],[257499,68898789,77943810,13976482],[590913,65333115,25338727,6449912],[282974,76658551,21902740,7134114],[372017,49780500,30018181,11387683],[262142,73991250,28664675,7340071],[247674,46774571,23431002,18365728],[330401,61527918,30469680,12804462],[502322,49455929,25743760,13165862],[763604,73399242,46989581,23394417],[1074669,67703853,29804496,17587749],[415339,49263437,28698367,8181609],[223073,58907999,36778648,19215201],[497964,56220514,23153128,8922018],[334192,71457027,31705419,9730513],[301242,63457058,24484847,11165562],[426888,69886740,30303707,7055327],[252833,59453926,28907720,17133728],[374483,82098201,31694609,12058991],[536494,89240713,27646292,10134442],[431731,52851182,29117206,11244918],[363570,69594319,26909665,7391055],[373785,56519400,28434400,11483082],[400069,49646391,31992543,15405408],[266471,59902959,24469615,8061360],[272656,69380815,36436224,8409729],[915701,49242589,19850268,18011512],[333640,66207748,24852874,9401612],[514418,60299758,22138108,12137814],[248992,68583673,28104848,8596795],[434687,57790219,20502170,10927622],[313133,62245876,39205820,8067818],[435157,56537424,23308817,7255498],[575491,71034108,25886703,10624514],[449051,69352094,26110177,22130404],[3348443,82215064,25636406,7660680],[652985,66930696,45285834,25018758],[467454,71315993,32938098,8835655],[436532,75279998,30727600,7530850],[471312,55844499,27814791,11522978],[274837,74848466,23447285,26479098],[682321,78096950,31179839,14305945],[3560023,65552926,45897492,12868817],[462202,86687334,61116156,9369852],[514525,92170365,42097942,18372618],[676230,81307042,39811404,10887464],[506409,80236061,26357495,9401444],[432945,60643239,29182292,15643252],[456566,65413127,31875323,10056837],[463694,78321597,24210700,8022198],[418933,47519667,22763774,11906539],[418631,86330629,29962317,12597978],[437552,67367219,23424195,7058754],[428157,55133946,29682683,8971924],[360392,60737866,23094437,11187101],[504430,68754750,37754893,14671757],[961629,65301687,23706465,12219579]]}\n",
+      "stdout_sha256": "2c9966270c1a10dc7aa42e056f582b961f514b15e463146792a547b8ac6cf97c",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-5-B": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":123.57007490277778,\"tick_p50_ms\":113.47007499999999,\"tick_p95_ms\":191.26481899999999,\"tick_p99_ms\":247.84197,\"tick_max_ms\":247.84197,\"column_mean_ms\":68.370446708333333,\"flux_mean_ms\":33.00862466666667,\"apply_mean_ms\":14.827820902777779,\"prepare_mean_ms\":0.5767450277777777,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[170725937,131915371,110361790,138144795,124184328,111051742,128522499,142614790,120026635,139025808,115246245,144529946,140977430,158932992,152200210,134398333,132754752,137225380,133903276,199335867,126019057,169540472,129787105,127594634,135137425,117836460,106635333,109655958,91515734,104222150,83787902,106627751,110245199,104089420,123364233,115427892,130606229,108893587,112744365,101401094,133740211,107156564,108102032,102903740,100139527,107821993,108271722,112202432,201143020,149449176,102269487,97346410,97311336,107109949,142137265,109134050,191264819,124543692,100925670,104662338,116701406,110280242,102059248,247841970,113470075,127030891,99225679,110308883,103632474,87176365,95842181,94630420],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[3777677,109197162,32789458,13743691],[290718,73607502,35904680,12503558],[302639,58842180,28212673,14723908],[294010,74718061,49805472,12815551],[243240,85890578,24329450,11856586],[690303,63087095,37240184,9253406],[232347,73793672,35913897,16907821],[305704,73583345,37438252,25983543],[408033,70861366,29076887,18809828],[365328,74441024,42653632,17172251],[605907,66907611,32084429,15059432],[592493,98016833,33145841,11076681],[464505,74802395,37076346,21926115],[317360,91081224,40496369,21688082],[454255,84221121,47552580,15672669],[314332,60793185,42926139,27751801],[445111,72451651,34031461,17815269],[335917,74481610,46143684,14205619],[384398,63330946,50993726,18182770],[324407,94857840,62280642,36071171],[487206,65937895,29233520,13465427],[387097,89659865,52574378,20903461],[310860,74637371,39905086,13715149],[331536,71317888,41042111,13155242],[569965,80614400,32776801,12467091],[343452,72549586,28977437,10657631],[301466,62303949,26961181,9266336],[249469,67279092,32039268,7804177],[445354,52941261,21428955,8971342],[384718,59783235,29488345,10602134],[469625,51502272,20739319,9153743],[445059,51813772,30608772,15432630],[417862,62450079,33584359,11076114],[478352,65843691,25804976,9926380],[472088,61533581,39974086,19662304],[1072685,53554878,29730936,23094010],[588612,62998969,40652294,16434837],[433192,59438759,29197249,13812651],[408150,60775795,36601780,13552854],[448610,62099710,26855236,8070174],[351737,84513347,34834570,9576749],[397586,60306531,28521691,16297076],[384821,67516527,21565892,14296005],[428099,60021294,24305292,15053859],[347027,59669565,27784949,10208964],[364999,63457906,28994088,9318104],[347434,59641264,28956369,12868441],[245413,66814457,31436934,12116034],[2387850,121918657,55871950,17842110],[304827,73766873,40206341,15514509],[310546,61527658,25022917,11820111],[314408,67029992,18566298,9689765],[509198,55615913,18558678,15234209],[531004,58062972,32596462,10619161],[4654770,79155575,38752251,16247915],[458002,64606310,26890106,14603439],[283033,80113781,42702948,36262151],[343640,76421066,35419981,10802467],[424603,56004561,27858130,14121010],[286157,53605413,36806975,12475481],[521257,60980996,35695109,9373799],[642041,66880446,25405668,12839632],[411630,45744317,40327863,13180349],[2529020,55343635,20775946,27408042],[639481,73508195,23854363,10380599],[355542,80207048,27261668,15370400],[434865,57698668,26361904,13143861],[431395,58738449,32168607,13797828],[488019,57439502,27390106,16361557],[444523,53615544,20684333,8171635],[316624,57027749,19240096,17212980],[442049,57715503,23530600,10951424]]}\n",
+      "stdout_sha256": "b33467a18673809ee5f81d8364b24473cde1e8cb74d09c14355ad7ecbb9c5406",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    "current2048-one-6-A": {
+      "stdout": "{\"schema\":\"pubpres-empty-derived-native-v1\",\"scope\":\"native-only\",\"size\":2048,\"bodies\":1,\"workers\":4,\"workers_observed\":4,\"ticks\":72,\"profile\":0,\"water_units\":266083830,\"tick_mean_ms\":141.11932602777779,\"tick_p50_ms\":137.365904,\"tick_p95_ms\":183.63950700000001,\"tick_p99_ms\":251.36956599999999,\"tick_max_ms\":251.36956599999999,\"column_mean_ms\":97.705262069444444,\"flux_mean_ms\":28.090448263888888,\"apply_mean_ms\":10.757082388888888,\"prepare_mean_ms\":0.56056920833333335,\"wave_storage_bytes\":55912040,\"launched_parcels\":4608,\"checkpoints\":[14103258381715885975,11793914587748001397,8319377670905281559,0,0,0,8330271259758308748,13238939686797544372,8014468811358169298,0,0,0,891244006270983595,9705272046736812862,7843052256888340300,0,0,0,2541073624382994752,7995667067924999169,15195825727937012849,0,0,0,14573660950467537221,3993372611441977579,16716654134185236325,0,0,0,15854165085326478191,79851475492195197,17933798407556067558,0,0,0],\"tick_nanoseconds\":[177159163,150047200,117335391,118932318,136633558,133694122,192066403,127197241,121720331,116121183,115550538,126021805,150158282,183639507,143163448,152907418,141612903,117826954,127750595,123807339,188102099,251369566,171390798,141969739,167475082,139211382,137552541,132672053,124570031,126011640,135400393,125119942,113329464,126829961,143907457,160034616,153084804,121568327,143402071,118190097,144058050,125490481,150375389,139088095,145695813,132099371,136567881,132107679,174260191,135374408,137365904,141410274,143465240,144182184,143139777,139871606,140644088,139293566,147695456,164953383,169751701,137016192,130136844,123503836,120112396,129493442,125152993,134835417,129788256,138134775,129365559,141623465],\"phase_columns\":[\"prepare\",\"column\",\"flux\",\"apply\"],\"phase_nanoseconds\":[[1326553,115568680,37398024,13865885],[214278,110668669,26395463,7258192],[203727,80899809,17395605,8396477],[194445,83732439,25443455,8862772],[446433,94257364,32973505,7518314],[293478,90412234,26055755,13791869],[745213,112674666,52501278,21526396],[2217703,89218501,25676918,9107200],[305018,87585330,18313339,14725894],[215723,85220026,23587138,6601991],[212168,84238872,23513434,6615277],[309116,92586231,24851560,7693143],[372421,105872113,34551547,7325652],[263142,126611700,30405906,10748194],[300738,100144605,28347802,10310308],[584165,104566658,28997605,7784802],[487593,105082240,23106933,11158214],[519763,86483834,22897452,7081031],[242586,96225722,23522710,6738521],[255918,82706595,24321517,15553555],[482283,111895321,47654473,14856951],[6174219,145167144,58911036,35548499],[281665,112751048,31960250,10627584],[447935,102525681,26355536,10560439],[781095,118951309,32392353,13668951],[563034,95273282,27652144,8097764],[516989,95373854,25792022,13130384],[386743,92839823,26407019,11394184],[391217,89512935,26004073,7198723],[374360,86213184,28796944,8896872],[418372,99863724,25202528,8327085],[359256,95597074,20811576,7008131],[393214,82582901,20042549,8993406],[477726,92003661,22767172,9108031],[470731,100779521,23828070,13702647],[2958657,115611295,23752490,11212656],[633480,107582206,28858082,14159502],[451163,91783261,21133775,6624953],[381353,94032346,29829734,17671028],[497867,87272174,22550608,6469415],[367528,102194240,26281383,11174942],[536181,97462164,17630515,8253497],[404963,98275566,38329296,8417403],[476861,92565589,34135946,9513460],[267285,95173875,35588618,12125175],[328786,80034235,32003849,10638841],[494756,88376406,31856910,12266611],[556470,84015060,34217730,7135877],[478875,95016607,46025266,24666227],[924621,91065715,25867971,14856572],[391252,104435334,22348585,7393717],[255735,101777361,24149870,13750577],[385671,96220607,31118557,11399195],[326293,105546333,28151173,7797693],[334681,103344832,26474870,11361574],[273779,103454188,24199265,10524524],[252007,93492351,35332040,9533763],[464191,96147836,25788916,11638991],[488801,104850847,21903272,8981531],[310620,115043285,29593552,8509362],[600754,109879382,44916891,8268413],[450126,88190756,32496035,12685146],[414470,85807782,26691775,14582941],[506486,88819478,20633651,7113677],[416640,86662205,23044776,7563787],[362636,91894864,26589783,8621940],[425792,86178361,25415337,9519278],[267039,97984577,22659519,6646257],[440591,93669994,16731241,14123051],[275814,104806920,20984248,10149393],[276826,89440511,28408562,9021841],[452913,110583576,21983493,6353784]]}\n",
+      "stdout_sha256": "4a3835f3b645247d6cce89b663893f8146a08d6f247fecd7c116665ec080e56e",
+      "stderr": "",
+      "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    }
+  },
+  "runner_source": "#!/usr/bin/env python3\n\"\"\"Execute one prebuilt, source-exact A/B/C/C/B/A applicability screen once.\"\"\"\nfrom __future__ import annotations\n\nimport argparse\nimport datetime\nimport hashlib\nimport json\nfrom pathlib import Path\nimport resource\nimport subprocess\nimport time\n\nfrom native_mask_applicability import BENCHMARK_PATH, BENCHMARK_SHA256, COHORTS, CPU_SCOPE, ORDER, cpu_observation, reduce_receipts\nfrom native_empty_derived import reconstruct\n\n\ndef digest(path):\n    return hashlib.sha256(path.read_bytes()).hexdigest()\n\n\ndef stamp():\n    return datetime.datetime.now(datetime.timezone.utc).isoformat()\n\n\ndef child_cpu():\n    usage = resource.getrusage(resource.RUSAGE_CHILDREN)\n    return {\"user_seconds\": usage.ru_utime, \"system_seconds\": usage.ru_stime}\n\n\ndef main():\n    parser = argparse.ArgumentParser(description=__doc__)\n    parser.add_argument(\"manifest\", type=Path)\n    parser.add_argument(\"--repository\", required=True, type=Path)\n    args = parser.parse_args()\n    output = args.manifest.resolve().parent\n    receipt_path = output / \"timing-receipts.json\"\n    if receipt_path.exists():\n        raise RuntimeError(\"Refusing to overwrite an original measurement receipt\")\n    manifest = json.loads(args.manifest.read_bytes())\n    if manifest[\"runs\"] or manifest[\"order\"] != list(ORDER) or manifest[\"cohorts\"] != [list(row) for row in COHORTS]:\n        raise RuntimeError(\"Expected an unused, exactly registered three-arm manifest\")\n    for arm, build in manifest[\"builds\"].items():\n        if build[\"exit_code\"] != 0 or digest(Path(build[\"binary_path\"])) != build[\"binary_sha256\"]:\n            raise RuntimeError(\"Native binary changed or did not build: \" + arm)\n        if build[\"benchmark_sha256\"] != BENCHMARK_SHA256 or build[\"source_inputs_sha256\"].get(BENCHMARK_PATH) != BENCHMARK_SHA256:\n            raise RuntimeError(\"Original benchmark source is absent or changed: \" + arm)\n        overlays = {}\n        for name, expected in build[\"source_inputs_sha256\"].items():\n            stored = subprocess.run([\"git\", \"show\", build[\"source_commit\"] + \":\" + name],\n                                    cwd=args.repository, capture_output=True)\n            actual = hashlib.sha256(stored.stdout).hexdigest()\n            if stored.returncode or actual != expected:\n                if arm != \"A\" or name != BENCHMARK_PATH or expected != BENCHMARK_SHA256:\n                    raise RuntimeError(\"Undeclared native source overlay: \" + arm + \":\" + name)\n                overlays[name] = expected\n        build[\"verified_source_overlays_sha256\"] = overlays\n    manifest[\"started_utc\"] = stamp()\n    manifest[\"runner_source_sha256\"] = digest(Path(__file__))\n    manifest[\"quiet_scope\"] = \"Root/B/C explicitly suspended heavy local work. External shared-host activity is unobserved. No stationarity assumption.\"\n    manifest[\"cpu_collection\"] = \"Linux resource.getrusage(RUSAGE_CHILDREN), before Popen and immediately after communicate/reap. Exactly one child is launched inside each interval; no child is launched between measured intervals. Native worker threads are included.\"\n    raw_runs, failures, descriptive = {}, [], []\n\n    def save():\n        args.manifest.write_text(json.dumps(manifest, indent=2) + \"\\n\")\n        receipt = {\"schema\": \"pubpres-native-mask-applicability-receipts-v1\", \"manifest\": manifest,\n                   \"raw_runs\": raw_runs, \"runner_source\": Path(__file__).read_text(), \"failures\": failures}\n        receipt_path.write_text(json.dumps(receipt, indent=2) + \"\\n\")\n        (output / \"descriptive-processes.json\").write_text(json.dumps({\n            \"status\": \"descriptive-only-pending-registered-reduction\", \"processes\": descriptive}, indent=2) + \"\\n\")\n        return receipt\n\n    save()\n    for label, size, bodies, profile in COHORTS:\n        for index, arm in enumerate(ORDER, 1):\n            build = manifest[\"builds\"][arm]\n            name = f\"{label}-{index}-{arm}\"\n            command = [build[\"binary_path\"], str(size), str(bodies), \"4\", \"72\", str(profile)]\n            if digest(Path(command[0])) != build[\"binary_sha256\"]:\n                raise RuntimeError(\"Native binary changed before execution: \" + name)\n            row = {\"name\": name, \"arm\": arm, \"argv\": command, \"binary_sha256\": build[\"binary_sha256\"],\n                   \"started_utc\": stamp(), \"cpu_scope\": CPU_SCOPE, \"children_cpu_before\": child_cpu()}\n            wall_start = time.monotonic_ns()\n            process = subprocess.Popen(command, cwd=args.repository, stdout=subprocess.PIPE, stderr=subprocess.PIPE)\n            row[\"pid\"] = process.pid\n            try:\n                stdout, stderr = process.communicate(timeout=120)\n            except subprocess.TimeoutExpired:\n                process.kill()\n                stdout, stderr = process.communicate()\n                failures.append({\"name\": name, \"reason\": \"Owned native process timed out and was killed\"})\n            row[\"whole_process_wall_nanoseconds\"] = time.monotonic_ns() - wall_start\n            row[\"children_cpu_after\"] = child_cpu()\n            row.update(finished_utc=stamp(), exit_code=process.returncode)\n            manifest[\"runs\"].append(row)\n            raw = {}\n            for key, data in ((\"stdout\", stdout), (\"stderr\", stderr)):\n                (output / (name + \".\" + key)).write_bytes(data)\n                raw[key] = data.decode()\n                raw[key + \"_sha256\"] = hashlib.sha256(data).hexdigest()\n            raw_runs[name] = raw\n            try:\n                if process.returncode or stderr:\n                    raise RuntimeError(\"Native process did not exit cleanly\")\n                data = json.loads(stdout)\n                stats = reconstruct(data)\n                cpu = cpu_observation(row, sum(data[\"tick_nanoseconds\"]))\n                descriptive.append({\"name\": name, \"workers_observed\": data[\"workers_observed\"], **stats, **cpu})\n                print(name, \"mean\", round(stats[\"tick_mean_ms\"], 3), \"p95\", round(stats[\"tick_p95_ms\"], 3),\n                      \"max\", round(stats[\"tick_max_ms\"], 3), \"workers\", data[\"workers_observed\"],\n                      \"whole-child CPU seconds\", round(cpu[\"whole_child_cpu_seconds\"], 3), flush=True)\n            except Exception as error:\n                failures.append({\"name\": name, \"reason\": repr(error)})\n                print(name, \"RETAINED FAILURE\", repr(error), flush=True)\n            save()\n    manifest[\"finished_utc\"] = stamp()\n    receipt = save()\n    try:\n        if failures:\n            raise RuntimeError(\"One or more original native processes failed\")\n        reduced = reduce_receipts(receipt)\n    except Exception as error:\n        (output / \"timing-refusal.json\").write_text(json.dumps({\"registered_reduction\": \"REFUSED\",\n            \"reason\": repr(error), \"original_receipt_sha256\": digest(receipt_path)}, indent=2) + \"\\n\")\n        raise\n    (output / \"timing-reduction.json\").write_text(json.dumps(reduced, indent=2) + \"\\n\")\n    print(\"All 18 original processes retain exact complete semantic/conservation parity and registered participation.\", flush=True)\n\n\nif __name__ == \"__main__\":\n    main()\n",
+  "failures": []
+}

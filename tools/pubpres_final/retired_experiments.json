@@ -1,0 +1,28 @@
+{
+  "schema": "pubpres-final-prospective-experiment-retirement-v1",
+  "status": "Draft/HOLD",
+  "effective_scope": "Subsequent hosted campaigns; no original registration, receipt, workflow outcome or performance rule is changed.",
+  "experiments": [
+    {
+      "name": "Full-image three-slot performance repeats",
+      "retired_executions": ["slots-abba", "sustained-slots3"],
+      "original_run": 45436083078,
+      "original_source": "515fce2862dd87d8dd01935bdf7bd1736e645901",
+      "artifacts": [
+        {"platform": "linux", "id": 14943496499, "sha256": "afd69e365ee244fbc5d31dada33c3f3a0d85e30d6cc88cceb453db94880e3361"},
+        {"platform": "windows", "id": 14945083776, "sha256": "2420a9f5fe066bafc7be60892cb07217cceb6ccb9810739af1eadf689cf26688"}
+      ],
+      "reason": "Linux establishes no repeatable physical gain. Both Windows matched workloads are adverse: Wave512 three-slot rates are about 9.1 steps/s versus 13.6–13.8 for two slots, and maxima are about 701–709 ms versus 248–249 ms. The large Windows three-slot arms also have lower rates and more >500 ms physical gaps. No source evidence links the subsequent native storage certificate to a repair of texture reuse or renderer backpressure.",
+      "selection": "Retained negative diagnostic control; ordinary and evaluator default remains Full2.",
+      "preserved_gates": [
+        "All two/three-slot exact GPU current/previous history, ownership, rotation and allocation checks",
+        "Production Main World replacement, publisher refusal and exact fallback recovery",
+        "Extracted-package opt-in three-slot launcher smoke",
+        "Original raw source/slot arms, failed workflow and detached corrected extent replay",
+        "Full2 ordinary source ABBA, sustained, mixed, deadline and same-engine render-owner qualification"
+      ],
+      "independent_review": "Performance qualification lane agreed that retiming a rejected nondefault arm after an unrelated native change is not an acceptance requirement.",
+      "reopen_only_for": "A distinct causal renderer/publication repair or an explicit physical-driver question. Any reopened experiment requires a new prospective record and retains these negatives."
+    }
+  ]
+}

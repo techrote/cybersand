@@ -1,0 +1,3 @@
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread native/tests/test_persistent_worker_pool.cpp -o build/test_persistent_worker_pool_tsan
+TSAN_OPTIONS=halt_on_error=1 ./build/test_persistent_worker_pool_tsan
+PUBPRES_POOL_LIFETIME_RESULT {"checks":495,"failures":[]}

@@ -1,0 +1,264 @@
+{
+  "presentation_enabled": true,
+  "material_steps_policy": {
+    "source": "0bd275a36669a18217f7861372bbf54a837af750",
+    "api_present": true,
+    "main_sha256": "fc303860a47dcb95a422892af58095fa8e3b2d90470aaddd6eb1921729de5010",
+    "helper_sha256": "a20ccad2c447c88df08e709a8e25d799604377ff1c731248f1504d65dd342ff1",
+    "requested_interval": 0,
+    "verified_off": true,
+    "legacy_api_absence_verified": false,
+    "physical_credit": false,
+    "scope": "Exact committed/staged Main and helper plus actual pre/post request/status; absent legacy capability is distinct from implemented effective0."
+  },
+  "bundle": {
+    "schema": "pubpres-final-observer-bundle-v1",
+    "files_sha256": {
+      "tools/pubpres_final_observers/bundle.py": "9670be3961a2a760e2954e858ed7770849b7aeeeee35d87ceaa8413c3c8ae106",
+      "tools/pubpres_final_observers/execute_with_resources.py": "dfea9ee2b1bb1e91634ef6299b47129c88d8e859f0d7058fd95ee168f22123cb",
+      "tools/pubpres_final_observers/execution_contract.py": "f15e6bf9a298b589161ae3e804c59bbf5009239d56c30600e5f21a5347a64989",
+      "tools/pubpres_final_observers/presentation_metrics.py": "39127c13209b5cb41322e13ec73aeae49d2799032973c8e5d13ea3cd48a75733",
+      "tools/pubpres_final_observers/presentation_probe.gd": "49d116cb2465bc7cff090eb3c80c2d26bc30ac88e33a8f06b6739ddfcad881b8",
+      "tools/pubpres_final_observers/resource_sampler.py": "a1e56c7b2b5c9012b4be995f58dece8adf336fac1122d327577aa2578d67fe59",
+      "tools/pubpres_final_observers/test_observers.py": "dd2982e801a5d093861730400431b58578773798cecb102df2f7c68b3a1080cf"
+    },
+    "execution_derivation": {
+      "frozen_runner_sha256": "8cc11d567101c518d13776781aa0e644546b6c69b1535e9669a103fdf05dfd84",
+      "runner_sha256": "dfea9ee2b1bb1e91634ef6299b47129c88d8e859f0d7058fd95ee168f22123cb",
+      "scope": "Only additive same-iteration CPU reads and a bounded sidecar; all frozen process ownership and completion gates remain exact."
+    },
+    "scope": "Explicit supplementary Main presentation and whole-process CPU observations; frozen physical gates and production defaults unchanged."
+  },
+  "presentation": {
+    "schema": "pubpres-final-presentation-analysis-v1",
+    "sidecar_sha256": "71cda1dec55c867e0e5027a619334b66d9069ea189fa576dd9b07d7837731235",
+    "base_receipt_sha256": "1364ea99927adaea8217375939195f68d16abeab750c822a316490c3e8dca2e2",
+    "source_identity": {
+      "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "files": {
+        "res://addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll": "2e96ee9366df690b0ab9645c1d47c821c456579d4651b2e2a1eec239b8fd2057",
+        "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+        "res://addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+        "res://addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll": "6672da180bcdc8d0380b1dbebe85e7deb05f6c764ffd0e9b26460766c9a82c5d",
+        "res://project.godot": "722e9d1180764a2cd942610ba44275d5ba457ed5e64ed2fa35caa46fb97c2efa",
+        "res://scripts/blit_material_publisher.gd": "bf5937fe8d1d96272b001fc9d99720780a31db4bcfc0ebf33da59b3381f112fe",
+        "res://scripts/engine_lab_reference_fixture.gd": "b5b10d5de557395066aa07802c40e43c6bf47df6b997f5dcd1510c63aaed9934",
+        "res://scripts/full_image_ring_publisher.gd": "d3640e08987927c6779fa58cfbc3f6d9239603cff08d0b90c50453166bf323cb",
+        "res://scripts/main.gd": "fc303860a47dcb95a422892af58095fa8e3b2d90470aaddd6eb1921729de5010",
+        "res://scripts/material_publication_deadline.gd": "a3ee3e49b9269dfd1941d3bc9b2af9b8fe7956db70019c1289cd9791388eb20d",
+        "res://scripts/material_publication_steps.gd": "a20ccad2c447c88df08e709a8e25d799604377ff1c731248f1504d65dd342ff1",
+        "res://scripts/physical_actor_overlay.gd": "85df1fa66eb708eab27b8fe80b633d1c412063173aaf80a172c1d5a89bffe705",
+        "res://scripts/physical_actor_rig.gd": "6fe7520c7a2da79d861e4f83fbe1773ef52bf4aac22db32833a4806eb41e8dd6",
+        "res://scripts/physical_actor_session.gd": "677f522acf0bea0625f5bee5a114d04305e9b08ab68d5114b34980cef39d149e",
+        "res://scripts/rapier_physics_bridge.gd": "1757daa7dd0038462f720d6c30c0e7d26bd37f943879310f200633139f4ad4b3",
+        "res://scripts/shared_workbench.gd": "700e70c976c0db87312e2ca7a5237eae0329b71d5e7e395ac6ce7dee7cd6f269",
+        "res://scripts/simulation_worker.gd": "217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674",
+        "res://scripts/workbench_material_timeline.gd": "b6a9e447708515d55a3533e874f71b47229da160f0364dd9d29370d814d15efb",
+        "res://scripts/workbench_native_rendezvous.gd": "67837fa261cae861f4bc4fb08d0816447d4fa23826914f464ba7020a29950385",
+        "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+        "res://scripts/workbench_presentation_coherence.gd": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d",
+        "res://scripts/workbench_presentation_history.gd": "448c1386843b66e9e4f89bac2a9b0759429f6cdb4cba391f09071a95fd395240",
+        "res://scripts/workbench_same_frame_continuation.gd": "172454914aa22b25d2134274c7a79ac0e8d0318368eeff84d1e206b7bf8aa879",
+        "res://shaders/material_palette.gdshader": "b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f",
+        "res://tests/fixtures/engine_lab/setup-gate-canvas.json": "b001849d0823b9a1c3fdff7a650d455945eb1ebb885004e9836ee7525ce1b954",
+        "res://tests/pubpres003_causal_gameplay.gd": "24e61a18db9748f3cdef11e62f28e2e3ee26c030ad83d9cb200a66aec3a7c37e",
+        "res://tests/pubpres_final_gameplay.gd": "b52964b5fcba3b1fde85b162812e26663e5a21616389b9fe1e565bd9ee425ba5",
+        "res://tests/pubpres_final_presentation_probe.gd": "49d116cb2465bc7cff090eb3c80c2d26bc30ac88e33a8f06b6739ddfcad881b8",
+        "res://tests/pubpres_playability_compatibility.gd": "65ae7a99546b4d6f120a100f9306e2f1c8aa1d3da95938a457f3d37a343eb90b",
+        "res://tests/pubpres_playability_profile.gd": "f73f37a3c7932f026700bbf325d56a649b84c365dbbfc4f9c1a8aec11e5ded10",
+        "res://tests/pubpres_same_frame_gameplay.gd": "b914d02ed562c7c5454629925ec3038ab96c9ccb2829510012ac6e599cfd0c18"
+      },
+      "source_sha": "0bd275a36669a18217f7861372bbf54a837af750"
+    },
+    "joined_selected_physical_poses": 228,
+    "pre_capture_selected_poses_without_trace_join": 1,
+    "joined_follow_targets": 228,
+    "pre_capture_follow_targets_without_trace_join": 1,
+    "verified_first_part_submissions": 229,
+    "unverified_first_part_submissions": 0,
+    "all_visible_first_parts_verified": true,
+    "observer_total_usec": 32198,
+    "observer_call_ms": {
+      "count": 458,
+      "max": 0.543,
+      "p50": 0.101,
+      "p95": 0.15,
+      "p99": 0.3244700000000002
+    },
+    "windows": {
+      "first_144_steps": {
+        "submissions": 144,
+        "body_submissions": 144,
+        "visible_body_submissions": 144,
+        "withheld_body_submissions": 0,
+        "intentional_holds": 0,
+        "explicit_reentries": 0,
+        "selected_physical_steps_behind": {
+          "count": 144,
+          "max": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0
+        },
+        "selected_completion_age_ms": {
+          "count": 143,
+          "max": 24.08,
+          "p50": 3.499,
+          "p95": 5.6711,
+          "p99": 12.747040000000062
+        },
+        "verified_first_part_completion_age_ms": {
+          "count": 143,
+          "max": 24.08,
+          "p50": 3.499,
+          "p95": 5.6711,
+          "p99": 12.747040000000062
+        },
+        "unverified_visible_first_parts": 0,
+        "source_reported_completion_age_ms": {
+          "count": 143,
+          "max": 24.082,
+          "p50": 3.501,
+          "p95": 5.6731,
+          "p99": 12.749040000000061
+        },
+        "pre_capture_unjoined_completion_age_ms": null,
+        "unknown_selected_completion_times": 1,
+        "intentional_hold_age_ms": null,
+        "follow_held_submissions": 0,
+        "follow_unknown_targets": 0,
+        "follow_physical_steps_behind": {
+          "count": 144,
+          "max": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0
+        },
+        "submission_gap_ms": {
+          "count": 143,
+          "max": 164.626,
+          "p50": 41.329,
+          "p95": 55.467200000000005,
+          "p99": 67.00252000000005
+        },
+        "material_generation_age_at_submission_ms": {
+          "count": 143,
+          "max": 161.532,
+          "p50": 41.557,
+          "p95": 56.151900000000005,
+          "p99": 73.18574000000007
+        },
+        "pre_capture_unjoined_material_submissions": 1,
+        "projection_residual_px": {
+          "count": 144,
+          "max": 0.00012582719846101058,
+          "p50": 6.1035156022626325e-05,
+          "p95": 8.631674542875604e-05,
+          "p99": 0.00012421173769331737
+        },
+        "withholding_episodes": [],
+        "withholding_observation_duration_ms": null,
+        "withholding_censored_episodes": 0
+      },
+      "whole_capture": {
+        "submissions": 229,
+        "body_submissions": 229,
+        "visible_body_submissions": 229,
+        "withheld_body_submissions": 0,
+        "intentional_holds": 0,
+        "explicit_reentries": 0,
+        "selected_physical_steps_behind": {
+          "count": 229,
+          "max": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0
+        },
+        "selected_completion_age_ms": {
+          "count": 228,
+          "max": 24.08,
+          "p50": 3.457,
+          "p95": 5.9794,
+          "p99": 13.590279999999954
+        },
+        "verified_first_part_completion_age_ms": {
+          "count": 228,
+          "max": 24.08,
+          "p50": 3.457,
+          "p95": 5.9794,
+          "p99": 13.590279999999954
+        },
+        "unverified_visible_first_parts": 0,
+        "source_reported_completion_age_ms": {
+          "count": 228,
+          "max": 24.082,
+          "p50": 3.458,
+          "p95": 5.9814,
+          "p99": 13.592009999999952
+        },
+        "pre_capture_unjoined_completion_age_ms": null,
+        "unknown_selected_completion_times": 1,
+        "intentional_hold_age_ms": null,
+        "follow_held_submissions": 0,
+        "follow_unknown_targets": 0,
+        "follow_physical_steps_behind": {
+          "count": 229,
+          "max": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0
+        },
+        "submission_gap_ms": {
+          "count": 228,
+          "max": 164.626,
+          "p50": 41.4285,
+          "p95": 54.4561,
+          "p99": 86.89517999999974
+        },
+        "material_generation_age_at_submission_ms": {
+          "count": 228,
+          "max": 161.532,
+          "p50": 41.5245,
+          "p95": 54.194150000000015,
+          "p99": 88.52352999999982
+        },
+        "pre_capture_unjoined_material_submissions": 1,
+        "projection_residual_px": {
+          "count": 229,
+          "max": 0.00012582719846101058,
+          "p50": 6.1035156022626325e-05,
+          "p95": 8.631674542875604e-05,
+          "p99": 0.0001258271982100953
+        },
+        "withholding_episodes": [],
+        "withholding_observation_duration_ms": null,
+        "withholding_censored_episodes": 0
+      }
+    },
+    "scope": "Actual Main submitted overlay state at pre-draw. The first visible part is joined to the real roster node/RID and actual collider-local transform; compound composition uses a float32 roundoff bound including absolute operand magnitudes under cancellation. Additional parts are not individually checked. Unsupported geometry and pre-capture physical poses remain explicitly unverified. Withholding, pose age and Follow lag are submitted-state observations, not scanout, display refresh or input-device latency. Separate draw notifications remain unassociated."
+  },
+  "cpu": {
+    "schema": "pubpres-final-process-cpu-summary-v1",
+    "complete": true,
+    "problems": [],
+    "samples": 111,
+    "sample_errors": 0,
+    "dropped": 0,
+    "expected_pid": 1184,
+    "sampler_sha256": "a1e56c7b2b5c9012b4be995f58dece8adf336fac1122d327577aa2578d67fe59",
+    "external_sampler_wall_usec": 12751,
+    "external_sampler_max_read_usec": 986,
+    "scope": "Actual owned Godot process CPU accounting, all its threads. Includes scene setup and capture inside the sampled process lifetime. Samples are not aligned to Godot capture clocks. The unobserved launch/exit tail is excluded from interval deltas; last cumulative counters are lower bounds on lifetime CPU. Read time for successful and failed queries is external sampler wall cost, not Godot CPU; elapsed_ms marks query request, not an instantaneous kernel accounting timestamp. No GPU busy-time or hardware utilization claim.",
+    "creation_identity": "linux-start-ticks:737445",
+    "first_sample_elapsed_ms": 1.0519340003156685,
+    "last_sample_elapsed_ms": 27625.0082330007,
+    "observed_interval_seconds": 27.623956299000383,
+    "observed_user_seconds": 87.72,
+    "observed_kernel_seconds": 3.65,
+    "mean_cpu_core_equivalents": 3.3076362781281397,
+    "last_cumulative_user_seconds": 87.72,
+    "last_cumulative_kernel_seconds": 3.65,
+    "maximum_sample_gap_ms": 257.608801999595
+  },
+  "scope": "Additional submitted-pose and whole-process CPU evidence. Disabled pose/freshness is unavailable, never zero; actual displayed pixels and input-device latency remain unobserved."
+}

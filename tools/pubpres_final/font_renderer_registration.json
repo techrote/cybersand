@@ -1,0 +1,25 @@
+{
+  "schema": "pubpres-final-font-renderer-registration-v1",
+  "platform": "windows",
+  "driver": "opengl3_angle",
+  "engine_identity": "Externally supplied exact source/run/attempt/proof, then verified actual GUI executable; one identical executable in all four arms.",
+  "order": [
+    {"engine": "repaired", "render_thread": "safe"},
+    {"engine": "repaired", "render_thread": "separate"},
+    {"engine": "repaired", "render_thread": "separate"},
+    {"engine": "repaired", "render_thread": "safe"}
+  ],
+  "cases": ["wave_512_follow", "wave_gameplay_2048_follow"],
+  "minimum_capture_usec": 10000000,
+  "minimum_real_steps": 144,
+  "maximum_capture_usec": 90000000,
+  "material": "full",
+  "full_image_slots": 2,
+  "physics": "early",
+  "presentation": "coherent",
+  "same_frame_continuation": false,
+  "material_deadline_hz": 0,
+  "comparisons": {"same_repaired_engine_safe_separate_abba": [0, 1, 2, 3]},
+  "prerequisites": ["exact new engine payload and external build proof", "four retained font arms with exact visual parity", "both repaired ordinary paused owner-start arms", "both repaired actual two-slot 180-admission GPU history oracles"],
+  "scope": "A new prospective render-owner comparison after the font ownership repair. The original failed #609 Separate captures and eight Safe controls remain unchanged negative evidence. Every arm uses the same current application, independently built native/Rapier and exact repaired engine, Full2/Early/coherent with material deadline and same-frame continuation off. Every frozen physical predicate remains mandatory except the explicitly registered actual render owner. Separate draw notifications have unknown submission identity. Stock/custom comparisons outside this cohort are whole-engine bundle comparisons, not attribution to one patch. Draft/HOLD; no physical NVIDIA acceptance."
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "pubpres-closure-run-v1",
+  "phase": "windows-focus",
+  "purpose": "Deliver the pixel-verified world-edge-correct Fire-on evaluator after source-bound Windows contact, sustained Follow and picking tests.",
+  "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+  "payload_sha256": "e96e0c27a8076575681ca115fbe49f457a85b584df3a5ff145fc28a9e3411504",
+  "physical_acceptance": "HOLD"
+}

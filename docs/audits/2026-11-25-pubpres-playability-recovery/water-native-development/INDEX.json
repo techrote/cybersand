@@ -1,0 +1,135 @@
+{
+  "schema": "pubpres-water-mounted-development-originals-v1",
+  "scope": "Original development receipts retained before v2 authority changes. Application source_revision uses a short development commit; exact input hashes identify each fixture and production source. Headless results are not framebuffer qualification. No performance claim.",
+  "records": [
+    {
+      "file": "headless.json",
+      "sha256": "8842c0a41d96e444a653927f03c0b6150eadc40ac01e807820c143478897a9d4",
+      "checks": 64,
+      "failures": [
+        "dry_large_erase all admitted cells have actual write results",
+        "ordinary large erase produces actual Empty cells at actor",
+        "wet_large_fill all admitted cells have actual write results",
+        "mixed_sand_small_edit all admitted cells have actual write results",
+        "water_small_repair all admitted cells have actual write results",
+        "moving submerged actor has multiple distinct actual completed poses in composed submissions"
+      ],
+      "source_revision": "bad31d68",
+      "input_hashes": {
+        "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+        "res://scripts/main.gd": "e0d5a83daa6bde5a041eb1092bd0d0f04c7a2297d2d41361b495274469d1d77e",
+        "res://scripts/physical_actor_overlay.gd": "9e233afa3591761ba9baacde9548f40c64e01da571ad37a567e439021f707f51",
+        "res://scripts/physical_actor_session.gd": "0d655e16fead03f99aab6428221f203f84c213494680fc818a2eaa440ec7f99d",
+        "res://scripts/shared_workbench.gd": "700e70c976c0db87312e2ca7a5237eae0329b71d5e7e395ac6ce7dee7cd6f269",
+        "res://scripts/simulation_worker.gd": "217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674",
+        "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+        "res://scripts/workbench_presentation_coherence.gd": "312e6611a1c279ba0e8ef93a65cb2ca875dff7f13669be3b1d35432a5c258d85",
+        "res://scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+        "res://scripts/workbench_water_composition.gd": "dd7deabc0532ace124df0784d5e3720da7ebd63c7a5c044a91bbf7fba87798c0",
+        "res://shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+        "res://tests/test_workbench_water_composition_native.gd": "9a3d93dd170118a5e7878feffd9b54db06cef6e00b44b2c74b568a7c732e0589"
+      },
+      "hidden_body_frames": 387,
+      "observed_frames": 162
+    },
+    {
+      "file": "headless-02.json",
+      "sha256": "730a077c65a9a57c00df3eac507cb07f53335ebe1ecd7670878b8b60a86cec2c",
+      "checks": 23,
+      "failures": [
+        "previously dry actual actor enters retained native Water"
+      ],
+      "source_revision": "bad31d68",
+      "input_hashes": {
+        "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+        "res://scripts/main.gd": "e0d5a83daa6bde5a041eb1092bd0d0f04c7a2297d2d41361b495274469d1d77e",
+        "res://scripts/physical_actor_overlay.gd": "9e233afa3591761ba9baacde9548f40c64e01da571ad37a567e439021f707f51",
+        "res://scripts/physical_actor_session.gd": "0d655e16fead03f99aab6428221f203f84c213494680fc818a2eaa440ec7f99d",
+        "res://scripts/shared_workbench.gd": "700e70c976c0db87312e2ca7a5237eae0329b71d5e7e395ac6ce7dee7cd6f269",
+        "res://scripts/simulation_worker.gd": "217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674",
+        "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+        "res://scripts/workbench_presentation_coherence.gd": "312e6611a1c279ba0e8ef93a65cb2ca875dff7f13669be3b1d35432a5c258d85",
+        "res://scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+        "res://scripts/workbench_water_composition.gd": "dd7deabc0532ace124df0784d5e3720da7ebd63c7a5c044a91bbf7fba87798c0",
+        "res://shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+        "res://tests/test_workbench_water_composition_native.gd": "891a180c3190d34cfef354e42c7eac0a3220a2e3e6346d383449f3c36de75ac2"
+      },
+      "hidden_body_frames": 286,
+      "observed_frames": 124
+    },
+    {
+      "file": "headless-03.json",
+      "sha256": "0ed1f3e8f362631d1904600622aa721e5b58e27892e498899bc041029d31ffa2",
+      "checks": 23,
+      "failures": [
+        "previously dry actual actor enters retained native Water"
+      ],
+      "source_revision": "bad31d68",
+      "input_hashes": {
+        "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+        "res://scripts/main.gd": "e0d5a83daa6bde5a041eb1092bd0d0f04c7a2297d2d41361b495274469d1d77e",
+        "res://scripts/physical_actor_overlay.gd": "9e233afa3591761ba9baacde9548f40c64e01da571ad37a567e439021f707f51",
+        "res://scripts/physical_actor_session.gd": "0d655e16fead03f99aab6428221f203f84c213494680fc818a2eaa440ec7f99d",
+        "res://scripts/shared_workbench.gd": "700e70c976c0db87312e2ca7a5237eae0329b71d5e7e395ac6ce7dee7cd6f269",
+        "res://scripts/simulation_worker.gd": "217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674",
+        "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+        "res://scripts/workbench_presentation_coherence.gd": "312e6611a1c279ba0e8ef93a65cb2ca875dff7f13669be3b1d35432a5c258d85",
+        "res://scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+        "res://scripts/workbench_water_composition.gd": "dd7deabc0532ace124df0784d5e3720da7ebd63c7a5c044a91bbf7fba87798c0",
+        "res://shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+        "res://tests/test_workbench_water_composition_native.gd": "d172f8fe2515659d47bbe538396790af528b1c7ffcc3a28a0ccf1af171cd25af"
+      },
+      "hidden_body_frames": 285,
+      "observed_frames": 123
+    },
+    {
+      "file": "headless-04.json",
+      "sha256": "1ba35ff98c61bd1d214559acc0900831a9f929cb2850fed489042b433a97096b",
+      "checks": 68,
+      "failures": [],
+      "source_revision": "bad31d68",
+      "input_hashes": {
+        "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+        "res://scripts/main.gd": "e0d5a83daa6bde5a041eb1092bd0d0f04c7a2297d2d41361b495274469d1d77e",
+        "res://scripts/physical_actor_overlay.gd": "9e233afa3591761ba9baacde9548f40c64e01da571ad37a567e439021f707f51",
+        "res://scripts/physical_actor_session.gd": "0d655e16fead03f99aab6428221f203f84c213494680fc818a2eaa440ec7f99d",
+        "res://scripts/shared_workbench.gd": "700e70c976c0db87312e2ca7a5237eae0329b71d5e7e395ac6ce7dee7cd6f269",
+        "res://scripts/simulation_worker.gd": "217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674",
+        "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+        "res://scripts/workbench_presentation_coherence.gd": "312e6611a1c279ba0e8ef93a65cb2ca875dff7f13669be3b1d35432a5c258d85",
+        "res://scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+        "res://scripts/workbench_water_composition.gd": "dd7deabc0532ace124df0784d5e3720da7ebd63c7a5c044a91bbf7fba87798c0",
+        "res://shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+        "res://tests/test_workbench_water_composition_native.gd": "527d6fef8bb5d8d27e3cfb667e3551bba7efa42bacc655da3a060f372694575b"
+      },
+      "hidden_body_frames": 738,
+      "observed_frames": 316
+    },
+    {
+      "file": "graphical-01.json",
+      "sha256": "526240c1d55d9417320600218ce4e66550a8b3d11072eb0c744b9729c261d451",
+      "checks": 26,
+      "failures": [
+        "submerged_framebuffer selected submerged actor remains admitted after Free camera",
+        "initial submerged and rewet actual framebuffer controls both execute"
+      ],
+      "source_revision": "bad31d68",
+      "input_hashes": {
+        "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+        "res://scripts/main.gd": "e0d5a83daa6bde5a041eb1092bd0d0f04c7a2297d2d41361b495274469d1d77e",
+        "res://scripts/physical_actor_overlay.gd": "9e233afa3591761ba9baacde9548f40c64e01da571ad37a567e439021f707f51",
+        "res://scripts/physical_actor_session.gd": "0d655e16fead03f99aab6428221f203f84c213494680fc818a2eaa440ec7f99d",
+        "res://scripts/shared_workbench.gd": "700e70c976c0db87312e2ca7a5237eae0329b71d5e7e395ac6ce7dee7cd6f269",
+        "res://scripts/simulation_worker.gd": "217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674",
+        "res://scripts/workbench_physics_bridge.gd": "bbf06b443d10187deae9ee1f0307f488b7dda644db5a3775398dc8389500923b",
+        "res://scripts/workbench_presentation_coherence.gd": "312e6611a1c279ba0e8ef93a65cb2ca875dff7f13669be3b1d35432a5c258d85",
+        "res://scripts/workbench_setup.gd": "5d25c94eff697500e80bf057bb37244052c59151664f4c4c828e62d85adfd925",
+        "res://scripts/workbench_water_composition.gd": "dd7deabc0532ace124df0784d5e3720da7ebd63c7a5c044a91bbf7fba87798c0",
+        "res://shaders/workbench_water_actor_composition.gdshader": "900ed274be67b1598c615bafe7ba8770ce2c8127b54b75b48aa4ac404a7093d9",
+        "res://tests/test_workbench_water_composition_native.gd": "527d6fef8bb5d8d27e3cfb667e3551bba7efa42bacc655da3a060f372694575b"
+      },
+      "hidden_body_frames": 276,
+      "observed_frames": 130
+    }
+  ]
+}

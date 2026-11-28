@@ -1,0 +1,119 @@
+{
+  "schema": "pubpres-native-first-attempt-admission-failure-v1",
+  "source": "b6956cd94382218a270ad85df7bc84f30a66776f",
+  "summary_sha256": "5f21b31811d865f1a9ea9d6c7eddd22ef0664f3bd21eb15fbdc8b7bbdc203485",
+  "complete": false,
+  "arms": [
+    {
+      "arm": "template-C/import",
+      "process_sha256": "b819aafd90d56ec81e2a7f65f4641a02ae734cbd92d2be459299ba475371855a",
+      "exit_code": 0,
+      "wrapper_pid": 348,
+      "observed_application_pid": 348,
+      "receipt_pid": null,
+      "receipt_complete": null,
+      "clean_display_terminal": null,
+      "display_wrapper_sha256": null,
+      "admission": "CANCELLED before application launch"
+    },
+    {
+      "arm": "wave_512_follow/0-C-slots2",
+      "process_sha256": "93e8158674199e1c6c80281d9d4769f72f191b7bf621c349a15de4cfea840fcb",
+      "exit_code": 0,
+      "wrapper_pid": 1113,
+      "observed_application_pid": null,
+      "receipt_pid": 1117,
+      "receipt_complete": true,
+      "clean_display_terminal": true,
+      "display_wrapper_sha256": "892dc269c5175f0bd3edede568b4a81dac4b791c2737f6089c64fbbcb845eb72",
+      "admission": "REFUSED: no actual CPU/process PID discovery"
+    },
+    {
+      "arm": "wave_512_follow/1-C-slots2",
+      "process_sha256": "bfb70055e2ec299439c80960e8a262732568e6023b0792adfb3f332a527ab800",
+      "exit_code": 0,
+      "wrapper_pid": 1371,
+      "observed_application_pid": null,
+      "receipt_pid": 1375,
+      "receipt_complete": true,
+      "clean_display_terminal": true,
+      "display_wrapper_sha256": "892dc269c5175f0bd3edede568b4a81dac4b791c2737f6089c64fbbcb845eb72",
+      "admission": "REFUSED: no actual CPU/process PID discovery"
+    },
+    {
+      "arm": "wave_512_follow/2-C-slots2",
+      "process_sha256": "757f10436d5525ab37bfdeafcba7b176dd5d24e4f15efcd0fe200f1bcad10cc0",
+      "exit_code": 0,
+      "wrapper_pid": 1626,
+      "observed_application_pid": null,
+      "receipt_pid": 1628,
+      "receipt_complete": true,
+      "clean_display_terminal": true,
+      "display_wrapper_sha256": "892dc269c5175f0bd3edede568b4a81dac4b791c2737f6089c64fbbcb845eb72",
+      "admission": "REFUSED: no actual CPU/process PID discovery"
+    },
+    {
+      "arm": "wave_512_follow/3-C-slots2",
+      "process_sha256": "09558c28563ec62834f589eb1dbe17ff38deb2f3c3a99ffe40337352c20cede7",
+      "exit_code": 0,
+      "wrapper_pid": 1882,
+      "observed_application_pid": null,
+      "receipt_pid": 1886,
+      "receipt_complete": true,
+      "clean_display_terminal": true,
+      "display_wrapper_sha256": "892dc269c5175f0bd3edede568b4a81dac4b791c2737f6089c64fbbcb845eb72",
+      "admission": "REFUSED: no actual CPU/process PID discovery"
+    },
+    {
+      "arm": "wave_gameplay_2048_follow/0-C-slots2",
+      "process_sha256": "6d12916224bf1df9cc273817ae660bac999a0fa4fa37840eb14decc6fc65fe85",
+      "exit_code": 0,
+      "wrapper_pid": 2137,
+      "observed_application_pid": null,
+      "receipt_pid": 2142,
+      "receipt_complete": true,
+      "clean_display_terminal": true,
+      "display_wrapper_sha256": "feb61eb72ff499d25a209ae0cf971b11206a6d38c1b2ccbd9bf36a790070642f",
+      "admission": "REFUSED: no actual CPU/process PID discovery"
+    },
+    {
+      "arm": "wave_gameplay_2048_follow/1-C-slots2",
+      "process_sha256": "74352cfa07347a110488260aefd57b9a5aea716b71316b9d76cbb1a54a0e670a",
+      "exit_code": 125,
+      "wrapper_pid": 2392,
+      "observed_application_pid": null,
+      "receipt_pid": null,
+      "receipt_complete": null,
+      "clean_display_terminal": null,
+      "display_wrapper_sha256": "feb61eb72ff499d25a209ae0cf971b11206a6d38c1b2ccbd9bf36a790070642f",
+      "admission": "CANCELLED before application launch"
+    },
+    {
+      "arm": "wave_gameplay_2048_follow/2-C-slots2",
+      "process_sha256": "e99eccf4506e4cf75ace5aa7e7082cfcf20302cc0b0bd3c727de60f29186dc66",
+      "exit_code": 125,
+      "wrapper_pid": 2393,
+      "observed_application_pid": null,
+      "receipt_pid": null,
+      "receipt_complete": null,
+      "clean_display_terminal": null,
+      "display_wrapper_sha256": "feb61eb72ff499d25a209ae0cf971b11206a6d38c1b2ccbd9bf36a790070642f",
+      "admission": "CANCELLED before application launch"
+    },
+    {
+      "arm": "wave_gameplay_2048_follow/3-C-slots2",
+      "process_sha256": "872e1e028c6ba72fd0e03289616a3d466255081be164f71cb9fcd5bdd1c9516e",
+      "exit_code": 125,
+      "wrapper_pid": 2394,
+      "observed_application_pid": null,
+      "receipt_pid": null,
+      "receipt_complete": null,
+      "clean_display_terminal": null,
+      "display_wrapper_sha256": "feb61eb72ff499d25a209ae0cf971b11206a6d38c1b2ccbd9bf36a790070642f",
+      "admission": "CANCELLED before application launch"
+    }
+  ],
+  "cause": "Linux kernel has no /proc/PID/task/PID/children; frozen descendant enumeration cannot traverse its owned wrapper despite /proc/PID/status and exe availability.",
+  "performance_selection": "NOT_EVALUATED_INADMISSIBLE_CAPTURE",
+  "preservation": "Original full receipts/events/presentation sidecars/process data are retained without rewriting. No actual game crash; final three wrappers deliberately refused before launching application."
+}

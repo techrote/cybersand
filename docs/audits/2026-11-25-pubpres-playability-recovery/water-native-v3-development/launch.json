@@ -1,0 +1,37 @@
+{
+  "source": "f2f9cab4b2fc650d0d5e034561b9dddabcf3b24f",
+  "engine": "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+  "arguments": [
+    "--path",
+    "/workspace/scratch/8a0b6cd48416/water-native-source-v3/godot",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--log-file",
+    "/workspace/scratch/8a0b6cd48416/native-runtime-dev/water-native-v3-01/godot.log",
+    "--script",
+    "res://tests/test_workbench_water_composition_native.gd"
+  ],
+  "settings": {
+    "CYBERSAND_DIAG_WATER_COMPOSITION": "1",
+    "CYBERSAND_DIAG_ACTUAL_SUBMISSION": "0",
+    "CYBERSAND_DIAG_PRESENTATION": "coherent",
+    "CYBERSAND_MATERIAL_PUBLICATION": "full",
+    "CYBERSAND_DIAG_FULL_IMAGE_SLOTS": "2",
+    "CYBERSAND_DIAG_MATERIAL_TIMING": "measured",
+    "CYBERSAND_DIAG_RENDER_CADENCE": "repaired",
+    "CYBERSAND_DIAG_PHYSICS_PUBLICATION": "early",
+    "CYBERSAND_DIAG_NATIVE_RENDEZVOUS": "0",
+    "CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE": "0",
+    "CYBERSAND_WATER_COMPOSITION_OUTPUT": "/workspace/scratch/8a0b6cd48416/native-runtime-dev/water-native-v3-01/result.json"
+  },
+  "display": "127.0.0.1:110",
+  "dbus": "unix:path=/workspace/scratch/8a0b6cd48416/native-runtime-dev/water-native-v3-01/unavailable-session-bus",
+  "scope": "Functional native Water validation; no performance comparison",
+  "timeout_seconds": 300
+}

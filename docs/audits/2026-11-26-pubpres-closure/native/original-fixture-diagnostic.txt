@@ -1,0 +1,6 @@
+original ballistic fixture rejection: tick=13 workers=1 actual_tasks=0 outcome=7 quantity=0 live=64 capacity=64
+PUBPRES task-completion World failed after28449 checks: declared ballistic input has explicit legitimate outcome
+law=0 workers=1 actual_tasks=0 ticks=80 dispatches=0 tasks=0 physical_hash=2422618298732426796
+law=0 workers=4 actual_tasks=0 ticks=80 dispatches=320 tasks=1767 physical_hash=2422618298732426796
+law=0 workers=4 actual_tasks=1 ticks=80 dispatches=320 tasks=1767 physical_hash=2422618298732426796
+law=0 workers=1 actual_tasks=1 ticks=80 dispatches=0 tasks=0 physical_hash=2422618298732426796

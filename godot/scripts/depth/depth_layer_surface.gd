@@ -56,7 +56,9 @@ func configure(id: String, frozen: bool = false, authored_size: Vector2i = MATER
 	render_target_update_mode = SubViewport.UPDATE_ALWAYS if render_enabled else SubViewport.UPDATE_ONCE
 	cell_image = Image.create(native_size.x, native_size.y, false, Image.FORMAT_RG8)
 	cell_image.fill(Color(0.0, 0.0, 0.0, 1.0))
-	cell_texture = ImageTexture.create_from_image(cell_image)
+	# RenderingServer may retain this Image in its separate-owner queue.
+	# Later packets mutate cell_image, so creation needs its own snapshot too.
+	cell_texture = ImageTexture.create_from_image(cell_image.duplicate())
 
 	_material_rect = TextureRect.new()
 	_material_rect.name = "MaterialSurface"
@@ -137,7 +139,9 @@ func apply_packet(packet: Dictionary) -> bool:
 			locations[index]
 		)
 	if not images.is_empty():
-		cell_texture.update(cell_image)
+		# The mutable CPU atlas is reused by the next packet. Preserve the
+		# exact bytes of this accepted upload until the rendering owner consumes it.
+		cell_texture.update(cell_image.duplicate())
 		set_source_texture(cell_texture)
 		if not render_enabled: render_target_update_mode = SubViewport.UPDATE_ONCE
 		upload_count += 1

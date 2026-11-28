@@ -1,0 +1,117 @@
+Linux GDExtension build command: /usr/bin/g++ -std=c++20 -O3 -DNDEBUG -fPIC -shared -pthread -fno-math-errno -ffile-prefix-map=/workspace/scratch/9cef565acfec/native=. -ffile-prefix-map=/workspace/scratch/b5ff5c354306/toolchain/godot-cpp=godot-cpp -I/workspace/scratch/9cef565acfec/native/native/include -I/workspace/scratch/b5ff5c354306/toolchain/godot-cpp/include -I/workspace/scratch/b5ff5c354306/toolchain/godot-cpp/gen/include -I/workspace/scratch/b5ff5c354306/toolchain/godot-cpp/gdextension /workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp /workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_world_generator.cpp /workspace/scratch/9cef565acfec/native/godot/native_extension/material_baseline_file.cpp /workspace/scratch/9cef565acfec/native/godot/native_extension/register_types.cpp /workspace/scratch/9cef565acfec/native/native/src/world.cpp /workspace/scratch/9cef565acfec/native/native/src/world_generation.cpp /workspace/scratch/9cef565acfec/native/native/src/generation_fields.cpp /workspace/scratch/9cef565acfec/native/native/src/generation_typed_fields.cpp /workspace/scratch/9cef565acfec/native/native/src/generation_spatial.cpp /workspace/scratch/9cef565acfec/native/native/src/generation_grammar.cpp /workspace/scratch/9cef565acfec/native/native/src/generation_planes.cpp /workspace/scratch/9cef565acfec/native/native/src/render_snapshot.cpp /workspace/scratch/9cef565acfec/native/native/src/settled_world_discovery.cpp /workspace/scratch/9cef565acfec/native/native/src/material_rules.cpp /workspace/scratch/9cef565acfec/native/native/src/scheduler_geometry.cpp /workspace/scratch/b5ff5c354306/toolchain/godot-cpp/bin/libgodot-cpp.linux.template_debug.x86_64.a -Wl\,--build-id=sha1 -o /workspace/scratch/9cef565acfec/native-runtime-23fb/.libcybersand_native.linux.x86_64.so.partial.QPeXCz
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp: In static member function 'static godot::CyberNativeCellWorld::BodyStates godot::CyberNativeCellWorld::parse_body_state_values(const godot::PackedFloat32Array&, bool)':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:703:21: warning: narrowing conversion of '(double)std::max<double>(5.0e-1, (((double)((float)(& states)->godot::PackedFloat32Array::operator[]((((long int)offset) + ((long int)((int)godot::{anonymous}::kInputSizeX)))))) * 5.0e-1))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  703 |             std::max(0.5, static_cast<double>(states[offset + kInputSizeX]) * 0.5),
+      |             ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:704:21: warning: narrowing conversion of '(double)std::max<double>(5.0e-1, (((double)((float)(& states)->godot::PackedFloat32Array::operator[]((((long int)offset) + ((long int)((int)godot::{anonymous}::kInputSizeY)))))) * 5.0e-1))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  704 |             std::max(0.5, static_cast<double>(states[offset + kInputSizeY]) * 0.5),
+      |             ~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp: In static member function 'static void godot::CyberNativeCellWorld::rasterize_transform_in(cybersand::World&, godot::Vector2i, std::vector<int>*, uint16_t, godot::Vector2, double, godot::Vector2)':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:759:40: warning: narrowing conversion of '((std::abs(((double)cosine)) * ((double)half_size.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x)) + (std::abs(((double)sine)) * ((double)half_size.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y)))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  759 |         std::abs(cosine) * half_size.x + std::abs(sine) * half_size.y,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:760:38: warning: narrowing conversion of '((std::abs(((double)sine)) * ((double)half_size.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x)) + (std::abs(((double)cosine)) * ((double)half_size.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y)))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  760 |         std::abs(sine) * half_size.x + std::abs(cosine) * half_size.y,
+      |         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:774:62: warning: narrowing conversion of '(((double)x + 5.0e-1) - ((double)center.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  774 |             const Vector2 delta{static_cast<double>(x) + 0.5 - center.x,
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:775:62: warning: narrowing conversion of '(((double)y + 5.0e-1) - ((double)center.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  775 |                                 static_cast<double>(y) + 0.5 - center.y};
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:776:50: warning: narrowing conversion of '((((double)cosine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x))) + (((double)sine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y))))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  776 |             const Vector2 local{cosine * delta.x + sine * delta.y,
+      |                                 ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:777:49: warning: narrowing conversion of '(((- sine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x))) + (((double)cosine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y))))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  777 |                                 -sine * delta.x + cosine * delta.y};
+      |                                 ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp: In member function 'bool godot::CyberNativeCellWorld::cell_inside_body(const BodyState&, int32_t, int32_t) const':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:866:54: warning: narrowing conversion of '(((double)x + 5.0e-1) - ((double)((godot::real_t)body.godot::CyberNativeCellWorld::BodyState::center.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x)))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  866 |     const Vector2 delta{static_cast<double>(x) + 0.5 - body.center.x,
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:867:54: warning: narrowing conversion of '(((double)y + 5.0e-1) - ((double)((godot::real_t)body.godot::CyberNativeCellWorld::BodyState::center.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y)))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  867 |                         static_cast<double>(y) + 0.5 - body.center.y};
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:868:42: warning: narrowing conversion of '((((double)cosine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x))) + (((double)sine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y))))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  868 |     const Vector2 local{cosine * delta.x + sine * delta.y,
+      |                         ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:869:41: warning: narrowing conversion of '(((- sine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x))) + (((double)cosine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y))))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  869 |                         -sine * delta.x + cosine * delta.y};
+      |                         ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp: In member function 'godot::Vector2 godot::CyberNativeCellWorld::overlap_normal(const BodyState&, int32_t, int32_t, double&) const':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:879:54: warning: narrowing conversion of '(((double)x + 5.0e-1) - ((double)((godot::real_t)body.godot::CyberNativeCellWorld::BodyState::center.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x)))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  879 |     const Vector2 delta{static_cast<double>(x) + 0.5 - body.center.x,
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:880:54: warning: narrowing conversion of '(((double)y + 5.0e-1) - ((double)((godot::real_t)body.godot::CyberNativeCellWorld::BodyState::center.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y)))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  880 |                         static_cast<double>(y) + 0.5 - body.center.y};
+      |                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:881:42: warning: narrowing conversion of '((((double)cosine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x))) + (((double)sine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y))))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  881 |     const Vector2 local{cosine * delta.x + sine * delta.y,
+      |                         ~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:882:41: warning: narrowing conversion of '(((- sine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x))) + (((double)cosine) * ((double)((godot::real_t)delta.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y))))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  882 |                         -sine * delta.x + cosine * delta.y};
+      |                         ~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:887:40: warning: narrowing conversion of '((((double)((godot::real_t)local.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x)) >= 0.0) ? 1.0e+0 : -1.0e+0)' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  887 |         local_normal = {local.x >= 0.0 ? 1.0 : -1.0, 0.0};
+      |                         ~~~~~~~~~~~~~~~^~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:890:45: warning: narrowing conversion of '((((double)((godot::real_t)local.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y)) >= 0.0) ? 1.0e+0 : -1.0e+0)' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  890 |         local_normal = {0.0, local.y >= 0.0 ? 1.0 : -1.0};
+      |                              ~~~~~~~~~~~~~~~^~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:893:37: warning: narrowing conversion of '((((double)cosine) * ((double)local_normal.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x)) - (((double)sine) * ((double)local_normal.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y)))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  893 |     return {cosine * local_normal.x - sine * local_normal.y,
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:894:35: warning: narrowing conversion of '((((double)sine) * ((double)local_normal.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::x)) + (((double)cosine) * ((double)local_normal.godot::Vector2::<anonymous>.godot::Vector2::<unnamed union>::y)))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  894 |             sine * local_normal.x + cosine * local_normal.y};
+      |             ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp: In member function 'godot::Vector2i godot::CyberNativeCellWorld::find_ejection_target(int32_t, int32_t, uint16_t, godot::Vector2, double) const':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:903:63: warning: narrowing conversion of '((double)source_x + 5.0e-1)' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  903 |     const Vector2 source_center{static_cast<double>(source_x) + 0.5,
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:904:63: warning: narrowing conversion of '((double)source_y + 5.0e-1)' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  904 |                                 static_cast<double>(source_y) + 0.5};
+      |                                 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp: In member function 'void godot::CyberNativeCellWorld::accumulate_boundary_pressure()':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:972:34: warning: narrowing conversion of '-(double)(int32_t)direction.godot::Vector2i::<unnamed>.godot::Vector2i::._anon_206::x' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  972 |             const Vector2 normal{-static_cast<double>(direction.x),
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:973:34: warning: narrowing conversion of '-(double)(int32_t)direction.godot::Vector2i::<unnamed>.godot::Vector2i::._anon_207::y' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+  973 |                                  -static_cast<double>(direction.y)};
+      |                                  ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp: In member function 'void godot::CyberNativeCellWorld::accumulate_granular_bearing()':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:1021:37: warning: narrowing conversion of '- magnitude' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+ 1021 |         observation.bearing = {0.0, -magnitude};
+      |                                     ^~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp: In member function 'godot::PackedFloat32Array godot::CyberNativeCellWorld::rigid_body_results() const':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:1068:53: warning: narrowing conversion of '(((double)(long int)contact_x / 1.0e+3) * ((double)((const godot::CyberNativeCellWorld*)this)->godot::CyberNativeCellWorld::contact_gain_))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+ 1068 |             static_cast<double>(contact_x) / 1000.0 * contact_gain_,
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:1069:53: warning: narrowing conversion of '(((double)(long int)contact_y / 1.0e+3) * ((double)((const godot::CyberNativeCellWorld*)this)->godot::CyberNativeCellWorld::contact_gain_))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+ 1069 |             static_cast<double>(contact_y) / 1000.0 * contact_gain_,
+      |             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp: In member function 'godot::Array godot::CyberNativeCellWorld::diagnostic_body_metrics() const':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:2988:127: warning: narrowing conversion of '(((double)((const godot::CyberNativeCellWorld*)this)->godot::CyberNativeCellWorld::world_.std::unique_ptr<cybersand::World, std::default_delete<cybersand::World> >::operator->()()->transient_contact_impulse_x(uint16_t)((int)(uint16_t)id) / 1.0e+3) * ((double)((const godot::CyberNativeCellWorld*)this)->godot::CyberNativeCellWorld::contact_gain_))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+ 2988 |         const Vector2 pixel{static_cast<double>(world_->transient_contact_impulse_x(static_cast<std::uint16_t>(id))) / 1000.0 * contact_gain_,
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_native_cell_world.cpp:2989:127: warning: narrowing conversion of '(((double)((const godot::CyberNativeCellWorld*)this)->godot::CyberNativeCellWorld::world_.std::unique_ptr<cybersand::World, std::default_delete<cybersand::World> >::operator->()()->transient_contact_impulse_y(uint16_t)((int)(uint16_t)id) / 1.0e+3) * ((double)((const godot::CyberNativeCellWorld*)this)->godot::CyberNativeCellWorld::contact_gain_))' from 'double' to 'godot::real_t' {aka 'float'} [-Wnarrowing]
+ 2989 |                             static_cast<double>(world_->transient_contact_impulse_y(static_cast<std::uint16_t>(id))) / 1000.0 * contact_gain_};
+      |                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~~
+In file included from /workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_demo_bridge.hpp:1175,
+                 from /workspace/scratch/9cef565acfec/native/godot/native_extension/register_types.cpp:2:
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_prepared_liquid_world.hpp: In member function 'int64_t godot::CyberDemoBridge::prepare_liquid_candidate(const godot::Ref<godot::CyberNativeCellWorld>&, const godot::PackedInt32Array&, const godot::PackedInt32Array&, const godot::PackedInt32Array&, const godot::PackedInt32Array&, const godot::PackedInt32Array&, const godot::Dictionary&, const godot::PackedByteArray*, bool)':
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_prepared_liquid_world.hpp:532:60: warning: narrowing conversion of '(int)a' from 'int' to 'uint16_t' {aka 'short unsigned int'} [-Wnarrowing]
+  532 |                     input.cells.push_back({x, y, material, a, initial.initial_state_b, config->ambient_temperature});
+      |                                                            ^
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_prepared_liquid_world.hpp:565:29: warning: narrowing conversion of '((((cybersand::Material)material) == cybersand::Material::Water) ? ((int)config.std::unique_ptr<cybersand::WorldConfig, std::default_delete<cybersand::WorldConfig> >::operator->()->cybersand::WorldConfig::water_experiment_policy.cybersand::WaterExperimentPolicy::maximum()) : ((int)((uint8_t)initial.cybersand::MaterialDefinition::initial_state_a)))' from 'int' to 'uint16_t' {aka 'short unsigned int'} [-Wnarrowing]
+  564 |                         material, material == cybersand::Material::Water
+      |                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  565 |                             ? config->water_experiment_policy.maximum() : initial.initial_state_a,
+      |                             ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_prepared_liquid_world.hpp:590:84: warning: narrowing conversion of '(int)a' from 'int' to 'uint16_t' {aka 'short unsigned int'} [-Wnarrowing]
+  590 |                     map[static_cast<std::size_t>(dy) * extent.x + dx] = {material, a, initial.initial_state_b};
+      |                                                                                    ^
+/workspace/scratch/9cef565acfec/native/godot/native_extension/cyber_prepared_liquid_world.hpp:643:25: warning: narrowing conversion of '((((cybersand::Material)material) == cybersand::Material::Water) ? ((int)config.std::unique_ptr<cybersand::WorldConfig, std::default_delete<cybersand::WorldConfig> >::operator->()->cybersand::WorldConfig::water_experiment_policy.cybersand::WaterExperimentPolicy::maximum()) : ((int)((uint8_t)initial.cybersand::MaterialDefinition::initial_state_a)))' from 'int' to 'uint16_t' {aka 'short unsigned int'} [-Wnarrowing]
+  642 |                     const Tuple cell{material, material == cybersand::Material::Water
+      |                                                ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  643 |                         ? config->water_experiment_policy.maximum() : initial.initial_state_a,
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+/workspace/scratch/9cef565acfec/native-runtime-23fb/libcybersand_native.linux.x86_64.so

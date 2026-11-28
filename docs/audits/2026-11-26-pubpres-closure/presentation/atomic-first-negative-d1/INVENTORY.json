@@ -1,0 +1,42 @@
+{
+  "schema": "pubpres-preserved-graphical-evidence-v1",
+  "original_directory": "/workspace/scratch/9cef565acfec/presentation-evidence/atomic-negative-d1-safe0",
+  "files": {
+    "SUMMARY.json": {
+      "bytes": 379120,
+      "sha256": "c84e4f2b5306a4802417a122ae2df35c07c56d0a6f5050c0cb1a10cc7c2e2da6"
+    },
+    "test_workbench_presentation_submission-slots2/engine-draws.json": {
+      "bytes": 75209,
+      "sha256": "0f8f985f1044c0b0e1d51cc20539f0d2ee819d4d1d41392ddc0a9b7a1da7e837"
+    },
+    "test_workbench_presentation_submission-slots2/display-owner.xorg.log": {
+      "bytes": 54857,
+      "sha256": "c8dbf00f5087198df13fec8f3cc5afb23f2ece076027f375cf01c959cbde141d"
+    },
+    "test_workbench_presentation_submission-slots2/process.json": {
+      "bytes": 985,
+      "sha256": "67561ed36dcd45bb492548c32611e3067bb40fd7d8cf5079f504614a5cd433fd"
+    },
+    "test_workbench_presentation_submission-slots2/receipt.json": {
+      "bytes": 27220,
+      "sha256": "388d505d39622ec470174a6e76c54c7386ce92c07243907406da67a2e6671906"
+    },
+    "test_workbench_presentation_submission-slots2/stdout.log": {
+      "bytes": 4666,
+      "sha256": "7f5c1fb45a3cd92d409acfdfa7645f7e8aa955fc676504f72099b9175db5b29b"
+    },
+    "test_workbench_presentation_submission-slots2/display-owner.json": {
+      "bytes": 1131,
+      "sha256": "4dd7a08c60a7c47530b97ff9c75fb6c094860f0971443e7080fa60be77ddb2fe"
+    },
+    "import-slots2/process.json": {
+      "bytes": 518,
+      "sha256": "465809848d9805fa41683a9660629077ebb629641828c156381281186924ae4d"
+    },
+    "import-slots2/stdout.log": {
+      "bytes": 51417,
+      "sha256": "81da412d1f1dffc623783a7cf37e7a1ff62dd157de74dc0db35adccd98a4ede5"
+    }
+  }
+}

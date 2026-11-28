@@ -1,0 +1,6 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+OpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+PUBPRES_WATER_COMPOSITION_NATIVE_RESULT {"checks":144,"failures":["submerged_framebuffer restored same-state draw reproduces those pixels"]}

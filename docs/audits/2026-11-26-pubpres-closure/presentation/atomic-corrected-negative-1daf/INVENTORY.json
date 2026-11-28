@@ -1,0 +1,46 @@
+{
+  "schema": "pubpres-preserved-graphical-evidence-v1",
+  "original_directory": "/workspace/scratch/9cef565acfec/presentation-evidence/atomic-negative-isolated-safe0",
+  "files": {
+    "SUMMARY.json": {
+      "bytes": 379156,
+      "sha256": "922696cd4ec838421b011471dffc6bbef9b8ae8e8cd0bb96e5195445b2cc8970"
+    },
+    "test_workbench_presentation_submission-slots2/engine-draws.json": {
+      "bytes": 83672,
+      "sha256": "2091df1c6311b1d03632b8f95323bcd46b5ca9fd5861c28a011d66aa86c72538"
+    },
+    "test_workbench_presentation_submission-slots2/display-owner.xorg.log": {
+      "bytes": 54863,
+      "sha256": "f72aea0bff55308a4f26e3454c7f0efa27e378007e93c06e675a52e68f93445c"
+    },
+    "test_workbench_presentation_submission-slots2/process.json": {
+      "bytes": 997,
+      "sha256": "431107fb58f57fe6445647c4d68333341e3a926dc983bc57e7ad246f24206cc8"
+    },
+    "test_workbench_presentation_submission-slots2/receipt.json": {
+      "bytes": 27801,
+      "sha256": "b7c39a5527be96569d4dd775e0077a6ec5301d9bfa17b9ab58471185ad3eecc9"
+    },
+    "test_workbench_presentation_submission-slots2/stdout.log": {
+      "bytes": 3216,
+      "sha256": "72290ecea290fe1f96d1e6d72e132ff85bd7a85bb2bd93238ee6ba7f1caac875"
+    },
+    "test_workbench_presentation_submission-slots2/display-owner.json": {
+      "bytes": 1137,
+      "sha256": "5aaae8a02f9c7543b43b29d3e5261d58302d362cab8fa483d5e71b9c232827d7"
+    },
+    "test_workbench_presentation_submission-slots2/submission-first-read.png": {
+      "bytes": 43484,
+      "sha256": "65e61331b7a00fd160e3a97bca42011349a8e199e81df8d6c8734dff86c0b326"
+    },
+    "import-slots2/process.json": {
+      "bytes": 524,
+      "sha256": "2b79e7d312a65324047c814b1b5d1dec18e27b969909ac8810b5a14873f264f4"
+    },
+    "import-slots2/stdout.log": {
+      "bytes": 51417,
+      "sha256": "81da412d1f1dffc623783a7cf37e7a1ff62dd157de74dc0db35adccd98a4ede5"
+    }
+  }
+}

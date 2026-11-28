@@ -1,0 +1,102 @@
+name: PUBPRES bounded Main render engine component
+
+on:
+  push:
+    branches: [codex/pubpres-playability-final-001-20261124]
+    paths: ['.github/pubpres-frame-budget-build-run.json']
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 1, persist-credentials: false}
+      - name: Exact component and unchanged predecessor gates
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/pubpres_final_frame_budget/request_contract.py
+          python3 tools/pubpres_final_frame_budget/engine_contract.py --verify
+          python3 -m unittest discover -s tools/pubpres_final_frame_budget -p 'test_*.py' -v
+          python3 -m unittest discover -s tools/pubpres_final_engine -p 'test_*.py' -v
+      - name: Bounded producer and actual cross-thread token qualification
+        run: |
+          mkdir -p build/pubpres-frame-budget-plan
+          g++ -std=c++17 -O2 -Wall -Wextra -Werror -pthread tools/pubpres_final_frame_budget/test_frame_budget.cpp -o build/pubpres-frame-budget-plan/normal
+          build/pubpres-frame-budget-plan/normal > build/pubpres-frame-budget-plan/normal.log
+          g++ -std=c++17 -O1 -g -Wall -Wextra -Werror -pthread -fsanitize=address,undefined -fno-omit-frame-pointer tools/pubpres_final_frame_budget/test_frame_budget.cpp -o build/pubpres-frame-budget-plan/sanitized
+          ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 build/pubpres-frame-budget-plan/sanitized > build/pubpres-frame-budget-plan/sanitized.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-frame-budget-plan-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-frame-budget-plan/*.log
+          retention-days: 90
+          if-no-files-found: warn
+
+  bounded-engine-windows:
+    needs: plan
+    runs-on: windows-2022
+    timeout-minutes: 180
+    steps:
+      - name: Canonical Windows source bytes
+        shell: powershell
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Exact clean Godot 4.7 source
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $EngineSource = Join-Path $env:RUNNER_TEMP 'godot-bounded-source'
+          git init $EngineSource
+          if ($LASTEXITCODE -ne 0) { throw 'Engine source initialization failed' }
+          git -C $EngineSource remote add origin https://github.com/godotengine/godot.git
+          if ($LASTEXITCODE -ne 0) { throw 'Engine source remote setup failed' }
+          git -C $EngineSource fetch --depth=1 --no-tags origin 5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88
+          if ($LASTEXITCODE -ne 0) { throw 'Exact engine source fetch failed' }
+          git -C $EngineSource checkout --detach FETCH_HEAD
+          if ($LASTEXITCODE -ne 0) { throw 'Exact engine source checkout failed' }
+      - name: Build separately identified bounded Main render engine
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          python tools/pubpres_final_frame_budget/request_contract.py
+          if ($LASTEXITCODE -ne 0) { throw 'Component request admission failed' }
+          python tools/pubpres_final_frame_budget/build_engine.py --source-dir (Join-Path $env:RUNNER_TEMP 'godot-bounded-source') --output build/pubpres-frame-budget-engine/payload --evidence build/pubpres-frame-budget-engine/proof --workers 2
+          if ($LASTEXITCODE -ne 0) { throw 'Exact bounded engine build or ABI gate failed' }
+      - name: Independently re-admit exact engine payload
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Proof = Get-Item build/pubpres-frame-budget-engine/payload/build-provenance.json
+          $Hash = (Get-FileHash -Algorithm SHA256 $Proof.FullName).Hash.ToLowerInvariant()
+          python tools/pubpres_final_frame_budget/payload.py --directory build/pubpres-frame-budget-engine/payload --engine-build-source $env:GITHUB_SHA --engine-build-run $env:GITHUB_RUN_ID --engine-build-attempt $env:GITHUB_RUN_ATTEMPT --engine-proof-sha256 $Hash --evidence build/pubpres-frame-budget-engine/proof/payload-admission.json
+          if ($LASTEXITCODE -ne 0) { throw 'Exact component payload re-admission failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: success()
+        with:
+          name: pubpres-final-bounded-engine-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-frame-budget-engine/payload/
+          retention-days: 90
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-final-bounded-engine-proof-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pubpres-frame-budget-engine/proof/
+            !build/pubpres-frame-budget-engine/proof/dependencies/**
+            !build/pubpres-frame-budget-engine/proof/downloads/*.zip
+            !build/pubpres-frame-budget-engine/proof/downloads/*.whl
+          retention-days: 90
+          if-no-files-found: warn

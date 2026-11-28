@@ -46,12 +46,14 @@ func publication_fault(late: bool) -> void:
 	var owner: RefCounted = LateFaultWorker.new()
 	require(not owner._thread.is_started(),"publication fixture has exclusive test ownership")
 	require(owner._world.diagnostic_reset({"extent":Vector2i(128,128)}),"publication fixture native construction")
+	owner._workbench_extent = Vector2i(128,128)
 	require(owner._world.diagnostic_fill_rect(Vector2i(16,16),Vector2i.ONE,1,0),"healthy publication contains a known cell")
 	owner._publish_snapshot(0.0,true,0,true)
 	var previous: CyberSimulationSnapshot = owner.take_latest_snapshot(-1)
 	if not require(previous != null and not previous.simulation_failed,"last healthy publication exists"): return
 	var old_cells: PackedByteArray = previous.cells.duplicate()
 	var old_patches: PackedByteArray = previous.render_patch_cells.duplicate()
+	require(old_patches.size() == 128 * 128 * 2,"healthy fixture has a complete retained baseline")
 	var old_tick: int = previous.tick_index
 	var old_revision: int = previous.world_revision
 	var old_render_serial: int = previous.render_snapshot_serial

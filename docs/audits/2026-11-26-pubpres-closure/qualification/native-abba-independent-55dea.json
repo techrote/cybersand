@@ -1,0 +1,840 @@
+{
+  "campaign_summary_sha256": "a5eb89878bcc88693f42f1f4cccd7995fa823fdbf411a1b6016573fea0deac06",
+  "cases": [
+    {
+      "arms": [
+        {
+          "equal_step_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+          "equal_step_body_sha256": "33177eca76cfd711934f17f5337bef0ce0a343884c85ed6506543c7b1a121997",
+          "index": 0,
+          "memory_sample_count": 124,
+          "memory_samples_without_rss": 0,
+          "mode": "all_workers",
+          "observer_max_usec": 531,
+          "observer_total_usec": 33080,
+          "presentation_sha256": "84f9bd4ce6e465dd63b618ff81c5d757e083e5e1ea6356af06398def6e9c6997",
+          "process_cpu_mean_core_equivalents": 3.214999611568085,
+          "process_id": 1126,
+          "receipt_sha256": "d8569d81fc82cfc48d389b5b48ff3ed252c09aa0bdbc3af5429e63175890384b",
+          "sampled_last_rss_bytes": 1221320704,
+          "sampled_peak_rss_bytes": 1233510400,
+          "task_dispatches_delta": 1600,
+          "tasks_delta": 10046,
+          "trace_sha256": "c239b063960a1c1ae1a5567c6ef1128a228332ca0aa72e7d45f97a64874d115d",
+          "windows": {
+            "first_144_steps": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 6.38571,
+              "gap_counts_above_ms": {
+                "100": 1,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 143,
+                "max": 115.595,
+                "p50": 42.491,
+                "p95": 58.7044,
+                "p99": 76.95524000000016
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 124.179,
+                "p50": 42.132,
+                "p95": 58.419700000000006,
+                "p99": 67.34888000000004
+              },
+              "pre_capture_unjoined_material_submissions": 1,
+              "pre_capture_unjoined_visible_poses": 1,
+              "real_steps_per_second": 22.550350704933358,
+              "selected_completion_age_ms": {
+                "count": 142,
+                "max": 9.994,
+                "p50": 3.6005000000000003,
+                "p95": 7.413549999999996,
+                "p99": 9.51962
+              },
+              "submissions": 144,
+              "withheld_body_submissions": 1
+            },
+            "whole_capture": {
+              "completed_physical_steps": 230,
+              "elapsed_seconds": 10.041642,
+              "gap_counts_above_ms": {
+                "100": 2,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 229,
+                "max": 144.864,
+                "p50": 41.692,
+                "p95": 58.477999999999994,
+                "p99": 78.81415999999999
+              },
+              "physical_gap_ms": {
+                "count": 229,
+                "max": 124.179,
+                "p50": 41.373,
+                "p95": 57.0664,
+                "p99": 71.64067999999999
+              },
+              "pre_capture_unjoined_material_submissions": 1,
+              "pre_capture_unjoined_visible_poses": 1,
+              "real_steps_per_second": 22.90462057898499,
+              "selected_completion_age_ms": {
+                "count": 228,
+                "max": 28.901,
+                "p50": 3.5854999999999997,
+                "p95": 7.1309499999999995,
+                "p99": 9.840169999999995
+              },
+              "submissions": 230,
+              "withheld_body_submissions": 1
+            }
+          }
+        },
+        {
+          "equal_step_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+          "equal_step_body_sha256": "33177eca76cfd711934f17f5337bef0ce0a343884c85ed6506543c7b1a121997",
+          "index": 1,
+          "memory_sample_count": 118,
+          "memory_samples_without_rss": 0,
+          "mode": "actual_tasks",
+          "observer_max_usec": 14045,
+          "observer_total_usec": 48460,
+          "presentation_sha256": "8ca1b56496c2685856cee1fcd480bd57a89d2ee2137f37c9720109ed93451253",
+          "process_cpu_mean_core_equivalents": 3.240555409773427,
+          "process_id": 1386,
+          "receipt_sha256": "135d26e5994d19d142ff555fd3abdba9a256029cb4aea82c2d704e61cbdc4930",
+          "sampled_last_rss_bytes": 1227890688,
+          "sampled_peak_rss_bytes": 1239953408,
+          "task_dispatches_delta": 1565,
+          "tasks_delta": 9821,
+          "trace_sha256": "ab3d82037fb607843a7e25cc73a2a5ce6abfa5596804964a84bd1bc80f89148e",
+          "windows": {
+            "first_144_steps": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 6.499182,
+              "gap_counts_above_ms": {
+                "100": 2,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 143,
+                "max": 136.134,
+                "p50": 42.977,
+                "p95": 57.685100000000006,
+                "p99": 67.97186000000004
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 130.434,
+                "p50": 42.704,
+                "p95": 56.34230000000001,
+                "p99": 101.86456000000081
+              },
+              "pre_capture_unjoined_material_submissions": 1,
+              "pre_capture_unjoined_visible_poses": 1,
+              "real_steps_per_second": 22.156634481077774,
+              "selected_completion_age_ms": {
+                "count": 143,
+                "max": 22.934,
+                "p50": 3.704,
+                "p95": 7.843200000000001,
+                "p99": 15.903480000000101
+              },
+              "submissions": 144,
+              "withheld_body_submissions": 0
+            },
+            "whole_capture": {
+              "completed_physical_steps": 225,
+              "elapsed_seconds": 10.012099,
+              "gap_counts_above_ms": {
+                "100": 4,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 224,
+                "max": 142.398,
+                "p50": 42.188,
+                "p95": 57.4103,
+                "p99": 113.62508000000054
+              },
+              "physical_gap_ms": {
+                "count": 224,
+                "max": 130.434,
+                "p50": 41.710499999999996,
+                "p95": 54.973099999999995,
+                "p99": 118.99332000000001
+              },
+              "pre_capture_unjoined_material_submissions": 1,
+              "pre_capture_unjoined_visible_poses": 1,
+              "real_steps_per_second": 22.47281014700314,
+              "selected_completion_age_ms": {
+                "count": 224,
+                "max": 27.096,
+                "p50": 3.7279999999999998,
+                "p95": 7.06885,
+                "p99": 17.871650000000063
+              },
+              "submissions": 225,
+              "withheld_body_submissions": 0
+            }
+          }
+        },
+        {
+          "equal_step_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+          "equal_step_body_sha256": "33177eca76cfd711934f17f5337bef0ce0a343884c85ed6506543c7b1a121997",
+          "index": 2,
+          "memory_sample_count": 117,
+          "memory_samples_without_rss": 1,
+          "mode": "actual_tasks",
+          "observer_max_usec": 1082,
+          "observer_total_usec": 38384,
+          "presentation_sha256": "cffe4e7cfe1cc026b2fd4ef77af11c2e755b8e9f939f732dd2bd72e4fcb8d323",
+          "process_cpu_mean_core_equivalents": 3.1796380546247596,
+          "process_id": 1643,
+          "receipt_sha256": "1acb89019a6d5ce60a2cf40f4a95f44a7e7f14be600dc0f6a434291444f3ba95",
+          "sampled_last_rss_bytes": 1221099520,
+          "sampled_peak_rss_bytes": 1233543168,
+          "task_dispatches_delta": 1530,
+          "tasks_delta": 9596,
+          "trace_sha256": "922f6bceaf267fbef4f17ab38c1167b5dc2f49efaa79ad038792c51e24790c8a",
+          "windows": {
+            "first_144_steps": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 6.642834,
+              "gap_counts_above_ms": {
+                "100": 3,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 143,
+                "max": 202.54,
+                "p50": 42.209,
+                "p95": 58.82440000000001,
+                "p99": 163.27082000000033
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 178.086,
+                "p50": 42.005,
+                "p95": 57.081600000000016,
+                "p99": 147.72470000000024
+              },
+              "pre_capture_unjoined_material_submissions": 1,
+              "pre_capture_unjoined_visible_poses": 1,
+              "real_steps_per_second": 21.677494876433762,
+              "selected_completion_age_ms": {
+                "count": 143,
+                "max": 30.369,
+                "p50": 3.673,
+                "p95": 7.689500000000003,
+                "p99": 21.218340000000104
+              },
+              "submissions": 144,
+              "withheld_body_submissions": 0
+            },
+            "whole_capture": {
+              "completed_physical_steps": 220,
+              "elapsed_seconds": 10.034292,
+              "gap_counts_above_ms": {
+                "100": 5,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 218,
+                "max": 202.54,
+                "p50": 41.7235,
+                "p95": 57.02739999999994,
+                "p99": 147.69778
+              },
+              "physical_gap_ms": {
+                "count": 219,
+                "max": 179.477,
+                "p50": 41.612,
+                "p95": 57.687899999999985,
+                "p99": 152.0122999999999
+              },
+              "pre_capture_unjoined_material_submissions": 1,
+              "pre_capture_unjoined_visible_poses": 1,
+              "real_steps_per_second": 21.924815422951614,
+              "selected_completion_age_ms": {
+                "count": 218,
+                "max": 30.369,
+                "p50": 3.4425,
+                "p95": 7.773949999999995,
+                "p99": 23.772599999999922
+              },
+              "submissions": 219,
+              "withheld_body_submissions": 0
+            }
+          }
+        },
+        {
+          "equal_step_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+          "equal_step_body_sha256": "33177eca76cfd711934f17f5337bef0ce0a343884c85ed6506543c7b1a121997",
+          "index": 3,
+          "memory_sample_count": 121,
+          "memory_samples_without_rss": 0,
+          "mode": "all_workers",
+          "observer_max_usec": 3287,
+          "observer_total_usec": 41865,
+          "presentation_sha256": "7b2c4d777d341ee56bfc0dcfb80694b9e80841205fad434adf67d2fbf22d1216",
+          "process_cpu_mean_core_equivalents": 3.2520578591110363,
+          "process_id": 1901,
+          "receipt_sha256": "6d90a2d53cb7e9ec5a008fac5d6f94bff278b4a5c42c34bdd54b1ff6df018a91",
+          "sampled_last_rss_bytes": 1209020416,
+          "sampled_peak_rss_bytes": 1231892480,
+          "task_dispatches_delta": 1614,
+          "tasks_delta": 10136,
+          "trace_sha256": "f8d0ca7d18bfe11c771d02906b97a23f1e3ab0454023da498c79cb4310ff1b94",
+          "windows": {
+            "first_144_steps": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 6.363457,
+              "gap_counts_above_ms": {
+                "100": 3,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 143,
+                "max": 162.268,
+                "p50": 41.223,
+                "p95": 54.0703,
+                "p99": 126.43860000000001
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 145.544,
+                "p50": 41.219,
+                "p95": 55.1792,
+                "p99": 129.12568000000016
+              },
+              "pre_capture_unjoined_material_submissions": 1,
+              "pre_capture_unjoined_visible_poses": 1,
+              "real_steps_per_second": 22.62920924899783,
+              "selected_completion_age_ms": {
+                "count": 142,
+                "max": 23.292,
+                "p50": 3.3985000000000003,
+                "p95": 6.659549999999999,
+                "p99": 13.528950000000016
+              },
+              "submissions": 144,
+              "withheld_body_submissions": 1
+            },
+            "whole_capture": {
+              "completed_physical_steps": 232,
+              "elapsed_seconds": 10.031156,
+              "gap_counts_above_ms": {
+                "100": 3,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 231,
+                "max": 162.268,
+                "p50": 41.125,
+                "p95": 54.6105,
+                "p99": 122.67769999999987
+              },
+              "physical_gap_ms": {
+                "count": 231,
+                "max": 145.544,
+                "p50": 40.916,
+                "p95": 55.036,
+                "p99": 106.67829999999944
+              },
+              "pre_capture_unjoined_material_submissions": 1,
+              "pre_capture_unjoined_visible_poses": 1,
+              "real_steps_per_second": 23.127942582091237,
+              "selected_completion_age_ms": {
+                "count": 230,
+                "max": 23.292,
+                "p50": 3.4035,
+                "p95": 6.739099999999997,
+                "p99": 10.895260000000002
+              },
+              "submissions": 232,
+              "withheld_body_submissions": 1
+            }
+          }
+        }
+      ],
+      "case": "wave_512_follow",
+      "equal_step_trajectory_parity": true,
+      "necessary_criteria_all_pass": false,
+      "original_registered_necessary_criteria": {
+        "both_candidate_rates_exceed_both_controls": false,
+        "material_generation_age_at_submission_ms_max_no_worse_than_worst_control": false,
+        "material_generation_age_at_submission_ms_p99_no_worse_than_worst_control": false,
+        "physical_gap_ms_max_no_worse_than_worst_control": false,
+        "physical_gap_ms_p99_no_worse_than_worst_control": false,
+        "selected_completion_age_ms_max_no_worse_than_worst_control": false,
+        "selected_completion_age_ms_p99_no_worse_than_worst_control": false
+      },
+      "selection": "NOT_SELECTED",
+      "stricter_frozen_direction": {
+        "all_candidate_gap_quantiles_lower": {
+          "p95": false,
+          "p99": false
+        },
+        "all_candidate_max_gaps_within_worst_reference": false,
+        "all_candidate_rates_higher": false,
+        "all_candidate_severe_counts_within_worst_reference": {
+          "100": true,
+          "1000": true,
+          "250": true,
+          "500": true
+        },
+        "disposition": "NOT_ESTABLISHED",
+        "reference_role": "D",
+        "repeatable_direction": false,
+        "window": "first_144_steps"
+      }
+    },
+    {
+      "arms": [
+        {
+          "equal_step_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+          "equal_step_body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+          "index": 0,
+          "memory_sample_count": 216,
+          "memory_samples_without_rss": 0,
+          "mode": "all_workers",
+          "observer_max_usec": 894,
+          "observer_total_usec": 44361,
+          "presentation_sha256": "130c19d950d6dcacb0662a74fbc62e4fb46e084132438e67a40d353f5a3590c9",
+          "process_cpu_mean_core_equivalents": 4.373888469414951,
+          "process_id": 2158,
+          "receipt_sha256": "cb1bb5c332639c603ee94dc3fb324840cba8d407ad1e92ca05ccc0dade27fd1b",
+          "sampled_last_rss_bytes": 1448996864,
+          "sampled_peak_rss_bytes": 1474834432,
+          "task_dispatches_delta": 1450,
+          "tasks_delta": 142029,
+          "trace_sha256": "80a11f5a8ef65e14f9cf419f25da73c9bbb731df2e293af71ba2d76015b643d3",
+          "windows": {
+            "first_144_steps": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 16.739037,
+              "gap_counts_above_ms": {
+                "100": 91,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 248,
+                "max": 185.383,
+                "p50": 55.5655,
+                "p95": 148.52315,
+                "p99": 173.19789
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 226.099,
+                "p50": 128.527,
+                "p95": 174.5874,
+                "p99": 185.73128000000005
+              },
+              "pre_capture_unjoined_material_submissions": 2,
+              "pre_capture_unjoined_visible_poses": 2,
+              "real_steps_per_second": 8.602645421000025,
+              "selected_completion_age_ms": {
+                "count": 248,
+                "max": 141.523,
+                "p50": 15.919,
+                "p95": 118.23864999999995,
+                "p99": 135.24219
+              },
+              "submissions": 250,
+              "withheld_body_submissions": 0
+            },
+            "whole_capture": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 16.740054,
+              "gap_counts_above_ms": {
+                "100": 91,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 248,
+                "max": 185.383,
+                "p50": 55.5655,
+                "p95": 148.52315,
+                "p99": 173.19789
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 226.099,
+                "p50": 128.527,
+                "p95": 174.5874,
+                "p99": 185.73128000000005
+              },
+              "pre_capture_unjoined_material_submissions": 2,
+              "pre_capture_unjoined_visible_poses": 2,
+              "real_steps_per_second": 8.602122788851219,
+              "selected_completion_age_ms": {
+                "count": 248,
+                "max": 141.523,
+                "p50": 15.919,
+                "p95": 118.23864999999995,
+                "p99": 135.24219
+              },
+              "submissions": 250,
+              "withheld_body_submissions": 0
+            }
+          }
+        },
+        {
+          "equal_step_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+          "equal_step_body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+          "index": 1,
+          "memory_sample_count": 216,
+          "memory_samples_without_rss": 0,
+          "mode": "actual_tasks",
+          "observer_max_usec": 1184,
+          "observer_total_usec": 45546,
+          "presentation_sha256": "d31d21efb2cf7c3869a67ec5bcf2be803235b31becb535b8672a2975c0eada8b",
+          "process_cpu_mean_core_equivalents": 4.397037328823204,
+          "process_id": 2414,
+          "receipt_sha256": "08c3c391f6c07e9654c1de059431331713eb6b91a193783cec1dff33c3c8c45a",
+          "sampled_last_rss_bytes": 1438429184,
+          "sampled_peak_rss_bytes": 1464500224,
+          "task_dispatches_delta": 1450,
+          "tasks_delta": 142029,
+          "trace_sha256": "3465f47a7fb2dc8fe3aed6338471b123932302562618fc505642f4670ba4ab42",
+          "windows": {
+            "first_144_steps": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 16.160961,
+              "gap_counts_above_ms": {
+                "100": 90,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 260,
+                "max": 190.47,
+                "p50": 56.2315,
+                "p95": 163.05325,
+                "p99": 185.22932
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 188.689,
+                "p50": 123.678,
+                "p95": 174.27949999999998,
+                "p99": 181.33512000000005
+              },
+              "pre_capture_unjoined_material_submissions": 3,
+              "pre_capture_unjoined_visible_poses": 3,
+              "real_steps_per_second": 8.9103612093365,
+              "selected_completion_age_ms": {
+                "count": 260,
+                "max": 141.206,
+                "p50": 13.5075,
+                "p95": 125.74255,
+                "p99": 133.65578
+              },
+              "submissions": 263,
+              "withheld_body_submissions": 0
+            },
+            "whole_capture": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 16.161809,
+              "gap_counts_above_ms": {
+                "100": 90,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 260,
+                "max": 190.47,
+                "p50": 56.2315,
+                "p95": 163.05325,
+                "p99": 185.22932
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 188.689,
+                "p50": 123.678,
+                "p95": 174.27949999999998,
+                "p99": 181.33512000000005
+              },
+              "pre_capture_unjoined_material_submissions": 3,
+              "pre_capture_unjoined_visible_poses": 3,
+              "real_steps_per_second": 8.909893688262247,
+              "selected_completion_age_ms": {
+                "count": 260,
+                "max": 141.206,
+                "p50": 13.5075,
+                "p95": 125.74255,
+                "p99": 133.65578
+              },
+              "submissions": 263,
+              "withheld_body_submissions": 0
+            }
+          }
+        },
+        {
+          "equal_step_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+          "equal_step_body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+          "index": 2,
+          "memory_sample_count": 213,
+          "memory_samples_without_rss": 0,
+          "mode": "actual_tasks",
+          "observer_max_usec": 1739,
+          "observer_total_usec": 48528,
+          "presentation_sha256": "901834610439ee76f9bcefce5c32f0e605c5dd36b85f2ce237807fc8b969c032",
+          "process_cpu_mean_core_equivalents": 4.28696917372791,
+          "process_id": 2673,
+          "receipt_sha256": "f6d5b75736946e0f3d4badc93192dbec46ecc5a24cf5258c8377f75d0bb11b7e",
+          "sampled_last_rss_bytes": 1438969856,
+          "sampled_peak_rss_bytes": 1454243840,
+          "task_dispatches_delta": 1450,
+          "tasks_delta": 142029,
+          "trace_sha256": "10eed3cce677810bf2c833022feb56e96472795d848f34b882f4132ac1917700",
+          "windows": {
+            "first_144_steps": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 16.267814,
+              "gap_counts_above_ms": {
+                "100": 88,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 249,
+                "max": 265.312,
+                "p50": 56.563,
+                "p95": 165.22339999999997,
+                "p99": 203.07084000000003
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 225.852,
+                "p50": 123.101,
+                "p95": 173.65910000000002,
+                "p99": 206.57932000000017
+              },
+              "pre_capture_unjoined_material_submissions": 2,
+              "pre_capture_unjoined_visible_poses": 2,
+              "real_steps_per_second": 8.85183467182499,
+              "selected_completion_age_ms": {
+                "count": 249,
+                "max": 178.16,
+                "p50": 14.054,
+                "p95": 122.2832,
+                "p99": 147.8966400000001
+              },
+              "submissions": 251,
+              "withheld_body_submissions": 0
+            },
+            "whole_capture": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 16.268566,
+              "gap_counts_above_ms": {
+                "100": 88,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 249,
+                "max": 265.312,
+                "p50": 56.563,
+                "p95": 165.22339999999997,
+                "p99": 203.07084000000003
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 225.852,
+                "p50": 123.101,
+                "p95": 173.65910000000002,
+                "p99": 206.57932000000017
+              },
+              "pre_capture_unjoined_material_submissions": 2,
+              "pre_capture_unjoined_visible_poses": 2,
+              "real_steps_per_second": 8.851425503636891,
+              "selected_completion_age_ms": {
+                "count": 249,
+                "max": 178.16,
+                "p50": 14.054,
+                "p95": 122.2832,
+                "p99": 147.8966400000001
+              },
+              "submissions": 251,
+              "withheld_body_submissions": 0
+            }
+          }
+        },
+        {
+          "equal_step_admitted_moves_sha256": "986183b4f06a36a76279b3f6c4d9f196c4fa34d5c4dfaa887e34f52303851726",
+          "equal_step_body_sha256": "fd78955c67fe7109ac53dc56a3b3cbc8d4450d62317bcb41152c165bb55cbe1b",
+          "index": 3,
+          "memory_sample_count": 210,
+          "memory_samples_without_rss": 0,
+          "mode": "all_workers",
+          "observer_max_usec": 1862,
+          "observer_total_usec": 52272,
+          "presentation_sha256": "f9163430daa50c72b76d7428ffa7bb4229efe33c28d6563138002e73f88312ed",
+          "process_cpu_mean_core_equivalents": 4.382844010345178,
+          "process_id": 2931,
+          "receipt_sha256": "6c0be8c69e03979188e837f4fafd09ed9b23c2998cec47c9c7e6fa7fe3ccda07",
+          "sampled_last_rss_bytes": 1429094400,
+          "sampled_peak_rss_bytes": 1464770560,
+          "task_dispatches_delta": 1450,
+          "tasks_delta": 142029,
+          "trace_sha256": "132a164976055b00d7fc8a4f87314e89ae7d2e217124d450d51bbc9fa3a19c55",
+          "windows": {
+            "first_144_steps": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 16.222204,
+              "gap_counts_above_ms": {
+                "100": 92,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 248,
+                "max": 262.113,
+                "p50": 57.7255,
+                "p95": 157.9546,
+                "p99": 179.47912000000002
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 243.299,
+                "p50": 123.527,
+                "p95": 178.2869,
+                "p99": 230.54476000000034
+              },
+              "pre_capture_unjoined_material_submissions": 2,
+              "pre_capture_unjoined_visible_poses": 2,
+              "real_steps_per_second": 8.876722299879845,
+              "selected_completion_age_ms": {
+                "count": 247,
+                "max": 191.828,
+                "p50": 14.07,
+                "p95": 123.58759999999995,
+                "p99": 149.07879999999992
+              },
+              "submissions": 250,
+              "withheld_body_submissions": 1
+            },
+            "whole_capture": {
+              "completed_physical_steps": 144,
+              "elapsed_seconds": 16.223412,
+              "gap_counts_above_ms": {
+                "100": 92,
+                "1000": 0,
+                "250": 0,
+                "500": 0
+              },
+              "material_generation_age_at_submission_ms": {
+                "count": 248,
+                "max": 262.113,
+                "p50": 57.7255,
+                "p95": 157.9546,
+                "p99": 179.47912000000002
+              },
+              "physical_gap_ms": {
+                "count": 143,
+                "max": 243.299,
+                "p50": 123.527,
+                "p95": 178.2869,
+                "p99": 230.54476000000034
+              },
+              "pre_capture_unjoined_material_submissions": 2,
+              "pre_capture_unjoined_visible_poses": 2,
+              "real_steps_per_second": 8.876061336542522,
+              "selected_completion_age_ms": {
+                "count": 247,
+                "max": 191.828,
+                "p50": 14.07,
+                "p95": 123.58759999999995,
+                "p99": 149.07879999999992
+              },
+              "submissions": 250,
+              "withheld_body_submissions": 1
+            }
+          }
+        }
+      ],
+      "case": "wave_gameplay_2048_follow",
+      "equal_step_trajectory_parity": true,
+      "necessary_criteria_all_pass": false,
+      "original_registered_necessary_criteria": {
+        "both_candidate_rates_exceed_both_controls": false,
+        "material_generation_age_at_submission_ms_max_no_worse_than_worst_control": false,
+        "material_generation_age_at_submission_ms_p99_no_worse_than_worst_control": false,
+        "physical_gap_ms_max_no_worse_than_worst_control": true,
+        "physical_gap_ms_p99_no_worse_than_worst_control": true,
+        "selected_completion_age_ms_max_no_worse_than_worst_control": true,
+        "selected_completion_age_ms_p99_no_worse_than_worst_control": true
+      },
+      "selection": "NOT_SELECTED",
+      "stricter_frozen_direction": {
+        "all_candidate_gap_quantiles_lower": {
+          "p95": true,
+          "p99": false
+        },
+        "all_candidate_max_gaps_within_worst_reference": true,
+        "all_candidate_rates_higher": false,
+        "all_candidate_severe_counts_within_worst_reference": {
+          "100": true,
+          "1000": true,
+          "250": true,
+          "500": true
+        },
+        "disposition": "NOT_ESTABLISHED",
+        "reference_role": "D",
+        "repeatable_direction": false,
+        "window": "first_144_steps"
+      }
+    }
+  ],
+  "disposition": "NOT_SELECTED / DEFAULT OFF / original all-worker path retained",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "independent_physical_reducer_program_sha256": "57bed41ffd3b382c1d4d3154b0d51d87e4aa4583d07a2a5437d6487056076024",
+  "independent_physical_reduction_sha256": "b854580703847e7abee52a09c44f470a98fa66b9b4c4116a913bc6526ebf16d1",
+  "independently_recomputed_windows": 16,
+  "limits": [
+    "Neither workload meets the original necessary performance criteria. No later medium/mixed/sustained promotion is justified for this unchanged candidate.",
+    "Task counts are actual whole-capture dispatch/task readbacks. Wave512 captures contain different total step counts; unequal full-capture task totals do not imply omitted equal-step work.",
+    "Three control arms each contain one transient withheld submission; no candidate withholding appears in these captures. First-capture poses/material without a trace join are counted separately. This is not a complete display visibility qualification.",
+    "Submitted pose/material ages are Main pre-draw observations. No GPU completion, display scanout, or input-to-visible claim is made.",
+    "Process CPU and RSS sample the process lifetime including setup. These short captures do not qualify sustained retention or prove bounded GPU resource memory.",
+    "Original complete physical and submitted-geometry readers remain mandatory; this independent reduction does not replace their full correctness inventories."
+  ],
+  "native_sha256": "a908b78028bd7e0ebe173b3f75a9ac143f863e20be66589b224cac3bbfd205b4",
+  "native_toolchain": "Local GCC14.2.0 drift, explicitly registered. This is not pinned hosted platform qualification.",
+  "raw_physical_receipts_admitted": 8,
+  "registration_criterion": "Both candidate trials must improve actual physical steps per elapsed second over both controls, without worse maximum/p99 gaps or material/selected-pose age than the worse matched control. All correctness, actual actor visibility, memory/resource and ownership gates remain mandatory. A treatment with inconsistent primary improvement is NOT_ESTABLISHED, even if one native stage or CPU metric improves.",
+  "registration_sha256": "4d8c113532c0770ead9ab39ae3224cc9f3182411c6d7cf799e27d3efa4144ebe",
+  "reviewer": "Specialist C",
+  "schema": "pubpres-closure-independent-native-abba-v1",
+  "source_commit": "55dea232aaeee8cda32fd85fd5b3cfd628848469"
+}

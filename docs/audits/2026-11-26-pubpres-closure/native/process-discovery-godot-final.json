@@ -1,0 +1,117 @@
+{
+  "schema": "pubpres-actual-godot-process-discovery-check-v1",
+  "complete": true,
+  "actual_engine_reported_pid": 10,
+  "process": {
+    "command": [
+      "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+      "/workspace/scratch/9cef565acfec/native-apparatus/owned_xorg_process_discovery_v2.py",
+      "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--script",
+      "/workspace/scratch/9cef565acfec/native-process-discovery-godot-final/observed_process.gd"
+    ],
+    "source_commit": "b6956cd94382218a270ad85df7bc84f30a66776f",
+    "elapsed_seconds": 2.262960965000275,
+    "exit_code": 0,
+    "timed_out": false,
+    "surviving_children_at_exit": false,
+    "interruption": null,
+    "wrapper_pid": 6,
+    "observed_application_pid": 10,
+    "sampled_peak_rss_bytes": 218177536,
+    "memory_scope": "250ms actual Godot process working-set/RSS samples including setup and capture; valid only after receipt PID match. Windows virtual size unavailable; commit reported separately.",
+    "display_wrapper_sha256": "892dc269c5175f0bd3edede568b4a81dac4b791c2737f6089c64fbbcb845eb72",
+    "application_discovery": {
+      "schema": "pubpres-owned-application-discovery-v1",
+      "method": "status_parent_graph",
+      "owner_pid": 6,
+      "pid": 10,
+      "executable": "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+      "creation_identity": "linux-start-ticks:412480",
+      "ancestry": [
+        {
+          "pid": 6,
+          "parent_pid": 5,
+          "creation_identity": "linux-start-ticks:412472",
+          "start_ticks": 412472
+        },
+        {
+          "pid": 10,
+          "parent_pid": 6,
+          "creation_identity": "linux-start-ticks:412480",
+          "start_ticks": 412480
+        }
+      ]
+    },
+    "process_cpu": {
+      "path": "/workspace/scratch/9cef565acfec/native-process-discovery-godot-final/run/process-cpu.json",
+      "sha256": "cbc22f4bf1690d111594cf82fcc28818b0b494ee5cacfa9552d3836ef65e0130",
+      "summary": {
+        "schema": "pubpres-final-process-cpu-summary-v1",
+        "complete": true,
+        "problems": [],
+        "samples": 8,
+        "sample_errors": 0,
+        "dropped": 0,
+        "expected_pid": 10,
+        "sampler_sha256": "a1e56c7b2b5c9012b4be995f58dece8adf336fac1122d327577aa2578d67fe59",
+        "external_sampler_wall_usec": 608,
+        "external_sampler_max_read_usec": 139,
+        "scope": "Actual owned Godot process CPU accounting, all its threads. Includes scene setup and capture inside the sampled process lifetime. Samples are not aligned to Godot capture clocks. The unobserved launch/exit tail is excluded from interval deltas; last cumulative counters are lower bounds on lifetime CPU. Read time for successful and failed queries is external sampler wall cost, not Godot CPU; elapsed_ms marks query request, not an instantaneous kernel accounting timestamp. No GPU busy-time or hardware utilization claim.",
+        "creation_identity": "linux-start-ticks:412480",
+        "first_sample_elapsed_ms": 259.6770549998837,
+        "last_sample_elapsed_ms": 2012.3627990005843,
+        "observed_interval_seconds": 1.7526857440007007,
+        "observed_user_seconds": 0.39,
+        "observed_kernel_seconds": 0.17,
+        "mean_cpu_core_equivalents": 0.31950964507860813,
+        "last_cumulative_user_seconds": 0.52,
+        "last_cumulative_kernel_seconds": 0.2,
+        "maximum_sample_gap_ms": 250.42545199994493
+      }
+    }
+  },
+  "display": {
+    "schema": "pubpres-owned-xorg-development-v1",
+    "wrapper_pid": 6,
+    "scope": "Actual Linux dummy/llvmpipe correctness; not physical hardware acceptance",
+    "authorization": "private MIT-MAGIC-COOKIE-1; TCP localhost client; UNIX disabled",
+    "server_command": [
+      "/usr/bin/Xorg",
+      ":171",
+      "-config",
+      "/tmp/pubpres-xorg-toyy39lr/xorg.conf",
+      "-logfile",
+      "/workspace/scratch/9cef565acfec/native-process-discovery-godot-final/run/display-owner.xorg.log",
+      "-noreset",
+      "-listen",
+      "tcp",
+      "-nolisten",
+      "unix",
+      "-auth",
+      "/tmp/pubpres-xorg-toyy39lr/authority"
+    ],
+    "configuration_sha256": "d2fe50179580f31a41a876e4e592767674fa7c2d405a3ed6198b0e34beb617ce",
+    "server_executable_sha256": "bca1ceb412614f4e0cb13a68b5d78e86b32ac25f7f2f66b40de73517c8f239eb",
+    "display": "127.0.0.1:171",
+    "server_pid": 7,
+    "application_returncode": 0,
+    "application_timeout": false,
+    "server_alive_before_requested_shutdown": true,
+    "unexpected_server_members": false,
+    "server_reaped": true,
+    "server_returncode": 0,
+    "terminal_ownership_verified": true,
+    "returncode": 0
+  },
+  "apparatus_files_sha256": {
+    "tools/pubpres_final_observers/process_discovery.py": "38377b99ff28d73cf4307bbb0ac58194b8f2cd739a4f9631f79e295ad42c9151",
+    "tools/pubpres_final_observers/execute_with_resources.py": "fbf5004e9b3270dce2cdd6e6bec2c56a82c9096b09c5f3c4ca7a44a514538c20",
+    "tools/pubpres_final_observers/execution_contract.py": "ebc16803cfa7bc70ccb837ecd6bbc62b6484232af37991ce21a51322b6017f69",
+    "tools/pubpres_final_observers/presentation_metrics.py": "61ff916f8ad14202c924067e25a3fed354ec53113fad044f2fd381f8581d9e03"
+  },
+  "scope": "Actual pinned Godot process, private Xorg wrapper ownership, source-bound CPU identity and clean shutdown only. Neutral1.25sec timer script; no physical progression or gameplay qualification."
+}

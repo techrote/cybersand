@@ -1,8 +1,23 @@
 extends Control
 
+const MaterialPublisher = preload("res://scripts/blit_material_publisher.gd")
+const FullImageRingPublisher = preload("res://scripts/full_image_ring_publisher.gd")
+const MaterialPublicationDeadline = preload("res://scripts/material_publication_deadline.gd")
+const MaterialPublicationSteps = preload("res://scripts/material_publication_steps.gd")
+const PixelCamera = preload("res://scripts/pixel_camera_transform.gd")
 const PhysicalTrial = preload("res://scripts/physical_actor_trial.gd")
 const PhysicalCatalog = preload("res://scripts/physical_actor_catalog.gd")
 const PhysicalSession = preload("res://scripts/physical_actor_session.gd")
+const WorkbenchBridge = preload("res://scripts/workbench_physics_bridge.gd")
+const WorkbenchPresentationCoherence = preload("res://scripts/workbench_presentation_coherence.gd")
+const WorkbenchWaterComposition = preload("res://scripts/workbench_water_composition.gd")
+const WorkbenchMaterialTimeline = preload("res://scripts/workbench_material_timeline.gd")
+const WorkbenchPresentationHistory = preload("res://scripts/workbench_presentation_history.gd")
+const WorkbenchPresentationSubmission = preload("res://scripts/workbench_presentation_submission.gd")
+const WorkbenchPoseTrace = preload("res://scripts/workbench_pose_trace.gd")
+const OwnerGameplay = preload("res://scripts/workbench_owner_gameplay.gd")
+const WorkbenchNativeRendezvous = preload("res://scripts/workbench_native_rendezvous.gd")
+const WorkbenchSameFrameContinuation = preload("res://scripts/workbench_same_frame_continuation.gd")
 const PhysicalOverlay = preload("res://scripts/physical_actor_overlay.gd")
 const PhysicalLoadouts = preload("res://scripts/physical_usable_loadouts.gd")
 const PhysicalEquipment = preload("res://scripts/physical_usable_equipment.gd")
@@ -53,10 +68,93 @@ var physical_trial_input = PhysicalTrial.new()
 var physical_rig_id: StringName = &""
 var physical_actor_session: CyberPhysicalActorSession
 var physical_actor_overlay: CyberPhysicalActorOverlay
+# The evaluator can finish scheduled fixed steps as native samples become ready.
+# No worker touches a RID. At most four recent callbacks are retained and the
+# ordinary transaction still consumes exactly one new native result per step.
+var _flight_pacing := OS.get_environment("CYBERSAND_WORKBENCH_FLIGHT_PACING") == "1"
+var _held_flight_callbacks: int = 0
+var _held_flight_times := PackedInt64Array()
+var _held_flight_ticket: Dictionary = {}
+var _serviced_flight_callbacks: int = 0
+var _last_flight_sample_hold_usec: int = -1000000
 var _workbench_wait_sample: int = -1
 var _workbench_frame_error: String = ""
 var _workbench_collider_frame: int = -1
+var _workbench_native_rendezvous = WorkbenchNativeRendezvous.new()
+# Separate renderer selection is independently controlled by Godot's existing
+# --render-thread option. This scheduling experiment is never enabled silently.
+var _workbench_native_rendezvous_selection: String = OS.get_environment("CYBERSAND_DIAG_NATIVE_RENDEZVOUS")
+var _workbench_native_rendezvous_enabled: bool = _workbench_native_rendezvous_selection in ["1", "render-overlap"]
+# Independent, explicitly selected experiment. Existing rendezvous and its
+# waits are mutually exclusive with a nonblocking same-frame continuation.
+var _workbench_same_frame = WorkbenchSameFrameContinuation.new()
+var _workbench_same_frame_requested: bool = OS.get_environment("CYBERSAND_DIAG_SAME_FRAME_CONTINUATION") == "1"
+var _workbench_same_frame_enabled: bool = _workbench_same_frame_requested and not _workbench_native_rendezvous_enabled
 var shared_workbench: Control
+# Opt-in physical presentation trace. Empty and inactive in normal operation.
+var workbench_pose_trace = WorkbenchPoseTrace.new()
+var _owner_gameplay: OwnerGameplay
+var _workbench_pose_trace_reasons: Dictionary = {}
+# Causal observation seam shared with the bounded worker trace. Ordinary play
+# creates no event dictionaries or additional reads. Main retains no event log.
+var _pubpres_trace_enabled: bool = OS.get_environment("CYBERSAND_DIAG_PHYSICS_CAUSAL_TRACE") == "1"
+# One resolved presentation decision per Main render submission. Rapier and
+# native World remain authoritative; this state owns only visual selection.
+var workbench_presentation_frame: Dictionary = {}
+var _workbench_presentation_state: Dictionary = {}
+var _workbench_presentation_identity: Array = []
+var _workbench_presentation_policy: String = ""
+var _workbench_presentation_turn: int = 0
+var _workbench_follow_state: Dictionary = {}
+var _workbench_mapping_locked: bool = false
+# Default-off live transaction required by the bounded engine experiment.
+# Only the actual pre-draw callback commits visible history and mapping.
+signal workbench_presentation_submitted(frame: Dictionary)
+var _workbench_submission_requested: bool = OS.get_environment("CYBERSAND_DIAG_ACTUAL_SUBMISSION") == "1"
+var _workbench_submission: Node
+var _workbench_submission_preparing: bool = false
+var _workbench_submission_refusal: String = ""
+var _workbench_submission_notification_pending: bool = false
+var _workbench_observation_identity: Array = []
+# Sample serials are not Rapier steps. Retain their real correspondence at
+# publication, independently of the physics bridge's short impulse history.
+const PRESENTATION_SAMPLE_HISTORY: int = 2048
+var _workbench_sample_steps: Dictionary = {}
+var _workbench_sample_identity: Array = []
+var _workbench_presentation_history = WorkbenchPresentationHistory.new()
+var _workbench_completed_step: int = -1
+var _workbench_completed_step_usec: int = 0
+var _workbench_water_dependencies: Dictionary = {}
+var _workbench_water_completion_context: Dictionary = {}
+var _workbench_water_closure_cache: Dictionary = {}
+var _workbench_water_closure_cache_hits: int = 0
+var _workbench_water_coverage_cache: Dictionary = {}
+var _workbench_contact_coverage_cache: Dictionary = {}
+var _workbench_water_coverage_cache_hits: int = 0
+var engine_lab_wait_native_sample: bool = true
+var engine_lab_ack_delay_frames: int = 0
+var _engine_lab_pending_ack_serial: int = 0
+var _engine_lab_pending_ack_frames: int = 0
+# Each accepted upload owns a fixed deadline. Later uploads cannot restart it.
+# At most five due-frame buckets exist (the UI delay is bounded to 0..4).
+var _engine_lab_ack_queue: Array[Dictionary] = []
+var _engine_lab_last_ack_serial: int = 0
+var _engine_lab_last_ack_usec: int = 0
+var _cadence_upload: Dictionary = {}
+var _cadence_received_usec: int = 0
+var _cadence_physics_hold_counts: Dictionary = {}
+var engine_lab_scripted_input: bool = false
+var _engine_lab_scripted_start_tick: int = 0
+# Test It uses source-fenced, physics-tick-indexed inputs, not wall-clock keys.
+# This mode is accessible only to the explicit --engine-lab-scripted runner.
+var engine_lab_replay_active: bool = false
+var engine_lab_replay_source_epoch: int = -1
+var engine_lab_replay_source_generation: int = -1
+var engine_lab_replay_tick_zero: int = -1
+var engine_lab_replay_tape: Array[Dictionary] = []
+var engine_lab_replay_events: Array[Dictionary] = []
+var engine_lab_replay_error: String = ""
+var _engine_lab_last_replay_segment: int = -1
 # Experimental Water settings staged for explicit Apply/Load. Unrelated
 # lifecycle rebuilds reuse the last acknowledged native construction options.
 # Empty keeps every default.
@@ -1104,6 +1202,8 @@ func _apply_microscenario_definition(definition: Dictionary, mode: String, actor
 				str(checked.definition.id))
 			if checked.definition.id == CyberMicroScenarioContract.WORKBENCH_ID:
 				definitions = player_configuration.workbench_actors
+			if _owner_gameplay != null and staged is PreparedPhysical:
+				staged.diagnostic_observer = _owner_gameplay.spawn_phase.bind(_microscenario_request_serial+1,self)
 			if not staged.prepare(self,definitions,_physical_epoch+1):
 				microscenario_error = staged.last_error;staged.close();return false
 		# Signal connection and all rig/equipment/space construction precede the
@@ -1217,8 +1317,7 @@ func _microscenario_installed(definition: Dictionary) -> void:
 			image = Image.create_empty(extent.x,extent.y,false,render_image_format)
 			create_render_textures()
 			world_view.texture = texture
-			world_shader.set_shader_parameter("current_world_texture",texture)
-			world_shader.set_shader_parameter("previous_world_texture",previous_texture)
+			configure_material_textures(world_shader)
 		shared_workbench.installed(pending_microscenario_apply.workbench)
 		if pending_microscenario_apply.has("persistent_authoring"):
 			shared_workbench.persistent_restore_camera(pending_microscenario_apply.persistent_authoring.get("camera",{}))
@@ -1691,16 +1790,25 @@ func recording_runtime_identity() -> Dictionary:
 
 
 func recording_configuration() -> Dictionary:
-	var roi: Rect2i = Rect2i(
-		floori(camera_origin.x),
-		floori(camera_origin.y),
-		current_view_size.x,
-		current_view_size.y
+	# Enclose the displayed view, including partially visible edge cells. The
+	# requested camera can differ from this origin after display-pixel rounding.
+	var presented: Vector2 = presentation_camera_origin()
+	var extent: Vector2i = world_extent.max(Vector2i.ZERO)
+	var start: Vector2i = Vector2i(floori(presented.x), floori(presented.y)).clamp(
+		Vector2i.ZERO, extent
 	)
+	# Add scalar components before ceil so a float32 Vector2 sum cannot erase a
+	# small fractional remainder at the far edge.
+	var end: Vector2i = Vector2i(
+		ceili(presented.x + float(current_view_size.x)),
+		ceili(presented.y + float(current_view_size.y))
+	).clamp(Vector2i.ZERO, extent)
+	var roi: Rect2i = Rect2i(start, (end - start).max(Vector2i.ZERO))
 	var result: Dictionary = {
 		"capture_hz": DEFAULT_RECORDING_HZ,
 		"queue_capacity": DEFAULT_RECORDING_QUEUE_CAPACITY,
 		"roi": roi,
+		"world_extent": world_extent,
 		"retain_raw_ids": true,
 		"selected_material_id_at_start": selected_material_id,
 		"selected_paint_slot_at_start": selected_paint_slot,
@@ -1755,7 +1863,7 @@ func toggle_gameplay_recording() -> void:
 
 
 func _refresh_recording_button() -> void:
-	if recording_button == null:
+	if recording_button == null or (shared_workbench != null and not recording_button.is_visible_in_tree()):
 		return
 	var recorder_status: Dictionary = gameplay_recorder.status()
 	recording_button.disabled = bool(recorder_status.get("finalizing", false))
@@ -1814,13 +1922,69 @@ var lockstep_main_fenced_steps: int = 0
 var lockstep_main_unfenced_steps: int = 0
 
 var image: Image
-var texture: ImageTexture
-var previous_texture: ImageTexture
+var texture: Texture2D
+var previous_texture: Texture2D
+var _material_blit_publisher: MaterialPublisher
+var _material_full_ring: FullImageRingPublisher
+var _material_publication_mode: String = ""
+var _material_publication_fallback: String = ""
+var _material_publication_last: Dictionary = {}
+var _material_pending_rectangles := PackedInt32Array()
+var _material_image_patch_usec: int = 0
+var _check_ambient_sources := OS.get_environment("CYBERSAND_WORKBENCH_EMPTY_EFFECTS") == "1"
+var _ambient_sources_absent := false
+var _ambient_source_bounds := Rect2i()
+var _ambient_bounds_valid := false
+var _vapour_history_possible := false
+
 var material_appearance_lut: ImageTexture
 var material_appearance_program: ImageTexture
 var render_channels: int = 1
 var render_image_format: Image.Format = Image.FORMAT_R8
 var _uploaded_workbench_frame: Dictionary = {}
+var _material_deadline = MaterialPublicationDeadline.new()
+var _material_deadline_hz: int = MaterialPublicationDeadline.requested_hz(
+	OS.get_environment("CYBERSAND_DIAG_MATERIAL_DEADLINE_HZ"))
+var _material_steps = MaterialPublicationSteps.new()
+var _material_step_interval: int = MaterialPublicationSteps.requested_interval(
+	OS.get_environment("CYBERSAND_DIAG_MATERIAL_STEP_INTERVAL"))
+var _material_step_uploads_after_cancellation: int = 0
+# Changed-pixel old occupancy from the *previous* GPU texture, sampled before
+# accepting each patch. Only consulted while palette snapshot_blend < 1.
+# An oversized/full refresh is unknown rather than optimistically empty.
+const PRESENTATION_PREVIOUS_PATCH_LIMIT: int = 16384
+# Render-only guard work is capped globally across all Workbench bodies.
+# Reaching a budget holds a certified selected pose or withholds that part;
+# it never rewinds to an older receipt or displays unchecked geometry.
+const PRESENTATION_FRAME_SCAN_BUDGET: int = 24000
+const PRESENTATION_FRAME_TIME_BUDGET_USEC: int = 2000
+var _presentation_previous_occupied: Dictionary = {}
+var _presentation_previous_unknown: bool = true
+# Exact CPU counterpart of previous_world_texture. One World-sized image,
+# retained before mutation, replaces the old global 'unknown after 16K cells'
+# shortcut. Swept queries still obey their existing local scan/time bounds.
+var _presentation_previous_image: Image
+# Immutable byte copies are taken once per upload, never once per actor query.
+# They follow the same current/previous GPU texture swap as the Image history.
+var _presentation_current_bytes := PackedByteArray()
+var _presentation_previous_bytes := PackedByteArray()
+# An upload serial or GPU slot is not a material-content identity. These IDs
+# follow exact byte values (including size/format) through the two GPU slots.
+# IDs are never recycled; comparisons happen once per upload, not per actor.
+var _presentation_content_serial: int = 0
+var _presentation_current_content_id: int = 0
+var _presentation_previous_content_id: int = 0
+var _presentation_current_content_shape := Vector3i.ZERO
+var _presentation_previous_content_shape := Vector3i.ZERO
+var _presentation_upload_cache_usec: int = 0
+var _presentation_pending_cache_usec: int = 0
+var _presentation_pending_clearance_cells: int = 0
+var _workbench_dry_region: Dictionary = {}
+var _workbench_dry_region_status: String = "none"
+var workbench_presentation_last: Dictionary = {}
+var workbench_presentation_totals: Dictionary = {
+	"frames":0,"safe_live":0,"blocked_material":0,"blocked_unknown":0,
+	"blocked_other":0,"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0}
 var last_uploaded_render_snapshot_serial: int = 0
 var last_uploaded_world_generation: int = -1
 var last_render_patch_count: int = 0
@@ -1832,6 +1996,7 @@ var last_render_patch_validation_error: String = ""
 var last_render_publication_usec: int = -1
 var measured_render_publication_hz: float = 0.0
 var snapshot_blend_start_usec: int = 0
+var material_presentation_timeline = WorkbenchMaterialTimeline.new()
 var glow_enabled: bool = true
 var debug_stats_visible: bool = true
 var debug_stats_expanded: bool = false
@@ -1992,6 +2157,30 @@ func apply_player_environment_profile(candidate: Dictionary) -> void:
 
 
 func _ready() -> void:
+	if _flight_pacing:
+		simulation_worker.workbench_sample_completed.connect(_service_held_flight_callback, CONNECT_DEFERRED)
+		RenderingServer.frame_post_draw.connect(_service_held_flight_callback)
+	if get_tree().get_meta("cybersand_feature","") == "shared_workbench" \
+			and not OS.get_environment("CYBERSAND_PLAYABILITY_OWNER_RECEIPT").is_empty():
+		var recorder := OwnerGameplay.new()
+		if recorder.start(get_instance_id()):
+			_owner_gameplay = recorder
+			RenderingServer.frame_post_draw.connect(_owner_gameplay.draw)
+	if _workbench_submission_requested:
+		if WorkbenchPresentationSubmission.atomic_admission_supported():
+			if WorkbenchPresentationSubmission.revision_is_valid(OS.get_environment("CYBERSAND_SOURCE_REVISION")):
+				_workbench_submission = WorkbenchPresentationSubmission.new()
+				_workbench_submission.bind(self)
+				add_child(_workbench_submission)
+				RenderingServer.frame_pre_draw.connect(_commit_workbench_presentation_submission)
+			else:
+				# Refuse an unidentifiable experiment before publishing an enabled
+				# handshake. Ordinary Workbench/error UI must remain drawable.
+				_workbench_submission_refusal = "source_identity_invalid"
+		else:
+			_workbench_submission_refusal = "engine_atomic_admission_unavailable"
+	_material_deadline.configure(_material_deadline_hz)
+	_configure_material_steps()
 	world_shader.shader = CyberPaletteShader.for_current_renderer(world_shader.shader)
 	# Consume before any early return, so a later unrelated scene cannot inherit
 	# an abandoned recovery. SceneTree retires old Main/_exit_tree before this
@@ -2118,8 +2307,7 @@ func _ready() -> void:
 	material_appearance_lut = CyberMaterialAppearanceLut.create_texture()
 	material_appearance_program = CyberMaterialAppearanceLut.create_program_texture()
 	world_view.texture = texture
-	world_shader.set_shader_parameter("current_world_texture", texture)
-	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
+	configure_material_textures(world_shader)
 	world_shader.set_shader_parameter("material_lut", material_appearance_lut)
 	world_shader.set_shader_parameter("material_program_lut", material_appearance_program)
 	world_shader.set_shader_parameter(
@@ -2149,6 +2337,10 @@ func _ready() -> void:
 	if feature == "shared_workbench":
 		shared_workbench = load("res://scripts/shared_workbench.gd").new()
 		shared_workbench.setup(self,recovery.get("workbench",{}))
+		# These legacy launchers are normally hidden behind the Workbench. If a
+		# caller reveals either, refresh its text and enabled state immediately.
+		actor_prototype_button.visibility_changed.connect(refresh_actor_prototypes)
+		recording_button.visibility_changed.connect(_refresh_recording_button)
 	elif PhysicalTrial.contains(feature):
 		microscenario_launch.call_deferred(feature, "Play", 0)
 	elif feature == "blacksite":
@@ -2174,6 +2366,17 @@ func _notification(what: int) -> void:
 
 
 func _exit_tree() -> void:
+	if _owner_gameplay != null:
+		RenderingServer.frame_post_draw.disconnect(_owner_gameplay.draw)
+		_owner_gameplay.close()
+		_owner_gameplay = null
+	_workbench_submission_notification_pending = false
+	if _workbench_submission != null: _workbench_submission.close()
+	_material_deadline.cancel("exit_tree")
+	_material_steps.cancel("exit_tree")
+	if workbench_pose_trace.active:
+		var saved: Dictionary = finish_workbench_pose_trace()
+		print("WORKBENCH_POSE_TRACE_EXIT ",JSON.stringify(saved))
 	if gameplay_recorder.is_active():
 		var stopped: Dictionary = gameplay_recorder.stop_recording()
 		print("REC-001 recording finalized at exit: ", JSON.stringify(stopped))
@@ -2184,13 +2387,43 @@ func _exit_tree() -> void:
 	rapier_bridge.shutdown()
 
 
+var _publication_detail_trace: bool = OS.get_environment("CYBERSAND_DIAG_COMMON_OBSERVER") != "1"
+var _launcher_ready_receipt: String = OS.get_environment("CYBERSAND_LAUNCH_READY_RECEIPT")
+var _launcher_ready_frames: int = 0
+
 func _process(delta: float) -> void:
+	var callback_started_usec: int = Time.get_ticks_usec() if workbench_pose_trace.active and _publication_detail_trace else 0
+	var causal_started_usec: int = Time.get_ticks_usec() if _pubpres_trace_enabled else 0
+	if _pubpres_trace_enabled:
+		_pubpres_packet_observed("main_process_entry", causal_started_usec, null, {})
+	if _flight_pacing: _service_held_flight_callback()
+	if _workbench_same_frame_enabled: _try_same_frame_continuation()
+	_workbench_mapping_locked = false
+	_engine_lab_pump_ack()
 	if shared_workbench == null:
-		tower_panel.refresh(tower_active,tower_floor,tower_context)
 		_refresh_microscenario_controls()
 	frame_time_ms = delta * 1000.0
 	maximum_frame_time_ms = maxf(maximum_frame_time_ms, frame_time_ms)
+	# Drain an already admitted collider packet before uploading material. The
+	# physics callback still requires the matching complete terrain revision.
+	if shared_workbench != null and physical_actor_session != null \
+			and _actor_reset_receipt == 0 and _pending_physical_candidate == null \
+			and pending_microscenario_apply.is_empty() \
+			and rapier_bridge.pending_hard_surface_chunks() > 0:
+		if _pubpres_trace_enabled:
+			_pubpres_terrain_budget(32, 1000, "process", null)
+		else:
+			rapier_bridge.process_hard_surface_collider_budget(32, 1000)
+	var material_started_usec: int = Time.get_ticks_usec() if _pubpres_trace_enabled else 0
 	consume_worker_snapshot()
+	# A paused World may publish no newer mailbox. An already offered material
+	# packet still drains at its fixed deadline on every ordinary process turn.
+	_drain_material_deadline()
+	_drain_material_steps()
+	if _pubpres_trace_enabled:
+		_pubpres_packet_observed("material_consumption", material_started_usec, latest_snapshot,
+			{"uploaded_serial":last_uploaded_render_snapshot_serial, "ack_serial":_engine_lab_last_ack_serial})
+	if _flight_pacing: _service_held_flight_callback()
 	_advance_prepared_physical_candidate()
 	if shared_workbench != null and physical_actor_session != null:
 		physical_actor_session.ingest_ambient_snapshot(latest_snapshot)
@@ -2214,23 +2447,34 @@ func _process(delta: float) -> void:
 		maximum_collider_time_ms,
 		rapier_bridge.last_hard_surface_build_time_ms()
 	)
+	if not workbench_presentation_submission_enabled():
+		if shared_workbench != null:
+			_resolve_workbench_presentation_frame(workbench_display_frame())
+		update_camera(delta)
+		if shared_workbench != null:
+			_resolve_workbench_camera_mapping()
+	if shared_workbench == null:
+		tower_panel.refresh(tower_active,tower_floor,tower_context)
 	update_brush_preview()
 	handle_painting()
-	update_camera(delta)
 	_present_playable_course_targets()
 	actor_prototype_overlay.present(
 		latest_snapshot.actor_prototypes if latest_snapshot != null else {},
-		camera_origin.floor(), current_view_size, view_content_rect()
+		presentation_camera_origin(), current_view_size, view_content_rect()
 	)
 	usable_overlay.present(
 		(latest_snapshot.physical_usables if physical_actor_session != null else latest_snapshot.actor_usables) if latest_snapshot != null else {},
-		camera_origin.floor(), current_view_size, view_content_rect()
+		presentation_camera_origin(), current_view_size, view_content_rect()
 	)
-	physical_actor_overlay.present(
-		physical_actor_session.render_parts(workbench_display_frame()) if physical_actor_session != null else [],
-		camera_origin.floor(), current_view_size, view_content_rect())
+	if not workbench_presentation_submission_enabled():
+		if shared_workbench != null:
+			_submit_workbench_presentation_frame()
+		else:
+			_present_physical_actor_overlay({})
+	if _flight_pacing: _service_held_flight_callback()
 	update_worker_frame_state()
-	update_shader_parameters()
+	if not workbench_presentation_submission_enabled(): update_shader_parameters()
+	_workbench_mapping_locked = false
 
 	status_accumulator += delta
 	if status_accumulator >= STATUS_INTERVAL:
@@ -2239,14 +2483,78 @@ func _process(delta: float) -> void:
 		refresh_actor_prototypes()
 		maximum_frame_time_ms = frame_time_ms
 		maximum_collider_time_ms = 0.0
+	if callback_started_usec > 0 and workbench_pose_trace.active:
+		workbench_pose_trace.observe_event({"event":"main_callback",
+			"start_usec":callback_started_usec,"time_usec":Time.get_ticks_usec(),
+			"process_frame":Engine.get_process_frames()})
+	if not _launcher_ready_receipt.is_empty(): _write_launcher_ready_receipt()
+	if _pubpres_trace_enabled:
+		_pubpres_packet_observed("main_process_exit", causal_started_usec, null, {})
+
+
+# Opt-in installed-launcher qualification. Ordinary sessions never enter this
+# path. A loaded extension banner alone does not prove Workbench installation.
+func _write_launcher_ready_receipt() -> void:
+	if shared_workbench == null or shared_workbench.applied.is_empty() \
+		or not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null \
+		or worker_start_error != OK or rapier_start_error != OK \
+		or latest_snapshot == null or latest_snapshot.simulation_failed \
+		or last_uploaded_revision < 0 or last_uploaded_world_generation < 0 \
+		or last_uploaded_world_generation != latest_snapshot.render_world_generation \
+		or rapier_bridge.pending_hard_surface_chunks() != 0:
+		_launcher_ready_frames = 0
+		return
+	# A freshly installed blank Workbench deliberately retires its unused
+	# reference-body bridge. Authored actors still require the adopted live
+	# owner, initialized Rapier space and complete collision terrain.
+	var authored_actor_count: int = shared_workbench.applied.get("actors",[]).size()
+	var physics_required: bool = authored_actor_count > 0
+	if physics_required != (physical_actor_session != null):
+		_launcher_ready_frames = 0
+		return
+	if physics_required and (not rapier_bridge.is_initialized() \
+		or _actor_reset_receipt != 0 or not _physical_terrain_ready):
+		_launcher_ready_frames = 0
+		return
+	_launcher_ready_frames += 1
+	if _launcher_ready_frames < 2: return
+	var receipt := {"source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"workbench_installed":true,"world_generation":last_uploaded_world_generation,
+		"uploaded_revision":last_uploaded_revision,"snapshot_serial":latest_snapshot.serial,
+		"native_tick":latest_snapshot.tick_index,"pending_hard_chunks":0,
+		"physics_required":physics_required,"authored_actor_count":authored_actor_count,
+		"rapier_initialized":rapier_bridge.is_initialized(),
+		"native_rendezvous":native_rendezvous_status(),
+		"material_publication":material_publication_status(),
+		"physics_publication":simulation_worker.physics_publication_mode()}
+	var output := FileAccess.open(_launcher_ready_receipt, FileAccess.WRITE)
+	_launcher_ready_receipt = ""
+	if output == null:
+		push_error("Installed launcher could not write its readiness receipt")
+		get_tree().quit(1)
+		return
+	output.store_string(JSON.stringify(receipt)+"\n")
+	output.close()
+	print("WORKBENCH_LAUNCH_READY ", JSON.stringify(receipt))
+	if OS.get_environment("CYBERSAND_LAUNCH_QUIT_AFTER_READY") == "1": get_tree().quit()
 
 
 func _physics_process(_delta: float) -> void:
+	if _flight_pacing: _service_held_flight_callback()
+	if _pubpres_trace_enabled:
+		_pubpres_packet_observed("physics_callback_entry", Time.get_ticks_usec(), null,
+			{"manual_steps":rapier_bridge.manual_step_count(), "paused":paused})
+	if _workbench_same_frame_enabled:
+		_workbench_same_frame.begin_callback(Engine.get_process_frames(), Engine.get_physics_frames(), Time.get_ticks_usec())
 	if shared_workbench != null and not _workbench_frame_error.is_empty(): return
+	if _workbench_native_rendezvous_enabled:
+		_workbench_native_rendezvous.begin_callback(Engine.get_process_frames(),
+			_workbench_native_rendezvous_selection == "render-overlap")
 	if _pending_physical_candidate != null:
 		# The retained manually stepped space stays at its actual prior pose.
 		# Do not reconfigure its equipment, revoke its leases or publish stale
 		# body frames while the separate replacement graph is being prepared.
+		_cadence_physics_hold("preparing_actor")
 		return
 	var single_step: bool = shared_workbench != null and shared_workbench.step_requested and paused
 	if physical_actor_session != null:
@@ -2257,19 +2565,74 @@ func _physics_process(_delta: float) -> void:
 	publish_actor_usable_input()
 	var physics_snapshot: CyberSimulationSnapshot = latest_snapshot
 	if shared_workbench != null and physical_actor_session != null:
-		# Physics can consume an immutable completion before the next render
-		# callback. Its native terrain revision, sample fence and wrench must
-		# all belong to the same publication.
-		physics_snapshot = simulation_worker.take_latest_snapshot(0)
-		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch(): return
-		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty(): return
-		if not _workbench_terrain_installed(physics_snapshot): return
+		# Physics consumes the bounded native/terrain mailbox before material
+		# extraction and upload complete. Terrain, sample and wrench still
+		# belong to one immutable owner turn and the ordinary strict fence.
+		physics_snapshot = _pubpres_take_physics_snapshot("physics_callback") if _pubpres_trace_enabled \
+			else simulation_worker.take_latest_physics_snapshot()
+		if physics_snapshot == null or physics_snapshot.simulation_failed or physics_snapshot.rigid_body_epoch != _body_owner_epoch():
+			_cadence_physics_hold("missing_failed_or_wrong_epoch",physics_snapshot)
+			return
+		if not str(physics_snapshot.lab_context.get("workbench_refusal","")).is_empty():
+			_cadence_physics_hold("native_refusal",physics_snapshot)
+			return
+		if not (_pubpres_terrain_installed(physics_snapshot) if _pubpres_trace_enabled else _workbench_terrain_installed(physics_snapshot)):
+			_cadence_physics_hold("terrain_installation",physics_snapshot)
+			return
 		physical_actor_session.ingest_ambient_snapshot(physics_snapshot)
 		if paused and not single_step:
 			_workbench_wait_sample = -1
+			_cadence_physics_hold("paused",physics_snapshot)
 			return
 		# A single step can restart a previously unpublished paused frame.
-		if _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step: return
+		if engine_lab_wait_native_sample and _workbench_wait_sample >= 0 and physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample and not single_step:
+			if _workbench_native_rendezvous_enabled and _workbench_native_rendezvous.callback_count > 1 \
+					and _actor_reset_receipt == 0 and pending_microscenario_apply.is_empty() \
+					and worker_start_error == OK and _physical_terrain_ready:
+				var expected := {"sample":_workbench_wait_sample, "epoch":_body_owner_epoch(),
+					"world_generation":physics_snapshot.physics_world_generation,
+					"session":physical_actor_session.bridge._session}
+				var waited: Dictionary = _workbench_native_rendezvous.wait_for_sample(
+					_pubpres_try_physics_mailbox if _pubpres_trace_enabled else simulation_worker.try_read_physics_mailbox, expected)
+				if workbench_pose_trace.active:
+					var event: Dictionary = waited.duplicate()
+					event.erase("snapshot")
+					event.merge({"event":"native_rendezvous", "time_usec":waited.completed_usec,
+						"physics_frame":Engine.get_physics_frames(), "sample":expected.sample,
+						"epoch":expected.epoch, "session":expected.session,
+						"world_generation":expected.world_generation})
+					workbench_pose_trace.observe_event(event)
+				if waited.status == "ready":
+					physics_snapshot = waited.snapshot
+					# No input, scene or physics work ran on another thread. Still
+					# repeat every owner/terrain gate after observing a NEW packet.
+					if paused or physical_actor_session == null or _pending_physical_candidate != null \
+							or _body_owner_epoch() != expected.epoch \
+							or physical_actor_session.bridge._session != expected.session \
+							or physics_snapshot.simulation_failed \
+							or physics_snapshot.rigid_body_epoch != _body_owner_epoch() \
+							or physics_snapshot.physics_world_generation != expected.world_generation:
+						_cadence_physics_hold("missing_failed_or_wrong_epoch",physics_snapshot)
+						return
+					if not str(physics_snapshot.lab_context.get("workbench_refusal", "")).is_empty():
+						_cadence_physics_hold("native_refusal",physics_snapshot)
+						return
+					if not (_pubpres_terrain_installed(physics_snapshot) if _pubpres_trace_enabled else _workbench_terrain_installed(physics_snapshot)):
+						_cadence_physics_hold("terrain_installation",physics_snapshot)
+						return
+			if physics_snapshot.lab_context.get("workbench_completed_sample",-1) != _workbench_wait_sample:
+				if _flight_pacing: _hold_flight_callback(physics_snapshot)
+				if _workbench_same_frame_enabled: _arm_same_frame_continuation(_delta, physics_snapshot)
+				_cadence_physics_hold("native_sample",physics_snapshot)
+				return
+	_complete_physics_callback(_delta, single_step, physics_snapshot)
+
+
+# The same sole Main owner completes a callback using its original admission
+# and manual Rapier transaction. The continuation never calls _physics_process,
+# publishes fresh keyboard/usable input, installs terrain or starts rendezvous.
+func _complete_physics_callback(_delta: float, single_step: bool,
+		physics_snapshot: CyberSimulationSnapshot) -> void:
 	if paused or simulation_worker.has_failed():
 		physical_trial_input.armed = false
 	if simulation_worker.has_failed():
@@ -2296,7 +2659,17 @@ func _physics_process(_delta: float) -> void:
 				return # Skip this physics frame: no step and no new publication.
 			elif fenced_snapshot != null:
 				physics_snapshot = fenced_snapshot
+		var cadence_step_started_usec: int = Time.get_ticks_usec() if workbench_pose_trace.active else 0
+		if _pubpres_trace_enabled and shared_workbench != null and physical_actor_session != null:
+			_pubpres_packet_observed("transaction_entry", Time.get_ticks_usec(), physics_snapshot,
+				{"native_and_terrain_gate_passed":true, "manual_steps_before":rapier_bridge.manual_step_count(),
+				"pending_hard_chunks":rapier_bridge.pending_hard_surface_chunks()})
 		apply_latest_rigid_body_results(physics_snapshot)
+		if _pubpres_trace_enabled and physical_actor_session != null and rapier_bridge is WorkbenchBridge:
+			var application: Dictionary = rapier_bridge.last_application
+			_pubpres_packet_observed("native_response_application", Time.get_ticks_usec(), physics_snapshot,
+				{"accepted":application.get("accepted",false), "refusal":application.get("refusal",""),
+				"application_snapshot":application.get("snapshot",-1)})
 		if physical_actor_session != null:
 			physical_actor_session.advance(rapier_bridge.fixed_delta())
 		else:
@@ -2305,15 +2678,237 @@ func _physics_process(_delta: float) -> void:
 		if physical_actor_session != null:
 			var before_completed_tick: int = physical_actor_session.tick
 			physical_actor_session.complete_step()
+			var cadence_step_completed_usec: int = Time.get_ticks_usec()
 			# A gate visited and left between two rendered frames must still
 			# count. This callback owns actual completed Rapier observations.
 			if physical_actor_session.tick > before_completed_tick:
+				_workbench_completed_step = physical_actor_session.tick
+				_workbench_completed_step_usec = cadence_step_completed_usec
+				if _owner_gameplay != null and rapier_bridge is WorkbenchBridge and physics_snapshot != null:
+					_owner_gameplay.physics_step(self,cadence_step_completed_usec,physics_snapshot,single_step)
+				_capture_workbench_water_dependencies(physics_snapshot)
 				_record_completed_playable_course_step()
+				_cadence_rapier_completed(cadence_step_started_usec,cadence_step_completed_usec,physics_snapshot)
 	_publish_physical_body_state()
+	if _pubpres_trace_enabled:
+		_pubpres_packet_observed("transaction_exit", Time.get_ticks_usec(), physics_snapshot,
+			{"manual_steps_after":rapier_bridge.manual_step_count(), "next_requested_sample":_workbench_wait_sample})
 	if single_step and pending_microscenario_apply.is_empty() and worker_start_error == OK and (physical_actor_session == null or _physical_terrain_ready):
 		shared_workbench.step_requested = false
 		tower_command({"step":true,"workbench_step_serial":shared_workbench.step_serial})
 		if physical_actor_session != null: physical_actor_session.set_suspended(true)
+
+func _hold_flight_callback(snapshot: CyberSimulationSnapshot) -> void:
+	_last_flight_sample_hold_usec = Time.get_ticks_usec()
+	var identity := _same_frame_identity()
+	if identity.is_empty():
+		_clear_held_flight()
+		return
+	# The ordinary keyboard path renews a lease on each callback. Older
+	# callbacks can share the renewal only while the actual command and all
+	# control generations still match. Never carry old input across a change.
+	var commands: Array = physical_actor_session._commands
+	var last: Dictionary = _held_flight_ticket.get("identity",{})
+	if last.get("sample") != identity.sample or last.get("generations") != identity.generations \
+			or _held_flight_ticket.get("commands") != commands:
+		_clear_held_flight()
+	if _held_flight_times.size() == 4: _held_flight_times.remove_at(0)
+	_held_flight_times.append(Time.get_ticks_usec())
+	_held_flight_callbacks = _held_flight_times.size()
+	_held_flight_ticket = {"identity":identity,"world_generation":snapshot.physics_world_generation,
+		"required_revision":snapshot.lab_context.get("workbench_hard_surface_revision",-1),
+		"commands":commands.duplicate(true)}
+
+
+func _clear_held_flight() -> void:
+	_held_flight_times.clear()
+	_held_flight_callbacks = 0
+	_held_flight_ticket = {}
+
+
+func _service_held_flight_callback() -> void:
+	if OS.get_thread_caller_id() != OS.get_main_thread_id() or _held_flight_callbacks == 0: return
+	var ticket := _held_flight_ticket
+	var now := Time.get_ticks_usec()
+	while not _held_flight_times.is_empty() and now - _held_flight_times[0] > 100000:
+		_held_flight_times.remove_at(0)
+	if _held_flight_times.is_empty() or not is_inside_tree() or _same_frame_identity() != ticket.identity:
+		_clear_held_flight()
+		return
+	var result := WorkbenchSameFrameContinuation.validate_mailbox({}, ticket,
+		ticket.identity, simulation_worker.try_read_physics_mailbox())
+	if result.status != "ready": return
+	_held_flight_times.remove_at(0)
+	_held_flight_callbacks = _held_flight_times.size()
+	_held_flight_ticket = {}
+	physical_actor_session.ingest_ambient_snapshot(result.snapshot)
+	_complete_physics_callback(rapier_bridge.fixed_delta(), false, result.snapshot)
+	_serviced_flight_callbacks += 1
+	if _held_flight_callbacks == 0: return
+	# Validate each successor against its own sample, lease, epoch and fresh
+	# native reply. Every completion returns to the normal event loop.
+	var successor := _same_frame_identity()
+	if successor.is_empty() or successor.generations != ticket.identity.generations \
+			or successor.tick != int(ticket.identity.tick) + 1 \
+			or physical_actor_session._commands != ticket.commands:
+		_clear_held_flight()
+		return
+	ticket.identity = successor
+	_held_flight_ticket = ticket
+
+
+func same_frame_continuation_status() -> Dictionary:
+	return {"version":WorkbenchSameFrameContinuation.VERSION,
+		"requested":_workbench_same_frame_requested,"enabled":_workbench_same_frame_enabled,
+		"disabled_reason":"rendezvous_selected" if _workbench_same_frame_requested and _workbench_native_rendezvous_enabled else "",
+		"mode":"same_frame_once" if _workbench_same_frame_enabled else "off",
+		"maximum_attempts_per_process_frame":1,"maximum_mailbox_reads_per_attempt":1,
+		"wait_usec":0,"new_physics_callbacks":0,"carried_time_credit":false}
+
+
+func _same_frame_identity() -> Dictionary:
+	# All values are bounded copied owner/lease counters. In particular an
+	# intervening cancellation, pause/resume or takeover changes generations,
+	# even if it leaves the same actor pose and then restores the same input.
+	if OS.get_thread_caller_id() != OS.get_main_thread_id() \
+		or shared_workbench == null or physical_actor_session == null \
+		or not physical_actor_session.bridge is WorkbenchBridge \
+		or physical_actor_session.bridge != rapier_bridge \
+		or not physical_actor_session.active() or physical_actor_session._suspended \
+		or paused or shared_workbench.step_requested or shared_workbench.step_pending \
+		or not _workbench_frame_error.is_empty() or not engine_lab_wait_native_sample \
+		or _workbench_wait_sample < 0 or _pending_physical_candidate != null \
+		or _actor_reset_receipt != 0 or not pending_microscenario_apply.is_empty() \
+		or worker_start_error != OK or not _physical_terrain_ready \
+		or not rapier_bridge.is_initialized() or rapier_bridge.pending_hard_surface_chunks() != 0:
+		return {}
+	return {"owner":str(physical_actor_session.get_instance_id()),"bridge":str(rapier_bridge.get_instance_id()),
+		"worker":str(simulation_worker.get_instance_id()),"epoch":_body_owner_epoch(),
+		"session":physical_actor_session.bridge._session,"tick":physical_actor_session.tick,
+		"manual_steps":rapier_bridge.manual_step_count(),"sample":_workbench_wait_sample,
+		"bridge_sample":physical_actor_session.bridge._serial,"installed_revision":last_hard_surface_revision,
+		"accepted_commands":physical_actor_session.accepted_commands,
+		"sequences":physical_actor_session._sequences.duplicate(),
+		"generations":physical_actor_session._generations.duplicate(),
+		"deadlines":physical_actor_session._deadlines.duplicate()}
+
+
+func _arm_same_frame_continuation(delta: float, snapshot: CyberSimulationSnapshot) -> void:
+	# Only the final native_sample hold may arm a permit. Every earlier gate
+	# has already passed and no admitted step or body publication occurred.
+	var identity: Dictionary = _same_frame_identity()
+	if identity.is_empty() or snapshot == null: return
+	_workbench_same_frame.arm(identity, snapshot.physics_world_generation,
+		int(snapshot.lab_context.get("workbench_hard_surface_revision",-1)), delta, Time.get_ticks_usec())
+
+
+func _same_frame_continuation_observed(_phase: String, _evidence: Dictionary) -> void:
+	# Observation seam only. Ordinary Main records no unbounded history.
+	pass
+
+
+func _try_same_frame_continuation() -> void:
+	if _workbench_same_frame.pending.is_empty(): return
+	var started_usec: int = Time.get_ticks_usec()
+	var before: int = physical_actor_session.tick if physical_actor_session != null else -1
+	var attempt: Dictionary = _workbench_same_frame.take_ready(Engine.get_process_frames(),
+		_same_frame_identity(), _pubpres_try_physics_mailbox if _pubpres_trace_enabled else simulation_worker.try_read_physics_mailbox)
+	attempt["start_usec"] = started_usec
+	attempt["before_step"] = before
+	attempt["attempt_process_frame"] = Engine.get_process_frames()
+	# Immutable snapshots are retained locally until the ordinary transaction
+	# ends. The observer gets only identity/scalars, never a mutable packet.
+	var snapshot: CyberSimulationSnapshot = attempt.get("snapshot")
+	attempt.erase("snapshot")
+	_same_frame_continuation_observed("begin", attempt.duplicate(true))
+	if attempt.status == "ready":
+		# No new event-loop turn can intervene here. Repeat the read-only Main
+		# guards after the one nonblocking owner-mailbox observation. Changed
+		# terrain waits for a real physics callback; no extra install allowance.
+		if _same_frame_identity() != attempt.identity:
+			attempt.status = "owner_or_input_changed"
+		else:
+			_complete_physics_callback(float(attempt.delta), false, snapshot)
+	attempt["time_usec"] = Time.get_ticks_usec()
+	attempt["after_step"] = physical_actor_session.tick if physical_actor_session != null else -1
+	attempt["advanced"] = int(attempt.after_step) == before + 1
+	_same_frame_continuation_observed("end", attempt.duplicate(true))
+	if workbench_pose_trace.active:
+		var event: Dictionary = attempt.duplicate(true)
+		event["event"] = "physics_continuation"
+		workbench_pose_trace.observe_event(event)
+
+
+func _pubpres_transaction_observed(_event: String, _evidence: Dictionary) -> void:
+	# No retained history or behavior in Main. The dedicated observer owns its
+	# bounded sidecar and joins these observations to actual callback/step proof.
+	pass
+
+
+func _pubpres_packet_observed(event: String, started_usec: int,
+		snapshot: CyberSimulationSnapshot, extra: Dictionary) -> void:
+	var evidence := {"trace_version":2, "start_usec":started_usec, "time_usec":Time.get_ticks_usec(),
+		"process_frame":Engine.get_process_frames(), "physics_frame":Engine.get_physics_frames(),
+		"requested_sample":_workbench_wait_sample, "current_epoch":_body_owner_epoch(),
+		"current_session":physical_actor_session.bridge._session if physical_actor_session != null \
+			and physical_actor_session.bridge is WorkbenchBridge else -1,
+		"physical_tick":physical_actor_session.tick if physical_actor_session != null else -1,
+		"queued_hard_revision":last_hard_surface_revision, "packet_present":snapshot != null}
+	if snapshot != null:
+		evidence.merge({"world_generation":snapshot.physics_world_generation,
+			"rigid_body_epoch":snapshot.rigid_body_epoch, "snapshot_serial":snapshot.serial,
+			"tick_index":snapshot.tick_index,
+			"completed_body_sample":snapshot.lab_context.get("workbench_completed_sample", -1),
+			"packet_session":snapshot.lab_context.get("workbench_gcr", {}).get("session", -1),
+			"required_hard_revision":snapshot.lab_context.get("workbench_hard_surface_revision", -1),
+			"packet_hard_revision":snapshot.hard_surface_revision,
+			"native_completed_usec":snapshot.last_native_tick_completed_usec,
+			"physics_handoff_usec":snapshot.physics_handoff_usec,
+			"simulation_failed":snapshot.simulation_failed,
+			"native_refusal":str(snapshot.lab_context.get("workbench_refusal", ""))})
+	evidence.merge(extra)
+	_pubpres_transaction_observed(event, evidence)
+
+
+func _pubpres_take_physics_snapshot(callsite: String) -> CyberSimulationSnapshot:
+	var started_usec: int = Time.get_ticks_usec()
+	var snapshot: CyberSimulationSnapshot = simulation_worker.take_latest_physics_snapshot()
+	_pubpres_packet_observed("mailbox_observation", started_usec, snapshot,
+		{"callsite":callsite, "status":"ready" if snapshot != null else "empty", "nonblocking":false})
+	return snapshot
+
+
+func _pubpres_try_physics_mailbox() -> Dictionary:
+	var started_usec: int = Time.get_ticks_usec()
+	var mailbox: Dictionary = simulation_worker.try_read_physics_mailbox()
+	var snapshot: CyberSimulationSnapshot = mailbox.get("snapshot")
+	_pubpres_packet_observed("mailbox_observation", started_usec, snapshot,
+		{"callsite":"try_read", "status":str(mailbox.get("status", "invalid")), "nonblocking":true,
+		"mailbox_epoch":mailbox.get("epoch", -1), "mailbox_session":mailbox.get("session", -1)})
+	return mailbox
+
+
+func _pubpres_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
+	var started_usec: int = Time.get_ticks_usec()
+	var pending_before: int = rapier_bridge.pending_hard_surface_chunks()
+	var queued_before: int = last_hard_surface_revision
+	var ready: bool = _workbench_terrain_installed(snapshot)
+	_pubpres_packet_observed("terrain_install", started_usec, snapshot,
+		{"operation":"check", "pending_before":pending_before,
+		"pending_after":rapier_bridge.pending_hard_surface_chunks(),
+		"queued_revision_before":queued_before, "queued_revision_after":last_hard_surface_revision, "ready":ready})
+	return ready
+
+
+func _pubpres_terrain_budget(chunks: int, usec: int, callsite: String,
+		snapshot: CyberSimulationSnapshot) -> void:
+	var started_usec: int = Time.get_ticks_usec()
+	var pending_before: int = rapier_bridge.pending_hard_surface_chunks()
+	rapier_bridge.process_hard_surface_collider_budget(chunks, usec)
+	_pubpres_packet_observed("terrain_install", started_usec, snapshot,
+		{"operation":"budget", "callsite":callsite, "pending_before":pending_before,
+		"pending_after":rapier_bridge.pending_hard_surface_chunks(), "chunks_allowance":chunks, "usec_allowance":usec})
+
 
 func workbench_source(origin: Vector2i, material: int, command: String) -> bool:
 	if shared_workbench == null: return false
@@ -3263,6 +3858,11 @@ func consume_worker_snapshot() -> void:
 	if not worker_publication_counter.observe(snapshot.serial):
 		return
 	latest_snapshot = snapshot
+	_cadence_received_usec = Time.get_ticks_usec()
+	if workbench_pose_trace.active:
+		workbench_pose_trace.observe_event({"event":"main_receipt","time_usec":_cadence_received_usec,
+			"snapshot_serial":snapshot.serial,"render_serial":snapshot.render_snapshot_serial,
+			"native_tick":snapshot.tick_index,"worker_handoff_usec":snapshot.worker_handoff_usec})
 	_reconcile_actor_prototype_reset()
 	tower_context = snapshot.lab_context
 	if shared_workbench != null and not str(tower_context.get("workbench_refusal","")).is_empty():
@@ -3373,8 +3973,1668 @@ func consume_worker_snapshot() -> void:
 		character_position = snapshot.character_position
 	if shared_workbench != null and physical_actor_session != null:
 		physical_actor_session.ingest_ambient_snapshot(snapshot)
-	consume_render_snapshot(snapshot)
+	_offer_material_snapshot(snapshot)
 	gameplay_recorder.ingest_snapshot(snapshot)
+
+
+# A Workbench receipt must describe the actual uploaded material texture,
+# physical session and epoch. Absent/stale receipts never authorize a live
+# Rapier fallback; the actor is temporarily hidden until a valid receipt.
+func _valid_workbench_mask_frame(frame: Dictionary) -> bool:
+	if shared_workbench == null or physical_actor_session == null:
+		return false
+	var bridge: Variant = physical_actor_session.bridge
+	return bridge is WorkbenchBridge \
+		and frame.get("session",-1) == bridge._session \
+		and frame.get("epoch",-1) == bridge._epoch \
+		and frame.get("world_generation",-1) == last_uploaded_world_generation \
+		and frame.get("revision",-1) == last_uploaded_revision \
+		and frame.get("instances") is Dictionary
+
+
+# Direct test/compatibility entry. Production resolves before update_camera,
+# then submits the same frame; this entry follows that identical ordering.
+func _present_physical_actor_overlay(frame: Dictionary) -> void:
+	if shared_workbench == null:
+		physical_actor_overlay.present(physical_actor_session.render_parts() \
+			if physical_actor_session != null else [],presentation_camera_origin(),
+			current_view_size,view_content_rect())
+		return
+	if workbench_presentation_submission_enabled():
+		_prepare_workbench_presentation_candidate(0.0,frame)
+		return
+	_workbench_mapping_locked = false
+	_resolve_workbench_presentation_frame(frame)
+	update_camera(0.0)
+	_resolve_workbench_camera_mapping()
+	_submit_workbench_presentation_frame()
+	update_shader_parameters()
+	_workbench_mapping_locked = false
+
+
+func _workbench_presentation_mode() -> String:
+	if OS.get_environment("CYBERSAND_DIAG_FLYER_POSE") == "mask": return "mask_baseline"
+	return "coherent" if OS.get_environment("CYBERSAND_DIAG_PRESENTATION") == "coherent" else "legacy_guarded"
+
+
+func _material_presentation_state(now_usec: int) -> Dictionary:
+	var timing: Dictionary = material_presentation_timeline.frame(now_usec,cadence_lod_enabled)
+	if shared_workbench != null and timing.previous.is_empty():
+		# A recycled GPU plane may still contain another World (or an
+		# unqualified upload). Requested cadence cannot authorize its colour
+		# contribution. Both timing policies require an actual same-World
+		# predecessor; keep the accepted upload, history bytes and ACK intact.
+		return timing
+	if shared_workbench == null or OS.get_environment("CYBERSAND_DIAG_MATERIAL_TIMING") != "measured":
+		# Independent diagnostic control; it never changes upload ACK, texture
+		# history, the native scheduler or Rapier's physical timestep.
+		var duration: int = int(1000000.0/float(maxi(render_snapshot_hz,1)))
+		var blend: float = clampf(float(now_usec-snapshot_blend_start_usec)/float(duration),0.0,1.0) \
+			if cadence_lod_enabled else 1.0
+		timing.merge({"snapshot_blend":blend,"previous_blend_active":blend < 1.0,
+			"blend_duration_usec":duration,"timing_source":"legacy_requested"},true)
+	return timing
+
+
+func _workbench_bound_sample(entry: Dictionary) -> Dictionary:
+	if physical_actor_session == null or not physical_actor_session.bridge is WorkbenchBridge:
+		return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if _workbench_sample_identity != [bridge._session,bridge._epoch]: return {}
+	var serial: int = int(entry.get("sample",-1))
+	if serial < 0: return {}
+	var sample: Dictionary = _workbench_sample_steps.get(serial % PRESENTATION_SAMPLE_HISTORY,{})
+	return sample if sample.get("serial",-1) == serial else {}
+
+
+func _workbench_bound_step(entry: Dictionary) -> int:
+	return int(_workbench_bound_sample(entry).get("step",-1))
+
+func _observe_workbench_presentation(slot: int, sample_serial: int = -1) -> Dictionary:
+	var bridge: Variant = physical_actor_session.bridge
+	var member: Dictionary = bridge._members[slot]
+	var owner: Array = [bridge.get_instance_id(),bridge._session,bridge._epoch]
+	if not _workbench_presentation_history.bound_to(owner) \
+			or not _workbench_presentation_history.member_matches(slot,int(member.instance_id),int(member.generation)):
+		if not _workbench_presentation_history.bind_members(owner,bridge._members): return {}
+	var step: int = physical_actor_session.tick
+	# The bridge copies these values after every completed Rapier step. Drawing
+	# must never query PhysicsServer or turn an old completion into a new one.
+	return _workbench_presentation_history.observe(slot,int(member.instance_id),int(member.generation),
+		step,bridge.body_transform(slot),bridge._linear_velocities[slot],bridge._angular_velocities[slot],
+		_workbench_completed_step_usec if _workbench_completed_step == step else 0,sample_serial)
+
+
+func _workbench_recovery_time_valid(observation: Dictionary, now_usec: int, current_step: int) -> bool:
+	# Current physics may itself be old because it is paused. That does not
+	# create display lag. Older playback observations must have a real known
+	# completion clock and remain within the explicit100ms visual age bound.
+	var completed: int = int(observation.get("completed_usec",0))
+	return completed > 0 and completed <= now_usec \
+		and (int(observation.get("step",-1)) == current_step \
+		or now_usec-completed <= WorkbenchPresentationHistory.MAX_HOLD_USEC)
+
+
+func _assess_workbench_presented_sweep(start: Transform2D, target: Transform2D,
+		rectangles: Array, context: Dictionary, summary: Dictionary) -> Dictionary:
+	var remaining: int = PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined)
+	if remaining <= 0 or Time.get_ticks_usec() >= int(context.deadline_usec):
+		summary.budget_vetoes += 1
+		return {"safe":false,"reason":"shared_budget","scanned":0}
+	var result: Dictionary = WorkbenchPresentationCoherence.assess(start,target,
+		rectangles,image,_presentation_previous_occupied,_presentation_previous_unknown,
+		context.previous_blend_active,mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),
+		context.deadline_usec,_presentation_previous_image,true,
+		_presentation_current_bytes,_presentation_previous_bytes,remaining,true)
+	summary.cells_examined += int(result.scanned)
+	if str(result.reason) in ["scan_budget","time_budget","shared_budget"]:
+		summary.budget_vetoes += 1
+	if bool(result.get("refined",false)):
+		summary.refined_queries += 1
+		if bool(result.safe): summary.refined_clear += 1
+	return result
+
+
+func _workbench_water_composition_enabled() -> bool:
+	return OS.get_environment("CYBERSAND_DIAG_WATER_COMPOSITION") == "1" \
+		and _workbench_presentation_mode() == "coherent"
+
+
+func _capture_workbench_water_dependencies(snapshot: CyberSimulationSnapshot) -> void:
+	_workbench_water_dependencies.clear()
+	# Existing readers retain the immutable capsule; retire our reference.
+	_workbench_water_completion_context = {}
+	_workbench_water_closure_cache.clear()
+	if not _workbench_water_composition_enabled() or physical_actor_session == null or snapshot == null:
+		return
+	var bridge: Variant = physical_actor_session.bridge
+	if not bridge is WorkbenchBridge or bridge != rapier_bridge or snapshot.simulation_failed \
+			or snapshot.rigid_body_epoch != bridge._epoch \
+			or snapshot.last_native_tick_world_generation != snapshot.physics_world_generation:
+		return
+	var application: Dictionary = bridge.last_application
+	if application.get("accepted",false) != true or not str(application.get("refusal","")).is_empty() \
+			or application.get("snapshot",-1) != snapshot.serial:
+		return
+	# A fresh native coupling result can precede another material tick.
+	# Keep the actual last material completion and the response clock distinct.
+	var response_usec: int = snapshot.lab_context.get("coupling_response_usec",-1)
+	var sample: int = snapshot.last_native_tick_body_sample
+	if response_usec > 0:
+		if response_usec < snapshot.last_native_tick_completed_usec or response_usec > _workbench_completed_step_usec: return
+		sample = int(snapshot.lab_context.get("workbench_completed_sample",-1))
+	var packet: Dictionary = snapshot.lab_context.get("workbench_gcr",{})
+	if sample < 0 or snapshot.last_native_tick_completed_usec <= 0 \
+			or snapshot.lab_context.get("workbench_completed_sample",-1) != sample \
+			or packet.get("session",-1) != bridge._session or packet.get("epoch",-1) != bridge._epoch \
+			or not packet.get("valid",false) or bridge._history.is_empty(): return
+	var history: Dictionary = bridge._history[sample % bridge._history.size()]
+	if history.get("serial",-1) != sample or history.get("bodies",[]).size() != bridge._members.size(): return
+	_workbench_water_completion_context = {"bridge":bridge.get_instance_id(),"session":bridge._session,
+		"epoch":bridge._epoch,"world":snapshot.physics_world_generation,"step":physical_actor_session.tick,
+		"native_tick":snapshot.tick_index,"sample":sample,"revision":snapshot.simulation_world_revision,
+		"coupling_response_usec":response_usec,"material_tick_body_sample":snapshot.last_native_tick_body_sample,
+		"native_completed_usec":snapshot.last_native_tick_completed_usec,"completed_usec":_workbench_completed_step_usec}
+	_workbench_water_completion_context.make_read_only()
+	for action: Dictionary in bridge.last_application.get("bodies",[]):
+		var slot: int = int(action.get("id",0))-1
+		if slot < 0 or slot >= bridge._members.size() or action.has("refusal") \
+				or action.get("sample",-1) != sample: continue
+		var member: Dictionary = bridge._members[slot]
+		_workbench_water_dependencies[slot] = {"bridge":bridge.get_instance_id(),
+			"session":bridge._session,"epoch":bridge._epoch,"world":snapshot.physics_world_generation,
+			"step":physical_actor_session.tick,"native_tick":snapshot.tick_index,"sample":sample,
+			"revision":snapshot.simulation_world_revision,"rid":bridge._body_rids[slot].get_id(),
+			"rectangles":bridge._rects[slot].duplicate(true),
+			"instance_id":member.instance_id,"generation":member.generation,
+			"native_response_applied":true,"input_pose":history.bodies[slot].pose,
+			"output_pose":bridge.body_transform(slot),"completed_usec":_workbench_completed_step_usec,
+			"coupling_response_usec":response_usec,"material_tick_body_sample":snapshot.last_native_tick_body_sample,
+		"native_completed_usec":snapshot.last_native_tick_completed_usec}
+		WorkbenchWaterComposition.freeze(_workbench_water_dependencies[slot])
+
+
+func _workbench_water_dependency(slot: int, frame: Dictionary, entry: Dictionary,
+		observation: Dictionary) -> Dictionary:
+	if not _workbench_water_composition_enabled() or not _valid_workbench_mask_frame(frame) \
+			or not _workbench_frame_error.is_empty() or simulation_worker.has_failed() \
+			or not _physical_terrain_ready or _actor_reset_receipt != 0:
+		return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if bridge != rapier_bridge or slot < 0 or slot >= bridge._members.size() \
+			or _workbench_sample_identity != [bridge._session,bridge._epoch]:
+		return {}
+	# Restore builds a separate owner while the installed session remains paused.
+	# Only an already proved closure for that installed owner can survive staging.
+	var staging := not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null
+	if staging and (not paused or _pending_physical_candidate == null
+			or _pending_physical_candidate.physics_bridge() == bridge
+			or not physical_actor_session._suspended):
+		return {}
+	var initialized: bool = physical_actor_session.tick == 0 and bridge.manual_step_count() == 0 \
+		and bridge.is_initialized() and _workbench_completed_step <= 0 and _workbench_completed_step_usec == 0
+	if not initialized and (physical_actor_session.tick != _workbench_completed_step \
+			or int(observation.get("completed_usec",-1)) != _workbench_completed_step_usec):
+		return {}
+	var member: Dictionary = bridge._members[slot]
+	var visible: Dictionary = {"world":last_uploaded_world_generation,"revision":last_uploaded_revision,
+		"upload_serial":last_uploaded_render_snapshot_serial,"current_content":_presentation_current_content_id,
+		"previous_content":_presentation_previous_content_id,"native_tick":frame.get("tick",-1),
+		"native_sample":entry.get("sample",-1)}
+	if not initialized and not _workbench_water_completion_context.is_empty():
+		var current: Dictionary = _workbench_water_completion_context.duplicate()
+		# Bind the immutable completion capsule to the CURRENT owner/World and
+		# exact current member geometry. Visible material keeps separate clocks.
+		current.merge({"bridge":bridge.get_instance_id(),"session":bridge._session,"epoch":bridge._epoch,
+			"world":last_uploaded_world_generation,"step":physical_actor_session.tick,
+			"rid":bridge._body_rids[slot].get_id(),"rectangles":bridge._rects[slot],
+			"completed_usec":_workbench_completed_step_usec},true)
+		var completed_proof: Dictionary = WorkbenchWaterComposition.completed_dependency(current,member,
+			observation,_workbench_water_dependencies.get(slot,{}))
+		if not completed_proof.is_empty():
+			completed_proof["visible_material"] = visible
+			return completed_proof
+	var serial: int = int(entry.get("sample",-1))
+	if serial < 0 or (not initialized and int(frame.get("native_completed_usec",0)) <= 0): return {}
+	var context: Dictionary = {"bridge":bridge.get_instance_id(),"session":bridge._session,
+		"epoch":bridge._epoch,"world":last_uploaded_world_generation,"revision":last_uploaded_revision,
+		"step":physical_actor_session.tick,"native_tick":int(frame.get("tick",-1)),"sample":serial,
+		"native_completed_usec":int(frame.get("native_completed_usec",-1)),
+		"rid":bridge._body_rids[slot].get_id(),"initialized":initialized,"manual_steps":bridge.manual_step_count(),
+		"initialized_pose":bridge.body_transform(slot),"completed_usec":_workbench_completed_step_usec}
+	var identity: Dictionary = {"context":context,"entry":entry.duplicate(true),
+		"member":[member.instance_id,member.generation,bridge._body_rids[slot].get_id(),
+			bridge._rects[slot].duplicate(true)],
+		"observation":[observation.get("instance_id"),observation.get("generation"),
+			observation.get("step"),observation.get("completed_usec"),observation.get("pose")]}
+	# Paused Main can publish enough same-step samples to evict the short
+	# native wrench ring while its uploaded material frame stays unchanged.
+	# Eviction retires force-application authority, not an already proved exact
+	# completed-pose provenance. Retain at most one immutable proof per member.
+	# This cache retains native pose provenance. The separate coverage cache
+	# certifies the required visible material images and swept geometry.
+	var cached: Dictionary = _workbench_water_closure_cache.get(slot,{})
+	if cached.get("identity") == identity:
+		_workbench_water_closure_cache_hits += 1
+		var retained: Dictionary = cached.proof.duplicate(true)
+		retained["visible_material"] = visible
+		return retained
+	if staging: return {}
+	_workbench_water_closure_cache.erase(slot)
+	var sampled: Dictionary = _workbench_bound_sample(entry).duplicate()
+	if bridge._history.is_empty(): return {}
+	var history: Dictionary = bridge._history[serial % bridge._history.size()]
+	if sampled.get("water_poses",[]).size() == bridge._members.size():
+		sampled.merge({"pose":sampled.water_poses[slot],"session":bridge._session,"epoch":bridge._epoch})
+	elif history.get("serial",-1) == serial and history.get("bodies",[]).size() == bridge._members.size():
+		sampled.merge({"pose":history.bodies[slot].pose,"session":bridge._session,"epoch":bridge._epoch})
+	var proof: Dictionary = WorkbenchWaterComposition.initialized_closure(context,member,entry,observation,sampled) \
+		if initialized else WorkbenchWaterComposition.dependency(context,member,entry,
+			observation,sampled,_workbench_water_dependencies.get(slot,{}))
+	if not proof.is_empty():
+		WorkbenchWaterComposition.freeze(identity)
+		proof.make_read_only()
+		_workbench_water_closure_cache[slot] = {"identity":identity,"proof":proof}
+	# The resolver attaches this draw's fresh coverage result to its own copy.
+	var result: Dictionary = proof.duplicate(true)
+	if not result.is_empty(): result["visible_material"] = visible
+	return result
+
+
+func _workbench_water_coverage_identity(slot: int, start: Transform2D, target: Transform2D,
+		rectangles: Array, context: Dictionary) -> Dictionary:
+	if physical_actor_session == null or not physical_actor_session.bridge is WorkbenchBridge \
+			or _workbench_visible_material_contents(bool(context.previous_blend_active)).is_empty(): return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if slot < 0 or slot >= bridge._members.size(): return {}
+	var member: Dictionary = bridge._members[slot]
+	var front_rid: int = context.current_texture_id if context.has("current_texture_id") else _material_publication_rid(texture).get_id()
+	var back_rid: int = context.previous_texture_id if context.has("previous_texture_id") else _material_publication_rid(previous_texture).get_id()
+	return {"owner":[bridge.get_instance_id(),bridge._session,bridge._epoch,
+		member.instance_id,member.generation,bridge._body_rids[slot].get_id()],
+		"material":[last_uploaded_world_generation,last_uploaded_revision,last_uploaded_render_snapshot_serial,
+			_presentation_current_content_id,_presentation_current_content_shape,front_rid],
+		"previous":[_presentation_previous_content_id,_presentation_previous_content_shape,
+			back_rid,_presentation_previous_unknown]
+			if bool(context.previous_blend_active) else [],
+		"full_back_rid":back_rid if texture is ImageTexture and previous_texture is ImageTexture
+			and _material_full_ring == null and _material_blit_publisher == null else 0,
+		"sweep":[start,target,rectangles]}
+
+
+# A paused Full refresh can rotate the same two GPU resources and restart a
+# blend with two byte-identical material planes. finish_texture_upload assigns
+# an existing content ID only after comparing all bytes AND the format/extent.
+# The old scan must have tested exactly this one effective image: if a
+# different visible previous image contributed Water, its result cannot stand
+# in for the current image alone. Native/physical authority is proved anew.
+func _same_paused_water_coverage(old: Dictionary, current: Dictionary) -> bool:
+	if not paused or old.is_empty() or current.is_empty() or old.owner != current.owner \
+			or old.sweep != current.sweep or current.sweep[0] != current.sweep[1]: return false
+	var before: Array = old.material
+	var after: Array = current.material
+	if before[0] != after[0] or before[1] != after[1] or before[3] != after[3] or before[4] != after[4] \
+			or old.full_back_rid == 0 or current.full_back_rid == 0 or after[5] == 0 \
+			or current.full_back_rid == after[5]: return false
+	for key: Dictionary in [old,current]:
+		if not key.previous.is_empty() and (key.previous[0] != after[3] or key.previous[1] != after[4]
+				or key.previous[2] != key.full_back_rid or key.previous[3]): return false
+	if before[2] == after[2]:
+		return before[5] == after[5] and old.full_back_rid == current.full_back_rid
+	return after[2] == before[2]+1 and before[5] == current.full_back_rid and old.full_back_rid == after[5]
+
+
+# A completed swept proof also covers its target at rest. Retain one
+# immutable clipped endpoint per member. Its fresh native dependency is
+# independently required by the caller on EVERY selection, including pause.
+func _assess_workbench_contact(slot: int, start: Transform2D, target: Transform2D,
+		rectangles: Array, context: Dictionary, remaining: int) -> Dictionary:
+	var cached: Dictionary = _workbench_contact_coverage_cache.get(slot,{})
+	var identity: Dictionary = {}
+	if start==target and not cached.is_empty():
+		identity=_workbench_water_coverage_identity(slot,target,target,rectangles,context)
+		var same: bool = not identity.is_empty() and identity==cached.identity
+		var rebound: bool = not same and _same_paused_water_coverage(cached.identity,identity)
+		if same or rebound:
+			var kept: Dictionary=cached.result.duplicate(true)
+			if rebound:
+				# Both participating images were proved byte-identical; reflect
+				# the actual active history even if its transport slot rotated.
+				kept.clip.previous_active=context.previous_blend_active
+				kept.clip.previous=kept.clip.current if context.previous_blend_active else ""
+				kept.contact_cell.previous_id=kept.contact_cell.current_id if context.previous_blend_active else -1
+				var next: Dictionary={"identity":identity,"result":kept.duplicate(true)}
+				WorkbenchWaterComposition.freeze(next)
+				_workbench_contact_coverage_cache[slot]=next
+				kept["equivalent_paused_publication"]=true
+			kept["original_scanned"]=kept.scanned
+			kept.scanned=0
+			kept["coverage_reused"]=true
+			return kept
+	var result:=WorkbenchPresentationCoherence.contact_sweep(start,target,rectangles,image,
+		_presentation_previous_image,context.previous_blend_active,remaining,context.deadline_usec)
+	if result.get("safe",false) and result.has("clip"):
+		if identity.is_empty(): identity=_workbench_water_coverage_identity(slot,target,target,rectangles,context)
+		if not identity.is_empty():
+			var value: Dictionary={"identity":identity,"result":result.duplicate(true)}
+			WorkbenchWaterComposition.freeze(value)
+			_workbench_contact_coverage_cache[slot]=value
+	return result
+
+
+func _assess_workbench_water_sweep(slot: int, start: Transform2D, target: Transform2D,
+		rectangles: Array, context: Dictionary, summary: Dictionary, cached_only: bool = false) -> Dictionary:
+	var identity: Dictionary = _workbench_water_coverage_identity(slot,start,target,rectangles,context)
+	var cached: Dictionary = _workbench_water_coverage_cache.get(slot,{})
+	var exact: bool = not identity.is_empty() and cached.get("identity") == identity
+	var rebound: bool = not exact and _same_paused_water_coverage(cached.get("identity",{}),identity)
+	if exact or rebound:
+		if rebound:
+			# Holds and submissions still require the actual new upload and RID
+			# identities. Keep the historical immutable receipt unmodified.
+			var next: Dictionary = {"identity":identity.duplicate(true),"result":cached.result}
+			WorkbenchWaterComposition.freeze(next.identity)
+			next.make_read_only()
+			_workbench_water_coverage_cache[slot] = next
+		# This is an exact immutable image/geometry result, not physical or
+		# visible-history authority. The caller must separately prove the current
+		# actual owner/pose. No scan cells or elapsed time are invented on reuse.
+		var retained: Dictionary = cached.result.duplicate(true)
+		retained["original_scanned"] = retained.scanned
+		retained["scanned"] = 0
+		retained["coverage_reused"] = true
+		if rebound: retained["equivalent_paused_publication"] = true
+		return retained
+	if cached_only: return {}
+	var remaining: int = PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined)
+	if remaining <= 0 or Time.get_ticks_usec() >= int(context.deadline_usec):
+		summary.budget_vetoes += 1
+		return {"safe":false,"reason":"shared_budget","scanned":0}
+	var result: Dictionary = WorkbenchPresentationCoherence.assess(start,target,
+		rectangles,image,_presentation_previous_occupied,_presentation_previous_unknown,
+		context.previous_blend_active,mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),
+		context.deadline_usec,_presentation_previous_image,true,
+		_presentation_current_bytes,_presentation_previous_bytes,remaining,true,true)
+	summary.cells_examined += int(result.scanned)
+	if str(result.reason) in ["scan_budget","time_budget","shared_budget"]: summary.budget_vetoes += 1
+	# Refusals, partial scans and unknown history never seed this bounded cache.
+	# A single exact last result per real member is sufficient for stationary
+	# actors across repeated draws; any changed image/geometry must scan again.
+	if bool(result.safe) and not identity.is_empty():
+		var value: Dictionary = {"identity":identity.duplicate(true),"result":result.duplicate(true)}
+		WorkbenchWaterComposition.freeze(value)
+		_workbench_water_coverage_cache[slot] = value
+	return result
+
+
+# A refused successor may briefly hold its last submitted Water pose under the
+# same hold clock as a dry body. Only the prior endpoint is certified here.
+# Never associate its historical physics proof with the successor's step.
+func _submitted_water_hold(slot: int, previous: Dictionary, context: Dictionary) -> Dictionary:
+	if not _workbench_water_composition_enabled() or not _workbench_frame_error.is_empty() \
+			or simulation_worker.has_failed() or not _physical_terrain_ready or _actor_reset_receipt != 0 \
+			or _pending_physical_candidate != null or not pending_microscenario_apply.is_empty():
+		return {}
+	var old: Dictionary = previous.get("water_coverage_identity",{})
+	var proof: Dictionary = workbench_presentation_frame.get("water_proofs",{}).get(slot,{})
+	if proof.is_empty() or old.is_empty() or not previous.get("water_composed",false) \
+			or workbench_presentation_frame.get("poses",{}).get(slot) != previous.pose \
+			or proof.get("step",-1) != previous.step:
+		return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if bridge != rapier_bridge: return {}
+	var visible: Dictionary = proof.get("visible_material",{})
+	var entry: Dictionary = context.mask_frame.instances.get(bridge._members[slot].instance_id,{})
+	if visible.get("native_tick",-1) != context.mask_native_tick or visible.get("native_sample",-1) != entry.get("sample",-2):
+		return {}
+	var key: Dictionary = _workbench_water_coverage_identity(slot,previous.pose,previous.pose,bridge._rects[slot],context)
+	if key.is_empty() or old.owner != key.owner or old.material != key.material \
+			or old.sweep[1] != previous.pose or old.sweep[2] != key.sweep[2] \
+			or (context.previous_blend_active and old.previous != key.previous):
+		return {}
+	return proof
+
+
+# A material publication can advance before the next native response is
+# available. That retires the old MATERIAL certificate, not the original
+# already-submitted physical endpoint. Recheck only that endpoint against the
+# actual current/previous images, under the resolver's existing shared budget.
+# The caller retains the original 100 ms hold clock and original physical step;
+# this cannot authorize a new pose, a different owner or a current completion.
+func _revalidated_submitted_water_hold(slot: int, previous: Dictionary, context: Dictionary,
+		summary: Dictionary) -> Dictionary:
+	if not _workbench_water_composition_enabled() or not _workbench_frame_error.is_empty() \
+			or simulation_worker.has_failed() or not _physical_terrain_ready or _actor_reset_receipt != 0 \
+			or _pending_physical_candidate != null or not pending_microscenario_apply.is_empty() \
+			or physical_actor_session == null or not physical_actor_session.bridge is WorkbenchBridge \
+			or int(previous.get("withheld_frames",0)) != 0 or previous.get("contact_clipped",false):
+		return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if bridge != rapier_bridge or slot < 0 or slot >= bridge._members.size() \
+			or _workbench_sample_identity != [bridge._session,bridge._epoch]: return {}
+	var old: Dictionary = previous.get("water_coverage_identity",{})
+	var proof: Dictionary = workbench_presentation_frame.get("water_proofs",{}).get(slot,{})
+	if proof.is_empty() or old.is_empty() or not previous.get("water_composed",false) \
+			or not previous.get("pose") is Transform2D or not Transform2D(previous.pose).is_finite() \
+			or workbench_presentation_frame.get("poses",{}).get(slot) != previous.pose \
+			or proof.get("step",-1) != previous.get("step",-2) or int(previous.step) < 0 \
+			or int(previous.step) > physical_actor_session.tick:
+		return {}
+	var key: Dictionary = _workbench_water_coverage_identity(slot,previous.pose,previous.pose,bridge._rects[slot],context)
+	if key.is_empty() or old.owner != key.owner or old.material[0] != key.material[0] \
+			or old.sweep[1] != previous.pose or old.sweep[2] != key.sweep[2]: return {}
+	var coverage: Dictionary = _assess_workbench_water_sweep(slot,previous.pose,previous.pose,
+		bridge._rects[slot],context,summary)
+	if not coverage.get("safe",false): return {}
+	var entry: Dictionary = context.mask_frame.instances.get(bridge._members[slot].instance_id,{})
+	var result: Dictionary = proof.duplicate(true)
+	# Keep the original proof's native sample/tick/completion fields untouched.
+	# This separate record describes only the newly tested material image pair.
+	result["held_material_revalidation"] = {"selected_step":previous.step,"selected_pose":previous.pose,
+		"original_visible_material":proof.get("held_material_revalidation",{}).get("original_visible_material",
+			proof.get("visible_material",{})).duplicate(true)}
+	result["visible_material"] = {"world":last_uploaded_world_generation,"revision":last_uploaded_revision,
+		"upload_serial":last_uploaded_render_snapshot_serial,"current_content":_presentation_current_content_id,
+		"previous_content":_presentation_previous_content_id,"native_tick":context.mask_native_tick,
+		"native_sample":entry.get("sample",-1)}
+	result["coverage"] = coverage
+	return result
+
+
+func _workbench_visible_material_contents(previous_active: bool) -> Array[int]:
+	var contents: Array[int] = []
+	if _presentation_current_content_id <= 0:
+		return contents
+	# An identity cannot stand in for missing genuine previous-texture history.
+	if previous_active and (_presentation_previous_unknown or _presentation_previous_content_id <= 0):
+		return contents
+	contents.append(_presentation_current_content_id)
+	if previous_active and _presentation_previous_content_id != _presentation_current_content_id:
+		contents.append(_presentation_previous_content_id)
+	return contents
+
+
+func _workbench_material_certificate_covers(certified: Array, required: Array) -> bool:
+	if required.is_empty():
+		return false
+	for content_id: int in required:
+		if not certified.has(content_id):
+			return false
+	return true
+
+
+# On the first valid paused owner frame, check stationary material footprints
+# together, before per-member native proof construction can exhaust the shared
+# clearance deadline. These results authorize geometry only in this resolver
+# call. Ordinary native, pose and submission checks still decide every draw.
+func _initial_workbench_water_coverage(frame: Dictionary, context: Dictionary, summary: Dictionary,
+		bridge: WorkbenchBridge, order: Array[int]) -> Dictionary:
+	var results: Dictionary = {}
+	if not paused or not _workbench_presentation_state.is_empty() or not _workbench_water_composition_enabled() \
+			or not _valid_workbench_mask_frame(frame) or bridge != rapier_bridge or not bridge.is_initialized() \
+			or not _physical_terrain_ready or _actor_reset_receipt != 0 or not _workbench_frame_error.is_empty() \
+			or _pending_physical_candidate != null or not pending_microscenario_apply.is_empty() \
+			or physical_actor_session.tick != 0 or bridge.manual_step_count() != 0 or _workbench_completed_step > 0 \
+			or _workbench_completed_step_usec != 0 or _workbench_sample_identity != [bridge._session,bridge._epoch] \
+			or order.is_empty() or order.size() > WorkbenchBridge.Capacity.DEFAULT_BODIES \
+			or order.size() != bridge._rects.size() or order.size() != bridge._body_rids.size() \
+			or _workbench_visible_material_contents(context.previous_blend_active).is_empty() or simulation_worker.has_failed():
+		return results
+	var start := Time.get_ticks_usec()
+	var cells_before: int = summary.cells_examined
+	var refused := 0
+	for slot: int in order:
+		var member: Dictionary = bridge._members[slot]
+		var entry: Variant = frame.instances.get(member.instance_id)
+		if not entry is Dictionary or entry.get("generation",-1) != member.generation \
+				or not entry.get("pose") is Transform2D or not Transform2D(entry.pose).is_finite() \
+				or entry.pose != bridge.body_transform(slot) or _workbench_bound_step(entry) != 0:
+			continue
+		var result := _assess_workbench_water_sweep(slot,entry.pose,entry.pose,bridge._rects[slot],context,summary)
+		results[slot] = {"pose":entry.pose,"coverage":result}
+		if not result.safe: refused += 1
+	context["initial_water_coverage"] = {"members":results.size(),"refusals":refused,
+		"cells":int(summary.cells_examined)-cells_before,"elapsed_usec":Time.get_ticks_usec()-start,
+		"budget_at_entry_usec":maxi(0,int(context.deadline_usec)-start)}
+	return results
+
+
+func _resolve_workbench_presentation_frame(frame: Dictionary) -> Dictionary:
+	var started_usec: int = Time.get_ticks_usec()
+	# Charge immutable byte capture once to the presentation frame consuming
+	# that upload. Its time was also included in the real upload interval.
+	var cache_usec: int = _presentation_pending_cache_usec
+	_presentation_pending_cache_usec = 0
+	var mode: String = _workbench_presentation_mode()
+	var material_timing: Dictionary = _material_presentation_state(started_usec)
+	var blend: float = material_timing.snapshot_blend
+	var resolved: Dictionary = {"policy":mode,"original_mask_frame":frame,
+		"mask_frame":{},"poses":{},"sources":{},"selected_steps":{},"desired_steps":{},
+		"reasons":{},"intentional_holds":{},"timeline_resets":{},"parts":[],
+		"hold_age_usec":{},"selected_observations":{},"recovery_attempts":{},"explicit_reentries":{},
+		"recovery_ceilings":{},"water_proofs":{},"water_composition":{},"contact_clips":{},"contact_cells":{},"contact_budget":{},
+		"follow_instance_id":shared_workbench.selected_id() if shared_workbench != null else -1,
+		"follow_target":Vector2.INF,"follow_source_step":-1,"follow_held":false,
+		"session":-1,"epoch":-1,"world_generation":last_uploaded_world_generation,
+		"material_revision":last_uploaded_revision,"upload_serial":last_uploaded_render_snapshot_serial,
+		"material_native_tick":_cadence_upload.get("native_tick",-1),
+		"mask_native_tick":frame.get("tick",-1),"mask_sample_tick":frame.get("sample_tick",-1),
+		"native_tick":latest_snapshot.tick_index if latest_snapshot != null else -1,
+		"rapier_step":physical_actor_session.tick if physical_actor_session != null else -1,
+		"snapshot_blend":blend,"previous_blend_active":blend < 1.0,"material_timing":material_timing,
+		"draw_usec":started_usec,
+		"current_texture_id":_material_publication_rid(texture).get_id(),
+		"previous_texture_id":_material_publication_rid(previous_texture).get_id(),
+		"deadline_usec":started_usec+maxi(0,PRESENTATION_FRAME_TIME_BUDGET_USEC-cache_usec),
+		"valid":false,"reason":"invalid_frame","resolve_usec":0,"upload_cache_usec":cache_usec,
+		"dry_region_status":_workbench_dry_region_status,"patch_count":_material_pending_rectangles.size()/RENDER_PATCH_METADATA_STRIDE}
+	var summary: Dictionary = {"safe_live":0,"blocked_material":0,"blocked_unknown":0,
+		"blocked_other":0,"budget_vetoes":0,"cells_examined":_presentation_pending_clearance_cells,"elapsed_usec":0,
+		"intentional_holds":0,"withheld":0,"refined_queries":0,"refined_clear":0,
+		"water_coverage_reuses":0}
+	_presentation_pending_clearance_cells = 0
+	var bridge: Variant = physical_actor_session.bridge if physical_actor_session != null else null
+	var identity: Array = [bridge._session,bridge._epoch,last_uploaded_world_generation] \
+		if bridge is WorkbenchBridge else []
+	if identity != _workbench_presentation_identity or mode != _workbench_presentation_policy:
+		if identity != _workbench_presentation_identity \
+				and (not workbench_presentation_submission_enabled() or identity != _workbench_observation_identity):
+			_workbench_presentation_history.clear()
+			_workbench_observation_identity = identity.duplicate()
+		_workbench_presentation_state.clear()
+		_workbench_follow_state.clear()
+		_workbench_presentation_identity = identity
+		_workbench_presentation_policy = mode
+		_workbench_presentation_turn = 0
+	if bridge is WorkbenchBridge:
+		resolved.session = bridge._session
+		resolved.epoch = bridge._epoch
+	if _valid_workbench_mask_frame(frame) and image != null:
+		resolved.mask_frame = frame
+		resolved.valid = true
+		resolved.reason = "resolved"
+		var material_contents: Array[int] = _workbench_visible_material_contents(resolved.previous_blend_active)
+		resolved["material_contents"] = material_contents.duplicate()
+		var legacy_poses: Dictionary = _safe_workbench_presentation_poses(frame,resolved.previous_blend_active) if mode != "coherent" else {}
+		# Every actor receives the first opportunity once per complete rotation.
+		# A permanently unsafe, unadmitted body must not stay ahead of retained
+		# or suppressed peers and monopolize the shared guard deadline forever.
+		var admission_order: Array[int] = []
+		for offset: int in range(bridge._members.size()):
+			var slot: int = (offset+_workbench_presentation_turn) % bridge._members.size()
+			admission_order.append(slot)
+		_workbench_presentation_turn = (_workbench_presentation_turn+1) % maxi(bridge._members.size(),1)
+		# Keep rotating order within each group. Focused/on-screen roots get
+		# access before distant actors in a running scene; the mapping affects
+		# scheduling only. All bodies retain the identical global allowance.
+		if not paused and mode=="coherent" and admission_order.size()>1:
+			var visible_order: Array[int]=[]
+			var distant_order: Array[int]=[]
+			var view:=Rect2(camera_origin,Vector2(current_view_size)).grow(16.0)
+			for slot: int in admission_order:
+				if view.has_point(bridge.body_transform(slot).origin): visible_order.append(slot)
+				else: distant_order.append(slot)
+			visible_order.append_array(distant_order)
+			admission_order=visible_order
+		var initial_water: Dictionary = _initial_workbench_water_coverage(frame,resolved,summary,bridge,admission_order) \
+			if paused and _workbench_presentation_state.is_empty() else {}
+		var no_coverage: Dictionary = {}
+		for slot: int in admission_order:
+			var member: Dictionary = bridge._members[slot]
+			var entry: Dictionary = frame.instances.get(int(member.instance_id),{})
+			resolved.sources[slot] = "hidden"
+			resolved.reasons[slot] = "actor_receipt_invalid"
+			resolved.desired_steps[slot] = physical_actor_session.tick
+			resolved.intentional_holds[slot] = false
+			resolved.timeline_resets[slot] = false
+			resolved.hold_age_usec[slot] = 0
+			resolved.recovery_attempts[slot] = 0
+			resolved.explicit_reentries[slot] = false
+			if entry.get("generation",-1) != member.generation or not entry.get("pose") is Transform2D \
+					or not Transform2D(entry.pose).is_finite():
+				continue
+			var bound: Transform2D = entry.pose
+			var bound_sample: Dictionary = _workbench_bound_sample(entry)
+			var bound_step: int = int(bound_sample.get("step",-1))
+			if bound_step > physical_actor_session.tick:
+				resolved.reasons[slot] = "future_native_sample"
+				continue
+			if mode != "coherent":
+				resolved.poses[slot] = legacy_poses.get(slot,bound)
+				resolved.sources[slot] = "live" if legacy_poses.has(slot) else "mask_bound"
+				resolved.selected_steps[slot] = physical_actor_session.tick if legacy_poses.has(slot) else bound_step
+				resolved.reasons[slot] = _workbench_pose_trace_reasons.get(slot,workbench_presentation_last.status)
+				continue
+			var desired: Transform2D = bridge.body_transform(slot)
+			var desired_observation: Dictionary = _observe_workbench_presentation(slot)
+			var previous: Dictionary = _workbench_presentation_state.get(slot,{})
+			if previous.get("instance_id",member.instance_id) != member.instance_id \
+					or previous.get("generation",member.generation) != member.generation:
+				previous = {}
+			var initial: bool = previous.is_empty()
+			var first_coverage: Dictionary = no_coverage
+			if initial and initial_water.has(slot) and initial_water[slot].pose == desired and bound == desired:
+				first_coverage = initial_water[slot].coverage
+			resolved.timeline_resets[slot] = initial
+			var anchor: Transform2D = bound if initial else previous.pose
+			var recovering: bool = not initial and int(previous.get("withheld_frames",0)) == 0 \
+				and int(previous.step) < int(previous.get("desired_step",previous.step))
+			var ceiling: int = physical_actor_session.tick
+			var target: Transform2D = desired
+			var target_step: int = physical_actor_session.tick
+			var target_observation: Dictionary = desired_observation
+			if recovering:
+				# Repay at most ONE extra physical step per graphical submission.
+				# This adds no normal live delay, preserves actual fast movement,
+				# and cannot convert accumulated hold lag into an instant snap.
+				ceiling = mini(physical_actor_session.tick,int(previous.step)
+					+maxi(0,physical_actor_session.tick-int(previous.desired_step))+1)
+				target_observation = _workbench_presentation_history.newest_after_through(
+					slot,int(previous.step),ceiling)
+				if not target_observation.is_empty():
+					target = target_observation.pose
+					target_step = int(target_observation.step)
+			resolved.recovery_ceilings[slot] = ceiling
+			var certificate_valid: bool = not initial and not previous.get("water_composed",false) \
+				and _workbench_material_certificate_covers(previous.get("material_contents",[]),material_contents)
+			var selected: Variant = null
+			var selected_step: int = -1
+			var selected_observation: Dictionary = {}
+			var hold_started_usec: int = int(previous.get("hold_started_usec",0))
+			var reason: String = ""
+			var decision: Dictionary
+			if not initial and int(previous.step) > physical_actor_session.tick:
+				decision = {"safe":false,"reason":"rapier_step_regressed"}
+			elif recovering and target_observation.is_empty():
+				decision = {"safe":false,"reason":"recovery_history_missing"}
+			elif recovering and not _workbench_recovery_time_valid(target_observation,started_usec,physical_actor_session.tick):
+				decision = {"safe":false,"reason":"recovery_time_unknown" if int(target_observation.get("completed_usec",0)) <= 0 else "recovery_age_expired"}
+			elif certificate_valid and anchor == target:
+				decision = {"safe":true,"reason":"same_presented_pose"}
+			elif not _workbench_dry_region.is_empty() and not _presentation_previous_unknown \
+					and _workbench_dry_region.world == last_uploaded_world_generation \
+					and _workbench_dry_region.session == bridge._session and _workbench_dry_region.epoch == bridge._epoch \
+					and _workbench_dry_region.current == _presentation_current_content_id \
+					and _workbench_dry_region.previous == _presentation_previous_content_id \
+					and WorkbenchPresentationCoherence.empty_region_covers_sweep(
+						_workbench_dry_region.area,anchor,target,bridge._rects[slot]):
+				decision = {"safe":true,"reason":"empty_published_region"}
+			else:
+				# Prove the actual current physical/native authority FIRST, then
+				# ask the Water-compatible guard once. An empty-only guard would
+				# inevitably reject Water, spend its refinement budget and starve
+				# this same valid composition or a later member. The compatible
+				# guard still scans both immutable histories, refuses hard material,
+				# retains the same sweep/cell/time bounds and creates no completion.
+				if _workbench_water_composition_enabled() and target_step == physical_actor_session.tick \
+						and target == desired:
+					var water_proof: Dictionary = _workbench_water_dependency(slot,frame,entry,desired_observation)
+					if not water_proof.is_empty():
+						# Exact COMPLETE image/sweep cache entries are checked before
+						# the shared deadline. Any changed input requires a new scan.
+						# Only an initial or actually withheld body may re-enter at
+						# its endpoint; consecutive visible poses require the sweep.
+						var water_reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
+						var water_start: Transform2D = desired if initial or water_reentry else anchor
+						var water_check: Dictionary = first_coverage
+						if water_check.is_empty() and water_proof.kind=="current_completed_native_dependency" \
+								and (not paused or previous.get("contact_clipped",false)) and not recovering \
+								and (not resolved.previous_blend_active or not _presentation_previous_unknown) and not material_contents.is_empty() \
+								and resolved.current_texture_id!=0 and (not resolved.previous_blend_active or resolved.previous_texture_id!=0):
+							# Independent native authority applies the actual physical endpoint.
+							# The texture-backed clip cannot legalize a jump across a wall:
+							# test the prior presented pose even after a withheld draw.
+							var before:=Time.get_ticks_usec()
+							resolved.contact_budget[slot]={"cells_before":int(summary.cells_examined),
+								"remaining_usec":int(resolved.deadline_usec)-before,"upload_cache_usec":cache_usec,
+								"selection_usec":before-started_usec}
+							var contact := _assess_workbench_contact(slot,anchor,desired,bridge._rects[slot],
+								resolved,PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined))
+							summary.cells_examined+=int(contact.scanned)
+							resolved.contact_budget[slot]["contact_cells"]=int(contact.scanned)
+							resolved.contact_budget[slot]["contact_reason"]=contact.reason
+							if contact.has("contact_cell"): resolved.contact_cells[slot]=contact.contact_cell
+							if contact.safe:
+								water_check=contact
+								if contact.has("clip"): resolved.contact_clips[slot]=contact.clip
+						if water_check.is_empty():
+							water_check=_assess_workbench_water_sweep(slot,water_start,
+								desired,bridge._rects[slot],resolved,summary)
+						decision = water_check
+						if bool(water_check.safe):
+							if water_check.get("coverage_reused",false):
+								_workbench_water_coverage_cache_hits += 1
+								summary.water_coverage_reuses += 1
+							resolved.explicit_reentries[slot] = water_reentry
+							# A complete Empty proof needs no Water layer or native
+							# composition exception. Keep its ordinary certificate,
+							# including across unchanged dry frames.
+							if resolved.contact_clips.has(slot) or bool(water_check.get("water_in_bounds",false)) or int(water_check.get("water_contacts",0)) > 0:
+								water_proof["coverage"] = water_check.duplicate()
+								water_proof.coverage.erase("clip")
+								resolved.water_proofs[slot] = water_proof
+								decision = {"safe":true,"reason":("material_clipped:" if resolved.contact_clips.has(slot) else "water_composed:")+str(water_proof.kind)}
+				# Certify only the motion since the last presented state. Old
+				# material behind that state cannot invalidate elapsed motion.
+				if decision.is_empty():
+					if recovering: resolved.recovery_attempts[slot] += 1
+					# A rejected Water-compatible check on the same endpoint cannot
+					# justify an empty-only fallback. Never repeat that refusal.
+					decision = first_coverage if not first_coverage.get("safe",true) else _assess_workbench_presented_sweep(anchor,target,bridge._rects[slot],resolved,summary)
+			if bool(decision.safe):
+				selected = target
+				selected_step = target_step
+				selected_observation = target_observation
+				resolved.sources[slot] = "history" if target_step < physical_actor_session.tick else "live"
+				if target_step == physical_actor_session.tick: summary.safe_live += 1
+				reason = "paced_observed_recovery" if recovering else str(decision.reason)
+			else:
+				reason = str(decision.reason)
+				if reason == "material_in_swept_mask": summary.blocked_material += 1
+				elif reason == "previous_texture_unbounded": summary.blocked_unknown += 1
+				else: summary.blocked_other += 1
+				# A small ordered history can advance through a genuinely observed
+				# clear prefix when the newest pose is blocked. Every proposed
+				# displayed endpoint is swept from the last displayed pose, under
+				# the SAME shared budget; never invent or smooth an unchecked pose.
+				if not initial and reason in ["material_in_swept_mask","bounded_pose_delta"]:
+					for observed: Dictionary in _workbench_presentation_history.recovery_candidates(
+							slot,int(previous.step),mini(physical_actor_session.tick,ceiling+1)):
+						if int(resolved.recovery_attempts[slot]) >= WorkbenchPresentationHistory.RECOVERY_ATTEMPTS: break
+						if not _workbench_recovery_time_valid(observed,started_usec,physical_actor_session.tick): break
+						resolved.recovery_attempts[slot] += 1
+						var recovery: Dictionary = _assess_workbench_presented_sweep(
+							anchor,observed.pose,bridge._rects[slot],resolved,summary)
+						if not bool(recovery.safe): break
+						selected = observed.pose
+						selected_step = int(observed.step)
+						selected_observation = observed
+						resolved.sources[slot] = "history"
+						reason = "safe_observed_prefix"
+				# A native receipt is a timestamped endpoint, not proof of the
+				# route from a retained actor. Consecutively visible frames must
+				# prove that route too. Endpoint-only re-entry is an explicit
+				# discontinuity following at least one withheld submission.
+				var bound_can_advance: bool = bound_step >= 0 and (initial or bound_step > int(previous.step))
+				var bound_observation: Dictionary = bound_sample
+				# A native receipt identifies an endpoint, not fresh presentation time.
+				# Its clock applies on FIRST refusal as well as recovery/re-entry:
+				# neither the initial path nor a previous visible frame can bypass
+				# expiration for a noncurrent physical step.
+				if bound_can_advance and bound_step < physical_actor_session.tick \
+						and not _workbench_recovery_time_valid(
+							bound_observation,started_usec,physical_actor_session.tick):
+					bound_can_advance = false
+				if recovering and bound_step > ceiling:
+					bound_can_advance = false
+				if selected == null and bound_can_advance and reason != "rapier_step_regressed":
+					var reentry: bool = not initial and int(previous.get("withheld_frames",0)) > 0
+					var bound_start: Transform2D = bound if initial or reentry else anchor
+					var bound_check: Dictionary = first_coverage if not first_coverage.get("safe",true) else _assess_workbench_presented_sweep(bound_start,bound,bridge._rects[slot],resolved,summary)
+					if bool(bound_check.safe):
+						selected = bound
+						selected_step = bound_step
+						selected_observation = bound_observation
+						resolved.sources[slot] = "mask_bound"
+						resolved.explicit_reentries[slot] = reentry
+						reason = "native_receipt_initial" if initial else ("native_receipt_reentry" if reentry else "native_receipt_swept")
+				if selected == null and not initial and int(previous.get("withheld_frames",0)) > 0 \
+						and physical_actor_session.tick >= int(previous.step) and reason != "rapier_step_regressed":
+					# Once an actual submission has withheld the body, a known
+					# current endpoint may reappear if its FULL footprint is clear
+					# in both visible textures. This explicit degraded transition
+					# avoids waiting forever for an evicted or stopped native sample.
+					var live_check: Dictionary = _assess_workbench_presented_sweep(
+						desired,desired,bridge._rects[slot],resolved,summary)
+					if bool(live_check.safe):
+						selected = desired
+						selected_step = physical_actor_session.tick
+						selected_observation = desired_observation
+						resolved.sources[slot] = "live"
+						resolved.explicit_reentries[slot] = true
+						reason = "explicit_live_reentry"
+				if selected == null and not initial and reason != "rapier_step_regressed" \
+						and int(previous.get("withheld_frames",0)) == 0:
+					if hold_started_usec <= 0: hold_started_usec = started_usec
+					resolved.hold_age_usec[slot] = maxi(0,started_usec-hold_started_usec)
+					var submitted_water: Dictionary = _submitted_water_hold(slot,previous,resolved) if previous.get("water_composed",false) else {}
+					if submitted_water.is_empty() and previous.get("water_composed",false):
+						submitted_water = _revalidated_submitted_water_hold(slot,previous,resolved,summary)
+					var held_clear: bool = certificate_valid or not submitted_water.is_empty()
+					if not held_clear:
+						var held_check: Dictionary = _assess_workbench_presented_sweep(anchor,anchor,bridge._rects[slot],resolved,summary)
+						held_clear = bool(held_check.safe)
+					var held_observation: Dictionary = previous.get("observation",{})
+					# Recheck the timestamp on EVERY submitted frame. Withholding
+					# clears recovering but must never renew an expired historical
+					# pose by starting a fresh hold timer. A genuinely current
+					# physical step is exempt (e.g. a paused simulation).
+					# A pose that was selected while physically current may be
+					# retained for ONE short certified hold, timed from its first
+					# material refusal. That is not historical playback. Poses
+					# first selected from history still require their completion
+					# age, even if a later withheld frame resets recovery.
+					var held_time_valid: bool = int(previous.step) == physical_actor_session.tick \
+						or bool(previous.get("origin_current",false)) \
+						or (int(held_observation.get("step",-1)) == int(previous.step) \
+							and _workbench_recovery_time_valid(
+								held_observation,started_usec,physical_actor_session.tick))
+					if held_clear and held_time_valid and reason != "recovery_age_expired" \
+							and int(resolved.hold_age_usec[slot]) < WorkbenchPresentationHistory.MAX_HOLD_USEC:
+						selected = anchor
+						selected_step = int(previous.step)
+						selected_observation = held_observation
+						resolved.sources[slot] = "held"
+						if not submitted_water.is_empty():
+							resolved.water_proofs[slot] = submitted_water
+						resolved.intentional_holds[slot] = true
+						summary.intentional_holds += 1
+					elif held_clear and not held_time_valid:
+						reason = "held_observation_time_unknown" \
+							if int(held_observation.get("completed_usec",0)) <= 0 \
+							else "held_observation_age_expired"
+					elif int(resolved.hold_age_usec[slot]) >= WorkbenchPresentationHistory.MAX_HOLD_USEC:
+						reason = "hold_expired:"+reason
+					previous.hold_started_usec = hold_started_usec
+			resolved.reasons[slot] = reason
+			if selected != null:
+				if not initial and int(previous.get("withheld_frames",0)) > 0:
+					resolved.explicit_reentries[slot] = true
+				resolved.poses[slot] = selected
+				resolved.selected_steps[slot] = selected_step
+				# A held/unchanged pose retains its already checked contents. A new
+				# pose receives only the contents this frame's sweep actually checked.
+				var certified_contents: Array = previous.get("material_contents",[]) \
+					if certificate_valid and selected == anchor else material_contents
+				resolved.selected_observations[slot] = selected_observation
+				_workbench_presentation_state[slot] = {"pose":selected,"step":selected_step,
+					"desired_step":physical_actor_session.tick,
+					"instance_id":member.instance_id,"generation":member.generation,"material_contents":certified_contents.duplicate(),
+					"observation":selected_observation,"withheld_frames":0,
+					"water_composed":resolved.water_proofs.has(slot),"contact_clipped":resolved.contact_clips.has(slot),
+					"water_coverage_identity":(previous.get("water_coverage_identity",{}) if resolved.sources[slot] == "held" \
+						and not resolved.water_proofs.get(slot,{}).has("held_material_revalidation")
+						else _workbench_water_coverage_cache.get(slot,{}).get("identity",{})) if resolved.water_proofs.has(slot) and not resolved.contact_clips.has(slot) and not previous.get("contact_clipped",false) else {},
+					"origin_current":bool(previous.get("origin_current",false)) \
+						if resolved.sources[slot] == "held" else selected_step == physical_actor_session.tick,
+					"hold_started_usec":hold_started_usec if resolved.sources[slot] == "held" else 0}
+			else:
+				summary.withheld += 1
+		# Remove withheld instances from a copied render receipt. render_parts'
+		# strict path cannot silently substitute a bound pose for a missing
+		# selected pose. The unmodified receipt remains available to tracing.
+		var render_frame: Dictionary = frame.duplicate()
+		render_frame.instances = frame.instances.duplicate()
+		for slot: int in range(bridge._members.size()):
+			if not resolved.poses.has(slot): render_frame.instances.erase(int(bridge._members[slot].instance_id))
+		resolved.parts = physical_actor_session.render_parts(render_frame,resolved.poses,true)
+		if not resolved.water_proofs.is_empty():
+			resolved.water_composition = {"enabled":true,"current_texture":texture,
+				"previous_texture":previous_texture,"world_size":image.get_size(),
+				"previous_active":resolved.previous_blend_active,"snapshot_blend":resolved.snapshot_blend}
+			for part: Dictionary in resolved.parts:
+				part["water_composed"] = resolved.water_proofs.has(int(part.get("physical_body_index",
+					part.get("water_body_index",-1))))
+		var pilot_slot: int = physical_actor_session.slot_for_instance(int(resolved.follow_instance_id))
+		var pilot_body: int = bridge.actor_body_index(pilot_slot)
+		if resolved.poses.has(pilot_body):
+			resolved.follow_target = resolved.poses[pilot_body].origin
+			resolved.follow_source_step = resolved.selected_steps.get(pilot_body,-1)
+			_workbench_follow_state = {"instance_id":resolved.follow_instance_id,
+				"position":resolved.follow_target,"step":resolved.follow_source_step}
+	if mode == "coherent":
+		for slot: int in _workbench_presentation_state:
+			if not resolved.poses.has(slot):
+				_workbench_presentation_state[slot].desired_step = physical_actor_session.tick
+				_workbench_presentation_state[slot].withheld_frames = int(
+					_workbench_presentation_state[slot].get("withheld_frames",0))+1
+	if not Vector2(resolved.follow_target).is_finite() \
+			and _workbench_follow_state.get("instance_id",-1) == resolved.follow_instance_id:
+		resolved.follow_target = _workbench_follow_state.position
+		resolved.follow_source_step = _workbench_follow_state.step
+		resolved.follow_held = true
+	if mode != "coherent" and shared_workbench != null:
+		# Baseline Follow deliberately retains its independently sampled live
+		# target. Trace that actual target, not the selected overlay position.
+		var pilot: Dictionary = shared_workbench.body_state(int(resolved.follow_instance_id))
+		resolved.follow_target = pilot.get("position",Vector2.INF)
+		resolved.follow_source_step = physical_actor_session.tick if physical_actor_session != null else -1
+		resolved.follow_held = false
+	resolved.selection_usec = Time.get_ticks_usec()-started_usec
+	resolved.resolve_usec = resolved.selection_usec+cache_usec
+	if mode == "coherent" or not resolved.valid:
+		summary.elapsed_usec = resolved.resolve_usec
+		workbench_presentation_totals.frames += 1
+		for key: String in summary:
+			workbench_presentation_totals[key] = int(workbench_presentation_totals.get(key,0))+int(summary[key])
+		summary.status = "coherent" if resolved.valid else "invalid_frame"
+		workbench_presentation_last = summary
+	_workbench_pose_trace_reasons = resolved.reasons
+	workbench_presentation_frame = resolved
+	return resolved
+
+
+func _resolve_workbench_camera_mapping() -> void:
+	_workbench_mapping_locked = false
+	var content: Rect2 = view_content_rect()
+	var screen: Transform2D = _world_view_screen_transform()
+	var mapping: Transform2D = presentation_camera_screen_transform()
+	workbench_presentation_frame.merge({"camera_requested":camera_origin,"camera_mapping":mapping,
+		"camera_origin":PixelCamera.screen_to_world(screen*content.position,mapping),
+		"screen_transform":screen,"content_rect":content,"view_size":current_view_size},true)
+	_workbench_mapping_locked = true
+
+
+func _submit_workbench_presentation_frame() -> void:
+	var resolved: Dictionary = workbench_presentation_frame
+	if shared_workbench.actor_interaction != null:
+		shared_workbench.actor_interaction.present_mapping(resolved.screen_transform.affine_inverse() * resolved.camera_mapping)
+	physical_actor_overlay.present(resolved.parts,resolved.camera_origin,resolved.view_size,resolved.content_rect,
+		resolved.get("water_composition",{}))
+	if _owner_gameplay != null and not _workbench_submission_preparing:
+		_owner_gameplay.presentation(self,resolved,"stock_overlay_applied")
+	if not _workbench_submission_preparing and workbench_pose_trace.active and physical_actor_session != null:
+		_workbench_trace_presentation_frame(resolved.original_mask_frame,resolved.mask_frame,
+			resolved.poses,resolved.parts,resolved.camera_origin,resolved.content_rect)
+
+
+func workbench_presentation_submission_enabled() -> bool:
+	return _workbench_submission != null and shared_workbench != null \
+		and _workbench_submission_requested and _workbench_submission._alive
+
+
+func workbench_presentation_submission_status() -> Dictionary:
+	return _workbench_submission.status() if _workbench_submission != null else {
+		"schema":WorkbenchPresentationSubmission.SCHEMA,"enabled":false,
+		"connected":false,"candidate_ready":false,"committed_count":0,
+		"requested":_workbench_submission_requested,"refusal":_workbench_submission_refusal,
+		"engine_atomic_admission":WorkbenchPresentationSubmission.atomic_admission_supported()}
+
+
+func _workbench_presentation_bookkeeping() -> Dictionary:
+	return {"state":_workbench_presentation_state,"identity":_workbench_presentation_identity,
+		"policy":_workbench_presentation_policy,"turn":_workbench_presentation_turn,
+		"follow":_workbench_follow_state,"totals":workbench_presentation_totals,
+		"last":workbench_presentation_last,"frame":workbench_presentation_frame,
+		"reasons":_workbench_pose_trace_reasons,"cache_usec":_presentation_pending_cache_usec,
+		"clearance_cells":_presentation_pending_clearance_cells,
+		"camera_request":camera_origin,"view_request":current_view_size,
+		"focus_pending":shared_workbench._focus_pending if shared_workbench != null else false}
+
+
+func _install_workbench_presentation_bookkeeping(state: Dictionary) -> void:
+	_workbench_presentation_state = state.state
+	_workbench_presentation_identity = state.identity
+	_workbench_presentation_policy = state.policy
+	_workbench_presentation_turn = state.turn
+	_workbench_follow_state = state.follow
+	workbench_presentation_totals = state.totals
+	workbench_presentation_last = state.last
+	workbench_presentation_frame = state.frame
+	_workbench_pose_trace_reasons = state.reasons
+	_presentation_pending_cache_usec = state.cache_usec
+	_presentation_pending_clearance_cells = state.clearance_cells
+	camera_origin = state.camera_request
+	current_view_size = state.view_request
+	if shared_workbench != null: shared_workbench._focus_pending = state.focus_pending
+
+
+func _workbench_presentation_submission_fence() -> Dictionary:
+	var bridge: Variant = physical_actor_session.bridge if physical_actor_session != null else null
+	var members: Array = []
+	if bridge is WorkbenchBridge:
+		for slot: int in bridge._members.size():
+			var member: Dictionary = bridge._members[slot]
+			members.append([member.instance_id,member.generation,bridge.body_transform(slot),
+				bridge._body_rids[slot].get_id(),bridge._rects[slot]])
+	return {"engine_admission":WorkbenchPresentationSubmission.atomic_admission_supported(),
+		"owner":get_instance_id(),"worker":simulation_worker.get_instance_id(),
+		"physical_owner":physical_actor_session.get_instance_id() if physical_actor_session != null else 0,
+		"bridge":bridge.get_instance_id() if bridge != null else 0,
+		"world":[last_uploaded_world_generation,world_extent],
+		"session":[bridge._session,bridge._epoch] if bridge is WorkbenchBridge else [],
+		"physical_completion":[physical_actor_session.tick if physical_actor_session != null else -1,
+			_workbench_completed_step,_workbench_completed_step_usec],
+		"members":members,"selected":shared_workbench.selected_id() if shared_workbench != null else -1,
+		"material":[last_uploaded_revision,last_uploaded_render_snapshot_serial,
+			_presentation_current_content_id,_presentation_previous_content_id,
+			_presentation_current_content_shape,_presentation_previous_content_shape,
+			_material_publication_rid(texture).get_id(),_material_publication_rid(previous_texture).get_id(),
+			_presentation_previous_unknown],
+		"policy":[_workbench_presentation_mode(),_material_publication_mode,
+			_material_publication_fallback,cadence_lod_enabled,render_snapshot_hz,
+			OS.get_environment("CYBERSAND_DIAG_MATERIAL_TIMING"),
+			OS.get_environment("CYBERSAND_DIAG_ACTUAL_SUBMISSION"),
+			OS.get_environment("CYBERSAND_DIAG_WATER_COMPOSITION"),
+			OS.get_environment("CYBERSAND_SOURCE_REVISION")],
+		"camera":[camera_origin,current_view_size,view_content_rect(),_world_view_screen_transform(),
+			shared_workbench._camera.selected if shared_workbench != null else -1,
+			shared_workbench._focus_pending if shared_workbench != null else false],
+		"lifecycle":[paused,_physical_epoch,_actor_reset_receipt,_workbench_frame_error,
+			pending_microscenario_apply,simulation_worker.has_failed(),_playable_recovery_queued,
+			_pending_physical_candidate.get_instance_id() if _pending_physical_candidate != null else 0,
+			shared_workbench.step_pending if shared_workbench != null else false]}
+
+
+func _prepare_workbench_presentation_candidate(delta: float, supplied: Dictionary = {}) -> void:
+	if not workbench_presentation_submission_enabled() or _workbench_submission_preparing: return
+	var preparation_started: int = Time.get_ticks_usec()
+	# Run the existing selection against a private copy of last SUBMITTED
+	# bookkeeping. Its guard results stage canvas commands, but a skipped idle
+	# turn cannot become a visible hold, recovery, Follow or fairness turn.
+	var submitted: Dictionary = _workbench_presentation_bookkeeping()
+	_install_workbench_presentation_bookkeeping(submitted.duplicate(true))
+	_workbench_submission_preparing = true
+	_workbench_mapping_locked = false
+	_resolve_workbench_presentation_frame(workbench_display_frame() if supplied.is_empty() else supplied)
+	update_camera(delta)
+	_resolve_workbench_camera_mapping()
+	update_brush_preview()
+	_present_playable_course_targets()
+	actor_prototype_overlay.present(
+		latest_snapshot.actor_prototypes if latest_snapshot != null else {},
+		presentation_camera_origin(),current_view_size,view_content_rect())
+	usable_overlay.present(
+		(latest_snapshot.physical_usables if physical_actor_session != null else latest_snapshot.actor_usables)
+			if latest_snapshot != null else {},presentation_camera_origin(),current_view_size,view_content_rect())
+	_submit_workbench_presentation_frame()
+	update_shader_parameters()
+	var staged_frame: Dictionary = workbench_presentation_frame
+	var next_state: Dictionary = _workbench_presentation_bookkeeping()
+	_install_workbench_presentation_bookkeeping(submitted)
+	_workbench_mapping_locked = false
+	_workbench_submission_preparing = false
+	_workbench_submission.stage(staged_frame,next_state,_workbench_presentation_submission_fence())
+	_workbench_submission.record_preparation_cost(Time.get_ticks_usec()-preparation_started)
+
+
+func _commit_workbench_presentation_submission(engine_admission: bool = false) -> Dictionary:
+	if not workbench_presentation_submission_enabled(): return {}
+	if not engine_admission:
+		# The engine validated the returned receipt and allocated an actual draw
+		# before emitting this ordinary signal. External observers run only now;
+		# no callbacks can intervene between the direct admission and its receipt.
+		if _workbench_submission_notification_pending:
+			_workbench_submission_notification_pending = false
+			var submitted: Dictionary = workbench_presentation_frame
+			if _owner_gameplay != null:
+				_owner_gameplay.presentation(self,submitted,"atomic_submission_accepted")
+			if workbench_pose_trace.active and physical_actor_session != null:
+				_workbench_trace_presentation_frame(submitted.original_mask_frame,submitted.mask_frame,
+					submitted.poses,submitted.parts,submitted.camera_origin,submitted.content_rect)
+			workbench_presentation_submitted.emit(submitted)
+		return {}
+	var accepted: Dictionary = _workbench_submission.take(_workbench_presentation_submission_fence())
+	if accepted.is_empty(): return {}
+	# This exact typed receipt is constructed before any visible-history commit.
+	# Its fields come from the same immutable candidate and current owner/frame
+	# checked above. The engine validates the handshake before calling us. There
+	# is no fallible branch or external observer between commit and return.
+	var receipt: Dictionary = {"accepted":true,"owner_instance":get_instance_id(),
+		"submission_serial":int(accepted.frame.submission_serial),
+		"candidate_serial":int(accepted.frame.candidate_serial),
+		"process_frame":Engine.get_process_frames(),
+		"submitted_usec":int(accepted.frame.submitted_usec),
+		"source_revision":str(_workbench_submission.source_revision)}
+	receipt.make_read_only()
+	# Bookkeeping only. CanvasItem drawing, shader values and node transforms
+	# were prepared BEFORE Main's message flush. The new engine refuses the
+	# entire draw on an empty receipt: no stale canvas reaches the framebuffer,
+	# no draw signals/token/frames_drawn are fabricated, and time is conserved.
+	_install_workbench_presentation_bookkeeping(accepted.next_state)
+	workbench_presentation_frame = accepted.frame
+	_workbench_submission_notification_pending = true
+	return receipt
+
+
+func begin_workbench_pose_trace(settings: Dictionary = {}) -> bool:
+	if shared_workbench == null or physical_actor_session == null or latest_snapshot == null: return false
+	var identity: Dictionary = settings.duplicate(true)
+	identity["source_commit"] = OS.get_environment("CYBERSAND_SOURCE_REVISION")
+	identity["pose_mode"] = OS.get_environment("CYBERSAND_DIAG_FLYER_POSE")
+	identity["native_sha256"] = FileAccess.get_sha256("res://addons/cybersand_native/bin/" +
+		("cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows"
+			else "libcybersand_native.linux.x86_64.so"))
+	identity["render_cadence_mode"] = "legacy" if _legacy_render_cadence() else "repaired"
+	identity["fixed_physics_delta"] = rapier_bridge.fixed_delta()
+	identity["native_rendezvous"] = native_rendezvous_status()
+	identity["same_frame_continuation"] = same_frame_continuation_status()
+	identity["clock_notice"] = "Rapier targets alter callbacks; fixed 1/60 steps are compared by simulation index. CPU upload ACK and frame_post_draw are not GPU fences or scanout."
+	if not workbench_pose_trace.begin(identity): return false
+	_cadence_physics_hold_counts.clear()
+	if not simulation_worker.begin_render_cadence_trace():
+		# Do not finish/drain a worker capture owned by another caller.
+		workbench_pose_trace.finish()
+		return false
+	if not RenderingServer.frame_post_draw.is_connected(_cadence_frame_post_draw):
+		RenderingServer.frame_post_draw.connect(_cadence_frame_post_draw)
+	return true
+
+
+func finish_workbench_pose_trace() -> Dictionary:
+	if not workbench_pose_trace.active: return {}
+	if RenderingServer.frame_post_draw.is_connected(_cadence_frame_post_draw):
+		RenderingServer.frame_post_draw.disconnect(_cadence_frame_post_draw)
+	var worker_events: Dictionary = simulation_worker.finish_render_cadence_trace()
+	return workbench_pose_trace.finish(worker_events)
+
+
+func _legacy_render_cadence() -> bool:
+	return OS.get_environment("CYBERSAND_DIAG_RENDER_CADENCE") == "legacy"
+
+
+func native_rendezvous_status() -> Dictionary:
+	var overlap: bool = _workbench_native_rendezvous_selection == "render-overlap"
+	var separate: bool = not RenderingServer.is_on_render_thread()
+	return {"enabled":_workbench_native_rendezvous_enabled,
+		"mode":"render-overlap" if overlap else ("fixed16" if _workbench_native_rendezvous_enabled else "off"),
+		"max_frame_wait_usec":WorkbenchNativeRendezvous.MAX_RENDER_OVERLAP_WAIT_USEC if overlap else WorkbenchNativeRendezvous.MAX_FRAME_WAIT_USEC,
+		"poll_usec":WorkbenchNativeRendezvous.POLL_USEC,
+		"separate_render_thread":separate,
+		"render_overlap_available":overlap and separate,
+		"render_marker_meaning":"Earlier RenderingServer calls returned; not GPU completion, scanout or a draw identity.",
+		"fixed_physics_delta":rapier_bridge.fixed_delta(),
+		"waits_for_native_sample":engine_lab_wait_native_sample}
+
+
+func _cadence_frame_post_draw() -> void:
+	if not workbench_pose_trace.active: return
+	# Separate rendering queues this signal back to Main. Delivery can occur
+	# after another submission; Engine's current frame/serial is not the draw's
+	# identity. Preserve delivery timing without inventing a same-frame join.
+	var inline_render: bool = RenderingServer.is_on_render_thread()
+	workbench_pose_trace.observe_event({"event":"framebuffer_draw",
+		"time_usec":Time.get_ticks_usec(),
+		"process_frame":Engine.get_process_frames() if inline_render else -1,
+		"callback_process_frame":Engine.get_process_frames(),
+		"draw_identity_associated":inline_render,
+		"signal_delivery":"inline_main" if inline_render else "main_deferred",
+		"rendered_frames":Engine.get_frames_drawn(),
+		"render_serial":last_uploaded_render_snapshot_serial,
+		"render_serial_is_current_submission":true})
+
+
+func _cadence_physics_hold(reason: String, snapshot: CyberSimulationSnapshot = null) -> void:
+	if _owner_gameplay != null and (physical_actor_session == null or rapier_bridge is WorkbenchBridge):
+		_owner_gameplay.physics_hold(self,reason,snapshot)
+	if not workbench_pose_trace.active: return
+	_cadence_physics_hold_counts[reason] = int(_cadence_physics_hold_counts.get(reason,0))+1
+	workbench_pose_trace.observe_event({"event":"rapier_hold","reason":reason,
+		"time_usec":Time.get_ticks_usec(),"physics_frame":Engine.get_physics_frames(),
+		"process_frame":Engine.get_process_frames(),
+		"step":physical_actor_session.tick if physical_actor_session != null else -1,
+		"waiting_body_sample":_workbench_wait_sample,
+		"completed_body_sample":snapshot.lab_context.get("workbench_completed_sample",-1) if snapshot != null else -1,
+		"required_hard_revision":snapshot.lab_context.get("workbench_hard_surface_revision",-1) if snapshot != null else -1,
+		"packet_hard_revision":snapshot.hard_surface_revision if snapshot != null else -1,
+		# This revision is queued, not installed, while pending chunks remain.
+		"queued_hard_revision":last_hard_surface_revision,
+		"pending_hard_chunks":rapier_bridge.pending_hard_surface_chunks(),
+		"last_collider_call_usec":roundi(rapier_bridge.last_hard_surface_build_time_ms()*1000.0),
+		"waits_for_native_sample":engine_lab_wait_native_sample})
+
+
+func _cadence_rapier_completed(started_usec: int, completed_usec: int,
+		snapshot: CyberSimulationSnapshot) -> void:
+	if not workbench_pose_trace.active or physical_actor_session == null: return
+	var bridge: Variant = physical_actor_session.bridge
+	if not bridge is WorkbenchBridge: return
+	var bodies: Array[Dictionary] = []
+	for slot: int in range(mini(bridge._members.size(),WorkbenchPoseTrace.MAX_BODIES)):
+		var pose: Transform2D = bridge.body_transform(slot)
+		bodies.append({"slot":slot,"instance_id":int(bridge._members[slot].instance_id),
+			"xy":WorkbenchPoseTrace.xy(pose.origin),"angle":pose.get_rotation(),
+			"velocity":WorkbenchPoseTrace.xy(bridge.body_linear_velocity(slot))})
+	workbench_pose_trace.observe_event({"event":"rapier_step","start_usec":started_usec,
+		"time_usec":completed_usec,"observed_usec":Time.get_ticks_usec(),
+		"step":physical_actor_session.tick,
+		"session":bridge._session,"epoch":bridge._epoch,
+		"world_generation":(snapshot.physics_world_generation if snapshot.physics_world_generation >= 0
+			else snapshot.render_world_generation) if snapshot != null else -1,
+		"physics_publication_usec":snapshot.physics_handoff_usec if snapshot != null else 0,
+		"native_completed_usec":snapshot.last_native_tick_completed_usec if snapshot != null else -1,
+		"fixed_delta":rapier_bridge.fixed_delta(),
+		"solver_usec":roundi(rapier_bridge.last_step_time_ms()*1000.0),
+		"flush_usec":roundi(rapier_bridge.last_flush_time_ms()*1000.0),
+		"hard_surface_shapes":rapier_bridge.hard_surface_shape_count(),
+		"pending_hard_chunks":rapier_bridge.pending_hard_surface_chunks(),
+		"simulation_time_sec":physical_actor_session.tick*rapier_bridge.fixed_delta(),
+		"native_tick_used":snapshot.tick_index if snapshot != null else -1,
+		"native_response":_cadence_response_json(bridge.last_application),
+		"input_tape_index":_engine_lab_last_replay_segment,"bodies":bodies})
+
+
+func _cadence_response_json(application: Dictionary) -> Dictionary:
+	# Retain admission/refusal counts without putting Variant Vector2 objects
+	# into JSON or confusing a rejected stale response with an applied impulse.
+	var responses: Array[Dictionary] = []
+	for row: Dictionary in application.get("bodies",[]):
+		responses.append({"id":row.get("id",-1),"sample":row.get("sample",-1),
+			"age":row.get("age",-1),"refusal":row.get("refusal","")})
+	return {"accepted":application.get("accepted",false),
+		"refusal":application.get("refusal",""),"bodies":responses}
+
+
+# The shader and overlay should agree spatially for *the same* actor pose;
+# the separate bound/live fields identify a disagreement in simulation time.
+func _workbench_trace_presentation_frame(original_frame: Dictionary,
+		frame: Dictionary, admitted: Dictionary, parts: Array,
+		presented_origin: Vector2, content: Rect2) -> void:
+	var bridge: Variant = physical_actor_session.bridge
+	if not bridge is WorkbenchBridge: return
+	var screen: Transform2D = _world_view_screen_transform()
+	var shader_map: Transform2D = presentation_camera_screen_transform()
+	var unsnapped: Vector2 = screen*content.position \
+		- shader_map.x*camera_origin.x-shader_map.y*camera_origin.y
+	var first_parts: Dictionary = {}
+	for part: Dictionary in parts:
+		# Workbench admits exactly one rigid body per actor. The ordinary
+		# rectangular/circular render_parts rows identify actor_id, whereas
+		# rectangle unions additionally expose physical_body_index.
+		var slot: int = int(part.get("physical_body_index",part.get("actor_id",-1)))
+		if slot >= 0 and not first_parts.has(slot):
+			first_parts[slot] = part
+	var rows: Array = []
+	var instances: Dictionary = frame.get("instances",{})
+	for slot: int in range(mini(bridge._members.size(),WorkbenchPoseTrace.MAX_BODIES)):
+		var member: Dictionary = bridge._members[slot]
+		var receipt: Dictionary = instances.get(int(member.instance_id),{})
+		var bound: Variant = receipt.get("pose",null)
+		var live: Transform2D = bridge.body_transform(slot)
+		var visible: bool = first_parts.has(slot)
+		var selected: Variant = admitted.get(slot,null) if visible else null
+		var source: String = str(workbench_presentation_frame.sources.get(slot,"hidden")) if visible else "hidden"
+		var selected_projection: Variant = WorkbenchPoseTrace.projection(
+			selected,presented_origin,content,current_view_size,screen,shader_map)
+		var render_part: Variant = first_parts[slot].transform \
+			if visible else null
+		var part_projection: Variant = WorkbenchPoseTrace.projection(
+			render_part,presented_origin,content,current_view_size,screen,shader_map)
+		var observation: Dictionary = workbench_presentation_frame.selected_observations.get(slot,{})
+		var completed_usec: int = int(observation.get("completed_usec",0))
+		var sampled_usec: int = int(observation.get("sampled_usec",0))
+		var age_origin: int = completed_usec if completed_usec > 0 else sampled_usec
+		rows.append({"slot":slot,"instance_id":int(member.instance_id),
+			"generation":int(member.generation),
+			"receipt_generation":receipt.get("generation",-1),
+			"source":source,"visible":visible,
+			"presentation_step":workbench_presentation_frame.selected_steps.get(slot,-1),
+			"presentation_time_sec":float(workbench_presentation_frame.selected_steps.get(slot,-1))*rapier_bridge.fixed_delta(),
+			"desired_step":workbench_presentation_frame.desired_steps.get(slot,physical_actor_session.tick),
+			"source_reason":workbench_presentation_frame.reasons.get(slot,"invalid_frame"),
+			"intentional_hold":workbench_presentation_frame.intentional_holds.get(slot,false),
+			"hold_age_usec":workbench_presentation_frame.hold_age_usec.get(slot,0),
+			"selected_completed_usec":completed_usec,"selected_sampled_usec":sampled_usec,
+			"selected_age_usec":maxi(0,Time.get_ticks_usec()-age_origin) if age_origin > 0 else -1,
+			"selected_velocity":WorkbenchPoseTrace.xy(observation.velocity) if observation.get("velocity") is Vector2 else null,
+			"selected_angular_velocity":observation.get("angular_velocity",null),
+			"recovery_attempts":workbench_presentation_frame.recovery_attempts.get(slot,0),
+			"recovery_step_ceiling":workbench_presentation_frame.recovery_ceilings.get(slot,physical_actor_session.tick),
+			"explicit_reentry":workbench_presentation_frame.explicit_reentries.get(slot,false),
+			"timeline_reset":workbench_presentation_frame.timeline_resets.get(slot,false),
+			"onscreen_center":visible and selected is Transform2D and content.has_point(
+				PixelCamera.world_to_local(selected.origin,presented_origin,current_view_size,content)),
+			"guard_reason":str(_workbench_pose_trace_reasons.get(slot,
+				workbench_presentation_last.get("status","not_evaluated"))),
+			"bound":WorkbenchPoseTrace.pose_json(bound),
+			"live":WorkbenchPoseTrace.pose_json(live),
+			"selected":WorkbenchPoseTrace.pose_json(selected),
+			"first_drawn_part":WorkbenchPoseTrace.pose_json(render_part),
+			"screen_selected":selected_projection,
+			"screen_first_part":part_projection,
+			"selected_screen":selected_projection.get("overlay_px",null) \
+				if selected_projection is Dictionary else null,
+			"live_screen":WorkbenchPoseTrace.xy(shader_map*live.origin),
+			"bound_screen":WorkbenchPoseTrace.xy(shader_map*bound.origin) \
+				if bound is Transform2D and bound.is_finite() else null})
+	var pilot_id: int = shared_workbench.selected_id()
+	var pilot_state: Dictionary = shared_workbench.body_state(pilot_id) \
+		if pilot_id > 0 else {}
+	var pilot_position: Vector2 = pilot_state.get("position",Vector2.INF)
+	var now_usec: int = Time.get_ticks_usec()
+	var native_tick: int = latest_snapshot.tick_index if latest_snapshot != null else -1
+	var snapshot_serial: int = latest_snapshot.serial if latest_snapshot != null else -1
+	workbench_pose_trace.observe({"type":"frame","time_usec":now_usec,
+		"presentation":{"policy":workbench_presentation_frame.policy,
+			"session":workbench_presentation_frame.session,"epoch":workbench_presentation_frame.epoch,
+			"world_generation":workbench_presentation_frame.world_generation,
+			"material_contents":workbench_presentation_frame.get("material_contents",[]),
+			"resolve_usec":workbench_presentation_frame.resolve_usec,
+			"selection_usec":workbench_presentation_frame.selection_usec,
+			"upload_cache_usec":workbench_presentation_frame.upload_cache_usec,
+			"material_timing":workbench_presentation_frame.material_timing.duplicate(true),
+			"follow_instance_id":workbench_presentation_frame.follow_instance_id,
+			"follow_position":WorkbenchPoseTrace.xy(workbench_presentation_frame.follow_target) \
+				if Vector2(workbench_presentation_frame.follow_target).is_finite() else null,
+			"follow_source_step":workbench_presentation_frame.follow_source_step,
+			"follow_held":workbench_presentation_frame.follow_held,
+			"valid":workbench_presentation_frame.valid,"reason":workbench_presentation_frame.reason},
+		"process_frame":Engine.get_process_frames(),
+		"physics_frame":Engine.get_physics_frames(),
+		"frame_delta_ms":frame_time_ms,
+		"native_tick":native_tick,"native_snapshot_serial":snapshot_serial,
+		"rapier_step":physical_actor_session.tick,
+		"paused":paused,
+		"camera_mode":shared_workbench._camera.selected,
+		"pilot_instance_id":pilot_id,
+		"pilot_live_position":WorkbenchPoseTrace.xy(pilot_position) \
+			if pilot_position.is_finite() else null,
+		"camera_requested":WorkbenchPoseTrace.xy(camera_origin),
+		"camera_presented":WorkbenchPoseTrace.xy(presented_origin),
+		"camera_screen_phase_px":WorkbenchPoseTrace.xy(shader_map.origin-unsnapped),
+		"shader_world_zero_screen_px":WorkbenchPoseTrace.xy(shader_map.origin),
+		"screen_transform_origin":WorkbenchPoseTrace.xy(screen.origin),
+		"screen_basis_x":WorkbenchPoseTrace.xy(screen.x),
+		"screen_basis_y":WorkbenchPoseTrace.xy(screen.y),
+		"shader_basis_x":WorkbenchPoseTrace.xy(shader_map.x),
+		"shader_basis_y":WorkbenchPoseTrace.xy(shader_map.y),
+		"view_world_cells":[current_view_size.x,current_view_size.y],
+		"content_rect":[content.position.x,content.position.y,content.size.x,content.size.y],
+		"mask_receipt_original_valid":_valid_workbench_mask_frame(original_frame),
+		"mask_receipt_render_valid":_valid_workbench_mask_frame(frame),
+		"mask_session":frame.get("session",-1),
+		"mask_epoch":frame.get("epoch",-1),
+		"mask_world_generation":frame.get("world_generation",-1),
+		"mask_revision":frame.get("revision",-1),
+		"uploaded_world_generation":last_uploaded_world_generation,
+		"uploaded_revision":last_uploaded_revision,
+		"uploaded_render_serial":last_uploaded_render_snapshot_serial,
+		"snapshot_received_usec":_cadence_received_usec,
+		"native_snapshot_published_usec":latest_snapshot.worker_handoff_usec,
+		"native_completed_usec":latest_snapshot.last_native_tick_completed_usec,
+		"native_tick_wall_usec":latest_snapshot.last_native_tick_completed_usec-latest_snapshot.last_native_tick_started_usec,
+		"native_scheduler_lateness_usec":latest_snapshot.last_native_tick_lateness_usec,
+		"native_tick_body_sample":latest_snapshot.last_native_tick_body_sample,
+		"offered_body_sample":latest_snapshot.offered_body_sample,
+		"worker_step_time_ms":latest_snapshot.worker_step_time_ms,
+		"native_tick_time_ms":latest_snapshot.simulation_time_ms,
+		"mask_native_completed_usec":frame.get("native_completed_usec",-1),
+		"render_snapshot_built_usec":_cadence_upload.get("generated_usec",-1),
+		"upload_started_usec":_cadence_upload.get("start_usec",-1),
+		"upload_completed_usec":_cadence_upload.get("completed_usec",-1),
+		"upload_native_tick":_cadence_upload.get("native_tick",-1),
+		"upload_full_refresh":_cadence_upload.get("full_refresh",false),
+		"last_ack_issued_usec":_engine_lab_last_ack_usec,
+		"last_ack_issued_serial":_engine_lab_last_ack_serial,
+		"render_ack_pending":_engine_lab_pending_ack_serial,
+		"worker_ack_serial":latest_snapshot.render_acknowledged_serial,
+		"worker_ack_observed_usec":latest_snapshot.render_ack_observed_usec,
+		"worker_pending_patch_bytes":latest_snapshot.render_pending_patch_bytes,
+		"worker_pending_patch_count":latest_snapshot.render_pending_patch_count,
+		"ack_gated_publication":latest_snapshot.render_publication_ack_gated,
+		"ack_gate_holds":latest_snapshot.render_publication_gate_holds,
+		"physics_hold_counts":_cadence_physics_hold_counts.duplicate(),
+		"previous_texture_known":not _presentation_previous_unknown,
+		"previous_texture_bytes":_presentation_previous_image.get_width()*_presentation_previous_image.get_height()*render_channels \
+			if _presentation_previous_image != null else 0,
+		"render_hz_target":render_snapshot_hz,
+		"blend_active":workbench_presentation_frame.previous_blend_active,
+		"snapshot_blend":workbench_presentation_frame.snapshot_blend,
+		"guard":workbench_presentation_last.duplicate(true),
+		"body_count":bridge._members.size(),
+		"truncated_bodies":maxi(0,bridge._members.size()-WorkbenchPoseTrace.MAX_BODIES),
+		"visible_part_count":parts.size(),"bodies":rows})
+
+
+# This ACK releases retained CPU publication data after successful upload
+# submission. ImageTexture.update returning is NOT a GPU completion fence.
+func _issue_render_ack(serial: int, uploaded_usec: int = 0, due_frame: int = -1) -> void:
+	if serial <= _engine_lab_last_ack_serial: return
+	simulation_worker.acknowledge_render_snapshot(serial)
+	_engine_lab_last_ack_serial = serial
+	_engine_lab_last_ack_usec = Time.get_ticks_usec()
+	if workbench_pose_trace.active:
+		workbench_pose_trace.observe_event({"event":"render_ack","render_serial":serial,
+			"time_usec":_engine_lab_last_ack_usec,"uploaded_usec":uploaded_usec,
+			"due_frame":due_frame,"process_frame":Engine.get_process_frames()})
+
+
+# Native render ACK is mandatory. Delay only an accepted, uploaded serial.
+func _engine_lab_ack_uploaded_snapshot(serial: int) -> void:
+	if engine_lab_ack_delay_frames == 0:
+		_issue_render_ack(serial,Time.get_ticks_usec(),Engine.get_process_frames())
+		return
+	if not _legacy_render_cadence():
+		var due: int = Engine.get_process_frames()+engine_lab_ack_delay_frames
+		var pending: Dictionary = {"serial":serial,"due_frame":due,
+			"uploaded_usec":Time.get_ticks_usec()}
+		# Several uploads in a single process callback have the same deadline;
+		# acknowledging its newest serial also retires its earlier uploads.
+		for index: int in _engine_lab_ack_queue.size():
+			if int(_engine_lab_ack_queue[index].due_frame)==due:
+				_engine_lab_ack_queue[index] = pending
+				_engine_lab_pending_ack_serial = maxi(_engine_lab_pending_ack_serial,serial)
+				return
+		_engine_lab_ack_queue.append(pending)
+		_engine_lab_pending_ack_serial = maxi(_engine_lab_pending_ack_serial,serial)
+		return
+	# Same-source negative control: retained #609 restart-on-every-upload bug.
+	_engine_lab_pending_ack_serial = maxi(_engine_lab_pending_ack_serial,serial)
+	_engine_lab_pending_ack_frames = engine_lab_ack_delay_frames
+
+
+func _engine_lab_pump_ack() -> void:
+	if not _legacy_render_cadence():
+		var waiting: Array[Dictionary] = []
+		var frame: int = Engine.get_process_frames()
+		for pending: Dictionary in _engine_lab_ack_queue:
+			if int(pending.due_frame) <= frame:
+				_issue_render_ack(int(pending.serial),int(pending.uploaded_usec),int(pending.due_frame))
+			else:
+				waiting.append(pending)
+		_engine_lab_ack_queue = waiting
+		_engine_lab_pending_ack_serial = 0
+		for pending: Dictionary in waiting:
+			_engine_lab_pending_ack_serial = maxi(_engine_lab_pending_ack_serial,int(pending.serial))
+		return
+	if _engine_lab_pending_ack_serial <= 0: return
+	_engine_lab_pending_ack_frames -= 1
+	if _engine_lab_pending_ack_frames > 0: return
+	_issue_render_ack(_engine_lab_pending_ack_serial)
+	_engine_lab_pending_ack_serial = 0
+	_engine_lab_pending_ack_frames = 0
+
+
+func engine_lab_set_ack_delay(frames: int) -> void:
+	engine_lab_ack_delay_frames = clampi(frames,0,4)
+	if engine_lab_ack_delay_frames == 0 and _engine_lab_pending_ack_serial > 0:
+		_issue_render_ack(_engine_lab_pending_ack_serial)
+		_engine_lab_pending_ack_serial = 0
+		_engine_lab_pending_ack_frames = 0
+		_engine_lab_ack_queue.clear()
+
+
+func engine_lab_set_render_hz(target_hz: int) -> void:
+	render_snapshot_hz = clampi(target_hz,1,1000)
+	simulation_worker.set_render_snapshot_hz(render_snapshot_hz)
+	snapshot_blend_start_usec = Time.get_ticks_usec()
+
+
+func engine_lab_set_rapier_hz(target_hz: int) -> void:
+	# The flight solver demands a fixed 1/60 simulation delta each step.
+	# Deliberately change callback cadence only, not the physics step size:
+	# non-60Hz settings therefore change wall-clock simulation speed.
+	Engine.physics_ticks_per_second = clampi(target_hz,1,1000)
+
+
+func engine_lab_begin_tape(segments: Array[Dictionary]) -> bool:
+	if engine_lab_replay_active or engine_lab_scripted_input \
+			or not OS.get_cmdline_user_args().has("--engine-lab-scripted") \
+			or physical_actor_session == null or shared_workbench == null \
+			or shared_workbench.pilot_id() != 1 or shared_workbench.pilot_slot < 0 \
+			or latest_snapshot == null or simulation_worker.has_failed():
+		return false
+	var previous_tick: int = -1
+	for segment: Dictionary in segments:
+		if segment.size()!=2 or not segment.has_all(["tick","move"]) \
+				or not segment.tick is int or int(segment.tick)<=previous_tick \
+				or int(segment.tick)>120 or not segment.move is Array \
+				or segment.move.size()!=2:
+			return false
+		for number: Variant in segment.move:
+			if not (number is int or number is float) \
+					or not is_finite(float(number)) or absf(float(number))>1.0:
+				return false
+		previous_tick=int(segment.tick)
+	if segments.is_empty() or int(segments[0].tick)!=0: return false
+	engine_lab_replay_tape=segments.duplicate(true)
+	engine_lab_replay_events.clear()
+	engine_lab_replay_error=""
+	_engine_lab_last_replay_segment=-1
+	engine_lab_replay_source_epoch=physical_actor_session.epoch
+	engine_lab_replay_source_generation=int(latest_snapshot.render_world_generation)
+	engine_lab_replay_tick_zero=physical_actor_session.tick
+	engine_lab_replay_active=true
+	return true
+
+
+func _engine_lab_replay_workbench_input() -> void:
+	if not engine_lab_replay_active: return
+	if paused or physical_actor_session==null or simulation_worker.has_failed() \
+			or latest_snapshot==null \
+			or shared_workbench.pilot_id()!=1 \
+			or physical_actor_session.epoch!=engine_lab_replay_source_epoch \
+			or int(latest_snapshot.render_world_generation)!=engine_lab_replay_source_generation:
+		engine_lab_replay_error="scripted_replay_actor_or_world_owner_changed"
+		engine_lab_replay_active=false
+		return
+	var tick: int=physical_actor_session.tick
+	var relative: int=tick-engine_lab_replay_tick_zero
+	var selected: int=-1
+	for i: int in engine_lab_replay_tape.size():
+		if int(engine_lab_replay_tape[i].tick)<=relative: selected=i
+		else: break
+	if selected<0:
+		engine_lab_replay_error="scripted_replay_tick_before_origin"
+		engine_lab_replay_active=false
+		return
+	var entry: Dictionary=engine_lab_replay_tape[selected]
+	var axis: Array=entry.move
+	var accepted: bool=physical_actor_session.submit_workbench_action(
+		1,{"move":Vector2(float(axis[0]),float(axis[1]))},
+		{"q":false,"e":false,"s":false,"boost":false},false)
+	if not accepted:
+		engine_lab_replay_error="scripted_replay_command_refused_at_tick_%d_%s" % [
+			relative,str(physical_actor_session.last_error)]
+		engine_lab_replay_active=false
+		return
+	if selected!=_engine_lab_last_replay_segment:
+		_engine_lab_last_replay_segment=selected
+		engine_lab_replay_events.append({
+			"input_index":selected,
+			"requested_physical_tick":int(entry.tick),
+			"accepted_physical_tick":relative,
+			"session_tick":tick,
+			"world_generation":engine_lab_replay_source_generation,
+			"native_tick_at_admission":int(latest_snapshot.tick_index),
+			"wall_usec":Time.get_ticks_usec(),
+			"move":[float(axis[0]),float(axis[1])],
+			"accepted_commands":physical_actor_session.accepted_commands,
+			"actor_epoch":physical_actor_session.epoch})
+
+
+func engine_lab_tape_receipt() -> Dictionary:
+	return {"active":engine_lab_replay_active,
+		"error":engine_lab_replay_error,
+		"source_epoch":engine_lab_replay_source_epoch,
+		"source_generation":engine_lab_replay_source_generation,
+		"tick_zero":engine_lab_replay_tick_zero,
+		"segments":engine_lab_replay_tape.duplicate(true),
+		"events":engine_lab_replay_events.duplicate(true)}
+
+
+func engine_lab_end_tape() -> void:
+	engine_lab_replay_active=false
+
+
+func engine_lab_set_scripted_input(enabled: bool) -> bool:
+	if not enabled:
+		engine_lab_scripted_input = false
+		if physical_actor_session != null and shared_workbench != null:
+			var slot: int = physical_actor_session.slot_for_instance(shared_workbench.pilot_id())
+			if slot >= 0:
+				physical_actor_session.cancel_input(slot,physical_actor_session.epoch,&"human")
+		return true
+	if shared_workbench == null or paused or physical_actor_session == null \
+			or shared_workbench.pilot_slot < 0:
+		return false
+	engine_lab_scripted_input = true
+	_engine_lab_scripted_start_tick = physical_actor_session.tick
+	return true
+
+
+# Retained original guarded policy for explicit baseline diagnostics. The
+# coherent resolver above retains its visual timeline and may request bounded
+# contact refinement; this original policy retains the coarse oracle pass.
+func _safe_workbench_presentation_poses(frame: Dictionary, blend_active: bool) -> Dictionary:
+	var poses: Dictionary = {}
+	# The resolved frame needs an accurate source reason even when the trace
+	# recorder is off, particularly after an interactive A/B policy switch.
+	_workbench_pose_trace_reasons = {}
+	workbench_presentation_last = {"status":"inactive","safe_live":0,
+		"blocked_material":0,"blocked_unknown":0,"blocked_other":0,
+		"budget_vetoes":0,"cells_examined":0,"elapsed_usec":0}
+	if shared_workbench == null or paused or physical_actor_session == null or image == null:
+		return poses
+	if OS.get_environment("CYBERSAND_DIAG_FLYER_POSE") == "mask":
+		workbench_presentation_last.status = "mask_baseline"
+		return poses
+	if not _valid_workbench_mask_frame(frame):
+		workbench_presentation_last.status = "invalid_frame"
+		return poses
+	var bridge: Variant = physical_actor_session.bridge
+	# Original keeps its source-selection policy, but must certify against the
+	# same frozen blend that this presentation frame will submit to the shader.
+	# Re-reading time here could drop old material at a crossfade boundary.
+	var started_usec: int = Time.get_ticks_usec()
+	var deadline_usec: int = started_usec + PRESENTATION_FRAME_TIME_BUDGET_USEC
+	var summary: Dictionary = {"safe_live":0,"blocked_material":0,
+		"blocked_unknown":0,"blocked_other":0,"budget_vetoes":0,
+		"cells_examined":0,"elapsed_usec":0}
+	var instances: Dictionary = frame.get("instances",{})
+	for slot: int in range(bridge._members.size()):
+		var member: Dictionary = bridge._members[slot]
+		var entry: Dictionary = instances.get(int(member.instance_id),{})
+		if entry.get("generation",-1) != member.generation or not entry.get("pose") is Transform2D:
+			_workbench_pose_trace_reasons[slot] = "actor_receipt_invalid"
+			summary.blocked_other += 1
+			continue
+		var bound_pose: Transform2D = entry.pose
+		var live_pose: Transform2D = bridge.body_transform(slot)
+		if bound_pose.is_equal_approx(live_pose):
+			_workbench_pose_trace_reasons[slot] = "same_pose"
+			continue
+		var remaining: int = PRESENTATION_FRAME_SCAN_BUDGET-int(summary.cells_examined)
+		if remaining <= 0 or Time.get_ticks_usec() >= deadline_usec:
+			_workbench_pose_trace_reasons[slot] = "shared_budget"
+			summary.budget_vetoes += 1
+			summary.blocked_other += 1
+			continue
+		var decision: Dictionary = WorkbenchPresentationCoherence.assess(
+			bound_pose,live_pose,bridge._rects[slot],image,
+			_presentation_previous_occupied,_presentation_previous_unknown,blend_active,
+			mini(remaining,WorkbenchPresentationCoherence.MAX_SCAN_CELLS),deadline_usec,
+			_presentation_previous_image)
+		_workbench_pose_trace_reasons[slot] = str(decision.reason)
+		summary.cells_examined += int(decision.scanned)
+		if decision.safe:
+			poses[slot] = live_pose
+			summary.safe_live += 1
+		elif decision.reason == "material_in_swept_mask":
+			summary.blocked_material += 1
+		elif decision.reason == "previous_texture_unbounded":
+			summary.blocked_unknown += 1
+		else:
+			if decision.reason in ["scan_budget","time_budget"]:
+				summary.budget_vetoes += 1
+			summary.blocked_other += 1
+	summary.elapsed_usec = Time.get_ticks_usec()-started_usec
+	workbench_presentation_totals.frames += 1
+	for key: String in summary:
+		workbench_presentation_totals[key] = int(workbench_presentation_totals.get(key,0)) + int(summary[key])
+	summary["status"] = "guarded"
+	workbench_presentation_last = summary
+	return poses
 
 
 func workbench_display_frame() -> Dictionary:
@@ -3389,10 +5649,201 @@ func workbench_display_frame() -> Dictionary:
 	return _uploaded_workbench_frame
 
 
+func _material_deadline_identity(snapshot: CyberSimulationSnapshot) -> Array:
+	if shared_workbench == null or snapshot == null or snapshot.simulation_failed \
+			or not pending_microscenario_apply.is_empty() or _pending_physical_candidate != null \
+			or _actor_reset_receipt != 0:
+		return []
+	var generation: int = snapshot.physics_world_generation
+	if generation < 0 or snapshot.render_world_generation != generation:
+		return []
+	if physical_actor_session != null:
+		var bridge: Variant = physical_actor_session.bridge
+		if not bridge is WorkbenchBridge or snapshot.rigid_body_epoch != bridge._epoch:
+			return []
+		var frame: Dictionary = snapshot.render_context.get("workbench_display", {})
+		if frame.get("session", -1) != bridge._session or frame.get("epoch", -1) != bridge._epoch \
+				or frame.get("world_generation", -1) != generation:
+			return []
+		return [bridge._session, bridge._epoch, generation]
+	return [0, _body_owner_epoch(), generation] if snapshot.rigid_body_epoch == _body_owner_epoch() else []
+
+
+func _offer_material_snapshot(snapshot: CyberSimulationSnapshot, now_usec: int = -1) -> void:
+	if _material_steps.enabled() and not _material_step_publisher_supported():
+		_retire_material_step_policy("publisher_changed")
+	if _material_steps.enabled() and shared_workbench != null:
+		_offer_material_step_snapshot(snapshot, now_usec)
+		return
+	if not _material_deadline.enabled() or shared_workbench == null:
+		consume_render_snapshot(snapshot)
+		return
+	if snapshot.simulation_failed or simulation_worker.has_failed():
+		_material_deadline.cancel("native_failure")
+		return
+	var identity: Array = _material_deadline_identity(snapshot)
+	if identity.is_empty():
+		# Transition transactions retain their original immediate material path.
+		# An old deferred offer never survives a physical owner replacement.
+		_material_deadline.cancel("owner_transition")
+		consume_render_snapshot(snapshot)
+		return
+	var offered: bool = _material_deadline.offer(snapshot, identity,
+		Time.get_ticks_usec() if now_usec < 0 else now_usec,
+		last_uploaded_world_generation, last_uploaded_render_snapshot_serial)
+	if not offered:
+		var reason: String = _material_deadline.status().last_offer_result
+		if reason in ["new_world_requires_full", "world_mismatch", "invalid_offer"]:
+			last_render_patch_validation_error = "material deadline refused: " + reason
+			reject_render_snapshot(snapshot)
+
+
+func _drain_material_deadline(now_usec: int = -1) -> void:
+	if not _material_deadline.enabled():
+		return
+	var identity: Array = _material_deadline_identity(latest_snapshot)
+	if identity.is_empty() or simulation_worker.has_failed():
+		_material_deadline.cancel("owner_transition_or_failure")
+		return
+	var selected: CyberSimulationSnapshot = _material_deadline.take_due(identity,
+		Time.get_ticks_usec() if now_usec < 0 else now_usec)
+	if selected == null:
+		return
+	var before_serial: int = last_uploaded_render_snapshot_serial
+	consume_render_snapshot(selected)
+	var accepted: bool = selected.render_snapshot_serial > before_serial \
+		and last_uploaded_render_snapshot_serial == selected.render_snapshot_serial \
+		and last_uploaded_world_generation == selected.render_world_generation
+	_material_deadline.complete(selected, accepted,
+		Time.get_ticks_usec() if now_usec < 0 else now_usec)
+
+
+func material_deadline_status() -> Dictionary:
+	return _material_deadline.status()
+
+
+func _configure_material_steps() -> void:
+	var reason: String = ""
+	if _material_deadline.enabled():
+		reason = "material_deadline_selected"
+	elif OS.get_environment("CYBERSAND_MATERIAL_PUBLICATION") != "full":
+		reason = "full_publication_required"
+	elif OS.get_environment("CYBERSAND_DIAG_FULL_IMAGE_SLOTS") not in ["", "2"]:
+		reason = "two_slot_publication_required"
+	_material_steps.configure(_material_step_interval, reason)
+
+
+func _material_step_publisher_supported() -> bool:
+	return _material_publication_mode in ["", "full"] \
+		and _material_blit_publisher == null and _material_full_ring == null \
+		and OS.get_environment("CYBERSAND_MATERIAL_PUBLICATION") == "full" \
+		and OS.get_environment("CYBERSAND_DIAG_FULL_IMAGE_SLOTS") in ["", "2"]
+
+
+func _retire_material_step_policy(reason: String) -> void:
+	var pending: bool = _material_steps.status().pending_count > 0
+	_material_steps.configure(_material_step_interval, reason)
+	if pending:
+		# No abandoned offer is acknowledged. A paused owner must still emit a
+		# fresh cumulative/full packet for the restored immediate path.
+		simulation_worker.request_render_full_refresh()
+
+
+func material_edit_admitted() -> void:
+	if shared_workbench != null:
+		_material_steps.mark_edit_admitted()
+
+
+func _material_step_identity(snapshot: CyberSimulationSnapshot) -> Array:
+	var identity: Array = _material_deadline_identity(snapshot)
+	if identity.is_empty():
+		return []
+	# Session/epoch values alone do not identify a recreated owner object.
+	identity.append(physical_actor_session.bridge.get_instance_id() if physical_actor_session != null else 0)
+	return identity
+
+
+func _material_step_completed_witness(identity: Array) -> Dictionary:
+	if identity.size() != 4 or physical_actor_session == null or not physical_actor_session.active():
+		return {}
+	var bridge: Variant = physical_actor_session.bridge
+	if not bridge is WorkbenchBridge or bridge != rapier_bridge or not bridge.is_initialized() \
+			or identity != [bridge._session, bridge._epoch, last_uploaded_world_generation, bridge.get_instance_id()] \
+			or physical_actor_session.tick != _workbench_completed_step \
+			or _workbench_completed_step <= 0 or _workbench_completed_step_usec <= 0 \
+			or bridge.manual_step_count() <= 0:
+		return {}
+	# _workbench_completed_step is written only after the sole Main owner's
+	# real Rapier step and complete_step transaction. This is a read-only gate.
+	return {"session_step":_workbench_completed_step,
+		"rapier_step":bridge.manual_step_count(), "completed_usec":_workbench_completed_step_usec}
+
+
+func _offer_material_step_snapshot(snapshot: CyberSimulationSnapshot, now_usec: int = -1) -> void:
+	if snapshot.simulation_failed or simulation_worker.has_failed():
+		_material_steps.cancel("native_failure")
+		return
+	var identity: Array = _material_step_identity(snapshot)
+	if identity.is_empty():
+		_material_steps.cancel("owner_transition")
+		consume_render_snapshot(snapshot)
+		return
+	var offered: bool = _material_steps.offer(snapshot, identity,
+		Time.get_ticks_usec() if now_usec < 0 else now_usec,
+		last_uploaded_world_generation, last_uploaded_render_snapshot_serial)
+	if not offered:
+		var reason: String = _material_steps.status().last_offer_result
+		if reason in ["new_world_requires_full", "world_mismatch", "invalid_offer"]:
+			last_render_patch_validation_error = "material step policy refused: " + reason
+			reject_render_snapshot(snapshot)
+
+
+func _drain_material_steps(now_usec: int = -1) -> void:
+	if not _material_steps.enabled():
+		return
+	if not _material_step_publisher_supported():
+		_retire_material_step_policy("publisher_changed")
+		return
+	var identity: Array = _material_step_identity(latest_snapshot)
+	if identity.is_empty() or simulation_worker.has_failed():
+		_material_steps.cancel("owner_transition_or_failure")
+		return
+	# The protected state includes queued AND inflight legacy edits. Precise
+	# Paint and Art authoring busy states also bypass this presentation hold.
+	var paint: Dictionary = simulation_worker.paint_state()
+	var now: int = Time.get_ticks_usec() if now_usec < 0 else now_usec
+	_material_steps.observe_paint_busy(bool(paint.get("legacy_busy", false)) \
+		or bool(paint.get("busy", false)) or bool(paint.get("art_busy", false)), now)
+	var witness: Dictionary = _material_step_completed_witness(identity)
+	var selected: CyberSimulationSnapshot = _material_steps.take_due(identity, witness, now,
+		"paused" if paused else "")
+	if selected == null:
+		return
+	var before_serial: int = last_uploaded_render_snapshot_serial
+	consume_render_snapshot(selected)
+	var accepted: bool = selected.render_snapshot_serial > before_serial \
+		and last_uploaded_render_snapshot_serial == selected.render_snapshot_serial \
+		and last_uploaded_world_generation == selected.render_world_generation
+	var counted: bool = _material_steps.complete(selected, accepted, _material_step_completed_witness(identity),
+		Time.get_ticks_usec() if now_usec < 0 else now_usec)
+	if accepted and not counted:
+		# An accepted resize can recreate textures, deliberately cancelling the
+		# selected policy transaction. Its real upload remains visible in the
+		# normal serial/ACK trace and this explicit supplementary counter.
+		_material_step_uploads_after_cancellation += 1
+
+
+func material_step_status() -> Dictionary:
+	var result: Dictionary = _material_steps.status()
+	result.accepted_uploads_after_policy_cancellation = _material_step_uploads_after_cancellation
+	return result
+
+
 func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	# Shared production upload/ACK path, exercised by rendered qualification.
 	if snapshot.render_snapshot_serial > last_uploaded_render_snapshot_serial:
 		record_render_payload(snapshot)
+		var upload_started_usec: int = Time.get_ticks_usec()
 		var render_uploaded: bool = upload_texture_patches(
 			snapshot.render_patch_rectangles,
 			snapshot.render_patch_cells,
@@ -3400,16 +5851,34 @@ func consume_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 			snapshot.render_channels
 		)
 		if render_uploaded:
+			var uploaded_usec: int = Time.get_ticks_usec()
+			var native_completed_usec: int = int(snapshot.render_context.get("native_completed_usec",-1))
+			if not material_presentation_timeline.accept_upload(snapshot.render_world_generation,
+					snapshot.world_revision,snapshot.render_snapshot_serial,snapshot.render_tick_index,
+					snapshot.render_generated_usec,native_completed_usec,uploaded_usec):
+				# A malformed clock never authorizes stale texture contribution.
+				# Upload/ACK validity remains controlled by the existing packet path.
+				material_presentation_timeline.reset()
+			_cadence_upload = {"event":"texture_upload","render_serial":snapshot.render_snapshot_serial,
+				"start_usec":upload_started_usec,"completed_usec":uploaded_usec,
+				"native_completed_usec":native_completed_usec,
+				"generated_usec":snapshot.render_generated_usec,"native_tick":snapshot.render_tick_index,
+				"revision":snapshot.world_revision,"world_generation":snapshot.render_world_generation,
+				"full_refresh":snapshot.render_full_refresh,"patch_bytes":snapshot.render_patch_cells.size(),
+				"material_publication":material_publication_status()}
+			if _owner_gameplay != null: _owner_gameplay.upload(_cadence_upload)
+			if workbench_pose_trace.active:
+				workbench_pose_trace.observe_event(_cadence_upload.duplicate())
 			# Only an accepted World replacement invalidates presentation history.
 			# Full refreshes also occur during resync and every fallback frame.
 			if snapshot.render_world_generation != last_uploaded_world_generation:
+				_presentation_previous_occupied.clear()
+				_presentation_previous_unknown = true
 				reset_vapour_trail()
 			last_uploaded_world_generation = snapshot.render_world_generation
 			last_uploaded_render_snapshot_serial = snapshot.render_snapshot_serial
 			if shared_workbench != null: _uploaded_workbench_frame = snapshot.render_context.get("workbench_display",{})
-			simulation_worker.acknowledge_render_snapshot(
-				snapshot.render_snapshot_serial
-			)
+			_engine_lab_ack_uploaded_snapshot(snapshot.render_snapshot_serial)
 		else:
 			reject_render_snapshot(snapshot)
 
@@ -3440,15 +5909,21 @@ func _workbench_terrain_installed(snapshot: CyberSimulationSnapshot) -> bool:
 	# A worker publication without the latest geometry cannot release Rapier.
 	if rapier_bridge.pending_hard_surface_chunks() == 0 and snapshot.hard_surface_revision == required and last_hard_surface_revision != required:
 		sync_hard_surface_colliders(snapshot)
-	if rapier_bridge.pending_hard_surface_chunks() > 0 and _workbench_collider_frame != Engine.get_process_frames():
-		_workbench_collider_frame = Engine.get_process_frames()
-		rapier_bridge.process_hard_surface_collider_budget(WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME,WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC)
+	# Pending terrain may progress at every actual physics callback. A slow
+	# render frame must not make otherwise available callbacks idle behind this
+	# independent native-feedback fence. Each call keeps the existing allowance.
+	if rapier_bridge.pending_hard_surface_chunks() > 0:
+		if _pubpres_trace_enabled:
+			_pubpres_terrain_budget(WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME, WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC, "physics_callback", snapshot)
+		else:
+			rapier_bridge.process_hard_surface_collider_budget(WORKBENCH_HARD_SURFACE_CHUNKS_PER_FRAME,WORKBENCH_HARD_SURFACE_FRAME_BUDGET_USEC)
 	if last_hard_surface_revision != required or rapier_bridge.pending_hard_surface_chunks() != 0: return false
 	_physical_terrain_ready = true
 	return true
 
 
 func sync_hard_surface_colliders(snapshot: CyberSimulationSnapshot = null) -> void:
+	var started_usec: int = Time.get_ticks_usec() if _pubpres_trace_enabled else 0
 	if snapshot == null: snapshot = latest_snapshot
 	if (
 		snapshot == null
@@ -3456,6 +5931,17 @@ func sync_hard_surface_colliders(snapshot: CyberSimulationSnapshot = null) -> vo
 		or snapshot.hard_surface_revision == last_hard_surface_revision
 	):
 		return
+	if shared_workbench != null and physical_actor_session != null:
+		if snapshot.rigid_body_epoch != _body_owner_epoch(): return
+		# A later physical completion may already have installed newer terrain
+		# while the full graphical snapshot was being assembled. Direct callers
+		# and the render callback must never roll that geometry backwards.
+		var newest: CyberSimulationSnapshot = _pubpres_take_physics_snapshot("terrain_queue_guard") if _pubpres_trace_enabled \
+			else simulation_worker.take_latest_physics_snapshot()
+		if newest == null: return
+		if newest.rigid_body_epoch == snapshot.rigid_body_epoch \
+			and newest.serial > snapshot.serial and newest.hard_surface_revision != snapshot.hard_surface_revision:
+			return
 	if physical_actor_session != null and not _physical_terrain_ready \
 		and (snapshot.rigid_body_epoch != _physical_epoch or _actor_reset_receipt != 0
 			or not pending_microscenario_apply.is_empty()):
@@ -3480,6 +5966,9 @@ func sync_hard_surface_colliders(snapshot: CyberSimulationSnapshot = null) -> vo
 		)
 	last_hard_surface_revision = snapshot.hard_surface_revision
 	hard_surface_rebuild_cooldown = HARD_SURFACE_REBUILD_INTERVAL
+	if _pubpres_trace_enabled:
+		_pubpres_packet_observed("terrain_install", started_usec, snapshot,
+			{"operation":"queue", "pending_after":rapier_bridge.pending_hard_surface_chunks()})
 
 
 func _update_physical_terrain_ready() -> void:
@@ -3699,6 +6188,12 @@ func _adopt_prepared_physical_candidate() -> void:
 	_actor_usable_power = float(loadout.get("power",0.8))
 	_actor_usable_transition_pending = false;_actor_usable_pointer_rearm = true
 	simulation_worker.set_physical_actor_epoch(_physical_epoch)
+	if _workbench_water_composition_enabled() and rapier_bridge is WorkbenchBridge:
+		# Native preparation already admitted this exact frozen owner sample.
+		# Preserve its presentation provenance BEFORE adoption retires the
+		# provisional force ring. This records no new native publication, wait
+		# target or completed physical step; the birth closure remains step zero.
+		_record_workbench_presentation_sample(accepted.initial_workbench_sample())
 	accepted.adopt()
 	_prepared_physical_identity = {};_prepared_physical_ready_sent = false
 
@@ -3747,6 +6242,26 @@ func _activate_articulated_actor_rigs(spawn: Vector2) -> bool:
 
 
 func _close_physical_actors() -> void:
+	_workbench_submission_notification_pending = false
+	if _workbench_submission != null: _workbench_submission.retire("physical_owner_closed")
+	_material_deadline.cancel("physical_owner_closed")
+	_material_steps.cancel("physical_owner_closed")
+	_workbench_presentation_state.clear()
+	_workbench_presentation_identity.clear()
+	_workbench_sample_steps.clear()
+	_workbench_sample_identity.clear()
+	_workbench_presentation_history.clear()
+	_workbench_observation_identity.clear()
+	_workbench_completed_step = -1
+	_workbench_completed_step_usec = 0
+	_workbench_water_dependencies.clear()
+	_workbench_water_completion_context = {}
+	_workbench_water_closure_cache.clear()
+	_workbench_water_coverage_cache.clear()
+	_workbench_contact_coverage_cache.clear()
+	_workbench_follow_state.clear()
+	workbench_presentation_frame = {}
+	_workbench_mapping_locked = false
 	_physical_terrain_ready = false
 	_playable_course_observation_valid = false
 	if playable_course_overlay != null:
@@ -3768,13 +6283,46 @@ func _close_physical_actors() -> void:
 		physical_actor_overlay.present([], Vector2.ZERO, current_view_size, view_content_rect())
 
 
+func _record_workbench_presentation_sample(sample: Dictionary) -> void:
+	if physical_actor_session == null or not physical_actor_session.bridge is WorkbenchBridge \
+			or sample.is_empty() or not sample.get("states") is PackedFloat64Array or sample.states.size() <= 10:
+		return
+	var bridge: Variant = physical_actor_session.bridge
+	if sample.get("session") != bridge._session or sample.get("epoch") != bridge._epoch: return
+	var serial: int = int(sample.states[10])
+	var sample_identity: Array = [sample.session,sample.epoch]
+	if sample_identity != _workbench_sample_identity:
+		_workbench_sample_steps.clear()
+		_workbench_presentation_history.clear()
+		_workbench_sample_identity = sample_identity
+	_workbench_sample_steps[serial % PRESENTATION_SAMPLE_HISTORY] = {
+		"serial":serial,"step":physical_actor_session.tick,
+		"completed_usec":_workbench_completed_step_usec if _workbench_completed_step == physical_actor_session.tick else 0,
+		"sampled_usec":Time.get_ticks_usec()}
+	if _workbench_water_composition_enabled() and not bridge._history.is_empty():
+		# This independent bounded copy never extends impulse eligibility in the
+		# short native force ring. Both actual material images are still scanned.
+		var source: Dictionary = bridge._history[serial % bridge._history.size()]
+		if source.get("serial",-1) == serial and source.get("bodies",[]).size() == bridge._members.size():
+			var poses: Array = []
+			for body: Dictionary in source.bodies: poses.append(body.pose)
+			poses.make_read_only()
+			_workbench_sample_steps[serial % PRESENTATION_SAMPLE_HISTORY]["water_poses"] = poses
+	for slot: int in range(bridge._members.size()):
+		_observe_workbench_presentation(slot,serial)
+
+
 func _publish_physical_body_state() -> void:
 	if shared_workbench != null and microscenario_definition.get("id","") == CyberMicroScenarioContract.WORKBENCH_ID:
 		if physical_actor_session != null:
 			var sample: Dictionary = physical_actor_session.pack_workbench_sample()
 			if not sample.is_empty() and not sample.states.is_empty():
+				if _flight_pacing and not paused and Time.get_ticks_usec() - _last_flight_sample_hold_usec <= 100000:
+					sample["held_physics_callback"] = true
 				var admission: Dictionary = simulation_worker.set_workbench_sample(sample)
-				if admission.get("accepted",false): _workbench_wait_sample = int(sample.states[10])
+				if admission.get("accepted",false):
+					_workbench_wait_sample = int(sample.states[10])
+					_record_workbench_presentation_sample(sample)
 				if str(admission.get("status","")) == "refused":
 					physical_actor_session.reject_equipment_requests(sample.get("equipment_requests",[]),str(admission.get("reason","admission")))
 				if not admission.get("accepted",false):
@@ -3899,7 +6447,7 @@ func _present_playable_course_targets() -> void:
 		"source_tick":_playable_course_progress.last_source_tick,
 		"physics_tick":_playable_course_progress.last_physics_tick,
 		"target_index":_playable_course_progress.target_index},
-		camera_origin.floor(), current_view_size, view_content_rect())
+		presentation_camera_origin(), current_view_size, view_content_rect())
 
 
 # Only the authored PLAY course uses this copied controller adapter. All
@@ -4336,7 +6884,8 @@ func actor_pointer_aim_at(pointer: Vector2) -> Vector2:
 	var content: Rect2 = view_content_rect()
 	if not pointer.is_finite() or content.size.x <= 0.0 or content.size.y <= 0.0 or not content.has_point(pointer):
 		return Vector2.ZERO
-	var world_point: Vector2 = camera_origin.floor() + (pointer - content.position) / content.size * Vector2(current_view_size)
+	var world_point: Vector2 = world_position_from_local_point(pointer)
+	if not world_point.is_finite(): return Vector2.ZERO
 	return (world_point - character_centre()).normalized()
 
 
@@ -4345,6 +6894,23 @@ func _workbench_key(key: Key) -> bool:
 
 func _publish_workbench_keyboard() -> void:
 	if physical_actor_session == null or shared_workbench.pilot_slot < 0: return
+	# Tick-addressed Test It runs through the same ordinary admission path.
+	if engine_lab_replay_active:
+		_engine_lab_replay_workbench_input()
+		return
+	# Repeatable input follows completed Rapier steps, independent of FPS.
+	if engine_lab_scripted_input:
+		if paused: return
+		var elapsed: int = maxi(0,physical_actor_session.tick-_engine_lab_scripted_start_tick)
+		var phase: int = int(elapsed / 60) % 4
+		var movement: Vector2 = [Vector2.RIGHT,Vector2.UP,Vector2.LEFT,Vector2.DOWN][phase]
+		var action: Dictionary = {"move":movement,"aim":movement,
+			"effort":1.0,"trim":0.0,"primary":false,
+			"secondary":false,"auxiliary":false}
+		var ports: Dictionary = {"q":false,"e":false,"s":false,"boost":false}
+		physical_actor_session.submit_workbench_action(
+			shared_workbench.pilot_id(),action,ports,false)
+		return
 	var gesture: bool = shared_workbench.actor_interaction != null \
 		and shared_workbench.actor_interaction.actively_manipulating()
 	if paused or simulation_worker.has_failed() or not pending_microscenario_apply.is_empty() or not _actor_window_has_focus() \
@@ -4370,10 +6936,13 @@ func _publish_workbench_keyboard() -> void:
 		"s":_workbench_key(KEY_S) or _workbench_key(KEY_DOWN),"boost":_workbench_key(KEY_SHIFT)}
 	if is_fleet: action.secondary = _workbench_key(KEY_CTRL)
 	var aim: Vector2 = Vector2(observed.get("aim",Vector2.RIGHT))
-	var pixel := view_pixel_from_local_point(world_view.get_local_mouse_position())
-	if pixel.x >= 0:
-		var body: Dictionary = shared_workbench.body_state(shared_workbench.pilot_id())
-		if not body.is_empty(): aim = (camera_origin.floor()+Vector2(pixel)-Vector2(body.position)).normalized()
+	var pointer := world_view.get_local_mouse_position()
+	var frame := workbench_presentation_frame
+	if world_cell_from_local_point(pointer,true).x >= 0 and shared_workbench._submitted_pick_frame_valid(frame):
+		var root_body: int = physical_actor_session.bridge.actor_body_index(slot)
+		var pose: Variant = frame.poses.get(root_body)
+		if pose is Transform2D:
+			aim = (world_position_from_local_point(pointer,true)-pose.origin).normalized()
 	if aim.length_squared() < 0.0001: aim = Vector2.RIGHT
 	action.aim = aim
 	action.reel = float(_workbench_key(KEY_X))-float(_workbench_key(KEY_Z))
@@ -4448,6 +7017,7 @@ func publish_actor_keyboard_input() -> void:
 
 
 func refresh_actor_prototypes() -> void:
+	if shared_workbench != null and not actor_prototype_button.is_visible_in_tree(): return
 	actor_prototype_button.disabled = not actor_prototypes_allowed()
 	if physical_actor_session != null:
 		var state: Dictionary = physical_actor_session.snapshot()
@@ -4488,7 +7058,11 @@ func refresh_actor_prototypes() -> void:
 
 
 func update_camera(delta: float) -> void:
-	if shared_workbench != null: return
+	if shared_workbench != null:
+		# Resolve follow before the parent publishes terrain, overlays and picking
+		# for this frame. The child process used to move it after publication.
+		shared_workbench.update_camera(workbench_presentation_frame)
+		return
 	if water_controlled_run_active(): return
 	if _blacksite_keyboard_blocked(): return
 	var pan_input: Vector2 = Vector2(
@@ -4535,9 +7109,105 @@ func character_centre() -> Vector2:
 
 func clamped_camera_origin(candidate: Vector2) -> Vector2:
 	return Vector2(
-		clampf(candidate.x, 0.0, float(world_extent.x - current_view_size.x)),
-		clampf(candidate.y, 0.0, float(world_extent.y - current_view_size.y))
+		clampf(candidate.x, 0.0, float(maxi(0, world_extent.x - current_view_size.x))),
+		clampf(candidate.y, 0.0, float(maxi(0, world_extent.y - current_view_size.y)))
 	)
+
+
+func presentation_camera_origin() -> Vector2:
+	if _workbench_mapping_locked: return workbench_presentation_frame.camera_origin
+	if workbench_presentation_submission_enabled() and not _workbench_submission_preparing \
+			and workbench_presentation_frame.has("camera_origin"):
+		return workbench_presentation_frame.camera_origin
+	var content := view_content_rect()
+	if content.size.x <= 0.0 or content.size.y <= 0.0: return clamped_camera_origin(camera_origin)
+	return PixelCamera.screen_to_world(_world_view_screen_transform() * content.position,
+		presentation_camera_screen_transform())
+
+
+func _world_view_screen_transform() -> Transform2D:
+	if not world_view.is_inside_tree(): return Transform2D.IDENTITY
+	# CanvasItem.get_screen_transform() omits the Window's final stretch when
+	# embedded subwindows are enabled. Compose the renderer's viewport/canvas
+	# transform with this item's global transform exactly once so translation
+	# and picking address framebuffer pixels, including canvas_items stretch.
+	return world_view.get_viewport_transform() * world_view.get_global_transform()
+
+
+func presentation_camera_screen_transform() -> Transform2D:
+	if _workbench_mapping_locked: return workbench_presentation_frame.camera_mapping
+	if workbench_presentation_submission_enabled() and not _workbench_submission_preparing \
+			and workbench_presentation_frame.has("camera_mapping"):
+		return workbench_presentation_frame.camera_mapping
+	return PixelCamera.presentation_screen_transform(camera_origin, current_view_size,
+		view_content_rect(), _world_view_screen_transform(),
+		Vector2(maxi(0, world_extent.x-current_view_size.x), maxi(0, world_extent.y-current_view_size.y)))
+
+
+func configure_pixel_camera(material: ShaderMaterial) -> void:
+	var content: Rect2 = workbench_presentation_frame.content_rect if _workbench_mapping_locked else view_content_rect()
+	var screen: Transform2D = workbench_presentation_frame.screen_transform if _workbench_mapping_locked else _world_view_screen_transform()
+	var mapping := presentation_camera_screen_transform()
+	var enabled := content.size.x > 0.0 and content.size.y > 0.0 and PixelCamera.is_axis_aligned(mapping)
+	material.set_shader_parameter("native_pixel_mapping_enabled", enabled)
+	if not enabled: return
+	material.set_shader_parameter("content_screen_origin", screen * content.position)
+	material.set_shader_parameter("content_screen_size", Vector2(screen.x.x, screen.y.y) * content.size)
+	material.set_shader_parameter("world_zero_screen", mapping.origin)
+	material.set_shader_parameter("world_units_per_screen_pixel", PixelCamera.world_units_per_screen_pixel(mapping))
+
+
+func world_position_from_local_point(local: Vector2, use_submitted_mapping: bool = false) -> Vector2:
+	if not local.is_finite(): return Vector2.INF
+	if use_submitted_mapping or workbench_presentation_submission_enabled():
+		if not workbench_presentation_frame.has("camera_mapping"): return Vector2.INF
+		# Input localization already used the CURRENT Control/viewport transform.
+		# Recover its physical screen point with that same transform, then address
+		# the LAST SUBMITTED camera. Reapplying the old transform to new-local
+		# coordinates would mis-pick during an unsubmitted resize/rotation.
+		return PixelCamera.screen_to_world(_world_view_screen_transform() * local,
+			workbench_presentation_frame.camera_mapping)
+	return PixelCamera.screen_to_world(_world_view_screen_transform() * local,
+		presentation_camera_screen_transform())
+
+
+func _world_view_pointer_screen_position(local: Vector2, screen: Transform2D) -> Vector2:
+	var physical := screen * local
+	# Godot localizes native mouse coordinates through float32 viewport and
+	# Control inverses. Reprojection can put an integer pixel boundary a few
+	# ULPs below itself, selecting the previous pixel (or the letterbox).
+	# Restore only this float32 roundoff band; ordinary fractional positions
+	# still address their containing pixel. Continuous zoom anchors do not use
+	# this input-only reconstruction, and the shader's sample math is unchanged.
+	var integer := physical.round()
+	var magnitude := physical.abs().max(screen.origin.abs()).max(Vector2.ONE)
+	var roundoff := magnitude * (2.0 * 1.1920928955078125e-7)
+	if absf(physical.x - integer.x) <= roundoff.x: physical.x = integer.x
+	if absf(physical.y - integer.y) <= roundoff.y: physical.y = integer.y
+	return physical
+
+
+func world_cell_from_local_point(local: Vector2, use_submitted_mapping: bool = false) -> Vector2i:
+	if not local.is_finite(): return Vector2i(-1, -1)
+	if workbench_presentation_submission_enabled() and not workbench_presentation_frame.has("camera_mapping"):
+		return Vector2i(-1,-1)
+	var content: Rect2 = view_content_rect()
+	var input_screen: Transform2D = _world_view_screen_transform()
+	var screen: Transform2D = input_screen
+	var mapping: Transform2D = presentation_camera_screen_transform()
+	if (use_submitted_mapping or workbench_presentation_submission_enabled()) \
+			and workbench_presentation_frame.has("camera_mapping"):
+		# Input can arrive between two submissions, after pan or zoom has
+		# changed requested values. Use the terrain/pose mapping still on screen.
+		content = workbench_presentation_frame.content_rect
+		screen = workbench_presentation_frame.screen_transform
+		mapping = workbench_presentation_frame.camera_mapping
+	# The content bound belongs to the submitted image; event-local coordinates
+	# belong to the current transform. Keep those two mappings distinct.
+	var sample_position := _world_view_pointer_screen_position(local, input_screen).floor() + Vector2(0.5, 0.5)
+	if not PixelCamera.content_contains_screen_sample(sample_position, content, screen): return Vector2i(-1, -1)
+	var cell := Vector2i(PixelCamera.screen_to_world(sample_position, mapping).floor())
+	return cell if Rect2i(Vector2i.ZERO, world_extent).has_point(cell) else Vector2i(-1, -1)
 
 
 func update_worker_frame_state() -> void:
@@ -4596,9 +7266,9 @@ func view_pixel_from_local_point(mouse: Vector2) -> Vector2i:
 	return view_pixel
 
 
-func brush_outline_points(view_pixel: Vector2i) -> PackedVector2Array:
+func brush_outline_points(world_cell: Vector2i) -> PackedVector2Array:
 	var points := PackedVector2Array()
-	if view_pixel.x < 0 or view_pixel.y < 0:
+	if world_cell.x < 0 or world_cell.y < 0:
 		return points
 	var content_rect: Rect2 = view_content_rect()
 	if content_rect.size.x <= 0.0 or content_rect.size.y <= 0.0:
@@ -4606,9 +7276,9 @@ func brush_outline_points(view_pixel: Vector2i) -> PackedVector2Array:
 	var scale: Vector2 = content_rect.size / Vector2(current_view_size)
 	var dimensions: Vector2i = brush_dimensions()
 	var start: Vector2 = Vector2(
-		view_pixel.x - int((dimensions.x - 1) / 2),
-		view_pixel.y - int((dimensions.y - 1) / 2)
-	)
+		world_cell.x - int((dimensions.x - 1) / 2),
+		world_cell.y - int((dimensions.y - 1) / 2)
+	) - presentation_camera_origin()
 	if brush_shape == "circle":
 		var centre: Vector2 = (
 			content_rect.position
@@ -4643,10 +7313,10 @@ func update_brush_preview() -> void:
 	):
 		brush_preview.visible = false
 		return
-	var view_pixel: Vector2i = view_pixel_from_local_point(
+	var world_cell: Vector2i = world_cell_from_local_point(
 		world_view.get_local_mouse_position()
 	)
-	var points: PackedVector2Array = brush_outline_points(view_pixel)
+	var points: PackedVector2Array = brush_outline_points(world_cell)
 	brush_preview.visible = not points.is_empty()
 	if brush_preview.visible:
 		brush_preview.points = points
@@ -4662,8 +7332,11 @@ func queue_brush_mutation(
 	# Retained compatibility entry point for existing disc-oriented fixtures.
 	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
 		return false
-	return simulation_worker.queue_emit_disc(
+	var admitted: bool = simulation_worker.queue_emit_disc(
 		world_x,world_y,radius,material_id,emission_flags)
+	if admitted:
+		material_edit_admitted()
+	return admitted
 
 
 func queue_brush_footprint_mutation(
@@ -4675,17 +7348,23 @@ func queue_brush_footprint_mutation(
 	if water_controlled_run_active() or not _microscenario_tool_allowed(material_id):
 		return false
 	if brush_shape == "circle" and (brush_size_px & 1) == 1:
-		return simulation_worker.queue_emit_disc(
+		var admitted: bool = simulation_worker.queue_emit_disc(
 			world_x,
 			world_y,
 			(brush_size_px - 1) / 2,
 			material_id,
 			emission_flags
 		)
+		if admitted:
+			material_edit_admitted()
+		return admitted
 	var cells: PackedInt32Array = brush_footprint_cells(world_x, world_y)
 	if cells.is_empty():
 		return false
-	return simulation_worker.queue_emit_cells(cells, material_id, emission_flags)
+	var admitted: bool = simulation_worker.queue_emit_cells(cells, material_id, emission_flags)
+	if admitted:
+		material_edit_admitted()
+	return admitted
 
 
 func handle_painting() -> void:
@@ -4705,10 +7384,10 @@ func handle_painting() -> void:
 	if actor_prototype_panel != null and actor_prototype_panel.visible: return
 	if microscenario_panel != null and microscenario_panel.modal_open(): return
 	if tower_profile_panel != null and tower_profile_panel.visible: return
-	var view_pixel: Vector2i = view_pixel_from_local_point(
+	var world_cell: Vector2i = world_cell_from_local_point(
 		world_view.get_local_mouse_position()
 	)
-	if view_pixel.x < 0:
+	if world_cell.x < 0:
 		return
 
 	var emitted_material_id: int = brush_material_for_buttons(
@@ -4722,11 +7401,9 @@ func handle_painting() -> void:
 	if emitted_material_id != CyberCellWorld.EMPTY and coherent_liquid_emission:
 		emission_flags = CyberCellWorld.EMISSION_FLAG_COHERENT_LIQUID
 
-	var world_x: int = floori(camera_origin.x) + view_pixel.x
-	var world_y: int = floori(camera_origin.y) + view_pixel.y
 	queue_brush_footprint_mutation(
-		world_x,
-		world_y,
+		world_cell.x,
+		world_cell.y,
 		emitted_material_id,
 		emission_flags
 	)
@@ -4753,15 +7430,79 @@ func view_content_rect() -> Rect2:
 	return Rect2((available_size - shown_size) * 0.5, shown_size)
 
 
+# The palette projects growth, sparks and fumes into neighbouring Empty
+# cells. These four IDs can never seed those effects. Classify the actual
+# first channel of published bytes, independently of authored scene labels,
+# native statistics, condition, and simulation revisions.
+func _ambient_id_plane(plane: Image) -> Image:
+	var ids := plane
+	if plane.get_format() == Image.FORMAT_RG8:
+		ids = plane.duplicate()
+		ids.convert(Image.FORMAT_R8)
+	return ids
+
+
+func _no_ambient_source(ids: Image) -> bool:
+	var bytes := ids.get_data()
+	return bytes.count(0) + bytes.count(2) + bytes.count(3) + bytes.count(58) == bytes.size()
+
+
+func _reset_ambient_bounds(plane: Image) -> void:
+	_ambient_source_bounds = Rect2i()
+	_ambient_sources_absent = false
+	_ambient_bounds_valid = _check_ambient_sources and shared_workbench != null and not _workbench_submission_requested \
+		and plane != null and not plane.is_empty() and not plane.has_mipmaps() \
+		and plane.get_format() in [Image.FORMAT_R8, Image.FORMAT_RG8]
+	if not _ambient_bounds_valid: return
+	var ids := _ambient_id_plane(plane)
+	_ambient_sources_absent = _no_ambient_source(ids)
+	if _ambient_sources_absent: return
+	# Whole-image edits can introduce sources anywhere. Classify at most 16
+	# disjoint rectangles. Normal patch publications expand this bound directly.
+	var extent := ids.get_size()
+	var block := Vector2i(ceili(extent.x / 4.0), ceili(extent.y / 4.0))
+	for y in range(0, extent.y, block.y):
+		for x in range(0, extent.x, block.x):
+			var start := Vector2i(x, y)
+			var area := Rect2i(start, block.min(extent - start))
+			if not _no_ambient_source(ids.get_region(area)):
+				_ambient_source_bounds = _ambient_source_bounds.merge(area) if _ambient_source_bounds.has_area() else area
+
+
+func _patch_ambient_bounds(plane: Image, area: Rect2i) -> void:
+	if not _ambient_bounds_valid: return
+	# The old bound already contains every possible source in this patch.
+	if _ambient_source_bounds.has_area() and _ambient_source_bounds.encloses(area): return
+	if _no_ambient_source(_ambient_id_plane(plane)): return
+	_ambient_source_bounds = _ambient_source_bounds.merge(area) if _ambient_source_bounds.has_area() else area
+	_ambient_sources_absent = false
+
+
 func create_render_textures() -> void:
-	texture = ImageTexture.create_from_image(image)
-	previous_texture = ImageTexture.create_from_image(image)
+	_reset_ambient_bounds(image)
+	_material_deadline.cancel("textures_recreated")
+	_material_steps.cancel("textures_recreated")
+	material_presentation_timeline.reset()
+	_create_material_texture_pair(image, image)
+	_material_pending_rectangles.clear()
+	_presentation_previous_image = null
+	_presentation_previous_unknown = true
+	_presentation_current_bytes = image.get_data()
+	_presentation_previous_bytes = _presentation_current_bytes
+	_presentation_content_serial += 1
+	_presentation_current_content_id = _presentation_content_serial
+	_presentation_previous_content_id = _presentation_current_content_id
+	_presentation_current_content_shape = Vector3i(image.get_width(),image.get_height(),image.get_format())
+	_presentation_previous_content_shape = _presentation_current_content_shape
 
 
 func upload_texture(material_cells: PackedByteArray, world_revision: int) -> void:
 	if image == null or texture == null or previous_texture == null:
 		return
 	var start_usec: int = Time.get_ticks_usec()
+	_presentation_previous_occupied.clear()
+	_presentation_previous_image = image.duplicate() if _presentation_current_bytes.is_empty() or (shared_workbench != null and not _legacy_render_cadence()) else null
+	_presentation_previous_unknown = _presentation_previous_image == null
 	image.set_data(
 		world_extent.x,
 		world_extent.y,
@@ -4769,6 +7510,9 @@ func upload_texture(material_cells: PackedByteArray, world_revision: int) -> voi
 		render_image_format,
 		material_cells
 	)
+	_reset_ambient_bounds(image)
+	_material_pending_rectangles = _full_material_rectangle()
+	_material_image_patch_usec = Time.get_ticks_usec() - start_usec
 	finish_texture_upload(world_revision, start_usec)
 
 
@@ -4788,8 +7532,47 @@ func upload_texture_patches(
 		patch_channels
 	):
 		return false
+	_material_pending_rectangles = patch_rectangles.duplicate()
+	_material_image_patch_usec = Time.get_ticks_usec() - start_usec
 	finish_texture_upload(world_revision, start_usec)
 	return true
+
+
+# Called against the old CPU image before its patches are applied. Outside
+# these rectangles the old and new GPU textures contain the same material.
+# Retain the exact image for Workbench. Legacy callers without an image keep
+# the bounded map of old nonempty pixels.
+func _capture_previous_presentation_occupancy(rectangles: PackedInt32Array) -> void:
+	_presentation_previous_occupied.clear()
+	_presentation_previous_unknown = false
+	_presentation_previous_image = null
+	if image == null or texture == null or previous_texture == null:
+		_presentation_previous_unknown = true
+		return
+	if _presentation_current_bytes.is_empty() or (shared_workbench != null and not _legacy_render_cadence()):
+		# Bind precisely the image that becomes previous_world_texture when the
+		# GPU slots swap. Preserve it through CPU patch mutation. Full refreshes
+		# and delayed ACK accumulation no longer imply unknown local occupancy.
+		_presentation_previous_image = image.duplicate()
+		# Both production clearance policies use the exact previous Image (or
+		# its immutable byte cache) whenever it exists. Building the legacy map
+		# as well only repeats up to 16,384 GDScript pixel reads/dictionary writes.
+		# If retention failed, continue through the conservative legacy fallback.
+		if _presentation_previous_image != null: return
+	var changed: int = 0
+	for offset: int in range(0,rectangles.size(),RENDER_PATCH_METADATA_STRIDE):
+		var cells: int = int(rectangles[offset+2])*int(rectangles[offset+3])
+		if cells > PRESENTATION_PREVIOUS_PATCH_LIMIT-changed:
+			_presentation_previous_unknown = _presentation_previous_image == null
+			return
+		changed += cells
+	for offset: int in range(0,rectangles.size(),RENDER_PATCH_METADATA_STRIDE):
+		var left: int = rectangles[offset]
+		var top: int = rectangles[offset+1]
+		for y: int in range(top,top+rectangles[offset+3]):
+			for x: int in range(left,left+rectangles[offset+2]):
+				if image.get_pixel(x,y).r8 != 0:
+					_presentation_previous_occupied[y*world_extent.x+x] = true
 
 
 func apply_render_patches_to_image(
@@ -4804,6 +7587,22 @@ func apply_render_patches_to_image(
 	)
 	if not last_render_patch_validation_error.is_empty():
 		return false
+	_capture_previous_presentation_occupancy(patch_rectangles)
+	# A single exact whole-image payload already has the layout set_data needs.
+	# The old CPU image was retained above, before replacing these bytes. Avoid
+	# slicing another full array, constructing a patch Image and blitting it
+	# back into an equally sized image. Partial, padded, trailing-data and
+	# multiple-patch publications retain the existing compaction path below.
+	if patch_rectangles.size() == RENDER_PATCH_METADATA_STRIDE \
+			and patch_rectangles[0] == 0 and patch_rectangles[1] == 0 \
+			and patch_rectangles[2] == world_extent.x and patch_rectangles[3] == world_extent.y \
+			and patch_rectangles[4] == 0 and patch_rectangles[5] == world_extent.x * patch_channels \
+			and patch_cells.size() == world_extent.x * world_extent.y * patch_channels \
+			and image.get_width() == world_extent.x and image.get_height() == world_extent.y \
+			and image.get_format() == render_image_format and not image.has_mipmaps():
+		image.set_data(world_extent.x, world_extent.y, false, render_image_format, patch_cells)
+		_reset_ambient_bounds(image)
+		return true
 	for metadata_offset: int in range(
 		0,
 		patch_rectangles.size(),
@@ -4858,6 +7657,7 @@ func apply_render_patches_to_image(
 				]
 			)
 			return false
+		_patch_ambient_bounds(patch_image, Rect2i(patch_x, patch_y, patch_width, patch_height))
 		image.blit_rect(
 			patch_image,
 			Rect2i(0, 0, patch_width, patch_height),
@@ -4941,6 +7741,8 @@ func validate_render_patch_payload(
 
 
 func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
+	_material_deadline.cancel("render_packet_rejected")
+	_material_steps.cancel("render_packet_rejected")
 	rejected_render_snapshot_count += 1
 	if snapshot.render_snapshot_serial != last_rejected_render_snapshot_serial:
 		push_error(
@@ -4955,31 +7757,293 @@ func reject_render_snapshot(snapshot: CyberSimulationSnapshot) -> void:
 	simulation_worker.request_render_full_refresh()
 
 
+# Validate a small area surrounding the piloted body before World-sized byte
+# comparisons consume this upload's guard allowance. It certifies Empty pixels
+# only; pose, generation, native mask and submission checks stay in the resolver.
+func _prepare_workbench_dry_region(started_usec: int) -> Dictionary:
+	_workbench_dry_region_status = "inactive"
+	if paused or shared_workbench == null or not shared_workbench.has_method("pilot_id") or not _workbench_water_composition_enabled() \
+			or physical_actor_session == null or not physical_actor_session.bridge is WorkbenchBridge \
+			or _presentation_previous_unknown or _presentation_previous_image == null \
+			or _pending_physical_candidate != null or not pending_microscenario_apply.is_empty():
+		return {}
+	var actor: int = physical_actor_session.slot_for_instance(shared_workbench.pilot_id())
+	var bridge: WorkbenchBridge = physical_actor_session.bridge
+	var slot: int = bridge.actor_body_index(actor)
+	if slot < 0 or bridge != rapier_bridge or not bridge.is_initialized(): return {}
+	var previous: Dictionary = _workbench_presentation_state.get(slot,{})
+	if previous.get("water_composed",false):
+		_workbench_dry_region_status = "water_composed"
+		return {}
+	var position: Vector2 = bridge.body_transform(slot).origin
+	if not position.is_finite(): return {}
+	var inherited: Dictionary = {}
+	if not _workbench_dry_region.is_empty() and _workbench_dry_region.world == last_uploaded_world_generation \
+			and _workbench_dry_region.session == bridge._session and _workbench_dry_region.epoch == bridge._epoch \
+			and _workbench_dry_region.current == _presentation_current_content_id \
+			and WorkbenchPresentationCoherence.patches_preserve_region(_workbench_dry_region.area,_material_pending_rectangles):
+		# Only the old current image becomes previous. The complete validated
+		# patch inventory proves that every pixel in this area stays unchanged
+		# in the new current image. This charges no new material-cell reads.
+		inherited = _workbench_dry_region.duplicate()
+		_workbench_dry_region_status = "unchanged_patches"
+		if Rect2i(inherited.area).grow(-12).has_point(Vector2i(position.floor())): return inherited
+	var area := Rect2i(Vector2i(position.floor())-Vector2i(24,24),Vector2i(48,48))
+	var cells := area.get_area()
+	var deadline := started_usec+PRESENTATION_FRAME_TIME_BUDGET_USEC-_presentation_pending_cache_usec
+	if _presentation_pending_clearance_cells+cells > PRESENTATION_FRAME_SCAN_BUDGET \
+			or Time.get_ticks_usec() >= deadline:
+		if inherited.is_empty(): _workbench_dry_region_status = "budget_before_scan"
+		return inherited
+	_presentation_pending_clearance_cells += cells
+	if not WorkbenchPresentationCoherence.region_is_empty(image,area) or Time.get_ticks_usec() >= deadline \
+			or not WorkbenchPresentationCoherence.region_is_empty(_presentation_previous_image,area) \
+			or Time.get_ticks_usec() >= deadline:
+		if inherited.is_empty(): _workbench_dry_region_status = "scan_incomplete_or_occupied"
+		return inherited
+	_workbench_dry_region_status = "scanned"
+	return {"area":area,"world":last_uploaded_world_generation,"session":bridge._session,"epoch":bridge._epoch}
+
+
 func finish_texture_upload(world_revision: int, start_usec: int) -> void:
 	# Ping-pong two GPU textures. The shader blends movable occupancy from the
 	# previous snapshot to the current one, masking the intentional two-cell
 	# sparse-flight leap without changing authoritative physics or collisions.
-	var old_current_texture: ImageTexture = texture
+	var old_current_texture: Texture2D = texture
 	texture = previous_texture
 	previous_texture = old_current_texture
+	var cache_started_usec: int = Time.get_ticks_usec()
+	var previous_dry: Dictionary = _workbench_dry_region
+	_workbench_dry_region = _prepare_workbench_dry_region(cache_started_usec)
+	var next_bytes := PackedByteArray()
+	var next_shape := Vector3i(image.get_width(),image.get_height(),image.get_format())
+	var next_content_id: int = 0
+	# Exact equality is the proof. Revisions can change without material edits,
+	# and slots swap on every upload; neither invalidates an unchanged footprint.
+	# During active owner play, comparing two entire large textures to discover
+	# an optional cache hit can exhaust the guard before the pilot is examined.
+	# A new identity is conservative even for identical bytes. Bounds proven
+	# unchanged by the actual patches still carry their own local certificate.
+	var compare_full_contents := not _flight_pacing or paused or shared_workbench == null \
+		or physical_actor_session == null or next_shape.x * next_shape.y <= PRESENTATION_FRAME_SCAN_BUDGET
+	# Both immutable images already exist for bounded contact crops. On the
+	# large active path the optional byte arrays would retain/release another
+	# world-sized allocation merely to accelerate pixel reads on a fallback.
+	var retain_plane_bytes := compare_full_contents or _presentation_previous_image == null
+	if retain_plane_bytes:
+		next_bytes = image.get_data()
+	if compare_full_contents:
+		if _presentation_current_bytes.is_empty() and _presentation_previous_image != null:
+			# First refresh after pausing: this is the exact pre-edit image.
+			_presentation_current_bytes = _presentation_previous_image.get_data()
+		if next_shape == _presentation_current_content_shape and next_bytes == _presentation_current_bytes:
+			next_content_id = _presentation_current_content_id
+		elif next_shape == _presentation_previous_content_shape and next_bytes == _presentation_previous_bytes:
+			next_content_id = _presentation_previous_content_id
+	if next_content_id <= 0:
+		_presentation_content_serial += 1
+		next_content_id = _presentation_content_serial
+	_presentation_previous_bytes = _presentation_current_bytes
+	_presentation_previous_content_id = _presentation_current_content_id
+	_presentation_previous_content_shape = _presentation_current_content_shape
+	_presentation_current_bytes = next_bytes
+	_presentation_current_content_id = next_content_id
+	_presentation_current_content_shape = next_shape
+	if _workbench_dry_region.is_empty() and _workbench_dry_region_status == "budget_before_scan" \
+			and not previous_dry.is_empty() and previous_dry.current == _presentation_previous_content_id \
+			and (previous_dry.current == next_content_id or previous_dry.previous == next_content_id):
+		# A full refresh can still install the identical two certified images.
+		# Actual immutable bytes and dimensions established these content IDs.
+		_workbench_dry_region = previous_dry.duplicate()
+		_workbench_dry_region_status = "same_contents"
+	if not _workbench_dry_region.is_empty():
+		_workbench_dry_region["current"] = _presentation_current_content_id
+		_workbench_dry_region["previous"] = _presentation_previous_content_id
+	_presentation_upload_cache_usec = Time.get_ticks_usec()-cache_started_usec
+	_presentation_pending_cache_usec += _presentation_upload_cache_usec
 	update_render_texture()
-	world_view.texture = texture
-	world_shader.set_shader_parameter("current_world_texture", texture)
-	world_shader.set_shader_parameter("previous_world_texture", previous_texture)
-	if glow_source_shader != null:
-		glow_source_shader.set_shader_parameter("world_texture", texture)
+	_bind_material_texture_consumers()
 	snapshot_blend_start_usec = Time.get_ticks_usec()
 	last_uploaded_revision = world_revision
 	upload_time_ms = float(Time.get_ticks_usec() - start_usec) / 1000.0
 
 
 func update_render_texture() -> void:
-	texture.update(image)
+	if _material_full_ring != null:
+		# finish_texture_upload has swapped Main's old pair. The third texture
+		# was absent from that pair; upload there, then bind the exact new pair.
+		if texture == _material_full_ring.previous and previous_texture == _material_full_ring.current \
+				and _material_full_ring.publish(image):
+			texture = _material_full_ring.current
+			previous_texture = _material_full_ring.previous
+			_material_publication_last = _material_full_ring.last_update.duplicate()
+			return
+		# Any structural refusal reconstructs both exact histories before ACK.
+		# Do not continue with a partially rotated or foreign resource.
+		_material_publication_fallback = "full image ring ownership or source refused"
+		_material_full_ring = null
+		var recovery_started: int = Time.get_ticks_usec()
+		texture = ImageTexture.create_from_image(image.duplicate())
+		previous_texture = ImageTexture.create_from_image(_material_previous_cpu_image())
+		_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width()*image.get_height()*render_channels*2,
+			"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec()-recovery_started,
+			"recovery_rebuilt_pair":true}
+		return
+	if texture is MaterialPublisher.MaterialPlane:
+		var regions: Array[Rect2i] = []
+		for offset: int in range(0, _material_pending_rectangles.size(), 6):
+			regions.append(Rect2i(_material_pending_rectangles[offset], _material_pending_rectangles[offset+1],
+				_material_pending_rectangles[offset+2], _material_pending_rectangles[offset+3]))
+		# finish_texture_upload has swapped Main's references already. The owner
+		# installs every pending tile in the recycled slot, then advances its pair.
+		if _material_blit_publisher != null and texture == _material_blit_publisher.previous \
+				and previous_texture == _material_blit_publisher.current \
+				and _material_blit_publisher.publish(image, regions):
+			_material_publication_last = _material_blit_publisher.last_update.duplicate()
+			return
+		# A structural rejection publishes both exact CPU histories with the
+		# verified full path before the revision is acknowledged.
+		_material_publication_fallback = "blit update validation failed"
+		var recovery_previous: Image = _material_previous_cpu_image()
+		var recovery_started: int = Time.get_ticks_usec()
+		texture = ImageTexture.create_from_image(image.duplicate())
+		previous_texture = ImageTexture.create_from_image(recovery_previous)
+		_material_blit_publisher = null
+		_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width() * image.get_height() * render_channels * 2,
+			"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec() - recovery_started,
+			"recovery_rebuilt_pair":true}
+		return
+	var started: int = Time.get_ticks_usec()
+	# RenderingServer may retain this Image until a separate render owner
+	# executes the queued upload. Main mutates image on the next publication;
+	# give the queue an immutable snapshot, just as the blit staging path does.
+	(texture as ImageTexture).update(image.duplicate())
+	_material_publication_last = {"mode":"full", "submitted_bytes":image.get_width() * image.get_height() * render_channels,
+		"candidate_tiles":1, "updated_tiles":1, "tile_count":1,
+		"tile_assembly_usec":0, "backend_submit_usec":Time.get_ticks_usec() - started}
+
+
+func _full_material_rectangle() -> PackedInt32Array:
+	return PackedInt32Array([0, 0, world_extent.x, world_extent.y, 0, world_extent.x * render_channels])
+
+
+func _material_previous_cpu_image() -> Image:
+	if _presentation_previous_image != null:
+		return _presentation_previous_image.duplicate()
+	return Image.create_from_data(_presentation_previous_content_shape.x,
+		_presentation_previous_content_shape.y, false,
+		_presentation_previous_content_shape.z, _presentation_previous_bytes)
+
+
+func _create_material_texture_pair(current: Image, previous: Image) -> void:
+	if _material_publication_mode.is_empty():
+		_material_publication_mode = OS.get_environment("CYBERSAND_MATERIAL_PUBLICATION").to_lower()
+		if _material_publication_mode not in ["auto", "full", "blit"]: _material_publication_mode = "full"
+	_material_publication_fallback = ""
+	_material_full_ring = null
+	var publisher: MaterialPublisher
+	if _material_publication_mode != "full":
+		if MaterialPublisher.supported_driver():
+			publisher = MaterialPublisher.create_pair(current, previous)
+			if publisher == null:
+				_material_publication_fallback = "drawable pair creation or capacity refused"
+		else:
+			_material_publication_fallback = "platform or renderer not qualified for blit publication"
+	if publisher != null:
+		texture = publisher.current
+		previous_texture = publisher.previous
+		_material_publication_last = publisher.last_update.duplicate()
+	elif _material_publication_mode == "full" and OS.get_environment("CYBERSAND_DIAG_FULL_IMAGE_SLOTS") == "3":
+		_material_full_ring = FullImageRingPublisher.create_pair(current, previous)
+		if _material_full_ring != null:
+			texture = _material_full_ring.current
+			previous_texture = _material_full_ring.previous
+			_material_publication_last = _material_full_ring.last_update.duplicate()
+		else:
+			_material_publication_fallback = "full image ring creation refused"
+	if publisher == null and _material_full_ring == null:
+		var setup_started: int = Time.get_ticks_usec()
+		# Initial creation is queued too. These inputs may alias Main's mutable
+		# image, including reset/mode-switch followed by another same-frame edit.
+		texture = ImageTexture.create_from_image(current.duplicate())
+		previous_texture = ImageTexture.create_from_image(previous.duplicate())
+		_material_publication_last = {"mode":"full", "initialization":true,
+			"initialization_usec":Time.get_ticks_usec()-setup_started,
+			"submitted_bytes":(current.get_width()*current.get_height()+previous.get_width()*previous.get_height())*render_channels}
+	_material_blit_publisher = publisher
+	if _material_steps.enabled() and not _material_step_publisher_supported():
+		_retire_material_step_policy("publisher_changed")
+
+
+func _material_publication_rid(value: Texture2D) -> RID:
+	return value.get_rid() if value != null else RID()
+
+
+func configure_material_textures(shader: ShaderMaterial, single: bool = false) -> void:
+	if shader == null: return
+	if single:
+		shader.set_shader_parameter("world_texture", texture)
+	else:
+		shader.set_shader_parameter("current_world_texture", texture)
+		shader.set_shader_parameter("previous_world_texture", previous_texture)
+
+
+func _bind_material_texture_consumers() -> void:
+	if world_view != null: world_view.texture = texture
+	configure_material_textures(world_shader)
+	configure_material_textures(glow_source_shader, true)
+	for shader: ShaderMaterial in vapour_trail_shaders:
+		configure_material_textures(shader, true)
+
+
+func material_publication_status() -> Dictionary:
+	var result: Dictionary = _material_publication_last.duplicate()
+	result["requested_mode"] = _material_publication_mode
+	result["backend"] = "blit" if texture is MaterialPublisher.MaterialPlane else "full"
+	result["full_image_slots_requested"] = OS.get_environment("CYBERSAND_DIAG_FULL_IMAGE_SLOTS")
+	result["full_image_slots"] = 3 if _material_full_ring != null else (0 if _material_blit_publisher != null else 2)
+	result["fallback_reason"] = _material_publication_fallback
+	result["policy"] = ""
+	result["driver"] = RenderingServer.get_current_rendering_driver_name()
+	result["logical_source_format"] = "R8" if render_channels == 1 else "RG8"
+	result["gpu_storage_format"] = "RGBA8_LINEAR" if texture is MaterialPublisher.MaterialPlane else result.logical_source_format
+	if not result.get("initialization", false):
+		result["image_patch_usec"] = _material_image_patch_usec
+		result["content_cache_usec"] = _presentation_upload_cache_usec
+	result["timing_scope"] = "elapsed wall calls including possible waits/descheduling; not GPU completion"
+	result["timing_aliases"] = "tile_assembly=atlas_assembly; backend_submit=staging_upload+gpu_blit_submit; do not add aliases twice"
+	result["byte_scope"] = "submitted_bytes counts CPU staging uploads; target write bytes are estimates, not measured bandwidth"
+	if _material_blit_publisher != null:
+		result["tile_side"] = _material_blit_publisher.tile_side
+		result["tile_count"] = _material_blit_publisher.columns * _material_blit_publisher.rows
+		result["allocated_gpu_bytes"] = _material_blit_publisher.gpu_storage_bytes()
+		result["current_texture_rid"] = _material_publication_rid(texture).get_id()
+		result["previous_texture_rid"] = _material_publication_rid(previous_texture).get_id()
+	return result
+
+
+func set_material_publication_mode(mode: String) -> bool:
+	if mode not in ["auto", "full", "blit"] or image == null: return false
+	_material_publication_mode = mode
+	_create_material_texture_pair(image, _material_previous_cpu_image())
+	_bind_material_texture_consumers()
+	return mode != "blit" or texture is MaterialPublisher.MaterialPlane
 
 
 func update_shader_parameters() -> void:
 	if world_shader == null:
 		return
+	world_shader.set_shader_parameter("ambient_sources_absent",_ambient_sources_absent)
+	var bounds := Vector4(_ambient_source_bounds.position.x, _ambient_source_bounds.position.y,
+		_ambient_source_bounds.end.x, _ambient_source_bounds.end.y)
+	var localized := _ambient_bounds_valid and _ambient_source_bounds.has_area()
+	world_shader.set_shader_parameter("ambient_bounds_valid", localized)
+	world_shader.set_shader_parameter("ambient_source_bounds", bounds)
+	if glow_source_shader != null:
+		glow_source_shader.set_shader_parameter("ambient_sources_absent",_ambient_sources_absent)
+		glow_source_shader.set_shader_parameter("ambient_bounds_valid", localized)
+		glow_source_shader.set_shader_parameter("ambient_source_bounds", bounds)
+		_bind_glow_composite_proof()
 	world_shader.set_shader_parameter(
 		"world_size_px",
 		Vector2(world_extent.x, world_extent.y)
@@ -5003,8 +8067,9 @@ func update_shader_parameters() -> void:
 	)
 	world_shader.set_shader_parameter(
 		"camera_origin_px",
-		Vector2(floori(camera_origin.x), floori(camera_origin.y))
+		presentation_camera_origin()
 	)
+	configure_pixel_camera(world_shader)
 	var sampled_player_visible: bool = (
 		not player_uses_barrel()
 		and (latest_snapshot == null or latest_snapshot.actor_prototypes.is_empty())
@@ -5019,13 +8084,10 @@ func update_shader_parameters() -> void:
 	)
 	world_shader.set_shader_parameter("player_size_px", CyberSampledCharacter.BODY_SIZE)
 	var snapshot_blend: float = 1.0
-	if cadence_lod_enabled:
-		snapshot_blend = clampf(
-			float(Time.get_ticks_usec() - snapshot_blend_start_usec)
-			/ (1000000.0 / float(render_snapshot_hz)),
-			0.0,
-			1.0
-		)
+	if _workbench_mapping_locked:
+		snapshot_blend = workbench_presentation_frame.snapshot_blend
+	else:
+		snapshot_blend = _material_presentation_state(Time.get_ticks_usec()).snapshot_blend
 	world_shader.set_shader_parameter("snapshot_blend", snapshot_blend)
 	world_shader.set_shader_parameter(
 		"condition_projection_enabled",
@@ -5286,7 +8348,7 @@ func setup_glow_pipeline() -> void:
 	world_view.add_child(glow_overlay)
 	set_glow_enabled(glow_enabled)
 	setup_vapour_trail_pipeline()
-	glow_source_shader.set_shader_parameter("world_texture", texture)
+	configure_material_textures(glow_source_shader, true)
 	glow_source_shader.set_shader_parameter(
 		"material_program_lut",
 		material_appearance_program
@@ -5317,14 +8379,14 @@ func setup_vapour_trail_pipeline() -> void:
 		viewport.use_hdr_2d = true
 		viewport.render_target_clear_mode = SubViewport.CLEAR_MODE_ALWAYS
 		viewport.render_target_update_mode = SubViewport.UPDATE_DISABLED
-		viewport.size = current_view_size
+		viewport.size = current_view_size + Vector2i.ONE
 		add_child(viewport)
 		var shader_material: ShaderMaterial = ShaderMaterial.new()
 		shader_material.shader = trail_shader
 		var source: ColorRect = ColorRect.new()
 		source.name = "VapourTrailSource"
 		source.color = Color.WHITE
-		source.size = Vector2(current_view_size)
+		source.size = Vector2(viewport.size)
 		source.mouse_filter = Control.MOUSE_FILTER_IGNORE
 		source.material = shader_material
 		viewport.add_child(source)
@@ -5341,6 +8403,7 @@ func setup_vapour_trail_pipeline() -> void:
 # records current gas with zero history weight; its successor can only sample
 # that newly written target. Also used when a quality setting disables the pass.
 func reset_vapour_trail() -> void:
+	_vapour_history_possible = false
 	vapour_trail_latest = -1
 	vapour_trail_frame = -1
 	vapour_trail_usec = 0
@@ -5363,17 +8426,25 @@ func set_vapour_trail_enabled(enabled: bool) -> void:
 func update_vapour_trail() -> void:
 	if not vapour_trail_enabled or vapour_trail_viewports.is_empty() or world_shader == null:
 		return
+	# A reset starts with exactly zero history. A gas-free publication
+	# cannot add Steam or Smoke to those zero buffers. As soon as another
+	# material is observed, resume normal history until the next real reset.
+	if _ambient_sources_absent and not _vapour_history_possible: return
+	_vapour_history_possible = true
 	# Resize both generations together. Resizing only the alternating target
 	# drops the first history frame and can revive a buffer after rapid resizes.
-	if vapour_trail_viewports[0].size != current_view_size or vapour_trail_viewports[1].size != current_view_size:
+	# The fractional view can include one more cell on its right/bottom edges.
+	var history_size := current_view_size + Vector2i.ONE
+	if vapour_trail_viewports[0].size != history_size or vapour_trail_viewports[1].size != history_size:
 		reset_vapour_trail()
 		for resized: SubViewport in vapour_trail_viewports:
-			resized.size = current_view_size
+			resized.size = history_size
 			var source: ColorRect = resized.get_child(0) as ColorRect
-			source.size = Vector2(current_view_size)
+			source.size = Vector2(history_size)
 	var frame: int = Engine.get_process_frames()
 	if frame == vapour_trail_frame:
 		return
+	_vapour_history_possible = true
 	vapour_trail_frame = frame
 	var now_usec: int = Time.get_ticks_usec()
 	var delta_seconds: float = 0.0
@@ -5384,17 +8455,19 @@ func update_vapour_trail() -> void:
 	var history: int = 1 - target
 	var viewport: SubViewport = vapour_trail_viewports[target]
 	vapour_trail_viewports[history].render_target_update_mode = SubViewport.UPDATE_DISABLED
-	var origin: Vector2 = Vector2(floori(camera_origin.x), floori(camera_origin.y))
+	# History remains on the integer world grid; only the final palette lookup
+	# uses the fractional presentation origin. This is not camera quantization.
+	var origin: Vector2 = presentation_camera_origin().floor()
 	var shader_material: ShaderMaterial = vapour_trail_shaders[target]
-	shader_material.set_shader_parameter("world_texture", texture)
+	configure_material_textures(shader_material, true)
 	shader_material.set_shader_parameter(
 		"world_size_px", Vector2(world_extent.x, world_extent.y))
-	shader_material.set_shader_parameter("view_size_px", Vector2(current_view_size))
+	shader_material.set_shader_parameter("view_size_px", Vector2(history_size))
 	shader_material.set_shader_parameter("camera_origin_px", origin)
 	shader_material.set_shader_parameter("history_origin_px", vapour_trail_origins[history])
 	shader_material.set_shader_parameter(
 		"delta_seconds",
-		delta_seconds if vapour_trail_viewports[history].size == current_view_size else 0.0
+		delta_seconds if vapour_trail_viewports[history].size == history_size else 0.0
 	)
 	shader_material.set_shader_parameter(
 		"condition_projection_enabled", 1.0 if render_channels == 2 else 0.0)
@@ -5403,16 +8476,34 @@ func update_vapour_trail() -> void:
 	vapour_trail_latest = target
 	world_shader.set_shader_parameter("vapour_trail_texture", viewport.get_texture())
 	world_shader.set_shader_parameter("vapour_trail_origin_px", origin)
+	world_shader.set_shader_parameter("vapour_trail_size_px", Vector2(history_size))
 	world_shader.set_shader_parameter("vapour_trail_strength", 1.0)
+
+
+func _bind_glow_composite_proof() -> void:
+	if glow_composite_shader == null: return
+	# A live program can replace the emitter's LUT independently of the
+	# catalogue default. The composite must inspect the same texture.
+	var program: Variant = glow_source_shader.get_shader_parameter("material_program_lut")
+	glow_composite_shader.set_shader_parameter("material_program_lut", program)
+	glow_composite_shader.set_shader_parameter("ambient_sources_absent", _ambient_sources_absent
+		and program is Texture2D and program.get_size() == Vector2(
+			CyberMaterialAppearanceLut.PROGRAM_WIDTH, CyberMaterialAppearanceLut.PROGRAM_HEIGHT))
 
 
 func update_glow_parameters(content_rect: Rect2) -> void:
 	if glow_viewport == null or glow_source_shader == null or glow_overlay == null:
 		return
-	var downsampled_size: Vector2i = Vector2i(
-		maxi(80, current_view_size.x / 2),
-		maxi(45, current_view_size.y / 2)
-	)
+	# Keep the source on a fixed two-world-cell grid. Odd view dimensions must
+	# not stretch that grid. Five guard texels cover the composite's four-texel
+	# halo plus filtering; the extra far texel covers a partial camera step.
+	var source_cells := Vector2(2.0, 2.0)
+	var guard := Vector2i(5, 5)
+	var downsampled_size := Vector2i(maxi(80,ceili(current_view_size.x / 2.0)),
+		maxi(45,ceili(current_view_size.y / 2.0))) + guard * 2 + Vector2i.ONE
+	var origin := presentation_camera_origin()
+	var source_origin := (origin / source_cells).floor() * source_cells - Vector2(guard) * source_cells
+	var source_view := Vector2(downsampled_size) * source_cells
 	if glow_viewport.size != downsampled_size:
 		glow_viewport.size = downsampled_size
 		glow_source.position = Vector2.ZERO
@@ -5423,11 +8514,10 @@ func update_glow_parameters(content_rect: Rect2) -> void:
 		"world_size_px",
 		Vector2(world_extent.x, world_extent.y)
 	)
-	glow_source_shader.set_shader_parameter("view_size_px", Vector2(current_view_size))
-	glow_source_shader.set_shader_parameter(
-		"camera_origin_px",
-		Vector2(floori(camera_origin.x), floori(camera_origin.y))
-	)
+	glow_source_shader.set_shader_parameter("view_size_px", source_view)
+	glow_source_shader.set_shader_parameter("camera_origin_px", source_origin)
+	glow_composite_shader.set_shader_parameter("source_uv_offset", (origin - source_origin) / source_view)
+	glow_composite_shader.set_shader_parameter("source_uv_scale", Vector2(current_view_size) / source_view)
 	glow_source_shader.set_shader_parameter(
 		"condition_projection_enabled",
 		1.0 if render_channels == 2 else 0.0

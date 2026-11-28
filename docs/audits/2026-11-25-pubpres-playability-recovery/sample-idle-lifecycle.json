@@ -1,0 +1,60 @@
+{
+  "schema": "pubpres-recovery-sample-idle-lifecycle-v1",
+  "base_application_source": "f4089809c7294336db26cf576b0ac3c57fc54775",
+  "local_delta_inputs": {
+    "godot/scripts/simulation_worker.gd": "217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674",
+    "godot/tests/test_workbench_sample_idle.gd": "08b676ea9010ba84ad4f83ffc1208e446486973643caac0edfd6238f85c9a59b"
+  },
+  "native_runtime_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+  "native_runtime_origin_run": 45477483707,
+  "native_input_equivalence": "Retained C binary from4bde032; all105 native source inputs equal f4089809. Worker-only local delta.",
+  "disposition": "CORRECTNESS PASS / PERFORMANCE UNSELECTED / PHYSICAL OWNER HOLD",
+  "original_failed_oracle_disposition": "Initial completed==offered snapshot predicate could admit an old packet before the last actual Main-issued sample was consumed. Final fixture additionally joins completed sample to host._workbench_wait_sample. Original five failed assertions retained. No production mutation was needed to repair that witness.",
+  "source_peer_review": {
+    "reviewer": "Specialist B presentation",
+    "outcome": "No correctness blocker found",
+    "scope": "Complete helper and bottom-loop invocation; no-body/paused/failed/refused exclusions, sample authority, command/ACK/trace/epoch/view wake, due uncaptured render deadline and unchanged native path. Repeated poll mutex overhead remains an actual measurement question."
+  },
+  "retained": {
+    "sample-idle-headless-02.json": {
+      "sha256": "a8cc7162a45b9d00b5d56616f91afc7d972421fddc48f66b2cb408acd78ce8df",
+      "bytes": 1328,
+      "original_text": "{\n\t\"checks\": 40,\n\t\"display\": \"headless\",\n\t\"failures\": [\n\t\t\"held completed sample grants neither native nor Rapier progress\",\n\t\t\"ACK neither invents native progress nor mutates retained payload\",\n\t\t\"full refresh preserves native identity\",\n\t\t\"edit does not manufacture a material turn\",\n\t\t\"camera origin change interrupts without a settings revision\"\n\t],\n\t\"fixture_sha256\": \"c629b16ca649b204ee5ff9d751214ca2925dbbedfc8c846907c9330041ad1c33\",\n\t\"godot\": {\n\t\t\"build\": \"official\",\n\t\t\"hash\": \"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88\",\n\t\t\"hex\": 263936,\n\t\t\"major\": 4,\n\t\t\"minor\": 7,\n\t\t\"patch\": 0,\n\t\t\"status\": \"stable\",\n\t\t\"string\": \"4.7-stable (official)\",\n\t\t\"timestamp\": 0\n\t},\n\t\"observations\": [\n\t\t{\n\t\t\t\"case\": \"held-completion\",\n\t\t\t\"idle\": {\n\t\t\t\t\"active\": true,\n\t\t\t\t\"enabled\": true,\n\t\t\t\t\"heartbeat_usec\": 250000,\n\t\t\t\t\"last_wake\": \"heartbeat_or_render_deadline\",\n\t\t\t\t\"physical_credit\": 0,\n\t\t\t\t\"wait_usec\": 518095,\n\t\t\t\t\"waits\": 6\n\t\t\t},\n\t\t\t\"native_tick\": 2,\n\t\t\t\"physical_tick\": 3,\n\t\t\t\"status_publications\": 4\n\t\t}\n\t],\n\t\"platform\": \"Linux\",\n\t\"schema\": \"workbench-sample-idle-v1\",\n\t\"scope\": \"Actual production worker/native/Rapier lifecycle under deliberately held Main. No physical display or comparative performance acceptance.\",\n\t\"source_commit\": \"\",\n\t\"worker_sha256\": \"217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674\"\n}\n"
+    },
+    "sample-idle-headless-02.log": {
+      "sha256": "a88123883eea76f8d8a1a077703fa59f0a0b473b4e3447b6216f6ca22754cfd0",
+      "bytes": 2186,
+      "original_text": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nERROR: WORKBENCH_SAMPLE_IDLE: held completed sample grants neither native nor Rapier progress\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/test_workbench_sample_idle.gd:23)\n       [1] body_wait_and_wakes (res://tests/test_workbench_sample_idle.gd:91)\nERROR: WORKBENCH_SAMPLE_IDLE: ACK neither invents native progress nor mutates retained payload\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/test_workbench_sample_idle.gd:23)\n       [1] body_wait_and_wakes (res://tests/test_workbench_sample_idle.gd:108)\n       [2] until (res://tests/test_workbench_sample_idle.gd:29)\nERROR: WORKBENCH_SAMPLE_IDLE: full refresh preserves native identity\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/test_workbench_sample_idle.gd:23)\n       [1] body_wait_and_wakes (res://tests/test_workbench_sample_idle.gd:116)\n       [2] until (res://tests/test_workbench_sample_idle.gd:29)\nERROR: WORKBENCH_SAMPLE_IDLE: edit does not manufacture a material turn\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/test_workbench_sample_idle.gd:23)\n       [1] body_wait_and_wakes (res://tests/test_workbench_sample_idle.gd:129)\n       [2] until (res://tests/test_workbench_sample_idle.gd:29)\nERROR: WORKBENCH_SAMPLE_IDLE: camera origin change interrupts without a settings revision\n   at: push_error (core/variant/variant_utility.cpp:1023)\n   GDScript backtrace (most recent call first):\n       [0] check (res://tests/test_workbench_sample_idle.gd:23)\n       [1] body_wait_and_wakes (res://tests/test_workbench_sample_idle.gd:137)\n       [2] until (res://tests/test_workbench_sample_idle.gd:31)\nWORKBENCH_SAMPLE_IDLE: 40 checks, 5 failures\n"
+    },
+    "sample-idle-headless-04.json": {
+      "sha256": "d62362ce8273cc074d9532cd4c5586b554a83cf56c4400e40ed8f677aafab101",
+      "bytes": 1272,
+      "original_text": "{\n\t\"checks\": 58,\n\t\"display\": \"headless\",\n\t\"failures\": [],\n\t\"fixture_sha256\": \"08b676ea9010ba84ad4f83ffc1208e446486973643caac0edfd6238f85c9a59b\",\n\t\"godot\": {\n\t\t\"build\": \"official\",\n\t\t\"hash\": \"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88\",\n\t\t\"hex\": 263936,\n\t\t\"major\": 4,\n\t\t\"minor\": 7,\n\t\t\"patch\": 0,\n\t\t\"status\": \"stable\",\n\t\t\"string\": \"4.7-stable (official)\",\n\t\t\"timestamp\": 0\n\t},\n\t\"observations\": [\n\t\t{\n\t\t\t\"case\": \"held-completion\",\n\t\t\t\"idle\": {\n\t\t\t\t\"active\": true,\n\t\t\t\t\"enabled\": true,\n\t\t\t\t\"heartbeat_usec\": 250000,\n\t\t\t\t\"last_wake\": \"heartbeat_or_render_deadline\",\n\t\t\t\t\"physical_credit\": 0,\n\t\t\t\t\"wait_usec\": 527274,\n\t\t\t\t\"waits\": 4\n\t\t\t},\n\t\t\t\"native_tick\": 3,\n\t\t\t\"physical_tick\": 3,\n\t\t\t\"status_publications\": 2\n\t\t},\n\t\t{\n\t\t\t\"case\": \"stop\",\n\t\t\t\"elapsed_usec\": 540,\n\t\t\t\"idle\": {\n\t\t\t\t\"active\": false,\n\t\t\t\t\"enabled\": true,\n\t\t\t\t\"heartbeat_usec\": 250000,\n\t\t\t\t\"last_wake\": \"owner_work\",\n\t\t\t\t\"physical_credit\": 0,\n\t\t\t\t\"wait_usec\": 861139,\n\t\t\t\t\"waits\": 25\n\t\t\t}\n\t\t}\n\t],\n\t\"platform\": \"Linux\",\n\t\"schema\": \"workbench-sample-idle-v1\",\n\t\"scope\": \"Actual production worker/native/Rapier lifecycle under deliberately held Main. No physical display or comparative performance acceptance.\",\n\t\"source_commit\": \"\",\n\t\"worker_sha256\": \"217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674\"\n}\n"
+    },
+    "sample-idle-headless-04.log": {
+      "sha256": "ddce07c42c6edae6b6a6ae39ce7409744f30104e977fbd0c9fcc1260e2a974b8",
+      "bytes": 266,
+      "original_text": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nWORKBENCH_SAMPLE_IDLE: 58 checks, 0 failures\n"
+    },
+    "sample-idle-graphical-01.json": {
+      "sha256": "f7ee5375e836c5ecd84d6c9ad3c5ac7600a3142d8bbdde6316f8bfaa749d1b8b",
+      "bytes": 1269,
+      "original_text": "{\n\t\"checks\": 58,\n\t\"display\": \"X11\",\n\t\"failures\": [],\n\t\"fixture_sha256\": \"08b676ea9010ba84ad4f83ffc1208e446486973643caac0edfd6238f85c9a59b\",\n\t\"godot\": {\n\t\t\"build\": \"official\",\n\t\t\"hash\": \"5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88\",\n\t\t\"hex\": 263936,\n\t\t\"major\": 4,\n\t\t\"minor\": 7,\n\t\t\"patch\": 0,\n\t\t\"status\": \"stable\",\n\t\t\"string\": \"4.7-stable (official)\",\n\t\t\"timestamp\": 0\n\t},\n\t\"observations\": [\n\t\t{\n\t\t\t\"case\": \"held-completion\",\n\t\t\t\"idle\": {\n\t\t\t\t\"active\": true,\n\t\t\t\t\"enabled\": true,\n\t\t\t\t\"heartbeat_usec\": 250000,\n\t\t\t\t\"last_wake\": \"heartbeat_or_render_deadline\",\n\t\t\t\t\"physical_credit\": 0,\n\t\t\t\t\"wait_usec\": 546079,\n\t\t\t\t\"waits\": 4\n\t\t\t},\n\t\t\t\"native_tick\": 3,\n\t\t\t\"physical_tick\": 3,\n\t\t\t\"status_publications\": 2\n\t\t},\n\t\t{\n\t\t\t\"case\": \"stop\",\n\t\t\t\"elapsed_usec\": 6843,\n\t\t\t\"idle\": {\n\t\t\t\t\"active\": false,\n\t\t\t\t\"enabled\": true,\n\t\t\t\t\"heartbeat_usec\": 250000,\n\t\t\t\t\"last_wake\": \"owner_work\",\n\t\t\t\t\"physical_credit\": 0,\n\t\t\t\t\"wait_usec\": 1450351,\n\t\t\t\t\"waits\": 22\n\t\t\t}\n\t\t}\n\t],\n\t\"platform\": \"Linux\",\n\t\"schema\": \"workbench-sample-idle-v1\",\n\t\"scope\": \"Actual production worker/native/Rapier lifecycle under deliberately held Main. No physical display or comparative performance acceptance.\",\n\t\"source_commit\": \"\",\n\t\"worker_sha256\": \"217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674\"\n}\n"
+    },
+    "sample-idle-graphical-01.log": {
+      "sha256": "9d3ba819f6db940328099f42636625f0174fb91249078ab35db382b23e18b913",
+      "bytes": 561,
+      "original_text": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\nWARNING: Could not set V-Sync mode, as changing V-Sync mode is not supported by the graphics driver.\n     at: set_use_vsync (platform/linuxbsd/x11/gl_manager_x11.cpp:372)\nOpenGL API 4.5 (Core Profile) Mesa 25.0.7-2+deb13u1 - Compatibility - Using Device: Mesa - llvmpipe (LLVM 19.1.7, 256 bits)\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nWORKBENCH_SAMPLE_IDLE: 58 checks, 0 failures\n"
+    },
+    "sample-idle-graphical-01-process.json": {
+      "sha256": "149c279ed708a7bd30edf490b9f2b15f91a3ed02048849ec9b619211150dd7c6",
+      "bytes": 721,
+      "original_text": "{\n  \"argv\": [\n    \"/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64\",\n    \"--path\",\n    \"godot\",\n    \"--rendering-method\",\n    \"gl_compatibility\",\n    \"--audio-driver\",\n    \"Dummy\",\n    \"--script\",\n    \"res://tests/test_workbench_sample_idle.gd\"\n  ],\n  \"exit_code\": 0,\n  \"elapsed_seconds\": 23.38299584388733,\n  \"display\": \"Xorg dummy + llvmpipe, local graphical\",\n  \"application_base\": \"f4089809c7294336db26cf576b0ac3c57fc54775\",\n  \"native_sha256\": \"e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74\",\n  \"worker_sha256\": \"217b4b0827e4e6bb12295c70e0c2b128eff2f2f2f3f20bec9ea5e18cd4b00674\",\n  \"fixture_sha256\": \"08b676ea9010ba84ad4f83ffc1208e446486973643caac0edfd6238f85c9a59b\"\n}\n"
+    }
+  },
+  "limitations": [
+    "Headless and actual Xorg/llvmpipe graphical lifecycle execution; physical Windows/NVIDIA untested.",
+    "Functional held-Main sequence is not a performance or playability measurement.",
+    "Tested application identity is pinned base plus exact changed worker and fixture bytes, not yet a frozen integrated application commit."
+  ]
+}

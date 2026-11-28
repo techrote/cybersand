@@ -51,6 +51,41 @@ $(BUILD_DIR)/tests_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) $(TEST_SOURCES) $(
 	$(CXX) $(COMMON_FLAGS) -O1 -g -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) $(TEST_SOURCES) -o $@
 
 # WAVE-MT-001 wave_flow_v1: standalone regressions (own main; not part of TEST_SOURCES).
+# PUBPRES actual-task context retirement uses the production private pool class.
+# Test-only delayed-worker hooks are absent from native application builds.
+.PHONY: worker-pool-test worker-pool-sanitize worker-pool-thread-sanitize
+
+$(BUILD_DIR)/test_persistent_worker_pool: native/src/persistent_worker_pool.hpp native/tests/test_persistent_worker_pool.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread native/tests/test_persistent_worker_pool.cpp -o $@
+
+$(BUILD_DIR)/test_persistent_worker_pool_sanitized: native/src/persistent_worker_pool.hpp native/tests/test_persistent_worker_pool.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined native/tests/test_persistent_worker_pool.cpp -o $@
+
+$(BUILD_DIR)/test_persistent_worker_pool_tsan: native/src/persistent_worker_pool.hpp native/tests/test_persistent_worker_pool.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=thread native/tests/test_persistent_worker_pool.cpp -o $@
+
+worker-pool-test: $(BUILD_DIR)/test_persistent_worker_pool
+	./$(BUILD_DIR)/test_persistent_worker_pool
+
+worker-pool-sanitize: $(BUILD_DIR)/test_persistent_worker_pool_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_persistent_worker_pool_sanitized
+
+worker-pool-thread-sanitize: $(BUILD_DIR)/test_persistent_worker_pool_tsan
+	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_persistent_worker_pool_tsan
+
+.PHONY: task-completion-world-test task-completion-world-sanitize
+$(BUILD_DIR)/test_task_completion_world: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_task_completion_world.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread $(CORE_SOURCES) native/tests/test_task_completion_world.cpp -o $@
+
+$(BUILD_DIR)/test_task_completion_world_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_task_completion_world.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined $(CORE_SOURCES) native/tests/test_task_completion_world.cpp -o $@
+
+task-completion-world-test: $(BUILD_DIR)/test_task_completion_world
+	./$(BUILD_DIR)/test_task_completion_world
+
+task-completion-world-sanitize: $(BUILD_DIR)/test_task_completion_world_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_task_completion_world_sanitized
+
 .PHONY: wave-flow-test wave-flow-sanitize wave-flow-thread-sanitize wave-mt-matrix
 
 $(BUILD_DIR)/test_wave_flow: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_flow.cpp | $(BUILD_DIR)
@@ -75,6 +110,24 @@ wave-flow-sanitize: $(BUILD_DIR)/test_wave_flow_sanitized
 
 wave-flow-thread-sanitize: $(BUILD_DIR)/test_wave_flow_tsan
 	TSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_flow_tsan
+
+# PUBPRES derived-Empty cache lifecycle. The diagnostic verifies actual cells
+# and derived bytes before reuse and after certification; performance builds
+# omit it. Run this exact source against the occupied-bounds control as well.
+.PHONY: wave-empty-derived-test wave-empty-derived-sanitize
+$(BUILD_DIR)/test_wave_empty_derived: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_empty_derived.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O2 -g -pthread -DCYBERSAND_WAVE_VERIFY_EMPTY_DERIVED $(CORE_SOURCES) native/tests/test_wave_empty_derived.cpp -o $@
+
+$(BUILD_DIR)/test_wave_empty_derived_sanitized: $(CORE_SOURCES) $(CORE_HEADERS) native/tests/test_wave_empty_derived.cpp | $(BUILD_DIR)
+	$(CXX) $(COMMON_FLAGS) -O1 -g -pthread -fno-omit-frame-pointer -fsanitize=address,undefined -DCYBERSAND_WAVE_VERIFY_EMPTY_DERIVED $(CORE_SOURCES) native/tests/test_wave_empty_derived.cpp -o $@
+
+wave-empty-derived-test: $(BUILD_DIR)/test_wave_empty_derived
+	./$(BUILD_DIR)/test_wave_empty_derived 1
+	./$(BUILD_DIR)/test_wave_empty_derived 4
+
+wave-empty-derived-sanitize: $(BUILD_DIR)/test_wave_empty_derived_sanitized
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_empty_derived_sanitized 1
+	UBSAN_OPTIONS=halt_on_error=1 ./$(BUILD_DIR)/test_wave_empty_derived_sanitized 4
 
 # WAVE-WATERWALL-001 exposed-face spill and hybrid ballistic release: standalone
 # regressions (own main) and the authored-map apparatus.

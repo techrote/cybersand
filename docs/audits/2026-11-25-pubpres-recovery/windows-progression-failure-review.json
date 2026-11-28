@@ -1,0 +1,1227 @@
+{
+  "schema": "pubpres-original-progression-failure-review-v1",
+  "source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+  "tree": "0e9be155adfc408641e391c6d184e01fce235866",
+  "run_id": 45477483707,
+  "attempt": 1,
+  "artifact_id": 14966741716,
+  "archive_sha256": "4a469346e11d2533293012904072a228d4199240f5f4d70423ec91e54260a4f1",
+  "archive_bytes": 54822873,
+  "archive_members": 2317,
+  "archive_crc_passed": true,
+  "review_program_sha256": "0c6afb5e15caf7c11719ee37adbfc6396787b3fc607f2fa2ddffde58067d9081",
+  "original_driver_inputs_checked": 91,
+  "inventory_sha256": "5a937e8122459a767094505b43a9a6880b59b37ef289834df6c9e7b5e5fa91bd",
+  "original_summary_sha256": "c8708c4fc226b95745bc454cec888d08e228b496bf70a1f94c4e1fe98f608067",
+  "original_failure": {
+    "case": "wave_512_follow",
+    "reason": "Valid no-op/deadline-only count2 arm: registered deferral/coalescing/real-count eligibility was not exercised in both arms"
+  },
+  "original_stage_outcomes": [
+    {
+      "name": "successor-correctness",
+      "returncode": 0,
+      "timed_out": false
+    },
+    {
+      "name": "observer-calibration",
+      "returncode": 0,
+      "timed_out": false
+    },
+    {
+      "name": "causal-wave512",
+      "returncode": 0,
+      "timed_out": false
+    },
+    {
+      "name": "mixed-eight-actor",
+      "returncode": 0,
+      "timed_out": false
+    },
+    {
+      "name": "material-completed-steps",
+      "returncode": 1,
+      "timed_out": false
+    },
+    {
+      "name": "source-abba",
+      "returncode": 0,
+      "timed_out": false
+    }
+  ],
+  "cases": [
+    {
+      "case": "wave_512_follow",
+      "treatment_exercised_in_both_arms": false,
+      "registered_direction": {
+        "window": "first_144_steps",
+        "reference_role": "D",
+        "all_candidate_rates_higher": false,
+        "all_candidate_gap_quantiles_lower": {
+          "p95": false,
+          "p99": false
+        },
+        "all_candidate_max_gaps_within_worst_reference": true,
+        "all_candidate_severe_counts_within_worst_reference": {
+          "100": false,
+          "250": true,
+          "500": true,
+          "1000": true
+        },
+        "repeatable_direction": false,
+        "disposition": "NOT_ESTABLISHED"
+      },
+      "arms": [
+        {
+          "index": 0,
+          "requested_interval": 0,
+          "receipt_sha256": "d7d36153e06e8ffa8aaeb3fd5e44afaaa43456823f3bdf283f10c3c0992259e5",
+          "events_sha256": "dc777528ea4eb4b5998debad2cbf2def6ae706a37841817493eb512012f23f9c",
+          "source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+          "native_binary_sha256": "bb6eceaa3b7423a6956cf007f7ecde3c6f02dbdb5d514bc40fd087e842923815",
+          "process_exit_code": 0,
+          "process_timed_out": false,
+          "physical_witness": {
+            "actual_completed_steps": 144,
+            "unique_callback_credits": 144,
+            "actual_owned_bodies": 1,
+            "initial_pre_capture_sample_steps": 0,
+            "native_response_steps": 144,
+            "terrain_and_owner_fences": true
+          },
+          "first_144_steps": {
+            "duration_seconds": 12.290381,
+            "completed_rapier_steps": 144,
+            "rapier_steps_per_second": 11.7164797413522,
+            "physical_gap_ms": {
+              "count": 143,
+              "mean": 85.90313986013986,
+              "max": 801.589,
+              "p50": 8.083,
+              "p95": 275.3349,
+              "p99": 280.62802
+            },
+            "gaps_above_ms": {
+              "100": 41,
+              "250": 33,
+              "500": 1,
+              "1000": 0
+            },
+            "absolute_tail_burden": {
+              "100": {
+                "count": 41,
+                "count_per_capture_minute": 200.15652891476677,
+                "inter_step_span_ms_in_long_gaps": 11241.522,
+                "share_of_observed_inter_step_span": 0.9151241978585575,
+                "summed_excess_above_threshold_ms": 7141.522
+              },
+              "250": {
+                "count": 33,
+                "count_per_capture_minute": 161.10159644359277,
+                "inter_step_span_ms_in_long_gaps": 9443.2,
+                "share_of_observed_inter_step_span": 0.7687304997684415,
+                "summed_excess_above_threshold_ms": 1193.2
+              },
+              "500": {
+                "count": 1,
+                "count_per_capture_minute": 4.88186655889675,
+                "inter_step_span_ms_in_long_gaps": 801.589,
+                "share_of_observed_inter_step_span": 0.06525393008502259,
+                "summed_excess_above_threshold_ms": 301.58900000000006
+              },
+              "1000": {
+                "count": 0,
+                "count_per_capture_minute": 0.0,
+                "inter_step_span_ms_in_long_gaps": 0.0,
+                "share_of_observed_inter_step_span": 0.0,
+                "summed_excess_above_threshold_ms": 0.0
+              }
+            },
+            "observed_inter_step_span_ms": 12284.149,
+            "tail_burden_scope": "Existing reporting thresholds only, not owner acceptance budgets. Gap spans exclude capture edges before first and after last observed completion; rate normalization uses the full capture window.",
+            "first_command_admission_to_completion_ms": {
+              "count": 144,
+              "mean": 66.531125,
+              "max": 800.834,
+              "p50": 7.156499999999999,
+              "p95": 274.03995,
+              "p99": 278.75473
+            },
+            "latest_consumed_command_to_completion_ms": {
+              "count": 144,
+              "mean": 2.8965069444444445,
+              "max": 145.726,
+              "p50": 0.711,
+              "p95": 0.9644999999999998,
+              "p99": 81.30148999999972
+            },
+            "native_completion_clock_to_physical_ms": {
+              "count": 144,
+              "mean": 79.60748611111111,
+              "max": 797.749,
+              "p50": 3.692,
+              "p95": 270.35085000000004,
+              "p99": 276.12314
+            },
+            "solver_elapsed_ms": {
+              "count": 144,
+              "mean": 2.3290694444444444,
+              "max": 145.013,
+              "p50": 0.113,
+              "p95": 0.23479999999999984,
+              "p99": 80.65058999999971
+            },
+            "upload_submit_call_ms": {
+              "count": 41,
+              "mean": 171.78912195121953,
+              "max": 792.266,
+              "p50": 189.013,
+              "p95": 269.364,
+              "p99": 583.8820000000007
+            },
+            "delivered_draw_gap_ms": {
+              "count": 43,
+              "mean": 285.19832558139535,
+              "max": 816.617,
+              "p50": 285.615,
+              "p95": 295.46500000000003,
+              "p99": 599.0599399999992
+            }
+          },
+          "treatment_exercise": {
+            "deferred_turns": false,
+            "replaced_offers": false,
+            "independently_joined_count_due": false
+          },
+          "capture_policy_counters": {
+            "offers": 0,
+            "replaced_offers": 0,
+            "deferred_turns": 0,
+            "consumptions": 0,
+            "accepted_uploads": 0,
+            "accepted_uploads_after_policy_cancellation": 0,
+            "cancellations": 0,
+            "edit_requests": 0,
+            "paint_generation": 0
+          },
+          "accepted_eligibility_populations": {
+            "count_only": 0,
+            "both": 0,
+            "deadline_only": 0,
+            "neither_initial_or_immediate": 0
+          },
+          "independent_count_before_deadline_observed": false
+        },
+        {
+          "index": 1,
+          "requested_interval": 2,
+          "receipt_sha256": "263e6012d79c813fe9ef1c3b5ebe5e83ca8ffc8ca445cd6edf17de89d42537aa",
+          "events_sha256": "776819ea3a119cae6e443dfbbbd030a54ce70d71043959d81905ec97e163eae8",
+          "source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+          "native_binary_sha256": "bb6eceaa3b7423a6956cf007f7ecde3c6f02dbdb5d514bc40fd087e842923815",
+          "process_exit_code": 0,
+          "process_timed_out": false,
+          "physical_witness": {
+            "actual_completed_steps": 145,
+            "unique_callback_credits": 145,
+            "actual_owned_bodies": 1,
+            "initial_pre_capture_sample_steps": 0,
+            "native_response_steps": 145,
+            "terrain_and_owner_fences": true
+          },
+          "first_144_steps": {
+            "duration_seconds": 12.487786,
+            "completed_rapier_steps": 144,
+            "rapier_steps_per_second": 11.531267432033188,
+            "physical_gap_ms": {
+              "count": 143,
+              "mean": 87.2333986013986,
+              "max": 520.369,
+              "p50": 8.067,
+              "p95": 274.3425,
+              "p99": 280.52468000000005
+            },
+            "gaps_above_ms": {
+              "100": 45,
+              "250": 35,
+              "500": 1,
+              "1000": 0
+            },
+            "absolute_tail_burden": {
+              "100": {
+                "count": 45,
+                "count_per_capture_minute": 216.2112643506223,
+                "inter_step_span_ms_in_long_gaps": 11453.267,
+                "share_of_observed_inter_step_span": 0.9181434806839236,
+                "summed_excess_above_threshold_ms": 6953.267
+              },
+              "250": {
+                "count": 35,
+                "count_per_capture_minute": 168.16431671715065,
+                "inter_step_span_ms_in_long_gaps": 9641.65,
+                "share_of_observed_inter_step_span": 0.77291641682117,
+                "summed_excess_above_threshold_ms": 891.6500000000003
+              },
+              "500": {
+                "count": 1,
+                "count_per_capture_minute": 4.804694763347162,
+                "inter_step_span_ms_in_long_gaps": 520.369,
+                "share_of_observed_inter_step_span": 0.04171503247938013,
+                "summed_excess_above_threshold_ms": 20.369000000000028
+              },
+              "1000": {
+                "count": 0,
+                "count_per_capture_minute": 0.0,
+                "inter_step_span_ms_in_long_gaps": 0.0,
+                "share_of_observed_inter_step_span": 0.0,
+                "summed_excess_above_threshold_ms": 0.0
+              }
+            },
+            "observed_inter_step_span_ms": 12474.376,
+            "tail_burden_scope": "Existing reporting thresholds only, not owner acceptance budgets. Gap spans exclude capture edges before first and after last observed completion; rate normalization uses the full capture window.",
+            "first_command_admission_to_completion_ms": {
+              "count": 144,
+              "mean": 63.048402777777774,
+              "max": 519.687,
+              "p50": 7.0835,
+              "p95": 271.83265,
+              "p99": 279.8883
+            },
+            "latest_consumed_command_to_completion_ms": {
+              "count": 144,
+              "mean": 2.778159722222222,
+              "max": 153.849,
+              "p50": 0.732,
+              "p95": 0.8921499999999999,
+              "p99": 83.33567999999902
+            },
+            "native_completion_clock_to_physical_ms": {
+              "count": 144,
+              "mean": 81.3349861111111,
+              "max": 515.499,
+              "p50": 3.793,
+              "p95": 269.4626,
+              "p99": 275.46387
+            },
+            "solver_elapsed_ms": {
+              "count": 144,
+              "mean": 2.1857569444444445,
+              "max": 153.139,
+              "p50": 0.1085,
+              "p95": 0.18884999999999988,
+              "p99": 82.58053999999902
+            },
+            "upload_submit_call_ms": {
+              "count": 43,
+              "mean": 197.88806976744186,
+              "max": 281.727,
+              "p50": 253.23,
+              "p95": 268.68769999999995,
+              "p99": 276.3153
+            },
+            "delivered_draw_gap_ms": {
+              "count": 44,
+              "mean": 283.27197727272727,
+              "max": 520.142,
+              "p50": 283.029,
+              "p95": 295.3827,
+              "p99": 424.4571100000001
+            }
+          },
+          "treatment_exercise": {
+            "deferred_turns": false,
+            "replaced_offers": false,
+            "independently_joined_count_due": true
+          },
+          "capture_policy_counters": {
+            "offers": 43,
+            "replaced_offers": 0,
+            "deferred_turns": 0,
+            "consumptions": 43,
+            "accepted_uploads": 43,
+            "accepted_uploads_after_policy_cancellation": 0,
+            "cancellations": 0,
+            "edit_requests": 0,
+            "paint_generation": 0
+          },
+          "accepted_eligibility_populations": {
+            "count_only": 42,
+            "both": 0,
+            "deadline_only": 0,
+            "neither_initial_or_immediate": 1
+          },
+          "independent_count_before_deadline_observed": true
+        },
+        {
+          "index": 2,
+          "requested_interval": 2,
+          "receipt_sha256": "5f78c4ed4c9311cf144f9ef5c8399091695528458d06258ce8b154884c0f25d3",
+          "events_sha256": "c2d5bfc689e5c904af86f9aa5c05c71ca1aee561b2c8455b52190f0219d2fc68",
+          "source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+          "native_binary_sha256": "bb6eceaa3b7423a6956cf007f7ecde3c6f02dbdb5d514bc40fd087e842923815",
+          "process_exit_code": 0,
+          "process_timed_out": false,
+          "physical_witness": {
+            "actual_completed_steps": 144,
+            "unique_callback_credits": 144,
+            "actual_owned_bodies": 1,
+            "initial_pre_capture_sample_steps": 0,
+            "native_response_steps": 144,
+            "terrain_and_owner_fences": true
+          },
+          "first_144_steps": {
+            "duration_seconds": 12.03526,
+            "completed_rapier_steps": 144,
+            "rapier_steps_per_second": 11.964843302097337,
+            "physical_gap_ms": {
+              "count": 143,
+              "mean": 84.06998601398601,
+              "max": 536.09,
+              "p50": 8.155,
+              "p95": 276.6544,
+              "p99": 282.37406
+            },
+            "gaps_above_ms": {
+              "100": 43,
+              "250": 30,
+              "500": 1,
+              "1000": 0
+            },
+            "absolute_tail_burden": {
+              "100": {
+                "count": 43,
+                "count_per_capture_minute": 214.3701091625773,
+                "inter_step_span_ms_in_long_gaps": 10912.252,
+                "share_of_observed_inter_step_span": 0.907689630550903,
+                "summed_excess_above_threshold_ms": 6612.252
+              },
+              "250": {
+                "count": 30,
+                "count_per_capture_minute": 149.56054127621672,
+                "inter_step_span_ms_in_long_gaps": 8354.712,
+                "share_of_observed_inter_step_span": 0.6949514590241497,
+                "summed_excess_above_threshold_ms": 854.712
+              },
+              "500": {
+                "count": 1,
+                "count_per_capture_minute": 4.985351375873891,
+                "inter_step_span_ms_in_long_gaps": 536.09,
+                "share_of_observed_inter_step_span": 0.04459238423398155,
+                "summed_excess_above_threshold_ms": 36.09000000000003
+              },
+              "1000": {
+                "count": 0,
+                "count_per_capture_minute": 0.0,
+                "inter_step_span_ms_in_long_gaps": 0.0,
+                "share_of_observed_inter_step_span": 0.0,
+                "summed_excess_above_threshold_ms": 0.0
+              }
+            },
+            "observed_inter_step_span_ms": 12022.008,
+            "tail_burden_scope": "Existing reporting thresholds only, not owner acceptance budgets. Gap spans exclude capture edges before first and after last observed completion; rate normalization uses the full capture window.",
+            "first_command_admission_to_completion_ms": {
+              "count": 144,
+              "mean": 68.75833333333334,
+              "max": 535.425,
+              "p50": 7.247999999999999,
+              "p95": 274.6321,
+              "p99": 280.15628
+            },
+            "latest_consumed_command_to_completion_ms": {
+              "count": 144,
+              "mean": 3.5894791666666666,
+              "max": 147.751,
+              "p50": 0.7455,
+              "p95": 1.0625499999999997,
+              "p99": 84.43848999999983
+            },
+            "native_completion_clock_to_physical_ms": {
+              "count": 144,
+              "mean": 77.44030555555555,
+              "max": 531.749,
+              "p50": 3.7969999999999997,
+              "p95": 270.9336,
+              "p99": 277.61711
+            },
+            "solver_elapsed_ms": {
+              "count": 144,
+              "mean": 2.9698194444444446,
+              "max": 146.93,
+              "p50": 0.1085,
+              "p95": 0.26034999999999964,
+              "p99": 83.78794999999982
+            },
+            "upload_submit_call_ms": {
+              "count": 41,
+              "mean": 172.1898292682927,
+              "max": 477.703,
+              "p50": 168.178,
+              "p95": 269.883,
+              "p99": 395.7278000000003
+            },
+            "delivered_draw_gap_ms": {
+              "count": 42,
+              "mean": 285.96871428571427,
+              "max": 535.862,
+              "p50": 287.20000000000005,
+              "p95": 297.29015,
+              "p99": 440.0130200000008
+            }
+          },
+          "treatment_exercise": {
+            "deferred_turns": true,
+            "replaced_offers": true,
+            "independently_joined_count_due": true
+          },
+          "capture_policy_counters": {
+            "offers": 42,
+            "replaced_offers": 1,
+            "deferred_turns": 1,
+            "consumptions": 41,
+            "accepted_uploads": 41,
+            "accepted_uploads_after_policy_cancellation": 0,
+            "cancellations": 0,
+            "edit_requests": 0,
+            "paint_generation": 0
+          },
+          "accepted_eligibility_populations": {
+            "count_only": 39,
+            "both": 1,
+            "deadline_only": 0,
+            "neither_initial_or_immediate": 1
+          },
+          "independent_count_before_deadline_observed": true
+        },
+        {
+          "index": 3,
+          "requested_interval": 0,
+          "receipt_sha256": "928463d13f05db52dd6ea861d42c68761c71cd47f0121784ea785c1d869cbbf7",
+          "events_sha256": "05af7e2eebd82d23e07a509b72e894255a38a9232e43b022c2b2d42b6e74f139",
+          "source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+          "native_binary_sha256": "bb6eceaa3b7423a6956cf007f7ecde3c6f02dbdb5d514bc40fd087e842923815",
+          "process_exit_code": 0,
+          "process_timed_out": false,
+          "physical_witness": {
+            "actual_completed_steps": 144,
+            "unique_callback_credits": 144,
+            "actual_owned_bodies": 1,
+            "initial_pre_capture_sample_steps": 0,
+            "native_response_steps": 144,
+            "terrain_and_owner_fences": true
+          },
+          "first_144_steps": {
+            "duration_seconds": 12.593651,
+            "completed_rapier_steps": 144,
+            "rapier_steps_per_second": 11.434333061953202,
+            "physical_gap_ms": {
+              "count": 143,
+              "mean": 87.97250349650349,
+              "max": 283.144,
+              "p50": 7.909,
+              "p95": 277.689,
+              "p99": 282.88792
+            },
+            "gaps_above_ms": {
+              "100": 44,
+              "250": 40,
+              "500": 0,
+              "1000": 0
+            },
+            "absolute_tail_burden": {
+              "100": {
+                "count": 44,
+                "count_per_capture_minute": 209.62943946914203,
+                "inter_step_span_ms_in_long_gaps": 11702.717,
+                "share_of_observed_inter_step_span": 0.9302586440709224,
+                "summed_excess_above_threshold_ms": 7302.717
+              },
+              "250": {
+                "count": 40,
+                "count_per_capture_minute": 190.57221769922003,
+                "inter_step_span_ms_in_long_gaps": 10815.397,
+                "share_of_observed_inter_step_span": 0.8597248440946426,
+                "summed_excess_above_threshold_ms": 815.3969999999999
+              },
+              "500": {
+                "count": 0,
+                "count_per_capture_minute": 0.0,
+                "inter_step_span_ms_in_long_gaps": 0.0,
+                "share_of_observed_inter_step_span": 0.0,
+                "summed_excess_above_threshold_ms": 0.0
+              },
+              "1000": {
+                "count": 0,
+                "count_per_capture_minute": 0.0,
+                "inter_step_span_ms_in_long_gaps": 0.0,
+                "share_of_observed_inter_step_span": 0.0,
+                "summed_excess_above_threshold_ms": 0.0
+              }
+            },
+            "observed_inter_step_span_ms": 12580.068,
+            "tail_burden_scope": "Existing reporting thresholds only, not owner acceptance budgets. Gap spans exclude capture edges before first and after last observed completion; rate normalization uses the full capture window.",
+            "first_command_admission_to_completion_ms": {
+              "count": 144,
+              "mean": 66.63725,
+              "max": 282.571,
+              "p50": 7.0585,
+              "p95": 274.36035,
+              "p99": 280.94446
+            },
+            "latest_consumed_command_to_completion_ms": {
+              "count": 144,
+              "mean": 0.7135763888888889,
+              "max": 3.006,
+              "p50": 0.7164999999999999,
+              "p95": 0.8761,
+              "p99": 1.0755399999999984
+            },
+            "native_completion_clock_to_physical_ms": {
+              "count": 144,
+              "mean": 82.22897222222223,
+              "max": 279.532,
+              "p50": 3.8034999999999997,
+              "p95": 271.5441,
+              "p99": 278.7656
+            },
+            "solver_elapsed_ms": {
+              "count": 144,
+              "mean": 0.13572222222222222,
+              "max": 2.405,
+              "p50": 0.108,
+              "p95": 0.16924999999999998,
+              "p99": 0.3519799999999985
+            },
+            "upload_submit_call_ms": {
+              "count": 44,
+              "mean": 217.30774999999997,
+              "max": 274.787,
+              "p50": 255.83550000000002,
+              "p95": 270.5809,
+              "p99": 274.75088
+            },
+            "delivered_draw_gap_ms": {
+              "count": 44,
+              "mean": 285.47029545454546,
+              "max": 299.333,
+              "p50": 285.1975,
+              "p95": 295.819,
+              "p99": 298.20339
+            }
+          },
+          "treatment_exercise": {
+            "deferred_turns": false,
+            "replaced_offers": false,
+            "independently_joined_count_due": false
+          },
+          "capture_policy_counters": {
+            "offers": 0,
+            "replaced_offers": 0,
+            "deferred_turns": 0,
+            "consumptions": 0,
+            "accepted_uploads": 0,
+            "accepted_uploads_after_policy_cancellation": 0,
+            "cancellations": 0,
+            "edit_requests": 0,
+            "paint_generation": 0
+          },
+          "accepted_eligibility_populations": {
+            "count_only": 0,
+            "both": 0,
+            "deadline_only": 0,
+            "neither_initial_or_immediate": 0
+          },
+          "independent_count_before_deadline_observed": false
+        }
+      ]
+    },
+    {
+      "case": "wave_gameplay_2048_follow",
+      "treatment_exercised_in_both_arms": true,
+      "registered_direction": {
+        "window": "first_144_steps",
+        "reference_role": "D",
+        "all_candidate_rates_higher": false,
+        "all_candidate_gap_quantiles_lower": {
+          "p95": false,
+          "p99": false
+        },
+        "all_candidate_max_gaps_within_worst_reference": false,
+        "all_candidate_severe_counts_within_worst_reference": {
+          "100": true,
+          "250": true,
+          "500": false,
+          "1000": true
+        },
+        "repeatable_direction": false,
+        "disposition": "NOT_ESTABLISHED"
+      },
+      "arms": [
+        {
+          "index": 0,
+          "requested_interval": 0,
+          "receipt_sha256": "33ffa8d63f280ff7e16b72884c15ca53a724a202e76e3491bd03a9bb218a3dab",
+          "events_sha256": "d25baab2ce0deb9d176680e72efec4b06688e5097ce20077437e14bbf12346ab",
+          "source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+          "native_binary_sha256": "bb6eceaa3b7423a6956cf007f7ecde3c6f02dbdb5d514bc40fd087e842923815",
+          "process_exit_code": 0,
+          "process_timed_out": false,
+          "physical_witness": {
+            "actual_completed_steps": 146,
+            "unique_callback_credits": 146,
+            "actual_owned_bodies": 1,
+            "initial_pre_capture_sample_steps": 0,
+            "native_response_steps": 146,
+            "terrain_and_owner_fences": true
+          },
+          "first_144_steps": {
+            "duration_seconds": 43.730582,
+            "completed_rapier_steps": 144,
+            "rapier_steps_per_second": 3.2928900877651253,
+            "physical_gap_ms": {
+              "count": 143,
+              "mean": 303.94802797202794,
+              "max": 834.318,
+              "p50": 324.995,
+              "p95": 435.88530000000003,
+              "p99": 720.4246400000006
+            },
+            "gaps_above_ms": {
+              "100": 132,
+              "250": 103,
+              "500": 6,
+              "1000": 0
+            },
+            "absolute_tail_burden": {
+              "100": {
+                "count": 132,
+                "count_per_capture_minute": 181.10895482708187,
+                "inter_step_span_ms_in_long_gaps": 42906.856,
+                "share_of_observed_inter_step_span": 0.987168582924832,
+                "summed_excess_above_threshold_ms": 29706.856
+              },
+              "250": {
+                "count": 103,
+                "count_per_capture_minute": 141.31986626658662,
+                "inter_step_span_ms_in_long_gaps": 38053.972,
+                "share_of_observed_inter_step_span": 0.875517087849579,
+                "summed_excess_above_threshold_ms": 12303.972
+              },
+              "500": {
+                "count": 6,
+                "count_per_capture_minute": 8.232225219412813,
+                "inter_step_span_ms_in_long_gaps": 4021.174,
+                "share_of_observed_inter_step_span": 0.09251613866264587,
+                "summed_excess_above_threshold_ms": 1021.174
+              },
+              "1000": {
+                "count": 0,
+                "count_per_capture_minute": 0.0,
+                "inter_step_span_ms_in_long_gaps": 0.0,
+                "share_of_observed_inter_step_span": 0.0,
+                "summed_excess_above_threshold_ms": 0.0
+              }
+            },
+            "observed_inter_step_span_ms": 43464.568,
+            "tail_burden_scope": "Existing reporting thresholds only, not owner acceptance budgets. Gap spans exclude capture edges before first and after last observed completion; rate normalization uses the full capture window.",
+            "first_command_admission_to_completion_ms": {
+              "count": 144,
+              "mean": 260.6306388888889,
+              "max": 741.694,
+              "p50": 322.003,
+              "p95": 417.99235,
+              "p99": 580.1704099999984
+            },
+            "latest_consumed_command_to_completion_ms": {
+              "count": 144,
+              "mean": 11.320361111111112,
+              "max": 207.426,
+              "p50": 4.006,
+              "p95": 45.129349999999995,
+              "p99": 172.03473999999974
+            },
+            "native_completion_clock_to_physical_ms": {
+              "count": 144,
+              "mean": 168.3635486111111,
+              "max": 612.145,
+              "p50": 167.6175,
+              "p95": 310.8298,
+              "p99": 589.3650499999998
+            },
+            "solver_elapsed_ms": {
+              "count": 144,
+              "mean": 7.895180555555555,
+              "max": 204.289,
+              "p50": 0.678,
+              "p95": 36.86754999999985,
+              "p99": 168.51062999999976
+            },
+            "upload_submit_call_ms": {
+              "count": 98,
+              "mean": 195.28348979591837,
+              "max": 730.346,
+              "p50": 279.356,
+              "p95": 380.62330000000026,
+              "p99": 613.5560600000001
+            },
+            "delivered_draw_gap_ms": {
+              "count": 110,
+              "mean": 397.3808818181818,
+              "max": 1210.314,
+              "p50": 394.02,
+              "p95": 694.55935,
+              "p99": 953.0123999999994
+            }
+          },
+          "treatment_exercise": {
+            "deferred_turns": false,
+            "replaced_offers": false,
+            "independently_joined_count_due": false
+          },
+          "capture_policy_counters": {
+            "offers": 0,
+            "replaced_offers": 0,
+            "deferred_turns": 0,
+            "consumptions": 0,
+            "accepted_uploads": 0,
+            "accepted_uploads_after_policy_cancellation": 0,
+            "cancellations": 0,
+            "edit_requests": 0,
+            "paint_generation": 0
+          },
+          "accepted_eligibility_populations": {
+            "count_only": 0,
+            "both": 0,
+            "deadline_only": 0,
+            "neither_initial_or_immediate": 0
+          },
+          "independent_count_before_deadline_observed": false
+        },
+        {
+          "index": 1,
+          "requested_interval": 2,
+          "receipt_sha256": "05b4e8c3c462765ec97ef9bf192b43fac59444496ff4ecac414733788a89716b",
+          "events_sha256": "235361ef51c3f5401aae6d2023f6691f75052df25b3918197c288b824d4b60cd",
+          "source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+          "native_binary_sha256": "bb6eceaa3b7423a6956cf007f7ecde3c6f02dbdb5d514bc40fd087e842923815",
+          "process_exit_code": 0,
+          "process_timed_out": false,
+          "physical_witness": {
+            "actual_completed_steps": 144,
+            "unique_callback_credits": 144,
+            "actual_owned_bodies": 1,
+            "initial_pre_capture_sample_steps": 0,
+            "native_response_steps": 144,
+            "terrain_and_owner_fences": true
+          },
+          "first_144_steps": {
+            "duration_seconds": 45.475431,
+            "completed_rapier_steps": 144,
+            "rapier_steps_per_second": 3.1665450295567292,
+            "physical_gap_ms": {
+              "count": 143,
+              "mean": 316.7418321678322,
+              "max": 997.713,
+              "p50": 295.725,
+              "p95": 723.7003000000001,
+              "p99": 978.86962
+            },
+            "gaps_above_ms": {
+              "100": 127,
+              "250": 93,
+              "500": 15,
+              "1000": 0
+            },
+            "absolute_tail_burden": {
+              "100": {
+                "count": 127,
+                "count_per_capture_minute": 167.5630078140436,
+                "inter_step_span_ms_in_long_gaps": 44574.2,
+                "share_of_observed_inter_step_span": 0.9841064887903015,
+                "summed_excess_above_threshold_ms": 31874.2
+              },
+              "250": {
+                "count": 93,
+                "count_per_capture_minute": 122.70361989532326,
+                "inter_step_span_ms_in_long_gaps": 38704.954,
+                "share_of_observed_inter_step_span": 0.8545256309643277,
+                "summed_excess_above_threshold_ms": 15454.954
+              },
+              "500": {
+                "count": 15,
+                "count_per_capture_minute": 19.790906434729557,
+                "inter_step_span_ms_in_long_gaps": 11695.581,
+                "share_of_observed_inter_step_span": 0.25821432919205645,
+                "summed_excess_above_threshold_ms": 4195.581
+              },
+              "1000": {
+                "count": 0,
+                "count_per_capture_minute": 0.0,
+                "inter_step_span_ms_in_long_gaps": 0.0,
+                "share_of_observed_inter_step_span": 0.0,
+                "summed_excess_above_threshold_ms": 0.0
+              }
+            },
+            "observed_inter_step_span_ms": 45294.082,
+            "tail_burden_scope": "Existing reporting thresholds only, not owner acceptance budgets. Gap spans exclude capture edges before first and after last observed completion; rate normalization uses the full capture window.",
+            "first_command_admission_to_completion_ms": {
+              "count": 144,
+              "mean": 255.45443055555558,
+              "max": 996.971,
+              "p50": 255.6805,
+              "p95": 710.37645,
+              "p99": 977.9914799999999
+            },
+            "latest_consumed_command_to_completion_ms": {
+              "count": 144,
+              "mean": 12.410381944444445,
+              "max": 193.904,
+              "p50": 3.9775,
+              "p95": 69.64879999999998,
+              "p99": 177.2575099999998
+            },
+            "native_completion_clock_to_physical_ms": {
+              "count": 144,
+              "mean": 179.65600694444444,
+              "max": 875.784,
+              "p50": 151.8355,
+              "p95": 593.88265,
+              "p99": 721.0846399999995
+            },
+            "solver_elapsed_ms": {
+              "count": 144,
+              "mean": 9.029909722222222,
+              "max": 190.207,
+              "p50": 0.6735,
+              "p95": 66.25459999999998,
+              "p99": 173.91146999999978
+            },
+            "upload_submit_call_ms": {
+              "count": 66,
+              "mean": 281.527303030303,
+              "max": 940.201,
+              "p50": 307.5775,
+              "p95": 817.0335,
+              "p99": 927.5545999999999
+            },
+            "delivered_draw_gap_ms": {
+              "count": 117,
+              "mean": 387.82436752136755,
+              "max": 1108.458,
+              "p50": 416.457,
+              "p95": 910.3904000000001,
+              "p99": 1103.91948
+            }
+          },
+          "treatment_exercise": {
+            "deferred_turns": true,
+            "replaced_offers": true,
+            "independently_joined_count_due": true
+          },
+          "capture_policy_counters": {
+            "offers": 94,
+            "replaced_offers": 28,
+            "deferred_turns": 43,
+            "consumptions": 66,
+            "accepted_uploads": 66,
+            "accepted_uploads_after_policy_cancellation": 0,
+            "cancellations": 0,
+            "edit_requests": 0,
+            "paint_generation": 0
+          },
+          "accepted_eligibility_populations": {
+            "count_only": 30,
+            "both": 28,
+            "deadline_only": 7,
+            "neither_initial_or_immediate": 1
+          },
+          "independent_count_before_deadline_observed": true
+        },
+        {
+          "index": 2,
+          "requested_interval": 2,
+          "receipt_sha256": "52ffc32d8e3f8a9e6cd5bd5b28507d45bf30b36a41f00fa61ae3b7fda4832f3d",
+          "events_sha256": "42924938af5480acc1ecfe40417f80ea6d37544dc3429166dde21eb54ddb0a07",
+          "source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+          "native_binary_sha256": "bb6eceaa3b7423a6956cf007f7ecde3c6f02dbdb5d514bc40fd087e842923815",
+          "process_exit_code": 0,
+          "process_timed_out": false,
+          "physical_witness": {
+            "actual_completed_steps": 144,
+            "unique_callback_credits": 144,
+            "actual_owned_bodies": 1,
+            "initial_pre_capture_sample_steps": 0,
+            "native_response_steps": 144,
+            "terrain_and_owner_fences": true
+          },
+          "first_144_steps": {
+            "duration_seconds": 43.746919,
+            "completed_rapier_steps": 144,
+            "rapier_steps_per_second": 3.2916603795572437,
+            "physical_gap_ms": {
+              "count": 143,
+              "mean": 300.532006993007,
+              "max": 923.727,
+              "p50": 286.894,
+              "p95": 707.3636,
+              "p99": 915.3108000000001
+            },
+            "gaps_above_ms": {
+              "100": 129,
+              "250": 85,
+              "500": 16,
+              "1000": 0
+            },
+            "absolute_tail_burden": {
+              "100": {
+                "count": 129,
+                "count_per_capture_minute": 176.92674540120186,
+                "inter_step_span_ms_in_long_gaps": 42378.024,
+                "share_of_observed_inter_step_span": 0.9860840485742801,
+                "summed_excess_above_threshold_ms": 29478.024
+              },
+              "250": {
+                "count": 85,
+                "count_per_capture_minute": 116.57963844265238,
+                "inter_step_span_ms_in_long_gaps": 34978.961,
+                "share_of_observed_inter_step_span": 0.8139170310961609,
+                "summed_excess_above_threshold_ms": 13728.961
+              },
+              "500": {
+                "count": 16,
+                "count_per_capture_minute": 21.944402530381627,
+                "inter_step_span_ms_in_long_gaps": 11568.677,
+                "share_of_observed_inter_step_span": 0.2691887628552043,
+                "summed_excess_above_threshold_ms": 3568.6769999999997
+              },
+              "1000": {
+                "count": 0,
+                "count_per_capture_minute": 0.0,
+                "inter_step_span_ms_in_long_gaps": 0.0,
+                "share_of_observed_inter_step_span": 0.0,
+                "summed_excess_above_threshold_ms": 0.0
+              }
+            },
+            "observed_inter_step_span_ms": 42976.077,
+            "tail_burden_scope": "Existing reporting thresholds only, not owner acceptance budgets. Gap spans exclude capture edges before first and after last observed completion; rate normalization uses the full capture window.",
+            "first_command_admission_to_completion_ms": {
+              "count": 144,
+              "mean": 237.9835902777778,
+              "max": 922.856,
+              "p50": 208.561,
+              "p95": 698.6963,
+              "p99": 914.38973
+            },
+            "latest_consumed_command_to_completion_ms": {
+              "count": 144,
+              "mean": 10.421416666666666,
+              "max": 206.379,
+              "p50": 4.0445,
+              "p95": 54.57824999999994,
+              "p99": 149.37345999999948
+            },
+            "native_completion_clock_to_physical_ms": {
+              "count": 144,
+              "mean": 165.84372916666666,
+              "max": 892.964,
+              "p50": 108.108,
+              "p95": 588.3837,
+              "p99": 885.09888
+            },
+            "solver_elapsed_ms": {
+              "count": 144,
+              "mean": 7.028201388888889,
+              "max": 203.187,
+              "p50": 0.68,
+              "p95": 47.4296999999998,
+              "p99": 147.36014999999946
+            },
+            "upload_submit_call_ms": {
+              "count": 67,
+              "mean": 245.41670149253733,
+              "max": 891.315,
+              "p50": 134.826,
+              "p95": 684.5477000000002,
+              "p99": 885.1222200000001
+            },
+            "delivered_draw_gap_ms": {
+              "count": 111,
+              "mean": 391.9113963963964,
+              "max": 1207.164,
+              "p50": 419.2,
+              "p95": 813.0785,
+              "p99": 938.0252
+            }
+          },
+          "treatment_exercise": {
+            "deferred_turns": true,
+            "replaced_offers": true,
+            "independently_joined_count_due": true
+          },
+          "capture_policy_counters": {
+            "offers": 87,
+            "replaced_offers": 19,
+            "deferred_turns": 32,
+            "consumptions": 67,
+            "accepted_uploads": 67,
+            "accepted_uploads_after_policy_cancellation": 0,
+            "cancellations": 0,
+            "edit_requests": 0,
+            "paint_generation": 0
+          },
+          "accepted_eligibility_populations": {
+            "count_only": 40,
+            "both": 18,
+            "deadline_only": 7,
+            "neither_initial_or_immediate": 2
+          },
+          "independent_count_before_deadline_observed": true
+        },
+        {
+          "index": 3,
+          "requested_interval": 0,
+          "receipt_sha256": "667fdb1c19fcc810d7d5fbf3ed9ed8c1b188daeb307037e6555f9effc295d555",
+          "events_sha256": "5923bbb9e0ea32ee33bd91ed5a783c6d334788abdae6edab2baff8b4e49f0f5c",
+          "source": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+          "native_binary_sha256": "bb6eceaa3b7423a6956cf007f7ecde3c6f02dbdb5d514bc40fd087e842923815",
+          "process_exit_code": 0,
+          "process_timed_out": false,
+          "physical_witness": {
+            "actual_completed_steps": 144,
+            "unique_callback_credits": 144,
+            "actual_owned_bodies": 1,
+            "initial_pre_capture_sample_steps": 0,
+            "native_response_steps": 144,
+            "terrain_and_owner_fences": true
+          },
+          "first_144_steps": {
+            "duration_seconds": 39.096134,
+            "completed_rapier_steps": 144,
+            "rapier_steps_per_second": 3.683228628180986,
+            "physical_gap_ms": {
+              "count": 143,
+              "mean": 268.09611188811186,
+              "max": 932.72,
+              "p50": 292.533,
+              "p95": 420.5494,
+              "p99": 649.4407400000009
+            },
+            "gaps_above_ms": {
+              "100": 128,
+              "250": 81,
+              "500": 3,
+              "1000": 0
+            },
+            "absolute_tail_burden": {
+              "100": {
+                "count": 128,
+                "count_per_capture_minute": 196.43886016965257,
+                "inter_step_span_ms_in_long_gaps": 37578.259,
+                "share_of_observed_inter_step_span": 0.9801896272248048,
+                "summed_excess_above_threshold_ms": 24778.259
+              },
+              "250": {
+                "count": 81,
+                "count_per_capture_minute": 124.30896620110828,
+                "inter_step_span_ms_in_long_gaps": 29557.696,
+                "share_of_observed_inter_step_span": 0.7709816206190954,
+                "summed_excess_above_threshold_ms": 9307.696
+              },
+              "500": {
+                "count": 3,
+                "count_per_capture_minute": 4.604035785226232,
+                "inter_step_span_ms_in_long_gaps": 2219.249,
+                "share_of_observed_inter_step_span": 0.057886791669327226,
+                "summed_excess_above_threshold_ms": 719.249
+              },
+              "1000": {
+                "count": 0,
+                "count_per_capture_minute": 0.0,
+                "inter_step_span_ms_in_long_gaps": 0.0,
+                "share_of_observed_inter_step_span": 0.0,
+                "summed_excess_above_threshold_ms": 0.0
+              }
+            },
+            "observed_inter_step_span_ms": 38337.744,
+            "tail_burden_scope": "Existing reporting thresholds only, not owner acceptance budgets. Gap spans exclude capture edges before first and after last observed completion; rate normalization uses the full capture window.",
+            "first_command_admission_to_completion_ms": {
+              "count": 144,
+              "mean": 207.27408333333335,
+              "max": 931.908,
+              "p50": 186.537,
+              "p95": 411.4447,
+              "p99": 614.7882599999978
+            },
+            "latest_consumed_command_to_completion_ms": {
+              "count": 144,
+              "mean": 8.966409722222222,
+              "max": 136.13,
+              "p50": 3.931,
+              "p95": 45.402849999999965,
+              "p99": 109.33469
+            },
+            "native_completion_clock_to_physical_ms": {
+              "count": 144,
+              "mean": 137.27564583333333,
+              "max": 902.777,
+              "p50": 98.3475,
+              "p95": 302.75239999999997,
+              "p99": 589.2083899999992
+            },
+            "solver_elapsed_ms": {
+              "count": 144,
+              "mean": 5.5445625000000005,
+              "max": 133.063,
+              "p50": 0.675,
+              "p95": 33.07974999999986,
+              "p99": 105.73314999999998
+            },
+            "upload_submit_call_ms": {
+              "count": 84,
+              "mean": 173.71139285714284,
+              "max": 889.871,
+              "p50": 125.7295,
+              "p95": 388.8458499999999,
+              "p99": 643.3933700000005
+            },
+            "delivered_draw_gap_ms": {
+              "count": 94,
+              "mean": 415.35847872340423,
+              "max": 932.757,
+              "p50": 420.1245,
+              "p95": 623.3084,
+              "p99": 699.2349299999983
+            }
+          },
+          "treatment_exercise": {
+            "deferred_turns": false,
+            "replaced_offers": false,
+            "independently_joined_count_due": false
+          },
+          "capture_policy_counters": {
+            "offers": 0,
+            "replaced_offers": 0,
+            "deferred_turns": 0,
+            "consumptions": 0,
+            "accepted_uploads": 0,
+            "accepted_uploads_after_policy_cancellation": 0,
+            "cancellations": 0,
+            "edit_requests": 0,
+            "paint_generation": 0
+          },
+          "accepted_eligibility_populations": {
+            "count_only": 0,
+            "both": 0,
+            "deadline_only": 0,
+            "neither_initial_or_immediate": 0
+          },
+          "independent_count_before_deadline_observed": false
+        }
+      ]
+    }
+  ],
+  "diagnosis": "Valid treatment-execution failure, reproduced. Wave512 first count2 arm never deferred or replaced an offered material packet. The reader correctly withholds count2 performance attribution. Large Wave exercised coalescing but failed the unchanged directional performance gate.",
+  "disposition": "Original Windows graphical FAIL retained. No oracle repair is warranted. Retire unchanged count2 timing prospectively; preserve all policy/correctness witnesses and adverse/no-op results.",
+  "physical_acceptance": "HOLD",
+  "complete": true,
+  "scope": "Offline independent original-byte/count/physical-step review. No new graphical execution, no workflow pass override, no complete GPU requalification and no physical Windows/NVIDIA acceptance."
+}

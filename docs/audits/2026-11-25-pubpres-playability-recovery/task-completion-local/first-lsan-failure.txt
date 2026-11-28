@@ -1,0 +1,8 @@
+Original tool result from make worker-pool-test worker-pool-sanitize worker-pool-thread-sanitize, before the explicit no-LSan rerun:
+./build/test_persistent_worker_pool
+PUBPRES_POOL_LIFETIME_RESULT {"checks":495,"failures":[]}
+UBSAN_OPTIONS=halt_on_error=1 ./build/test_persistent_worker_pool_sanitized
+==398==LeakSanitizer has encountered a fatal error.
+==398==HINT: For debugging, try setting environment variable LSAN_OPTIONS=verbosity=1:log_threads=1
+==398==HINT: LeakSanitizer does not work under ptrace (strace, gdb, etc)
+make: *** [Makefile:71: worker-pool-sanitize] Error 1

@@ -1,0 +1,3040 @@
+{
+  "schema": "pubpres-historical-c90-causal-stage-recovery-v1",
+  "program_sha256": "22f7192973a8f68f462ab9c2f4e4dbfcedf33c54166287a33a4d8cecf694fdd5",
+  "archive_sha256": "e4d0c605e29ea4c0e8d14cd90bd1b974881800034c5ba183504d1269e43cb4bd",
+  "members_sha256": {
+    "causal/wave_gameplay_2048_follow/0-C/receipt.json": "f6d294886233b3d16c6b7eb47c177a363387a5a3f2592c1f016cba268a523153",
+    "causal/wave_gameplay_2048_follow/0-C/receipt-events.jsonl": "0106d792c789652c326d10c3bb2a7dd7c702c764d85b28ceca0cb56ff14a029e",
+    "causal/wave_gameplay_2048_follow/0-C/receipt-causal-events.jsonl": "6bf3eceab716c6548fdc8b4487c3aa046874e08c541630fd68f029865c84a466",
+    "causal/wave_gameplay_2048_follow/0-C/causal-analysis.json": "3281030444e32a7d756cbf8a9155cee2b024a4281db99a3c21795861380c106f",
+    "causal/wave_gameplay_2048_follow/0-C/arm.json": "4dce3370df4aa64fa161b65d6d9dc3c77038d51c8bd2a24ba386a2e1753a9baf"
+  },
+  "source": {
+    "root": "D:\\a\\cybersand\\cybersand",
+    "source_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+    "source_tree": "bf742007f0640bf13c8b21cab5823b4a5a8c208d",
+    "working_tree_changes": [],
+    "untracked_source_files": [],
+    "qualified_exact_head": true,
+    "native_runtime": {
+      "manifest_path": "D:\\a\\cybersand\\cybersand\\build\\runtime\\C\\PUBPRES-RUNTIME.json",
+      "manifest_sha256": "b47b6c4ea0f9938138539adc8dda7622a60b219885bdd3aeb44187bb8091209e",
+      "binary_sha256": "250fe0d1da6df0857e6e1e135f183038a37eccfc5c9aba88551f68f78da58b28",
+      "binary_path": "D:\\a\\cybersand\\cybersand\\build\\runtime\\C\\cybersand_native.windows.x86_64.dll",
+      "staged_relative_path": "addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "checked_source_files": 105,
+      "build_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "source_inputs_sha256": "12c9df66fb0e58feee45ab3b676c6fc1d36b1fb62a92befb8b9326ba068b2b5c",
+      "dependency_builder_commit": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+      "toolchain": {
+        "godot_cpp_commit": "101ae38034304346a46ea9ea84ae156d3e860496",
+        "godot_cpp_library_sha256": "fa78011a7dfe03130bf1df52f6417fbb2cc4939732a2de2976d6577f2576da08",
+        "godot_cpp_dependency_sha256": "921887755c92a80c319e696c888a100fc192ffbb61db7fb772817cf5c9e4a5dd",
+        "compiler_command": "/home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-mingw32-g++",
+        "compiler_version": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg",
+        "toolchain_drift_allowed": false
+      },
+      "experimental_build": true
+    }
+  },
+  "base_step_witness": {
+    "actual_completed_steps": 144,
+    "unique_callback_credits": 144,
+    "actual_owned_bodies": 1,
+    "initial_pre_capture_sample_steps": 0,
+    "native_response_steps": 144,
+    "terrain_and_owner_fences": true
+  },
+  "unchanged_causal_reducer_replay": true,
+  "replayed_joined_transactions": 144,
+  "historical_transaction_latency_ms": {
+    "native_compute_ms": {
+      "count": 144,
+      "p50": 112.501,
+      "p95": 278.2914,
+      "p99": 300.77765,
+      "max": 312.781
+    },
+    "native_complete_to_publish_ms": {
+      "count": 144,
+      "p50": 2.4154999999999998,
+      "p95": 11.7333,
+      "p99": 43.94231999999962,
+      "max": 109.222
+    },
+    "published_to_observed_ms": {
+      "count": 144,
+      "p50": 96.241,
+      "p95": 340.4646499999998,
+      "p99": 717.6905599999998,
+      "max": 735.813
+    },
+    "observed_to_transaction_ms": {
+      "count": 144,
+      "p50": 2.0865,
+      "p95": 2.3747,
+      "p99": 3.0694899999999934,
+      "max": 3.961
+    },
+    "observed_until_terrain_ready_ms": {
+      "count": 144,
+      "p50": 2.0475000000000003,
+      "p95": 2.3414,
+      "p99": 2.991079999999993,
+      "max": 3.923
+    },
+    "transaction_to_completion_ms": {
+      "count": 144,
+      "p50": 1.294,
+      "p95": 1.8701499999999982,
+      "p99": 44.30614999999993,
+      "max": 77.546
+    }
+  },
+  "historical_main_phase_wall_ms": {
+    "material_consumption": {
+      "count": 120,
+      "p50": 77.9685,
+      "p95": 508.78299999999984,
+      "p99": 720.4065200000002,
+      "max": 752.416
+    },
+    "main_process_exit": {
+      "count": 120,
+      "p50": 78.9265,
+      "p95": 509.52714999999984,
+      "p99": 721.2676800000002,
+      "max": 753.183
+    }
+  },
+  "consecutive_gap_partitions": [
+    {
+      "step": 2,
+      "clocks_usec": [
+        153094181,
+        153094460,
+        153094537,
+        153095637,
+        153096000,
+        153342318,
+        153617163
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.279,
+      "admission_call_wall_ms": 0.077,
+      "admission_completed_to_worker_latch_ms": 1.1,
+      "worker_latch_to_native_start_ms": 0.363,
+      "native_wall_ms": 246.318,
+      "native_completion_to_physical_completion_ms": 274.845,
+      "observed_native_deadline_lateness_ms": 0.397
+    },
+    {
+      "step": 3,
+      "clocks_usec": [
+        153617163,
+        153617379,
+        153617449,
+        153618951,
+        153619348,
+        153884593,
+        153971637
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.216,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 1.502,
+      "worker_latch_to_native_start_ms": 0.397,
+      "native_wall_ms": 265.245,
+      "native_completion_to_physical_completion_ms": 87.044,
+      "observed_native_deadline_lateness_ms": 0.433
+    },
+    {
+      "step": 4,
+      "clocks_usec": [
+        153971637,
+        153971844,
+        153971923,
+        153972930,
+        153973276,
+        154217016,
+        154305794
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.207,
+      "admission_call_wall_ms": 0.079,
+      "admission_completed_to_worker_latch_ms": 1.007,
+      "worker_latch_to_native_start_ms": 0.346,
+      "native_wall_ms": 243.74,
+      "native_completion_to_physical_completion_ms": 88.778,
+      "observed_native_deadline_lateness_ms": 0.379
+    },
+    {
+      "step": 5,
+      "clocks_usec": [
+        154305794,
+        154306035,
+        154306102,
+        154306940,
+        154307301,
+        154423351,
+        154646050
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.241,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 0.838,
+      "worker_latch_to_native_start_ms": 0.361,
+      "native_wall_ms": 116.05,
+      "native_completion_to_physical_completion_ms": 222.699,
+      "observed_native_deadline_lateness_ms": 0.396
+    },
+    {
+      "step": 6,
+      "clocks_usec": [
+        154646050,
+        154646287,
+        154646359,
+        154648101,
+        154648477,
+        154759793,
+        154984053
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.237,
+      "admission_call_wall_ms": 0.072,
+      "admission_completed_to_worker_latch_ms": 1.742,
+      "worker_latch_to_native_start_ms": 0.376,
+      "native_wall_ms": 111.316,
+      "native_completion_to_physical_completion_ms": 224.26,
+      "observed_native_deadline_lateness_ms": 0.411
+    },
+    {
+      "step": 7,
+      "clocks_usec": [
+        154984053,
+        154984430,
+        154984508,
+        154985544,
+        154985936,
+        155104995,
+        155330613
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.377,
+      "admission_call_wall_ms": 0.078,
+      "admission_completed_to_worker_latch_ms": 1.036,
+      "worker_latch_to_native_start_ms": 0.392,
+      "native_wall_ms": 119.059,
+      "native_completion_to_physical_completion_ms": 225.618,
+      "observed_native_deadline_lateness_ms": 0.436
+    },
+    {
+      "step": 8,
+      "clocks_usec": [
+        155330613,
+        155330817,
+        155330913,
+        155331917,
+        155332267,
+        155439478,
+        155454780
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.204,
+      "admission_call_wall_ms": 0.096,
+      "admission_completed_to_worker_latch_ms": 1.004,
+      "worker_latch_to_native_start_ms": 0.35,
+      "native_wall_ms": 107.211,
+      "native_completion_to_physical_completion_ms": 15.302,
+      "observed_native_deadline_lateness_ms": 0.391
+    },
+    {
+      "step": 9,
+      "clocks_usec": [
+        155454780,
+        155455020,
+        155455090,
+        155457076,
+        155457393,
+        155677878,
+        156038012
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.24,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 1.986,
+      "worker_latch_to_native_start_ms": 0.317,
+      "native_wall_ms": 220.485,
+      "native_completion_to_physical_completion_ms": 360.134,
+      "observed_native_deadline_lateness_ms": 0.345
+    },
+    {
+      "step": 10,
+      "clocks_usec": [
+        156038012,
+        156038212,
+        156038280,
+        156039808,
+        156040197,
+        156150785,
+        156339290
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.2,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 1.528,
+      "worker_latch_to_native_start_ms": 0.389,
+      "native_wall_ms": 110.588,
+      "native_completion_to_physical_completion_ms": 188.505,
+      "observed_native_deadline_lateness_ms": 0.625
+    },
+    {
+      "step": 11,
+      "clocks_usec": [
+        156339290,
+        156339488,
+        156339550,
+        156340858,
+        156341167,
+        156465596,
+        156639571
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.198,
+      "admission_call_wall_ms": 0.062,
+      "admission_completed_to_worker_latch_ms": 1.308,
+      "worker_latch_to_native_start_ms": 0.309,
+      "native_wall_ms": 124.429,
+      "native_completion_to_physical_completion_ms": 173.975,
+      "observed_native_deadline_lateness_ms": 0.343
+    },
+    {
+      "step": 12,
+      "clocks_usec": [
+        156639571,
+        156639832,
+        156639903,
+        156641820,
+        156642165,
+        156775780,
+        157040556
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.261,
+      "admission_call_wall_ms": 0.071,
+      "admission_completed_to_worker_latch_ms": 1.917,
+      "worker_latch_to_native_start_ms": 0.345,
+      "native_wall_ms": 133.615,
+      "native_completion_to_physical_completion_ms": 264.776,
+      "observed_native_deadline_lateness_ms": 0.377
+    },
+    {
+      "step": 13,
+      "clocks_usec": [
+        157040556,
+        157040783,
+        157040840,
+        157041153,
+        157041421,
+        157272970,
+        157367588
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.227,
+      "admission_call_wall_ms": 0.057,
+      "admission_completed_to_worker_latch_ms": 0.313,
+      "worker_latch_to_native_start_ms": 0.268,
+      "native_wall_ms": 231.549,
+      "native_completion_to_physical_completion_ms": 94.618,
+      "observed_native_deadline_lateness_ms": 0.296
+    },
+    {
+      "step": 14,
+      "clocks_usec": [
+        157367588,
+        157367856,
+        157367933,
+        157368337,
+        157368711,
+        157510826,
+        157594267
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.268,
+      "admission_call_wall_ms": 0.077,
+      "admission_completed_to_worker_latch_ms": 0.404,
+      "worker_latch_to_native_start_ms": 0.374,
+      "native_wall_ms": 142.115,
+      "native_completion_to_physical_completion_ms": 83.441,
+      "observed_native_deadline_lateness_ms": 0.411
+    },
+    {
+      "step": 15,
+      "clocks_usec": [
+        157594267,
+        157594488,
+        157594550,
+        157596142,
+        157596446,
+        157769334,
+        157800776
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.221,
+      "admission_call_wall_ms": 0.062,
+      "admission_completed_to_worker_latch_ms": 1.592,
+      "worker_latch_to_native_start_ms": 0.304,
+      "native_wall_ms": 172.888,
+      "native_completion_to_physical_completion_ms": 31.442,
+      "observed_native_deadline_lateness_ms": 0.331
+    },
+    {
+      "step": 16,
+      "clocks_usec": [
+        157800776,
+        157800990,
+        157801056,
+        157801143,
+        157801475,
+        157911759,
+        158156225
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.214,
+      "admission_call_wall_ms": 0.066,
+      "admission_completed_to_worker_latch_ms": 0.087,
+      "worker_latch_to_native_start_ms": 0.332,
+      "native_wall_ms": 110.284,
+      "native_completion_to_physical_completion_ms": 244.466,
+      "observed_native_deadline_lateness_ms": 0.358
+    },
+    {
+      "step": 17,
+      "clocks_usec": [
+        158156225,
+        158156446,
+        158156518,
+        158158165,
+        158158589,
+        158345114,
+        158463844
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.221,
+      "admission_call_wall_ms": 0.072,
+      "admission_completed_to_worker_latch_ms": 1.647,
+      "worker_latch_to_native_start_ms": 0.424,
+      "native_wall_ms": 186.525,
+      "native_completion_to_physical_completion_ms": 118.73,
+      "observed_native_deadline_lateness_ms": 1.639
+    },
+    {
+      "step": 18,
+      "clocks_usec": [
+        158463844,
+        158464051,
+        158464126,
+        158465192,
+        158465499,
+        158572448,
+        158585203
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.207,
+      "admission_call_wall_ms": 0.075,
+      "admission_completed_to_worker_latch_ms": 1.066,
+      "worker_latch_to_native_start_ms": 0.307,
+      "native_wall_ms": 106.949,
+      "native_completion_to_physical_completion_ms": 12.755,
+      "observed_native_deadline_lateness_ms": 0.336
+    },
+    {
+      "step": 19,
+      "clocks_usec": [
+        158585203,
+        158585439,
+        158585498,
+        158586140,
+        158586393,
+        158741875,
+        158910178
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.236,
+      "admission_call_wall_ms": 0.059,
+      "admission_completed_to_worker_latch_ms": 0.642,
+      "worker_latch_to_native_start_ms": 0.253,
+      "native_wall_ms": 155.482,
+      "native_completion_to_physical_completion_ms": 168.303,
+      "observed_native_deadline_lateness_ms": 0.278
+    },
+    {
+      "step": 20,
+      "clocks_usec": [
+        158910178,
+        158910447,
+        158910519,
+        158911967,
+        158912325,
+        159019632,
+        159026006
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.269,
+      "admission_call_wall_ms": 0.072,
+      "admission_completed_to_worker_latch_ms": 1.448,
+      "worker_latch_to_native_start_ms": 0.358,
+      "native_wall_ms": 107.307,
+      "native_completion_to_physical_completion_ms": 6.374,
+      "observed_native_deadline_lateness_ms": 0.386
+    },
+    {
+      "step": 21,
+      "clocks_usec": [
+        159026006,
+        159026208,
+        159026274,
+        159027959,
+        159028295,
+        159155829,
+        159322026
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.202,
+      "admission_call_wall_ms": 0.066,
+      "admission_completed_to_worker_latch_ms": 1.685,
+      "worker_latch_to_native_start_ms": 0.336,
+      "native_wall_ms": 127.534,
+      "native_completion_to_physical_completion_ms": 166.197,
+      "observed_native_deadline_lateness_ms": 0.364
+    },
+    {
+      "step": 22,
+      "clocks_usec": [
+        159322026,
+        159322248,
+        159322318,
+        159338366,
+        159338795,
+        159446262,
+        159454728
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.222,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 16.048,
+      "worker_latch_to_native_start_ms": 0.429,
+      "native_wall_ms": 107.467,
+      "native_completion_to_physical_completion_ms": 8.466,
+      "observed_native_deadline_lateness_ms": 19.079
+    },
+    {
+      "step": 23,
+      "clocks_usec": [
+        159454728,
+        159454988,
+        159455060,
+        159456058,
+        159456398,
+        159659440,
+        159780088
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.26,
+      "admission_call_wall_ms": 0.072,
+      "admission_completed_to_worker_latch_ms": 0.998,
+      "worker_latch_to_native_start_ms": 0.34,
+      "native_wall_ms": 203.042,
+      "native_completion_to_physical_completion_ms": 120.648,
+      "observed_native_deadline_lateness_ms": 0.368
+    },
+    {
+      "step": 24,
+      "clocks_usec": [
+        159780088,
+        159780282,
+        159780334,
+        159781390,
+        159781670,
+        159893473,
+        159930593
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.194,
+      "admission_call_wall_ms": 0.052,
+      "admission_completed_to_worker_latch_ms": 1.056,
+      "worker_latch_to_native_start_ms": 0.28,
+      "native_wall_ms": 111.803,
+      "native_completion_to_physical_completion_ms": 37.12,
+      "observed_native_deadline_lateness_ms": 0.3
+    },
+    {
+      "step": 25,
+      "clocks_usec": [
+        159930593,
+        159930854,
+        159930912,
+        159931677,
+        159931961,
+        160140221,
+        160200436
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.261,
+      "admission_call_wall_ms": 0.058,
+      "admission_completed_to_worker_latch_ms": 0.765,
+      "worker_latch_to_native_start_ms": 0.284,
+      "native_wall_ms": 208.26,
+      "native_completion_to_physical_completion_ms": 60.215,
+      "observed_native_deadline_lateness_ms": 0.304
+    },
+    {
+      "step": 26,
+      "clocks_usec": [
+        160200436,
+        160200617,
+        160200671,
+        160201278,
+        160201660,
+        160310091,
+        160315829
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.181,
+      "admission_call_wall_ms": 0.054,
+      "admission_completed_to_worker_latch_ms": 0.607,
+      "worker_latch_to_native_start_ms": 0.382,
+      "native_wall_ms": 108.431,
+      "native_completion_to_physical_completion_ms": 5.738,
+      "observed_native_deadline_lateness_ms": 0.419
+    },
+    {
+      "step": 27,
+      "clocks_usec": [
+        160315829,
+        160316061,
+        160316130,
+        160317297,
+        160317653,
+        160468028,
+        160658414
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.232,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 1.167,
+      "worker_latch_to_native_start_ms": 0.356,
+      "native_wall_ms": 150.375,
+      "native_completion_to_physical_completion_ms": 190.386,
+      "observed_native_deadline_lateness_ms": 0.387
+    },
+    {
+      "step": 28,
+      "clocks_usec": [
+        160658414,
+        160658614,
+        160658672,
+        160659254,
+        160659527,
+        160860392,
+        160939345
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.2,
+      "admission_call_wall_ms": 0.058,
+      "admission_completed_to_worker_latch_ms": 0.582,
+      "worker_latch_to_native_start_ms": 0.273,
+      "native_wall_ms": 200.865,
+      "native_completion_to_physical_completion_ms": 78.953,
+      "observed_native_deadline_lateness_ms": 0.293
+    },
+    {
+      "step": 29,
+      "clocks_usec": [
+        160939345,
+        160939546,
+        160939609,
+        160941254,
+        160941567,
+        161073038,
+        161086473
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.201,
+      "admission_call_wall_ms": 0.063,
+      "admission_completed_to_worker_latch_ms": 1.645,
+      "worker_latch_to_native_start_ms": 0.313,
+      "native_wall_ms": 131.471,
+      "native_completion_to_physical_completion_ms": 13.435,
+      "observed_native_deadline_lateness_ms": 0.337
+    },
+    {
+      "step": 30,
+      "clocks_usec": [
+        161086473,
+        161086695,
+        161086756,
+        161087673,
+        161087971,
+        161273147,
+        161430303
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.222,
+      "admission_call_wall_ms": 0.061,
+      "admission_completed_to_worker_latch_ms": 0.917,
+      "worker_latch_to_native_start_ms": 0.298,
+      "native_wall_ms": 185.176,
+      "native_completion_to_physical_completion_ms": 157.156,
+      "observed_native_deadline_lateness_ms": 0.334
+    },
+    {
+      "step": 31,
+      "clocks_usec": [
+        161430303,
+        161430533,
+        161430591,
+        161431652,
+        161431927,
+        161648304,
+        161749982
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.23,
+      "admission_call_wall_ms": 0.058,
+      "admission_completed_to_worker_latch_ms": 1.061,
+      "worker_latch_to_native_start_ms": 0.275,
+      "native_wall_ms": 216.377,
+      "native_completion_to_physical_completion_ms": 101.678,
+      "observed_native_deadline_lateness_ms": 0.298
+    },
+    {
+      "step": 32,
+      "clocks_usec": [
+        161749982,
+        161750231,
+        161750281,
+        161751652,
+        161751944,
+        161858923,
+        161869332
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.249,
+      "admission_call_wall_ms": 0.05,
+      "admission_completed_to_worker_latch_ms": 1.371,
+      "worker_latch_to_native_start_ms": 0.292,
+      "native_wall_ms": 106.979,
+      "native_completion_to_physical_completion_ms": 10.409,
+      "observed_native_deadline_lateness_ms": 0.627
+    },
+    {
+      "step": 33,
+      "clocks_usec": [
+        161869332,
+        161869583,
+        161869661,
+        161870659,
+        161871023,
+        162134950,
+        162177065
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.251,
+      "admission_call_wall_ms": 0.078,
+      "admission_completed_to_worker_latch_ms": 0.998,
+      "worker_latch_to_native_start_ms": 0.364,
+      "native_wall_ms": 263.927,
+      "native_completion_to_physical_completion_ms": 42.115,
+      "observed_native_deadline_lateness_ms": 0.394
+    },
+    {
+      "step": 34,
+      "clocks_usec": [
+        162177065,
+        162177277,
+        162177339,
+        162177642,
+        162177940,
+        162280054,
+        162526354
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.212,
+      "admission_call_wall_ms": 0.062,
+      "admission_completed_to_worker_latch_ms": 0.303,
+      "worker_latch_to_native_start_ms": 0.298,
+      "native_wall_ms": 102.114,
+      "native_completion_to_physical_completion_ms": 246.3,
+      "observed_native_deadline_lateness_ms": 0.322
+    },
+    {
+      "step": 35,
+      "clocks_usec": [
+        162526354,
+        162526559,
+        162526625,
+        162527527,
+        162527909,
+        162806546,
+        162836579
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.205,
+      "admission_call_wall_ms": 0.066,
+      "admission_completed_to_worker_latch_ms": 0.902,
+      "worker_latch_to_native_start_ms": 0.382,
+      "native_wall_ms": 278.637,
+      "native_completion_to_physical_completion_ms": 30.033,
+      "observed_native_deadline_lateness_ms": 0.41
+    },
+    {
+      "step": 36,
+      "clocks_usec": [
+        162836579,
+        162836803,
+        162836871,
+        162837717,
+        162838063,
+        162939447,
+        162953970
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.224,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.846,
+      "worker_latch_to_native_start_ms": 0.346,
+      "native_wall_ms": 101.384,
+      "native_completion_to_physical_completion_ms": 14.523,
+      "observed_native_deadline_lateness_ms": 0.374
+    },
+    {
+      "step": 37,
+      "clocks_usec": [
+        162953970,
+        162954206,
+        162954269,
+        162954700,
+        162955062,
+        163231395,
+        163316650
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.236,
+      "admission_call_wall_ms": 0.063,
+      "admission_completed_to_worker_latch_ms": 0.431,
+      "worker_latch_to_native_start_ms": 0.362,
+      "native_wall_ms": 276.333,
+      "native_completion_to_physical_completion_ms": 85.255,
+      "observed_native_deadline_lateness_ms": 0.391
+    },
+    {
+      "step": 38,
+      "clocks_usec": [
+        163316650,
+        163316861,
+        163316925,
+        163317704,
+        163318068,
+        163420394,
+        163653222
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.211,
+      "admission_call_wall_ms": 0.064,
+      "admission_completed_to_worker_latch_ms": 0.779,
+      "worker_latch_to_native_start_ms": 0.364,
+      "native_wall_ms": 102.326,
+      "native_completion_to_physical_completion_ms": 232.828,
+      "observed_native_deadline_lateness_ms": 0.72
+    },
+    {
+      "step": 39,
+      "clocks_usec": [
+        163653222,
+        163653430,
+        163653504,
+        163655176,
+        163655536,
+        163922613,
+        164239947
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.208,
+      "admission_call_wall_ms": 0.074,
+      "admission_completed_to_worker_latch_ms": 1.672,
+      "worker_latch_to_native_start_ms": 0.36,
+      "native_wall_ms": 267.077,
+      "native_completion_to_physical_completion_ms": 317.334,
+      "observed_native_deadline_lateness_ms": 0.419
+    },
+    {
+      "step": 40,
+      "clocks_usec": [
+        164239947,
+        164240196,
+        164240269,
+        164242144,
+        164242513,
+        164373789,
+        164570795
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.249,
+      "admission_call_wall_ms": 0.073,
+      "admission_completed_to_worker_latch_ms": 1.875,
+      "worker_latch_to_native_start_ms": 0.369,
+      "native_wall_ms": 131.276,
+      "native_completion_to_physical_completion_ms": 197.006,
+      "observed_native_deadline_lateness_ms": 0.989
+    },
+    {
+      "step": 41,
+      "clocks_usec": [
+        164570795,
+        164571012,
+        164571079,
+        164572150,
+        164572520,
+        164852529,
+        164912284
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.217,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 1.071,
+      "worker_latch_to_native_start_ms": 0.37,
+      "native_wall_ms": 280.009,
+      "native_completion_to_physical_completion_ms": 59.755,
+      "observed_native_deadline_lateness_ms": 0.404
+    },
+    {
+      "step": 42,
+      "clocks_usec": [
+        164912284,
+        164912529,
+        164912597,
+        164913399,
+        164913744,
+        165136812,
+        165265746
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.245,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.802,
+      "worker_latch_to_native_start_ms": 0.345,
+      "native_wall_ms": 223.068,
+      "native_completion_to_physical_completion_ms": 128.934,
+      "observed_native_deadline_lateness_ms": 0.372
+    },
+    {
+      "step": 43,
+      "clocks_usec": [
+        165265746,
+        165265989,
+        165266056,
+        165266385,
+        165266739,
+        165531105,
+        165580112
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.243,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 0.329,
+      "worker_latch_to_native_start_ms": 0.354,
+      "native_wall_ms": 264.366,
+      "native_completion_to_physical_completion_ms": 49.007,
+      "observed_native_deadline_lateness_ms": 0.383
+    },
+    {
+      "step": 44,
+      "clocks_usec": [
+        165580112,
+        165580334,
+        165580414,
+        165581390,
+        165581729,
+        165692825,
+        165706259
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.222,
+      "admission_call_wall_ms": 0.08,
+      "admission_completed_to_worker_latch_ms": 0.976,
+      "worker_latch_to_native_start_ms": 0.339,
+      "native_wall_ms": 111.096,
+      "native_completion_to_physical_completion_ms": 13.434,
+      "observed_native_deadline_lateness_ms": 0.37
+    },
+    {
+      "step": 45,
+      "clocks_usec": [
+        165706259,
+        165706468,
+        165706537,
+        165706807,
+        165707141,
+        165959838,
+        166002274
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.209,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 0.27,
+      "worker_latch_to_native_start_ms": 0.334,
+      "native_wall_ms": 252.697,
+      "native_completion_to_physical_completion_ms": 42.436,
+      "observed_native_deadline_lateness_ms": 0.363
+    },
+    {
+      "step": 46,
+      "clocks_usec": [
+        166002274,
+        166002476,
+        166002538,
+        166003821,
+        166004140,
+        166111552,
+        166131126
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.202,
+      "admission_call_wall_ms": 0.062,
+      "admission_completed_to_worker_latch_ms": 1.283,
+      "worker_latch_to_native_start_ms": 0.319,
+      "native_wall_ms": 107.412,
+      "native_completion_to_physical_completion_ms": 19.574,
+      "observed_native_deadline_lateness_ms": 0.353
+    },
+    {
+      "step": 47,
+      "clocks_usec": [
+        166131126,
+        166131338,
+        166131406,
+        166131640,
+        166131999,
+        166444780,
+        166466869
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.212,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.234,
+      "worker_latch_to_native_start_ms": 0.359,
+      "native_wall_ms": 312.781,
+      "native_completion_to_physical_completion_ms": 22.089,
+      "observed_native_deadline_lateness_ms": 0.39
+    },
+    {
+      "step": 48,
+      "clocks_usec": [
+        166466869,
+        166467096,
+        166467167,
+        166467648,
+        166468021,
+        166575200,
+        166803918
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.227,
+      "admission_call_wall_ms": 0.071,
+      "admission_completed_to_worker_latch_ms": 0.481,
+      "worker_latch_to_native_start_ms": 0.373,
+      "native_wall_ms": 107.179,
+      "native_completion_to_physical_completion_ms": 228.718,
+      "observed_native_deadline_lateness_ms": 0.408
+    },
+    {
+      "step": 49,
+      "clocks_usec": [
+        166803918,
+        166804153,
+        166804213,
+        166805663,
+        166805965,
+        166919990,
+        166925171
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.235,
+      "admission_call_wall_ms": 0.06,
+      "admission_completed_to_worker_latch_ms": 1.45,
+      "worker_latch_to_native_start_ms": 0.302,
+      "native_wall_ms": 114.025,
+      "native_completion_to_physical_completion_ms": 5.181,
+      "observed_native_deadline_lateness_ms": 0.331
+    },
+    {
+      "step": 50,
+      "clocks_usec": [
+        166925171,
+        166925380,
+        166925448,
+        166925651,
+        166925974,
+        167139970,
+        167206007
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.209,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.203,
+      "worker_latch_to_native_start_ms": 0.323,
+      "native_wall_ms": 213.996,
+      "native_completion_to_physical_completion_ms": 66.037,
+      "observed_native_deadline_lateness_ms": 0.347
+    },
+    {
+      "step": 51,
+      "clocks_usec": [
+        167206007,
+        167206239,
+        167206312,
+        167206833,
+        167207237,
+        167409391,
+        167494798
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.232,
+      "admission_call_wall_ms": 0.073,
+      "admission_completed_to_worker_latch_ms": 0.521,
+      "worker_latch_to_native_start_ms": 0.404,
+      "native_wall_ms": 202.154,
+      "native_completion_to_physical_completion_ms": 85.407,
+      "observed_native_deadline_lateness_ms": 0.438
+    },
+    {
+      "step": 52,
+      "clocks_usec": [
+        167494798,
+        167495039,
+        167495115,
+        167496831,
+        167497209,
+        167647299,
+        167666943
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.241,
+      "admission_call_wall_ms": 0.076,
+      "admission_completed_to_worker_latch_ms": 1.716,
+      "worker_latch_to_native_start_ms": 0.378,
+      "native_wall_ms": 150.09,
+      "native_completion_to_physical_completion_ms": 19.644,
+      "observed_native_deadline_lateness_ms": 2.161
+    },
+    {
+      "step": 53,
+      "clocks_usec": [
+        167666943,
+        167667168,
+        167667242,
+        167667826,
+        167668217,
+        167905961,
+        168017945
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.225,
+      "admission_call_wall_ms": 0.074,
+      "admission_completed_to_worker_latch_ms": 0.584,
+      "worker_latch_to_native_start_ms": 0.391,
+      "native_wall_ms": 237.744,
+      "native_completion_to_physical_completion_ms": 111.984,
+      "observed_native_deadline_lateness_ms": 0.426
+    },
+    {
+      "step": 54,
+      "clocks_usec": [
+        168017945,
+        168018154,
+        168018222,
+        168019561,
+        168019933,
+        168197680,
+        168277532
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.209,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 1.339,
+      "worker_latch_to_native_start_ms": 0.372,
+      "native_wall_ms": 177.747,
+      "native_completion_to_physical_completion_ms": 79.852,
+      "observed_native_deadline_lateness_ms": 0.409
+    },
+    {
+      "step": 55,
+      "clocks_usec": [
+        168277532,
+        168277794,
+        168277860,
+        168279550,
+        168279914,
+        168441583,
+        168460190
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.262,
+      "admission_call_wall_ms": 0.066,
+      "admission_completed_to_worker_latch_ms": 1.69,
+      "worker_latch_to_native_start_ms": 0.364,
+      "native_wall_ms": 161.669,
+      "native_completion_to_physical_completion_ms": 18.607,
+      "observed_native_deadline_lateness_ms": 0.4
+    },
+    {
+      "step": 56,
+      "clocks_usec": [
+        168460190,
+        168460399,
+        168460464,
+        168460569,
+        168460920,
+        168688731,
+        168800152
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.209,
+      "admission_call_wall_ms": 0.065,
+      "admission_completed_to_worker_latch_ms": 0.105,
+      "worker_latch_to_native_start_ms": 0.351,
+      "native_wall_ms": 227.811,
+      "native_completion_to_physical_completion_ms": 111.421,
+      "observed_native_deadline_lateness_ms": 0.378
+    },
+    {
+      "step": 57,
+      "clocks_usec": [
+        168800152,
+        168800359,
+        168800423,
+        168800563,
+        168800910,
+        168967450,
+        169159555
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.207,
+      "admission_call_wall_ms": 0.064,
+      "admission_completed_to_worker_latch_ms": 0.14,
+      "worker_latch_to_native_start_ms": 0.347,
+      "native_wall_ms": 166.54,
+      "native_completion_to_physical_completion_ms": 192.105,
+      "observed_native_deadline_lateness_ms": 0.375
+    },
+    {
+      "step": 58,
+      "clocks_usec": [
+        169159555,
+        169159774,
+        169159842,
+        169160726,
+        169161080,
+        169268140,
+        169433563
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.219,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.884,
+      "worker_latch_to_native_start_ms": 0.354,
+      "native_wall_ms": 107.06,
+      "native_completion_to_physical_completion_ms": 165.423,
+      "observed_native_deadline_lateness_ms": 0.38
+    },
+    {
+      "step": 59,
+      "clocks_usec": [
+        169433563,
+        169433789,
+        169433857,
+        169435575,
+        169435935,
+        169583411,
+        170099232
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.226,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 1.718,
+      "worker_latch_to_native_start_ms": 0.36,
+      "native_wall_ms": 147.476,
+      "native_completion_to_physical_completion_ms": 515.821,
+      "observed_native_deadline_lateness_ms": 0.393
+    },
+    {
+      "step": 60,
+      "clocks_usec": [
+        170099232,
+        170099456,
+        170099524,
+        170099638,
+        170099981,
+        170210816,
+        170449248
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.224,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.114,
+      "worker_latch_to_native_start_ms": 0.343,
+      "native_wall_ms": 110.835,
+      "native_completion_to_physical_completion_ms": 238.432,
+      "observed_native_deadline_lateness_ms": 0.373
+    },
+    {
+      "step": 61,
+      "clocks_usec": [
+        170449248,
+        170449511,
+        170449570,
+        170450438,
+        170450711,
+        170753615,
+        170759734
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.263,
+      "admission_call_wall_ms": 0.059,
+      "admission_completed_to_worker_latch_ms": 0.868,
+      "worker_latch_to_native_start_ms": 0.273,
+      "native_wall_ms": 302.904,
+      "native_completion_to_physical_completion_ms": 6.119,
+      "observed_native_deadline_lateness_ms": 0.291
+    },
+    {
+      "step": 62,
+      "clocks_usec": [
+        170759734,
+        170759934,
+        170760015,
+        170760067,
+        170760360,
+        170871988,
+        170882081
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.2,
+      "admission_call_wall_ms": 0.081,
+      "admission_completed_to_worker_latch_ms": 0.052,
+      "worker_latch_to_native_start_ms": 0.293,
+      "native_wall_ms": 111.628,
+      "native_completion_to_physical_completion_ms": 10.093,
+      "observed_native_deadline_lateness_ms": 0.365
+    },
+    {
+      "step": 63,
+      "clocks_usec": [
+        170882081,
+        170882309,
+        170882378,
+        170884035,
+        170884401,
+        171147900,
+        171698842
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.228,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 1.657,
+      "worker_latch_to_native_start_ms": 0.366,
+      "native_wall_ms": 263.499,
+      "native_completion_to_physical_completion_ms": 550.942,
+      "observed_native_deadline_lateness_ms": 0.399
+    },
+    {
+      "step": 64,
+      "clocks_usec": [
+        171698842,
+        171699093,
+        171699166,
+        171700310,
+        171700715,
+        171867881,
+        171966042
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.251,
+      "admission_call_wall_ms": 0.073,
+      "admission_completed_to_worker_latch_ms": 1.144,
+      "worker_latch_to_native_start_ms": 0.405,
+      "native_wall_ms": 167.166,
+      "native_completion_to_physical_completion_ms": 98.161,
+      "observed_native_deadline_lateness_ms": 1.758
+    },
+    {
+      "step": 65,
+      "clocks_usec": [
+        171966042,
+        171966277,
+        171966351,
+        171967016,
+        171967392,
+        172128323,
+        172138514
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.235,
+      "admission_call_wall_ms": 0.074,
+      "admission_completed_to_worker_latch_ms": 0.665,
+      "worker_latch_to_native_start_ms": 0.376,
+      "native_wall_ms": 160.931,
+      "native_completion_to_physical_completion_ms": 10.191,
+      "observed_native_deadline_lateness_ms": 0.411
+    },
+    {
+      "step": 66,
+      "clocks_usec": [
+        172138514,
+        172138701,
+        172138756,
+        172140418,
+        172140783,
+        172369147,
+        172481643
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.187,
+      "admission_call_wall_ms": 0.055,
+      "admission_completed_to_worker_latch_ms": 1.662,
+      "worker_latch_to_native_start_ms": 0.365,
+      "native_wall_ms": 228.364,
+      "native_completion_to_physical_completion_ms": 112.496,
+      "observed_native_deadline_lateness_ms": 0.396
+    },
+    {
+      "step": 67,
+      "clocks_usec": [
+        172481643,
+        172481883,
+        172481951,
+        172482403,
+        172482779,
+        172718440,
+        172754108
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.24,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.452,
+      "worker_latch_to_native_start_ms": 0.376,
+      "native_wall_ms": 235.661,
+      "native_completion_to_physical_completion_ms": 35.668,
+      "observed_native_deadline_lateness_ms": 0.405
+    },
+    {
+      "step": 68,
+      "clocks_usec": [
+        172754108,
+        172754335,
+        172754424,
+        172754482,
+        172754841,
+        172898507,
+        172919649
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.227,
+      "admission_call_wall_ms": 0.089,
+      "admission_completed_to_worker_latch_ms": 0.058,
+      "worker_latch_to_native_start_ms": 0.359,
+      "native_wall_ms": 143.666,
+      "native_completion_to_physical_completion_ms": 21.142,
+      "observed_native_deadline_lateness_ms": 0.477
+    },
+    {
+      "step": 69,
+      "clocks_usec": [
+        172919649,
+        172919873,
+        172919950,
+        172921430,
+        172921843,
+        173206683,
+        173272582
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.224,
+      "admission_call_wall_ms": 0.077,
+      "admission_completed_to_worker_latch_ms": 1.48,
+      "worker_latch_to_native_start_ms": 0.413,
+      "native_wall_ms": 284.84,
+      "native_completion_to_physical_completion_ms": 65.899,
+      "observed_native_deadline_lateness_ms": 0.458
+    },
+    {
+      "step": 70,
+      "clocks_usec": [
+        173272582,
+        173272797,
+        173272866,
+        173274405,
+        173274821,
+        173501260,
+        173548159
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.215,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 1.539,
+      "worker_latch_to_native_start_ms": 0.416,
+      "native_wall_ms": 226.439,
+      "native_completion_to_physical_completion_ms": 46.899,
+      "observed_native_deadline_lateness_ms": 0.45
+    },
+    {
+      "step": 71,
+      "clocks_usec": [
+        173548159,
+        173548384,
+        173548456,
+        173549409,
+        173549745,
+        173704086,
+        173722097
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.225,
+      "admission_call_wall_ms": 0.072,
+      "admission_completed_to_worker_latch_ms": 0.953,
+      "worker_latch_to_native_start_ms": 0.336,
+      "native_wall_ms": 154.341,
+      "native_completion_to_physical_completion_ms": 18.011,
+      "observed_native_deadline_lateness_ms": 0.371
+    },
+    {
+      "step": 72,
+      "clocks_usec": [
+        173722097,
+        173722301,
+        173722380,
+        173723393,
+        173723745,
+        174021704,
+        174068948
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.204,
+      "admission_call_wall_ms": 0.079,
+      "admission_completed_to_worker_latch_ms": 1.013,
+      "worker_latch_to_native_start_ms": 0.352,
+      "native_wall_ms": 297.959,
+      "native_completion_to_physical_completion_ms": 47.244,
+      "observed_native_deadline_lateness_ms": 0.384
+    },
+    {
+      "step": 73,
+      "clocks_usec": [
+        174068948,
+        174069195,
+        174069265,
+        174070399,
+        174070778,
+        174339305,
+        174388427
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.247,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 1.134,
+      "worker_latch_to_native_start_ms": 0.379,
+      "native_wall_ms": 268.527,
+      "native_completion_to_physical_completion_ms": 49.122,
+      "observed_native_deadline_lateness_ms": 0.421
+    },
+    {
+      "step": 74,
+      "clocks_usec": [
+        174388427,
+        174388646,
+        174388714,
+        174390394,
+        174390773,
+        174496570,
+        174508257
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.219,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 1.68,
+      "worker_latch_to_native_start_ms": 0.379,
+      "native_wall_ms": 105.797,
+      "native_completion_to_physical_completion_ms": 11.687,
+      "observed_native_deadline_lateness_ms": 0.413
+    },
+    {
+      "step": 75,
+      "clocks_usec": [
+        174508257,
+        174508477,
+        174508544,
+        174509663,
+        174510024,
+        174757495,
+        174848468
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.22,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 1.119,
+      "worker_latch_to_native_start_ms": 0.361,
+      "native_wall_ms": 247.471,
+      "native_completion_to_physical_completion_ms": 90.973,
+      "observed_native_deadline_lateness_ms": 0.394
+    },
+    {
+      "step": 76,
+      "clocks_usec": [
+        174848468,
+        174848678,
+        174848745,
+        174850677,
+        174850989,
+        175046316,
+        175115457
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.21,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 1.932,
+      "worker_latch_to_native_start_ms": 0.312,
+      "native_wall_ms": 195.327,
+      "native_completion_to_physical_completion_ms": 69.141,
+      "observed_native_deadline_lateness_ms": 0.352
+    },
+    {
+      "step": 77,
+      "clocks_usec": [
+        175115457,
+        175115718,
+        175115788,
+        175116652,
+        175117011,
+        175274226,
+        175285536
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.261,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 0.864,
+      "worker_latch_to_native_start_ms": 0.359,
+      "native_wall_ms": 157.215,
+      "native_completion_to_physical_completion_ms": 11.31,
+      "observed_native_deadline_lateness_ms": 0.675
+    },
+    {
+      "step": 78,
+      "clocks_usec": [
+        175285536,
+        175285769,
+        175285837,
+        175287647,
+        175288019,
+        175498818,
+        175525574
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.233,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 1.81,
+      "worker_latch_to_native_start_ms": 0.372,
+      "native_wall_ms": 210.799,
+      "native_completion_to_physical_completion_ms": 26.756,
+      "observed_native_deadline_lateness_ms": 0.409
+    },
+    {
+      "step": 79,
+      "clocks_usec": [
+        175525574,
+        175525848,
+        175525917,
+        175526652,
+        175527000,
+        175684834,
+        175705562
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.274,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 0.735,
+      "worker_latch_to_native_start_ms": 0.348,
+      "native_wall_ms": 157.834,
+      "native_completion_to_physical_completion_ms": 20.728,
+      "observed_native_deadline_lateness_ms": 0.374
+    },
+    {
+      "step": 80,
+      "clocks_usec": [
+        175705562,
+        175705809,
+        175705879,
+        175706813,
+        175707181,
+        175991443,
+        176054808
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.247,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 0.934,
+      "worker_latch_to_native_start_ms": 0.368,
+      "native_wall_ms": 284.262,
+      "native_completion_to_physical_completion_ms": 63.365,
+      "observed_native_deadline_lateness_ms": 0.4
+    },
+    {
+      "step": 81,
+      "clocks_usec": [
+        176054808,
+        176055019,
+        176055091,
+        176055405,
+        176055768,
+        176347376,
+        176371055
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.211,
+      "admission_call_wall_ms": 0.072,
+      "admission_completed_to_worker_latch_ms": 0.314,
+      "worker_latch_to_native_start_ms": 0.363,
+      "native_wall_ms": 291.608,
+      "native_completion_to_physical_completion_ms": 23.679,
+      "observed_native_deadline_lateness_ms": 0.394
+    },
+    {
+      "step": 82,
+      "clocks_usec": [
+        176371055,
+        176371284,
+        176371346,
+        176371425,
+        176371719,
+        176480889,
+        176488946
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.229,
+      "admission_call_wall_ms": 0.062,
+      "admission_completed_to_worker_latch_ms": 0.079,
+      "worker_latch_to_native_start_ms": 0.294,
+      "native_wall_ms": 109.17,
+      "native_completion_to_physical_completion_ms": 8.057,
+      "observed_native_deadline_lateness_ms": 0.32
+    },
+    {
+      "step": 83,
+      "clocks_usec": [
+        176488946,
+        176489269,
+        176489344,
+        176490889,
+        176491302,
+        176722351,
+        176774916
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.323,
+      "admission_call_wall_ms": 0.075,
+      "admission_completed_to_worker_latch_ms": 1.545,
+      "worker_latch_to_native_start_ms": 0.413,
+      "native_wall_ms": 231.049,
+      "native_completion_to_physical_completion_ms": 52.565,
+      "observed_native_deadline_lateness_ms": 0.452
+    },
+    {
+      "step": 84,
+      "clocks_usec": [
+        176774916,
+        176775132,
+        176775203,
+        176776881,
+        176777265,
+        176885273,
+        176900638
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.216,
+      "admission_call_wall_ms": 0.071,
+      "admission_completed_to_worker_latch_ms": 1.678,
+      "worker_latch_to_native_start_ms": 0.384,
+      "native_wall_ms": 108.008,
+      "native_completion_to_physical_completion_ms": 15.365,
+      "observed_native_deadline_lateness_ms": 1.953
+    },
+    {
+      "step": 85,
+      "clocks_usec": [
+        176900638,
+        176900893,
+        176900960,
+        176901879,
+        176902230,
+        177019761,
+        177106939
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.255,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 0.919,
+      "worker_latch_to_native_start_ms": 0.351,
+      "native_wall_ms": 117.531,
+      "native_completion_to_physical_completion_ms": 87.178,
+      "observed_native_deadline_lateness_ms": 0.381
+    },
+    {
+      "step": 86,
+      "clocks_usec": [
+        177106939,
+        177107151,
+        177107203,
+        177108679,
+        177108950,
+        177320317,
+        177345543
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.212,
+      "admission_call_wall_ms": 0.052,
+      "admission_completed_to_worker_latch_ms": 1.476,
+      "worker_latch_to_native_start_ms": 0.271,
+      "native_wall_ms": 211.367,
+      "native_completion_to_physical_completion_ms": 25.226,
+      "observed_native_deadline_lateness_ms": 0.291
+    },
+    {
+      "step": 87,
+      "clocks_usec": [
+        177345543,
+        177345770,
+        177345841,
+        177346901,
+        177347294,
+        177531504,
+        177669328
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.227,
+      "admission_call_wall_ms": 0.071,
+      "admission_completed_to_worker_latch_ms": 1.06,
+      "worker_latch_to_native_start_ms": 0.393,
+      "native_wall_ms": 184.21,
+      "native_completion_to_physical_completion_ms": 137.824,
+      "observed_native_deadline_lateness_ms": 0.429
+    },
+    {
+      "step": 88,
+      "clocks_usec": [
+        177669328,
+        177669551,
+        177669615,
+        177670651,
+        177670979,
+        177784178,
+        177791536
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.223,
+      "admission_call_wall_ms": 0.064,
+      "admission_completed_to_worker_latch_ms": 1.036,
+      "worker_latch_to_native_start_ms": 0.328,
+      "native_wall_ms": 113.199,
+      "native_completion_to_physical_completion_ms": 7.358,
+      "observed_native_deadline_lateness_ms": 0.349
+    },
+    {
+      "step": 89,
+      "clocks_usec": [
+        177791536,
+        177791761,
+        177791832,
+        177791879,
+        177792231,
+        177996223,
+        178112001
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.225,
+      "admission_call_wall_ms": 0.071,
+      "admission_completed_to_worker_latch_ms": 0.047,
+      "worker_latch_to_native_start_ms": 0.352,
+      "native_wall_ms": 203.992,
+      "native_completion_to_physical_completion_ms": 115.778,
+      "observed_native_deadline_lateness_ms": 0.385
+    },
+    {
+      "step": 90,
+      "clocks_usec": [
+        178112001,
+        178112211,
+        178112279,
+        178112895,
+        178113239,
+        178222028,
+        178228159
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.21,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.616,
+      "worker_latch_to_native_start_ms": 0.344,
+      "native_wall_ms": 108.789,
+      "native_completion_to_physical_completion_ms": 6.131,
+      "observed_native_deadline_lateness_ms": 0.377
+    },
+    {
+      "step": 91,
+      "clocks_usec": [
+        178228159,
+        178228485,
+        178228562,
+        178228624,
+        178229019,
+        178269582,
+        178485988
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.326,
+      "admission_call_wall_ms": 0.077,
+      "admission_completed_to_worker_latch_ms": 0.062,
+      "worker_latch_to_native_start_ms": 0.395,
+      "native_wall_ms": 40.563,
+      "native_completion_to_physical_completion_ms": 216.406,
+      "observed_native_deadline_lateness_ms": 0.533
+    },
+    {
+      "step": 92,
+      "clocks_usec": [
+        178485988,
+        178486207,
+        178486282,
+        178486505,
+        178486878,
+        178512387,
+        178759096
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.219,
+      "admission_call_wall_ms": 0.075,
+      "admission_completed_to_worker_latch_ms": 0.223,
+      "worker_latch_to_native_start_ms": 0.373,
+      "native_wall_ms": 25.509,
+      "native_completion_to_physical_completion_ms": 246.709,
+      "observed_native_deadline_lateness_ms": 0.406
+    },
+    {
+      "step": 93,
+      "clocks_usec": [
+        178759096,
+        178759314,
+        178759386,
+        178760326,
+        178760735,
+        178786442,
+        179028717
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.218,
+      "admission_call_wall_ms": 0.072,
+      "admission_completed_to_worker_latch_ms": 0.94,
+      "worker_latch_to_native_start_ms": 0.409,
+      "native_wall_ms": 25.707,
+      "native_completion_to_physical_completion_ms": 242.275,
+      "observed_native_deadline_lateness_ms": 0.441
+    },
+    {
+      "step": 94,
+      "clocks_usec": [
+        179028717,
+        179028920,
+        179028985,
+        179030499,
+        179030836,
+        179132376,
+        179308911
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.203,
+      "admission_call_wall_ms": 0.065,
+      "admission_completed_to_worker_latch_ms": 1.514,
+      "worker_latch_to_native_start_ms": 0.337,
+      "native_wall_ms": 101.54,
+      "native_completion_to_physical_completion_ms": 176.535,
+      "observed_native_deadline_lateness_ms": 0.363
+    },
+    {
+      "step": 95,
+      "clocks_usec": [
+        179308911,
+        179309116,
+        179309180,
+        179310582,
+        179310867,
+        179340735,
+        179566739
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.205,
+      "admission_call_wall_ms": 0.064,
+      "admission_completed_to_worker_latch_ms": 1.402,
+      "worker_latch_to_native_start_ms": 0.285,
+      "native_wall_ms": 29.868,
+      "native_completion_to_physical_completion_ms": 226.004,
+      "observed_native_deadline_lateness_ms": 0.319
+    },
+    {
+      "step": 96,
+      "clocks_usec": [
+        179566739,
+        179566954,
+        179567024,
+        179567606,
+        179567956,
+        179592532,
+        179852433
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.215,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 0.582,
+      "worker_latch_to_native_start_ms": 0.35,
+      "native_wall_ms": 24.576,
+      "native_completion_to_physical_completion_ms": 259.901,
+      "observed_native_deadline_lateness_ms": 0.387
+    },
+    {
+      "step": 97,
+      "clocks_usec": [
+        179852433,
+        179852699,
+        179852766,
+        179854067,
+        179854443,
+        180006532,
+        180129282
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.266,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 1.301,
+      "worker_latch_to_native_start_ms": 0.376,
+      "native_wall_ms": 152.089,
+      "native_completion_to_physical_completion_ms": 122.75,
+      "observed_native_deadline_lateness_ms": 0.418
+    },
+    {
+      "step": 98,
+      "clocks_usec": [
+        180129282,
+        180129482,
+        180129542,
+        180130056,
+        180130362,
+        180161133,
+        180394564
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.2,
+      "admission_call_wall_ms": 0.06,
+      "admission_completed_to_worker_latch_ms": 0.514,
+      "worker_latch_to_native_start_ms": 0.306,
+      "native_wall_ms": 30.771,
+      "native_completion_to_physical_completion_ms": 233.431,
+      "observed_native_deadline_lateness_ms": 0.332
+    },
+    {
+      "step": 99,
+      "clocks_usec": [
+        180394564,
+        180394790,
+        180394863,
+        180395955,
+        180396357,
+        180521211,
+        180527982
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.226,
+      "admission_call_wall_ms": 0.073,
+      "admission_completed_to_worker_latch_ms": 1.092,
+      "worker_latch_to_native_start_ms": 0.402,
+      "native_wall_ms": 124.854,
+      "native_completion_to_physical_completion_ms": 6.771,
+      "observed_native_deadline_lateness_ms": 0.448
+    },
+    {
+      "step": 100,
+      "clocks_usec": [
+        180527982,
+        180528186,
+        180528252,
+        180529941,
+        180530288,
+        180554198,
+        180678315
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.204,
+      "admission_call_wall_ms": 0.066,
+      "admission_completed_to_worker_latch_ms": 1.689,
+      "worker_latch_to_native_start_ms": 0.347,
+      "native_wall_ms": 23.91,
+      "native_completion_to_physical_completion_ms": 124.117,
+      "observed_native_deadline_lateness_ms": 0.379
+    },
+    {
+      "step": 101,
+      "clocks_usec": [
+        180678315,
+        180678535,
+        180678601,
+        180680001,
+        180680340,
+        180705839,
+        180716688
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.22,
+      "admission_call_wall_ms": 0.066,
+      "admission_completed_to_worker_latch_ms": 1.4,
+      "worker_latch_to_native_start_ms": 0.339,
+      "native_wall_ms": 25.499,
+      "native_completion_to_physical_completion_ms": 10.849,
+      "observed_native_deadline_lateness_ms": 0.369
+    },
+    {
+      "step": 102,
+      "clocks_usec": [
+        180716688,
+        180716922,
+        180717040,
+        180717178,
+        180717538,
+        180798438,
+        180943410
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.234,
+      "admission_call_wall_ms": 0.118,
+      "admission_completed_to_worker_latch_ms": 0.138,
+      "worker_latch_to_native_start_ms": 0.36,
+      "native_wall_ms": 80.9,
+      "native_completion_to_physical_completion_ms": 144.972,
+      "observed_native_deadline_lateness_ms": 0.386
+    },
+    {
+      "step": 103,
+      "clocks_usec": [
+        180943410,
+        180943685,
+        180943754,
+        180943946,
+        180944291,
+        180968954,
+        181234848
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.275,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 0.192,
+      "worker_latch_to_native_start_ms": 0.345,
+      "native_wall_ms": 24.663,
+      "native_completion_to_physical_completion_ms": 265.894,
+      "observed_native_deadline_lateness_ms": 0.376
+    },
+    {
+      "step": 104,
+      "clocks_usec": [
+        181234848,
+        181235067,
+        181235139,
+        181235591,
+        181235973,
+        181376289,
+        181445783
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.219,
+      "admission_call_wall_ms": 0.072,
+      "admission_completed_to_worker_latch_ms": 0.452,
+      "worker_latch_to_native_start_ms": 0.382,
+      "native_wall_ms": 140.316,
+      "native_completion_to_physical_completion_ms": 69.494,
+      "observed_native_deadline_lateness_ms": 0.412
+    },
+    {
+      "step": 105,
+      "clocks_usec": [
+        181445783,
+        181445997,
+        181446067,
+        181446589,
+        181446959,
+        181503088,
+        181530640
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.214,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 0.522,
+      "worker_latch_to_native_start_ms": 0.37,
+      "native_wall_ms": 56.129,
+      "native_completion_to_physical_completion_ms": 27.552,
+      "observed_native_deadline_lateness_ms": 0.764
+    },
+    {
+      "step": 106,
+      "clocks_usec": [
+        181530640,
+        181530883,
+        181530956,
+        181531814,
+        181532173,
+        181558104,
+        181803113
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.243,
+      "admission_call_wall_ms": 0.073,
+      "admission_completed_to_worker_latch_ms": 0.858,
+      "worker_latch_to_native_start_ms": 0.359,
+      "native_wall_ms": 25.931,
+      "native_completion_to_physical_completion_ms": 245.009,
+      "observed_native_deadline_lateness_ms": 0.392
+    },
+    {
+      "step": 107,
+      "clocks_usec": [
+        181803113,
+        181803320,
+        181803391,
+        181803798,
+        181804147,
+        181829585,
+        182080240
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.207,
+      "admission_call_wall_ms": 0.071,
+      "admission_completed_to_worker_latch_ms": 0.407,
+      "worker_latch_to_native_start_ms": 0.349,
+      "native_wall_ms": 25.438,
+      "native_completion_to_physical_completion_ms": 250.655,
+      "observed_native_deadline_lateness_ms": 0.378
+    },
+    {
+      "step": 108,
+      "clocks_usec": [
+        182080240,
+        182080434,
+        182080501,
+        182080798,
+        182081136,
+        182106560,
+        182351484
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.194,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 0.297,
+      "worker_latch_to_native_start_ms": 0.338,
+      "native_wall_ms": 25.424,
+      "native_completion_to_physical_completion_ms": 244.924,
+      "observed_native_deadline_lateness_ms": 0.365
+    },
+    {
+      "step": 109,
+      "clocks_usec": [
+        182351484,
+        182351718,
+        182351793,
+        182352637,
+        182352990,
+        182391834,
+        182545983
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.234,
+      "admission_call_wall_ms": 0.075,
+      "admission_completed_to_worker_latch_ms": 0.844,
+      "worker_latch_to_native_start_ms": 0.353,
+      "native_wall_ms": 38.844,
+      "native_completion_to_physical_completion_ms": 154.149,
+      "observed_native_deadline_lateness_ms": 0.379
+    },
+    {
+      "step": 110,
+      "clocks_usec": [
+        182545983,
+        182546199,
+        182546266,
+        182546810,
+        182547149,
+        182571646,
+        182636040
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.216,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 0.544,
+      "worker_latch_to_native_start_ms": 0.339,
+      "native_wall_ms": 24.497,
+      "native_completion_to_physical_completion_ms": 64.394,
+      "observed_native_deadline_lateness_ms": 2.149
+    },
+    {
+      "step": 111,
+      "clocks_usec": [
+        182636040,
+        182636245,
+        182636310,
+        182636830,
+        182637173,
+        182662656,
+        182899166
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.205,
+      "admission_call_wall_ms": 0.065,
+      "admission_completed_to_worker_latch_ms": 0.52,
+      "worker_latch_to_native_start_ms": 0.343,
+      "native_wall_ms": 25.483,
+      "native_completion_to_physical_completion_ms": 236.51,
+      "observed_native_deadline_lateness_ms": 0.377
+    },
+    {
+      "step": 112,
+      "clocks_usec": [
+        182899166,
+        182899369,
+        182899456,
+        182901118,
+        182901408,
+        182926910,
+        183172678
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.203,
+      "admission_call_wall_ms": 0.087,
+      "admission_completed_to_worker_latch_ms": 1.662,
+      "worker_latch_to_native_start_ms": 0.29,
+      "native_wall_ms": 25.502,
+      "native_completion_to_physical_completion_ms": 245.768,
+      "observed_native_deadline_lateness_ms": 0.328
+    },
+    {
+      "step": 113,
+      "clocks_usec": [
+        183172678,
+        183172890,
+        183172958,
+        183173148,
+        183173524,
+        183200905,
+        183454491
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.212,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.19,
+      "worker_latch_to_native_start_ms": 0.376,
+      "native_wall_ms": 27.381,
+      "native_completion_to_physical_completion_ms": 253.586,
+      "observed_native_deadline_lateness_ms": 0.406
+    },
+    {
+      "step": 114,
+      "clocks_usec": [
+        183454491,
+        183454789,
+        183454857,
+        183455145,
+        183455514,
+        183492246,
+        183721793
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.298,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.288,
+      "worker_latch_to_native_start_ms": 0.369,
+      "native_wall_ms": 36.732,
+      "native_completion_to_physical_completion_ms": 229.547,
+      "observed_native_deadline_lateness_ms": 1.893
+    },
+    {
+      "step": 115,
+      "clocks_usec": [
+        183721793,
+        183722037,
+        183722102,
+        183724022,
+        183724383,
+        183760821,
+        183981800
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.244,
+      "admission_call_wall_ms": 0.065,
+      "admission_completed_to_worker_latch_ms": 1.92,
+      "worker_latch_to_native_start_ms": 0.361,
+      "native_wall_ms": 36.438,
+      "native_completion_to_physical_completion_ms": 220.979,
+      "observed_native_deadline_lateness_ms": 0.389
+    },
+    {
+      "step": 116,
+      "clocks_usec": [
+        183981800,
+        183982031,
+        183982101,
+        183982922,
+        183983308,
+        184009115,
+        184265926
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.231,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 0.821,
+      "worker_latch_to_native_start_ms": 0.386,
+      "native_wall_ms": 25.807,
+      "native_completion_to_physical_completion_ms": 256.811,
+      "observed_native_deadline_lateness_ms": 0.413
+    },
+    {
+      "step": 117,
+      "clocks_usec": [
+        184265926,
+        184266135,
+        184266205,
+        184267027,
+        184267370,
+        184293263,
+        184555675
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.209,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 0.822,
+      "worker_latch_to_native_start_ms": 0.343,
+      "native_wall_ms": 25.893,
+      "native_completion_to_physical_completion_ms": 262.412,
+      "observed_native_deadline_lateness_ms": 0.371
+    },
+    {
+      "step": 118,
+      "clocks_usec": [
+        184555675,
+        184555878,
+        184555946,
+        184557046,
+        184557433,
+        184700090,
+        184805617
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.203,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 1.1,
+      "worker_latch_to_native_start_ms": 0.387,
+      "native_wall_ms": 142.657,
+      "native_completion_to_physical_completion_ms": 105.527,
+      "observed_native_deadline_lateness_ms": 0.42
+    },
+    {
+      "step": 119,
+      "clocks_usec": [
+        184805617,
+        184805828,
+        184805892,
+        184805939,
+        184806233,
+        184832547,
+        184860746
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.211,
+      "admission_call_wall_ms": 0.064,
+      "admission_completed_to_worker_latch_ms": 0.047,
+      "worker_latch_to_native_start_ms": 0.294,
+      "native_wall_ms": 26.314,
+      "native_completion_to_physical_completion_ms": 28.199,
+      "observed_native_deadline_lateness_ms": 0.404
+    },
+    {
+      "step": 120,
+      "clocks_usec": [
+        184860746,
+        184860955,
+        184861021,
+        184861644,
+        184862003,
+        184887778,
+        185137811
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.209,
+      "admission_call_wall_ms": 0.066,
+      "admission_completed_to_worker_latch_ms": 0.623,
+      "worker_latch_to_native_start_ms": 0.359,
+      "native_wall_ms": 25.775,
+      "native_completion_to_physical_completion_ms": 250.033,
+      "observed_native_deadline_lateness_ms": 0.39
+    },
+    {
+      "step": 121,
+      "clocks_usec": [
+        185137811,
+        185138055,
+        185138121,
+        185139690,
+        185140044,
+        185166357,
+        185427619
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.244,
+      "admission_call_wall_ms": 0.066,
+      "admission_completed_to_worker_latch_ms": 1.569,
+      "worker_latch_to_native_start_ms": 0.354,
+      "native_wall_ms": 26.313,
+      "native_completion_to_physical_completion_ms": 261.262,
+      "observed_native_deadline_lateness_ms": 0.407
+    },
+    {
+      "step": 122,
+      "clocks_usec": [
+        185427619,
+        185427827,
+        185427897,
+        185429672,
+        185430049,
+        185455265,
+        185688244
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.208,
+      "admission_call_wall_ms": 0.07,
+      "admission_completed_to_worker_latch_ms": 1.775,
+      "worker_latch_to_native_start_ms": 0.377,
+      "native_wall_ms": 25.216,
+      "native_completion_to_physical_completion_ms": 232.979,
+      "observed_native_deadline_lateness_ms": 1.38
+    },
+    {
+      "step": 123,
+      "clocks_usec": [
+        185688244,
+        185688453,
+        185688521,
+        185689430,
+        185689822,
+        185848319,
+        185952577
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.209,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.909,
+      "worker_latch_to_native_start_ms": 0.392,
+      "native_wall_ms": 158.497,
+      "native_completion_to_physical_completion_ms": 104.258,
+      "observed_native_deadline_lateness_ms": 4.504
+    },
+    {
+      "step": 124,
+      "clocks_usec": [
+        185952577,
+        185952804,
+        185952871,
+        185953646,
+        185954045,
+        185991904,
+        186733660
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.227,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 0.775,
+      "worker_latch_to_native_start_ms": 0.399,
+      "native_wall_ms": 37.859,
+      "native_completion_to_physical_completion_ms": 741.756,
+      "observed_native_deadline_lateness_ms": 1.104
+    },
+    {
+      "step": 125,
+      "clocks_usec": [
+        186733660,
+        186733866,
+        186733928,
+        186734649,
+        186734941,
+        186762759,
+        186772997
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.206,
+      "admission_call_wall_ms": 0.062,
+      "admission_completed_to_worker_latch_ms": 0.721,
+      "worker_latch_to_native_start_ms": 0.292,
+      "native_wall_ms": 27.818,
+      "native_completion_to_physical_completion_ms": 10.238,
+      "observed_native_deadline_lateness_ms": 0.317
+    },
+    {
+      "step": 126,
+      "clocks_usec": [
+        186772997,
+        186773209,
+        186773278,
+        186774653,
+        186775009,
+        186814782,
+        187519186
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.212,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 1.375,
+      "worker_latch_to_native_start_ms": 0.356,
+      "native_wall_ms": 39.773,
+      "native_completion_to_physical_completion_ms": 704.404,
+      "observed_native_deadline_lateness_ms": 0.389
+    },
+    {
+      "step": 127,
+      "clocks_usec": [
+        187519186,
+        187519436,
+        187519504,
+        187520362,
+        187520756,
+        187552924,
+        187674912
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.25,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.858,
+      "worker_latch_to_native_start_ms": 0.394,
+      "native_wall_ms": 32.168,
+      "native_completion_to_physical_completion_ms": 121.988,
+      "observed_native_deadline_lateness_ms": 0.432
+    },
+    {
+      "step": 128,
+      "clocks_usec": [
+        187674912,
+        187675141,
+        187675195,
+        187675766,
+        187676016,
+        187700457,
+        187810886
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.229,
+      "admission_call_wall_ms": 0.054,
+      "admission_completed_to_worker_latch_ms": 0.571,
+      "worker_latch_to_native_start_ms": 0.25,
+      "native_wall_ms": 24.441,
+      "native_completion_to_physical_completion_ms": 110.429,
+      "observed_native_deadline_lateness_ms": 0.268
+    },
+    {
+      "step": 129,
+      "clocks_usec": [
+        187810886,
+        187811083,
+        187811155,
+        187811198,
+        187811524,
+        187838874,
+        188324339
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.197,
+      "admission_call_wall_ms": 0.072,
+      "admission_completed_to_worker_latch_ms": 0.043,
+      "worker_latch_to_native_start_ms": 0.326,
+      "native_wall_ms": 27.35,
+      "native_completion_to_physical_completion_ms": 485.465,
+      "observed_native_deadline_lateness_ms": 0.429
+    },
+    {
+      "step": 130,
+      "clocks_usec": [
+        188324339,
+        188324572,
+        188324646,
+        188326565,
+        188326933,
+        188353394,
+        188362966
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.233,
+      "admission_call_wall_ms": 0.074,
+      "admission_completed_to_worker_latch_ms": 1.919,
+      "worker_latch_to_native_start_ms": 0.368,
+      "native_wall_ms": 26.461,
+      "native_completion_to_physical_completion_ms": 9.572,
+      "observed_native_deadline_lateness_ms": 2.407
+    },
+    {
+      "step": 131,
+      "clocks_usec": [
+        188362966,
+        188363177,
+        188363245,
+        188363560,
+        188363884,
+        188406984,
+        189100799
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.211,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.315,
+      "worker_latch_to_native_start_ms": 0.324,
+      "native_wall_ms": 43.1,
+      "native_completion_to_physical_completion_ms": 693.815,
+      "observed_native_deadline_lateness_ms": 0.351
+    },
+    {
+      "step": 132,
+      "clocks_usec": [
+        189100799,
+        189101012,
+        189101079,
+        189101295,
+        189101677,
+        189128463,
+        189241843
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.213,
+      "admission_call_wall_ms": 0.067,
+      "admission_completed_to_worker_latch_ms": 0.216,
+      "worker_latch_to_native_start_ms": 0.382,
+      "native_wall_ms": 26.786,
+      "native_completion_to_physical_completion_ms": 113.38,
+      "observed_native_deadline_lateness_ms": 0.414
+    },
+    {
+      "step": 133,
+      "clocks_usec": [
+        189241843,
+        189242109,
+        189242182,
+        189243284,
+        189243670,
+        189358953,
+        189626643
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.266,
+      "admission_call_wall_ms": 0.073,
+      "admission_completed_to_worker_latch_ms": 1.102,
+      "worker_latch_to_native_start_ms": 0.386,
+      "native_wall_ms": 115.283,
+      "native_completion_to_physical_completion_ms": 267.69,
+      "observed_native_deadline_lateness_ms": 0.42
+    },
+    {
+      "step": 134,
+      "clocks_usec": [
+        189626643,
+        189626855,
+        189626924,
+        189627395,
+        189627751,
+        189653870,
+        189725412
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.212,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 0.471,
+      "worker_latch_to_native_start_ms": 0.356,
+      "native_wall_ms": 26.119,
+      "native_completion_to_physical_completion_ms": 71.542,
+      "observed_native_deadline_lateness_ms": 0.39
+    },
+    {
+      "step": 135,
+      "clocks_usec": [
+        189725412,
+        189725639,
+        189725692,
+        189727100,
+        189727368,
+        189753003,
+        189862026
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.227,
+      "admission_call_wall_ms": 0.053,
+      "admission_completed_to_worker_latch_ms": 1.408,
+      "worker_latch_to_native_start_ms": 0.268,
+      "native_wall_ms": 25.635,
+      "native_completion_to_physical_completion_ms": 109.023,
+      "observed_native_deadline_lateness_ms": 0.287
+    },
+    {
+      "step": 136,
+      "clocks_usec": [
+        189862026,
+        189862238,
+        189862303,
+        189863414,
+        189863762,
+        189889532,
+        189926246
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.212,
+      "admission_call_wall_ms": 0.065,
+      "admission_completed_to_worker_latch_ms": 1.111,
+      "worker_latch_to_native_start_ms": 0.348,
+      "native_wall_ms": 25.77,
+      "native_completion_to_physical_completion_ms": 36.714,
+      "observed_native_deadline_lateness_ms": 0.381
+    },
+    {
+      "step": 137,
+      "clocks_usec": [
+        189926246,
+        189926479,
+        189926548,
+        189927390,
+        189927766,
+        189956962,
+        190197569
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.233,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 0.842,
+      "worker_latch_to_native_start_ms": 0.376,
+      "native_wall_ms": 29.196,
+      "native_completion_to_physical_completion_ms": 240.607,
+      "observed_native_deadline_lateness_ms": 2.298
+    },
+    {
+      "step": 138,
+      "clocks_usec": [
+        190197569,
+        190197778,
+        190197835,
+        190199653,
+        190199935,
+        190225424,
+        190449146
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.209,
+      "admission_call_wall_ms": 0.057,
+      "admission_completed_to_worker_latch_ms": 1.818,
+      "worker_latch_to_native_start_ms": 0.282,
+      "native_wall_ms": 25.489,
+      "native_completion_to_physical_completion_ms": 223.722,
+      "observed_native_deadline_lateness_ms": 0.307
+    },
+    {
+      "step": 139,
+      "clocks_usec": [
+        190449146,
+        190449370,
+        190449435,
+        190449655,
+        190450020,
+        190475982,
+        190482641
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.224,
+      "admission_call_wall_ms": 0.065,
+      "admission_completed_to_worker_latch_ms": 0.22,
+      "worker_latch_to_native_start_ms": 0.365,
+      "native_wall_ms": 25.962,
+      "native_completion_to_physical_completion_ms": 6.659,
+      "observed_native_deadline_lateness_ms": 0.396
+    },
+    {
+      "step": 140,
+      "clocks_usec": [
+        190482641,
+        190482841,
+        190482909,
+        190483653,
+        190483958,
+        190567055,
+        190730979
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.2,
+      "admission_call_wall_ms": 0.068,
+      "admission_completed_to_worker_latch_ms": 0.744,
+      "worker_latch_to_native_start_ms": 0.305,
+      "native_wall_ms": 83.097,
+      "native_completion_to_physical_completion_ms": 163.924,
+      "observed_native_deadline_lateness_ms": 0.33
+    },
+    {
+      "step": 141,
+      "clocks_usec": [
+        190730979,
+        190731177,
+        190731240,
+        190732534,
+        190732844,
+        190762285,
+        191504609
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.198,
+      "admission_call_wall_ms": 0.063,
+      "admission_completed_to_worker_latch_ms": 1.294,
+      "worker_latch_to_native_start_ms": 0.31,
+      "native_wall_ms": 29.441,
+      "native_completion_to_physical_completion_ms": 742.324,
+      "observed_native_deadline_lateness_ms": 0.339
+    },
+    {
+      "step": 142,
+      "clocks_usec": [
+        191504609,
+        191504801,
+        191504861,
+        191506076,
+        191506394,
+        191532331,
+        191540889
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.192,
+      "admission_call_wall_ms": 0.06,
+      "admission_completed_to_worker_latch_ms": 1.215,
+      "worker_latch_to_native_start_ms": 0.318,
+      "native_wall_ms": 25.937,
+      "native_completion_to_physical_completion_ms": 8.558,
+      "observed_native_deadline_lateness_ms": 0.345
+    },
+    {
+      "step": 143,
+      "clocks_usec": [
+        191540889,
+        191541081,
+        191541150,
+        191542324,
+        191542636,
+        191643969,
+        191768165
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.192,
+      "admission_call_wall_ms": 0.069,
+      "admission_completed_to_worker_latch_ms": 1.174,
+      "worker_latch_to_native_start_ms": 0.312,
+      "native_wall_ms": 101.333,
+      "native_completion_to_physical_completion_ms": 124.196,
+      "observed_native_deadline_lateness_ms": 0.342
+    },
+    {
+      "step": 144,
+      "clocks_usec": [
+        191768165,
+        191768409,
+        191768471,
+        191770337,
+        191770596,
+        191794213,
+        192052840
+      ],
+      "ordered": true,
+      "previous_completion_to_admission_start_ms": 0.244,
+      "admission_call_wall_ms": 0.062,
+      "admission_completed_to_worker_latch_ms": 1.866,
+      "worker_latch_to_native_start_ms": 0.259,
+      "native_wall_ms": 23.617,
+      "native_completion_to_physical_completion_ms": 258.627,
+      "observed_native_deadline_lateness_ms": 0.288
+    }
+  ],
+  "nonordered_partitions": [],
+  "partition_distributions": {
+    "previous_completion_to_admission_start_ms": {
+      "count": 143,
+      "mean": 0.22657342657342655,
+      "max": 0.377,
+      "p50": 0.221,
+      "p95": 0.26890000000000003,
+      "p99": 0.32474000000000003
+    },
+    "admission_call_wall_ms": {
+      "count": 143,
+      "mean": 0.06847552447552448,
+      "max": 0.118,
+      "p50": 0.068,
+      "p95": 0.07890000000000001,
+      "p99": 0.09306000000000009
+    },
+    "admission_completed_to_worker_latch_ms": {
+      "count": 143,
+      "mean": 1.060020979020979,
+      "max": 16.048,
+      "p50": 0.94,
+      "p95": 1.8612000000000004,
+      "p99": 1.9633200000000006
+    },
+    "worker_latch_to_native_start_ms": {
+      "count": 143,
+      "mean": 0.34805594405594403,
+      "max": 0.429,
+      "p50": 0.354,
+      "p95": 0.40380000000000005,
+      "p99": 0.42064000000000007
+    },
+    "native_wall_ms": {
+      "count": 143,
+      "mean": 128.87404195804197,
+      "max": 312.781,
+      "p50": 113.199,
+      "p95": 278.4066,
+      "p99": 300.8271000000001
+    },
+    "native_completion_to_physical_completion_ms": {
+      "count": 143,
+      "mean": 141.86100699300698,
+      "max": 742.324,
+      "p50": 105.527,
+      "p95": 355.85400000000027,
+      "p99": 726.0681600000005
+    },
+    "observed_native_deadline_lateness_ms": {
+      "count": 143,
+      "mean": 0.6573216783216783,
+      "max": 19.079,
+      "p50": 0.39,
+      "p95": 1.8795000000000008,
+      "p99": 3.623260000000026
+    }
+  },
+  "scope": [
+    "Existing single Windows c90 current-gameplay Wave2048 causal ON diagnostic, not a new runtime execution.",
+    "Admission-to-latch includes wake/queue/scheduling delay and cannot identify kernel wakeup alone.",
+    "Worker native elapsed includes descheduling and is not on-CPU execution.",
+    "This capture already answers the broad large-workload post-publication delay question at c90.",
+    "No matched causal off/on/on/off calibration or Wave512 stage capture exists in this recovered cohort.",
+    "A prospective Wave512 diagnostic is justified; no broad repeated Wave2048 campaign is necessary."
+  ],
+  "physical_acceptance": "HOLD"
+}

@@ -1,0 +1,43 @@
+{
+  "schema": "pubpres-focused-font-requalification-native-peer-review-v1",
+  "recorded_utc": "2026-11-24T19:06:50.672051+00:00",
+  "reviewer": "native_progression (A), independent of root qualifier implementation",
+  "reviewed_root_head": "6443cd6884043edf579a7c868ebad1f378695c34",
+  "reviewed_files_sha256": {
+    "tools/pubpres_final_requalification/contract.py": "c3755d6d4ec0654ee9f3b91b5533918548242a5020e4a25c8e49f4eab4e89cf1",
+    "tools/pubpres_final_requalification/restore_artifacts.py": "a81e2ad02e4b2b56512cbcd29fa48ecf5034a97ab9dab3694d9764e343e33eb1",
+    "tools/pubpres_final_requalification/run.py": "f3857263686b2600c7b197bf10d350b6d79d1175958ae003342f5540de8ee624",
+    "tools/pubpres_final_requalification/test_contract.py": "42eea867b8ab302c9954a6332be23c04b6ddac84da517960f066f59f6e9e6359",
+    "tools/pubpres_final_requalification/registration.json": "d955506bd2c5626c5783f9fb53642101a1d34c5256f4813022190197f0de51fb",
+    ".github/workflows/pubpres-font-requalification.yml": "0cbc18a3ea77802074c4f5fbb3aa77d247d597b0215a0a2561aaca42dd5c0cdd"
+  },
+  "status": "No source-review blocker found; five contract adversarial methods passed independently",
+  "scope": "Current files were reviewed before final driver freeze. Hashes bind the reviewed bytes; a later change is not covered by this receipt. No actual font, startup, GPU, ordinary physics or hardware execution is claimed.",
+  "checked_boundaries": [
+    "Only three SHA-pinned function bodies are derived; exact app==driver joins become fixedc2 application/current committed driver joins. Physical predicates are retained.",
+    "Exact native binary and receipt, external engine source/run/attempt/proof, and current complete driver fingerprint are required.",
+    "Raw font/process/strict log/startup revalidation remains required; initial negative control classification is unchanged.",
+    "Both actual180-admission GPU history gates precede all same-engine Safe/Separate/Separate/Safe timing.",
+    "Unchanged native/Rapier/physical/source, CPU/presentation observers, draw identity and cohort matching remain in the executed bodies.",
+    "Artifact metadata/ZIP namespace/hash/CRC, exact native inventory and actual engine GUI/proof are admitted before launch.",
+    "Dedicated push/request gate uses read-only repository/actions permissions, fresh exactc2 checkout and exact Rapier materialization."
+  ],
+  "validation": {
+    "command": [
+      "python",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/pubpres_final_requalification",
+      "-p",
+      "test_contract.py",
+      "-v"
+    ],
+    "cwd": "/workspace/scratch/0b2a9bdf7883/cybersand",
+    "observed_exit_code": 0,
+    "tests": 5,
+    "result": "OK"
+  },
+  "physical_acceptance": "HOLD"
+}

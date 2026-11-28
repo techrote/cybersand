@@ -1,0 +1,22 @@
+law=0 workers=1 actual_tasks=0 ticks=80 dispatches=0 tasks=0 physical_hash=2422618298732426796
+law=0 workers=4 actual_tasks=0 ticks=80 dispatches=320 tasks=1767 physical_hash=2422618298732426796
+law=0 workers=4 actual_tasks=1 ticks=80 dispatches=320 tasks=1767 physical_hash=2422618298732426796
+law=0 workers=1 actual_tasks=1 ticks=80 dispatches=0 tasks=0 physical_hash=2422618298732426796
+Wave actual injection receipts: launched=3 capacity_refused=3
+law=1 workers=1 actual_tasks=0 ticks=80 dispatches=0 tasks=0 physical_hash=12296264551278915368
+law=1 workers=4 actual_tasks=0 ticks=80 dispatches=800 tasks=5109 physical_hash=12296264551278915368
+law=1 workers=4 actual_tasks=1 ticks=80 dispatches=800 tasks=5109 physical_hash=12296264551278915368
+law=1 workers=1 actual_tasks=1 ticks=80 dispatches=0 tasks=0 physical_hash=12296264551278915368
+law=2 workers=1 actual_tasks=0 ticks=80 dispatches=0 tasks=0 physical_hash=5342472734945718859
+law=2 workers=4 actual_tasks=0 ticks=80 dispatches=640 tasks=5083 physical_hash=5342472734945718859
+law=2 workers=4 actual_tasks=1 ticks=80 dispatches=640 tasks=5083 physical_hash=5342472734945718859
+law=2 workers=1 actual_tasks=1 ticks=80 dispatches=0 tasks=0 physical_hash=5342472734945718859
+law=3 workers=1 actual_tasks=0 ticks=80 dispatches=0 tasks=0 physical_hash=13791018653283871820
+law=3 workers=4 actual_tasks=0 ticks=80 dispatches=640 tasks=5083 physical_hash=13791018653283871820
+law=3 workers=4 actual_tasks=1 ticks=80 dispatches=640 tasks=5083 physical_hash=13791018653283871820
+law=3 workers=1 actual_tasks=1 ticks=80 dispatches=0 tasks=0 physical_hash=13791018653283871820
+law=4 workers=1 actual_tasks=0 ticks=80 dispatches=0 tasks=0 physical_hash=3970835845134956619
+law=4 workers=4 actual_tasks=0 ticks=80 dispatches=640 tasks=5083 physical_hash=3970835845134956619
+law=4 workers=4 actual_tasks=1 ticks=80 dispatches=640 tasks=5083 physical_hash=3970835845134956619
+law=4 workers=1 actual_tasks=1 ticks=80 dispatches=0 tasks=0 physical_hash=3970835845134956619
+PUBPRES_TASK_COMPLETION_WORLD_RESULT {"checks":124055,"failures":[]}

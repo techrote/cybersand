@@ -1,0 +1,86 @@
+name: PUBPRES Windows WARP transition comparison
+
+on:
+  # Completed mechanism experiments are retained for explicit reproduction.
+  # Production changes use the installed three-source comparison workflow;
+  # unrelated fixture edits must not repeat a rejected treatment automatically.
+  workflow_dispatch:
+    inputs:
+      experiment:
+        description: WARP comparison to run
+        type: choice
+        options:
+          - sparse-storage
+          - fixed-material
+          - fresh-drawable
+          - direct-drawable
+          - steady-sparse
+          - reentry
+        default: sparse-storage
+
+permissions:
+  actions: read
+  contents: read
+
+jobs:
+  transition:
+    if: github.ref == 'refs/heads/codex/pubpres-integration-001'
+    runs-on: windows-2022
+    timeout-minutes: 100
+    env:
+      GIT_LFS_SKIP_SMUDGE: '1'
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+          lfs: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Verify original installed-package artifact identity
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          $Artifact = gh api repos/${{ github.repository }}/actions/artifacts/14616761210 | ConvertFrom-Json
+          if ($LASTEXITCODE -ne 0 -or $Artifact.expired -or
+              $Artifact.workflow_run.id -ne 44706204266 -or
+              $Artifact.workflow_run.head_sha -ne '8503ec19e4d620e125dc6df2c5c6571b1256cb92' -or
+              $Artifact.digest -ne 'sha256:863c79b55274923a38f16ea23c0bc3b724d26ee4de01788917f93d45c485ddbf') {
+            throw 'The published evaluation artifact does not match its pinned identity'
+          }
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: 44706204266
+          name: pubpres-windows-package-44706204266-1
+          path: ${{ runner.temp }}/pubpres-warp-package
+      - name: Verify and extract the evaluation ZIP
+        shell: pwsh
+        run: |
+          $Folder = Join-Path $env:RUNNER_TEMP 'pubpres-warp-package'
+          $Zip = Join-Path $Folder 'CyberSand-Workbench-Windows-8503ec19e4d6.zip'
+          $Checksum = [IO.File]::ReadAllText($Zip+'.sha256').Split(' ')[0]
+          if ($Checksum -notmatch '^[0-9a-f]{64}$' -or (Get-FileHash -LiteralPath $Zip).Hash -ne $Checksum) {
+            throw 'The evaluation ZIP differs from its archived checksum'
+          }
+          Expand-Archive -LiteralPath $Zip -DestinationPath (Join-Path $env:RUNNER_TEMP 'pubpres-warp-installed')
+      - name: Run the selected publication comparison on WARP
+        shell: pwsh
+        env:
+          PUBPRES_WARP_EXPERIMENT: ${{ inputs.experiment || 'sparse-storage' }}
+        run: |
+          python tools/pubpres_integration/warp_transition.py `
+            --installed (Join-Path $env:RUNNER_TEMP 'pubpres-warp-installed') `
+            --output (Join-Path $PWD 'warp-evidence') `
+            --oracle godot/tests/pubpres_warp_transition_oracle.gd `
+            --fixture godot/tests/pubpres_transition.gd `
+            --experiment $env:PUBPRES_WARP_EXPERIMENT
+          if ($LASTEXITCODE -ne 0) { throw 'WARP comparison incomplete; consult retained receipts' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-warp-transition-${{ github.run_id }}-${{ github.run_attempt }}
+          path: warp-evidence/
+          if-no-files-found: warn
+          retention-days: 90

@@ -1,0 +1,15 @@
+{
+  "SUMMARY.json": "c7ffb236481c313fefb8a5dd0d35e18ccce50ba43991231cd5200f383bb6869b",
+  "test_workbench_presentation_history-slots2/process.json": "09b2e6840827cbfd84b76667bff6f6199ea8ef468fad031ebb161ecb12a1ed3d",
+  "test_workbench_presentation_history-slots2/stdout.log": "6a12da50778e2dd6053e4c29be9664819929809fa70eb6ca4229e11e8402db57",
+  "import-slots2/process.json": "1576e629b8f64e81f20ccf3a1ce9b2de317f0f6f0652420b7d18f554ccf3bc50",
+  "import-slots2/stdout.log": "81da412d1f1dffc623783a7cf37e7a1ff62dd157de74dc0db35adccd98a4ede5",
+  "test_workbench_member_presentation-slots2/display-owner.xorg.log": "7867a1a48eec3afb1022427097d70f8c91a6ac907913cd5be971fd6a3b29e87b",
+  "test_workbench_member_presentation-slots2/receipt.png": "c3fd18baef7d623f24e6936f791ab9101288f8a0e37facd8c3ba5f67a50ec91e",
+  "test_workbench_member_presentation-slots2/process.json": "f03daa53e9e025822e8593e2f7c33733f4876e94d3aba7849585e8e993e8f368",
+  "test_workbench_member_presentation-slots2/receipt.json": "c1f9151896c574c85a58d79aa4bb81bb6a61ffc90beedf5988b7b5b3a450bd2d",
+  "test_workbench_member_presentation-slots2/stdout.log": "1377826e7809b75c292bc0bbac7115b1ee2b33c3cc349089ad8fbc342d5e287f",
+  "test_workbench_member_presentation-slots2/display-owner.json": "1acbbe269c0d0a2b6a97c006341f8ff0e2b8ff2910ae77682f9183fce5b52afb",
+  "test_workbench_presentation_member_history-slots2/process.json": "355798785b03033bfe52fc867a9611181100388e5cfce1b7120e6365cab04100",
+  "test_workbench_presentation_member_history-slots2/stdout.log": "5cb5d8eed65631460f190b27473f42df762f7a0e58c469e3b8f9a092497e5583"
+}

@@ -1,0 +1,17 @@
+[
+  {
+    "path": "scripts/blit_material_publisher.gd",
+    "source_commit": "a7074ab1bb4fede30d75a7924b4a5bfb7ea963d1",
+    "sha256": "b3f046b691328d7991eb3d275f26c22d47f3bb368b5a8a9fe1ca46860870719b"
+  },
+  {
+    "path": "shaders/material_publication_blit.gdshader",
+    "source_commit": "a7074ab1bb4fede30d75a7924b4a5bfb7ea963d1",
+    "sha256": "ab174f03cf0d129c15a8af64d5223e5608cc5c10a7b7bb81855b17c7f0586abd"
+  },
+  {
+    "path": "tests/test_material_staging_reachability.gd",
+    "source_commit": "a7074ab1bb4fede30d75a7924b4a5bfb7ea963d1",
+    "sha256": "a1efcb382325ff8630249b401abf67202400b7485178397670d0093882912f94"
+  }
+]

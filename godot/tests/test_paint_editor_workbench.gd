@@ -3,7 +3,12 @@ extends SceneTree
 # Mounted ordinary Workbench gestures, native ACK and a fresh-process save.
 const Setup = preload("res://scripts/workbench_setup.gd")
 class FocusHost extends "res://scripts/main.gd":
+	var startup_observer: Callable
 	func _actor_window_has_focus() -> bool: return true
+	func _process(delta: float) -> void:
+		if startup_observer.is_valid(): startup_observer.call("main_enter")
+		super._process(delta)
+		if startup_observer.is_valid(): startup_observer.call("main_exit")
 var host: Control
 var bench: Control
 var editor: Control
@@ -13,6 +18,147 @@ var maximum_frame_gap_usec := 0
 var last_frame_usec := 0
 var frame_gaps_usec: Array[int] = []
 const SAVE_NAME := "paint001-mounted-acceptance"
+# Initial-readiness evidence only. These observations neither extend a deadline
+# nor admit a late predicate. No image readback or additional worker API is used.
+const STARTUP_EVENT_LIMIT := 256
+const STARTUP_FIRST_EVENTS := 64
+var startup_active := false
+var startup_terminal_probe := false
+var startup: Dictionary = {}
+var startup_events: Array[Dictionary] = []
+var startup_event_count := 0
+var startup_await_begin: Dictionary = {}
+var startup_main_begin: Dictionary = {}
+var startup_draw_begin: Dictionary = {}
+
+func _startup_main_state() -> Dictionary:
+	var state := {"host_valid":is_instance_valid(host),"fresh_worker_state":"not additionally queried"}
+	if not is_instance_valid(host): return state
+	state.merge({"worker_start_error":host.worker_start_error,"rapier_start_error":host.rapier_start_error,
+		"pending_apply":not host.pending_microscenario_apply.is_empty(),
+		"pending_request_serial":int(host.pending_microscenario_apply.get("serial",0)),
+		"prepared_owner":host._pending_physical_candidate != null,"prepared_ready_sent":host._prepared_physical_ready_sent,
+		"owner_epoch":host._physical_epoch,"owner_present":host.physical_actor_session != null,
+		"consumed_snapshot_serial":host.consumed_snapshot_serial,
+		"uploaded_serial":host.last_uploaded_render_snapshot_serial,
+		"uploaded_generation":host.last_uploaded_world_generation,"uploaded_revision":host.last_uploaded_revision,
+		"microscenario_error":host.microscenario_error})
+	var mounted: Control = host.shared_workbench
+	if is_instance_valid(mounted):
+		state.merge({"applied":not mounted.applied.is_empty(),"step_pending":mounted.step_pending,
+			"flatten_pending":mounted.is_flatten_pending(),"editor_busy":mounted.paint_editor != null and mounted.paint_editor.busy(),
+			"bench_message":mounted.message,"authored_actors":mounted.applied.get("actors",[]).size()})
+	var snapshot: RefCounted = host.latest_snapshot
+	state["main_snapshot"] = {"available":snapshot != null,"scope":"last Main-consumed immutable publication"}
+	if snapshot != null:
+		state.main_snapshot.merge({"serial":snapshot.serial,"published_usec":snapshot.published_usec,
+			"worker_handoff_usec":snapshot.worker_handoff_usec,"world_generation":snapshot.render_world_generation,
+			"world_revision":snapshot.world_revision,"simulation_revision":snapshot.simulation_world_revision,
+			"native_tick":snapshot.tick_index,"simulation_failed":snapshot.simulation_failed,"last_tick_error":snapshot.last_tick_error,
+			"request_serial":int(snapshot.lab_context.get("scenario_request_serial",0)),
+			"request_applied":bool(snapshot.lab_context.get("scenario_request_applied",false))})
+	return state
+
+func _startup_material_state() -> Dictionary:
+	var started := Time.get_ticks_usec()
+	if not is_instance_valid(host) or not host.has_method("material_publication_status"):
+		return {"available":false,"observation_started_usec":started,"observation_finished_usec":Time.get_ticks_usec()}
+	# This getter returns local counters, formats and existing Resource RIDs.
+	# It performs no texture readback, fence, update or worker query.
+	var result: Dictionary = host.material_publication_status()
+	result["available"] = true
+	result["current_texture_rid"] = host.texture.get_rid().get_id() if host.texture != null else 0
+	result["previous_texture_rid"] = host.previous_texture.get_rid().get_id() if host.previous_texture != null else 0
+	result["world_extent"] = [host.world_extent.x,host.world_extent.y]
+	result["render_channels"] = host.render_channels
+	result["paused"] = host.paused
+	result["uploaded_world_generation"] = host.last_uploaded_world_generation
+	result["uploaded_revision"] = host.last_uploaded_revision
+	result["uploaded_render_serial"] = host.last_uploaded_render_snapshot_serial
+	var snapshot: RefCounted = host.latest_snapshot
+	result["startup_snapshot"] = {"available":snapshot != null}
+	if snapshot != null:
+		result.startup_snapshot.merge({"serial":snapshot.serial,"world_generation":snapshot.render_world_generation,
+			"native_tick":snapshot.tick_index,"render_serial":snapshot.render_snapshot_serial,
+			"render_tick":snapshot.render_tick_index,"simulation_revision":snapshot.simulation_world_revision,
+			"backend_name":snapshot.backend_name,"native_worker_request":snapshot.native_worker_request,
+			"scheduler_thread_capacity_hint":snapshot.scheduler_thread_capacity_hint})
+	result["observation_scope"] = "local material publication metadata; no GPU completion or readback"
+	result["observation_started_usec"] = started
+	result["observation_finished_usec"] = Time.get_ticks_usec()
+	return result
+
+func _startup_mark(stage: String, values: Dictionary = {}) -> void:
+	if not startup_active: return
+	var row := {"event":stage,"sequence":startup_event_count,"time_usec":Time.get_ticks_usec(),
+		"process_frame":Engine.get_process_frames(),"physics_frame":Engine.get_physics_frames()}
+	row.merge(values)
+	if stage in ["main_enter","main_exit"]: row["state"] = _startup_main_state()
+	startup_event_count += 1
+	if startup_events.size() < STARTUP_EVENT_LIMIT: startup_events.append(row)
+	else:
+		var slot := STARTUP_FIRST_EVENTS+(startup_event_count-1-STARTUP_EVENT_LIMIT) % (STARTUP_EVENT_LIMIT-STARTUP_FIRST_EVENTS)
+		startup_events[slot] = row
+	var first: Dictionary = startup.first
+	if not first.has(stage):
+		if stage in ["host_add_end","main_enter","main_exit","frame_pre_draw"]:
+			row["material_publication"] = _startup_material_state()
+			if not startup.has("first_material_publications"): startup["first_material_publications"] = {}
+			# Four fixed entries survive any later first/tail event-ring rollover.
+			startup.first_material_publications[stage] = {"event":stage,"sequence":row.sequence,
+				"time_usec":row.time_usec,"process_frame":row.process_frame,"physics_frame":row.physics_frame,
+				"material_publication":row.material_publication}
+		first[stage] = row.time_usec
+		# A hung first callback/read still leaves its preceding boundary in the
+		# subprocess log. Later boundaries remain in the bounded in-memory tail.
+		if stage in ["host_add_begin","host_add_end","wait_begin","main_enter","main_exit","frame_pre_draw","frame_post_draw","timeout_before_diagnostic"]:
+			print("PAINT_STARTUP_CHECKPOINT ",JSON.stringify(row))
+	if stage == "await_begin": startup_await_begin = row
+	elif stage == "await_end" and not startup_await_begin.is_empty():
+		_startup_span("largest_await",startup_await_begin,row)
+	elif stage == "main_enter": startup_main_begin = row
+	elif stage == "main_exit" and not startup_main_begin.is_empty():
+		_startup_span("largest_main_callback",startup_main_begin,row)
+	elif stage == "frame_pre_draw": startup_draw_begin = row
+	elif stage == "frame_post_draw" and not startup_draw_begin.is_empty():
+		_startup_span("largest_draw_span",startup_draw_begin,row)
+
+func _startup_span(key: String, begin: Dictionary, end: Dictionary) -> void:
+	var duration: int = int(end.time_usec)-int(begin.time_usec)
+	if duration > int(startup.get(key,{}).get("duration_usec",-1)):
+		startup[key] = {"duration_usec":duration,"begin":begin,"end":end,
+			"scope":"wall span including observer and first-checkpoint output" if key=="largest_main_callback"
+				else ("pre/post-draw signal-delivery span; not GPU-exclusive" if key=="largest_draw_span" else "await wall span") }
+
+func _startup_process_frame() -> void: _startup_mark("process_frame")
+func _startup_pre_draw() -> void: _startup_mark("frame_pre_draw")
+func _startup_post_draw() -> void: _startup_mark("frame_post_draw")
+
+func _startup_ready_result(value: bool, observation: Dictionary) -> bool:
+	observation["ready"] = value
+	observation["finished_usec"] = Time.get_ticks_usec()
+	startup["last_ready_observation"] = observation
+	_startup_mark("ready_true" if value else "ready_false",{"observation":observation})
+	return value
+
+func _finish_startup(passed: bool) -> void:
+	_startup_mark("finished",{"passed":passed,"state":_startup_main_state()})
+	startup_active = false
+	if is_instance_valid(host): host.startup_observer = Callable()
+	process_frame.disconnect(_startup_process_frame)
+	RenderingServer.frame_pre_draw.disconnect(_startup_pre_draw)
+	RenderingServer.frame_post_draw.disconnect(_startup_post_draw)
+	startup_events.sort_custom(func(a: Dictionary,b: Dictionary) -> bool: return int(a.sequence)<int(b.sequence))
+	startup.merge({"passed":passed,"finished_usec":Time.get_ticks_usec(),"events":startup_events,
+		"event_count":startup_event_count,"retained_event_count":startup_events.size(),
+		"discarded_event_count":startup_event_count-startup_events.size(),
+		"test_sha256":FileAccess.get_sha256(get_script().resource_path)})
+	var output := OS.get_environment("PAINT_STARTUP_OUTPUT")
+	if not output.is_empty():
+		var file := FileAccess.open(output,FileAccess.WRITE)
+		if file != null: file.store_string(JSON.stringify(startup)+"\n"); file.close()
+		else: push_error("PAINT startup receipt could not be written: "+output)
+	print("PAINT_STARTUP_LIFECYCLE ",JSON.stringify(startup))
 
 func _initialize() -> void: run.call_deferred()
 func _process(_delta: float) -> bool:
@@ -22,6 +168,7 @@ func _process(_delta: float) -> bool:
 		maximum_frame_gap_usec=maxi(maximum_frame_gap_usec,gap_usec)
 		if frame_gaps_usec.size()<200000: frame_gaps_usec.append(gap_usec)
 	last_frame_usec=now
+	_startup_mark("scene_tree_process")
 	return false
 func check(ok: bool,label: String) -> bool:
 	checks+=1
@@ -31,17 +178,52 @@ func check(ok: bool,label: String) -> bool:
 	return ok
 func until(predicate: Callable,label: String,limit_ms: int=30000) -> bool:
 	var deadline := Time.get_ticks_msec()+limit_ms
+	var observing: bool = startup_active and label == "ordinary Workbench installed"
+	if observing:
+		startup.merge({"limit_ms":limit_ms,"wait_started_usec":Time.get_ticks_usec(),"deadline_msec":deadline})
+		_startup_mark("wait_begin",{"state":_startup_main_state()})
 	while Time.get_ticks_msec()<deadline:
 		if predicate.call(): return true
+		if observing: _startup_mark("await_begin")
 		await process_frame
+		if observing: _startup_mark("await_end")
+	if observing:
+		startup["timed_out"] = true
+		_startup_mark("timeout_before_diagnostic",{"state":_startup_main_state()})
+		startup_terminal_probe = true
+		startup["terminal_ready"] = bool(predicate.call())
+		startup_terminal_probe = false
+		_startup_mark("timeout_after_diagnostic",{"terminal_ready":startup.terminal_ready})
+	# A true late observation does not establish when readiness became true.
+	# It must never turn the unchanged deadline-first failure into success.
 	return check(false,label+" / "+str(bench.message))
 func ready() -> bool:
-	return not bench.applied.is_empty() and not bench.busy() and not host.simulation_worker.paint_state().busy
+	if not startup_active:
+		return not bench.applied.is_empty() and not bench.busy() and not host.simulation_worker.paint_state().busy
+	var observation := {"started_usec":Time.get_ticks_usec(),"terminal_diagnostic":startup_terminal_probe,
+		"main_state":_startup_main_state(),"bench_busy":"not reached","paint_state":"not reached"}
+	_startup_mark("ready_begin",{"terminal_diagnostic":startup_terminal_probe})
+	# Preserve the original short-circuit order and exactly its worker reads.
+	if bench.applied.is_empty(): return _startup_ready_result(false,observation)
+	_startup_mark("bench_busy_begin")
+	var bench_busy: bool = bench.busy()
+	observation.bench_busy = bench_busy
+	_startup_mark("bench_busy_end",{"busy":bench_busy})
+	if bench_busy: return _startup_ready_result(false,observation)
+	_startup_mark("paint_state_begin")
+	var state: Dictionary = host.simulation_worker.paint_state()
+	var compact := {}
+	for key: String in ["busy","generation","revision","tick","epoch","authoring_generation","paused","error",
+			"executing","queued","receipt_ready","art_busy","legacy_busy","transition_busy","flatten_busy"]:
+		if state.has(key): compact[key] = state[key]
+	observation.paint_state = compact
+	_startup_mark("paint_state_end",{"paint_state":compact})
+	return _startup_ready_result(not bool(state.busy),observation)
 func settled() -> bool:
 	return not editor.busy() and not host.simulation_worker.paint_state().busy
 func local(cell: Vector2i) -> Vector2:
 	var area: Rect2=host.view_content_rect()
-	return area.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.camera_origin.floor()))*area.size/Vector2(host.current_view_size)
+	return area.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.presentation_camera_origin()))*area.size/Vector2(host.current_view_size)
 func gesture(tool: String,from: Vector2i,to: Vector2i,id: int=58,button: int=MOUSE_BUTTON_LEFT) -> void:
 	editor.tools.select(editor.TOOLS.find(tool))
 	bench._tool.select(0)
@@ -222,14 +404,30 @@ func reopen() -> void:
 	check(editor.last_receipt.get("status")=="completed","continued editing after reopen")
 
 func run() -> void:
+	startup = {"schema":"paint-startup-lifecycle-v1","source":OS.get_environment("CYBERSAND_SOURCE_REVISION"),
+		"reopen":OS.get_environment("PAINT_REOPEN"),"started_usec":Time.get_ticks_usec(),
+		"default_limit_ms":30000,"timed_out":false,"terminal_ready":null,"first":{}}
+	startup_active = true
+	process_frame.connect(_startup_process_frame)
+	RenderingServer.frame_pre_draw.connect(_startup_pre_draw)
+	RenderingServer.frame_post_draw.connect(_startup_post_draw)
+	_startup_mark("run_enter")
 	set_meta("cybersand_feature","shared_workbench")
+	_startup_mark("host_instantiate_begin")
 	host=load("res://main.tscn").instantiate()
+	_startup_mark("host_instantiate_end")
 	host.set_script(FocusHost)
+	host.startup_observer = _startup_mark
+	_startup_mark("host_add_begin")
 	root.add_child(host)
+	_startup_mark("host_add_end")
 	root.size=Vector2i(1440,1000)
+	_startup_mark("root_resized")
 	bench=host.shared_workbench
 	editor=bench.paint_editor
-	if check(await until(ready,"ordinary Workbench installed",60000),"ordinary Workbench ready"):
+	var initial_ready: bool = await until(ready,"ordinary Workbench installed",60000)
+	_finish_startup(initial_ready)
+	if check(initial_ready,"ordinary Workbench ready"):
 		last_frame_usec=Time.get_ticks_usec(); maximum_frame_gap_usec=0; frame_gaps_usec.clear()
 		if OS.get_environment("PAINT_REOPEN")=="1": await reopen()
 		else: await author()

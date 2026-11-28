@@ -1,0 +1,38 @@
+{
+  "schema": "pubpres-count-independent-review-fix-v1",
+  "parent_commit": "429a826af7a4a3cae62af2e9d14f76046d57aac3",
+  "scope": "Driver reader and adversarial controls only; no application/native scheduling change or runtime qualification.",
+  "source_sha256": {
+    "tools/pubpres_final/material_steps_contract.py": "2632c5e32a51100c495f752c62ab422468dfa7066a5c522107ae6c1e4e8e749f",
+    "tools/pubpres_final/material_steps_status.py": "cba875c94f68fcb1943938a313cce418d8f4fca442ebf68e816e82c4a5b31698",
+    "tools/pubpres_final/material_steps_oracle.py": "bf5dc8095d785a9cd2628d34a56b2c603cbaa7b2b77ca10c54f4fa838f9d750f",
+    "tools/pubpres_final/test_material_steps_contract.py": "d122fddab8703702572cea9e689d5013ec5da53668b00f2f0bd4d35124e44c80"
+  },
+  "frozen_physical_oracle_sha256": "896126129f035e4ed39f776d6514f562ff0e6815d6ba1132d8f2a685982a3be2",
+  "validation": {
+    "command": [
+      "python3",
+      "-m",
+      "unittest",
+      "discover",
+      "-s",
+      "tools/pubpres_final",
+      "-p",
+      "test_*.py",
+      "-v"
+    ],
+    "exit_code": 0,
+    "methods": 64,
+    "count_methods": 15,
+    "raw_log": "build/pubpres-final/count-driver-parse/python-tests-latest-completion.log",
+    "raw_log_sha256": "e1652d2e9eb33fc67715881d4a12373224367ad46a1dc21e306dfdec75c19e1a"
+  },
+  "review_findings_resolved": [
+    "Older-but-real accepted anchor despite newer actual completion",
+    "Physical completion inside synchronous take/upload/complete transaction",
+    "Unqualified pre-capture anchor versus exact captured boundary",
+    "Out-of-range or coerced owner identity and unrestricted ownerless exception"
+  ],
+  "physical_credit": false,
+  "performance_selection": "HOLD"
+}

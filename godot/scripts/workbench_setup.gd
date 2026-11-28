@@ -713,7 +713,8 @@ static func write_named(label: String, setup: Dictionary) -> String:
 	var error := validate(setup)
 	if not error.is_empty():
 		return error
-	var content := JSON.stringify(setup)
+	# Preserve fractional authored placement through ordinary Save and fresh reopen.
+	var content := JSON.stringify(setup, "", true, true)
 	if content.to_utf8_buffer().size() > BYTE_LIMIT:
 		return "Setup exceeds the file budget."
 	if DirAccess.make_dir_recursive_absolute(DIRECTORY) != OK:

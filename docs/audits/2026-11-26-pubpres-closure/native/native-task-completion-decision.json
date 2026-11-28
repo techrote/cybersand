@@ -1,0 +1,3840 @@
+{
+  "schema": "pubpres-native-task-completion-final-decision-v1",
+  "utc": "2026-11-26T08:47:32.848052+00:00",
+  "source_commit": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+  "source_tree": "a5ac8c29a64695faa2cf10dace31efaf07262e5c",
+  "runtime_sha256": "a908b78028bd7e0ebe173b3f75a9ac143f863e20be66589b224cac3bbfd205b4",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "original_registration_sha256": "4d8c113532c0770ead9ab39ae3224cc9f3182411c6d7cf799e27d3efa4144ebe",
+  "selection_rule": "Both candidate trials must improve actual physical steps per elapsed second over both controls, without worse maximum/p99 gaps or material/selected-pose age than the worse matched control. All correctness, actual actor visibility, memory/resource and ownership gates remain mandatory. A treatment with inconsistent primary improvement is NOT_ESTABLISHED, even if one native stage or CPU metric improves.",
+  "capture_admission": {
+    "all8_complete": true,
+    "all_native_policies_actually_executed": true,
+    "independent_physical_reduction": true,
+    "actual_pid_executable_creation_identity_verified": true,
+    "all8_strict_display_ownership_verified": true,
+    "all12_pairwise_first144_actor_and_input_hashes_equal": true
+  },
+  "cases": [
+    {
+      "case": "wave_512_follow",
+      "original_primary_both_candidates_beat_both_controls": false,
+      "physical_tail_not_worse_than_worst_control": {
+        "p99": false,
+        "max": false
+      },
+      "freshness_not_worse_than_worst_control_reported_quantiles": {
+        "material_age": {
+          "p50": false,
+          "p95": false,
+          "p99": false,
+          "max": false
+        },
+        "pose_age": {
+          "p50": false,
+          "p95": false,
+          "p99": false,
+          "max": false
+        }
+      },
+      "frozen_stricter_direction": {
+        "window": "first_144_steps",
+        "reference_role": "D",
+        "all_candidate_rates_higher": false,
+        "all_candidate_gap_quantiles_lower": {
+          "p95": false,
+          "p99": false
+        },
+        "all_candidate_max_gaps_within_worst_reference": false,
+        "all_candidate_severe_counts_within_worst_reference": {
+          "100": true,
+          "250": true,
+          "500": true,
+          "1000": true
+        },
+        "repeatable_direction": false,
+        "disposition": "NOT_ESTABLISHED"
+      },
+      "same_source_equal_step_trajectory_and_moves": true,
+      "readings": [
+        {
+          "index": 0,
+          "enabled": false,
+          "rate": 22.550350704933358,
+          "gaps": {
+            "count": 143,
+            "max": 124.179,
+            "p50": 42.132,
+            "p95": 58.419700000000006,
+            "p99": 67.34888000000004
+          },
+          "gap_counts": {
+            "100": 1,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 143,
+            "max": 115.595,
+            "p50": 42.491,
+            "p95": 58.7044,
+            "p99": 76.95524000000016
+          },
+          "pose_age": {
+            "count": 142,
+            "max": 9.994,
+            "p50": 3.6005000000000003,
+            "p95": 7.413549999999996,
+            "p99": 9.51962
+          },
+          "omitted": 1,
+          "task_completion": {
+            "enabled": false,
+            "mode": "all_workers",
+            "completed_dispatches": 1600,
+            "completed_tasks": 10046
+          },
+          "cpu": 3.214999611568085,
+          "peak_rss_mb": 1176.3671875,
+          "process_pid": 1126,
+          "display_verified": true,
+          "display_receipt_sha256": "dfe8b114ddc1bee47ea87852c152b9c742f9541e1f19f4af3a335bb38edc3cec"
+        },
+        {
+          "index": 1,
+          "enabled": true,
+          "rate": 22.15663448107777,
+          "gaps": {
+            "count": 143,
+            "max": 130.434,
+            "p50": 42.704,
+            "p95": 56.34230000000001,
+            "p99": 101.86456000000081
+          },
+          "gap_counts": {
+            "100": 2,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 143,
+            "max": 136.134,
+            "p50": 42.977,
+            "p95": 57.685100000000006,
+            "p99": 67.97186000000004
+          },
+          "pose_age": {
+            "count": 143,
+            "max": 22.934,
+            "p50": 3.704,
+            "p95": 7.843200000000001,
+            "p99": 15.903480000000101
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": true,
+            "mode": "actual_tasks",
+            "completed_dispatches": 1565,
+            "completed_tasks": 9821
+          },
+          "cpu": 3.240555409773427,
+          "peak_rss_mb": 1182.51171875,
+          "process_pid": 1386,
+          "display_verified": true,
+          "display_receipt_sha256": "bbb76240a4308d0b0645661e8e3e806367bd778f86597977847d037ebc9f1e0b"
+        },
+        {
+          "index": 2,
+          "enabled": true,
+          "rate": 21.677494876433766,
+          "gaps": {
+            "count": 143,
+            "max": 178.086,
+            "p50": 42.005,
+            "p95": 57.081600000000016,
+            "p99": 147.72470000000024
+          },
+          "gap_counts": {
+            "100": 3,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 143,
+            "max": 202.54,
+            "p50": 42.209,
+            "p95": 58.82440000000001,
+            "p99": 163.27082000000033
+          },
+          "pose_age": {
+            "count": 143,
+            "max": 30.369,
+            "p50": 3.673,
+            "p95": 7.689500000000003,
+            "p99": 21.218340000000104
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": true,
+            "mode": "actual_tasks",
+            "completed_dispatches": 1530,
+            "completed_tasks": 9596
+          },
+          "cpu": 3.1796380546247596,
+          "peak_rss_mb": 1176.3984375,
+          "process_pid": 1643,
+          "display_verified": true,
+          "display_receipt_sha256": "8127ff2ecca5c2d78b3a7b22a1cf6241c761dfcd5f4713cb0bec77ed258fbaa8"
+        },
+        {
+          "index": 3,
+          "enabled": false,
+          "rate": 22.62920924899783,
+          "gaps": {
+            "count": 143,
+            "max": 145.544,
+            "p50": 41.219,
+            "p95": 55.1792,
+            "p99": 129.12568000000016
+          },
+          "gap_counts": {
+            "100": 3,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 143,
+            "max": 162.268,
+            "p50": 41.223,
+            "p95": 54.0703,
+            "p99": 126.43860000000001
+          },
+          "pose_age": {
+            "count": 142,
+            "max": 23.292,
+            "p50": 3.3985000000000003,
+            "p95": 6.659549999999999,
+            "p99": 13.528950000000016
+          },
+          "omitted": 1,
+          "task_completion": {
+            "enabled": false,
+            "mode": "all_workers",
+            "completed_dispatches": 1614,
+            "completed_tasks": 10136
+          },
+          "cpu": 3.2520578591110363,
+          "peak_rss_mb": 1174.82421875,
+          "process_pid": 1901,
+          "display_verified": true,
+          "display_receipt_sha256": "869dd08e5e505d7cea42d3cd51a488fabfdc41365267669fb31d5bed84edea4d"
+        }
+      ],
+      "whole_capture_and_causal": [
+        {
+          "index": 0,
+          "whole_capture": {
+            "start_usec": 19111559,
+            "end_usec": 29153201,
+            "duration_seconds": 10.041642,
+            "completed_native_ticks": 230,
+            "completed_rapier_steps": 230,
+            "completed_rapier_simulation_seconds": 3.8333333333333415,
+            "physical_simulation_seconds_per_wall_second": 0.38174367631641737,
+            "first_step": 1,
+            "last_step": 230,
+            "physical_no_step_prefix_ms": 50.109,
+            "physical_no_step_suffix_ms": 0.835,
+            "physical_boundary_scope": "Observed window boundaries, including censored no-step prefixes/suffixes; separate from between-completion gap distributions.",
+            "native_ticks_per_second": 22.904620578984993,
+            "rapier_steps_per_second": 22.904620578984993,
+            "frame_ms": {
+              "count": 229,
+              "max": 124.698,
+              "p50": 41.346,
+              "p95": 58.43519999999999,
+              "p99": 80.31103999999998
+            },
+            "consecutive_two_frame_ms": {
+              "count": 228,
+              "max": 194.078,
+              "p50": 82.715,
+              "p95": 113.28510000000001,
+              "p99": 157.0174499999997
+            },
+            "worst_frame_intervals": [
+              {
+                "from_process_frame": 218,
+                "to_process_frame": 219,
+                "start_usec": 27114002,
+                "gap_ms": 124.698
+              },
+              {
+                "from_process_frame": 122,
+                "to_process_frame": 123,
+                "start_usec": 22973206,
+                "gap_ms": 92.969
+              },
+              {
+                "from_process_frame": 123,
+                "to_process_frame": 124,
+                "start_usec": 23066175,
+                "gap_ms": 84.562
+              },
+              {
+                "from_process_frame": 219,
+                "to_process_frame": 220,
+                "start_usec": 27238700,
+                "gap_ms": 69.38
+              },
+              {
+                "from_process_frame": 178,
+                "to_process_frame": 179,
+                "start_usec": 25430628,
+                "gap_ms": 68.047
+              },
+              {
+                "from_process_frame": 63,
+                "to_process_frame": 64,
+                "start_usec": 20389143,
+                "gap_ms": 66.327
+              },
+              {
+                "from_process_frame": 64,
+                "to_process_frame": 65,
+                "start_usec": 20455470,
+                "gap_ms": 65.047
+              },
+              {
+                "from_process_frame": 65,
+                "to_process_frame": 66,
+                "start_usec": 20520517,
+                "gap_ms": 60.549
+              },
+              {
+                "from_process_frame": 74,
+                "to_process_frame": 75,
+                "start_usec": 20953914,
+                "gap_ms": 59.617
+              },
+              {
+                "from_process_frame": 177,
+                "to_process_frame": 178,
+                "start_usec": 25371242,
+                "gap_ms": 59.386
+              },
+              {
+                "from_process_frame": 59,
+                "to_process_frame": 60,
+                "start_usec": 20163947,
+                "gap_ms": 59.228
+              },
+              {
+                "from_process_frame": 60,
+                "to_process_frame": 61,
+                "start_usec": 20223175,
+                "gap_ms": 58.992
+              }
+            ],
+            "post_draw_callback_gap_ms": {
+              "count": 229,
+              "max": 124.509,
+              "p50": 41.378,
+              "p95": 57.0922,
+              "p99": 84.56023999999996
+            },
+            "native_observed_gap_ms": {
+              "count": 229,
+              "max": 125.546,
+              "p50": 41.215,
+              "p95": 58.1844,
+              "p99": 77.88939999999998
+            },
+            "native_exact_gap_ms": {
+              "count": 229,
+              "max": 125.522,
+              "p50": 41.211,
+              "p95": 58.1848,
+              "p99": 77.90671999999999
+            },
+            "physical_gap_ms": {
+              "count": 229,
+              "max": 124.179,
+              "p50": 41.373,
+              "p95": 57.0664,
+              "p99": 71.64067999999999
+            },
+            "native_tick_ms": {
+              "count": 230,
+              "max": 12.940722,
+              "p50": 2.353701,
+              "p95": 3.8897826,
+              "p99": 8.931139490000016
+            },
+            "main_callback_ms": {
+              "count": 230,
+              "max": 17.621,
+              "p50": 1.6355,
+              "p95": 2.760250000000001,
+              "p99": 8.663970000000006
+            },
+            "worker_publication_ms": {
+              "count": 713,
+              "max": 16.622,
+              "p50": 0.779,
+              "p95": 1.3565999999999994,
+              "p99": 2.3087599999999995
+            },
+            "snapshot_copy_ms": {
+              "count": 713,
+              "max": 1.822,
+              "p50": 0.009,
+              "p95": 0.35579999999999995,
+              "p99": 1.2768399999999998
+            },
+            "snapshot_publication_ms": {
+              "count": 713,
+              "max": 16.102,
+              "p50": 0.608,
+              "p95": 0.8607999999999999,
+              "p99": 1.6954
+            },
+            "rapier_solver_ms": {
+              "count": 230,
+              "max": 3.081,
+              "p50": 0.1605,
+              "p95": 0.30355,
+              "p99": 1.717910000000009
+            },
+            "rapier_observer_ms": {
+              "count": 230,
+              "max": 0.536,
+              "p50": 0.045,
+              "p95": 0.07110000000000002,
+              "p99": 0.1539800000000003
+            },
+            "native_observed_to_rapier_ms": {
+              "count": 230,
+              "max": 116.059,
+              "p50": 38.0835,
+              "p95": 52.74325000000003,
+              "p99": 62.74283000000001
+            },
+            "native_exact_to_rapier_ms": {
+              "count": 230,
+              "max": 116.067,
+              "p50": 38.090500000000006,
+              "p95": 52.749900000000025,
+              "p99": 62.76729000000001
+            },
+            "native_exact_to_physics_handoff_ms": {
+              "count": 230,
+              "max": 102.393,
+              "p50": 31.753999999999998,
+              "p95": 46.31840000000001,
+              "p99": 57.4710400000001
+            },
+            "physics_handoff_to_rapier_ms": {
+              "count": 230,
+              "max": 17.179,
+              "p50": 6.335,
+              "p95": 13.74285,
+              "p99": 15.98328
+            },
+            "first_observed_eligible_snapshot_to_rapier_ms": {
+              "count": 230,
+              "max": 115.177,
+              "p50": 37.162000000000006,
+              "p95": 50.77700000000001,
+              "p99": 61.35452000000001
+            },
+            "first_physics_handoff_to_rapier_ms": {
+              "count": 230,
+              "max": 115.209,
+              "p50": 37.194,
+              "p95": 50.8228,
+              "p99": 61.38865000000001
+            },
+            "native_exact_to_first_physics_handoff_ms": {
+              "count": 230,
+              "max": 4.045,
+              "p50": 0.8674999999999999,
+              "p95": 1.9128500000000002,
+              "p99": 2.425110000000002
+            },
+            "native_observed_to_first_physics_handoff_ms": {
+              "count": 230,
+              "max": 4.036,
+              "p50": 0.8574999999999999,
+              "p95": 1.9021000000000001,
+              "p99": 2.407880000000002
+            },
+            "first_ready_scope": "First healthy matching world/native-tick/body-sample/terrain packet. Observation clock is full snapshot hook exit (queue lower bound); exact physics handoff remains unavailable on accepted main. Latest handoff metrics above remain separately reported.",
+            "snapshot_generated_to_upload_ms": {
+              "count": 229,
+              "max": 127.569,
+              "p50": 39.682,
+              "p95": 56.56759999999999,
+              "p99": 76.66015999999999
+            },
+            "material_age_at_main_end_ms": {
+              "count": 230,
+              "max": 432.166,
+              "p50": 40.753,
+              "p95": 57.93275,
+              "p99": 98.14586000000018
+            },
+            "material_submission_ms": {
+              "count": 229,
+              "max": 5.215,
+              "p50": 0.383,
+              "p95": 0.5514,
+              "p99": 1.1891599999999996
+            },
+            "upload_return_to_next_delivered_draw_callback_ms": {
+              "count": 229,
+              "max": 86.982,
+              "p50": 37.278,
+              "p95": 52.12939999999999,
+              "p99": 60.569559999999996
+            },
+            "draw_clock_scope": "Next delivered frame_post_draw callback only; no upload-specific draw identity, GPU completion or scanout assertion, especially under Separate rendering.",
+            "submission_stages_usec": {
+              "image_patch_usec": {
+                "count": 229,
+                "max": 1323.0,
+                "p50": 104.0,
+                "p95": 192.79999999999998,
+                "p99": 550.1199999999995
+              },
+              "content_cache_usec": {
+                "count": 229,
+                "max": 460.0,
+                "p50": 28.0,
+                "p95": 49.599999999999994,
+                "p99": 180.7599999999999
+              },
+              "atlas_assembly_usec": null,
+              "backend_submit_usec": {
+                "count": 229,
+                "max": 1667.0,
+                "p50": 100.0,
+                "p95": 201.6,
+                "p99": 390.19999999999993
+              },
+              "staging_upload_usec": null,
+              "gpu_blit_submit_usec": null,
+              "direct_upload_usec": null,
+              "whole_storage_create_usec": null,
+              "whole_storage_replace_usec": null,
+              "initialization_usec": null
+            },
+            "publication": {
+              "accepted_uploads": 229,
+              "uploads_per_second": 22.805035272119838,
+              "native_full_inputs": 0,
+              "native_sparse_inputs": 229,
+              "input_payload_bytes": 13848630,
+              "input_patch_count": 1315,
+              "unique_worker_render_serials": 230,
+              "submission_modes": {
+                "full": 229
+              },
+              "cpu_staging_submitted_bytes": 120061952,
+              "staging_residency_bytes": null,
+              "dropped_publications": null,
+              "expired_publications": null,
+              "refused_publications": null,
+              "unavailable_reason": "The common legacy seam cannot distinguish publication refusal/expiration from no-op consumption; original integrated diagnostics retain finer counters.",
+              "byte_scope": "Input RG8 packet bytes and CPU staging upload bytes are distinct. Neither measures GPU bandwidth."
+            },
+            "native_capture": {
+              "count": 230,
+              "forced_count": 0,
+              "full_return_count": 0,
+              "status_counts": {
+                "1": 230
+              },
+              "wall_ms": {
+                "count": 230,
+                "max": 1.471,
+                "p50": 0.172,
+                "p95": 0.34265,
+                "p99": 1.18484
+              }
+            },
+            "command_attempts": 607,
+            "command_acceptances": 607,
+            "physical_callbacks_without_step": 377,
+            "physical_callbacks_with_pending_terrain": 0,
+            "contacts_observed": 95,
+            "response_refusals": [],
+            "wave_column_stage_counter_deltas": null,
+            "rapier_execution_to_completion_ms": {
+              "count": 230,
+              "max": 15.564,
+              "p50": 1.0975000000000001,
+              "p95": 1.7746000000000026,
+              "p99": 4.449990000000003
+            },
+            "first_physics_handoff_to_execution_start_ms": {
+              "count": 230,
+              "max": 99.645,
+              "p50": 35.971500000000006,
+              "p95": 48.83355000000002,
+              "p99": 59.13114000000003
+            },
+            "physics_callback_count": 607,
+            "physics_callback_ms": {
+              "count": 607,
+              "max": 26.67,
+              "p50": 0.226,
+              "p95": 1.6365,
+              "p99": 3.815720000000021
+            },
+            "same_frame_attempts": 0,
+            "same_frame_completed_steps": 0,
+            "same_frame_attempts_started": 0,
+            "same_frame_attempts_censored_at_end": 0,
+            "same_frame_attempt_count_scope": "same_frame_attempts counts completed attempt observations; physical completions use Rapier step timestamps independently",
+            "same_frame_attempt_ms": null,
+            "same_frame_hold_to_attempt_ms": null
+          },
+          "whole_capture_gap_counts": {
+            "100": 2,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "first144_causal": {
+            "native_tick_ms": {
+              "count": 144,
+              "max": 12.940722,
+              "p50": 2.3666229999999997,
+              "p95": 3.869199799999999,
+              "p99": 9.22793188999998
+            },
+            "native_complete_to_first_eligible_handoff_ms": {
+              "count": 144,
+              "max": 4.045,
+              "p50": 0.852,
+              "p95": 1.91495,
+              "p99": 2.50013
+            },
+            "first_eligible_handoff_to_callback_start_ms": {
+              "count": 144,
+              "max": 74.111,
+              "p50": 36.602999999999994,
+              "p95": 51.73415,
+              "p99": 55.711539999999985
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 3.081,
+              "p50": 0.15,
+              "p95": 0.30385,
+              "p99": 2.218559999999998
+            },
+            "main_callback_ms": {
+              "count": 144,
+              "max": 17.621,
+              "p50": 1.619,
+              "p95": 2.68455,
+              "p99": 4.12428
+            },
+            "upload_call_ms": {
+              "count": 143,
+              "max": 5.215,
+              "p50": 0.389,
+              "p95": 0.5989000000000003,
+              "p99": 1.1257400000000057
+            }
+          }
+        },
+        {
+          "index": 1,
+          "whole_capture": {
+            "start_usec": 17437142,
+            "end_usec": 27449241,
+            "duration_seconds": 10.012099,
+            "completed_native_ticks": 225,
+            "completed_rapier_steps": 225,
+            "completed_rapier_simulation_seconds": 3.7500000000000075,
+            "physical_simulation_seconds_per_wall_second": 0.3745468357833865,
+            "first_step": 1,
+            "last_step": 225,
+            "physical_no_step_prefix_ms": 49.828,
+            "physical_no_step_suffix_ms": 1.383,
+            "physical_boundary_scope": "Observed window boundaries, including censored no-step prefixes/suffixes; separate from between-completion gap distributions.",
+            "native_ticks_per_second": 22.47281014700314,
+            "rapier_steps_per_second": 22.47281014700314,
+            "frame_ms": {
+              "count": 224,
+              "max": 134.347,
+              "p50": 41.641000000000005,
+              "p95": 55.333099999999995,
+              "p99": 122.48079000000006
+            },
+            "consecutive_two_frame_ms": {
+              "count": 223,
+              "max": 200.668,
+              "p50": 84.05,
+              "p95": 112.27090000000004,
+              "p99": 186.13958000000002
+            },
+            "worst_frame_intervals": [
+              {
+                "from_process_frame": 135,
+                "to_process_frame": 136,
+                "start_usec": 21861700,
+                "gap_ms": 134.347
+              },
+              {
+                "from_process_frame": 91,
+                "to_process_frame": 92,
+                "start_usec": 19778468,
+                "gap_ms": 129.147
+              },
+              {
+                "from_process_frame": 229,
+                "to_process_frame": 230,
+                "start_usec": 25966734,
+                "gap_ms": 123.522
+              },
+              {
+                "from_process_frame": 181,
+                "to_process_frame": 182,
+                "start_usec": 23937670,
+                "gap_ms": 118.995
+              },
+              {
+                "from_process_frame": 230,
+                "to_process_frame": 231,
+                "start_usec": 26090256,
+                "gap_ms": 77.146
+              },
+              {
+                "from_process_frame": 94,
+                "to_process_frame": 95,
+                "start_usec": 20005384,
+                "gap_ms": 65.048
+              },
+              {
+                "from_process_frame": 42,
+                "to_process_frame": 43,
+                "start_usec": 17684662,
+                "gap_ms": 60.624
+              },
+              {
+                "from_process_frame": 163,
+                "to_process_frame": 164,
+                "start_usec": 23164257,
+                "gap_ms": 60.267
+              },
+              {
+                "from_process_frame": 76,
+                "to_process_frame": 77,
+                "start_usec": 19122451,
+                "gap_ms": 57.34
+              },
+              {
+                "from_process_frame": 145,
+                "to_process_frame": 146,
+                "start_usec": 22397908,
+                "gap_ms": 57.109
+              },
+              {
+                "from_process_frame": 41,
+                "to_process_frame": 42,
+                "start_usec": 17628507,
+                "gap_ms": 56.155
+              },
+              {
+                "from_process_frame": 134,
+                "to_process_frame": 135,
+                "start_usec": 21806252,
+                "gap_ms": 55.448
+              }
+            ],
+            "post_draw_callback_gap_ms": {
+              "count": 224,
+              "max": 148.444,
+              "p50": 41.802,
+              "p95": 57.275749999999995,
+              "p99": 104.61448000000009
+            },
+            "native_observed_gap_ms": {
+              "count": 224,
+              "max": 130.389,
+              "p50": 41.816500000000005,
+              "p95": 56.378099999999996,
+              "p99": 124.21485000000007
+            },
+            "native_exact_gap_ms": {
+              "count": 224,
+              "max": 130.389,
+              "p50": 41.8165,
+              "p95": 56.378099999999996,
+              "p99": 124.23087000000008
+            },
+            "physical_gap_ms": {
+              "count": 224,
+              "max": 130.434,
+              "p50": 41.710499999999996,
+              "p95": 54.973099999999995,
+              "p99": 118.99332000000001
+            },
+            "native_tick_ms": {
+              "count": 225,
+              "max": 7.238109,
+              "p50": 2.293367,
+              "p95": 3.9349348000000006,
+              "p99": 6.762161279999997
+            },
+            "main_callback_ms": {
+              "count": 225,
+              "max": 14.428,
+              "p50": 1.707,
+              "p95": 4.684000000000006,
+              "p99": 6.085559999999997
+            },
+            "worker_publication_ms": {
+              "count": 697,
+              "max": 54.169,
+              "p50": 0.787,
+              "p95": 1.3494000000000033,
+              "p99": 4.7589199999999785
+            },
+            "snapshot_copy_ms": {
+              "count": 697,
+              "max": 4.009,
+              "p50": 0.008,
+              "p95": 0.346,
+              "p99": 0.5902799999999951
+            },
+            "snapshot_publication_ms": {
+              "count": 697,
+              "max": 52.756,
+              "p50": 0.614,
+              "p95": 0.9862000000000003,
+              "p99": 2.357239999999975
+            },
+            "rapier_solver_ms": {
+              "count": 225,
+              "max": 1.578,
+              "p50": 0.152,
+              "p95": 0.32680000000000026,
+              "p99": 1.043799999999995
+            },
+            "rapier_observer_ms": {
+              "count": 225,
+              "max": 0.418,
+              "p50": 0.047,
+              "p95": 0.10920000000000005,
+              "p99": 0.27607999999999994
+            },
+            "native_observed_to_rapier_ms": {
+              "count": 225,
+              "max": 125.113,
+              "p50": 38.323,
+              "p95": 51.17,
+              "p99": 114.85739999999997
+            },
+            "native_exact_to_rapier_ms": {
+              "count": 225,
+              "max": 125.12,
+              "p50": 38.327,
+              "p95": 51.177,
+              "p99": 114.88015999999999
+            },
+            "native_exact_to_physics_handoff_ms": {
+              "count": 225,
+              "max": 117.25,
+              "p50": 31.773,
+              "p95": 43.332400000000085,
+              "p99": 94.49399999999957
+            },
+            "physics_handoff_to_rapier_ms": {
+              "count": 225,
+              "max": 65.949,
+              "p50": 6.654,
+              "p95": 14.001000000000003,
+              "p99": 18.317239999999998
+            },
+            "first_observed_eligible_snapshot_to_rapier_ms": {
+              "count": 225,
+              "max": 123.599,
+              "p50": 37.323,
+              "p95": 50.309200000000004,
+              "p99": 113.76191999999998
+            },
+            "first_physics_handoff_to_rapier_ms": {
+              "count": 225,
+              "max": 123.698,
+              "p50": 37.356,
+              "p95": 50.3936,
+              "p99": 113.82079999999998
+            },
+            "native_exact_to_first_physics_handoff_ms": {
+              "count": 225,
+              "max": 2.778,
+              "p50": 0.865,
+              "p95": 1.7400000000000007,
+              "p99": 2.0795599999999994
+            },
+            "native_observed_to_first_physics_handoff_ms": {
+              "count": 225,
+              "max": 2.771,
+              "p50": 0.858,
+              "p95": 1.7204000000000004,
+              "p99": 2.072319999999999
+            },
+            "first_ready_scope": "First healthy matching world/native-tick/body-sample/terrain packet. Observation clock is full snapshot hook exit (queue lower bound); exact physics handoff remains unavailable on accepted main. Latest handoff metrics above remain separately reported.",
+            "snapshot_generated_to_upload_ms": {
+              "count": 223,
+              "max": 129.17,
+              "p50": 40.013,
+              "p95": 53.5051,
+              "p99": 107.47138000000005
+            },
+            "material_age_at_main_end_ms": {
+              "count": 225,
+              "max": 374.332,
+              "p50": 41.255,
+              "p95": 56.179400000000015,
+              "p99": 129.0747199999999
+            },
+            "material_submission_ms": {
+              "count": 223,
+              "max": 4.727,
+              "p50": 0.361,
+              "p95": 0.8151000000000003,
+              "p99": 1.2040400000000002
+            },
+            "upload_return_to_next_delivered_draw_callback_ms": {
+              "count": 223,
+              "max": 105.014,
+              "p50": 37.808,
+              "p95": 45.9585,
+              "p99": 83.34298000000004
+            },
+            "draw_clock_scope": "Next delivered frame_post_draw callback only; no upload-specific draw identity, GPU completion or scanout assertion, especially under Separate rendering.",
+            "submission_stages_usec": {
+              "image_patch_usec": {
+                "count": 223,
+                "max": 1670.0,
+                "p50": 107.0,
+                "p95": 265.9000000000002,
+                "p99": 839.6000000000003
+              },
+              "content_cache_usec": {
+                "count": 223,
+                "max": 810.0,
+                "p50": 28.0,
+                "p95": 45.80000000000001,
+                "p99": 121.9
+              },
+              "atlas_assembly_usec": null,
+              "backend_submit_usec": {
+                "count": 223,
+                "max": 1332.0,
+                "p50": 85.0,
+                "p95": 189.0,
+                "p99": 344.68000000000006
+              },
+              "staging_upload_usec": null,
+              "gpu_blit_submit_usec": null,
+              "direct_upload_usec": null,
+              "whole_storage_create_usec": null,
+              "whole_storage_replace_usec": null,
+              "initialization_usec": null
+            },
+            "publication": {
+              "accepted_uploads": 223,
+              "uploads_per_second": 22.27305183458534,
+              "native_full_inputs": 0,
+              "native_sparse_inputs": 223,
+              "input_payload_bytes": 13260650,
+              "input_patch_count": 1268,
+              "unique_worker_render_serials": 225,
+              "submission_modes": {
+                "full": 223
+              },
+              "cpu_staging_submitted_bytes": 116916224,
+              "staging_residency_bytes": null,
+              "dropped_publications": null,
+              "expired_publications": null,
+              "refused_publications": null,
+              "unavailable_reason": "The common legacy seam cannot distinguish publication refusal/expiration from no-op consumption; original integrated diagnostics retain finer counters.",
+              "byte_scope": "Input RG8 packet bytes and CPU staging upload bytes are distinct. Neither measures GPU bandwidth."
+            },
+            "native_capture": {
+              "count": 225,
+              "forced_count": 0,
+              "full_return_count": 0,
+              "status_counts": {
+                "1": 225
+              },
+              "wall_ms": {
+                "count": 225,
+                "max": 1.226,
+                "p50": 0.176,
+                "p95": 0.2884,
+                "p99": 1.02188
+              }
+            },
+            "command_attempts": 606,
+            "command_acceptances": 606,
+            "physical_callbacks_without_step": 381,
+            "physical_callbacks_with_pending_terrain": 0,
+            "contacts_observed": 90,
+            "response_refusals": [],
+            "wave_column_stage_counter_deltas": null,
+            "rapier_execution_to_completion_ms": {
+              "count": 225,
+              "max": 30.636,
+              "p50": 1.086,
+              "p95": 1.6808,
+              "p99": 5.909239999999985
+            },
+            "first_physics_handoff_to_execution_start_ms": {
+              "count": 225,
+              "max": 119.33,
+              "p50": 36.252,
+              "p95": 48.7696,
+              "p99": 100.02343999999981
+            },
+            "physics_callback_count": 606,
+            "physics_callback_ms": {
+              "count": 606,
+              "max": 33.299,
+              "p50": 0.2195,
+              "p95": 1.6075000000000002,
+              "p99": 3.224650000000012
+            },
+            "same_frame_attempts": 0,
+            "same_frame_completed_steps": 0,
+            "same_frame_attempts_started": 0,
+            "same_frame_attempts_censored_at_end": 0,
+            "same_frame_attempt_count_scope": "same_frame_attempts counts completed attempt observations; physical completions use Rapier step timestamps independently",
+            "same_frame_attempt_ms": null,
+            "same_frame_hold_to_attempt_ms": null
+          },
+          "whole_capture_gap_counts": {
+            "100": 4,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "first144_causal": {
+            "native_tick_ms": {
+              "count": 144,
+              "max": 6.962723,
+              "p50": 2.316706,
+              "p95": 3.89417725,
+              "p99": 6.264450329999991
+            },
+            "native_complete_to_first_eligible_handoff_ms": {
+              "count": 144,
+              "max": 2.099,
+              "p50": 0.8534999999999999,
+              "p95": 1.552049999999999,
+              "p99": 1.965969999999999
+            },
+            "first_eligible_handoff_to_callback_start_ms": {
+              "count": 144,
+              "max": 119.33,
+              "p50": 36.862,
+              "p95": 48.8485,
+              "p99": 88.45760999999966
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 1.578,
+              "p50": 0.154,
+              "p95": 0.36634999999999995,
+              "p99": 0.9440499999999962
+            },
+            "main_callback_ms": {
+              "count": 144,
+              "max": 7.249,
+              "p50": 1.6935,
+              "p95": 5.062449999999999,
+              "p99": 6.0369199999999985
+            },
+            "upload_call_ms": {
+              "count": 142,
+              "max": 1.26,
+              "p50": 0.3635,
+              "p95": 0.8523499999999996,
+              "p99": 1.1911200000000002
+            }
+          }
+        },
+        {
+          "index": 2,
+          "whole_capture": {
+            "start_usec": 16776864,
+            "end_usec": 26811156,
+            "duration_seconds": 10.034292,
+            "completed_native_ticks": 220,
+            "completed_rapier_steps": 220,
+            "completed_rapier_simulation_seconds": 3.666666666666674,
+            "physical_simulation_seconds_per_wall_second": 0.36541359038252763,
+            "first_step": 1,
+            "last_step": 220,
+            "physical_no_step_prefix_ms": 56.946,
+            "physical_no_step_suffix_ms": 2.631,
+            "physical_boundary_scope": "Observed window boundaries, including censored no-step prefixes/suffixes; separate from between-completion gap distributions.",
+            "native_ticks_per_second": 21.924815422951614,
+            "rapier_steps_per_second": 21.924815422951614,
+            "frame_ms": {
+              "count": 218,
+              "max": 193.188,
+              "p50": 41.388000000000005,
+              "p95": 55.158800000000014,
+              "p99": 155.94429000000025
+            },
+            "consecutive_two_frame_ms": {
+              "count": 217,
+              "max": 262.339,
+              "p50": 83.806,
+              "p95": 109.3832,
+              "p99": 232.49216000000004
+            },
+            "worst_frame_intervals": [
+              {
+                "from_process_frame": 251,
+                "to_process_frame": 252,
+                "start_usec": 26536077,
+                "gap_ms": 193.188
+              },
+              {
+                "from_process_frame": 154,
+                "to_process_frame": 155,
+                "start_usec": 22260120,
+                "gap_ms": 183.898
+              },
+              {
+                "from_process_frame": 107,
+                "to_process_frame": 108,
+                "start_usec": 20121336,
+                "gap_ms": 159.406
+              },
+              {
+                "from_process_frame": 62,
+                "to_process_frame": 63,
+                "start_usec": 17993296,
+                "gap_ms": 139.043
+              },
+              {
+                "from_process_frame": 203,
+                "to_process_frame": 204,
+                "start_usec": 24455366,
+                "gap_ms": 129.901
+              },
+              {
+                "from_process_frame": 155,
+                "to_process_frame": 156,
+                "start_usec": 22444018,
+                "gap_ms": 78.441
+              },
+              {
+                "from_process_frame": 204,
+                "to_process_frame": 205,
+                "start_usec": 24585267,
+                "gap_ms": 67.425
+              },
+              {
+                "from_process_frame": 108,
+                "to_process_frame": 109,
+                "start_usec": 20280742,
+                "gap_ms": 64.582
+              },
+              {
+                "from_process_frame": 82,
+                "to_process_frame": 83,
+                "start_usec": 18967912,
+                "gap_ms": 58.026
+              },
+              {
+                "from_process_frame": 123,
+                "to_process_frame": 124,
+                "start_usec": 20912464,
+                "gap_ms": 58.023
+              },
+              {
+                "from_process_frame": 63,
+                "to_process_frame": 64,
+                "start_usec": 18132339,
+                "gap_ms": 57.124
+              },
+              {
+                "from_process_frame": 61,
+                "to_process_frame": 62,
+                "start_usec": 17938484,
+                "gap_ms": 54.812
+              }
+            ],
+            "post_draw_callback_gap_ms": {
+              "count": 218,
+              "max": 172.512,
+              "p50": 41.623000000000005,
+              "p95": 58.39490000000003,
+              "p99": 121.16817000000022
+            },
+            "native_observed_gap_ms": {
+              "count": 219,
+              "max": 185.89,
+              "p50": 41.92,
+              "p95": 54.288599999999995,
+              "p99": 154.36753999999985
+            },
+            "native_exact_gap_ms": {
+              "count": 219,
+              "max": 185.826,
+              "p50": 41.876,
+              "p95": 54.1742,
+              "p99": 154.37773999999985
+            },
+            "physical_gap_ms": {
+              "count": 219,
+              "max": 179.477,
+              "p50": 41.612,
+              "p95": 57.687899999999985,
+              "p99": 152.0122999999999
+            },
+            "native_tick_ms": {
+              "count": 220,
+              "max": 11.0785,
+              "p50": 2.5157195,
+              "p95": 3.9160079000000008,
+              "p99": 5.20315826
+            },
+            "main_callback_ms": {
+              "count": 219,
+              "max": 13.646,
+              "p50": 1.639,
+              "p95": 4.108799999999997,
+              "p99": 9.617299999999991
+            },
+            "worker_publication_ms": {
+              "count": 691,
+              "max": 77.956,
+              "p50": 0.714,
+              "p95": 1.7635,
+              "p99": 8.112100000000055
+            },
+            "snapshot_copy_ms": {
+              "count": 691,
+              "max": 1.496,
+              "p50": 0.008,
+              "p95": 0.41000000000000003,
+              "p99": 1.3728000000000002
+            },
+            "snapshot_publication_ms": {
+              "count": 691,
+              "max": 67.535,
+              "p50": 0.539,
+              "p95": 1.1219999999999999,
+              "p99": 7.585100000000013
+            },
+            "rapier_solver_ms": {
+              "count": 220,
+              "max": 1.306,
+              "p50": 0.1745,
+              "p95": 0.34370000000000017,
+              "p99": 0.9883200000000003
+            },
+            "rapier_observer_ms": {
+              "count": 220,
+              "max": 0.823,
+              "p50": 0.05,
+              "p95": 0.10005000000000001,
+              "p99": 0.6694000000000001
+            },
+            "native_observed_to_rapier_ms": {
+              "count": 220,
+              "max": 176.45,
+              "p50": 38.1735,
+              "p95": 50.357800000000026,
+              "p99": 146.51997000000003
+            },
+            "native_exact_to_rapier_ms": {
+              "count": 220,
+              "max": 176.457,
+              "p50": 38.188,
+              "p95": 50.364850000000025,
+              "p99": 146.53607000000002
+            },
+            "native_exact_to_physics_handoff_ms": {
+              "count": 220,
+              "max": 140.341,
+              "p50": 31.5165,
+              "p95": 45.15825000000002,
+              "p99": 120.22129000000001
+            },
+            "physics_handoff_to_rapier_ms": {
+              "count": 220,
+              "max": 55.227,
+              "p50": 6.848,
+              "p95": 15.945650000000002,
+              "p99": 17.78324
+            },
+            "first_observed_eligible_snapshot_to_rapier_ms": {
+              "count": 220,
+              "max": 175.614,
+              "p50": 37.054,
+              "p95": 49.59640000000002,
+              "p99": 144.74455000000003
+            },
+            "first_physics_handoff_to_rapier_ms": {
+              "count": 220,
+              "max": 175.663,
+              "p50": 37.085,
+              "p95": 49.62835000000002,
+              "p99": 144.81554000000006
+            },
+            "native_exact_to_first_physics_handoff_ms": {
+              "count": 220,
+              "max": 2.925,
+              "p50": 0.886,
+              "p95": 2.0503500000000003,
+              "p99": 2.4238000000000004
+            },
+            "native_observed_to_first_physics_handoff_ms": {
+              "count": 220,
+              "max": 2.917,
+              "p50": 0.877,
+              "p95": 2.04335,
+              "p99": 2.31355
+            },
+            "first_ready_scope": "First healthy matching world/native-tick/body-sample/terrain packet. Observation clock is full snapshot hook exit (queue lower bound); exact physics handoff remains unavailable on accepted main. Latest handoff metrics above remain separately reported.",
+            "snapshot_generated_to_upload_ms": {
+              "count": 218,
+              "max": 184.91,
+              "p50": 39.721999999999994,
+              "p95": 52.8781,
+              "p99": 139.97855000000007
+            },
+            "material_age_at_main_end_ms": {
+              "count": 219,
+              "max": 395.124,
+              "p50": 40.829,
+              "p95": 55.87929999999999,
+              "p99": 161.05923999999987
+            },
+            "material_submission_ms": {
+              "count": 218,
+              "max": 4.061,
+              "p50": 0.4185,
+              "p95": 0.6264500000000001,
+              "p99": 2.6773600000000086
+            },
+            "upload_return_to_next_delivered_draw_callback_ms": {
+              "count": 218,
+              "max": 98.099,
+              "p50": 37.549,
+              "p95": 50.676750000000006,
+              "p99": 93.17957000000004
+            },
+            "draw_clock_scope": "Next delivered frame_post_draw callback only; no upload-specific draw identity, GPU completion or scanout assertion, especially under Separate rendering.",
+            "submission_stages_usec": {
+              "image_patch_usec": {
+                "count": 218,
+                "max": 1113.0,
+                "p50": 107.0,
+                "p95": 198.05000000000004,
+                "p99": 819.7100000000017
+              },
+              "content_cache_usec": {
+                "count": 218,
+                "max": 148.0,
+                "p50": 27.0,
+                "p95": 55.0,
+                "p99": 142.83
+              },
+              "atlas_assembly_usec": null,
+              "backend_submit_usec": {
+                "count": 218,
+                "max": 1254.0,
+                "p50": 158.5,
+                "p95": 255.0,
+                "p99": 532.1800000000019
+              },
+              "staging_upload_usec": null,
+              "gpu_blit_submit_usec": null,
+              "direct_upload_usec": null,
+              "whole_storage_create_usec": null,
+              "whole_storage_replace_usec": null,
+              "initialization_usec": null
+            },
+            "publication": {
+              "accepted_uploads": 218,
+              "uploads_per_second": 21.7254989191066,
+              "native_full_inputs": 0,
+              "native_sparse_inputs": 218,
+              "input_payload_bytes": 13559124,
+              "input_patch_count": 1290,
+              "unique_worker_render_serials": 220,
+              "submission_modes": {
+                "full": 218
+              },
+              "cpu_staging_submitted_bytes": 114294784,
+              "staging_residency_bytes": null,
+              "dropped_publications": null,
+              "expired_publications": null,
+              "refused_publications": null,
+              "unavailable_reason": "The common legacy seam cannot distinguish publication refusal/expiration from no-op consumption; original integrated diagnostics retain finer counters.",
+              "byte_scope": "Input RG8 packet bytes and CPU staging upload bytes are distinct. Neither measures GPU bandwidth."
+            },
+            "native_capture": {
+              "count": 220,
+              "forced_count": 0,
+              "full_return_count": 0,
+              "status_counts": {
+                "1": 220
+              },
+              "wall_ms": {
+                "count": 220,
+                "max": 1.376,
+                "p50": 0.196,
+                "p95": 1.0598,
+                "p99": 1.27481
+              }
+            },
+            "command_attempts": 606,
+            "command_acceptances": 606,
+            "physical_callbacks_without_step": 386,
+            "physical_callbacks_with_pending_terrain": 0,
+            "contacts_observed": 85,
+            "response_refusals": [],
+            "wave_column_stage_counter_deltas": null,
+            "rapier_execution_to_completion_ms": {
+              "count": 220,
+              "max": 31.322,
+              "p50": 1.0995,
+              "p95": 1.6470000000000002,
+              "p99": 14.330480000000005
+            },
+            "first_physics_handoff_to_execution_start_ms": {
+              "count": 219,
+              "max": 148.807,
+              "p50": 36.006,
+              "p95": 48.55319999999999,
+              "p99": 130.65431999999987
+            },
+            "physics_callback_count": 606,
+            "physics_callback_ms": {
+              "count": 606,
+              "max": 36.562,
+              "p50": 0.22,
+              "p95": 1.6495,
+              "p99": 4.970000000000052
+            },
+            "same_frame_attempts": 0,
+            "same_frame_completed_steps": 0,
+            "same_frame_attempts_started": 0,
+            "same_frame_attempts_censored_at_end": 0,
+            "same_frame_attempt_count_scope": "same_frame_attempts counts completed attempt observations; physical completions use Rapier step timestamps independently",
+            "same_frame_attempt_ms": null,
+            "same_frame_hold_to_attempt_ms": null
+          },
+          "whole_capture_gap_counts": {
+            "100": 5,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "first144_causal": {
+            "native_tick_ms": {
+              "count": 144,
+              "max": 11.0785,
+              "p50": 2.508063,
+              "p95": 3.9655279999999995,
+              "p99": 6.943436279999979
+            },
+            "native_complete_to_first_eligible_handoff_ms": {
+              "count": 144,
+              "max": 2.925,
+              "p50": 0.896,
+              "p95": 2.0639999999999996,
+              "p99": 2.380599999999999
+            },
+            "first_eligible_handoff_to_callback_start_ms": {
+              "count": 144,
+              "max": 148.807,
+              "p50": 36.696,
+              "p95": 48.28355,
+              "p99": 126.42281999999989
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 1.306,
+              "p50": 0.171,
+              "p95": 0.3344499999999997,
+              "p99": 0.7965399999999991
+            },
+            "main_callback_ms": {
+              "count": 144,
+              "max": 11.515,
+              "p50": 1.699,
+              "p95": 3.9587499999999958,
+              "p99": 8.580599999999997
+            },
+            "upload_call_ms": {
+              "count": 143,
+              "max": 3.698,
+              "p50": 0.419,
+              "p95": 0.6287,
+              "p99": 2.5043600000000086
+            }
+          }
+        },
+        {
+          "index": 3,
+          "whole_capture": {
+            "start_usec": 18266467,
+            "end_usec": 28297623,
+            "duration_seconds": 10.031156,
+            "completed_native_ticks": 232,
+            "completed_rapier_steps": 232,
+            "completed_rapier_simulation_seconds": 3.8666666666666747,
+            "physical_simulation_seconds_per_wall_second": 0.38546570970152144,
+            "first_step": 1,
+            "last_step": 232,
+            "physical_no_step_prefix_ms": 46.783,
+            "physical_no_step_suffix_ms": 1.068,
+            "physical_boundary_scope": "Observed window boundaries, including censored no-step prefixes/suffixes; separate from between-completion gap distributions.",
+            "native_ticks_per_second": 23.127942582091237,
+            "rapier_steps_per_second": 23.127942582091237,
+            "frame_ms": {
+              "count": 231,
+              "max": 149.694,
+              "p50": 41.071,
+              "p95": 54.8695,
+              "p99": 105.10929999999954
+            },
+            "consecutive_two_frame_ms": {
+              "count": 230,
+              "max": 218.063,
+              "p50": 81.901,
+              "p95": 104.45605000000005,
+              "p99": 186.8329800000002
+            },
+            "worst_frame_intervals": [
+              {
+                "from_process_frame": 64,
+                "to_process_frame": 65,
+                "start_usec": 19331790,
+                "gap_ms": 149.694
+              },
+              {
+                "from_process_frame": 112,
+                "to_process_frame": 113,
+                "start_usec": 21456659,
+                "gap_ms": 120.675
+              },
+              {
+                "from_process_frame": 161,
+                "to_process_frame": 162,
+                "start_usec": 23554270,
+                "gap_ms": 117.355
+              },
+              {
+                "from_process_frame": 160,
+                "to_process_frame": 161,
+                "start_usec": 23477734,
+                "gap_ms": 76.536
+              },
+              {
+                "from_process_frame": 65,
+                "to_process_frame": 66,
+                "start_usec": 19481484,
+                "gap_ms": 68.369
+              },
+              {
+                "from_process_frame": 258,
+                "to_process_frame": 259,
+                "start_usec": 27679508,
+                "gap_ms": 60.76
+              },
+              {
+                "from_process_frame": 207,
+                "to_process_frame": 208,
+                "start_usec": 25564691,
+                "gap_ms": 60.521
+              },
+              {
+                "from_process_frame": 138,
+                "to_process_frame": 139,
+                "start_usec": 22605324,
+                "gap_ms": 57.078
+              },
+              {
+                "from_process_frame": 183,
+                "to_process_frame": 184,
+                "start_usec": 24574997,
+                "gap_ms": 56.381
+              },
+              {
+                "from_process_frame": 208,
+                "to_process_frame": 209,
+                "start_usec": 25625212,
+                "gap_ms": 55.612
+              },
+              {
+                "from_process_frame": 55,
+                "to_process_frame": 56,
+                "start_usec": 18912073,
+                "gap_ms": 55.304
+              },
+              {
+                "from_process_frame": 181,
+                "to_process_frame": 182,
+                "start_usec": 24468646,
+                "gap_ms": 55.047
+              }
+            ],
+            "post_draw_callback_gap_ms": {
+              "count": 231,
+              "max": 125.843,
+              "p50": 41.004,
+              "p95": 54.558,
+              "p99": 104.05599999999977
+            },
+            "native_observed_gap_ms": {
+              "count": 231,
+              "max": 145.083,
+              "p50": 41.101,
+              "p95": 53.131,
+              "p99": 104.82089999999943
+            },
+            "native_exact_gap_ms": {
+              "count": 231,
+              "max": 145.082,
+              "p50": 41.09,
+              "p95": 53.132000000000005,
+              "p99": 104.74669999999944
+            },
+            "physical_gap_ms": {
+              "count": 231,
+              "max": 145.544,
+              "p50": 40.916,
+              "p95": 55.036,
+              "p99": 106.67829999999944
+            },
+            "native_tick_ms": {
+              "count": 232,
+              "max": 13.512969,
+              "p50": 2.4571385,
+              "p95": 4.1358168,
+              "p99": 6.758365339999999
+            },
+            "main_callback_ms": {
+              "count": 232,
+              "max": 39.157,
+              "p50": 1.7035,
+              "p95": 2.9004999999999947,
+              "p99": 7.98745
+            },
+            "worker_publication_ms": {
+              "count": 719,
+              "max": 14.408,
+              "p50": 0.722,
+              "p95": 1.3339000000000005,
+              "p99": 2.7385600000000303
+            },
+            "snapshot_copy_ms": {
+              "count": 719,
+              "max": 2.512,
+              "p50": 0.008,
+              "p95": 0.3672,
+              "p99": 1.286400000000001
+            },
+            "snapshot_publication_ms": {
+              "count": 719,
+              "max": 14.228,
+              "p50": 0.554,
+              "p95": 0.8923000000000001,
+              "p99": 1.7801200000000033
+            },
+            "rapier_solver_ms": {
+              "count": 232,
+              "max": 0.834,
+              "p50": 0.149,
+              "p95": 0.2658,
+              "p99": 0.5428799999999999
+            },
+            "rapier_observer_ms": {
+              "count": 232,
+              "max": 0.305,
+              "p50": 0.047,
+              "p95": 0.07589999999999998,
+              "p99": 0.19499999999999978
+            },
+            "native_observed_to_rapier_ms": {
+              "count": 232,
+              "max": 139.192,
+              "p50": 37.5745,
+              "p95": 48.28849999999998,
+              "p99": 100.39587999999989
+            },
+            "native_exact_to_rapier_ms": {
+              "count": 232,
+              "max": 139.199,
+              "p50": 37.5805,
+              "p95": 48.29694999999998,
+              "p99": 100.40594999999989
+            },
+            "native_exact_to_physics_handoff_ms": {
+              "count": 232,
+              "max": 127.254,
+              "p50": 31.597,
+              "p95": 43.41929999999996,
+              "p99": 88.1761899999999
+            },
+            "physics_handoff_to_rapier_ms": {
+              "count": 232,
+              "max": 17.657,
+              "p50": 5.841,
+              "p95": 12.095099999999999,
+              "p99": 16.19435
+            },
+            "first_observed_eligible_snapshot_to_rapier_ms": {
+              "count": 232,
+              "max": 137.175,
+              "p50": 36.6555,
+              "p95": 47.441149999999986,
+              "p99": 88.12734999999992
+            },
+            "first_physics_handoff_to_rapier_ms": {
+              "count": 232,
+              "max": 137.228,
+              "p50": 36.686499999999995,
+              "p95": 47.48914999999998,
+              "p99": 88.16603999999992
+            },
+            "native_exact_to_first_physics_handoff_ms": {
+              "count": 232,
+              "max": 19.685,
+              "p50": 0.8254999999999999,
+              "p95": 1.85845,
+              "p99": 2.2383599999999997
+            },
+            "native_observed_to_first_physics_handoff_ms": {
+              "count": 232,
+              "max": 19.071,
+              "p50": 0.8185,
+              "p95": 1.8529,
+              "p99": 2.23174
+            },
+            "first_ready_scope": "First healthy matching world/native-tick/body-sample/terrain packet. Observation clock is full snapshot hook exit (queue lower bound); exact physics handoff remains unavailable on accepted main. Latest handoff metrics above remain separately reported.",
+            "snapshot_generated_to_upload_ms": {
+              "count": 231,
+              "max": 149.404,
+              "p50": 39.346,
+              "p95": 51.331,
+              "p99": 108.40839999999984
+            },
+            "material_age_at_main_end_ms": {
+              "count": 232,
+              "max": 381.488,
+              "p50": 40.284499999999994,
+              "p95": 54.86994999999999,
+              "p99": 120.66917999999998
+            },
+            "material_submission_ms": {
+              "count": 231,
+              "max": 10.866,
+              "p50": 0.409,
+              "p95": 0.5885,
+              "p99": 1.4337999999999993
+            },
+            "upload_return_to_next_delivered_draw_callback_ms": {
+              "count": 231,
+              "max": 99.496,
+              "p50": 37.057,
+              "p95": 47.688,
+              "p99": 70.24259999999983
+            },
+            "draw_clock_scope": "Next delivered frame_post_draw callback only; no upload-specific draw identity, GPU completion or scanout assertion, especially under Separate rendering.",
+            "submission_stages_usec": {
+              "image_patch_usec": {
+                "count": 231,
+                "max": 3550.0,
+                "p50": 106.0,
+                "p95": 213.5,
+                "p99": 840.3999999999967
+              },
+              "content_cache_usec": {
+                "count": 231,
+                "max": 412.0,
+                "p50": 28.0,
+                "p95": 60.5,
+                "p99": 131.99999999999943
+              },
+              "atlas_assembly_usec": null,
+              "backend_submit_usec": {
+                "count": 231,
+                "max": 2662.0,
+                "p50": 153.0,
+                "p95": 224.0,
+                "p99": 571.2999999999979
+              },
+              "staging_upload_usec": null,
+              "gpu_blit_submit_usec": null,
+              "direct_upload_usec": null,
+              "whole_storage_create_usec": null,
+              "whole_storage_replace_usec": null,
+              "initialization_usec": null
+            },
+            "publication": {
+              "accepted_uploads": 231,
+              "uploads_per_second": 23.02825317440981,
+              "native_full_inputs": 0,
+              "native_sparse_inputs": 231,
+              "input_payload_bytes": 13975676,
+              "input_patch_count": 1332,
+              "unique_worker_render_serials": 232,
+              "submission_modes": {
+                "full": 231
+              },
+              "cpu_staging_submitted_bytes": 121110528,
+              "staging_residency_bytes": null,
+              "dropped_publications": null,
+              "expired_publications": null,
+              "refused_publications": null,
+              "unavailable_reason": "The common legacy seam cannot distinguish publication refusal/expiration from no-op consumption; original integrated diagnostics retain finer counters.",
+              "byte_scope": "Input RG8 packet bytes and CPU staging upload bytes are distinct. Neither measures GPU bandwidth."
+            },
+            "native_capture": {
+              "count": 232,
+              "forced_count": 0,
+              "full_return_count": 0,
+              "status_counts": {
+                "1": 232
+              },
+              "wall_ms": {
+                "count": 232,
+                "max": 2.009,
+                "p50": 0.182,
+                "p95": 0.3871999999999998,
+                "p99": 1.2181899999999999
+              }
+            },
+            "command_attempts": 607,
+            "command_acceptances": 607,
+            "physical_callbacks_without_step": 375,
+            "physical_callbacks_with_pending_terrain": 0,
+            "contacts_observed": 97,
+            "response_refusals": [],
+            "wave_column_stage_counter_deltas": null,
+            "rapier_execution_to_completion_ms": {
+              "count": 232,
+              "max": 10.608,
+              "p50": 1.0474999999999999,
+              "p95": 1.589099999999999,
+              "p99": 3.697339999999999
+            },
+            "first_physics_handoff_to_execution_start_ms": {
+              "count": 232,
+              "max": 126.62,
+              "p50": 35.605000000000004,
+              "p95": 46.26499999999998,
+              "p99": 86.17812999999992
+            },
+            "physics_callback_count": 607,
+            "physics_callback_ms": {
+              "count": 607,
+              "max": 12.188,
+              "p50": 0.229,
+              "p95": 1.653800000000002,
+              "p99": 2.964400000000003
+            },
+            "same_frame_attempts": 0,
+            "same_frame_completed_steps": 0,
+            "same_frame_attempts_started": 0,
+            "same_frame_attempts_censored_at_end": 0,
+            "same_frame_attempt_count_scope": "same_frame_attempts counts completed attempt observations; physical completions use Rapier step timestamps independently",
+            "same_frame_attempt_ms": null,
+            "same_frame_hold_to_attempt_ms": null
+          },
+          "whole_capture_gap_counts": {
+            "100": 3,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "first144_causal": {
+            "native_tick_ms": {
+              "count": 144,
+              "max": 13.512969,
+              "p50": 2.4706415,
+              "p95": 4.485511149999997,
+              "p99": 7.144965179999982
+            },
+            "native_complete_to_first_eligible_handoff_ms": {
+              "count": 144,
+              "max": 19.685,
+              "p50": 0.8095000000000001,
+              "p95": 1.8385,
+              "p99": 2.0667599999999986
+            },
+            "first_eligible_handoff_to_callback_start_ms": {
+              "count": 144,
+              "max": 126.62,
+              "p50": 35.873999999999995,
+              "p95": 46.93699999999999,
+              "p99": 102.37201999999994
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 0.834,
+              "p50": 0.139,
+              "p95": 0.26574999999999993,
+              "p99": 0.641649999999999
+            },
+            "main_callback_ms": {
+              "count": 144,
+              "max": 39.157,
+              "p50": 1.6800000000000002,
+              "p95": 2.5929499999999996,
+              "p99": 7.798079999999997
+            },
+            "upload_call_ms": {
+              "count": 143,
+              "max": 10.866,
+              "p50": 0.406,
+              "p95": 0.5699000000000001,
+              "p99": 2.141460000000015
+            }
+          }
+        }
+      ],
+      "disposition": "NOT_SELECTED"
+    },
+    {
+      "case": "wave_gameplay_2048_follow",
+      "original_primary_both_candidates_beat_both_controls": false,
+      "physical_tail_not_worse_than_worst_control": {
+        "p99": true,
+        "max": true
+      },
+      "freshness_not_worse_than_worst_control_reported_quantiles": {
+        "material_age": {
+          "p50": true,
+          "p95": false,
+          "p99": false,
+          "max": false
+        },
+        "pose_age": {
+          "p50": true,
+          "p95": false,
+          "p99": true,
+          "max": true
+        }
+      },
+      "frozen_stricter_direction": {
+        "window": "first_144_steps",
+        "reference_role": "D",
+        "all_candidate_rates_higher": false,
+        "all_candidate_gap_quantiles_lower": {
+          "p95": true,
+          "p99": false
+        },
+        "all_candidate_max_gaps_within_worst_reference": true,
+        "all_candidate_severe_counts_within_worst_reference": {
+          "100": true,
+          "250": true,
+          "500": true,
+          "1000": true
+        },
+        "repeatable_direction": false,
+        "disposition": "NOT_ESTABLISHED"
+      },
+      "same_source_equal_step_trajectory_and_moves": true,
+      "readings": [
+        {
+          "index": 0,
+          "enabled": false,
+          "rate": 8.602645421000025,
+          "gaps": {
+            "count": 143,
+            "max": 226.099,
+            "p50": 128.527,
+            "p95": 174.5874,
+            "p99": 185.73128000000005
+          },
+          "gap_counts": {
+            "100": 91,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 248,
+            "max": 185.383,
+            "p50": 55.5655,
+            "p95": 148.52315000000002,
+            "p99": 173.19789
+          },
+          "pose_age": {
+            "count": 248,
+            "max": 141.523,
+            "p50": 15.919,
+            "p95": 118.23865,
+            "p99": 135.24219
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": false,
+            "mode": "all_workers",
+            "completed_dispatches": 1450,
+            "completed_tasks": 142029
+          },
+          "cpu": 4.373888469414951,
+          "peak_rss_mb": 1406.51171875,
+          "process_pid": 2158,
+          "display_verified": true,
+          "display_receipt_sha256": "98ca6f521ae03aff93bafac636b146ce6acb5ca2551fd4d83f43f2de71b46c57"
+        },
+        {
+          "index": 1,
+          "enabled": true,
+          "rate": 8.910361209336498,
+          "gaps": {
+            "count": 143,
+            "max": 188.689,
+            "p50": 123.678,
+            "p95": 174.27949999999998,
+            "p99": 181.33512000000005
+          },
+          "gap_counts": {
+            "100": 90,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 260,
+            "max": 190.47,
+            "p50": 56.2315,
+            "p95": 163.05325,
+            "p99": 185.22932
+          },
+          "pose_age": {
+            "count": 260,
+            "max": 141.206,
+            "p50": 13.5075,
+            "p95": 125.74255000000001,
+            "p99": 133.65578
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": true,
+            "mode": "actual_tasks",
+            "completed_dispatches": 1450,
+            "completed_tasks": 142029
+          },
+          "cpu": 4.397037328823204,
+          "peak_rss_mb": 1396.65625,
+          "process_pid": 2414,
+          "display_verified": true,
+          "display_receipt_sha256": "2599eb1710bbe8f25bf183595c972c5d8a45a925ff13291ee1f2eed2c6af3ddd"
+        },
+        {
+          "index": 2,
+          "enabled": true,
+          "rate": 8.85183467182499,
+          "gaps": {
+            "count": 143,
+            "max": 225.852,
+            "p50": 123.101,
+            "p95": 173.65910000000002,
+            "p99": 206.57932000000017
+          },
+          "gap_counts": {
+            "100": 88,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 249,
+            "max": 265.312,
+            "p50": 56.563,
+            "p95": 165.22339999999997,
+            "p99": 203.07084000000003
+          },
+          "pose_age": {
+            "count": 249,
+            "max": 178.16,
+            "p50": 14.054,
+            "p95": 122.2832,
+            "p99": 147.8966400000001
+          },
+          "omitted": 0,
+          "task_completion": {
+            "enabled": true,
+            "mode": "actual_tasks",
+            "completed_dispatches": 1450,
+            "completed_tasks": 142029
+          },
+          "cpu": 4.28696917372791,
+          "peak_rss_mb": 1396.71484375,
+          "process_pid": 2673,
+          "display_verified": true,
+          "display_receipt_sha256": "4eceb3a12b84e1f0386302d66b8c2431e1459f8d357e023908ecf2de47175e3e"
+        },
+        {
+          "index": 3,
+          "enabled": false,
+          "rate": 8.876722299879843,
+          "gaps": {
+            "count": 143,
+            "max": 243.299,
+            "p50": 123.527,
+            "p95": 178.2869,
+            "p99": 230.54476000000034
+          },
+          "gap_counts": {
+            "100": 92,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "material_age": {
+            "count": 248,
+            "max": 262.113,
+            "p50": 57.7255,
+            "p95": 157.9546,
+            "p99": 179.47912000000002
+          },
+          "pose_age": {
+            "count": 247,
+            "max": 191.828,
+            "p50": 14.07,
+            "p95": 123.58759999999995,
+            "p99": 149.07879999999992
+          },
+          "omitted": 1,
+          "task_completion": {
+            "enabled": false,
+            "mode": "all_workers",
+            "completed_dispatches": 1450,
+            "completed_tasks": 142029
+          },
+          "cpu": 4.382844010345178,
+          "peak_rss_mb": 1396.9140625,
+          "process_pid": 2931,
+          "display_verified": true,
+          "display_receipt_sha256": "8d09a7147dfbc7353f50e981d7610206c1b4370b8040e689044f3a7ce84928b3"
+        }
+      ],
+      "whole_capture_and_causal": [
+        {
+          "index": 0,
+          "whole_capture": {
+            "start_usec": 35398429,
+            "end_usec": 52138483,
+            "duration_seconds": 16.740054,
+            "completed_native_ticks": 144,
+            "completed_rapier_steps": 144,
+            "completed_rapier_simulation_seconds": 2.400000000000005,
+            "physical_simulation_seconds_per_wall_second": 0.1433687131475206,
+            "first_step": 1,
+            "last_step": 144,
+            "physical_no_step_prefix_ms": 169.845,
+            "physical_no_step_suffix_ms": 1.017,
+            "physical_boundary_scope": "Observed window boundaries, including censored no-step prefixes/suffixes; separate from between-completion gap distributions.",
+            "native_ticks_per_second": 8.602122788851219,
+            "rapier_steps_per_second": 8.602122788851219,
+            "frame_ms": {
+              "count": 249,
+              "max": 170.984,
+              "p50": 65.129,
+              "p95": 90.73559999999999,
+              "p99": 140.84420000000028
+            },
+            "consecutive_two_frame_ms": {
+              "count": 248,
+              "max": 245.953,
+              "p50": 130.272,
+              "p95": 174.72130000000004,
+              "p99": 237.95571
+            },
+            "worst_frame_intervals": [
+              {
+                "from_process_frame": 610,
+                "to_process_frame": 611,
+                "start_usec": 49162124,
+                "gap_ms": 170.984
+              },
+              {
+                "from_process_frame": 553,
+                "to_process_frame": 554,
+                "start_usec": 45017387,
+                "gap_ms": 155.938
+              },
+              {
+                "from_process_frame": 581,
+                "to_process_frame": 582,
+                "start_usec": 47102506,
+                "gap_ms": 154.265
+              },
+              {
+                "from_process_frame": 640,
+                "to_process_frame": 641,
+                "start_usec": 51237237,
+                "gap_ms": 126.305
+              },
+              {
+                "from_process_frame": 455,
+                "to_process_frame": 456,
+                "start_usec": 38826744,
+                "gap_ms": 119.087
+              },
+              {
+                "from_process_frame": 597,
+                "to_process_frame": 598,
+                "start_usec": 48278092,
+                "gap_ms": 99.493
+              },
+              {
+                "from_process_frame": 642,
+                "to_process_frame": 643,
+                "start_usec": 51461558,
+                "gap_ms": 98.813
+              },
+              {
+                "from_process_frame": 568,
+                "to_process_frame": 569,
+                "start_usec": 46151330,
+                "gap_ms": 98.297
+              },
+              {
+                "from_process_frame": 641,
+                "to_process_frame": 642,
+                "start_usec": 51363542,
+                "gap_ms": 98.016
+              },
+              {
+                "from_process_frame": 403,
+                "to_process_frame": 404,
+                "start_usec": 35473956,
+                "gap_ms": 95.85
+              },
+              {
+                "from_process_frame": 547,
+                "to_process_frame": 548,
+                "start_usec": 44624477,
+                "gap_ms": 93.063
+              },
+              {
+                "from_process_frame": 489,
+                "to_process_frame": 490,
+                "start_usec": 40877374,
+                "gap_ms": 91.738
+              }
+            ],
+            "post_draw_callback_gap_ms": {
+              "count": 249,
+              "max": 156.363,
+              "p50": 65.031,
+              "p95": 95.8976,
+              "p99": 130.77624000000006
+            },
+            "native_observed_gap_ms": {
+              "count": 143,
+              "max": 205.897,
+              "p50": 125.432,
+              "p95": 172.5713,
+              "p99": 186.09426000000005
+            },
+            "native_exact_gap_ms": {
+              "count": 143,
+              "max": 205.885,
+              "p50": 125.401,
+              "p95": 172.5728,
+              "p99": 185.59100000000004
+            },
+            "physical_gap_ms": {
+              "count": 143,
+              "max": 226.099,
+              "p50": 128.527,
+              "p95": 174.5874,
+              "p99": 185.73128000000005
+            },
+            "native_tick_ms": {
+              "count": 144,
+              "max": 174.948791,
+              "p50": 104.20733999999999,
+              "p95": 136.1131842,
+              "p99": 157.04118298999998
+            },
+            "main_callback_ms": {
+              "count": 250,
+              "max": 34.099,
+              "p50": 3.425,
+              "p95": 11.207450000000007,
+              "p99": 18.039859999999983
+            },
+            "worker_publication_ms": {
+              "count": 289,
+              "max": 36.062,
+              "p50": 1.758,
+              "p95": 10.661800000000007,
+              "p99": 17.713480000000015
+            },
+            "snapshot_copy_ms": {
+              "count": 289,
+              "max": 17.368,
+              "p50": 0.325,
+              "p95": 8.519800000000004,
+              "p99": 15.156000000000006
+            },
+            "snapshot_publication_ms": {
+              "count": 289,
+              "max": 35.514,
+              "p50": 1.119,
+              "p95": 3.5604000000000045,
+              "p99": 6.573720000000002
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 13.463,
+              "p50": 0.6435,
+              "p95": 2.1764999999999994,
+              "p99": 9.712929999999957
+            },
+            "rapier_observer_ms": {
+              "count": 144,
+              "max": 0.352,
+              "p50": 0.047,
+              "p95": 0.15249999999999994,
+              "p99": 0.23279999999999973
+            },
+            "native_observed_to_rapier_ms": {
+              "count": 144,
+              "max": 144.625,
+              "p50": 29.4745,
+              "p95": 48.40275,
+              "p99": 60.72093999999992
+            },
+            "native_exact_to_rapier_ms": {
+              "count": 144,
+              "max": 144.669,
+              "p50": 29.4925,
+              "p95": 49.013349999999996,
+              "p99": 60.72850999999992
+            },
+            "native_exact_to_physics_handoff_ms": {
+              "count": 144,
+              "max": 124.602,
+              "p50": 20.328000000000003,
+              "p95": 39.4524,
+              "p99": 51.35506999999992
+            },
+            "physics_handoff_to_rapier_ms": {
+              "count": 144,
+              "max": 32.872,
+              "p50": 9.522,
+              "p95": 20.0214,
+              "p99": 23.94924
+            },
+            "first_observed_eligible_snapshot_to_rapier_ms": {
+              "count": 144,
+              "max": 139.563,
+              "p50": 23.964,
+              "p95": 43.7799,
+              "p99": 56.93437999999993
+            },
+            "first_physics_handoff_to_rapier_ms": {
+              "count": 144,
+              "max": 139.621,
+              "p50": 24.1115,
+              "p95": 43.81385,
+              "p99": 56.97596999999993
+            },
+            "native_exact_to_first_physics_handoff_ms": {
+              "count": 144,
+              "max": 22.856,
+              "p50": 2.5220000000000002,
+              "p95": 14.03189999999999,
+              "p99": 19.33269999999998
+            },
+            "native_observed_to_first_physics_handoff_ms": {
+              "count": 144,
+              "max": 22.838,
+              "p50": 2.5010000000000003,
+              "p95": 13.962549999999986,
+              "p99": 19.25951999999998
+            },
+            "first_ready_scope": "First healthy matching world/native-tick/body-sample/terrain packet. Observation clock is full snapshot hook exit (queue lower bound); exact physics handoff remains unavailable on accepted main. Latest handoff metrics above remain separately reported.",
+            "snapshot_generated_to_upload_ms": {
+              "count": 143,
+              "max": 154.366,
+              "p50": 35.298,
+              "p95": 61.179800000000014,
+              "p99": 91.50610000000019
+            },
+            "material_age_at_main_end_ms": {
+              "count": 250,
+              "max": 518.957,
+              "p50": 54.5535,
+              "p95": 150.00300000000001,
+              "p99": 180.76300999999992
+            },
+            "material_submission_ms": {
+              "count": 143,
+              "max": 16.268,
+              "p50": 2.828,
+              "p95": 8.9707,
+              "p99": 15.968180000000002
+            },
+            "upload_return_to_next_delivered_draw_callback_ms": {
+              "count": 143,
+              "max": 123.574,
+              "p50": 57.157,
+              "p95": 73.4825,
+              "p99": 103.30284000000037
+            },
+            "draw_clock_scope": "Next delivered frame_post_draw callback only; no upload-specific draw identity, GPU completion or scanout assertion, especially under Separate rendering.",
+            "submission_stages_usec": {
+              "image_patch_usec": {
+                "count": 143,
+                "max": 7565.0,
+                "p50": 878.0,
+                "p95": 1707.5000000000002,
+                "p99": 4253.900000000038
+              },
+              "content_cache_usec": {
+                "count": 143,
+                "max": 288.0,
+                "p50": 23.0,
+                "p95": 166.8,
+                "p99": 228.18000000000026
+              },
+              "atlas_assembly_usec": null,
+              "backend_submit_usec": {
+                "count": 143,
+                "max": 14661.0,
+                "p50": 1496.0,
+                "p95": 7937.000000000005,
+                "p99": 10018.140000000001
+              },
+              "staging_upload_usec": null,
+              "gpu_blit_submit_usec": null,
+              "direct_upload_usec": null,
+              "whole_storage_create_usec": null,
+              "whole_storage_replace_usec": null,
+              "initialization_usec": null
+            },
+            "publication": {
+              "accepted_uploads": 143,
+              "uploads_per_second": 8.542385825039752,
+              "native_full_inputs": 19,
+              "native_sparse_inputs": 124,
+              "input_payload_bytes": 184065260,
+              "input_patch_count": 1440,
+              "unique_worker_render_serials": 144,
+              "submission_modes": {
+                "full": 143
+              },
+              "cpu_staging_submitted_bytes": 1199570944,
+              "staging_residency_bytes": null,
+              "dropped_publications": null,
+              "expired_publications": null,
+              "refused_publications": null,
+              "unavailable_reason": "The common legacy seam cannot distinguish publication refusal/expiration from no-op consumption; original integrated diagnostics retain finer counters.",
+              "byte_scope": "Input RG8 packet bytes and CPU staging upload bytes are distinct. Neither measures GPU bandwidth."
+            },
+            "native_capture": {
+              "count": 144,
+              "forced_count": 0,
+              "full_return_count": 19,
+              "status_counts": {
+                "1": 125,
+                "3": 19
+              },
+              "wall_ms": {
+                "count": 144,
+                "max": 17.131,
+                "p50": 0.512,
+                "p95": 9.6838,
+                "p99": 15.977889999999999
+              }
+            },
+            "command_attempts": 1011,
+            "command_acceptances": 1011,
+            "physical_callbacks_without_step": 867,
+            "physical_callbacks_with_pending_terrain": 2,
+            "contacts_observed": 86,
+            "response_refusals": [],
+            "wave_column_stage_counter_deltas": null,
+            "rapier_execution_to_completion_ms": {
+              "count": 144,
+              "max": 32.133,
+              "p50": 3.293,
+              "p95": 8.485799999999992,
+              "p99": 16.791359999999987
+            },
+            "first_physics_handoff_to_execution_start_ms": {
+              "count": 141,
+              "max": 130.102,
+              "p50": 20.956,
+              "p95": 41.194,
+              "p99": 52.88299999999994
+            },
+            "physics_callback_count": 1011,
+            "physics_callback_ms": {
+              "count": 1011,
+              "max": 42.691,
+              "p50": 0.189,
+              "p95": 4.1205,
+              "p99": 8.434299999999983
+            },
+            "same_frame_attempts": 0,
+            "same_frame_completed_steps": 0,
+            "same_frame_attempts_started": 0,
+            "same_frame_attempts_censored_at_end": 0,
+            "same_frame_attempt_count_scope": "same_frame_attempts counts completed attempt observations; physical completions use Rapier step timestamps independently",
+            "same_frame_attempt_ms": null,
+            "same_frame_hold_to_attempt_ms": null
+          },
+          "whole_capture_gap_counts": {
+            "100": 91,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "first144_causal": {
+            "native_tick_ms": {
+              "count": 144,
+              "max": 174.948791,
+              "p50": 104.20733999999999,
+              "p95": 136.1131842,
+              "p99": 157.04118298999998
+            },
+            "native_complete_to_first_eligible_handoff_ms": {
+              "count": 144,
+              "max": 22.856,
+              "p50": 2.5220000000000002,
+              "p95": 14.03189999999999,
+              "p99": 19.33269999999998
+            },
+            "first_eligible_handoff_to_callback_start_ms": {
+              "count": 144,
+              "max": 130.102,
+              "p50": 20.408,
+              "p95": 41.16805,
+              "p99": 52.563199999999924
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 13.463,
+              "p50": 0.6435,
+              "p95": 2.1764999999999994,
+              "p99": 9.712929999999957
+            },
+            "main_callback_ms": {
+              "count": 250,
+              "max": 34.099,
+              "p50": 3.425,
+              "p95": 11.207450000000007,
+              "p99": 18.039859999999983
+            },
+            "upload_call_ms": {
+              "count": 143,
+              "max": 16.268,
+              "p50": 2.828,
+              "p95": 8.9707,
+              "p99": 15.968180000000002
+            }
+          }
+        },
+        {
+          "index": 1,
+          "whole_capture": {
+            "start_usec": 35803247,
+            "end_usec": 51965056,
+            "duration_seconds": 16.161809,
+            "completed_native_ticks": 144,
+            "completed_rapier_steps": 144,
+            "completed_rapier_simulation_seconds": 2.400000000000005,
+            "physical_simulation_seconds_per_wall_second": 0.1484982281377044,
+            "first_step": 1,
+            "last_step": 144,
+            "physical_no_step_prefix_ms": 215.326,
+            "physical_no_step_suffix_ms": 0.848,
+            "physical_boundary_scope": "Observed window boundaries, including censored no-step prefixes/suffixes; separate from between-completion gap distributions.",
+            "native_ticks_per_second": 8.909893688262247,
+            "rapier_steps_per_second": 8.909893688262247,
+            "frame_ms": {
+              "count": 262,
+              "max": 168.826,
+              "p50": 60.195499999999996,
+              "p95": 76.6712,
+              "p99": 91.08562999999994
+            },
+            "consecutive_two_frame_ms": {
+              "count": 261,
+              "max": 235.451,
+              "p50": 121.559,
+              "p95": 145.927,
+              "p99": 180.4809999999999
+            },
+            "worst_frame_intervals": [
+              {
+                "from_process_frame": 657,
+                "to_process_frame": 658,
+                "start_usec": 51159127,
+                "gap_ms": 168.826
+              },
+              {
+                "from_process_frame": 602,
+                "to_process_frame": 603,
+                "start_usec": 47687335,
+                "gap_ms": 97.013
+              },
+              {
+                "from_process_frame": 609,
+                "to_process_frame": 610,
+                "start_usec": 48214769,
+                "gap_ms": 93.719
+              },
+              {
+                "from_process_frame": 608,
+                "to_process_frame": 609,
+                "start_usec": 48125367,
+                "gap_ms": 89.402
+              },
+              {
+                "from_process_frame": 543,
+                "to_process_frame": 544,
+                "start_usec": 43981842,
+                "gap_ms": 84.803
+              },
+              {
+                "from_process_frame": 601,
+                "to_process_frame": 602,
+                "start_usec": 47605627,
+                "gap_ms": 81.708
+              },
+              {
+                "from_process_frame": 595,
+                "to_process_frame": 596,
+                "start_usec": 47229066,
+                "gap_ms": 81.56
+              },
+              {
+                "from_process_frame": 606,
+                "to_process_frame": 607,
+                "start_usec": 47967753,
+                "gap_ms": 80.915
+              },
+              {
+                "from_process_frame": 572,
+                "to_process_frame": 573,
+                "start_usec": 45756254,
+                "gap_ms": 80.414
+              },
+              {
+                "from_process_frame": 578,
+                "to_process_frame": 579,
+                "start_usec": 46174507,
+                "gap_ms": 80.081
+              },
+              {
+                "from_process_frame": 456,
+                "to_process_frame": 457,
+                "start_usec": 38813870,
+                "gap_ms": 79.77
+              },
+              {
+                "from_process_frame": 611,
+                "to_process_frame": 612,
+                "start_usec": 48370953,
+                "gap_ms": 77.985
+              }
+            ],
+            "post_draw_callback_gap_ms": {
+              "count": 262,
+              "max": 119.856,
+              "p50": 60.0475,
+              "p95": 78.5941,
+              "p99": 101.36718999999988
+            },
+            "native_observed_gap_ms": {
+              "count": 143,
+              "max": 187.011,
+              "p50": 122.639,
+              "p95": 173.6953,
+              "p99": 186.1168
+            },
+            "native_exact_gap_ms": {
+              "count": 143,
+              "max": 187.007,
+              "p50": 122.65,
+              "p95": 173.6954,
+              "p99": 186.11738
+            },
+            "physical_gap_ms": {
+              "count": 143,
+              "max": 188.689,
+              "p50": 123.678,
+              "p95": 174.27949999999998,
+              "p99": 181.33512000000005
+            },
+            "native_tick_ms": {
+              "count": 144,
+              "max": 151.686887,
+              "p50": 98.803438,
+              "p95": 131.70698015,
+              "p99": 136.07688914
+            },
+            "main_callback_ms": {
+              "count": 263,
+              "max": 15.738,
+              "p50": 3.099,
+              "p95": 9.189300000000001,
+              "p99": 10.932619999999998
+            },
+            "worker_publication_ms": {
+              "count": 298,
+              "max": 18.628,
+              "p50": 1.4460000000000002,
+              "p95": 8.7175,
+              "p99": 13.34538999999986
+            },
+            "snapshot_copy_ms": {
+              "count": 298,
+              "max": 16.849,
+              "p50": 0.01,
+              "p95": 7.674949999999997,
+              "p99": 10.444539999999966
+            },
+            "snapshot_publication_ms": {
+              "count": 298,
+              "max": 9.642,
+              "p50": 0.9975,
+              "p95": 1.5353499999999993,
+              "p99": 3.0251799999999043
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 9.951,
+              "p50": 0.616,
+              "p95": 1.2129999999999999,
+              "p99": 3.0929899999999964
+            },
+            "rapier_observer_ms": {
+              "count": 144,
+              "max": 0.27,
+              "p50": 0.045,
+              "p95": 0.07669999999999999,
+              "p99": 0.18922999999999907
+            },
+            "native_observed_to_rapier_ms": {
+              "count": 144,
+              "max": 62.71,
+              "p50": 29.966,
+              "p95": 48.66675,
+              "p99": 53.84928
+            },
+            "native_exact_to_rapier_ms": {
+              "count": 144,
+              "max": 62.724,
+              "p50": 29.984,
+              "p95": 48.67545,
+              "p99": 53.86341
+            },
+            "native_exact_to_physics_handoff_ms": {
+              "count": 144,
+              "max": 46.523,
+              "p50": 20.1345,
+              "p95": 39.040099999999995,
+              "p99": 45.44079999999999
+            },
+            "physics_handoff_to_rapier_ms": {
+              "count": 144,
+              "max": 43.69,
+              "p50": 9.718,
+              "p95": 19.68915,
+              "p99": 20.38121
+            },
+            "first_observed_eligible_snapshot_to_rapier_ms": {
+              "count": 144,
+              "max": 52.061,
+              "p50": 26.655,
+              "p95": 44.350699999999996,
+              "p99": 45.271739999999994
+            },
+            "first_physics_handoff_to_rapier_ms": {
+              "count": 144,
+              "max": 52.097,
+              "p50": 26.695999999999998,
+              "p95": 44.38835,
+              "p99": 45.31173
+            },
+            "native_exact_to_first_physics_handoff_ms": {
+              "count": 144,
+              "max": 19.034,
+              "p50": 2.2504999999999997,
+              "p95": 11.491299999999992,
+              "p99": 18.62866
+            },
+            "native_observed_to_first_physics_handoff_ms": {
+              "count": 144,
+              "max": 19.02,
+              "p50": 2.2325,
+              "p95": 11.473449999999993,
+              "p99": 18.61622
+            },
+            "first_ready_scope": "First healthy matching world/native-tick/body-sample/terrain packet. Observation clock is full snapshot hook exit (queue lower bound); exact physics handoff remains unavailable on accepted main. Latest handoff metrics above remain separately reported.",
+            "snapshot_generated_to_upload_ms": {
+              "count": 143,
+              "max": 71.154,
+              "p50": 35.06,
+              "p95": 56.239000000000004,
+              "p99": 58.18444000000001
+            },
+            "material_age_at_main_end_ms": {
+              "count": 263,
+              "max": 559.693,
+              "p50": 55.211,
+              "p95": 168.7295,
+              "p99": 278.8739399999989
+            },
+            "material_submission_ms": {
+              "count": 143,
+              "max": 9.681,
+              "p50": 2.627,
+              "p95": 7.546000000000001,
+              "p99": 8.131920000000001
+            },
+            "upload_return_to_next_delivered_draw_callback_ms": {
+              "count": 143,
+              "max": 112.69,
+              "p50": 55.703,
+              "p95": 69.5522,
+              "p99": 82.47524000000007
+            },
+            "draw_clock_scope": "Next delivered frame_post_draw callback only; no upload-specific draw identity, GPU completion or scanout assertion, especially under Separate rendering.",
+            "submission_stages_usec": {
+              "image_patch_usec": {
+                "count": 143,
+                "max": 4358.0,
+                "p50": 859.0,
+                "p95": 1285.5000000000002,
+                "p99": 2768.8200000000193
+              },
+              "content_cache_usec": {
+                "count": 143,
+                "max": 193.0,
+                "p50": 23.0,
+                "p95": 53.0,
+                "p99": 99.18000000000026
+              },
+              "atlas_assembly_usec": null,
+              "backend_submit_usec": {
+                "count": 143,
+                "max": 8326.0,
+                "p50": 1312.0,
+                "p95": 6454.4,
+                "p99": 7162.360000000003
+              },
+              "staging_upload_usec": null,
+              "gpu_blit_submit_usec": null,
+              "direct_upload_usec": null,
+              "whole_storage_create_usec": null,
+              "whole_storage_replace_usec": null,
+              "initialization_usec": null
+            },
+            "publication": {
+              "accepted_uploads": 143,
+              "uploads_per_second": 8.848019426538205,
+              "native_full_inputs": 19,
+              "native_sparse_inputs": 124,
+              "input_payload_bytes": 184065260,
+              "input_patch_count": 1440,
+              "unique_worker_render_serials": 144,
+              "submission_modes": {
+                "full": 143
+              },
+              "cpu_staging_submitted_bytes": 1199570944,
+              "staging_residency_bytes": null,
+              "dropped_publications": null,
+              "expired_publications": null,
+              "refused_publications": null,
+              "unavailable_reason": "The common legacy seam cannot distinguish publication refusal/expiration from no-op consumption; original integrated diagnostics retain finer counters.",
+              "byte_scope": "Input RG8 packet bytes and CPU staging upload bytes are distinct. Neither measures GPU bandwidth."
+            },
+            "native_capture": {
+              "count": 144,
+              "forced_count": 0,
+              "full_return_count": 19,
+              "status_counts": {
+                "1": 125,
+                "3": 19
+              },
+              "wall_ms": {
+                "count": 144,
+                "max": 16.531,
+                "p50": 0.488,
+                "p95": 8.92745,
+                "p99": 14.184479999999965
+              }
+            },
+            "command_attempts": 978,
+            "command_acceptances": 978,
+            "physical_callbacks_without_step": 834,
+            "physical_callbacks_with_pending_terrain": 2,
+            "contacts_observed": 86,
+            "response_refusals": [],
+            "wave_column_stage_counter_deltas": null,
+            "rapier_execution_to_completion_ms": {
+              "count": 144,
+              "max": 30.289,
+              "p50": 3.0225,
+              "p95": 4.160499999999999,
+              "p99": 7.35824999999998
+            },
+            "first_physics_handoff_to_execution_start_ms": {
+              "count": 142,
+              "max": 49.083,
+              "p50": 23.817,
+              "p95": 41.29705,
+              "p99": 42.60251
+            },
+            "physics_callback_count": 978,
+            "physics_callback_ms": {
+              "count": 978,
+              "max": 30.603,
+              "p50": 0.186,
+              "p95": 3.455949999999999,
+              "p99": 4.342600000000003
+            },
+            "same_frame_attempts": 0,
+            "same_frame_completed_steps": 0,
+            "same_frame_attempts_started": 0,
+            "same_frame_attempts_censored_at_end": 0,
+            "same_frame_attempt_count_scope": "same_frame_attempts counts completed attempt observations; physical completions use Rapier step timestamps independently",
+            "same_frame_attempt_ms": null,
+            "same_frame_hold_to_attempt_ms": null
+          },
+          "whole_capture_gap_counts": {
+            "100": 90,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "first144_causal": {
+            "native_tick_ms": {
+              "count": 144,
+              "max": 151.686887,
+              "p50": 98.803438,
+              "p95": 131.70698015,
+              "p99": 136.07688914
+            },
+            "native_complete_to_first_eligible_handoff_ms": {
+              "count": 144,
+              "max": 19.034,
+              "p50": 2.2504999999999997,
+              "p95": 11.491299999999992,
+              "p99": 18.62866
+            },
+            "first_eligible_handoff_to_callback_start_ms": {
+              "count": 144,
+              "max": 49.083,
+              "p50": 23.564500000000002,
+              "p95": 41.25315,
+              "p99": 42.596729999999994
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 9.951,
+              "p50": 0.616,
+              "p95": 1.2129999999999999,
+              "p99": 3.0929899999999964
+            },
+            "main_callback_ms": {
+              "count": 263,
+              "max": 15.738,
+              "p50": 3.099,
+              "p95": 9.189300000000001,
+              "p99": 10.932619999999998
+            },
+            "upload_call_ms": {
+              "count": 143,
+              "max": 9.681,
+              "p50": 2.627,
+              "p95": 7.546000000000001,
+              "p99": 8.131920000000001
+            }
+          }
+        },
+        {
+          "index": 2,
+          "whole_capture": {
+            "start_usec": 35064827,
+            "end_usec": 51333393,
+            "duration_seconds": 16.268566,
+            "completed_native_ticks": 144,
+            "completed_rapier_steps": 144,
+            "completed_rapier_simulation_seconds": 2.400000000000005,
+            "physical_simulation_seconds_per_wall_second": 0.1475237583939485,
+            "first_step": 1,
+            "last_step": 144,
+            "physical_no_step_prefix_ms": 277.107,
+            "physical_no_step_suffix_ms": 0.752,
+            "physical_boundary_scope": "Observed window boundaries, including censored no-step prefixes/suffixes; separate from between-completion gap distributions.",
+            "native_ticks_per_second": 8.851425503636891,
+            "rapier_steps_per_second": 8.851425503636891,
+            "frame_ms": {
+              "count": 250,
+              "max": 193.807,
+              "p50": 61.9465,
+              "p95": 92.8411,
+              "p99": 139.68096999999997
+            },
+            "consecutive_two_frame_ms": {
+              "count": 249,
+              "max": 282.195,
+              "p50": 124.22,
+              "p95": 173.31959999999998,
+              "p99": 230.10356000000007
+            },
+            "worst_frame_intervals": [
+              {
+                "from_process_frame": 388,
+                "to_process_frame": 389,
+                "start_usec": 35150640,
+                "gap_ms": 193.807
+              },
+              {
+                "from_process_frame": 421,
+                "to_process_frame": 422,
+                "start_usec": 37232147,
+                "gap_ms": 163.972
+              },
+              {
+                "from_process_frame": 619,
+                "to_process_frame": 620,
+                "start_usec": 50045605,
+                "gap_ms": 141.615
+              },
+              {
+                "from_process_frame": 454,
+                "to_process_frame": 455,
+                "start_usec": 39345406,
+                "gap_ms": 137.668
+              },
+              {
+                "from_process_frame": 509,
+                "to_process_frame": 510,
+                "start_usec": 42949237,
+                "gap_ms": 132.587
+              },
+              {
+                "from_process_frame": 486,
+                "to_process_frame": 487,
+                "start_usec": 41387357,
+                "gap_ms": 117.346
+              },
+              {
+                "from_process_frame": 510,
+                "to_process_frame": 511,
+                "start_usec": 43081824,
+                "gap_ms": 100.362
+              },
+              {
+                "from_process_frame": 446,
+                "to_process_frame": 447,
+                "start_usec": 38824574,
+                "gap_ms": 98.246
+              },
+              {
+                "from_process_frame": 572,
+                "to_process_frame": 573,
+                "start_usec": 47062432,
+                "gap_ms": 96.74
+              },
+              {
+                "from_process_frame": 488,
+                "to_process_frame": 489,
+                "start_usec": 41580470,
+                "gap_ms": 94.477
+              },
+              {
+                "from_process_frame": 505,
+                "to_process_frame": 506,
+                "start_usec": 42665670,
+                "gap_ms": 93.902
+              },
+              {
+                "from_process_frame": 582,
+                "to_process_frame": 583,
+                "start_usec": 47761503,
+                "gap_ms": 93.202
+              }
+            ],
+            "post_draw_callback_gap_ms": {
+              "count": 250,
+              "max": 155.399,
+              "p50": 62.5755,
+              "p95": 94.1936,
+              "p99": 135.08680999999993
+            },
+            "native_observed_gap_ms": {
+              "count": 143,
+              "max": 280.822,
+              "p50": 117.728,
+              "p95": 171.5685,
+              "p99": 212.25070000000002
+            },
+            "native_exact_gap_ms": {
+              "count": 143,
+              "max": 280.819,
+              "p50": 117.728,
+              "p95": 171.5789,
+              "p99": 212.21936000000005
+            },
+            "physical_gap_ms": {
+              "count": 143,
+              "max": 225.852,
+              "p50": 123.101,
+              "p95": 173.65910000000002,
+              "p99": 206.57932000000017
+            },
+            "native_tick_ms": {
+              "count": 144,
+              "max": 161.85254,
+              "p50": 95.7982505,
+              "p95": 131.81871875,
+              "p99": 149.90920836
+            },
+            "main_callback_ms": {
+              "count": 251,
+              "max": 17.332,
+              "p50": 3.577,
+              "p95": 11.941500000000001,
+              "p99": 14.445
+            },
+            "worker_publication_ms": {
+              "count": 306,
+              "max": 30.041,
+              "p50": 1.461,
+              "p95": 9.99825,
+              "p99": 16.23144999999999
+            },
+            "snapshot_copy_ms": {
+              "count": 306,
+              "max": 21.788,
+              "p50": 0.01,
+              "p95": 8.570500000000001,
+              "p99": 12.264499999999979
+            },
+            "snapshot_publication_ms": {
+              "count": 306,
+              "max": 28.837,
+              "p50": 0.998,
+              "p95": 2.1195,
+              "p99": 4.1036999999999955
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 10.907,
+              "p50": 0.5305,
+              "p95": 1.1895499999999997,
+              "p99": 2.663329999999995
+            },
+            "rapier_observer_ms": {
+              "count": 144,
+              "max": 0.342,
+              "p50": 0.045,
+              "p95": 0.076,
+              "p99": 0.20736999999999972
+            },
+            "native_observed_to_rapier_ms": {
+              "count": 144,
+              "max": 173.219,
+              "p50": 30.505499999999998,
+              "p95": 54.667399999999994,
+              "p99": 74.2789399999999
+            },
+            "native_exact_to_rapier_ms": {
+              "count": 144,
+              "max": 173.234,
+              "p50": 30.524,
+              "p95": 54.683749999999996,
+              "p99": 75.2531999999999
+            },
+            "native_exact_to_physics_handoff_ms": {
+              "count": 144,
+              "max": 115.221,
+              "p50": 20.313000000000002,
+              "p95": 45.816199999999995,
+              "p99": 62.05834999999998
+            },
+            "physics_handoff_to_rapier_ms": {
+              "count": 144,
+              "max": 58.013,
+              "p50": 10.187000000000001,
+              "p95": 19.730150000000002,
+              "p99": 21.693409999999986
+            },
+            "first_observed_eligible_snapshot_to_rapier_ms": {
+              "count": 144,
+              "max": 157.966,
+              "p50": 27.1645,
+              "p95": 51.76485,
+              "p99": 59.13892999999998
+            },
+            "first_physics_handoff_to_rapier_ms": {
+              "count": 144,
+              "max": 158.191,
+              "p50": 27.2215,
+              "p95": 51.81775,
+              "p99": 59.18611999999998
+            },
+            "native_exact_to_first_physics_handoff_ms": {
+              "count": 144,
+              "max": 27.309,
+              "p50": 2.2305,
+              "p95": 11.662599999999998,
+              "p99": 21.528949999999973
+            },
+            "native_observed_to_first_physics_handoff_ms": {
+              "count": 144,
+              "max": 25.897,
+              "p50": 2.2115,
+              "p95": 11.644399999999997,
+              "p99": 21.510379999999973
+            },
+            "first_ready_scope": "First healthy matching world/native-tick/body-sample/terrain packet. Observation clock is full snapshot hook exit (queue lower bound); exact physics handoff remains unavailable on accepted main. Latest handoff metrics above remain separately reported.",
+            "snapshot_generated_to_upload_ms": {
+              "count": 143,
+              "max": 179.943,
+              "p50": 35.758,
+              "p95": 61.09550000000001,
+              "p99": 76.54560000000005
+            },
+            "material_age_at_main_end_ms": {
+              "count": 251,
+              "max": 530.935,
+              "p50": 56.119,
+              "p95": 165.98950000000002,
+              "p99": 241.95100000000002
+            },
+            "material_submission_ms": {
+              "count": 143,
+              "max": 12.305,
+              "p50": 2.559,
+              "p95": 8.632900000000001,
+              "p99": 11.524520000000019
+            },
+            "upload_return_to_next_delivered_draw_callback_ms": {
+              "count": 143,
+              "max": 128.357,
+              "p50": 55.897,
+              "p95": 85.34060000000001,
+              "p99": 114.63042000000003
+            },
+            "draw_clock_scope": "Next delivered frame_post_draw callback only; no upload-specific draw identity, GPU completion or scanout assertion, especially under Separate rendering.",
+            "submission_stages_usec": {
+              "image_patch_usec": {
+                "count": 143,
+                "max": 2989.0,
+                "p50": 920.0,
+                "p95": 1678.2000000000005,
+                "p99": 2733.2000000000007
+              },
+              "content_cache_usec": {
+                "count": 143,
+                "max": 173.0,
+                "p50": 24.0,
+                "p95": 59.0,
+                "p99": 86.76000000000028
+              },
+              "atlas_assembly_usec": null,
+              "backend_submit_usec": {
+                "count": 143,
+                "max": 10934.0,
+                "p50": 1285.0,
+                "p95": 7687.500000000002,
+                "p99": 10140.060000000021
+              },
+              "staging_upload_usec": null,
+              "gpu_blit_submit_usec": null,
+              "direct_upload_usec": null,
+              "whole_storage_create_usec": null,
+              "whole_storage_replace_usec": null,
+              "initialization_usec": null
+            },
+            "publication": {
+              "accepted_uploads": 143,
+              "uploads_per_second": 8.789957270972746,
+              "native_full_inputs": 19,
+              "native_sparse_inputs": 124,
+              "input_payload_bytes": 184065260,
+              "input_patch_count": 1440,
+              "unique_worker_render_serials": 144,
+              "submission_modes": {
+                "full": 143
+              },
+              "cpu_staging_submitted_bytes": 1199570944,
+              "staging_residency_bytes": null,
+              "dropped_publications": null,
+              "expired_publications": null,
+              "refused_publications": null,
+              "unavailable_reason": "The common legacy seam cannot distinguish publication refusal/expiration from no-op consumption; original integrated diagnostics retain finer counters.",
+              "byte_scope": "Input RG8 packet bytes and CPU staging upload bytes are distinct. Neither measures GPU bandwidth."
+            },
+            "native_capture": {
+              "count": 144,
+              "forced_count": 0,
+              "full_return_count": 19,
+              "status_counts": {
+                "1": 125,
+                "3": 19
+              },
+              "wall_ms": {
+                "count": 144,
+                "max": 21.469,
+                "p50": 0.51,
+                "p95": 9.355549999999997,
+                "p99": 15.417149999999982
+              }
+            },
+            "command_attempts": 985,
+            "command_acceptances": 985,
+            "physical_callbacks_without_step": 841,
+            "physical_callbacks_with_pending_terrain": 1,
+            "contacts_observed": 86,
+            "response_refusals": [],
+            "wave_column_stage_counter_deltas": null,
+            "rapier_execution_to_completion_ms": {
+              "count": 144,
+              "max": 41.326,
+              "p50": 2.9139999999999997,
+              "p95": 4.098349999999999,
+              "p99": 8.925659999999985
+            },
+            "first_physics_handoff_to_execution_start_ms": {
+              "count": 143,
+              "max": 116.865,
+              "p50": 24.891,
+              "p95": 47.481200000000015,
+              "p99": 55.77450000000005
+            },
+            "physics_callback_count": 985,
+            "physics_callback_ms": {
+              "count": 985,
+              "max": 42.172,
+              "p50": 0.194,
+              "p95": 3.426799999999999,
+              "p99": 4.824039999999999
+            },
+            "same_frame_attempts": 0,
+            "same_frame_completed_steps": 0,
+            "same_frame_attempts_started": 0,
+            "same_frame_attempts_censored_at_end": 0,
+            "same_frame_attempt_count_scope": "same_frame_attempts counts completed attempt observations; physical completions use Rapier step timestamps independently",
+            "same_frame_attempt_ms": null,
+            "same_frame_hold_to_attempt_ms": null
+          },
+          "whole_capture_gap_counts": {
+            "100": 88,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "first144_causal": {
+            "native_tick_ms": {
+              "count": 144,
+              "max": 161.85254,
+              "p50": 95.7982505,
+              "p95": 131.81871875,
+              "p99": 149.90920836
+            },
+            "native_complete_to_first_eligible_handoff_ms": {
+              "count": 144,
+              "max": 27.309,
+              "p50": 2.2305,
+              "p95": 11.662599999999998,
+              "p99": 21.528949999999973
+            },
+            "first_eligible_handoff_to_callback_start_ms": {
+              "count": 144,
+              "max": 116.865,
+              "p50": 24.6145,
+              "p95": 47.352299999999985,
+              "p99": 55.732749999999974
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 10.907,
+              "p50": 0.5305,
+              "p95": 1.1895499999999997,
+              "p99": 2.663329999999995
+            },
+            "main_callback_ms": {
+              "count": 251,
+              "max": 17.332,
+              "p50": 3.577,
+              "p95": 11.941500000000001,
+              "p99": 14.445
+            },
+            "upload_call_ms": {
+              "count": 143,
+              "max": 12.305,
+              "p50": 2.559,
+              "p95": 8.632900000000001,
+              "p99": 11.524520000000019
+            }
+          }
+        },
+        {
+          "index": 3,
+          "whole_capture": {
+            "start_usec": 34205752,
+            "end_usec": 50429164,
+            "duration_seconds": 16.223412,
+            "completed_native_ticks": 144,
+            "completed_rapier_steps": 144,
+            "completed_rapier_simulation_seconds": 2.400000000000005,
+            "physical_simulation_seconds_per_wall_second": 0.14793435560904233,
+            "first_step": 1,
+            "last_step": 144,
+            "physical_no_step_prefix_ms": 174.506,
+            "physical_no_step_suffix_ms": 1.208,
+            "physical_boundary_scope": "Observed window boundaries, including censored no-step prefixes/suffixes; separate from between-completion gap distributions.",
+            "native_ticks_per_second": 8.876061336542524,
+            "rapier_steps_per_second": 8.876061336542524,
+            "frame_ms": {
+              "count": 249,
+              "max": 177.995,
+              "p50": 62.677,
+              "p95": 83.11439999999999,
+              "p99": 126.64808000000005
+            },
+            "consecutive_two_frame_ms": {
+              "count": 248,
+              "max": 246.408,
+              "p50": 125.41749999999999,
+              "p95": 174.65940000000003,
+              "p99": 216.04511
+            },
+            "worst_frame_intervals": [
+              {
+                "from_process_frame": 414,
+                "to_process_frame": 415,
+                "start_usec": 35506282,
+                "gap_ms": 177.995
+              },
+              {
+                "from_process_frame": 542,
+                "to_process_frame": 543,
+                "start_usec": 43952041,
+                "gap_ms": 130.348
+              },
+              {
+                "from_process_frame": 608,
+                "to_process_frame": 609,
+                "start_usec": 48024384,
+                "gap_ms": 128.846
+              },
+              {
+                "from_process_frame": 444,
+                "to_process_frame": 445,
+                "start_usec": 37629546,
+                "gap_ms": 124.267
+              },
+              {
+                "from_process_frame": 612,
+                "to_process_frame": 613,
+                "start_usec": 48365651,
+                "gap_ms": 118.168
+              },
+              {
+                "from_process_frame": 508,
+                "to_process_frame": 509,
+                "start_usec": 41822724,
+                "gap_ms": 114.808
+              },
+              {
+                "from_process_frame": 396,
+                "to_process_frame": 397,
+                "start_usec": 34280716,
+                "gap_ms": 100.807
+              },
+              {
+                "from_process_frame": 402,
+                "to_process_frame": 403,
+                "start_usec": 34695854,
+                "gap_ms": 97.745
+              },
+              {
+                "from_process_frame": 421,
+                "to_process_frame": 422,
+                "start_usec": 36071832,
+                "gap_ms": 88.554
+              },
+              {
+                "from_process_frame": 454,
+                "to_process_frame": 455,
+                "start_usec": 38339121,
+                "gap_ms": 87.115
+              },
+              {
+                "from_process_frame": 609,
+                "to_process_frame": 610,
+                "start_usec": 48153230,
+                "gap_ms": 86.676
+              },
+              {
+                "from_process_frame": 541,
+                "to_process_frame": 542,
+                "start_usec": 43865880,
+                "gap_ms": 86.161
+              }
+            ],
+            "post_draw_callback_gap_ms": {
+              "count": 249,
+              "max": 183.687,
+              "p50": 62.492,
+              "p95": 83.3412,
+              "p99": 132.02296000000004
+            },
+            "native_observed_gap_ms": {
+              "count": 143,
+              "max": 235.82,
+              "p50": 119.249,
+              "p95": 182.7434,
+              "p99": 211.40522000000038
+            },
+            "native_exact_gap_ms": {
+              "count": 143,
+              "max": 235.528,
+              "p50": 119.25,
+              "p95": 182.7425,
+              "p99": 211.4011800000004
+            },
+            "physical_gap_ms": {
+              "count": 143,
+              "max": 243.299,
+              "p50": 123.527,
+              "p95": 178.2869,
+              "p99": 230.54476000000034
+            },
+            "native_tick_ms": {
+              "count": 144,
+              "max": 173.279195,
+              "p50": 94.946316,
+              "p95": 131.72002655,
+              "p99": 156.7476125599999
+            },
+            "main_callback_ms": {
+              "count": 250,
+              "max": 24.669,
+              "p50": 3.4299999999999997,
+              "p95": 11.8229,
+              "p99": 16.56683999999999
+            },
+            "worker_publication_ms": {
+              "count": 293,
+              "max": 27.556,
+              "p50": 1.614,
+              "p95": 11.365999999999998,
+              "p99": 22.25975999999998
+            },
+            "snapshot_copy_ms": {
+              "count": 293,
+              "max": 22.372,
+              "p50": 0.067,
+              "p95": 8.991999999999994,
+              "p99": 15.567959999999982
+            },
+            "snapshot_publication_ms": {
+              "count": 293,
+              "max": 25.264,
+              "p50": 1.067,
+              "p95": 2.477599999999998,
+              "p99": 11.063159999999963
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 9.272,
+              "p50": 0.578,
+              "p95": 2.1856999999999975,
+              "p99": 5.134039999999988
+            },
+            "rapier_observer_ms": {
+              "count": 144,
+              "max": 1.656,
+              "p50": 0.045,
+              "p95": 0.07639999999999998,
+              "p99": 0.4093999999999979
+            },
+            "native_observed_to_rapier_ms": {
+              "count": 144,
+              "max": 102.088,
+              "p50": 29.7165,
+              "p95": 60.72745,
+              "p99": 78.76185
+            },
+            "native_exact_to_rapier_ms": {
+              "count": 144,
+              "max": 102.107,
+              "p50": 29.734499999999997,
+              "p95": 60.73715,
+              "p99": 78.90598
+            },
+            "native_exact_to_physics_handoff_ms": {
+              "count": 144,
+              "max": 65.626,
+              "p50": 20.291,
+              "p95": 40.32254999999999,
+              "p99": 63.196479999999994
+            },
+            "physics_handoff_to_rapier_ms": {
+              "count": 144,
+              "max": 76.957,
+              "p50": 10.886,
+              "p95": 20.135049999999996,
+              "p99": 58.24734999999991
+            },
+            "first_observed_eligible_snapshot_to_rapier_ms": {
+              "count": 144,
+              "max": 99.817,
+              "p50": 26.2705,
+              "p95": 52.100849999999994,
+              "p99": 70.32410999999989
+            },
+            "first_physics_handoff_to_rapier_ms": {
+              "count": 144,
+              "max": 99.866,
+              "p50": 26.316000000000003,
+              "p95": 52.15194999999999,
+              "p99": 70.3749899999999
+            },
+            "native_exact_to_first_physics_handoff_ms": {
+              "count": 144,
+              "max": 23.858,
+              "p50": 2.325,
+              "p95": 13.289699999999995,
+              "p99": 22.944699999999994
+            },
+            "native_observed_to_first_physics_handoff_ms": {
+              "count": 144,
+              "max": 23.839,
+              "p50": 2.3064999999999998,
+              "p95": 13.153899999999995,
+              "p99": 22.759829999999994
+            },
+            "first_ready_scope": "First healthy matching world/native-tick/body-sample/terrain packet. Observation clock is full snapshot hook exit (queue lower bound); exact physics handoff remains unavailable on accepted main. Latest handoff metrics above remain separately reported.",
+            "snapshot_generated_to_upload_ms": {
+              "count": 143,
+              "max": 128.089,
+              "p50": 34.415,
+              "p95": 71.65550000000005,
+              "p99": 94.56868000000006
+            },
+            "material_age_at_main_end_ms": {
+              "count": 250,
+              "max": 532.398,
+              "p50": 56.324,
+              "p95": 156.16775,
+              "p99": 247.0597799999998
+            },
+            "material_submission_ms": {
+              "count": 143,
+              "max": 19.048,
+              "p50": 2.5,
+              "p95": 11.0619,
+              "p99": 13.88982
+            },
+            "upload_return_to_next_delivered_draw_callback_ms": {
+              "count": 143,
+              "max": 153.904,
+              "p50": 56.426,
+              "p95": 70.89040000000001,
+              "p99": 91.07430000000025
+            },
+            "draw_clock_scope": "Next delivered frame_post_draw callback only; no upload-specific draw identity, GPU completion or scanout assertion, especially under Separate rendering.",
+            "submission_stages_usec": {
+              "image_patch_usec": {
+                "count": 143,
+                "max": 6894.0,
+                "p50": 889.0,
+                "p95": 1713.3000000000002,
+                "p99": 3480.3800000000188
+              },
+              "content_cache_usec": {
+                "count": 143,
+                "max": 238.0,
+                "p50": 23.0,
+                "p95": 150.50000000000003,
+                "p99": 195.7800000000005
+              },
+              "atlas_assembly_usec": null,
+              "backend_submit_usec": {
+                "count": 143,
+                "max": 13576.0,
+                "p50": 1244.0,
+                "p95": 9889.900000000001,
+                "p99": 11429.440000000011
+              },
+              "staging_upload_usec": null,
+              "gpu_blit_submit_usec": null,
+              "direct_upload_usec": null,
+              "whole_storage_create_usec": null,
+              "whole_storage_replace_usec": null,
+              "initialization_usec": null
+            },
+            "publication": {
+              "accepted_uploads": 143,
+              "uploads_per_second": 8.814422021705422,
+              "native_full_inputs": 19,
+              "native_sparse_inputs": 124,
+              "input_payload_bytes": 184065260,
+              "input_patch_count": 1440,
+              "unique_worker_render_serials": 145,
+              "submission_modes": {
+                "full": 143
+              },
+              "cpu_staging_submitted_bytes": 1199570944,
+              "staging_residency_bytes": null,
+              "dropped_publications": null,
+              "expired_publications": null,
+              "refused_publications": null,
+              "unavailable_reason": "The common legacy seam cannot distinguish publication refusal/expiration from no-op consumption; original integrated diagnostics retain finer counters.",
+              "byte_scope": "Input RG8 packet bytes and CPU staging upload bytes are distinct. Neither measures GPU bandwidth."
+            },
+            "native_capture": {
+              "count": 144,
+              "forced_count": 0,
+              "full_return_count": 19,
+              "status_counts": {
+                "1": 125,
+                "3": 19
+              },
+              "wall_ms": {
+                "count": 144,
+                "max": 22.129,
+                "p50": 0.52,
+                "p95": 10.45655,
+                "p99": 18.515479999999975
+              }
+            },
+            "command_attempts": 978,
+            "command_acceptances": 978,
+            "physical_callbacks_without_step": 834,
+            "physical_callbacks_with_pending_terrain": 3,
+            "contacts_observed": 86,
+            "response_refusals": [],
+            "wave_column_stage_counter_deltas": null,
+            "rapier_execution_to_completion_ms": {
+              "count": 144,
+              "max": 42.617,
+              "p50": 3.0125,
+              "p95": 6.754099999999999,
+              "p99": 27.599849999999797
+            },
+            "first_physics_handoff_to_execution_start_ms": {
+              "count": 142,
+              "max": 66.175,
+              "p50": 23.561,
+              "p95": 46.2049,
+              "p99": 56.369960000000006
+            },
+            "physics_callback_count": 978,
+            "physics_callback_ms": {
+              "count": 978,
+              "max": 47.0,
+              "p50": 0.1835,
+              "p95": 3.629,
+              "p99": 7.39553
+            },
+            "same_frame_attempts": 0,
+            "same_frame_completed_steps": 0,
+            "same_frame_attempts_started": 0,
+            "same_frame_attempts_censored_at_end": 0,
+            "same_frame_attempt_count_scope": "same_frame_attempts counts completed attempt observations; physical completions use Rapier step timestamps independently",
+            "same_frame_attempt_ms": null,
+            "same_frame_hold_to_attempt_ms": null
+          },
+          "whole_capture_gap_counts": {
+            "100": 92,
+            "250": 0,
+            "500": 0,
+            "1000": 0
+          },
+          "first144_causal": {
+            "native_tick_ms": {
+              "count": 144,
+              "max": 173.279195,
+              "p50": 94.946316,
+              "p95": 131.72002655,
+              "p99": 156.7476125599999
+            },
+            "native_complete_to_first_eligible_handoff_ms": {
+              "count": 144,
+              "max": 23.858,
+              "p50": 2.325,
+              "p95": 13.289699999999995,
+              "p99": 22.944699999999994
+            },
+            "first_eligible_handoff_to_callback_start_ms": {
+              "count": 144,
+              "max": 66.175,
+              "p50": 23.2395,
+              "p95": 46.1887,
+              "p99": 56.32707999999999
+            },
+            "rapier_solver_ms": {
+              "count": 144,
+              "max": 9.272,
+              "p50": 0.578,
+              "p95": 2.1856999999999975,
+              "p99": 5.134039999999988
+            },
+            "main_callback_ms": {
+              "count": 250,
+              "max": 24.669,
+              "p50": 3.4299999999999997,
+              "p95": 11.8229,
+              "p99": 16.56683999999999
+            },
+            "upload_call_ms": {
+              "count": 143,
+              "max": 19.048,
+              "p50": 2.5,
+              "p95": 11.0619,
+              "p99": 13.88982
+            }
+          }
+        }
+      ],
+      "disposition": "NOT_SELECTED"
+    }
+  ],
+  "final_disposition": "CORRECTNESS_QUALIFIED / PERFORMANCE_NOT_ESTABLISHED / NOT_SELECTED / DEFAULT_OFF",
+  "selected_native_policy": "all_workers",
+  "scope": "Registered serial stockSafe native mechanism comparison on one9logicalCPU Linux host with actual1920x1080 llvmpipe; local g++14.2 explicit development toolchain drift. Not integrated resulting-source product, Windows or physicalGPU acceptance.",
+  "reason": "Wave512 both candidate rates are lower than both controls, with adverse upper tails. Wave2048 primary improvement is inconsistent and material freshness is worse. The original primary throughput rule is decisively false independently of how finer freshness tradeoffs are summarized.",
+  "limits": [
+    "Frozen candidate application predates lead resulting-source Water budget/picking integration and accepted-main reconciliation.",
+    "Wave512 is the frozen historical one-round/no-spill/no-ballistic profile;2048 uses the frozen gameplay_main846f profile.",
+    "Native World semantics cover mixed Sand/Water, but no medium/mixed/sustained gameplay performance expansion is justified for this rejected candidate.",
+    "Main submission ages are not GPU completion, compositor delivery, physical scanout or input-device-to-visible latency.",
+    "RSS and CPU observations span actual sampled process lifetime including setup; short runs do not establish long-session resource stability.",
+    "ASan/UBSan excludes LeakSanitizer; no leak-free claim."
+  ]
+}

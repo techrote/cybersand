@@ -1,0 +1,1897 @@
+{
+  "schema": "pubpres-final03-mixed-hidden-position-audit-v1",
+  "cases": [
+    {
+      "case": "mixed_wave_512_follow",
+      "presentation_sha256": "922205d2bf31b9488841e29ff0d46a7bf65250ea1776df2f5dc2cb1672e7a18e",
+      "trace_sha256": "32f2517e15280611f410d4223a335c431e9fcca697d1e44dd9b6a8448bb12c29",
+      "slots": [
+        {
+          "slot": 0,
+          "hidden": 4,
+          "joined_hidden": 4,
+          "hidden_center_in_submitted_view": 4,
+          "hidden_center_in_native_extent": 4,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4
+          },
+          "first_hidden": {
+            "time_usec": 15517600,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              200.006652832031,
+              165.383453369141
+            ],
+            "camera_origin": [
+              0.0,
+              30.1729507446289
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 23039830,
+            "step": 121,
+            "reason": "invalid_frame",
+            "xy": [
+              191.909973144531,
+              225.802673339844
+            ],
+            "camera_origin": [
+              0.0,
+              90.1596527099609
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 15517600,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                200.006652832031,
+                165.383453369141
+              ],
+              "camera_origin": [
+                0.0,
+                30.1729507446289
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 18280044,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                200.014953613281,
+                180.847946166992
+              ],
+              "camera_origin": [
+                0.0,
+                45.2594261169434
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 21005685,
+              "step": 97,
+              "reason": "invalid_frame",
+              "xy": [
+                199.775939941406,
+                205.982803344727
+              ],
+              "camera_origin": [
+                0.0,
+                70.0443496704102
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 23039830,
+              "step": 121,
+              "reason": "invalid_frame",
+              "xy": [
+                191.909973144531,
+                225.802673339844
+              ],
+              "camera_origin": [
+                0.0,
+                90.1596527099609
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 1,
+          "hidden": 59,
+          "joined_hidden": 59,
+          "hidden_center_in_submitted_view": 35,
+          "hidden_center_in_native_extent": 59,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "hold_expired:material_in_swept_mask": 2,
+            "material_in_swept_mask": 48,
+            "held_observation_age_expired": 4,
+            "time_budget": 1
+          },
+          "first_hidden": {
+            "time_usec": 15517600,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              72.0,
+              85.7910308837891
+            ],
+            "camera_origin": [
+              0.0,
+              30.1729507446289
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 64770172,
+            "step": 611,
+            "reason": "time_budget",
+            "xy": [
+              446.970581054688,
+              447.772033691406
+            ],
+            "camera_origin": [
+              0.0,
+              103.450119018555
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 15517600,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                72.0,
+                85.7910308837891
+              ],
+              "camera_origin": [
+                0.0,
+                30.1729507446289
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 18280044,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                72.0,
+                102.384353637695
+              ],
+              "camera_origin": [
+                0.0,
+                45.2594261169434
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 21005685,
+              "step": 97,
+              "reason": "invalid_frame",
+              "xy": [
+                72.0,
+                129.786514282227
+              ],
+              "camera_origin": [
+                0.0,
+                70.0443496704102
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 23039830,
+              "step": 121,
+              "reason": "invalid_frame",
+              "xy": [
+                72.0,
+                157.431442260742
+              ],
+              "camera_origin": [
+                0.0,
+                90.1596527099609
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 2,
+          "hidden": 6,
+          "joined_hidden": 6,
+          "hidden_center_in_submitted_view": 6,
+          "hidden_center_in_native_extent": 6,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "hold_expired:material_in_swept_mask": 1,
+            "shared_budget": 1
+          },
+          "first_hidden": {
+            "time_usec": 15517600,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              144.0,
+              85.7910308837891
+            ],
+            "camera_origin": [
+              0.0,
+              30.1729507446289
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 64770172,
+            "step": 611,
+            "reason": "shared_budget",
+            "xy": [
+              144.00456237793,
+              238.500579833984
+            ],
+            "camera_origin": [
+              0.0,
+              103.450119018555
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 15517600,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                144.0,
+                85.7910308837891
+              ],
+              "camera_origin": [
+                0.0,
+                30.1729507446289
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 18280044,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                144.0,
+                102.384353637695
+              ],
+              "camera_origin": [
+                0.0,
+                45.2594261169434
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 21005685,
+              "step": 97,
+              "reason": "invalid_frame",
+              "xy": [
+                144.0,
+                129.786514282227
+              ],
+              "camera_origin": [
+                0.0,
+                70.0443496704102
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 23039830,
+              "step": 121,
+              "reason": "invalid_frame",
+              "xy": [
+                144.0,
+                157.431442260742
+              ],
+              "camera_origin": [
+                0.0,
+                90.1596527099609
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "hidden": 5,
+          "joined_hidden": 5,
+          "hidden_center_in_submitted_view": 5,
+          "hidden_center_in_native_extent": 5,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "hold_expired:material_in_swept_mask": 1
+          },
+          "first_hidden": {
+            "time_usec": 15517600,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              216.0,
+              85.7910308837891
+            ],
+            "camera_origin": [
+              0.0,
+              30.1729507446289
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 27706979,
+            "step": 176,
+            "reason": "hold_expired:material_in_swept_mask",
+            "xy": [
+              216.0,
+              239.052841186523
+            ],
+            "camera_origin": [
+              0.0,
+              101.294906616211
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 15517600,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                216.0,
+                85.7910308837891
+              ],
+              "camera_origin": [
+                0.0,
+                30.1729507446289
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 18280044,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                216.0,
+                102.384353637695
+              ],
+              "camera_origin": [
+                0.0,
+                45.2594261169434
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 21005685,
+              "step": 97,
+              "reason": "invalid_frame",
+              "xy": [
+                216.0,
+                129.786514282227
+              ],
+              "camera_origin": [
+                0.0,
+                70.0443496704102
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 23039830,
+              "step": 121,
+              "reason": "invalid_frame",
+              "xy": [
+                216.0,
+                157.431442260742
+              ],
+              "camera_origin": [
+                0.0,
+                90.1596527099609
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 4,
+          "hidden": 437,
+          "joined_hidden": 437,
+          "hidden_center_in_submitted_view": 4,
+          "hidden_center_in_native_extent": 437,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "hold_expired:material_in_swept_mask": 1,
+            "material_in_swept_mask": 17,
+            "bounded_pose_delta": 415
+          },
+          "first_hidden": {
+            "time_usec": 15517600,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              288.0,
+              85.7910308837891
+            ],
+            "camera_origin": [
+              0.0,
+              30.1729507446289
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 72685960,
+            "step": 703,
+            "reason": "bounded_pose_delta",
+            "xy": [
+              287.676086425781,
+              494.517730712891
+            ],
+            "camera_origin": [
+              0.0,
+              103.450119018555
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 15517600,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                288.0,
+                85.7910308837891
+              ],
+              "camera_origin": [
+                0.0,
+                30.1729507446289
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 18280044,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                288.0,
+                102.384353637695
+              ],
+              "camera_origin": [
+                0.0,
+                45.2594261169434
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 21005685,
+              "step": 97,
+              "reason": "invalid_frame",
+              "xy": [
+                288.0,
+                129.786514282227
+              ],
+              "camera_origin": [
+                0.0,
+                70.0443496704102
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 23039830,
+              "step": 121,
+              "reason": "invalid_frame",
+              "xy": [
+                288.0,
+                157.431442260742
+              ],
+              "camera_origin": [
+                0.0,
+                90.1596527099609
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "hidden": 509,
+          "joined_hidden": 509,
+          "hidden_center_in_submitted_view": 41,
+          "hidden_center_in_native_extent": 509,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "held_observation_age_expired": 2,
+            "material_in_swept_mask": 25,
+            "bounded_pose_delta": 477,
+            "shared_budget": 1
+          },
+          "first_hidden": {
+            "time_usec": 15517600,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              360.0,
+              85.7910308837891
+            ],
+            "camera_origin": [
+              0.0,
+              30.1729507446289
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 72685960,
+            "step": 703,
+            "reason": "bounded_pose_delta",
+            "xy": [
+              360.522338867188,
+              494.500671386719
+            ],
+            "camera_origin": [
+              0.0,
+              103.450119018555
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 15517600,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                360.0,
+                85.7910308837891
+              ],
+              "camera_origin": [
+                0.0,
+                30.1729507446289
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 18280044,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                360.0,
+                102.384353637695
+              ],
+              "camera_origin": [
+                0.0,
+                45.2594261169434
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 21005685,
+              "step": 97,
+              "reason": "invalid_frame",
+              "xy": [
+                360.0,
+                129.786514282227
+              ],
+              "camera_origin": [
+                0.0,
+                70.0443496704102
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 23039830,
+              "step": 121,
+              "reason": "invalid_frame",
+              "xy": [
+                360.0,
+                157.431442260742
+              ],
+              "camera_origin": [
+                0.0,
+                90.1596527099609
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 6,
+          "hidden": 439,
+          "joined_hidden": 439,
+          "hidden_center_in_submitted_view": 4,
+          "hidden_center_in_native_extent": 439,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "material_in_swept_mask": 11,
+            "bounded_pose_delta": 424
+          },
+          "first_hidden": {
+            "time_usec": 15517600,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              432.0,
+              85.7910308837891
+            ],
+            "camera_origin": [
+              0.0,
+              30.1729507446289
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 72685960,
+            "step": 703,
+            "reason": "bounded_pose_delta",
+            "xy": [
+              430.148895263672,
+              494.517730712891
+            ],
+            "camera_origin": [
+              0.0,
+              103.450119018555
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 15517600,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                432.0,
+                85.7910308837891
+              ],
+              "camera_origin": [
+                0.0,
+                30.1729507446289
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 18280044,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                432.0,
+                102.384353637695
+              ],
+              "camera_origin": [
+                0.0,
+                45.2594261169434
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 21005685,
+              "step": 97,
+              "reason": "invalid_frame",
+              "xy": [
+                432.0,
+                129.786514282227
+              ],
+              "camera_origin": [
+                0.0,
+                70.0443496704102
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 23039830,
+              "step": 121,
+              "reason": "invalid_frame",
+              "xy": [
+                432.0,
+                157.431442260742
+              ],
+              "camera_origin": [
+                0.0,
+                90.1596527099609
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 7,
+          "hidden": 4,
+          "joined_hidden": 4,
+          "hidden_center_in_submitted_view": 4,
+          "hidden_center_in_native_extent": 4,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4
+          },
+          "first_hidden": {
+            "time_usec": 15517600,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              176.0,
+              233.000076293945
+            ],
+            "camera_origin": [
+              0.0,
+              30.1729507446289
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 23039830,
+            "step": 121,
+            "reason": "invalid_frame",
+            "xy": [
+              176.0,
+              233.000457763672
+            ],
+            "camera_origin": [
+              0.0,
+              90.1596527099609
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 15517600,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                176.0,
+                233.000076293945
+              ],
+              "camera_origin": [
+                0.0,
+                30.1729507446289
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 18280044,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                176.0,
+                233.000457763672
+              ],
+              "camera_origin": [
+                0.0,
+                45.2594261169434
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 21005685,
+              "step": 97,
+              "reason": "invalid_frame",
+              "xy": [
+                176.0,
+                233.000457763672
+              ],
+              "camera_origin": [
+                0.0,
+                70.0443496704102
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 23039830,
+              "step": 121,
+              "reason": "invalid_frame",
+              "xy": [
+                176.0,
+                233.000457763672
+              ],
+              "camera_origin": [
+                0.0,
+                90.1596527099609
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "case": "mixed_wave_1024_follow",
+      "presentation_sha256": "898bbb3232f3334617947a1b343b817287c65061b78c33d437e985405b33f945",
+      "trace_sha256": "eb240e52550b8e397b3a61af7ecd33949da02f78ca6a4f7ca6a6e076836dbeca",
+      "slots": [
+        {
+          "slot": 0,
+          "hidden": 17,
+          "joined_hidden": 17,
+          "hidden_center_in_submitted_view": 17,
+          "hidden_center_in_native_extent": 17,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "shared_budget": 13
+          },
+          "first_hidden": {
+            "time_usec": 16445930,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              400.00537109375,
+              325.383483886719
+            ],
+            "camera_origin": [
+              160.150787353516,
+              190.01774597168
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 70030731,
+            "step": 614,
+            "reason": "shared_budget",
+            "xy": [
+              376.763671875,
+              478.500335693359
+            ],
+            "camera_origin": [
+              136.802673339844,
+              343.396911621094
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 16445930,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                400.00537109375,
+                325.383483886719
+              ],
+              "camera_origin": [
+                160.150787353516,
+                190.01774597168
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 17874236,
+              "step": 48,
+              "reason": "shared_budget",
+              "xy": [
+                400.009033203125,
+                331.400695800781
+              ],
+              "camera_origin": [
+                160.150787353516,
+                195.76496887207
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 19483321,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                400.01318359375,
+                340.847930908203
+              ],
+              "camera_origin": [
+                160.150787353516,
+                205.104217529297
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 20911062,
+              "step": 80,
+              "reason": "shared_budget",
+              "xy": [
+                400.016845703125,
+                351.435272216797
+              ],
+              "camera_origin": [
+                160.150787353516,
+                215.521072387695
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 1,
+          "hidden": 373,
+          "joined_hidden": 373,
+          "hidden_center_in_submitted_view": 8,
+          "hidden_center_in_native_extent": 373,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "shared_budget": 13,
+            "material_in_swept_mask": 10,
+            "bounded_pose_delta": 346
+          },
+          "first_hidden": {
+            "time_usec": 16445930,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              144.0,
+              165.791030883789
+            ],
+            "camera_origin": [
+              160.150787353516,
+              190.01774597168
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 73193311,
+            "step": 649,
+            "reason": "bounded_pose_delta",
+            "xy": [
+              149.518356323242,
+              990.517822265625
+            ],
+            "camera_origin": [
+              136.802673339844,
+              343.396911621094
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 35789346,
+              "step": 241,
+              "reason": "shared_budget",
+              "xy": [
+                144.0,
+                466.855926513672
+              ],
+              "camera_origin": [
+                134.28825378418,
+                343.037719726562
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 39991909,
+              "step": 287,
+              "reason": "material_in_swept_mask",
+              "xy": [
+                143.98681640625,
+                594.650024414062
+              ],
+              "camera_origin": [
+                137.161880493164,
+                342.678497314453
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 40085116,
+              "step": 288,
+              "reason": "material_in_swept_mask",
+              "xy": [
+                143.993225097656,
+                597.147888183594
+              ],
+              "camera_origin": [
+                137.161880493164,
+                342.678497314453
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 40180011,
+              "step": 289,
+              "reason": "material_in_swept_mask",
+              "xy": [
+                144.001770019531,
+                599.689575195312
+              ],
+              "camera_origin": [
+                137.161880493164,
+                342.678497314453
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 2,
+          "hidden": 18,
+          "joined_hidden": 18,
+          "hidden_center_in_submitted_view": 10,
+          "hidden_center_in_native_extent": 18,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "shared_budget": 14
+          },
+          "first_hidden": {
+            "time_usec": 16445930,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              288.0,
+              165.791030883789
+            ],
+            "camera_origin": [
+              160.150787353516,
+              190.01774597168
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 70213695,
+            "step": 616,
+            "reason": "shared_budget",
+            "xy": [
+              287.8017578125,
+              478.500274658203
+            ],
+            "camera_origin": [
+              136.802673339844,
+              343.396911621094
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 27287179,
+              "step": 148,
+              "reason": "shared_budget",
+              "xy": [
+                288.0,
+                275.799499511719
+              ],
+              "camera_origin": [
+                144.345916748047,
+                267.964538574219
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 35789346,
+              "step": 241,
+              "reason": "shared_budget",
+              "xy": [
+                288.0,
+                466.855926513672
+              ],
+              "camera_origin": [
+                134.28825378418,
+                343.037719726562
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 45398960,
+              "step": 346,
+              "reason": "shared_budget",
+              "xy": [
+                287.8017578125,
+                478.500274658203
+              ],
+              "camera_origin": [
+                136.802673339844,
+                343.396911621094
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 48485235,
+              "step": 379,
+              "reason": "shared_budget",
+              "xy": [
+                287.8017578125,
+                478.500274658203
+              ],
+              "camera_origin": [
+                136.802673339844,
+                343.396911621094
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 3,
+          "hidden": 16,
+          "joined_hidden": 16,
+          "hidden_center_in_submitted_view": 9,
+          "hidden_center_in_native_extent": 16,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "shared_budget": 11,
+            "time_budget": 1
+          },
+          "first_hidden": {
+            "time_usec": 16445930,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              432.0,
+              165.791030883789
+            ],
+            "camera_origin": [
+              160.150787353516,
+              190.01774597168
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 70213695,
+            "step": 616,
+            "reason": "shared_budget",
+            "xy": [
+              431.8017578125,
+              478.500274658203
+            ],
+            "camera_origin": [
+              136.802673339844,
+              343.396911621094
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 27287179,
+              "step": 148,
+              "reason": "shared_budget",
+              "xy": [
+                432.0,
+                275.799499511719
+              ],
+              "camera_origin": [
+                144.345916748047,
+                267.964538574219
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 35789346,
+              "step": 241,
+              "reason": "shared_budget",
+              "xy": [
+                432.0,
+                466.855926513672
+              ],
+              "camera_origin": [
+                134.28825378418,
+                343.037719726562
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 45398960,
+              "step": 346,
+              "reason": "shared_budget",
+              "xy": [
+                431.8017578125,
+                478.500274658203
+              ],
+              "camera_origin": [
+                136.802673339844,
+                343.396911621094
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 49496243,
+              "step": 390,
+              "reason": "shared_budget",
+              "xy": [
+                431.8017578125,
+                478.500274658203
+              ],
+              "camera_origin": [
+                136.802673339844,
+                343.396911621094
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 4,
+          "hidden": 281,
+          "joined_hidden": 281,
+          "hidden_center_in_submitted_view": 2,
+          "hidden_center_in_native_extent": 281,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "shared_budget": 13,
+            "time_budget": 1,
+            "material_in_swept_mask": 7,
+            "bounded_pose_delta": 256
+          },
+          "first_hidden": {
+            "time_usec": 16445930,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              576.0,
+              165.791030883789
+            ],
+            "camera_origin": [
+              160.150787353516,
+              190.01774597168
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 73193311,
+            "step": 649,
+            "reason": "bounded_pose_delta",
+            "xy": [
+              576.166259765625,
+              990.494506835938
+            ],
+            "camera_origin": [
+              136.802673339844,
+              343.396911621094
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 27287179,
+              "step": 148,
+              "reason": "shared_budget",
+              "xy": [
+                576.0,
+                275.799499511719
+              ],
+              "camera_origin": [
+                144.345916748047,
+                267.964538574219
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 35789346,
+              "step": 241,
+              "reason": "shared_budget",
+              "xy": [
+                576.0,
+                466.855926513672
+              ],
+              "camera_origin": [
+                134.28825378418,
+                343.037719726562
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        },
+        {
+          "slot": 5,
+          "hidden": 281,
+          "joined_hidden": 281,
+          "hidden_center_in_submitted_view": 0,
+          "hidden_center_in_native_extent": 281,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "shared_budget": 14,
+            "hold_expired:material_in_swept_mask": 1,
+            "material_in_swept_mask": 5,
+            "bounded_pose_delta": 257
+          },
+          "first_hidden": {
+            "time_usec": 16445930,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              720.0,
+              165.791030883789
+            ],
+            "camera_origin": [
+              160.150787353516,
+              190.01774597168
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 73193311,
+            "step": 649,
+            "reason": "bounded_pose_delta",
+            "xy": [
+              719.341796875,
+              990.517639160156
+            ],
+            "camera_origin": [
+              136.802673339844,
+              343.396911621094
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "on_view_examples": []
+        },
+        {
+          "slot": 6,
+          "hidden": 281,
+          "joined_hidden": 281,
+          "hidden_center_in_submitted_view": 0,
+          "hidden_center_in_native_extent": 281,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "shared_budget": 13,
+            "material_in_swept_mask": 7,
+            "bounded_pose_delta": 257
+          },
+          "first_hidden": {
+            "time_usec": 16445930,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              864.0,
+              165.791030883789
+            ],
+            "camera_origin": [
+              160.150787353516,
+              190.01774597168
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 73193311,
+            "step": 649,
+            "reason": "bounded_pose_delta",
+            "xy": [
+              864.097778320312,
+              990.517639160156
+            ],
+            "camera_origin": [
+              136.802673339844,
+              343.396911621094
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": false,
+            "in_native_extent": true
+          },
+          "on_view_examples": []
+        },
+        {
+          "slot": 7,
+          "hidden": 19,
+          "joined_hidden": 19,
+          "hidden_center_in_submitted_view": 18,
+          "hidden_center_in_native_extent": 19,
+          "hidden_center_outside_native_extent": 0,
+          "reason_counts": {
+            "invalid_frame": 4,
+            "shared_budget": 14,
+            "time_budget": 1
+          },
+          "first_hidden": {
+            "time_usec": 16445930,
+            "step": 33,
+            "reason": "invalid_frame",
+            "xy": [
+              352.0,
+              453.423187255859
+            ],
+            "camera_origin": [
+              160.150787353516,
+              190.01774597168
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "last_hidden": {
+            "time_usec": 70213695,
+            "step": 616,
+            "reason": "shared_budget",
+            "xy": [
+              352.0,
+              473.000366210938
+            ],
+            "camera_origin": [
+              136.802673339844,
+              343.396911621094
+            ],
+            "view_size": [
+              480.0,
+              270.0
+            ],
+            "in_view": true,
+            "in_native_extent": true
+          },
+          "on_view_examples": [
+            {
+              "time_usec": 16445930,
+              "step": 33,
+              "reason": "invalid_frame",
+              "xy": [
+                352.0,
+                453.423187255859
+              ],
+              "camera_origin": [
+                160.150787353516,
+                190.01774597168
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 19483321,
+              "step": 65,
+              "reason": "invalid_frame",
+              "xy": [
+                352.0,
+                473.000366210938
+              ],
+              "camera_origin": [
+                160.150787353516,
+                205.104217529297
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 20911062,
+              "step": 80,
+              "reason": "shared_budget",
+              "xy": [
+                352.0,
+                473.000366210938
+              ],
+              "camera_origin": [
+                160.150787353516,
+                215.521072387695
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            },
+            {
+              "time_usec": 21375417,
+              "step": 85,
+              "reason": "shared_budget",
+              "xy": [
+                352.0,
+                473.000366210938
+              ],
+              "camera_origin": [
+                160.150787353516,
+                219.472290039062
+              ],
+              "view_size": [
+                480.0,
+                270.0
+              ],
+              "in_view": true,
+              "in_native_extent": true
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "scope": "Read-only join of hidden overlay submissions to actual latest completed physical centers and submitted camera rectangle. Center inclusion is not a collider/pixel visibility test; offscreen positions are retained, never used to excuse on-screen losses. Unavailable bootstrap physical samples remain explicit.",
+  "physical_acceptance": "HOLD"
+}

@@ -1,0 +1,10 @@
+{
+  "schema": "pubpres-focused-parser-and-review-v1",
+  "application_source": "2cf944e73c34dcbb6acd39dfad36ae5a7aaa3460",
+  "test_sha256": "1e73144d1c6a404956713449a8c42d236c513953bdbc0de1d6e49029488f36c9",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "parser": "Actual stock4.7 --headless --check-only; PASS; imported production project is69b89 with unchanged current production scripts. This is parser admission only.",
+  "independent_source_review": "Native specialist source GO: observer reads existing owners and selected frame, without prover, publication, cache or completion mutation. Bounded512storedrows plus explicit drops. Additional footprint observations can affect timing; this is correctness/transition diagnosis, never a matched omission-rate comparison.",
+  "original_assertions_preserved": true,
+  "actual_execution": "PENDING"
+}

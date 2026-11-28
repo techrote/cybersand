@@ -1,0 +1,203 @@
+{
+  "checks": 144,
+  "disposition": "ADVERSE RESULT RETAINED; framebuffer oracle UI-selection condition repaired after independent review; native Sand identity corrected; resulting-source rerun required",
+  "drawn_observations": 4878,
+  "failures": [
+    "submerged_framebuffer restored same-state draw reproduces those pixels"
+  ],
+  "framebuffer_controls": [
+    {
+      "control_scope": "ordinary presentation policy transition, no physical/material mutation",
+      "label": "initial_authoring_framebuffer",
+      "maximum_restored_error": 0.0,
+      "maximum_visible_difference": 0.5654296875,
+      "pixel_point": [
+        639,
+        408
+      ],
+      "policy_order": [
+        "1",
+        "0",
+        "1"
+      ],
+      "selected_pose": {
+        "radians": 0.0,
+        "xy": [
+          350.0,
+          430.0
+        ]
+      },
+      "size": [
+        1280,
+        720
+      ],
+      "slot": 3,
+      "viewport_point": [
+        959.500183105469,
+        613.100158691406
+      ]
+    },
+    {
+      "control_scope": "ordinary presentation policy transition, no physical/material mutation",
+      "label": "submerged_framebuffer",
+      "maximum_restored_error": 0.642333984375,
+      "maximum_visible_difference": 0.2177734375,
+      "pixel_point": [
+        640,
+        604
+      ],
+      "policy_order": [
+        "1",
+        "0",
+        "1"
+      ],
+      "selected_pose": {
+        "radians": 3.13622260093689,
+        "xy": [
+          125.908210754395,
+          494.497009277344
+        ]
+      },
+      "size": [
+        1280,
+        720
+      ],
+      "slot": 0,
+      "viewport_point": [
+        960.192199707031,
+        906.863159179688
+      ]
+    },
+    {
+      "control_scope": "ordinary presentation policy transition, no physical/material mutation",
+      "label": "water_refill_framebuffer",
+      "maximum_restored_error": 0.0,
+      "maximum_visible_difference": 0.519287109375,
+      "pixel_point": [
+        639,
+        591
+      ],
+      "policy_order": [
+        "1",
+        "0",
+        "1"
+      ],
+      "selected_pose": {
+        "radians": 1.20033337225323e-06,
+        "xy": [
+          349.542083740234,
+          492.288543701172
+        ]
+      },
+      "size": [
+        1280,
+        720
+      ],
+      "slot": 3,
+      "viewport_point": [
+        959.869812011719,
+        886.94287109375
+      ]
+    }
+  ],
+  "hidden_body_observations": 231,
+  "moving_wet_distinct_poses": 29,
+  "original_result_sha256": "9e79534c8f9ff564fc30d0def6cff87bb8dfd73bc0f45a73c1f3797fcc9a2726",
+  "paused_rows": [
+    {
+      "all_member_omissions": {},
+      "all_member_omissions_total": 0,
+      "closure_cache_hits": 7014,
+      "coverage_cache_hits": 7011,
+      "frames_observed": 2338,
+      "omitted_needle_frames": 0,
+      "proof": {
+        "completed_usec": 0,
+        "consumed_by_step": false,
+        "coverage": {
+          "dilation_cells": 0.0,
+          "reason": "water_composed_swept_mask",
+          "safe": true,
+          "scanned": 64,
+          "steps": 1,
+          "water_contacts": 64
+        },
+        "generation": 1,
+        "instance_id": 1,
+        "kind": "initialized_authoring_closure",
+        "native_tick": 0,
+        "physical_completion_claim": false,
+        "sample": 1,
+        "schema": "workbench-water-composition-v2",
+        "step": 0,
+        "visible_material": {
+          "current_content": 4,
+          "native_sample": 1,
+          "native_tick": 0,
+          "previous_content": 4,
+          "revision": 3,
+          "upload_serial": 4,
+          "world": 3
+        }
+      },
+      "sample_after_explicit_publication_stress": 2057,
+      "sample_after_ordinary_pause": 1,
+      "sample_before": 1,
+      "sample_history_capacity": 2048,
+      "stage": "initialized_paused_history",
+      "step": 0,
+      "upload_after": 4,
+      "upload_before": 3
+    },
+    {
+      "all_member_omissions": {},
+      "all_member_omissions_total": 0,
+      "closure_cache_hits": 7031,
+      "coverage_cache_hits": 9348,
+      "frames_observed": 2338,
+      "omitted_needle_frames": 0,
+      "proof": {
+        "completed_usec": 104174796,
+        "consumed_by_step": true,
+        "coverage": {
+          "dilation_cells": 0.0,
+          "reason": "water_composed_swept_mask",
+          "safe": true,
+          "scanned": 80,
+          "steps": 1,
+          "water_contacts": 42
+        },
+        "generation": 1,
+        "instance_id": 1,
+        "kind": "current_completed_native_dependency",
+        "native_completed_usec": 104151117,
+        "native_revision": 134,
+        "native_tick": 131,
+        "physical_completion_claim": true,
+        "sample": 2187,
+        "schema": "workbench-water-composition-v2",
+        "step": 130,
+        "visible_material": {
+          "current_content": 135,
+          "native_sample": 2188,
+          "native_tick": 132,
+          "previous_content": 135,
+          "revision": 136,
+          "upload_serial": 137,
+          "world": 3
+        }
+      },
+      "sample_after_explicit_publication_stress": 4244,
+      "sample_after_ordinary_pause": 2188,
+      "sample_before": 2188,
+      "sample_history_capacity": 2048,
+      "stage": "completed_paused_history",
+      "step": 130,
+      "upload_after": 137,
+      "upload_before": 136
+    }
+  ],
+  "sand_scope": "Original used native Wall1, not Sand2; no Water/Sand claim",
+  "schema": "pubpres-water-v3-independent-reduction-v1",
+  "source": "f2f9cab4b2fc650d0d5e034561b9dddabcf3b24f"
+}

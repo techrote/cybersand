@@ -5,6 +5,7 @@ from __future__ import annotations
 import copy
 import hashlib
 import json
+import os
 from pathlib import Path
 import subprocess
 import tempfile
@@ -132,6 +133,21 @@ class RuntimeArtifact(unittest.TestCase):
         self.pulls = 3
         self.staged()
         self.assertEqual(self.installed()["status"], "passed")
+
+    @unittest.skipUnless(os.name == "posix", "POSIX executable bit")
+    def test_install_uses_committed_mode_for_executable_and_library(self):
+        executable, library = self.selected
+        self.git("update-index", "--chmod=+x", executable)
+        self.git("commit", "-qm", "Track executable companion")
+        self.source = self.git("rev-parse", "HEAD").strip()
+        self.staged()
+        # Neither a downloaded artifact's permissions nor a stale pointer's
+        # permissions establish whether the installed binary is executable.
+        (self.artifact / "payload" / library).chmod(0o755)
+        (self.repo / executable).chmod(0o644)
+        self.installed()
+        self.assertEqual((self.repo / executable).stat().st_mode & 0o777, 0o755)
+        self.assertEqual((self.repo / library).stat().st_mode & 0o777, 0o644)
 
     def test_other_source_run_or_attempt_is_refused_without_network_fallback(self):
         self.staged()

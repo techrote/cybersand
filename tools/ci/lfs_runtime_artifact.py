@@ -284,6 +284,12 @@ def install(root: Path, selected: list[str], available: list[str], source: str,
             temporaries.append(temporary)
             copy(artifact / "payload" / item["path"], temporary, budget)
             verify_object(temporary, item, budget)
+            if os.name == "posix":
+                # Actions artifacts transfer bytes. Git owns the execute bit
+                # for both native shared libraries and standalone companions.
+                mode = git(root, budget, "ls-tree", "--format=%(objectmode)", source, "--", item["path"]).strip()
+                require(mode in (b"100644", b"100755"), "Expected a committed regular runtime file")
+                temporary.chmod(0o755 if mode == b"100755" else 0o644)
         require(source_inventory(root, available, source, budget) == inventory, "Consumer source or inventory moved")
         for item in inventory:
             if item["path"] in selected:

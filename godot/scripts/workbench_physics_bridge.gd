@@ -123,11 +123,13 @@ func pack_sample(drives: Array[bool]) -> Dictionary:
 	var states := PackedFloat64Array()
 	var bodies: Array[Dictionary] = []
 	var history: Array[Dictionary] = []
+	var display_poses: Array[Transform2D] = []
 	for slot: int in range(_members.size()):
 		var rid: RID = _body_rids[slot]
 		var direct := PhysicsServer2D.body_get_direct_state(rid)
 		if direct == null: return {}
 		var pose: Transform2D = direct.transform
+		display_poses.append(pose)
 		var com: Vector2 = pose * direct.center_of_mass_local
 		# Frozen provisional bodies have zero inverse mass. Read the authored
 		# server properties directly, also for a hull with a custom COM.
@@ -150,7 +152,7 @@ func pack_sample(drives: Array[bool]) -> Dictionary:
 			proxy_id += 1
 	_serial = serial
 	_history[serial % _history.size()] = {"serial":serial, "bodies":history, "step":manual_step_count()}
-	return {"session":_session, "epoch":_epoch, "states":states, "geometry":_geometry.duplicate(), "bodies":bodies}
+	return {"session":_session, "epoch":_epoch, "states":states, "geometry":_geometry.duplicate(), "bodies":bodies, "display_poses":display_poses}
 
 
 # Copied sample geometry for comparing a published result with the actual

@@ -1,0 +1,35 @@
+{
+  "source": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+  "argv": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/9cef565acfec/presentation-runtime/owned_xorg.py",
+    "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/9cef565acfec/presentation-evidence/water-stock-6ea6c85c/project",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--render-thread",
+    "safe",
+    "--audio-driver",
+    "Dummy",
+    "--script",
+    "res://tests/test_workbench_member_presentation.gd"
+  ],
+  "selectors": {
+    "CYBERSAND_SOURCE_REVISION": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+    "CYBERSAND_DIAG_ACTUAL_SUBMISSION": "0",
+    "CYBERSAND_DIAG_WATER_COMPOSITION": "0",
+    "CYBERSAND_DIAG_PRESENTATION": "coherent",
+    "CYBERSAND_MATERIAL_PUBLICATION": "full",
+    "CYBERSAND_DIAG_FULL_IMAGE_SLOTS": "2",
+    "CYBERSAND_DIAG_MATERIAL_TIMING": "measured",
+    "CYBERSAND_DIAG_RENDER_CADENCE": "repaired",
+    "CYBERSAND_DIAG_PHYSICS_PUBLICATION": "early",
+    "CYBERSAND_DIAG_NATIVE_RENDEZVOUS": "0",
+    "CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE": "0",
+    "CYBERSAND_MEMBER_PRESENTATION_OUTPUT": "/workspace/scratch/9cef565acfec/presentation-evidence/member-stock-6ea6c85c/result.json"
+  },
+  "scope": "Source-exact functional replay; no comparative timing claim"
+}

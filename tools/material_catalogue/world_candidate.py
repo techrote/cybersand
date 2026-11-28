@@ -215,12 +215,14 @@ def _build_and_execute(directory: Path, cxx: str, msvc: bool, scenario: dict,
     # Use staged-root-relative compiler inputs. Windows MinGW and Python may
     # disagree on DOS-short-name aliases for absolute temporary paths.
     inputs = [PROBE, *SIMULATION_SOURCES]
+    linker_options = lab.compiler_linker_options(cxx, msvc)
     if msvc:
         command = [cxx, "/nologo", "/std:c++20", "/EHsc", "/W4", "/Od",
                    "/I" + "native/include", "/I" + "generated",
                    *inputs, "/Fe:" + executable.name]
     else:
         command = [cxx, "-std=c++20", "-O0", "-Wall", "-Wextra", "-Werror", "-pthread",
+                   *linker_options,
                    "-I", "native/include", "-I", "generated",
                    *inputs, "-o", executable.name]
         if sanitize:

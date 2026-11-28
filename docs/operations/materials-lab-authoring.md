@@ -4,7 +4,7 @@ status: Current
 document-kind: runbook
 scope: Accepted Materials Lab v1 plus Draft/HOLD scene-local material audition; native inspection, isolated authoring and explicitly admitted current-World configuration
 canonical-for: [materials-lab-v1-ui, materials-lab-candidate-presets, materials-lab-native-experiments]
-last-reviewed: 2026-11-24
+last-reviewed: 2026-11-28
 related-documents: [../MATERIAL_LAB.md, material-catalogue-shadow.md, microscenario-reference-pack.md, ../architecture/material-authoring-catalogue-plan.md, ../systems/intermaterial-interactions.md, ../audits/2026-11-11-materials-lab-v1.md]
 ---
 
@@ -170,6 +170,18 @@ restores the launcher's original scaling. These presentation changes do not alte
 the simulation viewport or the shared Workbench's controls.
 
 ### Windows launch
+
+The integrated PUBPRES delivery recovery has a separate
+[portable-authoring correction and qualification status](pubpres-mainline-convergence.md#delivery-recovery-qualification-status).
+Its copied GNU tools receive a recorded UTF-8 process manifest for Unicode
+installation paths; native compiler code payloads and unrelated resources are
+verified unchanged, with any loader relocation-table movement proved separately.
+Verified packaged Lab commands retain GCC 14.2 and select the pinned GNU-compatible
+LLVM LLD linker and its bundled DLL closure. The six-path hosted compiler and real
+offline World comparison controls passed. This grants no pass to an old archive
+or a newly built evaluator before actual independent extraction and Materials Lab
+compilation. Earlier standalone Lab package evidence retains its
+original source, tools and tested paths.
 
 The branch-scoped **Materials Lab source-matched native runtime publication**
 workflow builds a Windows evaluation ZIP after actual Windows execution. Its

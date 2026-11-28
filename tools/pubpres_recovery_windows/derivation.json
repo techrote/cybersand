@@ -1,0 +1,44 @@
+{
+  "schema": "pubpres-recovery-windows-derivation-v1",
+  "predecessor_directory": "tools/pubpres_final_windows",
+  "frozen_predecessor_files_sha256": {
+    "README.md": "1539b2830c70cfafadae18b1e26d4922b75208a27b8af5bb4b47f0634ea2daa6",
+    "authoring.gd": "9a8bb6886ec6673713b5d952544fe323fbc436f37052a229fe35e094e6b45636",
+    "test_package_windows.py": "163b3aacf1cd48a769be6c9d9cf7ae3d43342f5be388d9fd47548da7fb329e83",
+    "Test-Evaluator.ps1": "9ce548b245ea5ced418ad14d48a4878111ca77181b950d6ec7da954459027104",
+    "Start-PUBPRES-Final.ps1": "228c95fb1c4f7febfca6b6df270394fbd47583dfd36db69910d2ec5a49460bd5",
+    "Collect-Results.ps1": "ae3a4e31185bc54f1310fa628bc6d7d63fa51c978fd9bc62a5c67292f58cfbca",
+    "two_slot_oracle.py": "d738d539fd39a515ea3bdd3a742e03933024cc728cf6c062ed79d4966e6299af",
+    "test_authoring_contract.py": "dbb3573e30f8cfc7c8f64bf30450b5d5e064a24cda52bfd54c91d10fa002a802",
+    "package_windows.py": "6c3548dd950f6e39a1d573ce9777edc4871f4c21344d2247df01cdfa0f4ab943",
+    "qualify_installed.py": "0d4d1db6d0a44e5db1bb55239288a5d2340a3b05779045439becc008b2a92911",
+    "two_slot_oracle.gd": "2a720dc4605151b85443b71d7296864bf53af789372571581a1c38ddded2d366",
+    "owner_start.gd": "0974b8c1511718552cceae43ec539bf751757565a557a3946cfc1fbba3fb3c5f",
+    "ACCEPTANCE.md": "d2d772a845c1fc22ac49067d24fdd0ca8b54a13064120958987407d7771992bc",
+    "test_two_slot_oracle.py": "274bc72f4de8cb7da450016fce707ffb4f78d751e1b03663c07323cda4702345"
+  },
+  "preserved_gates": [
+    "Native closure, exact independent build source/tree, original driver and dependency receipt custody; verify_sources AST identical to predecessor",
+    "Official Godot4.7 executable/ZIP and signed VC runtime identity",
+    "Canonical bounded archive/member paths, exact manifest file inventory, no extra runtime/source files",
+    "Original Windows Job Object process ownership and matched PID receipts",
+    "Actual shipped command execution, every representative scene, source corruption refusal, profile locking and fresh-process reopen",
+    "Complete inherited combined authoring tape, exact saved native material digest and actual framebuffer dimensions/readback",
+    "Bounded results collection with exact stable-byte hash index and explicit omissions"
+  ],
+  "additions": [
+    "New recovery mission/schema and distinct inner ZIP filename preserve older evaluators unchanged",
+    "Explicit committed stock-safe selection and independently named recovery-off fallback profiles",
+    "Selected Water requires original actual resulting-source Windows frozen19 plus4Water native/framebuffer gates before assembly",
+    "Actual policy readback of Water composition, atomic submission, render lookahead, material coalescing and sample-idle waiting",
+    "Source-bound recovery authoring policy checks before and after the unchanged full author/reopen tape",
+    "Collector records limited OS/CPU/graphics/display readback at collection time; no account/computer/serial fields requested",
+    "Owner acceptance template never overwrites existing notes; actual fallback and optional frozen-control commands tested",
+    "Closure command operands match the actual staged recovery entrypoints; the extracted package path contains spaces",
+    "Explicit atomic Safe0/Separate0/Separate4 selection and optional separately named bounded Experimental profile require exact original build02 custody plus raw resulting-source Windows integration before assembly",
+    "Stock Safe fallback always disables Water/atomic/task-completion treatments and retains a separate profile",
+    "Startup observes actual accepted atomic application submission for the current World; requested lookahead is not misreported as independently observed live engine counters"
+  ],
+  "current_scope": "Prepared closure selected/fallback/experimental packaging. The committed selection stays Stock Safe with no experimental engine until the lead records a source-bound decision. Atomic engine component proof alone cannot authorize a package. Actual extracted Windows commands, authoring, reopen and collector remain required.",
+  "physical_acceptance": "HOLD"
+}

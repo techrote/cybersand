@@ -1,0 +1,9 @@
+{
+  "schema": "pubpres-native-campaign-apparatus-abort-v1",
+  "utc": "2026-11-26T08:19:30.548875+00:00",
+  "reason": "This kernel exposes process status and exe but has no /proc/PID/task/PID/children. Frozen enumeration cannot discover actual Godot beneath owned wrapper, so process CPU/PID gate refuses.",
+  "original_wrapper_sha256": "892dc269c5175f0bd3edede568b4a81dac4b791c2737f6089c64fbbcb845eb72",
+  "abort_wrapper_sha256": "feb61eb72ff499d25a209ae0cf971b11206a6d38c1b2ccbd9bf36a790070642f",
+  "original_wrapper_preserved": "/workspace/scratch/9cef565acfec/native-apparatus/owned_xorg_before_discovery_abort.py",
+  "action": "Current running wrapper completes from already-loaded original bytes; every future wrapper launch exits125 before creating display or application. Any current wrapper post-run digest differs and is inadmissible; preserve original raw receipts. No comparison selection claim."
+}

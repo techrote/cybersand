@@ -1,0 +1,18 @@
+{
+  "schema": "pubpres-member-picking-adversary-registration-v1",
+  "registered_before_result": true,
+  "production_source": "c3e156cabe19c37dcea3d2f2f67e68de69a17efb",
+  "scope": "Extend the real six-actor/24-body fixture to ordinary mouse input on every submitted part after initialization, completed physical movement and owner replacement. Preserve logical actor selection and root Follow.",
+  "expected": {
+    "actual_member_clicks": 72,
+    "no_physical_credit": true,
+    "copied_actual_frame_adversaries": [
+      "withheld_member",
+      "foreign_member_generation"
+    ],
+    "adversary_draw_credit": false
+  },
+  "hypothesis": "The current root-pose/static-model-bounds hit test can select withheld articulated members and miss moved visible members. A member hit must use its own submitted pose and owner generation.",
+  "performance_claim": false,
+  "authority": "Draft/HOLD; no defaults, Ready, merge or release"
+}

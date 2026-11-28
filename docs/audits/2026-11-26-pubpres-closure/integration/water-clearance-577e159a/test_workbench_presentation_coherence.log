@@ -1,0 +1,7 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+PR593_SWEEP_COUNTEREXAMPLE {"cell":[94,100],"cell_centre":[94.5,100.5],"end":[98,98,0.75],"result":{"dilation_cells":0.957317153612773,"reason":"material_in_swept_mask","safe":false,"scanned":158,"steps":3},"start":[100,100,0.25],"witness_local":[-4.54623413085938,2.53653717041016],"witness_t":0.183333333333333}
+PR593_SWEEP_DILATION_FALSE_REFUSAL {"dilation_cells":0.5,"reason":"material_in_swept_mask","safe":false,"scanned":45,"steps":2}
+WORKBENCH_PRESENTATION_COHERENCE_RESULT {"checks":33,"failures":[],"production_source":"res://scripts/workbench_presentation_coherence.gd","schema":"workbench-presentation-coherence-v1"}

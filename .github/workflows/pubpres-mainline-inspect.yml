@@ -1,0 +1,199 @@
+name: PUBPRES original qualification inspection
+
+on:
+  push:
+    branches: [codex/pubpres-playability-final-001-20261124]
+    paths: ['.github/workflows/pubpres-mainline-inspect.yml']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pubpres-mainline-original-inspection-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  inspect-original:
+    name: Inspect original Q2 artifact (${{ matrix.role }})
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/pubpres-playability-final-001-20261124'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        role: [linux-shared, windows-shared, windows-focused, windows-water, windows-selected-water]
+    steps:
+      - name: Authenticate original artifact and inspect bounded original records
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+          INSPECTION_ROLE: ${{ matrix.role }}
+        run: |
+          python3 - <<'PY'
+          import hashlib, json, os, pathlib, stat, urllib.error, urllib.parse, urllib.request, zipfile
+          REPOSITORY = "techrote/cybersand"
+          SOURCE = "0670733eb0a418c8580458a9c5dd9aff24f342c6"
+          RUN, ATTEMPT = 46136935975, 1
+          ROLES = {
+              "linux-shared": (15259949712, 7753028, "e941fe8e53106d5d64a428aa228c7b40d3c46027514236a98c81af046a4b6953",
+                               "pubpres-mainline-feature-linux-shared-46136935975-1"),
+              "windows-shared": (15260600876, 6053788, "139f6ddb4cdcb192a62da09d79de052b53edb6e51de83841c8411b1bc9e2f09b",
+                                 "pubpres-mainline-feature-windows-shared-46136935975-1"),
+              "windows-focused": (15260700218, 17201713, "348a2c638777ab0bfec33f9eb5bb13f8b297e519a034c8afeae56a9c389380f5",
+                                  "pubpres-mainline-qualified-windows-mainline-46136935975-1"),
+              "windows-water": (15260681191, 18193777, "eb456b2cb0340eb2c6f88357c2b1c83e01bb5343f606274c5915db9909db3673",
+                                "pubpres-mainline-qualified-windows-water-46136935975-1"),
+              "windows-selected-water": (15260313964, 18111459, "b8f16bf7ceefd861856223d281d7f2a306df70d9d71585c93fc6dc0f7ba6184a",
+                                         "pubpres-mainline-qualified-windows-selected-water-46136935975-1"),
+          }
+          role = os.environ["INSPECTION_ROLE"]
+          artifact_id, expected_bytes, expected_sha, expected_name = ROLES[role]
+          output = pathlib.Path(os.environ["RUNNER_TEMP"]) / ("pubpres-original-inspection-" + role)
+          output.mkdir(exist_ok=False)
+          headers = {"Authorization": "Bearer " + os.environ["GITHUB_TOKEN"],
+                     "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+          def api(path):
+              request = urllib.request.Request("https://api.github.com/repos/" + REPOSITORY + path, headers=headers)
+              with urllib.request.urlopen(request, timeout=60) as response:
+                  raw = response.read(1048577)
+              if len(raw) > 1048576: raise ValueError("Bounded original metadata response exceeded")
+              return json.loads(raw)
+          run = api("/actions/runs/" + str(RUN))
+          if not (run["id"] == RUN and run["run_attempt"] == ATTEMPT and run["head_sha"] == SOURCE
+                  and run["event"] == "push" and run["head_branch"] == "codex/pubpres-playability-final-001-20261124"
+                  and run["path"] == ".github/workflows/pubpres-mainline.yml"):
+              raise ValueError("Original qualification source/run/attempt/workflow differs")
+          metadata = api("/actions/artifacts/" + str(artifact_id))
+          if not (metadata["id"] == artifact_id and metadata["name"] == expected_name and not metadata["expired"]
+                  and metadata["size_in_bytes"] == expected_bytes and metadata["digest"] == "sha256:" + expected_sha
+                  and metadata["workflow_run"]["id"] == RUN and metadata["workflow_run"]["head_sha"] == SOURCE):
+              raise ValueError("Original artifact identity differs")
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, request, fp, code, message, response_headers, newurl):
+                  return None
+          request = urllib.request.Request("https://api.github.com/repos/" + REPOSITORY
+                                           + "/actions/artifacts/" + str(artifact_id) + "/zip", headers=headers)
+          try:
+              urllib.request.build_opener(NoRedirect).open(request, timeout=60)
+          except urllib.error.HTTPError as response:
+              if response.code not in (301, 302, 303, 307, 308): raise
+              download = response.headers["Location"]
+          else:
+              raise ValueError("Expected the authenticated artifact's signed download redirect")
+          parsed = urllib.parse.urlsplit(download)
+          if parsed.scheme != "https" or parsed.username or parsed.password:
+              raise ValueError("Invalid artifact download redirect")
+          # The GitHub credential never accompanies the separate signed storage request.
+          archive = output / "original-artifact.zip"
+          received, digest = 0, hashlib.sha256()
+          with urllib.request.urlopen(urllib.request.Request(download), timeout=90) as response, archive.open("xb") as stream:
+              while block := response.read(1048576):
+                  received += len(block)
+                  if received > expected_bytes: raise ValueError("Original archive exceeds its authenticated size")
+                  digest.update(block)
+                  stream.write(block)
+          if received != expected_bytes or digest.hexdigest() != expected_sha:
+              raise ValueError("Original archive bytes differ")
+          if role.endswith("shared"):
+              prefix = "mainline-feature/original/"
+              requested = [prefix + "integration.json", "mainline-feature/pubpres-mainline-qualification.json",
+                           prefix + "test_ambient_default_off_integration/process.json",
+                           prefix + "test_ambient_default_off_integration/process.log"]
+              required = set(requested)
+          elif role.endswith("water"):
+              prefix = "mainline-qualified/"
+              native = prefix + "test_workbench_water_composition_native-slots2/"
+              requested = [prefix + "SUMMARY.json", native + "receipt.json", native + "stdout.log", native + "process.json"]
+              required = set(requested)
+          else:
+              prefix = "mainline-qualified/"
+              requested = [prefix + "SUMMARY.json",
+                           prefix + "test_workbench_continuous_actor_pick/receipt.json",
+                           prefix + "test_workbench_continuous_actor_pick/stdout.log",
+                           prefix + "test_workbench_continuous_actor_pick/process.json"]
+              required = {prefix + "SUMMARY.json"}
+          records, absent = {}, []
+          with zipfile.ZipFile(archive) as bundle:
+              items = bundle.infolist()
+              if not 0 < len(items) <= 10000 or sum(item.file_size for item in items) > 256 * 1024**2:
+                  raise ValueError("Original archive population/expansion exceeds inspection bound")
+              names = set()
+              for item in items:
+                  name, parts = item.filename, pathlib.PurePosixPath(item.filename).parts
+                  mode = (item.external_attr >> 16) & 0o170000
+                  if (name in names or "\\" in name or pathlib.PurePosixPath(name).is_absolute()
+                          or ".." in parts or item.flag_bits & 1 or mode not in (0, stat.S_IFREG, stat.S_IFDIR)):
+                      raise ValueError("Unsafe, linked, encrypted or duplicated original ZIP member")
+                  names.add(name)
+              if bundle.testzip() is not None: raise ValueError("Original archive CRC failure")
+              if not required <= names: raise ValueError("Missing original failure evidence")
+              for name in requested:
+                  if name not in names:
+                      absent.append(name)
+                      continue
+                  info = bundle.getinfo(name)
+                  if info.file_size > 8 * 1024**2: raise ValueError("Requested original record exceeds bounded size")
+                  raw = bundle.read(name)
+                  target = output / name
+                  target.parent.mkdir(parents=True, exist_ok=True)
+                  target.write_bytes(raw)
+                  records[name] = {"sha256": hashlib.sha256(raw).hexdigest(), "bytes": len(raw)}
+                  text = raw.decode("utf-8-sig", errors="replace")
+                  print("\nORIGINAL_RECORD_BEGIN " + name, flush=True)
+                  if name.endswith("integration.json"):
+                      document = json.loads(text)
+                      selected = {key: document.get(key) for key in
+                                  ("schema", "mode", "platform", "status", "completed", "input_custody", "error", "custody_error")}
+                      selected["source"] = {key: document.get("source_identity", {}).get(key)
+                                            for key in ("source_commit", "source_tree", "local_delta")}
+                      selected["cases"] = [{key: row.get(key) for key in
+                                            ("label", "status", "exit_code", "timed_out", "error", "seconds")}
+                                           for row in document.get("cases", [])]
+                      print(json.dumps(selected, indent=2), flush=True)
+                  elif role.endswith("water") and name.endswith("receipt.json"):
+                      document = json.loads(text)
+                      selected = {key: document.get(key) for key in
+                                  ("schema", "source_revision", "checks", "failures", "display", "graphical", "engine",
+                                   "engine_sha256", "selected_owner_readback", "scope", "observed_frames",
+                                   "composed_body_frames", "hidden_body_frames", "omitted_by_stage_and_slot",
+                                   "omission_reasons", "omitted_observations", "omitted_observations_dropped",
+                                   "observed_frames_by_stage", "interstitial_composed_body_frames",
+                                   "revalidated_held_body_frames", "staged_water_material_vetoes",
+                                   "proof_kinds", "moving_wet_distinct_poses", "compound_model", "input_hashes")}
+                      selected["actual_mouse_picks"] = [row for row in document.get("lifecycle", [])
+                                                        if str(row.get("stage", "")).endswith("_actual_mouse_pick")]
+                      selected["framebuffer"] = [{key: value for key, value in row.items() if key != "pixels"}
+                                                 for row in document.get("framebuffer", [])]
+                      bounded = json.dumps(selected, indent=2)
+                      if len(bounded) > 160000:
+                          raise ValueError("Original Water selected observation exceeds bounded console scope; original retained")
+                      print(bounded, flush=True)
+                  elif name.endswith("SUMMARY.json"):
+                      document = json.loads(text)
+                      print(json.dumps({key: document.get(key) for key in
+                                        ("schema", "complete", "physical_acceptance", "source", "failures", "selected_workbench_owner", "outcomes")}, indent=2)[:96000], flush=True)
+                  elif len(text) <= 96000:
+                      print(text, flush=True)
+                  else:
+                      print(text[:48000] + "\n[BOUNDED CONSOLE EXCERPT: complete original file retained]\n" + text[-48000:], flush=True)
+                  print("ORIGINAL_RECORD_END " + name, flush=True)
+          record = {"schema": "pubpres-mainline-original-failure-inspection-v1", "role": role,
+                    "original_source": SOURCE, "original_run": RUN, "original_attempt": ATTEMPT,
+                    "artifact": metadata, "zip_sha256": digest.hexdigest(), "zip_bytes": received,
+                    "records": records, "absent_optional_records": absent,
+                    "application_executed": False, "application_acceptance": "unchanged; failed arms remain failed",
+                    "scope": "Read-only original artifact custody and bounded diagnosis/observations. No source, fixture, watchdog or original receipt changes."}
+          (output / "INSPECTION.json").write_text(json.dumps(record, indent=2) + "\n", encoding="utf-8")
+          print(json.dumps({"original_source": SOURCE, "artifact_id": artifact_id, "archive_verified": True,
+                            "records": records, "absent_optional_records": absent}), flush=True)
+          
+          PY
+      - name: Preserve the immutable original archive and diagnosis
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-mainline-original-inspection-${{ matrix.role }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pubpres-original-inspection-${{ matrix.role }}/
+          if-no-files-found: warn
+          retention-days: 90

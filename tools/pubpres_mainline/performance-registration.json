@@ -1,0 +1,18 @@
+{
+  "schema": "pubpres-mainline-three-source-v1",
+  "accepted_main": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+  "owner_reference": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
+  "order": ["M", "P", "C", "C", "P", "M"],
+  "cases": ["wave_512_follow", "wave_1024_follow_4", "wave_gameplay_2048_follow"],
+  "minimum_capture_usec": 10000000,
+  "minimum_real_steps": 144,
+  "maximum_capture_usec": 90000000,
+  "reported_gap_thresholds_ms": [100, 250, 500, 1000],
+  "physical_targets": {"p95_ms": 100, "maximum_ms": 250},
+  "control": "Accepted main retains its ordinary Full/combined/legacy/source-default/Safe policy. Unavailable publication APIs remain unavailable.",
+  "pubpres": "Owner-evaluated P and integrated C both use selected Stock Safe, Full2/Early/coherent/Water1, all-worker completion, flight pacing, coupling clock and empty-effect guard. No same-frame continuation or atomic engine.",
+  "fixtures": "Original frozen production fixtures, actor input tapes, four native workers and gameplay Water laws. No material-density or simulated-work adjustment. The 2048 reference retains its original V3 fixture identity and is not substituted for the separate Mixed2048 owner patrol.",
+  "oracle": "Original V3 physical/native/terrain/input/final-framebuffer oracle and original renderer/CPU readers. All fifteen equal-step body/input pairs must agree before comparative timing is qualified. Raw adverse observations survive any failed predicate.",
+  "comparison": "Nested M/C/C/M and P/C/C/P comparisons use the unchanged registered direction reader. A captured cohort or lower CPU upload time does not establish improvement. Product thresholds are reported separately and never waived.",
+  "scope": "Hosted graphical software-renderer observations, with exact source-bound native builds sharing one pinned dependency/toolchain cohort. CPU draw callbacks do not establish physical NVIDIA display cadence. Physical owner acceptance and mainline promotion remain HOLD."
+}

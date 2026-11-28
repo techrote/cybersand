@@ -1,0 +1,146 @@
+{
+  "schema": "pubpres-final-closure-ledger-v1",
+  "mission": "PUBPRES-PLAYABILITY-FINAL-CLOSURE-001",
+  "updated_utc": "2026-11-26T09:05:08.776936+00:00",
+  "principal_pr": 767,
+  "disposition": "ENGINEERING_IN_PROGRESS_DRAFT_HOLD",
+  "source": {
+    "intake": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+    "intake_tree": "e55f15cbe8a81ed2f7db7e754b002f89d9070eb8",
+    "accepted_main": "67c1413a2a84077b47fa542cf91d2bd6ba5520ee",
+    "historical_main": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+    "donor_D": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+    "restored_f197": "f197d0010699682ab7a7ed4e593a718857c9ed47",
+    "restored_f197_tree": "3d3a9d4f2d5915f8689924d03cc81cdf5ae009bc",
+    "restored_native_candidate": "864cf7dcbb4e5ea8d8cba8d06eb9988c3b99cf14",
+    "restored_native_candidate_tree": "d2e28f7ab3db5106a7f1ea173a802e3628fa6705",
+    "bundle_verification": "Both original digests/sizes/prerequisites and all 15 advertised commit/tree pairs verified before import",
+    "current_checkpoint": "2cf944e73c34dcbb6acd39dfad36ae5a7aaa3460",
+    "accepted_main_reconciliation": "Integrated67c1413a. Actual native/Rapier headless AMBIENT default-OFF and control handoff passed at original64a; final platform qualification pending.",
+    "current_checkpoint_tree": "19b8170604c79d0675390d29068481d8a587c48c",
+    "latest_published_checkpoint": "b056fb1608d8781c0379f1369aaea7987d3cd69f",
+    "accepted_main_refreshed_utc": "2026-11-26T08:53:44.228443+00:00"
+  },
+  "ownership": {
+    "lead": "architecture, source integration, Linux engine, application campaigns and final decision",
+    "native_progression": "isolated native worktree; pool/World/adapter semantics and matched native investigation",
+    "atomic_presentation": "isolated presentation worktree; Water/Sand, actual submission, history/Follow/picking",
+    "qualification_delivery": "isolated delivery worktree; independent evidence, exact Windows payload and extracted launchers"
+  },
+  "prior_activity": {
+    "last_pr_update_utc": "2026-11-26T01:11:53Z",
+    "accessible_live_pubpres_process": false,
+    "remote_process_status": "Not observable; absence of newer publication is not proof of terminal failure",
+    "f197_raw_successful_campaign": "Not recovered; only published calibration summaries and exact source are available",
+    "f197_completed_architecture_comparison": "Not established"
+  },
+  "original_engine02": {
+    "run": 45716469250,
+    "payload_artifact": 15072815424,
+    "proof_artifact": 15072590485,
+    "payload_zip_sha256": "462e7d06bdcb44420019724d7bb0c015e5e7c30f99898cca0ef357752320bd12",
+    "gui_sha256": "39928036d0acf292139ea4dde47d3a5cda9765406be13497fa78b99ad9da95ff",
+    "admission": "Independent full payload/API/PE/source/manifest checks PASS; actual resulting Windows application pending"
+  },
+  "protected_c2": {
+    "source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+    "artifact": 14952245528,
+    "inner_sha256": "56a9218fe7e041abea7941b9866114b0d96514abda6e5c40b308ac00b76c3b01",
+    "mutation": "NONE"
+  },
+  "new_findings": [
+    "Source-exact Windows launcher directory repaired; four scene-specific stock fallback paths added. Full extracted execution remains pending.",
+    "Native pool explicit invalid/overlap/reentry admission is repaired. Candidate509 normal/scopedASan/TSan, World124055 normal/scopedASan, mounted150, Wave34 pass;192core cases covered185+7 after original600s timeout; no uninterrupted core or leak-checking pass claimed.",
+    "Native source55dea eight-arm0/1/1/0 completed and all12 equal-step body/input pairs agree; comparative benefit fails original criteria. Wave51222.550/22.157/21.677/22.629steps/s, Wave20488.603/8.910/8.852/8.877. Native all-worker policy retained; candidate unselected/defaultOFF. Local GCC14 drift scope retained.",
+    "Original source6ea Water151 assertions passed but4837draws contained214withheldbodyframes. That original failure remains. Root Water-compatible bounded clearance passes119 pure and128graphical on69b89; actual native replay RUNNING.",
+    "Multipart member ownership repair passed574 assertions including72memberclicks and11 explicit owner/refusal adversaries; final integrated replay pending.",
+    "Accepted-frame mouse picking across a real newer unsubmitted Sand upload: original correctedfixture1daf110checks has1 intended failure; repaired1163passes110/110 and frozen framebuffer/lifecycle controls. Independent reader rejects14 corruptions. Original mixed fixture-context failures retained.",
+    "Fresh sourceb056 pinned M/N/C/D Linux and Windows runtimes plus actual PowerShell5.1 eight-check configuration gate pass in run45783495854. C/N binary/buildlog/dependency/native-input custody independently replayed. No actual full Windows application or package pass is claimed.",
+    "Missing procfschildren apparatus failure and pre-execution disk-full failure are retained; corrected exact-PID/creation/executable attribution and clean display teardown admitted all8 native arms.",
+    "Accepted-main67c remains current. Root N/C/C/N physical comparison separately registered with exact-current-main, shared pinned dependency and frozen progression predicates; two tests include12 corruption refusals and retained adverse900ms gap. Execution pending."
+  ],
+  "pending": [
+    "Resulting native Water/Sand moving and restored visibility, all member parts and actual framebuffer analysis",
+    "Resulting integrated atomic Safe0/Separate0/Separate4 and multipart/ordinary picking graphical replay",
+    "Fresh pinned mounted native qualification on integrated Linux and Windows",
+    "Source-bound observer calibration and original six-arm architecture comparison",
+    "Current accepted-main N/C/C/N comparison",
+    "Meaningful five-minute small/medium/large/mixed ordinary product interactions, late-session tails and resource retention",
+    "Fresh source-exact Windows selected/fallback application qualification",
+    "Pristine extracted CMD, authored Save/fresh reopen, collector, independent new archive verification",
+    "Physical owner Windows11/NVIDIA acceptance"
+  ],
+  "authority": {
+    "merge": false,
+    "ready": false,
+    "production_default_activation": false,
+    "public_release": false
+  },
+  "linux_engine_reconstruction": {
+    "binary_sha256": "674a6324d6a3c83eb195418a68a72e98ea82d984f2ff72521a33bc2d9dd32745",
+    "byte_identical_to_retained_original": true,
+    "evidence": "linux-engine/proof.json",
+    "resulting_graphical_gates": "PENDING"
+  },
+  "campaigns": {
+    "native_abba": {
+      "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+      "status": "COMPLETE / BENEFIT_NOT_ESTABLISHED / CANDIDATE_NOT_SELECTED",
+      "order": [
+        0,
+        1,
+        1,
+        0
+      ],
+      "default_off": true,
+      "arms": 8,
+      "equal_step_body_and_input_pairs": 12,
+      "selected_native": "all_worker_completion",
+      "runtime_sha256": "a908b78028bd7e0ebe173b3f75a9ac143f863e20be66589b224cac3bbfd205b4",
+      "toolchain_scope": "Explicit local development GCC14.2; not pinned hosted-platform or physical-owner acceptance",
+      "evidence": "native/native-task-completion-decision.json",
+      "independent_review": "qualification/native-abba-independent-55dea.json"
+    },
+    "closure_platform": {
+      "phase": "runtimes",
+      "status": "COMPLETE / PASS / APPLICATION_AND_PACKAGE_NOT_RUN",
+      "source": "b056fb1608d8781c0379f1369aaea7987d3cd69f",
+      "run": 45783495854,
+      "linux_artifact": 15099603726,
+      "windows_artifact": 15099298754,
+      "windows_admission_artifact": 15099238629,
+      "prior_run": {
+        "run": 45782911690,
+        "result": "FAIL source admission before Windows/native execution; obsolete synthetic fixture assertion count repaired without changing actual gate"
+      },
+      "independent_runtime_admission": "C/N both platforms complete input/binary/buildlog/dependency/toolchain replay PASS",
+      "next_request": "FULL actual Linux/Windows mounted native, frozen inventory, Water/member/atomic gates and pristine extracted standalone package. Explicit StockSafeWater1 candidate, Separate4 experimental path, StockSafeWater0 fallback, all-worker native."
+    },
+    "bounded": {
+      "status": "PENDING_GATES",
+      "original_order_and_thresholds_preserved": true
+    },
+    "water_resulting": {
+      "source": "69b89da45c2e69a6bca5b00b5859a79d0e2c72aa",
+      "status": "FOCUSED_CORRECTNESS_PASS / MOVING_AND_TRANSITION_OMISSIONS_RETAINED",
+      "native_original_build": "b056fb1608d8781c0379f1369aaea7987d3cd69f",
+      "native_sha256": "7b85e43018713ff44025072c3b52160f46060600307bc502417cbbff500a726d",
+      "native_input_equivalence_count": 114,
+      "engine": "Stock4.7Linux f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "headless_checks": 119,
+      "graphical_pure_checks": 128,
+      "output": "/workspace/scratch/9cef565acfec/integration-water-69b89da4-01",
+      "native_checks": 151,
+      "draws": 4892,
+      "hidden_body_frames": 179,
+      "moving_wet_distinct_needle_poses": 42,
+      "paused_intervals_draws": [
+        2338,
+        2338
+      ],
+      "paused_omissions_all_parts": 0,
+      "evidence": "integration/water-native-69b89da4/INVENTORY.json",
+      "additional_restore_probe": "Prepared additive fixture: bounded original omission/owner observations,32restoredpauseddraws and fourth actual framebuffer control; parser PASS, independent source GO; actual execution pending"
+    }
+  }
+}

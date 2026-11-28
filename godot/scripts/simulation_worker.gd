@@ -1,6 +1,17 @@
 class_name CyberSimulationWorker
 extends RefCounted
 
+# Observers connect deferred. Only the immutable mailbox carries physical authority.
+signal workbench_sample_completed
+var _notify_sample_completion := OS.get_environment("CYBERSAND_WORKBENCH_FLIGHT_PACING") == "1"
+var _independent_coupling := OS.get_environment("CYBERSAND_WORKBENCH_COUPLING_CLOCK") == "1"
+var _coupling_only_count: int = 0
+var _last_material_tick_revision := -1
+var _last_material_tick_index := -1
+var _coupling_rounds_remaining: int = 0
+var _last_notified_sample: int = -1
+var _last_notified_epoch: int = -1
+
 # This worker owns every mutable simulation object. The main thread sends only
 # small commands and receives immutable snapshots, so rendering never reads a
 # PackedByteArray while the cellular solver is modifying it.
@@ -23,6 +34,7 @@ const TICK_INTERVAL_USEC: int = 16667
 const MAX_BACKLOG_TICKS: int = 3
 const LOCKSTEP_POLL_USEC: int = 100
 const WORKBENCH_SAMPLE_POLL_USEC: int = 250
+const WORKBENCH_IDLE_HEARTBEAT_USEC: int = 250000
 const EMISSION_MATERIAL_MASK: int = 255
 const EMISSION_FLAGS_SHIFT: int = 8
 const DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC: int = 16667
@@ -32,6 +44,7 @@ const MAX_PENDING_RENDER_PATCHES: int = 256
 const MAX_BRUSH_FOOTPRINT_CELLS: int = 4096
 const MAX_PENDING_BRUSH_COMMANDS: int = 8
 const PARTICIPATION_SAMPLE_INTERVAL_USEC: int = 250000
+const RENDER_CADENCE_TRACE_CAPACITY: int = 16384
 
 var _thread: Thread = Thread.new()
 var _mutex: Mutex = Mutex.new()
@@ -82,6 +95,30 @@ var _simulation_window_enabled: bool = true
 var _cadence_lod_enabled: bool = true
 var _liquid_surface_adhesion_enabled: bool = true
 var _render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+# ENGINE-LAB-001: live request guarded by worker mutex, no alternate World owner.
+var _engine_lab_pixel_target_hz: int = 60
+var _engine_lab_pixel_interval_usec: int = TICK_INTERVAL_USEC
+var _engine_lab_sample_wake: bool = true
+# RENDER-CADENCE-001: diagnostic publication policy, never a native tick gate.
+var _engine_lab_ack_gated_publication: bool = false
+# Trace state is exchanged only under _mutex. Each capture has a generation so
+# an owner turn begun before finish/restart cannot append to the new capture.
+var _render_cadence_trace_active: bool = false
+var _render_cadence_trace_generation: int = 0
+var _render_cadence_trace_events: Array[Dictionary] = []
+var _render_cadence_trace_dropped: int = 0
+var _render_cadence_trace_started_usec: int = 0
+var _render_cadence_trace_last_ack: int = -1
+# These completion values are exclusively written by the native owner. A
+# paused/status-only publication retains them instead of inventing a new tick.
+var _last_native_tick_started_usec: int = -1
+var _last_native_tick_completed_usec: int = -1
+var _last_native_tick_world_generation: int = -1
+var _last_native_tick_body_sample: int = -1
+var _last_native_tick_body_publication: int = -1
+var _last_native_tick_lateness_usec: int = 0
+var _record_owner_first_handoff := not OS.get_environment("CYBERSAND_PLAYABILITY_OWNER_RECEIPT").is_empty()
+var _render_publication_gate_holds: int = 0
 var _rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 var _rigid_body_epoch: int = 0
 # COUPLING-LOCKSTEP-001 opt-in fence (default off; see set_lockstep_coupling).
@@ -712,6 +749,7 @@ func _commit_controlled_liquid_candidate(bridge: Variant, token: int, request_re
 		# commands queued for the previous World are discarded here.
 		_workbench_equipment_commands.clear()
 		_workbench_equipment.reset()
+		_published_physics_snapshot = null
 		_workbench_result = {}
 		_workbench_consumed_sample = {}
 		_workbench_display = {}
@@ -1270,6 +1308,22 @@ static func _freeze_capture(value: Variant) -> void:
 		value.make_read_only()
 
 var _published_snapshot: CyberSimulationSnapshot
+# One immutable native/terrain completion, independent of material extraction.
+# The matching graphical publication uses the same globally reserved serial.
+# Native ownership stays here; the mailbox contains no World, RID or Node.
+var _published_physics_snapshot: CyberSimulationSnapshot
+var _combined_physics_publication: bool = OS.get_environment("CYBERSAND_DIAG_PHYSICS_PUBLICATION") != "early"
+var _publication_detail_trace: bool = OS.get_environment("CYBERSAND_DIAG_COMMON_OBSERVER") != "1"
+var _physics_causal_trace: bool = OS.get_environment("CYBERSAND_DIAG_PHYSICS_CAUSAL_TRACE") == "1"
+# Default-off PUBPRES recovery treatment. This parks only an owner whose actual
+# body sample has already completed; the ordinary native-sample fence therefore
+# forbids another material tick. Commands, fresh samples and due render capture
+# still wake it. A bounded heartbeat retains ordinary status/diagnostic service.
+var _workbench_sample_idle_enabled: bool = OS.get_environment("CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE") == "1"
+var _workbench_sample_idle_waits: int = 0 # Mutex-owned readback, never physical credit.
+var _workbench_sample_idle_usec: int = 0
+var _workbench_sample_idle_last_wake: String = ""
+var _workbench_sample_idle_active: bool = false
 var _snapshot_serial: int = 0
 var _snapshot_cells: PackedByteArray = PackedByteArray()
 var _snapshot_world_revision: int = -1
@@ -1295,6 +1349,11 @@ var _pending_render_worker_step_time_ms: float = 0.0
 var _pending_render_worker_overruns: int = 0
 var _pending_render_context: Dictionary = {}
 var _pending_render_payload_generation: int = 0
+# One validated complete frame has its own budget. Appended dirty data still
+# shares the original byte and rectangle limits until an accepted ACK.
+var _pending_render_baseline_bytes: int = 0
+var _pending_render_recovery_required: bool = false
+var _last_attempted_render_revision: int = -1
 var _published_render_payload_generation: int = -1
 var _published_render_patch_rectangles: PackedInt32Array = PackedInt32Array()
 var _published_render_patch_cells: PackedByteArray = PackedByteArray()
@@ -1303,6 +1362,7 @@ var _render_full_refresh_requested: bool = false
 var _fallback_render_snapshot_serial: int = 0
 var _snapshot_hard_surface_revision: int = -1
 var _snapshot_hard_surface_epoch: int = -1
+var _snapshot_hard_surface_world_generation: int = -1
 var _snapshot_hard_surface_rectangles: PackedInt32Array = PackedInt32Array()
 var _snapshot_hard_surface_rectangles_valid: bool = false
 var _snapshot_hard_surface_chunk_rectangles: PackedInt32Array = PackedInt32Array()
@@ -1441,6 +1501,7 @@ func start_worker(spawn_position: Vector2) -> Error:
 func stop_worker() -> void:
 	_mutex.lock()
 	_running = false
+	_published_physics_snapshot = null
 	_material_audition.refuse_pending("The native owner stopped before activation.","stopped")
 	_lab_request_revision += 1
 	_paint_epoch += 1
@@ -1454,6 +1515,10 @@ func stop_worker() -> void:
 		_persistent_finish_stopped_prefetch()
 		return
 	_thread.wait_to_finish()
+	_mutex.lock()
+	_published_physics_snapshot = null
+	_mutex.unlock()
+
 	# A preparation owns no active World. Join before releasing its private
 	# candidate so normal exit never destroys a World another thread is using.
 	if _resident_prefetch_thread != null:
@@ -1640,10 +1705,124 @@ func _workbench_sample_pending() -> bool:
 	_mutex.unlock()
 	return pending
 
+
+func _workbench_owner_work_pending(pause_request: bool, settings_revision: int,
+		paint_epoch: int, art_epoch: int, pixel_interval_usec: int,
+		render_interval_usec: int, rebased_wait: bool) -> bool:
+	# Wait only on copied owner state. Retirement and already admitted commands
+	# interrupt the same bounded poll as a fresh body sample; no World getter,
+	# main-thread object or second simulation owner participates in this wait.
+	_mutex.lock()
+	var states: Variant = _workbench_sample.get("states",null)
+	var pending: bool = (
+		not _running
+		or (states != null and states.size() > 10 and int(states[10]) >= 0
+			and int(states[10]) != _workbench_prepared_sample))
+	# Other Workbench waits retain their original fresh-sample cadence. In
+	# particular, an ACK must not authorize an early ordinary native tick in a
+	# World without bodies. Expanded wakeups only preserve prompt control
+	# service where rebasing otherwise added a new idle interval.
+	if rebased_wait:
+		pending = pending or (
+			_paused != pause_request or _reset_requested or not _lab_request.is_empty()
+			or _construction_settings_revision != settings_revision
+			or _paint_epoch != paint_epoch or _art_epoch != art_epoch
+			or not _pending_player_environment_profile.is_empty()
+			or not _pending_emissions.is_empty() or not _pending_cell_emissions.is_empty()
+			or not _pending_physical_effects.is_empty() or not _pending_physical_usables.is_empty()
+			or not _workbench_source_commands.is_empty() or not _workbench_equipment_commands.is_empty()
+			or not _water_spray_requests.is_empty() or not _paint_pending.is_empty() or not _art_pending.is_empty()
+			or (not _material_capture_request.is_empty() and _material_capture_result.is_empty())
+			or _render_full_refresh_requested or not _engine_lab_sample_wake
+			or _engine_lab_pixel_interval_usec != pixel_interval_usec
+			or _render_snapshot_interval_usec != render_interval_usec
+			or (_published_snapshot != null and (
+				_acknowledged_render_snapshot_serial > _published_snapshot.render_acknowledged_serial
+				or _engine_lab_ack_gated_publication != _published_snapshot.render_publication_ack_gated)))
+	_mutex.unlock()
+	return pending
+
+
+func workbench_sample_idle_status() -> Dictionary:
+	_mutex.lock()
+	var result := {"enabled":_workbench_sample_idle_enabled,
+		"heartbeat_usec":WORKBENCH_IDLE_HEARTBEAT_USEC,
+		"waits":_workbench_sample_idle_waits,"wait_usec":_workbench_sample_idle_usec,
+		"last_wake":_workbench_sample_idle_last_wake,
+		"active":_workbench_sample_idle_active,
+		"physical_credit":0}
+	_mutex.unlock()
+	return result
+
+
+func _wait_for_completed_workbench_sample(pause_request: bool, settings_revision: int,
+		paint_epoch: int, art_epoch: int, pixel_interval_usec: int, render_interval_usec: int,
+		interest_center: Vector2i, view_origin: Vector2i, body_epoch: int,
+		trace_generation: int, trace_active: bool) -> bool:
+	# Only the exclusive owner calls this after publishing its actual completion.
+	# Do not affect paused authoring, no-body worlds, failed/refused worlds, initial
+	# preparation, or a deliberately timer-paced Workbench. The retained sample
+	# is not permission to execute additional physics or material evolution.
+	if (not _workbench_sample_idle_enabled or pause_request or _simulation_failed
+			or _workbench_extent == Vector2i.ZERO or _workbench_completed_sample < 0
+			or _workbench_prepared_sample != _workbench_completed_sample
+			or _workbench_consumed_sample.is_empty() or not _workbench_refusal.is_empty()
+			or not bool(_workbench_result.get("valid",false))):
+		return false
+	var started_usec: int = Time.get_ticks_usec()
+	var deadline_usec: int = started_usec + WORKBENCH_IDLE_HEARTBEAT_USEC
+	# A completed material turn may precede its next render deadline. Never delay
+	# that required capture merely because the matching body sample is complete.
+	if _world.revision != _last_attempted_render_revision:
+		deadline_usec = mini(deadline_usec, _last_render_snapshot_usec + render_interval_usec)
+	if deadline_usec <= started_usec: return false
+	var waited: bool = false
+	var wake_reason: String = "heartbeat_or_render_deadline"
+	_mutex.lock()
+	_workbench_sample_idle_active = true
+	_mutex.unlock()
+	while Time.get_ticks_usec() < deadline_usec:
+		if _workbench_owner_work_pending(pause_request, settings_revision,
+				paint_epoch, art_epoch, pixel_interval_usec, render_interval_usec, true):
+			wake_reason = "owner_work"
+			break
+		_mutex.lock()
+		# Origins and tracing are not construction-setting revisions. Epoch and
+		# publication retirement must also interrupt without waiting for heartbeat.
+		var changed: bool = (_interest_center != interest_center or _view_origin != view_origin
+			or _physical_effect_epoch != body_epoch or _rigid_body_epoch != body_epoch
+			or _render_cadence_trace_generation != trace_generation
+			or _render_cadence_trace_active != trace_active
+			or not _prepared_physical_publication.is_empty()
+			or not _prepared_physical_frame_hold.is_empty())
+		_mutex.unlock()
+		if changed:
+			wake_reason = "identity_view_or_trace"
+			break
+		waited = true
+		OS.delay_usec(WORKBENCH_SAMPLE_POLL_USEC)
+	var completed_usec: int = Time.get_ticks_usec()
+	_mutex.lock()
+	_workbench_sample_idle_active = false
+	if waited:
+		_workbench_sample_idle_waits += 1
+		_workbench_sample_idle_usec += completed_usec - started_usec
+		_workbench_sample_idle_last_wake = wake_reason
+		if trace_active and trace_generation == _render_cadence_trace_generation:
+			_append_render_cadence_event_locked({"kind":"completed_sample_idle_wait",
+				"start_usec":started_usec,"completed_usec":completed_usec,
+				"world_generation":_world_generation,"body_sample":_workbench_completed_sample,
+				"tick_index":int(_world.tick_index),"heartbeat_usec":WORKBENCH_IDLE_HEARTBEAT_USEC,
+				"wake_reason":wake_reason},
+				trace_generation)
+	_mutex.unlock()
+	return true
+
 func set_workbench_sample(value: Dictionary) -> Dictionary:
 	# Body masks and ACT-005 geometry are one copied publication. The worker
 	# captures both under this same mutex; it must never use a newer body mask
 	# with a request issued against an older equipment frame.
+	var requested_usec: int = Time.get_ticks_usec() if _physics_causal_trace else 0
 	_mutex.lock()
 	var result := {"accepted":false,"status":"refused","reason":"workbench_identity"}
 	if _persistent_lease:
@@ -1652,6 +1831,7 @@ func set_workbench_sample(value: Dictionary) -> Dictionary:
 		return result
 	if value.is_empty() or _workbench_sample.is_empty() or not _prepared_physical_frame_hold.is_empty() \
 			or value.get("session") != _workbench_sample.session or value.get("epoch") != _workbench_sample.epoch:
+		if requested_usec > 0: _trace_workbench_admission_locked(requested_usec,value,result)
 		_mutex.unlock()
 		return result
 	var frame: Dictionary = value.get("equipment_frame",{})
@@ -1659,10 +1839,12 @@ func set_workbench_sample(value: Dictionary) -> Dictionary:
 		result = _set_physical_usable_state_locked(frame,value.get("equipment_requests",[]))
 		if not result.get("frame_admitted",false):
 			result["accepted"] = false
+			if requested_usec > 0: _trace_workbench_admission_locked(requested_usec,value,result)
 			_mutex.unlock()
 			return result
 	elif not _physical_usable_frame.is_empty():
 		result.reason = "equipment_frame_missing"
+		if requested_usec > 0: _trace_workbench_admission_locked(requested_usec,value,result)
 		_mutex.unlock()
 		return result
 	else:
@@ -1688,6 +1870,7 @@ func set_workbench_sample(value: Dictionary) -> Dictionary:
 				for intent: Dictionary in emitters:
 					intent["sample"] = serial
 					_workbench_emitters.append(intent)
+	if requested_usec > 0: _trace_workbench_admission_locked(requested_usec,value,result)
 	_mutex.unlock()
 	return result
 
@@ -1762,9 +1945,43 @@ func _capture_workbench_result() -> void:
 		var member: Dictionary = sample.bodies[int(row.id)-1]
 		var offset: int = (int(member.first_proxy)-1)*CyberRigidBodyCoupling.GCR_INPUT_STRIDE
 		if row.instance_id != member.instance_id or row.generation != member.generation or int(states[offset+10]) != row.sample: return
-		poses[int(row.instance_id)] = {"pose":Transform2D(states[offset+3],row.com),"sample":int(row.sample),"generation":int(row.generation)}
+		var pose := Transform2D(states[offset+3],row.com)
+		if sample.has("display_poses"):
+			# Native receives the angle, collider centres and force COM; the
+			# sampled basis cannot in general survive an atan2/sin/cos round trip.
+			# Recover the exact transform from this consumed sample and verify it
+			# projects to the native inputs before granting display authority.
+			var actual: Array = sample.display_poses
+			if actual.size() != sample.bodies.size() or not actual[int(row.id)-1] is Transform2D: return
+			pose = actual[int(row.id)-1]
+			var g: int = (int(member.first_proxy)-1)*4
+			if not pose.is_finite() or pose.get_rotation() != states[offset+3] \
+					or pose*Vector2(sample.geometry[g],sample.geometry[g+1]) != Vector2(states[offset+1],states[offset+2]) \
+					or row.com != Vector2(states[offset+12],states[offset+13]): return
+		poses[int(row.instance_id)] = {"pose":pose,"sample":int(row.sample),"generation":int(row.generation)}
 	_workbench_display = {"session":int(packet.session),"epoch":int(packet.epoch),"sample_tick":int(packet.sample_tick),
-		"tick":int(_world.tick_index),"revision":int(_world.revision),"world_generation":_world_generation,"instances":poses}
+		"tick":int(_world.tick_index),"revision":int(_world.revision),"world_generation":_world_generation,"instances":poses,
+		"native_completed_usec":_last_native_tick_completed_usec
+			if _last_native_tick_world_generation == _world_generation else -1}
+
+
+func _interstitial_workbench_response(sample: int) -> bool:
+	if not _workbench_result.get("valid",false) or _workbench_display.is_empty(): return false
+	var rows: Array = _workbench_result.get("rows",[])
+	if rows.is_empty(): return false
+	for row: Dictionary in rows:
+		# The normal native prep freshly computes pressure and support for
+		# this pose. A movement/arrival event, overlap repair or unresolved
+		# penetration needs the full material turn before the step is issued.
+		if row.sample != sample or row.displaced != 0 or row.unresolved != 0 \
+				or row.correction != Vector2.ZERO or row.arrival_count != 0 \
+				or row.event_accepted != Vector2.ZERO or row.event_torque != 0.0:
+			return false
+	_mutex.lock()
+	var clear: bool = _workbench_emitters.is_empty() and _workbench_source_commands.is_empty() \
+		and _workbench_equipment_commands.is_empty() and _water_spray_requests.is_empty()
+	_mutex.unlock()
+	return clear
 
 
 func _consume_workbench_emissions(paused: bool, sample: Dictionary) -> void:
@@ -2121,6 +2338,7 @@ func set_physical_actor_epoch(epoch: int) -> void:
 	_mutex.unlock()
 
 func _set_physical_actor_epoch_locked(epoch: int) -> void:
+	_published_physics_snapshot = null
 	_physical_effect_epoch = maxi(0, epoch)
 	_pending_physical_effects.clear()
 	_pending_physical_usables.clear()
@@ -2191,6 +2409,114 @@ func _consume_physical_effects(packets: Array, epoch: int) -> void:
 func _physical_world_extent() -> Vector2i:
 	# Worker-owned committed construction metadata, not producer-supplied data.
 	return _workbench_extent if _workbench_extent != Vector2i.ZERO else Vector2i(1024,1024)
+
+
+func set_engine_lab_pixel_pacing(hz: int, sample_wake: bool) -> void:
+	_mutex.lock()
+	_engine_lab_pixel_target_hz = clampi(hz,1,1000)
+	_engine_lab_pixel_interval_usec = maxi(1,roundi(1000000.0/float(_engine_lab_pixel_target_hz)))
+	_engine_lab_sample_wake = sample_wake
+	_mutex.unlock()
+
+
+func set_engine_lab_ack_gated_publication(enabled: bool) -> void:
+	_mutex.lock()
+	_engine_lab_ack_gated_publication = enabled
+	_mutex.unlock()
+
+
+func begin_render_cadence_trace() -> bool:
+	_mutex.lock()
+	if _render_cadence_trace_active:
+		_mutex.unlock()
+		return false
+	_render_cadence_trace_generation += 1
+	_render_cadence_trace_active = true
+	_render_cadence_trace_events = []
+	_render_cadence_trace_dropped = 0
+	_render_cadence_trace_started_usec = Time.get_ticks_usec()
+	_render_cadence_trace_last_ack = -1
+	_mutex.unlock()
+	return true
+
+
+# Swap the bounded value buffer; no disk I/O and no World access on Main.
+# `dropped` is cumulative for the current capture, not reset by a drain.
+func take_render_cadence_events() -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = _take_render_cadence_events_locked(false)
+	_mutex.unlock()
+	return result
+
+
+func finish_render_cadence_trace() -> Dictionary:
+	_mutex.lock()
+	_render_cadence_trace_active = false
+	var result: Dictionary = _take_render_cadence_events_locked(true)
+	_mutex.unlock()
+	return result
+
+
+func _take_render_cadence_events_locked(finished: bool) -> Dictionary:
+	var result: Dictionary = {"events":_render_cadence_trace_events,
+		"dropped":_render_cadence_trace_dropped,"capacity":RENDER_CADENCE_TRACE_CAPACITY,
+		"generation":_render_cadence_trace_generation,
+		"started_usec":_render_cadence_trace_started_usec,
+		"ended_usec":Time.get_ticks_usec() if finished else 0}
+	_render_cadence_trace_events = []
+	return result
+
+
+# The dictionaries contain scalar/value fields only. The worker never mutates
+# a recorded dictionary after append, including after Main drains the buffer.
+func _append_render_cadence_event_locked(event: Dictionary, generation: int) -> void:
+	if not _render_cadence_trace_active or generation != _render_cadence_trace_generation:
+		return
+	if _render_cadence_trace_events.size() >= RENDER_CADENCE_TRACE_CAPACITY:
+		_render_cadence_trace_dropped += 1
+		return
+	_render_cadence_trace_events.append(event)
+
+
+func _append_render_cadence_event(event: Dictionary, generation: int) -> void:
+	if generation <= 0: return
+	_mutex.lock()
+	_append_render_cadence_event_locked(event,generation)
+	_mutex.unlock()
+
+
+# Only copied owner identifiers cross the mutex. Unknown World, tick and
+# terrain stay -1 until the exclusive native owner observes them.
+func _workbench_phase_event(kind: String, started_usec: int, completed_usec: int,
+		sample: Dictionary, status: String, generation: int = -1,
+		tick: int = -1, required_revision: int = -1) -> Dictionary:
+	var states: Variant = sample.get("states")
+	var session: Variant = sample.get("session")
+	var epoch: Variant = sample.get("epoch")
+	var has_sample: bool = states is PackedFloat64Array and states.size() > 10 and is_finite(states[10])
+	return {"kind":kind,"start_usec":started_usec,"completed_usec":completed_usec,
+		"session":session if session is int else -1,"rigid_body_epoch":epoch if epoch is int else -1,
+		"body_sample":int(states[10]) if has_sample else -1,
+		"world_generation":generation,"tick_index":tick,
+		"required_hard_revision":required_revision,"status":status}
+
+
+func _trace_workbench_admission_locked(requested_usec: int, sample: Dictionary, result: Dictionary) -> void:
+	if not _render_cadence_trace_active: return
+	var accepted: bool = result.get("accepted",false)
+	var event: Dictionary = _workbench_phase_event("sample_admitted",requested_usec,
+		Time.get_ticks_usec(),sample,"accepted" if accepted else "refused")
+	event["reason"] = str(result.get("reason",""))
+	_append_render_cadence_event_locked(event,_render_cadence_trace_generation)
+
+
+func engine_lab_pixel_pacing() -> Dictionary:
+	_mutex.lock()
+	var result: Dictionary = {"target_hz":_engine_lab_pixel_target_hz,
+		"interval_usec":_engine_lab_pixel_interval_usec,
+		"sample_wake":_engine_lab_sample_wake}
+	_mutex.unlock()
+	return result
 
 
 func set_render_snapshot_hz(render_hz: int) -> void:
@@ -3171,14 +3497,48 @@ func take_latest_snapshot(after_serial: int) -> CyberSimulationSnapshot:
 	return result
 
 
+func physics_publication_mode() -> String:
+	_mutex.lock()
+	var result: String = "combined" if _combined_physics_publication else "early"
+	_mutex.unlock()
+	return result
+
+
+func take_latest_physics_snapshot() -> CyberSimulationSnapshot:
+	_mutex.lock()
+	# Null is a real retirement/missing-publication fence. Never recover a
+	# retired physical owner by falling back to its old graphical snapshot.
+	var result: CyberSimulationSnapshot = _published_physics_snapshot
+	if _combined_physics_publication and result != null:
+		result = _published_snapshot
+	_mutex.unlock()
+	return result
+
+
+func try_read_physics_mailbox() -> Dictionary:
+	# Bounded native-rendezvous experiment. No live World reads, payload copies,
+	# blocking mutex acquisition or retirement fallback are allowed here.
+	if not _mutex.try_lock(): return {"status":"contended"}
+	var result: Dictionary = {"status":"retired"}
+	if _running and _published_physics_snapshot != null:
+		if _paused or _reset_requested or _world_change_inflight or not _lab_request.is_empty() \
+				or not _prepared_physical_publication.is_empty() \
+				or not _prepared_physical_frame_hold.is_empty():
+			result = {"status":"transition"}
+		else:
+			result = {"status":"active", "epoch":_workbench_sample.get("epoch", -1),
+				"session":_workbench_sample.get("session", -1),
+				"snapshot":_published_snapshot if _combined_physics_publication else _published_physics_snapshot}
+	_mutex.unlock()
+	return result
+
+
 func acknowledge_render_snapshot(render_snapshot_serial: int) -> void:
 	if render_snapshot_serial <= 0:
 		return
 	_mutex.lock()
-	_acknowledged_render_snapshot_serial = maxi(
-		_acknowledged_render_snapshot_serial,
-		render_snapshot_serial
-	)
+	if _published_snapshot != null and render_snapshot_serial <= _published_snapshot.render_snapshot_serial:
+		_acknowledged_render_snapshot_serial = maxi(_acknowledged_render_snapshot_serial, render_snapshot_serial)
 	_mutex.unlock()
 
 
@@ -3258,6 +3618,8 @@ func _worker_loop() -> void:
 		var pause_requested_at_entry: bool = false
 		var pause_request_serial_at_entry: int = 0
 		var native_ticked_this_turn: bool = false
+		var coupling_only: bool = false
+		var coupling_prepared_usec := -1
 		var local_horizontal_input: float = 0.0
 		var local_jetpack_active: bool = false
 		var local_interest_center: Vector2i = Vector2i.ZERO
@@ -3269,6 +3631,16 @@ func _worker_loop() -> void:
 		var local_cadence_enabled: bool = true
 		var local_liquid_adhesion_enabled: bool = true
 		var local_render_snapshot_interval_usec: int = DEFAULT_RENDER_SNAPSHOT_INTERVAL_USEC
+		var local_pixel_interval_usec: int = TICK_INTERVAL_USEC
+		var local_pixel_target_hz: int = 60
+		var local_sample_wake: bool = true
+		var local_pause_request: bool = false
+		var local_settings_revision: int = 0
+		var local_paint_epoch: int = 0
+		var local_art_epoch: int = 0
+		var local_trace_generation: int = 0
+		var local_idle_trace_generation: int = 0
+		var local_idle_trace_active: bool = false
 		var local_rigid_body_states: PackedFloat32Array = PackedFloat32Array()
 		var local_rigid_body_epoch: int = 0
 		var local_physical_effects: Array = []
@@ -3293,6 +3665,10 @@ func _worker_loop() -> void:
 		local_paused = _paused
 		pause_requested_at_entry = _frame_command_paused and _paused
 		pause_request_serial_at_entry = _workbench_pause_request_serial
+		local_pause_request = _paused
+		local_settings_revision = _construction_settings_revision
+		local_paint_epoch = _paint_epoch
+		local_art_epoch = _art_epoch
 		local_horizontal_input = _horizontal_input
 		local_jetpack_active = _jetpack_active
 		local_interest_center = _interest_center
@@ -3304,6 +3680,12 @@ func _worker_loop() -> void:
 		local_cadence_enabled = _cadence_lod_enabled
 		local_liquid_adhesion_enabled = _liquid_surface_adhesion_enabled
 		local_render_snapshot_interval_usec = _render_snapshot_interval_usec
+		local_pixel_interval_usec = _engine_lab_pixel_interval_usec
+		local_pixel_target_hz = _engine_lab_pixel_target_hz
+		local_sample_wake = _engine_lab_sample_wake
+		local_trace_generation = _render_cadence_trace_generation if _render_cadence_trace_active else 0
+		local_idle_trace_generation = _render_cadence_trace_generation
+		local_idle_trace_active = _render_cadence_trace_active
 		var physical_wait: bool = not _prepared_physical_publication.is_empty() \
 			or not _lab_request.get("controlled_liquid_setup",{}).get("physical_owner",{}).is_empty()
 		local_rigid_body_states = _rigid_body_states
@@ -3342,6 +3724,14 @@ func _worker_loop() -> void:
 		if not persistent_command.is_empty(): local_lab = persistent_command
 		_legacy_edit_inflight = not local_emissions.is_empty() or not local_cell_emissions.is_empty()
 		_world_change_inflight = local_reset_requested or not local_lab.is_empty() or not _pending_physical_liquid.is_empty()
+		var trace_physics: bool = _physics_causal_trace and local_trace_generation > 0
+		if trace_physics and not local_workbench_sample.is_empty():
+			var latched_usec: int = Time.get_ticks_usec()
+			var event: Dictionary = _workbench_phase_event("worker_latch",latched_usec,
+				latched_usec,local_workbench_sample,
+				"owner_transition" if _world_change_inflight or physical_wait else "latched",_world_generation)
+			if int(event.body_sample) != _workbench_prepared_sample or _world_change_inflight or physical_wait:
+				_append_render_cadence_event_locked(event,local_trace_generation)
 		_mutex.unlock()
 
 		if not local_running:
@@ -3541,6 +3931,8 @@ func _worker_loop() -> void:
 				if workbench_serial >= 0 and workbench_serial == _workbench_prepared_sample:
 					local_paused = true
 				if _workbench_refusal.is_empty() and (_workbench_result.is_empty() or not local_paused):
+					var prepare_started_usec: int = Time.get_ticks_usec() if trace_physics else 0
+					var pre_coupling_revision: int = int(_world.revision) if _independent_coupling else -1
 					if not _workbench_sample_inside(sample.states,_workbench_extent):
 						_workbench_refusal = "A body reached the finite canvas edge. Move, reset or remove it while paused."
 					elif not _world.prepare_workbench_coupling(sample.states,sample.geometry,sample.bodies,
@@ -3552,14 +3944,37 @@ func _worker_loop() -> void:
 					else:
 						_workbench_prepared_sample = workbench_serial
 						_workbench_consumed_sample = sample
-						if _workbench_result.is_empty(): _capture_workbench_result()
+						if _independent_coupling and not local_paused and not local_pause_request \
+								and local_lab.is_empty() and not _simulation_failed and not _actor_session.active() \
+								and pre_coupling_revision == int(_world.revision) and pre_coupling_revision == _last_material_tick_revision \
+								and int(_world.tick_index) == _last_material_tick_index \
+								and _last_native_tick_body_sample >= 0 and workbench_serial > _last_native_tick_body_sample \
+								and local_physical_effects.is_empty() and local_physical_usables.is_empty() \
+								and local_emissions.is_empty() and local_cell_emissions.is_empty() \
+								and _last_native_tick_world_generation == _world_generation \
+								and not _combined_physics_publication and _coupling_rounds_remaining > 0 \
+								and sample.get("held_physics_callback",false) \
+								and Time.get_ticks_usec() - _last_native_tick_completed_usec < 2 * local_pixel_interval_usec \
+								and _snapshot_hard_surface_revision == int(_world.hard_surface_revision):
+							# Before the next material tick is due, an additional physical
+							# sample can have an exact native response of its own. Preparing
+							# its swept mask cleared all prior per-body contact accumulators.
+							_capture_workbench_result()
+							coupling_only = _interstitial_workbench_response(workbench_serial)
+							if coupling_only: coupling_prepared_usec = Time.get_ticks_usec()
+						elif _workbench_result.is_empty(): _capture_workbench_result()
+					if prepare_started_usec > 0:
+						_append_render_cadence_event(_workbench_phase_event("coupling_prepare",
+							prepare_started_usec,Time.get_ticks_usec(),sample,
+							"native_failed" if _simulation_failed else "prepared" if _workbench_refusal.is_empty() else "refused",
+							_world_generation),local_trace_generation)
 				if not _workbench_refusal.is_empty():
 					local_paused = true
 					_lab_status = _workbench_refusal
 					_mutex.lock()
 					_paused = true
 					_mutex.unlock()
-				_consume_workbench_emissions(local_paused,sample)
+				_consume_workbench_emissions(local_paused or coupling_only,sample)
 			else:
 				_world.prepare_rigid_body_coupling(local_rigid_body_states, not local_paused)
 			# Admission is rechecked at the exclusive owner's consume boundary.
@@ -3575,7 +3990,27 @@ func _worker_loop() -> void:
 			if _world.has_method(&"has_failed") and _world.has_failed():
 				_simulation_failed = true
 
-			if not local_paused and not _simulation_failed:
+			if coupling_only:
+				# A command can arrive between preparation and the exclusive owner
+				# consuming emissions/equipment. A changed source needs its normal
+				# full tick; never issue the old response against that new revision.
+				if _simulation_failed or int(_world.revision) != _workbench_display.revision \
+						or int(_world.tick_index) != _workbench_display.tick:
+					coupling_only = false
+					if not _simulation_failed: _consume_workbench_emissions(false,local_workbench_sample)
+				else:
+					_workbench_completed_sample = workbench_serial
+					_coupling_only_count += 1
+					_coupling_rounds_remaining -= 1
+					_workbench_display["coupling_only"] = true
+					_workbench_display["coupling_response_usec"] = coupling_prepared_usec
+					_workbench_display["coupling_body_sample"] = workbench_serial
+					_workbench_display["material_tick_body_sample"] = _last_native_tick_body_sample
+					_workbench_display["material_tick_completed_usec"] = _last_native_tick_completed_usec
+					# An interstitial mask is not a material-tick completion.
+					_workbench_display["native_completed_usec"] = -1
+
+			if not local_paused and not _simulation_failed and not coupling_only:
 				native_ticked_this_turn = true
 				if (
 					_sampled_character_enabled
@@ -3591,16 +4026,57 @@ func _worker_loop() -> void:
 							local_jetpack_active,
 							_world
 						)
+				var native_tick_started_usec: int = Time.get_ticks_usec()
 				if _world.has_method(&"has_failed"):
 					_simulation_failed = not bool(_world.simulation_tick())
 				else:
 					_world.simulation_tick()
+				var native_tick_completed_usec: int = Time.get_ticks_usec()
+				if not _simulation_failed:
+					if _independent_coupling:
+						# A real recent sample hold can request up to three fresh native
+						# responses. Two pixel intervals bound delay to the next material turn.
+						_coupling_rounds_remaining = 3 if local_workbench_sample.get("held_physics_callback",false) else 0
+						_last_material_tick_revision = int(_world.revision)
+						_last_material_tick_index = int(_world.tick_index)
+					_last_native_tick_started_usec = native_tick_started_usec
+					_last_native_tick_completed_usec = native_tick_completed_usec
+					_last_native_tick_world_generation = _world_generation
+					_last_native_tick_body_sample = workbench_serial
+					_last_native_tick_body_publication = local_body_publication
+					_last_native_tick_lateness_usec = maxi(0,native_tick_started_usec-next_tick_usec)
+				if local_trace_generation > 0:
+					_mutex.lock()
+					var offered_body_sample: int = int(_workbench_sample.states[10]) \
+						if not _workbench_sample.is_empty() and not _workbench_sample.states.is_empty() else -1
+					var event := {
+						"kind":"native_tick" if not _simulation_failed else "native_tick_failed",
+						"start_usec":native_tick_started_usec,"completed_usec":native_tick_completed_usec,
+						"worker_turn_started_usec":step_start_usec,"tick_index":int(_world.tick_index),
+						"world_generation":_world_generation,"revision":int(_world.revision),
+						"body_sample":workbench_serial,"offered_body_sample":offered_body_sample,
+						"body_publication":local_body_publication,"offered_body_publication":_rigid_body_publication,
+						"requested_hz":local_pixel_target_hz,"requested_interval_usec":local_pixel_interval_usec,
+						"sample_wake":local_sample_wake,"deadline_usec":next_tick_usec,
+						"lateness_usec":maxi(0,native_tick_started_usec-next_tick_usec),
+						"scheduler_overruns":_worker_overruns}
+					if trace_physics and workbench_serial >= 0:
+						event["session"] = local_workbench_sample.get("session",-1)
+						event["rigid_body_epoch"] = local_rigid_body_epoch
+					_append_render_cadence_event_locked(event,local_trace_generation)
+					_mutex.unlock()
 				if not _simulation_failed and _workbench_extent != Vector2i.ZERO:
+					var results_started_usec: int = Time.get_ticks_usec() if trace_physics else 0
 					_capture_workbench_result()
 					if _world.has_failed():
 						_simulation_failed = true
 					else:
 						_workbench_completed_sample = workbench_serial
+					if results_started_usec > 0:
+						_append_render_cadence_event(_workbench_phase_event("coupling_results",
+							results_started_usec,Time.get_ticks_usec(),local_workbench_sample,
+							"native_failed" if _simulation_failed else "healthy" if _workbench_result.get("valid",false) else "refused",
+							_world_generation,int(_world.tick_index)),local_trace_generation)
 				if not _simulation_failed and local_lab.has("workbench_step_serial"):
 					_workbench_step_serial = int(local_lab.workbench_step_serial)
 				if _lab_active and _scenario_host.active() and not _scenario_host.after_tick():
@@ -3633,132 +4109,67 @@ func _worker_loop() -> void:
 		if pause_requested_at_entry and local_paused and not native_ticked_this_turn:
 			_workbench_pause_ack_serial = pause_request_serial_at_entry
 		var worker_step_time_ms: float = float(Time.get_ticks_usec() - step_start_usec) / 1000.0
-		_publish_snapshot(
-			worker_step_time_ms,
-			local_paused,
-			local_render_snapshot_interval_usec,
-			local_reset_requested,
-			local_rigid_body_states,
-			local_rigid_body_epoch
-		)
+		if not coupling_only or not _publish_coupling_completion(local_rigid_body_epoch):
+			_publish_snapshot(
+				worker_step_time_ms,
+				local_paused,
+				local_render_snapshot_interval_usec,
+				local_reset_requested,
+				local_rigid_body_states,
+				local_rigid_body_epoch
+			)
 
 		if lockstep_ticked:
 			# Main's publications pace a fenced owner; no wall-clock deadline.
 			next_tick_usec = Time.get_ticks_usec()
 			continue
-		next_tick_usec += TICK_INTERVAL_USEC
+		if local_sample_wake and _wait_for_completed_workbench_sample(local_pause_request,
+				local_settings_revision, local_paint_epoch, local_art_epoch,
+				local_pixel_interval_usec, local_render_snapshot_interval_usec,
+				local_interest_center, local_view_origin, local_rigid_body_epoch,
+				local_idle_trace_generation, local_idle_trace_active):
+			# The completed sample already forbids another tick. When a new sample
+			# or command wakes this wait, immediately run the unchanged owner path.
+			next_tick_usec = Time.get_ticks_usec()
+			continue
+		next_tick_usec += local_pixel_interval_usec
 		var now_usec: int = Time.get_ticks_usec()
-		if _workbench_extent != Vector2i.ZERO and not _simulation_failed:
+		if _workbench_extent != Vector2i.ZERO and not _simulation_failed and local_sample_wake:
 			# Workbench lock-step: Rapier steps only after this worker completes
 			# the published body sample. A free-running timer drifts in phase
 			# against the physics frame and misses alternate frames (exact 30 Hz
 			# plateaus) even for short ticks, so wake as soon as the next sample
 			# arrives. Still one tick per sample; never earlier than the sample.
-			while now_usec < next_tick_usec and not _workbench_sample_pending():
+			# A completed body sample cannot authorize another native tick.
+			# Only retire overdue timer debt in that unpaused, sample-fenced
+			# case. Worlds without bodies and paused authoring retain their
+			# original timer cadence; a pending sample, ACK or command still
+			# interrupts this same poll without waiting for the new deadline.
+			var rebased_wait: bool = false
+			if (next_tick_usec < now_usec and not local_pause_request
+					and workbench_serial >= 0
+					and workbench_serial == _workbench_prepared_sample
+					and workbench_serial == _workbench_completed_sample
+					and not _workbench_consumed_sample.is_empty()
+					and bool(_workbench_result.get("valid",false))):
+				next_tick_usec = now_usec + local_pixel_interval_usec
+				rebased_wait = true
+			while now_usec < next_tick_usec and not _workbench_owner_work_pending(
+					local_pause_request, local_settings_revision, local_paint_epoch,
+					local_art_epoch, local_pixel_interval_usec, local_render_snapshot_interval_usec,
+					rebased_wait):
 				OS.delay_usec(WORKBENCH_SAMPLE_POLL_USEC)
 				now_usec = Time.get_ticks_usec()
 			next_tick_usec = mini(next_tick_usec, now_usec)
 		var wait_usec: int = next_tick_usec - now_usec
 		if wait_usec > 0:
 			OS.delay_usec(wait_usec)
-		elif -wait_usec > TICK_INTERVAL_USEC * MAX_BACKLOG_TICKS:
+		elif -wait_usec > local_pixel_interval_usec * MAX_BACKLOG_TICKS:
 			_worker_overruns += 1
 			next_tick_usec = now_usec
 
 
-func _publish_snapshot(
-	worker_step_time_ms: float,
-	paused: bool,
-	render_snapshot_interval_usec: int,
-	force_render_full_refresh: bool = false,
-	rigid_body_states: PackedFloat32Array = PackedFloat32Array(),
-	rigid_body_epoch: int = 0
-) -> void:
-	# A binding may quarantine between ticks (an edit, coupling or observation).
-	# Native health, not only simulation_tick's return, owns publication admission.
-	if _world.has_method(&"has_failed") and _world.has_failed():
-		_simulation_failed = true
-	if _simulation_failed:
-		_publish_failure_snapshot()
-		return
-	var copy_start_usec: int = Time.get_ticks_usec()
-	var now_usec: int = Time.get_ticks_usec()
-	var render_exchange_time_ms: float = 0.0
-	var hard_surface_packet_time_ms: float = 0.0
-	var render_serial_before: int = _pending_render_snapshot_serial
-	var render_generation_advanced: bool = false
-	var acknowledged_render_serial: int = 0
-	var render_full_refresh_requested: bool = false
-	_mutex.lock()
-	acknowledged_render_serial = _acknowledged_render_snapshot_serial
-	render_full_refresh_requested = _render_full_refresh_requested
-	_render_full_refresh_requested = false
-	_mutex.unlock()
-	_observe_render_acknowledgement(acknowledged_render_serial)
-	force_render_full_refresh = (
-		force_render_full_refresh or render_full_refresh_requested
-		or _world_generation != _pending_render_world_generation
-	)
-	if (
-		_pending_render_snapshot_serial > 0
-		and acknowledged_render_serial >= _pending_render_snapshot_serial
-	):
-		_clear_pending_render_patches()
-	if (
-		force_render_full_refresh
-		or (
-			_world.revision != _snapshot_world_revision
-			and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
-		)
-	):
-		var render_exchange_start_usec: int = Time.get_ticks_usec()
-		if _world.has_method(&"take_render_snapshot"):
-			var render_packet: Dictionary = _take_native_render_snapshot(
-				force_render_full_refresh
-			)
-			_append_native_render_packet(render_packet)
-			if (
-				_pending_render_patch_cells.size()
-				> maxi(CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT,_workbench_extent.x*_workbench_extent.y) * 2
-				or _pending_render_patch_rectangles.size()
-				> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
-			):
-				_append_native_render_packet(_take_native_render_snapshot(true))
-			if _pending_render_full_refresh:
-				_snapshot_cells = _pending_render_patch_cells.duplicate()
-		else:
-			_snapshot_cells = PackedByteArray(_world.get_cells())
-			_fallback_render_snapshot_serial += 1
-			_pending_render_snapshot_serial = _fallback_render_snapshot_serial
-			_pending_render_channels = 1
-			_pending_render_full_refresh = true
-			_pending_render_patch_rectangles = PackedInt32Array([
-				0,
-				0,
-				CyberCellWorld.WORLD_WIDTH,
-				CyberCellWorld.WORLD_HEIGHT,
-				0,
-				CyberCellWorld.WORLD_WIDTH,
-			])
-			_pending_render_patch_cells = _snapshot_cells
-			_pending_render_payload_generation += 1
-		_snapshot_world_revision = _world.revision
-		_last_render_snapshot_usec = now_usec
-		if _pending_render_snapshot_serial > render_serial_before:
-			_pending_render_world_generation = _world_generation
-			_pending_render_tick_index = int(_world.tick_index)
-			_pending_render_generated_usec = now_usec
-			_pending_render_character_position = _character.position
-			_pending_render_character_velocity = _character.velocity
-			_pending_render_character_grounded = _character.grounded
-			_pending_render_rigid_body_states = rigid_body_states.duplicate()
-			_pending_render_simulation_time_ms = _world.simulation_time_ms
-			_pending_render_worker_step_time_ms = worker_step_time_ms
-			_pending_render_worker_overruns = _worker_overruns
-			render_generation_advanced = true
-		render_exchange_time_ms = float(
-			Time.get_ticks_usec() - render_exchange_start_usec
-		) / 1000.0
+func _refresh_hard_surface_snapshot(force_refresh: bool, rigid_body_epoch: int, now_usec: int) -> float:
 	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	# The workbench lock-step steps Rapier only against the current revision,
 	# so a throttled packet would cap the whole session at the throttle rate
@@ -3766,8 +4177,9 @@ func _publish_snapshot(
 	# native packet is cached per revision; other modes keep the throttle.
 	var workbench_lockstep: bool = _workbench_extent != Vector2i.ZERO
 	if (
-		force_render_full_refresh
+		force_refresh
 		or rigid_body_epoch != _snapshot_hard_surface_epoch
+		or _world_generation != _snapshot_hard_surface_world_generation
 		or _snapshot_hard_surface_revision < 0
 		or (current_hard_surface_revision != _snapshot_hard_surface_revision
 			and (workbench_lockstep
@@ -3788,10 +4200,301 @@ func _publish_snapshot(
 			_snapshot_hard_surface_rectangles_valid = true
 		_snapshot_hard_surface_revision = current_hard_surface_revision
 		_snapshot_hard_surface_epoch = rigid_body_epoch
+		_snapshot_hard_surface_world_generation = _world_generation
 		_last_hard_surface_snapshot_usec = now_usec
-		hard_surface_packet_time_ms = float(
-			Time.get_ticks_usec() - hard_surface_start_usec
-		) / 1000.0
+		return float(Time.get_ticks_usec() - hard_surface_start_usec) / 1000.0
+	return 0.0
+
+
+# An interstitial response has its own native occupancy authority. If any
+# authoring or terrain revision moved on during this turn, take the normal
+# full publication path. This packet never claims a material step or upload.
+func _publish_coupling_completion(epoch: int) -> bool:
+	if _simulation_failed or _world.has_failed() or not _snapshot_hard_surface_chunk_rectangles_valid:
+		return false
+	var source := CyberSimulationSnapshot.new()
+	source.rigid_body_epoch = epoch
+	source.physics_world_generation = _world_generation
+	source.backend_name = _backend_name
+	source.simulation_world_revision = int(_world.revision)
+	source.tick_index = int(_world.tick_index)
+	var required := int(_world.hard_surface_revision)
+	if required != _snapshot_hard_surface_revision or _world.has_failed(): return false
+	_mutex.lock()
+	var previous := _published_snapshot
+	var eligible := previous != null and previous.rigid_body_epoch == epoch \
+		and previous.physics_world_generation == _world_generation \
+		and previous.simulation_world_revision == source.simulation_world_revision \
+		and not _render_full_refresh_requested and not _paused and _lab_request.is_empty()
+	_mutex.unlock()
+	if not eligible: return false
+	source.lab_context = {"workbench_hard_surface_revision":required}
+	_snapshot_serial += 1
+	if _publish_workbench_physics_snapshot(source,0) == null: return false
+	_notify_workbench_completion(epoch)
+	return true
+
+
+# A status-only packet may repeat an earlier native result. The time belongs
+# to the immutable response's original World, material turn and body sample.
+func _coupling_response_time(snapshot: CyberSimulationSnapshot) -> int:
+	var proof := _workbench_display
+	if not proof.get("coupling_only",false): return -1
+	if proof.world_generation != snapshot.physics_world_generation or proof.revision != snapshot.simulation_world_revision \
+			or proof.tick != snapshot.tick_index or proof.epoch != snapshot.rigid_body_epoch \
+			or proof.session != _workbench_result.get("session",-1) or proof.epoch != _workbench_result.get("epoch",-1) \
+			or proof.sample_tick != _workbench_result.get("sample_tick",-1) or not _workbench_result.get("valid",false) \
+			or proof.coupling_body_sample != _workbench_completed_sample or proof.material_tick_body_sample < 0 \
+			or proof.coupling_body_sample <= proof.material_tick_body_sample \
+			or proof.coupling_response_usec < proof.material_tick_completed_usec or proof.material_tick_completed_usec <= 0 \
+			or snapshot.last_native_tick_world_generation != proof.world_generation \
+			or snapshot.last_native_tick_body_sample != proof.material_tick_body_sample \
+			or snapshot.last_native_tick_completed_usec != proof.material_tick_completed_usec: return -1
+	return proof.coupling_response_usec
+
+
+func _publish_workbench_physics_snapshot(source: CyberSimulationSnapshot,
+		trace_generation: int) -> CyberSimulationSnapshot:
+	var snapshot: CyberSimulationSnapshot = CyberSimulationSnapshot.new()
+	snapshot.serial = _snapshot_serial
+	snapshot.published_usec = Time.get_ticks_usec()
+	var rigid_body_epoch: int = source.rigid_body_epoch
+	snapshot.rigid_body_epoch = rigid_body_epoch
+	snapshot.physics_world_generation = source.physics_world_generation
+	# An early completion owns native freshness, never a material identity.
+	snapshot.render_world_generation = -1
+	snapshot.render_snapshot_serial = 0
+	snapshot.backend_name = source.backend_name
+	snapshot.simulation_failed = source.simulation_failed
+	snapshot.simulation_world_revision = source.simulation_world_revision
+	snapshot.tick_index = source.tick_index
+	snapshot.paused = source.paused
+	snapshot.hard_surface_revision = _snapshot_hard_surface_revision
+	snapshot.hard_surface_rectangles = _snapshot_hard_surface_rectangles
+	snapshot.hard_surface_rectangles_valid = _snapshot_hard_surface_rectangles_valid
+	snapshot.hard_surface_chunk_rectangles = _snapshot_hard_surface_chunk_rectangles
+	snapshot.hard_surface_chunk_rectangles_valid = _snapshot_hard_surface_chunk_rectangles_valid
+	if _last_native_tick_world_generation == _world_generation:
+		snapshot.last_native_tick_started_usec = _last_native_tick_started_usec
+		snapshot.last_native_tick_completed_usec = _last_native_tick_completed_usec
+		snapshot.last_native_tick_world_generation = _last_native_tick_world_generation
+		snapshot.last_native_tick_body_sample = _last_native_tick_body_sample
+		snapshot.last_native_tick_body_publication = _last_native_tick_body_publication
+		snapshot.last_native_tick_lateness_usec = _last_native_tick_lateness_usec
+	snapshot.lab_context = {
+		"workbench_gcr":_workbench_result.duplicate(true),
+		"coupling_only_completions":_coupling_only_count,
+		"coupling_response_usec":_coupling_response_time(snapshot),
+		"workbench_hard_surface_revision":source.lab_context.workbench_hard_surface_revision,
+		"workbench_completed_sample":_workbench_completed_sample,
+		"workbench_refusal":_workbench_refusal,
+		"workbench_step_serial":_workbench_step_serial,
+	}
+	_mutex.lock()
+	snapshot.lab_context["workbench_emitters"] = _workbench_emitter_receipts.duplicate(true)
+	_mutex.unlock()
+	_freeze_capture(snapshot.lab_context)
+	_mutex.lock()
+	# Main can retire an owner or stop while copied values are assembled. A
+	# late old-owner completion cannot repopulate its cleared mailbox.
+	if not _running or rigid_body_epoch != _physical_effect_epoch \
+		or _workbench_sample.get("epoch",-1) != rigid_body_epoch:
+		_mutex.unlock()
+		return null
+	snapshot.physics_handoff_usec = Time.get_ticks_usec()
+	snapshot.worker_handoff_usec = snapshot.physics_handoff_usec
+	if _record_owner_first_handoff: _record_first_handoff_locked(snapshot)
+	_published_physics_snapshot = snapshot
+	if trace_generation > 0 and (_publication_detail_trace or _physics_causal_trace):
+		_trace_workbench_handoff_locked(snapshot,trace_generation,"early")
+	_mutex.unlock()
+	return snapshot
+
+
+# Caller holds the mailbox mutex. A retired/null predecessor cannot transfer
+# a timestamp to a new owner. No mailbox publication is delayed or suppressed.
+func _record_first_handoff_locked(snapshot: CyberSimulationSnapshot) -> void:
+	var context: Dictionary = snapshot.lab_context
+	var result: Dictionary = context.get("workbench_gcr",{})
+	var sample := int(context.get("workbench_completed_sample",-1))
+	var required := int(context.get("workbench_hard_surface_revision",-1))
+	if sample < 0 or required < 0 or required != snapshot.hard_surface_revision \
+			or snapshot.simulation_failed or not str(context.get("workbench_refusal","")).is_empty() \
+			or not result.get("valid",false) or int(result.get("session",-1)) <= 0 \
+			or int(result.get("epoch",-1)) != snapshot.rigid_body_epoch: return
+	var previous := _published_physics_snapshot
+	if previous != null and previous.first_physics_handoff_usec > 0 \
+			and previous.physics_world_generation == snapshot.physics_world_generation \
+			and previous.rigid_body_epoch == snapshot.rigid_body_epoch \
+			and previous.simulation_world_revision == snapshot.simulation_world_revision \
+			and previous.hard_surface_revision == required and previous.tick_index == snapshot.tick_index \
+			and previous.last_native_tick_completed_usec == snapshot.last_native_tick_completed_usec \
+			and previous.lab_context.get("workbench_completed_sample",-1) == sample \
+			and previous.lab_context.workbench_gcr.session == result.session:
+		snapshot.first_physics_handoff_usec = previous.first_physics_handoff_usec
+	else:
+		snapshot.first_physics_handoff_usec = snapshot.worker_handoff_usec
+
+
+func _trace_workbench_handoff_locked(snapshot: CyberSimulationSnapshot, generation: int, mode: String) -> void:
+	var event := {"kind":"physics_publication",
+		"start_usec":snapshot.published_usec,"completed_usec":snapshot.physics_handoff_usec,
+		"snapshot_serial":snapshot.serial,"world_generation":snapshot.physics_world_generation,
+		"tick_index":snapshot.tick_index,"revision":snapshot.simulation_world_revision,
+		"body_sample":snapshot.lab_context.workbench_completed_sample,
+		"required_hard_revision":snapshot.lab_context.workbench_hard_surface_revision,
+		"packet_hard_revision":snapshot.hard_surface_revision,
+		"native_completed_usec":snapshot.last_native_tick_completed_usec}
+	if _physics_causal_trace:
+		event["session"] = snapshot.lab_context.workbench_gcr.get("session",-1)
+		event["rigid_body_epoch"] = snapshot.rigid_body_epoch
+		event["packet_valid"] = snapshot.lab_context.workbench_gcr.get("valid",false)
+		event["workbench_refusal"] = snapshot.lab_context.workbench_refusal
+		event["publication_mode"] = mode
+	_append_render_cadence_event_locked(event,generation)
+
+
+func _publish_snapshot(
+	worker_step_time_ms: float,
+	paused: bool,
+	render_snapshot_interval_usec: int,
+	force_render_full_refresh: bool = false,
+	rigid_body_states: PackedFloat32Array = PackedFloat32Array(),
+	rigid_body_epoch: int = 0
+) -> void:
+	# A binding may quarantine between ticks (an edit, coupling or observation).
+	# Native health, not only simulation_tick's return, owns publication admission.
+	if _world.has_method(&"has_failed") and _world.has_failed():
+		_simulation_failed = true
+	if _simulation_failed:
+		_publish_failure_snapshot()
+		return
+	# Reserve exactly one identity for both publications from this owner turn.
+	# The physical bridge's duplicate fence must never see competing sequences.
+	_snapshot_serial += 1
+	var copy_start_usec: int = Time.get_ticks_usec()
+	var now_usec: int = Time.get_ticks_usec()
+	var render_exchange_time_ms: float = 0.0
+	var hard_surface_packet_time_ms: float = 0.0
+	var render_serial_before: int = _pending_render_snapshot_serial
+	var render_generation_advanced: bool = false
+	var acknowledged_render_serial: int = 0
+	var ack_observed_usec: int = 0
+	var ack_gated_publication: bool = false
+	var trace_generation: int = 0
+	var offered_body_sample: int = -1
+	var offered_body_publication: int = 0
+	var render_exchange_started_usec: int = 0
+	var render_exchange_completed_usec: int = 0
+	var native_render_capture_usec: int = 0
+	var native_render_status: int = -1
+	var native_render_recovery_status: int = -1
+	var render_full_refresh_requested: bool = false
+	_mutex.lock()
+	acknowledged_render_serial = _acknowledged_render_snapshot_serial
+	ack_observed_usec = Time.get_ticks_usec()
+	ack_gated_publication = _engine_lab_ack_gated_publication
+	trace_generation = _render_cadence_trace_generation if _render_cadence_trace_active else 0
+	offered_body_sample = int(_workbench_sample.states[10]) \
+		if not _workbench_sample.is_empty() and not _workbench_sample.states.is_empty() else -1
+	offered_body_publication = _rigid_body_publication
+	if trace_generation > 0 and acknowledged_render_serial > _render_cadence_trace_last_ack:
+		_append_render_cadence_event_locked({"kind":"worker_ack",
+			"start_usec":ack_observed_usec,"completed_usec":ack_observed_usec,
+			"render_serial":acknowledged_render_serial,"previous_serial":_render_cadence_trace_last_ack,
+			"initial_observation":_render_cadence_trace_last_ack < 0,
+			"world_generation":_world_generation,"tick_index":int(_world.tick_index),
+			"pending_render_serial":_pending_render_snapshot_serial,
+			"pending_patch_count":_pending_render_patch_rectangles.size()/RENDER_PATCH_METADATA_STRIDE,
+			"pending_patch_bytes":_pending_render_patch_cells.size()},trace_generation)
+		_render_cadence_trace_last_ack = acknowledged_render_serial
+	render_full_refresh_requested = _render_full_refresh_requested
+	_render_full_refresh_requested = false
+	_mutex.unlock()
+	_observe_render_acknowledgement(acknowledged_render_serial)
+	var force_terrain_refresh: bool = force_render_full_refresh
+	force_render_full_refresh = (force_render_full_refresh or render_full_refresh_requested
+		or _world_generation != _pending_render_world_generation or _pending_render_recovery_required)
+	if (
+		_pending_render_snapshot_serial > 0
+		and acknowledged_render_serial >= _pending_render_snapshot_serial
+	):
+		_clear_pending_render_patches()
+	var workbench_physics: bool = _workbench_extent != Vector2i.ZERO
+	if not workbench_physics:
+		_mutex.lock()
+		_published_physics_snapshot = null
+		_mutex.unlock()
+	var render_due: bool = (
+		force_render_full_refresh
+		or (
+			_world.revision != _last_attempted_render_revision
+			and now_usec - _last_render_snapshot_usec >= render_snapshot_interval_usec
+		)
+	)
+	var render_gate_holding: bool = render_due and ack_gated_publication \
+		and _pending_render_snapshot_serial > acknowledged_render_serial and not force_render_full_refresh
+	# A rejected upload cannot be ACKed. Explicit resync and accepted World
+	# replacement must therefore bypass this diagnostic-only publication gate;
+	# otherwise a missing/corrupt payload would prevent its own repair forever.
+	if render_gate_holding:
+		_render_publication_gate_holds += 1
+		if trace_generation > 0:
+			_append_render_cadence_event({"kind":"render_gate_hold",
+				"start_usec":now_usec,"completed_usec":Time.get_ticks_usec(),
+				"world_generation":_world_generation,"tick_index":int(_world.tick_index),
+				"revision":int(_world.revision),"pending_render_serial":_pending_render_snapshot_serial,
+				"acknowledged_render_serial":acknowledged_render_serial},trace_generation)
+	if render_due and not render_gate_holding:
+		var render_exchange_start_usec: int = Time.get_ticks_usec()
+		render_exchange_started_usec = render_exchange_start_usec
+		if _world.has_method(&"take_render_snapshot"):
+			_pending_render_recovery_required = force_render_full_refresh
+			var packet: Dictionary = _take_native_render_snapshot(force_render_full_refresh)
+			native_render_capture_usec = Time.get_ticks_usec() - render_exchange_start_usec
+			native_render_status = int(packet.get("status", -1))
+			_append_native_render_packet(packet)
+			if _pending_render_recovery_required and not force_render_full_refresh:
+				var recovery_started_usec: int = Time.get_ticks_usec()
+				var recovery_packet: Dictionary = _take_native_render_snapshot(true)
+				native_render_capture_usec += Time.get_ticks_usec() - recovery_started_usec
+				native_render_recovery_status = int(recovery_packet.get("status", -1))
+				_append_native_render_packet(recovery_packet)
+		else:
+			_snapshot_cells = PackedByteArray(_world.get_cells())
+			_fallback_render_snapshot_serial += 1
+			_pending_render_snapshot_serial = _fallback_render_snapshot_serial
+			_pending_render_channels = 1
+			_pending_render_full_refresh = true
+			_pending_render_patch_rectangles = PackedInt32Array([
+				0,
+				0,
+				CyberCellWorld.WORLD_WIDTH,
+				CyberCellWorld.WORLD_HEIGHT,
+				0,
+				CyberCellWorld.WORLD_WIDTH,
+			])
+			_pending_render_patch_cells = _snapshot_cells
+			_pending_render_payload_generation += 1
+		_last_attempted_render_revision = _world.revision
+		_last_render_snapshot_usec = now_usec
+		if _pending_render_snapshot_serial > render_serial_before:
+			_snapshot_world_revision = _world.revision
+			_pending_render_world_generation = _world_generation
+			_pending_render_tick_index = int(_world.tick_index)
+			_pending_render_generated_usec = now_usec
+			_pending_render_character_position = _character.position
+			_pending_render_character_velocity = _character.velocity
+			_pending_render_character_grounded = _character.grounded
+			_pending_render_rigid_body_states = rigid_body_states.duplicate()
+			_pending_render_simulation_time_ms = _world.simulation_time_ms
+			_pending_render_worker_step_time_ms = worker_step_time_ms
+			_pending_render_worker_overruns = _worker_overruns
+			render_generation_advanced = true
+		render_exchange_completed_usec = Time.get_ticks_usec()
+		render_exchange_time_ms = float(render_exchange_completed_usec-render_exchange_start_usec)/1000.0
+	hard_surface_packet_time_ms = _refresh_hard_surface_snapshot(force_terrain_refresh, rigid_body_epoch, now_usec)
+	var current_hard_surface_revision: int = int(_world.hard_surface_revision)
 	var copy_time_ms: float = float(Time.get_ticks_usec() - copy_start_usec) / 1000.0
 	var publication_start_usec: int = Time.get_ticks_usec()
 
@@ -3808,14 +4511,29 @@ func _publish_snapshot(
 	snapshot.actor_prototype_status = _actor_prototype_status
 	snapshot.actor_prototype_reset_serial = _actor_prototype_result_serial
 	snapshot.actor_prototype_reset_applied = _actor_prototype_reset_applied
-	_snapshot_serial += 1
 	snapshot.serial = _snapshot_serial
 	snapshot.published_usec = Time.get_ticks_usec()
+	snapshot.physics_world_generation = _world_generation
+	if _last_native_tick_world_generation == _world_generation:
+		snapshot.last_native_tick_started_usec = _last_native_tick_started_usec
+		snapshot.last_native_tick_completed_usec = _last_native_tick_completed_usec
+		snapshot.last_native_tick_world_generation = _last_native_tick_world_generation
+		snapshot.last_native_tick_body_sample = _last_native_tick_body_sample
+		snapshot.last_native_tick_body_publication = _last_native_tick_body_publication
+		snapshot.last_native_tick_lateness_usec = _last_native_tick_lateness_usec
 	snapshot.world_revision = _snapshot_world_revision
 	snapshot.simulation_world_revision = int(_world.revision)
 	snapshot.hard_surface_revision = _snapshot_hard_surface_revision
 	snapshot.cells = _snapshot_cells
 	snapshot.render_snapshot_serial = _pending_render_snapshot_serial
+	snapshot.render_acknowledged_serial = acknowledged_render_serial
+	snapshot.render_ack_observed_usec = ack_observed_usec
+	snapshot.render_publication_ack_gated = ack_gated_publication
+	snapshot.render_publication_gate_holds = _render_publication_gate_holds
+	snapshot.render_pending_patch_count = _pending_render_patch_rectangles.size()/RENDER_PATCH_METADATA_STRIDE
+	snapshot.render_pending_patch_bytes = _pending_render_patch_cells.size()
+	snapshot.offered_body_sample = offered_body_sample
+	snapshot.offered_body_publication = offered_body_publication
 	snapshot.render_world_generation = _pending_render_world_generation
 	snapshot.render_channels = _pending_render_channels
 	snapshot.render_full_refresh = _pending_render_full_refresh
@@ -3828,9 +4546,6 @@ func _publish_snapshot(
 	snapshot.render_simulation_time_ms = _pending_render_simulation_time_ms
 	snapshot.render_worker_step_time_ms = _pending_render_worker_step_time_ms
 	snapshot.render_worker_overruns = _pending_render_worker_overruns
-	_refresh_published_render_payload()
-	snapshot.render_patch_rectangles = _published_render_patch_rectangles
-	snapshot.render_patch_cells = _published_render_patch_cells
 	snapshot.hard_surface_rectangles = _snapshot_hard_surface_rectangles
 	snapshot.hard_surface_rectangles_valid = _snapshot_hard_surface_rectangles_valid
 	snapshot.hard_surface_chunk_rectangles = _snapshot_hard_surface_chunk_rectangles
@@ -3952,6 +4667,17 @@ func _publish_snapshot(
 		},
 	}
 	if _workbench_extent != Vector2i.ZERO:
+		var response_usec := _coupling_response_time(snapshot)
+		if _workbench_display.get("coupling_only",false) and response_usec < 0:
+			# A later authoring/status publication may change the World without
+			# changing the offered body sample. Retire its stale force packet and
+			# allow the SAME offered sample to prepare against the new World.
+			_workbench_result = {}
+			_workbench_display = {}
+			_workbench_completed_sample = -1
+			_workbench_prepared_sample = -1
+			_coupling_rounds_remaining = 0
+		snapshot.lab_context["coupling_response_usec"] = response_usec
 		snapshot.lab_context["workbench_gcr"] = _workbench_result
 		snapshot.lab_context["workbench_display"] = _workbench_display
 		# The immutable geometry packet is throttled; this revision identifies
@@ -3972,11 +4698,38 @@ func _publish_snapshot(
 			snapshot.lab_context["water_spray"] = spray
 		if _world.has_method(&"get_wave_flow_status"):
 			snapshot.lab_context["wave_flow"] = _world.get_wave_flow_status()
+	# Finish all native observations before either mailbox exposes a healthy
+	# turn. A getter can discover a fault even after a successful native tick.
+	if _world.has_method(&"has_failed") and _world.has_failed():
+		_simulation_failed = true
+	if _physics_causal_trace and trace_generation > 0 and workbench_physics:
+		var event: Dictionary = _workbench_phase_event("native_observations_ready",
+			copy_start_usec,Time.get_ticks_usec(),_workbench_consumed_sample,
+			"native_failed" if _simulation_failed else "healthy",_world_generation,
+			snapshot.tick_index,current_hard_surface_revision)
+		event["completed_body_sample"] = _workbench_completed_sample
+		_append_render_cadence_event(event,trace_generation)
+	if _simulation_failed:
+		_publish_failure_snapshot()
+		return
+	if workbench_physics and not _combined_physics_publication:
+		var physics_completion: CyberSimulationSnapshot = _publish_workbench_physics_snapshot(snapshot, trace_generation)
+		if physics_completion != null:
+			snapshot.physics_handoff_usec = physics_completion.physics_handoff_usec
+			snapshot.first_physics_handoff_usec = physics_completion.first_physics_handoff_usec
+	# The early mailbox can overlap owned material copies and metadata packing.
+	_refresh_published_render_payload()
+	snapshot.render_patch_rectangles = _published_render_patch_rectangles
+	snapshot.render_patch_cells = _published_render_patch_cells
 	if render_generation_advanced:
 		var render_micro: Dictionary = snapshot.lab_context.get("microscenario", {})
 		var render_presentation: Dictionary = render_micro.get("presentation", {})
 		var render_profile: Dictionary = snapshot.lab_context.get("profile", {})
 		_pending_render_context = {
+			# This stamp travels with this material publication, not a newer
+			# status snapshot that happens to repeat its pending render payload.
+			"native_completed_usec":_last_native_tick_completed_usec \
+				if _last_native_tick_world_generation == _world_generation else -1,
 			"actor_prototypes": snapshot.actor_prototypes.duplicate(true),
 			"actor_usables": snapshot.actor_usables.duplicate(true),
 			"micro_active": bool(snapshot.lab_context.get("micro_active", false)),
@@ -4007,15 +4760,42 @@ func _publish_snapshot(
 		Time.get_ticks_usec() - publication_start_usec
 	) / 1000.0
 
-	# A render/collider/status getter can itself discover a native fault. Discard
-	# the entire candidate publication and keep the last valid immutable payload.
-	if _world.has_method(&"has_failed") and _world.has_failed():
-		_simulation_failed = true
-		_publish_failure_snapshot()
-		return
 	_mutex.lock()
+	snapshot.worker_handoff_usec = Time.get_ticks_usec()
+	if render_generation_advanced and trace_generation > 0:
+		_append_render_cadence_event_locked({"kind":"render_publication",
+			"start_usec":render_exchange_started_usec,"completed_usec":render_exchange_completed_usec,
+			"handoff_usec":snapshot.worker_handoff_usec,"snapshot_serial":snapshot.serial,
+			"render_serial":snapshot.render_snapshot_serial,"world_generation":snapshot.render_world_generation,
+			"tick_index":snapshot.render_tick_index,"revision":snapshot.world_revision,
+			"generated_usec":snapshot.render_generated_usec,"body_sample":snapshot.last_native_tick_body_sample,
+			"acknowledged_render_serial":acknowledged_render_serial,"ack_gated":ack_gated_publication,
+			"forced_refresh_bypasses_ack":ack_gated_publication and force_render_full_refresh
+				and render_serial_before > acknowledged_render_serial,
+			"patch_count":snapshot.render_pending_patch_count,"patch_bytes":snapshot.render_pending_patch_bytes,
+			"native_capture_usec":native_render_capture_usec,"native_capture_status":native_render_status,
+			"native_force_full_requested":force_render_full_refresh,"native_recovery_status":native_render_recovery_status,
+			"full_refresh":snapshot.render_full_refresh},trace_generation)
+	if workbench_physics and _combined_physics_publication:
+		var admitted: bool = _running and rigid_body_epoch == _physical_effect_epoch \
+			and _workbench_sample.get("epoch", -1) == rigid_body_epoch
+		if admitted and _record_owner_first_handoff: _record_first_handoff_locked(snapshot)
+		_published_physics_snapshot = snapshot if admitted else null
+		if _physics_causal_trace and trace_generation > 0 and _published_physics_snapshot != null:
+			snapshot.physics_handoff_usec = snapshot.worker_handoff_usec
+			_trace_workbench_handoff_locked(snapshot,trace_generation,"combined")
 	_published_snapshot = snapshot
 	_mutex.unlock()
+
+	if workbench_physics: _notify_workbench_completion(rigid_body_epoch)
+
+
+func _notify_workbench_completion(rigid_body_epoch: int) -> void:
+	if _notify_sample_completion and _workbench_completed_sample >= 0 \
+			and (_last_notified_sample != _workbench_completed_sample or _last_notified_epoch != rigid_body_epoch):
+		_last_notified_sample = _workbench_completed_sample
+		_last_notified_epoch = rigid_body_epoch
+		workbench_sample_completed.emit()
 
 
 func has_failed() -> bool:
@@ -4054,6 +4834,8 @@ func _publish_failure_snapshot() -> void:
 	snapshot.last_tick_error = str(_world.get_last_tick_error())
 	_mutex.lock()
 	_pending_emissions.clear()
+	snapshot.worker_handoff_usec = Time.get_ticks_usec()
+	_published_physics_snapshot = snapshot if _running else null
 	_published_snapshot = snapshot
 	_mutex.unlock()
 
@@ -4069,6 +4851,7 @@ func _observe_render_acknowledgement(_serial: int) -> void:
 
 func _clear_pending_render_patches() -> void:
 	_pending_render_full_refresh = false
+	_pending_render_baseline_bytes = 0
 	_pending_render_patch_rectangles = PackedInt32Array()
 	_pending_render_patch_cells = PackedByteArray()
 	_pending_render_payload_generation += 1
@@ -4077,11 +4860,14 @@ func _clear_pending_render_patches() -> void:
 func _refresh_published_render_payload() -> void:
 	if _published_render_payload_generation == _pending_render_payload_generation:
 		return
-	# Packed arrays are reference types. These copies are the ownership boundary
-	# between the worker's mutable accumulation buffers and immutable snapshots
-	# consumed by the main thread.
+	# A lone complete packet stays immutable. The first appended delta detaches
+	# it from the worker journal. Once the journal contains deltas, every
+	# publication needs its own bytes because subsequent appends mutate it.
 	_published_render_patch_rectangles = _pending_render_patch_rectangles.duplicate()
-	_published_render_patch_cells = _pending_render_patch_cells.duplicate()
+	if _pending_render_baseline_bytes > 0 and _pending_render_patch_cells.size() == _pending_render_baseline_bytes:
+		_published_render_patch_cells = _pending_render_patch_cells
+	else:
+		_published_render_patch_cells = _pending_render_patch_cells.duplicate()
 	_published_render_payload_generation = _pending_render_payload_generation
 
 
@@ -4097,12 +4883,36 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 	var packet_serial: int = int(packet.get("serial", 0))
 	var packet_channels: int = int(packet.get("channels", 2))
 	var packet_full_refresh: bool = bool(packet.get("full_refresh", false))
+	var extent: Vector2i = _workbench_extent if _workbench_extent != Vector2i.ZERO else \
+		Vector2i(CyberCellWorld.WORLD_WIDTH, CyberCellWorld.WORLD_HEIGHT)
 	if packet_full_refresh:
-		_pending_render_patch_rectangles = packet_rectangles
+		if packet_channels not in [1, 2] or packet_rectangles != PackedInt32Array([
+				0, 0, extent.x, extent.y, 0, extent.x * packet_channels]) \
+				or packet_cells.size() != extent.x * extent.y * packet_channels:
+			_pending_render_recovery_required = true
+			return
+		_pending_render_patch_rectangles = packet_rectangles.duplicate()
 		_pending_render_patch_cells = packet_cells
+		_snapshot_cells = packet_cells
+		_pending_render_baseline_bytes = packet_cells.size()
 		_pending_render_full_refresh = true
+		_pending_render_recovery_required = false
 	else:
+		if _pending_render_recovery_required:
+			return
 		var data_offset_base: int = _pending_render_patch_cells.size()
+		var dirty_budget: int = maxi(CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT, extent.x * extent.y) * 2
+		var baseline_metadata: int = RENDER_PATCH_METADATA_STRIDE if _pending_render_baseline_bytes > 0 else 0
+		if packet_channels not in [1, 2] \
+				or (data_offset_base > 0 and packet_channels != _pending_render_channels) \
+				or packet_rectangles.size() % RENDER_PATCH_METADATA_STRIDE != 0 \
+				or data_offset_base - _pending_render_baseline_bytes + packet_cells.size() > dirty_budget \
+				or _pending_render_patch_rectangles.size() - baseline_metadata + packet_rectangles.size() \
+					> MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE:
+			_pending_render_recovery_required = true
+			return
+		if baseline_metadata > 0 and data_offset_base == _pending_render_baseline_bytes:
+			_pending_render_patch_cells = _pending_render_patch_cells.duplicate()
 		_pending_render_patch_cells.append_array(packet_cells)
 		for metadata_offset: int in range(
 			0,

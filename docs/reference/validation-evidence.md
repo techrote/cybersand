@@ -4,11 +4,24 @@ status: Current
 document-kind: reference
 scope: Dated source and runtime evidence with platform, artifact identity, coverage and missing gates
 canonical-for: [validation-results, platform-evidence, historical-evidence-boundaries]
-last-reviewed: 2026-11-04
+last-reviewed: 2026-11-24
 related-documents: [../operations/testing-validation-and-replay.md, level-saves-and-replay.md, ../audits/m11/README.md, ../operations/development-claims-remediation-programme.md, ../audits/2026-10-25-lcb002-pressure-variants.md]
 ---
 
 # Validation evidence ledger
+
+## PUBPRES material deadline implementation screen — 2026-11-24
+
+The default-off material deadline arm has a
+[source and execution checkpoint](../audits/2026-11-24-pubpres-playability-final/material-deadline-implementation.md)
+and compact [raw receipt](../audits/2026-11-24-pubpres-playability-final/material-deadline-local-receipt.json).
+Exact official Godot 4.7 passes 57 native-independent policy checks, 25 actual
+Main owner-identity/cancellation checks without bodies or uploads, and a headless
+script parse of the actual Main/worker GPU-history fixture. Synthetic scheduling
+clocks and copied identities establish those scoped rules only. Actual current/previous GPU
+reads, source-matched platform execution, physical-step timing, sustained
+Workbench interaction and physical NVIDIA acceptance remain unexecuted for this
+arm at that checkpoint. The source is Draft/HOLD and the selector remains off.
 
 ## MAT-AUTH-002 Phase A evidence boundary — 2026-11-04
 

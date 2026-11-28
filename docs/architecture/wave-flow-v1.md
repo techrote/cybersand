@@ -4,7 +4,7 @@ status: Current
 document-kind: reference
 scope: Current Wave Flow law, player defaults, bulk strip-parallel execution, admission, state and memory
 canonical-for: [wave-flow-v1]
-last-reviewed: 2026-11-20
+last-reviewed: 2026-11-24
 related-documents: [liquid-solver-family-policy.md, pressure-flow-v1.md, inertial-cellular-v1.md, simulation-tick-and-threading.md, rigid-body-and-cellular-coupling.md, ../audits/2026-11-15-wave-mt-001-wave-flow.md, ../audits/2026-11-15-wave-mt-001-completion.md]
 ---
 
@@ -171,6 +171,15 @@ are a numerical capacity contract, not a high-pressure physical model.
 
 ### Sparse work
 
+- The exclusive owner derives the exact bounding rectangle of the current
+  nonzero transient body cells before dispatch. The column pass probes only
+  that occupied rectangle, instead of the configured obstacle allocation
+  (which can cover a complete Workbench canvas for one small actor). The
+  original configured region still determines dry/clean metadata, so this
+  removes only lookups that must return zero. Cells, impulses, column order,
+  barriers and physical sample admission are unchanged. This scoped PUBPRES
+  successor is Draft/HOLD; [source proof and qualification](../audits/2026-11-24-pubpres-playability-final/native-architecture.md)
+  distinguish native measurements from whole-Workbench playability.
 - A chunk is solved until it is at exact rest, and again when an owner edit,
   kernel write, body mask or region re-entry touches it; its eight neighbours
   are solved with it. Rest means 30 consecutive ticks in which no cell changed
@@ -222,6 +231,21 @@ global mask endpoint. Valid sparse origins may be more than `INT64_MAX` apart,
 and a configured mask's mathematical endpoint may exceed the signed range;
 only representable occupied cells are accessed. A distant, disjoint mask covers
 no strip cells. This avoids overflow before a clamp could take effect.
+
+The PUBPRES continuation also bounds obstacle probes by the actual sparse
+occupied-cell rectangle, built once by the exclusive owner. The original
+allocated mask region still controls dry/clean classification. Its separate
+derived `empty_derived` half-cache certifies only that all actual cells are Empty
+and retained head/meta bytes are zero; it makes no claim about flux. A complete
+selected half outside actual occupied bounds can fill zero column scratch and,
+if column physics leaves it empty, omit redundant zero scatter. Gravity,
+refill, head/depth reconstruction, dry/clean decisions, retained-face retirement,
+flux snapshot, flux and apply still run unchanged. Incoming Water, bodies or
+other materials revoke reuse. Owner/material mutations wake the half, positive
+Wave writes revoke it, and partial selections cannot certify untouched cells.
+The [candidate proof and qualification record](../audits/2026-11-24-pubpres-playability-final/native-empty-derived.md)
+distinguishes source correctness, native measurements and unfulfilled gameplay
+acceptance. This continuation remains Draft/HOLD.
 
 ## Waterwall spill (experimental, WAVE-WATERWALL-001)
 
@@ -347,6 +371,10 @@ includes solver version, substeps, round/dither phase, flux, previous support an
 weight metadata, quiet/wake eligibility and the sparse skip state, in addition
 to the ordinary cells, masks, regions, policies and quantity ledger. Diagnostic
 timing, participant counts and allocation capacities are excluded. This Wave
+identity also excludes the redundant Empty/zero-derived cache: its certificate
+can only replace reads/writes of values already determined by hashed actual
+cells, head and meta. Original clean/dry/sleep/flux state remains hashed exactly.
+This does not add a physical-state serialization route. The Wave
 identity deliberately binds resident solver chunks; legacy complete hashes keep
 their existing empty-resident equivalence and byte stream. `state_hash` of a
 Wave World binds the same solver state (version, substeps, round, flux, weight

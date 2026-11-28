@@ -29,6 +29,7 @@
 # Retained raw campaign reports preserve their original target-host bytes.
 docs/audits/play-auto002-2026-10-28/windows-campaign.json -text whitespace=cr-at-eol
 docs/audits/play-auto002-2026-10-28/linux-campaign.json -text
+docs/audits/2026-11-24-pubpres-playability-final/final03-evaluator-manifest.json -text whitespace=cr-at-eol
 tools/swarm45/fixtures/ui_process_q5/* -text whitespace=cr-at-eol
 *.md text eol=lf
 *.yml text eol=lf
@@ -42,5 +43,10 @@ tools/swarm45/fixtures/ui_process_q5/* -text whitespace=cr-at-eol
 *.dylib filter=lfs diff=lfs merge=lfs -text
 *.wasm filter=lfs diff=lfs merge=lfs -text
 godot/addons/godot-rapier2d/bin/*.framework/libgodot_rapier.* filter=lfs diff=lfs merge=lfs -text
+
+# PUBPRES final measurement-driver closure compares these new script bytes exactly.
+tools/pubpres_final/*.ps1 text eol=lf
+# The recovery driver includes its shipped PowerShell bytes in source custody.
+tools/pubpres_recovery_windows/*.ps1 text eol=lf
 godot/tools/gentek_reciprocal filter=lfs diff=lfs merge=lfs -text
 godot/tools/gentek_reciprocal.exe filter=lfs diff=lfs merge=lfs -text

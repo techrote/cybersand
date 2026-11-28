@@ -1,0 +1,37 @@
+{
+  "schema": "pubpres-endpoint-replay-adversaries-v1",
+  "receipt_sha256": "5b9bc187653ff32c5f6053cb43be7b59e017e84da2f33dc479a1a5763f3a70bf",
+  "reader_sha256": "48b1af3561d18a6355310a5a3dfeeeca64e98633a91e1db3f107f3caf6cdba1f",
+  "controls": [
+    {
+      "control": "self-consistent hard material substitution",
+      "rejected": true,
+      "reason": "Endpoint obstacle is not the observed retained Water footprint"
+    },
+    {
+      "control": "false actual RID pose",
+      "rejected": true,
+      "reason": "Bridge pose differs from actual Rapier RID observation"
+    },
+    {
+      "control": "missing native unresolved overlap",
+      "rejected": true,
+      "reason": "Native overlap belongs to another body or disposition"
+    },
+    {
+      "control": "false endpoint clearance",
+      "rejected": true,
+      "reason": "Actual endpoint refusals differ from the causal finding"
+    },
+    {
+      "control": "forged engine identity",
+      "rejected": true,
+      "reason": "Unregistered application/engine/display identity"
+    },
+    {
+      "control": "float completion counter",
+      "rejected": true,
+      "reason": "Session progress is not paired with real bridge manual-step observations"
+    }
+  ]
+}

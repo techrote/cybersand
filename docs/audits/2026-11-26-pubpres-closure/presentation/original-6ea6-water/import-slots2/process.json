@@ -1,0 +1,18 @@
+{
+  "command": [
+    "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/9cef565acfec/presentation-evidence/water-stock-6ea6c85c/project",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--editor",
+    "--import",
+    "--quit"
+  ],
+  "timeout_seconds": 1200,
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 8.504872390999935,
+  "log_sha256": "5b69c10007656d7e59790d324da75324df6a9fce75b8fef7878e2fd910754356"
+}

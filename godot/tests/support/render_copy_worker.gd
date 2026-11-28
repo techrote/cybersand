@@ -97,8 +97,8 @@ func _append_native_render_packet(packet: Dictionary) -> void:
 	var after := pending()
 	after["before"] = before
 	after["packet_full"] = packet.get("full_refresh", false)
-	after["byte_overflow"] = _pending_render_patch_cells.size() > CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
-	after["rectangle_overflow"] = _pending_render_patch_rectangles.size() > MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
+	after["byte_overflow"] = _pending_render_patch_cells.size() - _pending_render_baseline_bytes > CyberCellWorld.WORLD_WIDTH * CyberCellWorld.WORLD_HEIGHT * 2
+	after["rectangle_overflow"] = _pending_render_patch_rectangles.size() - (RENDER_PATCH_METADATA_STRIDE if _pending_render_baseline_bytes > 0 else 0) > MAX_PENDING_RENDER_PATCHES * RENDER_PATCH_METADATA_STRIDE
 	trace.record("accumulate", after)
 	if dirty_onto_full:
 		trace.record("dirty_onto_full", after)

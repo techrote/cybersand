@@ -1,0 +1,25 @@
+{
+  "schema": "pubpres-native-original-fixture-failure-v1",
+  "source": "864cf7dcbb4e5ea8d8cba8d06eb9988c3b99cf14",
+  "original_checks_before_failure": 28449,
+  "original_exit": 1,
+  "diagnostic_only_reproduction": {
+    "law": "Wave",
+    "tick": 13,
+    "workers": 1,
+    "actual_tasks": false,
+    "outcome": 7,
+    "outcome_name": "CapacityFull",
+    "quantity": 0,
+    "live": 64,
+    "capacity": 64
+  },
+  "cause": "Prepared test omitted legitimate full-capacity refusal while enabling Wave spill with64 ballistic slots. Failure occurs first in single-worker all-workers control before candidate step at tick13.",
+  "repair": "Require actual full-capacity evidence and exact outcome/quantity/live receipt parity across all four modes; retain per-tick content/state/physical hashes, quantity, contacts and required-work equality unchanged; require positive launched and capacity-refused exercise.",
+  "original_evidence": [
+    "original-world-build.txt",
+    "original-world-run.txt",
+    "original-fixture-diagnostic.txt"
+  ],
+  "performance_claim": false
+}

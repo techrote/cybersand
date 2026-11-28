@@ -1,0 +1,1363 @@
+{
+  "schema": "pubpres-submerged-endpoint-independent-peer-v1",
+  "receipt_sha256": "5b9bc187653ff32c5f6053cb43be7b59e017e84da2f33dc479a1a5763f3a70bf",
+  "reader_sha256": "5a82c59bc2431746d0ac7f965c668aeebf144729fbd22aef634fe06c7224a29e",
+  "application_source": "498fa47da062db702a74665f177e06f454d956aa",
+  "native_build_source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "application_native_inputs_unchanged": true,
+  "actual_runtime_hashes_verified": {
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "res://addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "33d9c39ecfca71c800f538dbf3edbbb85675c0c65be35d6af525f699b7d15dc0",
+    "res://addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+  },
+  "application_files_verified": {
+    "scripts/main.gd": "fc303860a47dcb95a422892af58095fa8e3b2d90470aaddd6eb1921729de5010",
+    "scripts/workbench_presentation_coherence.gd": "7718b31df67e7d2163e06f76a9f637e5ecffe25aed817836f866a5a29648f25d"
+  },
+  "probe_sha256": "495a75aa49bc6470f3a9ff6c09d9417b9b0a062e880716855cc22073eadb698c",
+  "planes_checked": 112,
+  "planes": [
+    {
+      "capture": "paused_initial",
+      "slot": 0,
+      "history": "current",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 0,
+      "history": "previous",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 1,
+      "history": "current",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 1,
+      "history": "previous",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 2,
+      "history": "current",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 2,
+      "history": "previous",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 3,
+      "history": "current",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 3,
+      "history": "previous",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 4,
+      "history": "current",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 4,
+      "history": "previous",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 5,
+      "history": "current",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 5,
+      "history": "previous",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 6,
+      "history": "current",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 6,
+      "history": "previous",
+      "cells": 32,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 7,
+      "history": "current",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.4999
+    },
+    {
+      "capture": "paused_initial",
+      "slot": 7,
+      "history": "previous",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.4999
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 0,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 0,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 1,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 1,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 2,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 2,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 3,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 3,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 4,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 4,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 5,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 5,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 6,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 6,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 7,
+      "history": "current",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 7,
+      "history": "previous",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 0,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 0,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 1,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 11,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.08916391601559658
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 1,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 12,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.08916391601559658
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 2,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 2,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 3,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 3,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 4,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 4,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 5,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 5,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 6,
+      "history": "current",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 6,
+      "history": "previous",
+      "cells": 24,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0001
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 7,
+      "history": "current",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 7,
+      "history": "previous",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 0,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 0,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 1,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.016226904296988687
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 1,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.016226904296988687
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 2,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 2,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 3,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 3,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 4,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.42860605580005884
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 4,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.42860605580005884
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 5,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.33290406420206753
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 5,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.33290406420206753
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 6,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.09193437590297891
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 6,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.09193437590297891
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 7,
+      "history": "current",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 7,
+      "history": "previous",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 0,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 0,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 1,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.3248206542969887
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 1,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.3248206542969887
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 2,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 2,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 3,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 3,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 4,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.428481670857108
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 4,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.428481670857108
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 5,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.33290406413944384
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 5,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.33290406413944384
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 6,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.09175269391017803
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 6,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.09175269391017803
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 7,
+      "history": "current",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 7,
+      "history": "previous",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 0,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 0,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 1,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.15593637695301132
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 1,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.15593637695301132
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 2,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 2,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 3,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 3,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 4,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.428481670857108
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 4,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.428481670857108
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 5,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.33290406413944384
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 5,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.33290406413944384
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 6,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.0917534841857972
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 6,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.0917534841857972
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 7,
+      "history": "current",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 7,
+      "history": "previous",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 0,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 0,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.0018786409213882194
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 1,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.15593637695301132
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 1,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.15593637695301132
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 2,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 2,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 3,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 3,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.004458605983136843
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 4,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.428481670857108
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 4,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.428481670857108
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 5,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.33290406413944384
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 5,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.33290406413944384
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 6,
+      "history": "current",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.0917534841857972
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 6,
+      "history": "previous",
+      "cells": 21,
+      "occupied_cells": 21,
+      "materials": [
+        3
+      ],
+      "minimum_cell_boundary_distance": 0.0917534841857972
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 7,
+      "history": "current",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 7,
+      "history": "previous",
+      "cells": 112,
+      "occupied_cells": 0,
+      "materials": [],
+      "minimum_cell_boundary_distance": 0.49944223469516635
+    }
+  ],
+  "all_footprint_cell_centers_covered": true,
+  "unused_crop_border_rounding_differences": [
+    {
+      "capture": "ordinary_step_120",
+      "slot": 7,
+      "history": "current",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "ordinary_step_120",
+      "slot": 7,
+      "history": "previous",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 7,
+      "history": "current",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "ordinary_step_240",
+      "slot": 7,
+      "history": "previous",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 7,
+      "history": "current",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "ordinary_step_360",
+      "slot": 7,
+      "history": "previous",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 7,
+      "history": "current",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "ordinary_step_480",
+      "slot": 7,
+      "history": "previous",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 7,
+      "history": "current",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "ordinary_step_600",
+      "slot": 7,
+      "history": "previous",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 7,
+      "history": "current",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    },
+    {
+      "capture": "paused_camera_return",
+      "slot": 7,
+      "history": "previous",
+      "actual": [
+        171,
+        225,
+        10,
+        17
+      ],
+      "double_precision_box": [
+        170,
+        225,
+        12,
+        17
+      ]
+    }
+  ],
+  "actual_rids_unique_and_stable": true,
+  "terminal_identity_joins": [
+    {
+      "slot": 4,
+      "instance": 5,
+      "actual_rid": "19718",
+      "actual_pose": {
+        "radians": 3.56653436028864e-06,
+        "xy": [
+          287.571411132812,
+          494.517730712891
+        ]
+      },
+      "sample": 601,
+      "generation": 1,
+      "water_current": 21,
+      "water_previous": 21,
+      "native_unresolved": 21,
+      "native_displaced": 0,
+      "endpoint_refusals": 2,
+      "initial_sweep_reason": "bounded_pose_delta"
+    },
+    {
+      "slot": 5,
+      "instance": 6,
+      "actual_rid": "19723",
+      "actual_pose": {
+        "radians": -1.85770772986871e-06,
+        "xy": [
+          360.3330078125,
+          494.517730712891
+        ]
+      },
+      "sample": 601,
+      "generation": 1,
+      "water_current": 21,
+      "water_previous": 21,
+      "native_unresolved": 21,
+      "native_displaced": 0,
+      "endpoint_refusals": 2,
+      "initial_sweep_reason": "bounded_pose_delta"
+    },
+    {
+      "slot": 6,
+      "instance": 7,
+      "actual_rid": "19728",
+      "actual_pose": {
+        "radians": 2.19353432839853e-06,
+        "xy": [
+          429.908142089844,
+          494.517730712891
+        ]
+      },
+      "sample": 601,
+      "generation": 1,
+      "water_current": 21,
+      "water_previous": 21,
+      "native_unresolved": 21,
+      "native_displaced": 0,
+      "endpoint_refusals": 2,
+      "initial_sweep_reason": "bounded_pose_delta"
+    }
+  ],
+  "passed": true,
+  "limits": [
+    "Separate headless neutral/no-paint causal stimulus, not historical-capture replay or gameplay timing.",
+    "Full parent image hashes are retained but full parent bytes were not exported; bounded crops are source-bound actual get_region observations, not a separate cryptographic proof of the whole parent image.",
+    "Active snapshots legitimately lag physical completion; the strict contemporaneous native/material/endpoint finding uses the settled paused terminal only.",
+    "Recorded native Transform2D strings are rounded; the two actual endpoint-query numeric poses, rather than parsed rounded strings, match direct RID poses.",
+    "No graphical pixel, GPU completion, submitted camera matrix, physical NVIDIA or production-acceptance claim."
+  ],
+  "validator_hardening_requested": [
+    "Explicit unique/stable RID and terminal World/session/epoch/sample/generation predicates in reusable endpoint reader."
+  ],
+  "physical_acceptance": "HOLD"
+}

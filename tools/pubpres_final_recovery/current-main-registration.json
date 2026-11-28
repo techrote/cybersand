@@ -1,0 +1,17 @@
+{
+  "schema": "pubpres-closure-current-main-comparison-v1",
+  "current_main": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "order": ["N", "C", "C", "N"],
+  "cases": ["wave_512_follow", "wave_gameplay_2048_follow"],
+  "candidate_architectures": ["stock_safe", "atomic_safe0", "atomic_separate0", "atomic_separate4"],
+  "minimum_capture_usec": 10000000,
+  "minimum_real_steps": 144,
+  "maximum_capture_usec": 90000000,
+  "reported_gap_thresholds_ms": [100, 250, 500, 1000],
+  "control": "Exact accepted-main N, ordinary Full/combined/legacy/source-default/Safe, recovery selectors OFF. Independently built native runtime shares the exact candidate dependency/toolchain cohort.",
+  "candidate": "Exact committed resulting application, explicitly named qualified architecture, Full2/Early/coherent, continuation OFF, explicit Water and actual-task mode. No automatic default activation.",
+  "observer": "Same inherited frozen V3 physical/native/body/input observer and external process CPU/RSS observer in every arm. Supplementary presentation observer OFF in every arm. Freshness comes from the separately required same-source calibrated cohort; unavailable N pose ages are not invented.",
+  "admission": "Original V3 native/material/Water/terrain/actual callback/input/final framebuffer predicates. Exact render owner is the sole existing registered oracle extension. All six equal-step body/input pairings must agree. Same host, fixture, renderer, camera, workers and Water policy; only declared engine/owner and whole application/native source may differ.",
+  "direction": "Unchanged compare_registered_direction with reference N: every C rate exceeds every N rate; every C p95/p99 below every N; maxima and severe-gap counts no worse than the worse N. Preserve failed and adverse results.",
+  "scope": "Separate current accepted-main reconciliation comparison. No relabelling historical M/C/D evidence, single-patch attribution, input-to-visible inference or physical Windows/NVIDIA acceptance. No incompatible I capture attempted. Draft/HOLD."
+}

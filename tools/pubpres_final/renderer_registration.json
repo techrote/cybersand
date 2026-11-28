@@ -1,0 +1,31 @@
+{
+  "schema": "pubpres-final-renderer-isolation-registration-v1",
+  "platform": "windows",
+  "driver": "opengl3_angle",
+  "official_engine_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+  "patched_engine_sha256": "d6a1e5795205eb7968131df55f39916af112f716ec419fce5f97ccb48990fd45",
+  "patched_build_provenance_sha256": "a4be0fa432c77240c49e28ab53cc30b4cb97f898a0064e747e03f445ac04751c",
+  "patched_engine_source": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+  "patched_engine_build_source": "4e84820baa021f96c3c1957fb125786fb7ab5e6a",
+  "patched_engine_artifact": 14284768334,
+  "patched_engine_run": 43980022228,
+  "order": [
+    {"engine": "official", "render_thread": "safe"},
+    {"engine": "patched", "render_thread": "safe"},
+    {"engine": "patched", "render_thread": "separate"},
+    {"engine": "patched", "render_thread": "separate"},
+    {"engine": "patched", "render_thread": "safe"},
+    {"engine": "official", "render_thread": "safe"}
+  ],
+  "cases": ["wave_512_follow", "wave_gameplay_2048_follow"],
+  "material": "full",
+  "full_image_slots": 2,
+  "physics": "early",
+  "presentation": "coherent",
+  "same_frame_continuation": false,
+  "comparisons": {
+    "engine_safe_abba": [0, 1, 4, 5],
+    "patched_render_owner_abba": [1, 2, 3, 4]
+  },
+  "scope": "One exact current candidate/native/Rapier and Full-two/early/coherent policy throughout. Independently isolate engine package under Safe, then Safe/Separate ownership within the exact patched engine. The restored #609 engine repairs known startup, not a presumed performance gain. Original V3 remains unchanged; a mechanically checked successor requires the registered actual owner and every other original semantic gate. Main-delivered Separate frame_post_draw has no upload-specific material identity, GPU fence, physical scanout or physical NVIDIA acceptance. All outcomes remain Draft/HOLD."
+}

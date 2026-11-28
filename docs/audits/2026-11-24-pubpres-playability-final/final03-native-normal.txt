@@ -1,0 +1,767 @@
+gcc-13 -std=c11 -Wall -Wextra -Wpedantic -Inative/include -fsyntax-only native/tests/test_c_header.c
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_lcb_inertial.cpp native/tests/test_water_inertial.cpp native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp native/tests/test_lcb_pressure.cpp native/tests/test_pressure_moving_mask.cpp native/tests/test_pressure_setup_capacity.cpp native/tests/test_water_cellular_yield.cpp native/tests/test_water_normalization.cpp native/tests/test_liquid_run_receipt.cpp native/tests/test_liquid_construction_refusal.cpp native/tests/test_quantity_ledger.cpp native/tests/test_ballistic_water.cpp native/tests/test_workbench_pressure_heads.cpp -o build/tests
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3349:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3349 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5670:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+native/tests/test_lcb_inertial.cpp: In function ‘void {anonymous}::test_inertial_sparse_serial_seam()’:
+native/tests/test_lcb_inertial.cpp:429:33: warning: loop variable ‘start’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  429 |                 for (const auto start : {std::pair{3, 7}, std::pair{-5, -1}}) {
+      |                                 ^~~~~
+native/tests/test_lcb_inertial.cpp:429:33: note: use reference type to prevent copying
+  429 |                 for (const auto start : {std::pair{3, 7}, std::pair{-5, -1}}) {
+      |                                 ^~~~~
+      |                                 &
+native/tests/test_lcb_inertial.cpp: In function ‘uint64_t {anonymous}::check_resting_body_contact(int, int, int, int)’:
+native/tests/test_lcb_inertial.cpp:916:21: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  916 |     for (const auto [x, y] : kContactOrigins) {
+      |                     ^~~~~~
+native/tests/test_lcb_inertial.cpp:916:21: note: use reference type to prevent copying
+  916 |     for (const auto [x, y] : kContactOrigins) {
+      |                     ^~~~~~
+      |                     &
+native/tests/test_lcb_inertial.cpp: In function ‘void {anonymous}::test_inertial_body_contact()’:
+native/tests/test_lcb_inertial.cpp:1019:25: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+ 1019 |         for (const auto [dx, dy] : std::array<std::pair<int, int>, 5>{{{0, 1}, {-1, 0}, {1, 0}, {-1, 1}, {1, 1}}}) {
+      |                         ^~~~~~~~
+native/tests/test_lcb_inertial.cpp:1019:25: note: use reference type to prevent copying
+ 1019 |         for (const auto [dx, dy] : std::array<std::pair<int, int>, 5>{{{0, 1}, {-1, 0}, {1, 0}, {-1, 1}, {1, 1}}}) {
+      |                         ^~~~~~~~
+      |                         &
+In file included from native/tests/test_water_inertial.cpp:4:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:48:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   48 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+native/tests/test_water_inertial.cpp: In function ‘void {anonymous}::body_contacts()’:
+native/tests/test_water_inertial.cpp:211:54: warning: loop variable ‘normal’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  211 |     for (const auto workers:{1U,4U}) for (const auto normal:std::array<std::pair<int,int>,3>{{{0,1},{-1,1},{1,1}}}) {
+      |                                                      ^~~~~~
+native/tests/test_water_inertial.cpp:211:54: note: use reference type to prevent copying
+  211 |     for (const auto workers:{1U,4U}) for (const auto normal:std::array<std::pair<int,int>,3>{{{0,1},{-1,1},{1,1}}}) {
+      |                                                      ^~~~~~
+      |                                                      &
+native/tests/test_water_inertial.cpp:215:25: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  215 |         for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}}) {
+      |                         ^~~~~
+native/tests/test_water_inertial.cpp:215:25: note: use reference type to prevent copying
+  215 |         for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}}) {
+      |                         ^~~~~
+      |                         &
+native/tests/test_water_inertial.cpp:222:29: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  222 |             for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}})
+      |                             ^~~~~
+native/tests/test_water_inertial.cpp:222:29: note: use reference type to prevent copying
+  222 |             for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}})
+      |                             ^~~~~
+      |                             &
+native/tests/test_water_inertial.cpp: In function ‘void {anonymous}::unaligned_and_serial_activity()’:
+native/tests/test_water_inertial.cpp:533:20: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  533 |     for(const auto [chunk,block]:std::array<std::pair<int,int>,2>{{{10,3},{34,33}}})
+      |                    ^~~~~~~~~~~~~
+native/tests/test_water_inertial.cpp:533:20: note: use reference type to prevent copying
+  533 |     for(const auto [chunk,block]:std::array<std::pair<int,int>,2>{{{10,3},{34,33}}})
+      |                    ^~~~~~~~~~~~~
+      |                    &
+native/tests/test_water_inertial.cpp: In function ‘void test_water_inertial_carrying()’:
+native/tests/test_water_inertial.cpp:616:24: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  616 |         for(const auto [x,y]:std::array<std::pair<int,int>,2>{{{55,40},{10,-24}}}) {
+      |                        ^~~~~
+native/tests/test_water_inertial.cpp:616:24: note: use reference type to prevent copying
+  616 |         for(const auto [x,y]:std::array<std::pair<int,int>,2>{{{55,40},{10,-24}}}) {
+      |                        ^~~~~
+      |                        &
+In file included from native/tests/test_world.cpp:2:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:48:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   48 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+native/tests/test_world.cpp: In function ‘void test_water_experiment_policy_validation_and_coherence()’:
+native/tests/test_world.cpp:2960:21: warning: loop variable ‘invalid_policy’ creates a copy from type ‘const std::pair<unsigned char, unsigned char>’ [-Wrange-loop-construct]
+ 2960 |     for (const auto invalid_policy : {
+      |                     ^~~~~~~~~~~~~~
+native/tests/test_world.cpp:2960:21: note: use reference type to prevent copying
+ 2960 |     for (const auto invalid_policy : {
+      |                     ^~~~~~~~~~~~~~
+      |                     &
+native/tests/test_lcb_pressure.cpp: In lambda function:
+native/tests/test_lcb_pressure.cpp:987:14: warning: declaration of ‘config’ shadows a previous local [-Wshadow]
+  987 |         auto config = pressure_config();
+      |              ^~~~~~
+native/tests/test_lcb_pressure.cpp:938:10: note: shadowed declaration is here
+  938 |     auto config = pressure_config();
+      |          ^~~~~~
+native/tests/test_lcb_pressure.cpp:991:14: warning: declaration of ‘world’ shadows a previous local [-Wshadow]
+  991 |         auto world = std::make_unique<World>(config);
+      |              ^~~~~
+native/tests/test_lcb_pressure.cpp:942:11: note: shadowed declaration is here
+  942 |     World world(config);
+      |           ^~~~~
+In file included from native/include/cybersand/default_demo_recipe.hpp:3,
+                 from native/tests/test_pressure_setup_capacity.cpp:1:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:48:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   48 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+In file included from native/tests/test_water_cellular_yield.cpp:5:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:48:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   48 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+native/tests/test_water_cellular_yield.cpp: In function ‘void {anonymous}::admission_and_ingress()’:
+native/tests/test_water_cellular_yield.cpp:93:66: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   93 |         require(!world.set_cell_state(8,8,Material::Water,maximum-1U,0) &&
+      |                                                           ~~~~~~~^~~
+native/tests/test_ballistic_water.cpp: In function ‘void test_ballistic_water_persistence_and_parity()’:
+native/tests/test_ballistic_water.cpp:362:90: warning: conversion from ‘int64_t’ {aka ‘long int’} to ‘int32_t’ {aka ‘int’} may change value [-Wconversion]
+  362 |             (void)world.launch_ballistic_water(x, 50, centre(x), centre(48), (x % 5 - 2) * 150, -700 - (x % 7) * 40);
+      |                                                                              ~~~~~~~~~~~~^~~~~
+native/tests/test_ballistic_water.cpp:362:102: warning: conversion from ‘int64_t’ {aka ‘long int’} to ‘int32_t’ {aka ‘int’} may change value [-Wconversion]
+  362 |             (void)world.launch_ballistic_water(x, 50, centre(x), centre(48), (x % 5 - 2) * 150, -700 - (x % 7) * 40);
+      |                                                                                                 ~~~~~^~~~~~~~~~~~~~
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 native/tests/test_soliding_lifecycle.cpp -o build/test_soliding_lifecycle
+python3 tools/ci/native_build_configuration.py --output build/soliding-objects/normal/configuration.json
+Local native compiler configuration: changed
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3349:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3349 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5670:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 build/soliding-objects/normal/world.o build/soliding-objects/normal/material_rules.o build/soliding-objects/normal/scheduler_geometry.o build/soliding-objects/normal/settled_world_discovery.o build/soliding-objects/normal/render_snapshot.o build/soliding-objects/normal/c_api.o native/tests/test_settled_discovery.cpp -o build/test_settled_discovery
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 native/tests/test_settled_regions.cpp -o build/test_settled_regions
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 build/soliding-objects/normal/world.o build/soliding-objects/normal/material_rules.o build/soliding-objects/normal/scheduler_geometry.o build/soliding-objects/normal/settled_world_discovery.o build/soliding-objects/normal/render_snapshot.o build/soliding-objects/normal/c_api.o native/tests/test_settled_world_discovery.cpp -o build/test_settled_world_discovery
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 build/soliding-objects/normal/world.o build/soliding-objects/normal/material_rules.o build/soliding-objects/normal/scheduler_geometry.o build/soliding-objects/normal/settled_world_discovery.o build/soliding-objects/normal/render_snapshot.o build/soliding-objects/normal/c_api.o native/tests/test_stage3b_runtime_storage.cpp -o build/test_stage3b_runtime_storage
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 build/soliding-objects/normal/world.o build/soliding-objects/normal/material_rules.o build/soliding-objects/normal/scheduler_geometry.o build/soliding-objects/normal/settled_world_discovery.o build/soliding-objects/normal/render_snapshot.o build/soliding-objects/normal/c_api.o native/tests/test_stage3b_bounded_spatial_index.cpp -o build/test_stage3b_bounded_spatial_index
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 build/soliding-objects/normal/world.o build/soliding-objects/normal/material_rules.o build/soliding-objects/normal/scheduler_geometry.o build/soliding-objects/normal/settled_world_discovery.o build/soliding-objects/normal/render_snapshot.o build/soliding-objects/normal/c_api.o native/tests/test_stage3b_sparse_mutation_witness.cpp -o build/test_stage3b_sparse_mutation_witness
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 build/soliding-objects/normal/world.o build/soliding-objects/normal/material_rules.o build/soliding-objects/normal/scheduler_geometry.o build/soliding-objects/normal/settled_world_discovery.o build/soliding-objects/normal/render_snapshot.o build/soliding-objects/normal/c_api.o native/tests/test_stage3b_sparse_activity_deadline.cpp -o build/test_stage3b_sparse_activity_deadline
+./build/test_soliding_lifecycle
+PASS soliding lifecycle model: 384 complete transitions, 12 prepare/ack/commit guard refusals, 8 finalize quarantine guards, exact tuple/owner ledger, stale/cancel/capacity/exhaustion, eligibility/exclusion/quarantine
+./build/test_settled_discovery
+PASS settled discovery: exact work bounds, partial/ABA/tuple/signal/capacity/failure/coordinate/fairness tests; paired observer World neutrality workers1/4
+./build/test_settled_regions
+settled region tests passed
+./build/test_settled_world_discovery
+settled World discovery tests passed
+./build/test_stage3b_runtime_storage
+Stage-3B runtime-sized storage tests passed
+./build/test_stage3b_bounded_spatial_index
+Stage-3B bounded spatial-index tests passed
+./build/test_stage3b_sparse_mutation_witness
+Stage-3B sparse mutation/witness tests passed
+./build/test_stage3b_sparse_activity_deadline
+Stage-3B sparse activity/deadline tests passed
+mkdir -p build/worldgen-objects/normal-threaded
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror -c native/src/world_generation.cpp -o build/worldgen-objects/normal-threaded/world_generation.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror -c native/src/generation_fields.cpp -o build/worldgen-objects/normal-threaded/generation_fields.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror -c native/src/generation_typed_fields.cpp -o build/worldgen-objects/normal-threaded/generation_typed_fields.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror -c native/src/generation_spatial.cpp -o build/worldgen-objects/normal-threaded/generation_spatial.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror -c native/src/generation_grammar.cpp -o build/worldgen-objects/normal-threaded/generation_grammar.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror -c native/src/generation_planes.cpp -o build/worldgen-objects/normal-threaded/generation_planes.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal-threaded/world_generation.o build/worldgen-objects/normal-threaded/generation_fields.o build/worldgen-objects/normal-threaded/generation_typed_fields.o build/worldgen-objects/normal-threaded/generation_spatial.o build/worldgen-objects/normal-threaded/generation_grammar.o build/worldgen-objects/normal-threaded/generation_planes.o native/tests/test_generation_planes.cpp -o build/test_generation_planes
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal-threaded/world_generation.o build/worldgen-objects/normal-threaded/generation_fields.o build/worldgen-objects/normal-threaded/generation_typed_fields.o build/worldgen-objects/normal-threaded/generation_spatial.o build/worldgen-objects/normal-threaded/generation_grammar.o build/worldgen-objects/normal-threaded/generation_planes.o native/tests/test_generation_grammar.cpp -o build/test_generation_grammar
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal-threaded/world_generation.o build/worldgen-objects/normal-threaded/generation_fields.o build/worldgen-objects/normal-threaded/generation_typed_fields.o build/worldgen-objects/normal-threaded/generation_spatial.o build/worldgen-objects/normal-threaded/generation_grammar.o build/worldgen-objects/normal-threaded/generation_planes.o native/tests/test_generation_typed_integration.cpp -o build/test_generation_typed_integration
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal-threaded/generation_typed_fields.o build/worldgen-objects/normal-threaded/generation_spatial.o native/tests/test_generation_typed.cpp -o build/test_generation_typed
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal-threaded/generation_spatial.o native/tests/test_generation_spatial.cpp -o build/test_generation_spatial
+mkdir -p build/worldgen-objects/normal
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -Werror -c native/src/world_generation.cpp -o build/worldgen-objects/normal/world_generation.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -Werror -c native/src/generation_fields.cpp -o build/worldgen-objects/normal/generation_fields.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -Werror -c native/src/generation_typed_fields.cpp -o build/worldgen-objects/normal/generation_typed_fields.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -Werror -c native/src/generation_spatial.cpp -o build/worldgen-objects/normal/generation_spatial.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -Werror -c native/src/generation_grammar.cpp -o build/worldgen-objects/normal/generation_grammar.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -Werror -c native/src/generation_planes.cpp -o build/worldgen-objects/normal/generation_planes.o
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -Werror build/worldgen-objects/normal/world_generation.o build/worldgen-objects/normal/generation_fields.o build/worldgen-objects/normal/generation_typed_fields.o build/worldgen-objects/normal/generation_spatial.o build/worldgen-objects/normal/generation_grammar.o build/worldgen-objects/normal/generation_planes.o native/tests/test_world_generation.cpp -o build/test_world_generation
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_world_generation_install.cpp -o build/test_world_generation_install
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3349:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3349 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5670:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -Werror build/worldgen-objects/normal/generation_fields.o native/tests/test_generation_fields.cpp -o build/test_generation_fields
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -Werror build/worldgen-objects/normal/world_generation.o build/worldgen-objects/normal/generation_fields.o build/worldgen-objects/normal/generation_typed_fields.o build/worldgen-objects/normal/generation_spatial.o build/worldgen-objects/normal/generation_grammar.o build/worldgen-objects/normal/generation_planes.o native/tests/test_generation_modifiers.cpp -o build/test_generation_modifiers
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal/world_generation.o build/worldgen-objects/normal/generation_fields.o build/worldgen-objects/normal/generation_typed_fields.o build/worldgen-objects/normal/generation_spatial.o build/worldgen-objects/normal/generation_grammar.o build/worldgen-objects/normal/generation_planes.o native/tests/test_megatruss_station.cpp -o build/test_megatruss_station
+Running build/test_megatruss_station
+source_sha=c2f8a73d34448bc1496ecd84bca02f0812c80d27 run_id=45452580606 run_attempt=1 binary=test_megatruss_station
+{"status":"pass","assertions":1499,"gates":["same_seed_and_reverse_chunk_order","work_slicing_and_zero_budget","chunk_partition_and_signed_coordinates","bounds_do_not_rephase_station","parallel_requests_and_cancellation","large_signed_coordinate_stability","six_seed_programmes_and_negative_space","wall_thickness_controls_mass","glazing_toggle_is_local_material_substitution","portals_toggle_without_rephasing_structure","invalid_recipe_and_version_refusal","primary_chords_main_decks_and_transfer_cores","three_bay_primary_diagonal_continuity","protected_station_hall_rectangle","three_spatial_frequencies_and_member_mass","crossed_secondary_even_and_odd_panels","room_size_moves_macro_support_interval","floor_height_moves_chords_and_deck_hierarchy"],"measurements":{"minimum_clear_hall_width":221,"clear_hall_height":86,"supercell_repeat_width":384,"base_bay_width":64,"secondary_panel_pitch":16,"primary_diagonal_horizontal_run":192,"primary_member_measured_cells":13,"secondary_member_measured_cells":2,"supercell_height":288,"upper_chord_y":48,"lower_chord_y":144,"main_transit_deck_y":240}}
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal/world_generation.o build/worldgen-objects/normal/generation_fields.o build/worldgen-objects/normal/generation_typed_fields.o build/worldgen-objects/normal/generation_spatial.o build/worldgen-objects/normal/generation_grammar.o build/worldgen-objects/normal/generation_planes.o native/tests/test_seeded_typology_megablock.cpp -o build/test_seeded_typology_megablock
+Running build/test_seeded_typology_megablock
+source_sha=c2f8a73d34448bc1496ecd84bca02f0812c80d27 run_id=45452580606 run_attempt=1 binary=test_seeded_typology_megablock
+Megablock seed survey: 32/32 distinct full maps
+PASS Seeded Typology Megablock: 19750 assertions; 148 repaired CLASSIC material maps; 32 declared seeds
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal/world_generation.o build/worldgen-objects/normal/generation_fields.o build/worldgen-objects/normal/generation_typed_fields.o build/worldgen-objects/normal/generation_spatial.o build/worldgen-objects/normal/generation_grammar.o build/worldgen-objects/normal/generation_planes.o native/tests/test_metabolist_spine.cpp -o build/test_metabolist_spine
+Running build/test_metabolist_spine
+source_sha=c2f8a73d34448bc1496ecd84bca02f0812c80d27 run_id=45452580606 run_attempt=1 binary=test_metabolist_spine
+{"status":"pass","assertions":204424,"gates":["same_seed_and_reverse_chunk_order","work_slicing_and_zero_budget","chunk_partition_and_signed_coordinates","negative_origin_translation_identity","parallel_requests_and_cancellation","large_signed_coordinate_stability","thirty_two_seeds_have_distinct_coherent_geometry","control_dimensions_change_geometry","windows_only_remove_glazing","doors_only_open_outer_service_portals","schema_version_material_and_clearance_refusal","continuous_core_and_every_attachment_rooted_across_32_seeds"],"measurements":{"verified_bridge_instances":45,"seed_count":32,"wall_settings":3}}
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal/world_generation.o build/worldgen-objects/normal/generation_fields.o build/worldgen-objects/normal/generation_typed_fields.o build/worldgen-objects/normal/generation_spatial.o build/worldgen-objects/normal/generation_grammar.o build/worldgen-objects/normal/generation_planes.o native/tests/test_interlaced_viaduct.cpp -o build/test_interlaced_viaduct
+Running build/test_interlaced_viaduct
+source_sha=c2f8a73d34448bc1496ecd84bca02f0812c80d27 run_id=45452580606 run_attempt=1 binary=test_interlaced_viaduct
+{"status":"pass","assertions":1305,"gates":["same_seed_and_reverse_chunk_order","work_slicing_and_zero_budget","chunk_partition_and_signed_coordinates","translated_signed_origin_preserves_module_local_geometry","parallel_requests_and_cancellation","large_signed_coordinate_stability","six_seed_programmes_and_negative_space","wall_thickness_controls_mass","glazing_toggle_is_local_material_substitution","portals_toggle_without_rephasing_structure","invalid_recipe_and_version_refusal"],"measurements":{}}
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal/world_generation.o build/worldgen-objects/normal/generation_fields.o build/worldgen-objects/normal/generation_typed_fields.o build/worldgen-objects/normal/generation_spatial.o build/worldgen-objects/normal/generation_grammar.o build/worldgen-objects/normal/generation_planes.o native/tests/test_rosework_gatehouse.cpp -o build/test_rosework_gatehouse
+Running build/test_rosework_gatehouse
+source_sha=c2f8a73d34448bc1496ecd84bca02f0812c80d27 run_id=45452580606 run_attempt=1 binary=test_rosework_gatehouse
+{"status":"pass","assertions":166489,"gates":["same_seed_and_reverse_chunk_order","work_slicing_and_zero_budget","chunk_partition_and_signed_coordinates","module_local_geometry_is_translation_equivariant","parallel_requests_and_cancellation","large_signed_coordinate_stability","thirty_two_seed_programmes_and_negative_space","wall_room_and_floor_controls","glazing_toggle_only_affects_petal_infill","side_door_toggle_preserves_permanent_major_portal","schema_version_clearance_and_material_refusal","closed_radial_bands_seed_1","spokes_reach_rings_seed_1","connected_tracery_seed_1","petal_voids_and_structural_roots_seed_1","closed_radial_bands_seed_2","spokes_reach_rings_seed_2","connected_tracery_seed_2","petal_voids_and_structural_roots_seed_2","closed_radial_bands_seed_3","spokes_reach_rings_seed_3","connected_tracery_seed_3","petal_voids_and_structural_roots_seed_3","closed_radial_bands_seed_4","spokes_reach_rings_seed_4","connected_tracery_seed_4","petal_voids_and_structural_roots_seed_4","closed_radial_bands_seed_5","spokes_reach_rings_seed_5","connected_tracery_seed_5","petal_voids_and_structural_roots_seed_5","closed_radial_bands_seed_6","spokes_reach_rings_seed_6","connected_tracery_seed_6","petal_voids_and_structural_roots_seed_6","closed_radial_bands_seed_7","spokes_reach_rings_seed_7","connected_tracery_seed_7","petal_voids_and_structural_roots_seed_7","closed_radial_bands_seed_8","spokes_reach_rings_seed_8","connected_tracery_seed_8","petal_voids_and_structural_roots_seed_8","closed_radial_bands_seed_9","spokes_reach_rings_seed_9","connected_tracery_seed_9","petal_voids_and_structural_roots_seed_9","closed_radial_bands_seed_10","spokes_reach_rings_seed_10","connected_tracery_seed_10","petal_voids_and_structural_roots_seed_10","closed_radial_bands_seed_11","spokes_reach_rings_seed_11","connected_tracery_seed_11","petal_voids_and_structural_roots_seed_11","closed_radial_bands_seed_12","spokes_reach_rings_seed_12","connected_tracery_seed_12","petal_voids_and_structural_roots_seed_12","closed_radial_bands_seed_13","spokes_reach_rings_seed_13","connected_tracery_seed_13","petal_voids_and_structural_roots_seed_13","closed_radial_bands_seed_14","spokes_reach_rings_seed_14","connected_tracery_seed_14","petal_voids_and_structural_roots_seed_14","closed_radial_bands_seed_15","spokes_reach_rings_seed_15","connected_tracery_seed_15","petal_voids_and_structural_roots_seed_15","closed_radial_bands_seed_16","spokes_reach_rings_seed_16","connected_tracery_seed_16","petal_voids_and_structural_roots_seed_16","closed_radial_bands_seed_17","spokes_reach_rings_seed_17","connected_tracery_seed_17","petal_voids_and_structural_roots_seed_17","closed_radial_bands_seed_18","spokes_reach_rings_seed_18","connected_tracery_seed_18","petal_voids_and_structural_roots_seed_18","closed_radial_bands_seed_19","spokes_reach_rings_seed_19","connected_tracery_seed_19","petal_voids_and_structural_roots_seed_19","closed_radial_bands_seed_20","spokes_reach_rings_seed_20","connected_tracery_seed_20","petal_voids_and_structural_roots_seed_20","closed_radial_bands_seed_21","spokes_reach_rings_seed_21","connected_tracery_seed_21","petal_voids_and_structural_roots_seed_21","closed_radial_bands_seed_22","spokes_reach_rings_seed_22","connected_tracery_seed_22","petal_voids_and_structural_roots_seed_22","closed_radial_bands_seed_23","spokes_reach_rings_seed_23","connected_tracery_seed_23","petal_voids_and_structural_roots_seed_23","closed_radial_bands_seed_24","spokes_reach_rings_seed_24","connected_tracery_seed_24","petal_voids_and_structural_roots_seed_24","closed_radial_bands_seed_25","spokes_reach_rings_seed_25","connected_tracery_seed_25","petal_voids_and_structural_roots_seed_25","closed_radial_bands_seed_26","spokes_reach_rings_seed_26","connected_tracery_seed_26","petal_voids_and_structural_roots_seed_26","closed_radial_bands_seed_27","spokes_reach_rings_seed_27","connected_tracery_seed_27","petal_voids_and_structural_roots_seed_27","closed_radial_bands_seed_28","spokes_reach_rings_seed_28","connected_tracery_seed_28","petal_voids_and_structural_roots_seed_28","closed_radial_bands_seed_29","spokes_reach_rings_seed_29","connected_tracery_seed_29","petal_voids_and_structural_roots_seed_29","closed_radial_bands_seed_30","spokes_reach_rings_seed_30","connected_tracery_seed_30","petal_voids_and_structural_roots_seed_30","closed_radial_bands_seed_31","spokes_reach_rings_seed_31","connected_tracery_seed_31","petal_voids_and_structural_roots_seed_31","closed_radial_bands_seed_32","spokes_reach_rings_seed_32","connected_tracery_seed_32","petal_voids_and_structural_roots_seed_32"],"measurements":{"unique_seed_maps":31,"thin_occupied_cells":374909,"heavy_occupied_cells":451280,"glazing_cells":17425,"approved_spoke_programmes":3,"petal_field_empty_cells_over_32_seeds":849708}}
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal/world_generation.o build/worldgen-objects/normal/generation_fields.o build/worldgen-objects/normal/generation_typed_fields.o build/worldgen-objects/normal/generation_spatial.o build/worldgen-objects/normal/generation_grammar.o build/worldgen-objects/normal/generation_planes.o native/tests/test_interlock_brutalism.cpp -o build/test_interlock_brutalism
+Running build/test_interlock_brutalism
+source_sha=c2f8a73d34448bc1496ecd84bca02f0812c80d27 run_id=45452580606 run_attempt=1 binary=test_interlock_brutalism
+{"status":"pass","assertions":1725,"gates":["same_seed_and_reverse_chunk_order","work_slicing_and_zero_budget","chunk_partition_and_signed_coordinates","bounds_do_not_rephase_showcase","parallel_requests_and_cancellation","large_signed_coordinate_stability","32_seed_programmes_and_negative_space","dimensions_and_structural_mass","glazing_toggle_preserves_structure","door_controls_are_local_openings","schema_version_and_minimum_clearance","admitted_parameter_corner_support","rooted_projections_and_bounded_bridge_programmes"],"measurements":{"bridge_programmes_verified":36}}
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -Werror build/worldgen-objects/normal/world_generation.o build/worldgen-objects/normal/generation_fields.o build/worldgen-objects/normal/generation_typed_fields.o build/worldgen-objects/normal/generation_spatial.o build/worldgen-objects/normal/generation_grammar.o build/worldgen-objects/normal/generation_planes.o native/tests/test_suspended_arcology.cpp -o build/test_suspended_arcology
+Running build/test_suspended_arcology
+source_sha=c2f8a73d34448bc1496ecd84bca02f0812c80d27 run_id=45452580606 run_attempt=1 binary=test_suspended_arcology
+{"status":"pass","assertions":26265,"gates":["same_seed_and_reverse_chunk_order","work_slicing_and_zero_budget","chunk_partition_and_signed_coordinates","bounds_do_not_rephase_showcase","parallel_requests_and_cancellation","large_signed_coordinate_stability","32_seed_programmes_and_negative_space","dimensions_and_structural_mass","glazing_toggle_preserves_structure","door_controls_are_local_openings","schema_version_and_minimum_clearance","admitted_parameter_corner_support","carrier_support_roots_and_lower_void"],"measurements":{"bridge_programmes_verified":64}}
+./build/test_world_generation
+Cathedral measured structure: nave=22121 empty cells, protected rectangle=5616; spans=141/39/2; rhythms=384/40/12; native seams=5+2
+Cathedral seed material hashes:
+  271828=0xf919d4664c64d1de
+Cathedral measured structure: nave=22121 empty cells, protected rectangle=5616; spans=141/39/2; rhythms=384/40/12; native seams=5+2
+  314159=0xb00ca211081a03f3
+Cathedral measured structure: nave=22121 empty cells, protected rectangle=5616; spans=141/39/2; rhythms=384/40/12; native seams=5+2
+  161803=0xf2e4432230a10a62
+Cathedral measured structure: nave=22121 empty cells, protected rectangle=5616; spans=141/39/2; rhythms=384/40/12; native seams=5+2
+  57721=0x3955c99cd118469e
+
+Cathedral control deltas: windows=16171 doors=634 bay_width=122824 floor_height=94464 wall=59495
+PASS Cathedral contracts: 552616 assertions
+PASS procedural generation: candidate/order/partition determinism, signed seams, theme hierarchy/exclusions, broad/fine/hard controls, bounded modules, incremental ownership/cancel/stale identity, invalid input and capacity controls; schema4 architecture, independent tunnels/doors/windows, v1 receipts and v2 dimensions; 969803 assertions
+./build/test_world_generation_install
+PASS world generation installation: initialization, signed coordinates, residence, atomic refusal, masks, capacity, quarantine, owner boundary and simulation
+./build/test_generation_fields
+PASS generation fields: finite curve bijection/locality, signed tiles, analytic masks/sidechains, structured noise/warp, immutable context, canonical identity, concurrent purity, allocation and rejection bounds
+./build/test_generation_modifiers
+PASS generation modifiers: retained GEN-001 oracle, masked guidance/exclusion, immutable context, hard authority, aggregate material/grains, hook masks, signed partitioning, diagnostic receipts and bounded failure
+./build/test_generation_typed
+PASS typed generation fields: 14162 analytical, type/unit, transform/distance, exact-category, partition/cache/worker, allocation and rejection assertions
+./build/test_generation_typed_integration
+PASS typed generator integration: complete rectangle partition/worker/budget parity, immutable diagnostics, mask conversion, final override, rejection and schema compatibility
+./build/test_generation_spatial
+PASS generation spatial: finite Peano coverage/inverses/locality; independent broad Voronoi/Poisson controls; Delaunay ties and reciprocal structure; exact geometry/categories; bounded UNSAT/exhaustion; negative boundaries; concurrent allocation-free sampling
+./build/test_generation_grammar
+PASS semantic grammar: 208725 assertions
+./build/test_generation_planes
+GEN-005 native semantic planes: 774842 assertions, 0 failures
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/tests/test_material_baseline.cpp -o build/test_material_baseline
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3349:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3349 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5670:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+./build/test_material_baseline
+MATERIAL_BASELINE_PERF side=512 bytes=524288 copy_us=763 validate_us=115
+MATERIAL_BASELINE_PERF side=1024 bytes=2097152 copy_us=3497 validate_us=463
+MATERIAL_BASELINE_PERF side=2048 bytes=8388608 copy_us=12713 validate_us=1901
+PASS material baseline native contracts
+./build/tests
+[pass] player material field payloads and signed seams
+[pass] player material field blocking and invalid nonmutation
+[pass] player material field budgets and source snapshot
+[pass] player material field storage refusal
+[pass] player material field distinct spread and squeeze
+[pass] player material field native quantity and worker parity
+[pass] persistent material contacts survive sleep
+[pass] Ice contact boundaries and worker parity
+[pass] inert material contacts still sleep
+[pass] material deadlines pause and unmask
+[pass] Ice neighbor success keeps pending contact
+[pass] material deadlines follow contact removal and reset
+[pass] material deadlines with discovery observer
+[pass] INT-000 sparse schema shadow equivalence
+[pass] flow resting packing, films, barriers and signed seams
+[pass] flow conserved state, temperature, workers and exclusion
+[pass] powder pairs and void-driven rearrangement
+[pass] Mercury lanes, sleeping wakes, seams and worker parity
+[pass] granular sampled support policy
+[pass] physics diagnostic observer and worker parity
+[pass] physics diagnostic isolated controls
+[pass] physics masked source characterisation
+[pass] ACT-004 articulated body identity capacity
+[pass] negative coordinates
+[pass] scheduler geometry
+[pass] sand fall
+[pass] cross chunk
+[pass] cross scheduler core
+[pass] activity sleep and wake
+[pass] serial/phased behavioral parity
+[pass] density swap
+[info] water settled after 209 ticks
+[pass] conserved water
+[pass] Water lateral speed
+[pass] level water surface
+[pass] water single/multiworker parity
+[pass] water storage boundary
+[pass] runtime Water experiment policy
+[pass] odd-lattice Water boundaries and ledgers
+[pass] Water experiment validation and coherence
+[pass] Water coherence gravity and exhaustive merge
+[pass] Water experiment worker parity
+[pass] default Water experiment state-hash correspondence
+[pass] optional temperature movement
+[pass] serialized relocation preserves payload
+[pass] preallocated hot path
+[pass] chunk capacity
+[pass] smoke
+[pass] smoke density displacement
+[pass] smoke lifecycle and fire exclusion
+[pass] fire and extinguishing
+[pass] hot material reactions
+[pass] acid and stone
+[pass] water/oil density
+[pass] cloner
+[pass] deferred explosion
+[pass] explosion worker parity
+[pass] growth and seed
+[pass] mite and rocket
+[pass] complete material worker parity
+[pass] determinism
+[pass] single/multiworker determinism
+[pass] sleeping
+[pass] issue #1 failed tick stop/reset
+[pass] issue #1 late failure and publication
+[pass] issue #1 C API failure/recovery
+[pass] issue #2 interest resume boundaries
+[pass] issue #2 sleeping region transitions
+[pass] issue #2 conservation and worker determinism
+[pass] issues #1/#2 failed re-entry and recovery
+[pass] dirty rectangles
+[pass] immutable render snapshots
+RENDER_COPY_QUALIFICATION {"assertions":153284,"regions":231,"compared_bytes":8338180,"nonmutation_checks":42,"refusal_checks":18,"failures":0}
+[pass] render copy production qualification
+[pass] concurrent render leases
+[pass] C API and RGBA
+[pass] extended material families
+[pass] Sandspiel material catalog
+[pass] themed static material catalog
+[pass] themed combustible kernels
+[pass] building material catalog
+[pass] building combustibles ignite
+[pass] building pair reactions execute
+[pass] building inert controls stay inert
+[pass] building CYSD1 constructor and snapshot round trip
+[pass] building transport schema bounds
+[pass] building contact boundaries and worker parity
+[pass] LCB-001 liquid policy SHA-256 known answers
+[pass] LCB-001 liquid policy identity matches source
+[pass] LCB-001 liquid policy catalogue matches descriptors
+[pass] LCB-001 liquid policy wire vectors
+[pass] LCB-001 liquid policy session transcript
+[pass] LCB-001 liquid policy running build admits defaults and qualified candidates
+[pass] LCB-001 liquid policy World construction and refusal
+[pass] LCB-001 liquid policy default behavior and workers
+[pass] LCB-001 liquid policy C API transaction
+IN worker observation: damping=0/16 configured=4 observed=4
+IN worker observation: damping=1/16 configured=4 observed=4
+IN worker observation: damping=16/16 configured=4 observed=4
+[pass] LCB-005 inertial boundary workers
+[pass] LCB-005 inertial reset products
+IN storage 1024: slot=6 align=2 bytes=6291456 owners=2048 worker_ledgers=655360 world=301 total_components=6949165 serialized=12603966 capture_restore_seconds=1.06402
+[pass] LCB-005 inertial storage capture
+[pass] LCB-005 inertial residual motion
+[pass] LCB-005 inertial admission
+[pass] Water IN admission and normalization
+[pass] Water IN coherence and resting contacts
+Water IN carry x=55 y=40 bits=3 workers=1 enabled=1 no_motion=0 pickups=2
+Water IN carry x=55 y=40 bits=3 workers=1 enabled=0 no_motion=0 pickups=0
+Water IN carry x=55 y=40 bits=3 workers=1 enabled=1 no_motion=1 pickups=0
+Water IN carry x=10 y=-24 bits=3 workers=1 enabled=1 no_motion=0 pickups=2
+Water IN carry x=10 y=-24 bits=3 workers=1 enabled=0 no_motion=0 pickups=0
+Water IN carry x=10 y=-24 bits=3 workers=1 enabled=1 no_motion=1 pickups=0
+Water IN carry x=55 y=40 bits=8 workers=1 enabled=1 no_motion=0 pickups=2
+Water IN carry x=55 y=40 bits=8 workers=1 enabled=0 no_motion=0 pickups=0
+Water IN carry x=55 y=40 bits=8 workers=1 enabled=1 no_motion=1 pickups=0
+Water IN carry x=10 y=-24 bits=8 workers=1 enabled=1 no_motion=0 pickups=2
+Water IN carry x=10 y=-24 bits=8 workers=1 enabled=0 no_motion=0 pickups=0
+Water IN carry x=10 y=-24 bits=8 workers=1 enabled=1 no_motion=1 pickups=0
+Water IN carry x=55 y=40 bits=3 workers=4 enabled=1 no_motion=0 pickups=2
+Water IN carry x=55 y=40 bits=3 workers=4 enabled=0 no_motion=0 pickups=0
+Water IN carry x=55 y=40 bits=3 workers=4 enabled=1 no_motion=1 pickups=0
+Water IN carry x=10 y=-24 bits=3 workers=4 enabled=1 no_motion=0 pickups=2
+Water IN carry x=10 y=-24 bits=3 workers=4 enabled=0 no_motion=0 pickups=0
+Water IN carry x=10 y=-24 bits=3 workers=4 enabled=1 no_motion=1 pickups=0
+Water IN carry x=55 y=40 bits=8 workers=4 enabled=1 no_motion=0 pickups=2
+Water IN carry x=55 y=40 bits=8 workers=4 enabled=0 no_motion=0 pickups=0
+Water IN carry x=55 y=40 bits=8 workers=4 enabled=1 no_motion=1 pickups=0
+Water IN carry x=10 y=-24 bits=8 workers=4 enabled=1 no_motion=0 pickups=2
+Water IN carry x=10 y=-24 bits=8 workers=4 enabled=0 no_motion=0 pickups=0
+Water IN carry x=10 y=-24 bits=8 workers=4 enabled=1 no_motion=1 pickups=0
+[pass] Water IN actual carrier and complete footprint
+[pass] Water IN real workers and continuation
+activity:256 targets/job without discovery passed
+activity:optional discovery overflow independent passed
+activity:same-phase shared middle block passed
+activity:unaligned negative seams and serial passed
+CURRENT_DEADLINE_PREDICATES workers_ok=1 max_actual_workers=3 sleep_observed=1 reaction_observed=1 checked_ticks=128 independent_rooms=70
+activity:Current deadlines and diagnostics passed
+[pass] worker activity publication and observer independence
+[pass] Water IN mandatory material hooks and lifecycle
+[pass] Water IN independent arithmetic examples
+[pass] Water IN cadence and powder exchange control
+Water IN storage side=128 slot=6 alignment=2 slot_capacity=16384 array_bytes=98304 owner_bytes=32 job_ledger_bytes=655360 world_members=301 total_components=753997 simultaneous_world_components=1507994 legacy_resident_bytes=131328
+Water IN storage side=1024 slot=6 alignment=2 slot_capacity=1048576 array_bytes=6291456 owner_bytes=2048 job_ledger_bytes=655360 world_members=301 total_components=6949165 simultaneous_world_components=13898330 legacy_resident_bytes=8404992
+Water IN storage side=2048 slot=6 alignment=2 slot_capacity=4194304 array_bytes=25165824 owner_bytes=8192 job_ledger_bytes=655360 world_members=301 total_components=25829677 simultaneous_world_components=51659354 legacy_resident_bytes=33619968
+[pass] Water IN storage pause and capacity
+IN damping tail: numerator=0/16 tick=30 x=65 vx=24 loss=120
+IN damping tail: numerator=1/16 tick=30 x=50 vx=15 loss=129
+IN damping tail: numerator=8/16 tick=30 x=21 vx=0 loss=56
+IN damping tail: numerator=16/16 tick=30 x=20 vx=0 loss=40
+[pass] LCB-005 inertial damping parameters
+[pass] LCB-005 inertial comparison projections
+[pass] LCB-005 inertial contract examples
+[pass] LCB-005 inertial ledgers rest parity
+[pass] LCB-005 inertial no tunnelling
+[pass] LCB-005 inertial lifecycle
+[pass] LCB-005 inertial three families
+[pass] LCB-005 inertial body contact
+[pass] LCB-001 pressure admission and refusal
+[pass] LCB-001 pressure gas ID restore bounds
+[pass] LCB-001 pressure gas ID creation exhaustion
+[pass] LCB-001 pressure gas ID split exhaustion
+[pass] LCB-001 pressure quantity rectangle bounds
+[pass] LCB-001 pressure pending event restore bounds
+[pass] LCB-001 pressure gas single and twin pockets
+[pass] LCB-001 pressure gas unequal merge
+[pass] LCB-001 pressure gas compress, vent and reseal
+[pass] LCB-001 pressure gas split
+[pass] LCB-001 pressure gas in Empty-only and unallocated chunks
+[pass] LCB-001 pressure quantity, motion and worker parity
+[pass] LCB-001 pressure vented two-limb head transmission
+[pass] LCB-001 pressure walls and body masks block head
+[pass] LCB-001 pressure static rest, sleep and remote wake
+[pass] LCB-001 pressure lifecycle state and ledgers
+[pass] LCB-001 pressure physical hash and exact persistence
+[pass] LCB-001 pressure default policy untouched
+[pass] LCB-002 comparison static content and retained authority
+[pass] LCB-002 comparison pressure variant normalization
+[pass] LCB-002 cached incremental heads and continuation
+[pass] LCB-002 native optimization identity and readback
+LCB002_CERTIFICATE_COST_POSITIVE jobs=4 enabled=1 suspend=0 saved=154752 reuse=152256 charge=20368 credit=159744 resets=1 invalid=7271 attempts=2496 coldcells=4096 chunks=4 water=159744
+[pass] LCB-002 deterministic dormant proof-cost admission
+[pass] LCB-002 cached gas invalidation and exact fallback
+[pass] LCB-002 affected gas component discovery and continuation
+[pass] LCB-002 gas component capacity and pair-budget fallback
+LCB002_BODY_COST_NEGATIVE workers=1 saved=182 reuse=156 refmotion=1280 motion=1098 attempts=32 charge=16852 credit=448 reset=4 suspended=4
+LCB002_BODY_COST_NEGATIVE workers=4 saved=182 reuse=156 refmotion=1280 motion=1098 attempts=32 charge=16852 credit=448 reset=4 suspended=4
+[pass] LCB-002 dormant motion and stationary body obligations
+[pass] LCB-002 acceptance remote hydraulic wake and sparse interest
+[pass] LCB-002 acceptance rotating native masks
+[pass] LCB-002 acceptance mandatory obligations and reconstruction
+LCB002_BASIN_DIAGNOSTICS: workers=1 passage_height=1 resident_samples_per_arm=552960 prepared_samples_per_arm=83882 max_head_error=0 status_mismatches=0 positive_net_inflow_ticks=161 maximum_net_inflow=133 tick_sources=0 tick_sinks=0
+LCB002_BASIN_DIAGNOSTICS: workers=1 passage_height=4 resident_samples_per_arm=552960 prepared_samples_per_arm=89142 max_head_error=0 status_mismatches=0 positive_net_inflow_ticks=202 maximum_net_inflow=219 tick_sources=0 tick_sinks=0
+LCB002_BASIN_DIAGNOSTICS: workers=4 passage_height=1 resident_samples_per_arm=552960 prepared_samples_per_arm=83882 max_head_error=0 status_mismatches=0 positive_net_inflow_ticks=161 maximum_net_inflow=133 tick_sources=0 tick_sinks=0
+LCB002_BASIN_DIAGNOSTICS: workers=4 passage_height=4 resident_samples_per_arm=552960 prepared_samples_per_arm=89142 max_head_error=0 status_mismatches=0 positive_net_inflow_ticks=202 maximum_net_inflow=219 tick_sources=0 tick_sinks=0
+[pass] LCB-002 acceptance communicating narrow and broad passages
+[pass] LCB-002 acceptance isolated vent into certified target
+MOVING_GAS_MASK: collapse/split/merge/vent/live; PF0/1/2; configured1/4; masked restore; exact parity
+[pass] LCB-002 moving gas masks retire and preserve exact identities
+[pass] LCB-002 P1 wake summaries skip quiet scans and stay exact
+[pass] LCB-001 gas exact hotpath seams, masks and worker parity
+[pass] LCB-002 #201 moving region keeps exact warm pressure caches
+PRESSURE_SETUP_CAPACITY: 83 assertions; 0 failures
+[pass] LCB-003 prepared initial pressure gas capacity
+[pass] LCB-001 liquid policy C API allocation failures
+[pass] LCB-001 W-CY admission and ingress
+[pass] LCB-001 W-CY coherence, viscosity and masks
+[pass] LCB-001 W-CY material hooks
+[pass] LCB-001 W-CY workers, persistence and transport
+[pass] LCB-001 W-CY liveness and cadence
+[pass] LCB-001 Water normalization rounding
+[pass] LCB-001 Water normalization refusals
+[pass] LCB-001 Water normalization final identity
+[pass] LCB-001 Water normalization thermal fields
+[pass] LCB-001 Water normalization arithmetic
+[pass] LCB-001 Water normalization canonical vectors
+63 receipt assertions passed; host fields remain explicitly qualified
+[pass] LCB-001 native run receipt identity
+[pass] LCB-001 native-issued construction refusals
+[pass] LCB-001 native quantity ledger
+[pass] BW-001 ballistic Water defaults unchanged
+[pass] BW-001 ballistic Water upward arc and return
+[pass] BW-001 ballistic Water ceiling wall no tunnel
+[pass] BW-001 ballistic Water surface merge and injection
+[pass] BW-001 ballistic Water families
+[pass] BW-001 ballistic Water capacity mask deferral
+[pass] BW-001 ballistic Water body contact
+[pass] BW-001 ballistic Water persistence and parity
+[pass] BW-001 ballistic Water render overlay and forced age
+[pass] BW-001 ballistic Water run receipt identity
+[pass] BW-001 ballistic Water engulfed parcel column
+[pass] BW-001 ballistic Water retained rebuild inheritance
+WCX-FR family 1 control front 38 release front 42
+WCX-FR family 2 control front 42 release front 44
+WCX-FR family 3 control front 35 release front 41
+WCX-FR family 4 control front 50 release front 42
+[pass] BW-001 ballistic Water face release dam break
+[pass] BW-001 ballistic Water face release pooled pre-pass matches serial
+[pass] IN-B1 signed vertical control and identity
+[pass] IN-B1 signed vertical arc ceiling parity
+[pass] IN-B1 signed vertical support and hybrid
+variant=0 cert_reuses=0 cert_invalidations=0 unknown=38042 wakes=15 gas_samples=179
+variant=1 cert_reuses=0 cert_invalidations=0 unknown=38042 wakes=15 gas_samples=179
+variant=2 cert_reuses=0 cert_invalidations=453619 unknown=38042 wakes=15 gas_samples=179
+WORKBENCH_PRESSURE_HEADS checks=14405631
+[pass] Workbench parallel PressureFlow heads match serial (all variants)
+[pass] Pair reaction tables match the authored resolver
+[pass] Active-core capacity counts distinct cores
+[pass] Hard-surface bits match the display projection
+[pass] Hard-surface invalidation is independent and tile exact
+[pass] Hard-surface invalidation matches across worker counts
+[pass] LCB-002 PressureFlow pocket sealed from open air is atmospheric
+192 tests passed
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_wave_flow.cpp -o build/test_wave_flow
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3349:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3349 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5670:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+./build/test_wave_flow
+PASS disabled default and typed refusal
+PASS coherent Water edits refuse before zero-mass normalization
+PASS dam break conserves and spreads
+PASS worker counts are cell identical
+PASS waves propagate and interfere
+PASS quiet water sleeps and wakes
+PASS sealed passage equalises
+PASS bodies block water and receive contacts
+PASS other materials still interact
+PASS documented Water-owned chemistry is disabled
+PASS ledger population follows spreading
+PASS chunk capacity is an explicit outcome
+PASS tiny drops cross sleep and chunk boundaries
+PASS erasing support reactivates a dormant film
+PASS region pause freezes cells and reentry resumes
+PASS fixed-seed edits masks and seams conserve
+PASS physical identity names Wave and substeps
+PASS paused flux is retained and edits retire faces
+PASS region boundary flux freezes while source falls
+PASS C API construction and overfill are lossless
+PASS extreme legal overfill conserves and remains editable
+PASS coordinate extrema refuse before mutation
+PASS distant positive masks preserve Wave transport
+PASS distant negative masks preserve Wave transport
+PASS mask overlap at signed bounds preserves bodies
+PASS sparse mask bounds follow clear move and reconfigure
+PASS tall extreme column preserves head sign
+PASS disturbed water reaches exact rest
+PASS films level and rest
+PASS supported film uses an adhesion threshold
+PASS state hash binds retained momentum
+PASS prepared uint16 payload and quantity are lossless
+PASS slosh short ripples and shallow front
+PASS slosh admission identity and worker parity
+WAVE_FLOW: 34 tests; 0 failures (34 registered)
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_wave_spill.cpp -o build/test_wave_spill
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3349:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3349 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5670:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+./build/test_wave_spill
+PASS wave crosses a floating Oil blanket
+PASS mobile Oil only rises into accessible headroom
+PASS warm Oil surface move carries its tuple across chunks
+thick Oil t=300 workers=1 columns=249 deepest=14 surfaced=1793 spray=1038 live=0
+thick Oil t=540 workers=1 columns=323 deepest=9 surfaced=1793 spray=1038 live=0
+thick Oil t=900 workers=1 columns=359 deepest=8 surfaced=1793 spray=1038 live=0
+thick Oil t=300 workers=6 columns=249 deepest=14 surfaced=1793 spray=1038 live=0
+thick Oil t=540 workers=6 columns=323 deepest=9 surfaced=1793 spray=1038 live=0
+thick Oil t=900 workers=6 columns=359 deepest=8 surfaced=1793 spray=1038 live=0
+PASS thick Oil brush spreads on Water
+PASS floating Oil preserves paused face momentum
+Oil tank t=600 workers=1 sand=0 surfaced=48 supported=48 columns=48 longest_run=48 late_throw=0 live=0
+Oil tank gate t=600 workers=1 sand=0 fresh_throw=47729
+Oil tank t=600 workers=6 sand=0 surfaced=48 supported=48 columns=48 longest_run=48 late_throw=0 live=0
+Oil tank gate t=600 workers=6 sand=0 fresh_throw=47729
+Oil tank t=600 workers=1 sand=112 surfaced=48 supported=48 columns=42 longest_run=17 late_throw=0 live=0
+Oil tank gate t=600 workers=1 sand=112 fresh_throw=53481
+Oil tank t=600 workers=6 sand=112 surfaced=48 supported=48 columns=42 longest_run=17 late_throw=0 live=0
+Oil tank gate t=600 workers=6 sand=112 fresh_throw=53481
+Oil tank t=3600 workers=1 sand=112 surfaced=48 supported=48 columns=44 longest_run=12 late_throw=0 live=0
+Oil tank gate t=3600 workers=1 sand=112 fresh_throw=52714
+PASS buried Oil surfaces and disturbed tank settles
+PASS Oil exchange preserves partial overfull and paused cells
+PASS Oil exchange moves Water only once per tick
+PASS Oil lid pressure respects walls and masks
+PASS dry Oil keeps its cellular spread
+PASS deep draw limits opposing pool faces
+PASS floor gain requires real level terrain and conserves both shares
+PASS crest Apply adopts the replacement flight law
+PASS sheet starts with zero ordinary gain
+PASS sheet releases deep rows and keeps crest spray
+FULL_FACE curtain=0 workers=1 rows=96 previous=2 units=9207 grid=2973
+FULL_FACE curtain=0 workers=6 rows=96 previous=2 units=9207 grid=2973
+FULL_FACE curtain=1 workers=1 rows=96 previous=0 units=9207 grid=24480
+FULL_FACE curtain=1 workers=6 rows=96 previous=0 units=9207 grid=24480
+PASS full face covers dry and falling receivers
+PASS full face curtain head is independent of slots
+PASS full face respects paused receivers and maximal overfill
+PASS full face shares slots across tall walls
+PASS sheet and coyote budget each side of a ridge
+PASS coyote flight pauses expires and leaves jets alone
+PASS spill is off by default and admission is typed
+PASS disabled spill reproduces the base law
+PASS disabled spill preserves Wave identity
+PASS cleared World matches a fresh World
+PASS paused floor is solid to spill
+PASS parcels are not born in paused cores
+PASS full parcel pool is counted and clamped
+PASS diagonal one-cell wall holds
+PASS wet and dry corners stop ballistic Water
+PASS automatic spill bounds parcel coordinates
+PASS blobs and stream share conserve and are deterministic
+PASS body push scales with water amount
+PASS generic Ballistic Water runs under Wave
+PASS face release without spill conserves
+PASS stream draw keeps the throw and conserves
+PASS stream draw zero is the earlier spill World
+PASS exposed reservoir collapses and conserves
+PASS worker counts and repeats are identical
+PASS waterfall lands fills and rejoins
+PASS sealed reservoir is untouched
+PASS contained pool still waves and rests
+PASS capacity and budget are explicit outcomes
+PASS overfilled cells never wrap or overfill parcels
+PASS thin walls and masks stop spill
+PASS paused region does not spill
+PASS thin film is not thrown
+WAVE_SPILL: 47 tests; 0 failures (47 registered)
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_wave_body_boundary.cpp -o build/test_wave_body_boundary
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3349:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3349 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5670:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+./build/test_wave_body_boundary
+PASS boundary mode=0 seed=0 substeps=1 workers=1,2,4,6 ticks=120
+PASS boundary mode=0 seed=0 substeps=3 workers=1,2,4,6 ticks=120
+PASS boundary mode=1 seed=0 substeps=1 workers=1,2,4,6 ticks=120
+PASS boundary mode=1 seed=0 substeps=3 workers=1,2,4,6 ticks=120
+PASS boundary mode=2 seed=0 substeps=1 workers=1,2,4,6 ticks=120
+PASS boundary mode=2 seed=0 substeps=3 workers=1,2,4,6 ticks=120
+PASS boundary mode=0 seed=1 substeps=1 workers=1,2,4,6 ticks=120
+PASS boundary mode=0 seed=1 substeps=3 workers=1,2,4,6 ticks=120
+PASS boundary mode=1 seed=1 substeps=1 workers=1,2,4,6 ticks=120
+PASS boundary mode=1 seed=1 substeps=3 workers=1,2,4,6 ticks=120
+PASS boundary mode=2 seed=1 substeps=1 workers=1,2,4,6 ticks=120
+PASS boundary mode=2 seed=1 substeps=3 workers=1,2,4,6 ticks=120
+PASS push-observation-only substeps=8 workers=1,6 push=0,1024 by_mass=0,1
+WAVE_BODY_BOUNDARY: seeds=2 runs=50 ticks=6000 scripted_waterline_crossings=350 relocations=438578 launches=26950 masked_refusals=6000 capacity_refusals=78442 paused_refusals=9204 region_changes=186 overfill_edits=150 drains=100 maximum_live=4096 parity=checkpoints failures=0
+g++-13 -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread -DCYBERSAND_WAVE_VERIFY_EMPTY_DERIVED native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_wave_empty_derived.cpp -o build/test_wave_empty_derived
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3349:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3349 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5670:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+./build/test_wave_empty_derived 1
+{"schema":"pubpres-empty-derived-lifecycle-v1","workers":1,"checkpoint_fields":["physical","state","content","water","ballistic","contacts","impulse_x","impulse_y"],"checkpoints":[12345310327658687838,6493575889641705075,10773585893113416112,2277150,0,0,0,0,18099693853238589304,14426635202571894312,7923163838850235722,2277150,0,0,0,0,14334231406104660135,18391829210300695486,4470599610919392481,2277150,0,0,0,0,1408457090194354149,15002143069724210441,14749000389529268200,2277150,0,0,0,0,10444062520907701973,3124017057019098660,8862000116363769156,2277150,0,0,0,0,9678359315929964147,585999930106655920,3325032992454460520,2277150,0,0,0,0,678617991454125443,573689542501544976,2863250270740246854,2277150,0,0,0,0,2653790648793890874,13254903215127359721,8527940822474285981,2277150,0,0,0,0,11428834711580862340,9428577707291905917,13439195911335720983,2277405,0,1,0,1000,2208658976522167945,6186343364869555180,6166941507100983334,2277405,0,4,0,2000,17364525710950645126,8857275459852548618,5919550309739191271,2277405,0,7,0,3000,10790965779338350104,1085647042955979819,8045189235539339276,2277405,0,10,0,4000,16118662415582800382,8337189171256061352,15252666050144876213,2277405,0,0,0,0,13176596951654809044,5887225721310634098,11234172413660340202,2277405,0,0,0,0,10132053394462891925,5915594268820752844,3916710589628235817,2277405,0,0,0,0,10204138569354104824,2191313059412756330,17114277467657198564,2277405,0,0,0,0,15287029380307083752,4949588259951126362,2114505284004885403,2277405,0,0,0,0,7928921519822925146,1866383112734262834,10109585941271590339,2277405,0,0,0,0,7078741910609695501,1004452256903512271,11120378269004325251,2277405,0,0,0,0,10722808952610954590,14156891885214201109,16215957503250736556,2277405,0,0,0,0,1062851569127024862,13853421247821236735,8269178284583992863,2277405,0,0,0,0,5637911444608085560,11694688326159982314,7096959206138277887,2277405,0,0,0,0,3335449384302149590,17923707451476828246,18281591801711632683,2277405,0,0,0,0,11266681513836811589,18008610855832544167,13692870693344643515,2277405,0,0,0,0,10798325871600599923,8324632876254312433,3145276697232839467,2278425,0,0,0,0,12628944144148227761,11548427422289635020,8158560994905683165,2278425,0,0,0,0,14879951607614923422,9263892015674134324,11837973180306601986,2278425,0,0,0,0,9133143901192990627,14951924150349747910,12862530675989209949,2278425,0,0,0,0,12202737445373052308,7922266516463226822,17736063621473809987,2277405,0,0,0,0,9314907847379777996,11692776871650681425,6871944663426206364,2277405,0,0,0,0,6909418798066714796,11350837549379928311,7119363338474396357,2277405,0,0,0,0,13783505231284910441,1859203443525393802,4018589573215164116,2277405,0,0,0,0,12994974269728593155,9458186608875049302,15790897929633609267,2277405,0,0,0,0,9455027543290837564,14332848856171832787,13696797734812303424,2277405,0,0,0,0,14987728279092597945,11224225756620536952,14823566602760465001,2277405,0,0,0,0,11273631304058923246,12548046250824361621,14038184468077516058,2277405,0,0,0,0,2672348241781085013,10528782974578526412,7087154035849449661,2277405,0,0,0,0,12060945336889033340,9207345441670654538,11811618277592117246,2277405,0,0,0,0,5206393957083695157,18318169558814947897,4680305631434617893,2277405,0,0,0,0,12853946076999202279,3152859277937699056,5747421006574364840,2277405,0,0,0,0,16411945014879771980,7816330211816874778,3400257872195783633,2277405,0,0,0,0,3222642034585882639,6208325457240275449,4561303091926030671,2277405,0,0,0,0,6152086136710993116,12706089870046790163,924956154468628180,2277405,0,0,0,0,5316600357556462874,5509000390568850232,3679807879060784056,2277405,0,0,0,0,5666076337407982689,12840689354988599821,9011036319381200160,2277405,0,0,0,0,7579586119220711488,9936718411599605044,4466421354851241005,2277405,0,0,0,0,8984500290788979413,13771638174338532934,13322563954741203544,2277405,0,0,0,0,5811634898458195601,12011718911511513471,16877065070607846960,2277405,0,0,0,0,10735473012568854800,10107176068252566654,18171818935155691612,2277405,0,0,0,0,7757477776703780511,4078011294154494334,4589954236589601822,2277405,0,0,0,0,6393425521699330829,16133272347384880225,1488024888452758909,2277405,0,0,0,0,11791216178356684629,4390786691179026289,8347722146007692696,2277405,0,0,0,0,10910833992672781633,4606791214663532459,6813779000026288657,2277150,9393,0,0,0,5779991242277453855,4570917157649547398,2348593485274812615,2277150,18118,0,0,0,3754211062857266221,3816275468927750785,1610587078657046907,2277150,26333,0,0,0,15599858486521073997,18342849773973152345,3531693885529175335,2277150,34080,0,0,0,1142348199682751830,1764416738004941681,13291643554148602060,2277150,41149,0,0,0,16569295029566524129,10741398856884730944,9516921593491106223,2277150,47049,0,0,0,15990452185278072568,15179832179484560356,5023530026981800452,2277150,50818,0,0,0,3261879856973272717,2895018384969517387,14284299350858678366,2277150,53988,0,0,0,2774489148049401725,2861016879516993800,5747377257275805988,2277405,56341,3,0,3000,260436466499196394,9963710306861791708,5443673029093777385,2277405,59579,6,0,6000,4393738564474272715,9154260856630406543,3089304088604148217,2277405,62098,9,0,9000,17408550055835234383,262608773020899316,17222781439255534627,2277405,65465,12,0,12000,8357775816687041232,3525508158196117474,7113088222362774358,2277405,68448,0,0,0,1133006492168369639,17688661750939534510,8098331427381323045,2277405,70784,0,0,0,11469756795746417144,8060860844524942953,8359958370884699740,2277405,73274,0,0,0,11485090195044694278,6136388446033573732,1872019071945669967,2277405,75142,0,0,0,8832859251929933055,7824591278119041931,787746956201152464,2277405,75264,0,0,0,6742980703243243012,11958353074969215527,16931251078396776584,2277405,74975,0,0,0,3572344434014477505,17718261653943002089,8647085786059577334,2277405,74458,0,0,0,18265195937892951424,996732385460564059,7940128965878003784,2277405,73997,0,0,0,14844198690606606297,15787354531725523459,9495803653042360811,2277405,74711,0,0,0,9653698887937583054,11115755247745011179,14502977932833843550,2277405,75039,0,0,0,8548042968896689250,709282290338532309,6231992355547113419,2277405,75352,0,0,0,7217397219953609260,10471299583065734872,7081413538880916829,2277405,75759,0,0,0,10554981330421442421,304061896930265327,2712297098154244554,2278425,76204,0,0,0,14327558942472183064,8275390339192095727,12965108979101746171,2278425,76368,0,0,0,1978149952430767753,9296871161148221912,4336380096527603582,2278425,76287,0,0,0,18223104990940544191,17808540106409730633,7053783767762186384,2278425,76172,0,0,0,6676561118761373155,4081280932019369867,17275510233370450703,2277405,75110,0,0,0,4265489802326425015,15591723327219091630,3591912774425328699,2277405,74559,0,0,0,1361843226659154185,2531782338985655429,16551981718644299963,2277405,73468,0,0,0,11788930624101183858,5566972714197879351,911662871938143998,2277405,72341,0,0,0,11069503061556436190,13740580071306536673,5005762050779108781,2277405,72341,0,0,0,14629256717368290687,2910875660731546006,11734375045202431362,2277405,72341,0,0,0,16310325072842045652,14588030240654091879,10052345095532433055,2277405,72341,0,0,0,9287988904323023417,16658264567486091764,5050245521444278128,2277405,72341,0,0,0,13261896373803246138,9513514365779634439,1842654955306724246,2277405,72565,0,0,0,12725614815262990189,5663673950189509867,7341706579690871088,2277405,72046,0,0,0,3376685665098863446,851593891045028907,29219110663765310,2277405,71208,0,0,0,7842535485979831402,3940218166462297064,3163587847047964584,2277405,68731,0,0,0,10074018560499563536,1654273896965494580,7571270230225167072,2208674,807,0,0,0,5659553783534839354,9789215407427067532,16797190638484187234,2208674,1261,0,0,0,14264755687295722321,2021287628458962609,4680865462317212690,2208674,1701,0,0,0,12641072673992423718,3691226896758840193,2431111852690129182,2208674,1786,0,0,0,11063216733304242301,8299753236746063136,7974437773006598355,2208674,1624,0,0,0,2239301512295654115,2919400051999875219,10980880792868752067,2208674,1746,0,0,0,70075956554707619,1278600907507131846,7991029180126674331,2208674,1619,0,0,0,4308988445592377796,6078661923614986223,4899906352472735594,2208674,1760,0,0,0,17431116456979273728,12345405813701942951,13154926250839181265,2208674,1678,0,0,0,7598736733743300394,4996781192942714170,7107161811134365641,2208674,1483,0,0,0,3737994818872482722,7364178065285218828,13402194069209245956,2208674,996,0,0,0,7868253992230387749,18215146009491877905,6526219972515203687,2208674,812,0,0,0,7402367787146030413,5767175724912484048,5626929834575966181,0,0,0,0,0,9910174103866614132,6333036183465080675,5626929834575966181,0,0,0,0,0,7712015303506163385,6905393879386811265,5626929834575966181,0,0,0,0,0,4966513938834713527,8258027849847533653,5626929834575966181,0,0,0,0,0,11861354363464443932,7606788685086744234,2279139415272938048,256,0,0,0,0,12039214067815065305,17418516050165312971,377120678556114914,256,0,0,0,0,2441682363636380218,4412141010981201564,3057908771116420594,256,0,0,0,0,92615947118307419,7648185827460867437,88371091116956730,256,0,0,0,0,9612756501942457166,18278222619776248064,5697942657136441076,256,0,0,0,0,4089032678012618859,796789318020457113,17904530419713624792,256,0,0,0,0,13133529187364299885,8049850783367821251,10093687513083202336,256,0,0,0,0,4433011731568279841,15123365124324790267,14384158998267044286,256,0,0,0,0,2812680935824023442,11615793025273515704,12206452280657898950,256,0,0,0,0,6949036871058204840,10702771277044619502,10430350409947015498,256,0,0,0,0,514303210072015022,10896117325044863825,6832989297107820260,256,0,0,0,0,13874357669433210475,1359095158498556980,16713475068700509068,256,0,0,0,0,1540644821974820229,1432585979598249022,1280710984746617652,256,0,0,0,0,12749781158127610234,7437643829149232345,12819538863425590466,256,0,0,0,0,360757640521624490,13668505023279693249,5902240637147350242,256,0,0,0,0,15199853670914349889,2910504707611211403,15343357490265935890,256,0,0,0,0,382349587105367281,13727146904253017925,11860068691936078341,256,0,0,0,0,16302645897721403278,15099987601422505957,9156592531115186374,256,0,0,0,0,3275604293159647266,13659010522176763941,8004500113300679395,256,0,0,0,0,10130637606864157841,1396683615735388863,13788661528436607328,256,0,0,0,0,11883261371472727670,5298154655119083780,1218865824599367621,256,0,0,0,0,16490648941531189589,625008039876486140,5612472643699714450,256,0,0,0,0,17405106996863317957,8360463021019655324,11574037743284424685,256,0,0,0,0,17111471702741881271,2212474892987524845,3650237997903418762,256,0,0,0,0,9317458586522463146,9921653109121168896,4967206567163553067,256,0,0,0,0,17142976043620326731,10727644243637183534,915214909284701716,256,0,0,0,0,6914170096075978453,11638557065561657845,7045204011834074262,256,0,0,0,0,14446257543840331305,8241479935889788596,6153410573098742606,256,0,0,0,0,15201164196590479423,12915315729976695288,6591324402495534835,256,0,0,0,0,13310542773866280398,16090094528328744734,73664746054310123,0,0,0,0,0,5335261431286132238,13834208594867289800,73664746054310123,0,0,0,0,0,17326073916968037802,16448787898819159442,73664746054310123,0,0,0,0,0,13077342314172152874,10781078567812642264,73664746054310123,0,0,0,0,0,2758021668426735806,1022948281769976966,9337031811481476632,1020,0,0,0,0,13105661228547234190,5197723316824830609,12969711883857527270,1020,0,0,0,0,10326073462307020221,12082181054096057754,17717367201103027557,1020,0,0,0,0,3673078219470284969,15590849407368689406,6157531206600322339,1020,0,0,0,0,6416826921278501906,8583316863664553258,4494964452786292995,1020,0,0,0,0,9780056623005574974,13036296193003384302,6822361003786958302,1020,0,0,0,0,3197701593747015345,17270279455355030966,11021728696956820441,1020,0,0,0,0,9193878232359432655,1107281106787475477,9606181539597221350,1020,0,0,0,0,11201275288816834808,18171775071623990425,14879604598020657243,1020,0,0,0,0,7188475289394894088,14402533365767101816,8022798208395386291,1020,0,0,0,0,17401796169998311747,15124235691411676241,16688119347107530969,1020,0,0,0,0,11422283453866017579,15143161839618843702,10242963403490178186,1020,0,0,0,0]}
+./build/test_wave_empty_derived 4
+{"schema":"pubpres-empty-derived-lifecycle-v1","workers":4,"checkpoint_fields":["physical","state","content","water","ballistic","contacts","impulse_x","impulse_y"],"checkpoints":[12345310327658687838,6493575889641705075,10773585893113416112,2277150,0,0,0,0,18099693853238589304,14426635202571894312,7923163838850235722,2277150,0,0,0,0,14334231406104660135,18391829210300695486,4470599610919392481,2277150,0,0,0,0,1408457090194354149,15002143069724210441,14749000389529268200,2277150,0,0,0,0,10444062520907701973,3124017057019098660,8862000116363769156,2277150,0,0,0,0,9678359315929964147,585999930106655920,3325032992454460520,2277150,0,0,0,0,678617991454125443,573689542501544976,2863250270740246854,2277150,0,0,0,0,2653790648793890874,13254903215127359721,8527940822474285981,2277150,0,0,0,0,11428834711580862340,9428577707291905917,13439195911335720983,2277405,0,1,0,1000,2208658976522167945,6186343364869555180,6166941507100983334,2277405,0,4,0,2000,17364525710950645126,8857275459852548618,5919550309739191271,2277405,0,7,0,3000,10790965779338350104,1085647042955979819,8045189235539339276,2277405,0,10,0,4000,16118662415582800382,8337189171256061352,15252666050144876213,2277405,0,0,0,0,13176596951654809044,5887225721310634098,11234172413660340202,2277405,0,0,0,0,10132053394462891925,5915594268820752844,3916710589628235817,2277405,0,0,0,0,10204138569354104824,2191313059412756330,17114277467657198564,2277405,0,0,0,0,15287029380307083752,4949588259951126362,2114505284004885403,2277405,0,0,0,0,7928921519822925146,1866383112734262834,10109585941271590339,2277405,0,0,0,0,7078741910609695501,1004452256903512271,11120378269004325251,2277405,0,0,0,0,10722808952610954590,14156891885214201109,16215957503250736556,2277405,0,0,0,0,1062851569127024862,13853421247821236735,8269178284583992863,2277405,0,0,0,0,5637911444608085560,11694688326159982314,7096959206138277887,2277405,0,0,0,0,3335449384302149590,17923707451476828246,18281591801711632683,2277405,0,0,0,0,11266681513836811589,18008610855832544167,13692870693344643515,2277405,0,0,0,0,10798325871600599923,8324632876254312433,3145276697232839467,2278425,0,0,0,0,12628944144148227761,11548427422289635020,8158560994905683165,2278425,0,0,0,0,14879951607614923422,9263892015674134324,11837973180306601986,2278425,0,0,0,0,9133143901192990627,14951924150349747910,12862530675989209949,2278425,0,0,0,0,12202737445373052308,7922266516463226822,17736063621473809987,2277405,0,0,0,0,9314907847379777996,11692776871650681425,6871944663426206364,2277405,0,0,0,0,6909418798066714796,11350837549379928311,7119363338474396357,2277405,0,0,0,0,13783505231284910441,1859203443525393802,4018589573215164116,2277405,0,0,0,0,12994974269728593155,9458186608875049302,15790897929633609267,2277405,0,0,0,0,9455027543290837564,14332848856171832787,13696797734812303424,2277405,0,0,0,0,14987728279092597945,11224225756620536952,14823566602760465001,2277405,0,0,0,0,11273631304058923246,12548046250824361621,14038184468077516058,2277405,0,0,0,0,2672348241781085013,10528782974578526412,7087154035849449661,2277405,0,0,0,0,12060945336889033340,9207345441670654538,11811618277592117246,2277405,0,0,0,0,5206393957083695157,18318169558814947897,4680305631434617893,2277405,0,0,0,0,12853946076999202279,3152859277937699056,5747421006574364840,2277405,0,0,0,0,16411945014879771980,7816330211816874778,3400257872195783633,2277405,0,0,0,0,3222642034585882639,6208325457240275449,4561303091926030671,2277405,0,0,0,0,6152086136710993116,12706089870046790163,924956154468628180,2277405,0,0,0,0,5316600357556462874,5509000390568850232,3679807879060784056,2277405,0,0,0,0,5666076337407982689,12840689354988599821,9011036319381200160,2277405,0,0,0,0,7579586119220711488,9936718411599605044,4466421354851241005,2277405,0,0,0,0,8984500290788979413,13771638174338532934,13322563954741203544,2277405,0,0,0,0,5811634898458195601,12011718911511513471,16877065070607846960,2277405,0,0,0,0,10735473012568854800,10107176068252566654,18171818935155691612,2277405,0,0,0,0,7757477776703780511,4078011294154494334,4589954236589601822,2277405,0,0,0,0,6393425521699330829,16133272347384880225,1488024888452758909,2277405,0,0,0,0,11791216178356684629,4390786691179026289,8347722146007692696,2277405,0,0,0,0,10910833992672781633,4606791214663532459,6813779000026288657,2277150,9393,0,0,0,5779991242277453855,4570917157649547398,2348593485274812615,2277150,18118,0,0,0,3754211062857266221,3816275468927750785,1610587078657046907,2277150,26333,0,0,0,15599858486521073997,18342849773973152345,3531693885529175335,2277150,34080,0,0,0,1142348199682751830,1764416738004941681,13291643554148602060,2277150,41149,0,0,0,16569295029566524129,10741398856884730944,9516921593491106223,2277150,47049,0,0,0,15990452185278072568,15179832179484560356,5023530026981800452,2277150,50818,0,0,0,3261879856973272717,2895018384969517387,14284299350858678366,2277150,53988,0,0,0,2774489148049401725,2861016879516993800,5747377257275805988,2277405,56341,3,0,3000,260436466499196394,9963710306861791708,5443673029093777385,2277405,59579,6,0,6000,4393738564474272715,9154260856630406543,3089304088604148217,2277405,62098,9,0,9000,17408550055835234383,262608773020899316,17222781439255534627,2277405,65465,12,0,12000,8357775816687041232,3525508158196117474,7113088222362774358,2277405,68448,0,0,0,1133006492168369639,17688661750939534510,8098331427381323045,2277405,70784,0,0,0,11469756795746417144,8060860844524942953,8359958370884699740,2277405,73274,0,0,0,11485090195044694278,6136388446033573732,1872019071945669967,2277405,75142,0,0,0,8832859251929933055,7824591278119041931,787746956201152464,2277405,75264,0,0,0,6742980703243243012,11958353074969215527,16931251078396776584,2277405,74975,0,0,0,3572344434014477505,17718261653943002089,8647085786059577334,2277405,74458,0,0,0,18265195937892951424,996732385460564059,7940128965878003784,2277405,73997,0,0,0,14844198690606606297,15787354531725523459,9495803653042360811,2277405,74711,0,0,0,9653698887937583054,11115755247745011179,14502977932833843550,2277405,75039,0,0,0,8548042968896689250,709282290338532309,6231992355547113419,2277405,75352,0,0,0,7217397219953609260,10471299583065734872,7081413538880916829,2277405,75759,0,0,0,10554981330421442421,304061896930265327,2712297098154244554,2278425,76204,0,0,0,14327558942472183064,8275390339192095727,12965108979101746171,2278425,76368,0,0,0,1978149952430767753,9296871161148221912,4336380096527603582,2278425,76287,0,0,0,18223104990940544191,17808540106409730633,7053783767762186384,2278425,76172,0,0,0,6676561118761373155,4081280932019369867,17275510233370450703,2277405,75110,0,0,0,4265489802326425015,15591723327219091630,3591912774425328699,2277405,74559,0,0,0,1361843226659154185,2531782338985655429,16551981718644299963,2277405,73468,0,0,0,11788930624101183858,5566972714197879351,911662871938143998,2277405,72341,0,0,0,11069503061556436190,13740580071306536673,5005762050779108781,2277405,72341,0,0,0,14629256717368290687,2910875660731546006,11734375045202431362,2277405,72341,0,0,0,16310325072842045652,14588030240654091879,10052345095532433055,2277405,72341,0,0,0,9287988904323023417,16658264567486091764,5050245521444278128,2277405,72341,0,0,0,13261896373803246138,9513514365779634439,1842654955306724246,2277405,72565,0,0,0,12725614815262990189,5663673950189509867,7341706579690871088,2277405,72046,0,0,0,3376685665098863446,851593891045028907,29219110663765310,2277405,71208,0,0,0,7842535485979831402,3940218166462297064,3163587847047964584,2277405,68731,0,0,0,10074018560499563536,1654273896965494580,7571270230225167072,2208674,807,0,0,0,5659553783534839354,9789215407427067532,16797190638484187234,2208674,1261,0,0,0,14264755687295722321,2021287628458962609,4680865462317212690,2208674,1701,0,0,0,12641072673992423718,3691226896758840193,2431111852690129182,2208674,1786,0,0,0,11063216733304242301,8299753236746063136,7974437773006598355,2208674,1624,0,0,0,2239301512295654115,2919400051999875219,10980880792868752067,2208674,1746,0,0,0,70075956554707619,1278600907507131846,7991029180126674331,2208674,1619,0,0,0,4308988445592377796,6078661923614986223,4899906352472735594,2208674,1760,0,0,0,17431116456979273728,12345405813701942951,13154926250839181265,2208674,1678,0,0,0,7598736733743300394,4996781192942714170,7107161811134365641,2208674,1483,0,0,0,3737994818872482722,7364178065285218828,13402194069209245956,2208674,996,0,0,0,7868253992230387749,18215146009491877905,6526219972515203687,2208674,812,0,0,0,7402367787146030413,5767175724912484048,5626929834575966181,0,0,0,0,0,9910174103866614132,6333036183465080675,5626929834575966181,0,0,0,0,0,7712015303506163385,6905393879386811265,5626929834575966181,0,0,0,0,0,4966513938834713527,8258027849847533653,5626929834575966181,0,0,0,0,0,11861354363464443932,7606788685086744234,2279139415272938048,256,0,0,0,0,12039214067815065305,17418516050165312971,377120678556114914,256,0,0,0,0,2441682363636380218,4412141010981201564,3057908771116420594,256,0,0,0,0,92615947118307419,7648185827460867437,88371091116956730,256,0,0,0,0,9612756501942457166,18278222619776248064,5697942657136441076,256,0,0,0,0,4089032678012618859,796789318020457113,17904530419713624792,256,0,0,0,0,13133529187364299885,8049850783367821251,10093687513083202336,256,0,0,0,0,4433011731568279841,15123365124324790267,14384158998267044286,256,0,0,0,0,2812680935824023442,11615793025273515704,12206452280657898950,256,0,0,0,0,6949036871058204840,10702771277044619502,10430350409947015498,256,0,0,0,0,514303210072015022,10896117325044863825,6832989297107820260,256,0,0,0,0,13874357669433210475,1359095158498556980,16713475068700509068,256,0,0,0,0,1540644821974820229,1432585979598249022,1280710984746617652,256,0,0,0,0,12749781158127610234,7437643829149232345,12819538863425590466,256,0,0,0,0,360757640521624490,13668505023279693249,5902240637147350242,256,0,0,0,0,15199853670914349889,2910504707611211403,15343357490265935890,256,0,0,0,0,382349587105367281,13727146904253017925,11860068691936078341,256,0,0,0,0,16302645897721403278,15099987601422505957,9156592531115186374,256,0,0,0,0,3275604293159647266,13659010522176763941,8004500113300679395,256,0,0,0,0,10130637606864157841,1396683615735388863,13788661528436607328,256,0,0,0,0,11883261371472727670,5298154655119083780,1218865824599367621,256,0,0,0,0,16490648941531189589,625008039876486140,5612472643699714450,256,0,0,0,0,17405106996863317957,8360463021019655324,11574037743284424685,256,0,0,0,0,17111471702741881271,2212474892987524845,3650237997903418762,256,0,0,0,0,9317458586522463146,9921653109121168896,4967206567163553067,256,0,0,0,0,17142976043620326731,10727644243637183534,915214909284701716,256,0,0,0,0,6914170096075978453,11638557065561657845,7045204011834074262,256,0,0,0,0,14446257543840331305,8241479935889788596,6153410573098742606,256,0,0,0,0,15201164196590479423,12915315729976695288,6591324402495534835,256,0,0,0,0,13310542773866280398,16090094528328744734,73664746054310123,0,0,0,0,0,5335261431286132238,13834208594867289800,73664746054310123,0,0,0,0,0,17326073916968037802,16448787898819159442,73664746054310123,0,0,0,0,0,13077342314172152874,10781078567812642264,73664746054310123,0,0,0,0,0,2758021668426735806,1022948281769976966,9337031811481476632,1020,0,0,0,0,13105661228547234190,5197723316824830609,12969711883857527270,1020,0,0,0,0,10326073462307020221,12082181054096057754,17717367201103027557,1020,0,0,0,0,3673078219470284969,15590849407368689406,6157531206600322339,1020,0,0,0,0,6416826921278501906,8583316863664553258,4494964452786292995,1020,0,0,0,0,9780056623005574974,13036296193003384302,6822361003786958302,1020,0,0,0,0,3197701593747015345,17270279455355030966,11021728696956820441,1020,0,0,0,0,9193878232359432655,1107281106787475477,9606181539597221350,1020,0,0,0,0,11201275288816834808,18171775071623990425,14879604598020657243,1020,0,0,0,0,7188475289394894088,14402533365767101816,8022798208395386291,1020,0,0,0,0,17401796169998311747,15124235691411676241,16688119347107530969,1020,0,0,0,0,11422283453866017579,15143161839618843702,10242963403490178186,1020,0,0,0,0]}
+make: Nothing to be done for 'material-baseline-test'.

@@ -1,0 +1,140 @@
+{
+  "schema": "pubpres-native-closure-qualification-v1",
+  "updated_utc": "2026-11-26T08:47:32.848052+00:00",
+  "original_candidate": "864cf7dcbb4e5ea8d8cba8d06eb9988c3b99cf14",
+  "admission_and_semantic_fixture_source": "1e68c8c7f99e09eca487627af6c778e551cc5d31",
+  "comparison_source": "b6956cd94382218a270ad85df7bc84f30a66776f",
+  "production_native_inputs_unchanged_after_admission_commit": true,
+  "pool_lifetime": {
+    "normal": {
+      "checks": 509,
+      "failures": []
+    },
+    "asan_ubsan": {
+      "checks": 509,
+      "failures": [],
+      "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+      "UBSAN_OPTIONS": "halt_on_error=1",
+      "leak_checking": false
+    },
+    "tsan": {
+      "checks": 509,
+      "failures": [],
+      "TSAN_OPTIONS": "halt_on_error=1"
+    }
+  },
+  "native_world_semantics": {
+    "checks": 124055,
+    "failures": [],
+    "worlds": 20,
+    "ticks_each": 80,
+    "laws": [
+      "FreeMass",
+      "Wave/spill/ballistic",
+      "PressureFlow/reference",
+      "PressureFlow/cached",
+      "PressureFlow/dormant"
+    ],
+    "modes": [
+      "one-worker/control",
+      "four-worker/control",
+      "four-worker/actual-tasks",
+      "one-worker/actual-tasks"
+    ],
+    "scope": "Every tick content/state/physical hashes, quantity ledgers, body contact response and scheduled material work; explicit injection/refusal receipts; edits, pause/re-entry and actual World move.",
+    "asan_ubsan": {
+      "checks": 124055,
+      "failures": [],
+      "ASAN_OPTIONS": "detect_leaks=0:strict_string_checks=1",
+      "UBSAN_OPTIONS": "halt_on_error=1",
+      "leak_checking": false,
+      "log": "world-asan-ubsan.txt"
+    }
+  },
+  "mounted_native": {
+    "source": "23fb64d89c091448550814bff1543960b9012e1b",
+    "checks": 150,
+    "failures": [],
+    "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "runtime_sha256": "a908b78028bd7e0ebe173b3f75a9ac143f863e20be66589b224cac3bbfd205b4",
+    "scope": "Actual native module load, strict selector refusal, immutable mode/readback,32 equal native turns/material planes, prepared-owner replacement and actual nonzero task completion."
+  },
+  "registered_driver_preflight": {
+    "tests": 7,
+    "failures": [],
+    "source_and_runtime": "PASS",
+    "original_registration_preserved": true,
+    "fixed": [
+      "ABBA treatment/control role assignment separate from common source",
+      "Identifier-only original Wave512 typo amendment"
+    ],
+    "all_final_contracts": {
+      "initial_tests": 60,
+      "initial_errors": 1,
+      "initial_log": "final-driver-contracts.txt",
+      "initial_reason": "Recovered task-completion mixed observer added native selector/readback without its exact derivation amendment.",
+      "resulting_tests": 61,
+      "resulting_failures": 0,
+      "resulting_log": "final-driver-contracts-repaired.txt",
+      "scope": "Explicit three source derivation replacements; frozen observer base, physical callbacks, source/terrain/ownership predicates and fixture unchanged."
+    }
+  },
+  "preserved_failures": [
+    "Original full World fixture failed after28449 assertions at single-worker control tick13: full64-slot ballistic capacity, incorrectly excluded by original oracle.",
+    "An initial source-SHA transcription was rejected by exact-head build admission before compilation; actual builds read full git identity directly.",
+    "Production retained runtime/source check remains refused pending actual platform runtime publication; no false promotion.",
+    "Initial ordinary debug core process exceeded 600-second watchdog after 185 of 192 registered cases; unchanged remaining cases completed individually.",
+    "Initial complete final-driver contract preflight: 59 passing, one error from missing exact mixed native-selector derivation."
+  ],
+  "pending": [
+    "Resulting integrated-source Windows/platform qualification by lead/delivery specialist"
+  ],
+  "disposition": "CORRECTNESS_QUALIFIED / PERFORMANCE_NOT_ESTABLISHED / NOT_SELECTED / DEFAULT_OFF",
+  "ordinary_native_suites": {
+    "wave_flow": {
+      "registered_tests": 34,
+      "passed": 34,
+      "failures": 0,
+      "log": "wave-flow-run.txt"
+    },
+    "core": {
+      "registered_tests": 192,
+      "full_process_exit": 124,
+      "full_process_watchdog_seconds": 600,
+      "completed_before_interrupt": 185,
+      "remaining_cases_completed": 7,
+      "exhaustive_case_coverage": true,
+      "uninterrupted_full_process_pass": false,
+      "continuation": "core-continuation.json",
+      "scope": "Same unchanged binary and built-in name filter for seven cases not completed in initial process; preserve interruption and distinguish all-case coverage from uninterrupted full-process pass."
+    }
+  },
+  "comparison_successor_source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+  "mounted_native_successor": {
+    "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+    "checks": 150,
+    "failures": [],
+    "receipt": "mounted-native-55dea.json",
+    "actual_process_pid_matches": true,
+    "engine_native_hashes_match": true,
+    "control_completed_tick": 32,
+    "candidate_completed_tick": 32
+  },
+  "apparatus_failure_and_repair": {
+    "first_attempt": "comparison-first-attempt-admission.json",
+    "recovered_original_evidence": "comparison-first-attempt-evidence.tar.gz",
+    "successor_registration": "comparison-successor-registration.json",
+    "observer_tests": 16,
+    "actual_godot_process_test": "process-discovery-godot-final.json"
+  },
+  "registered_native_comparison": {
+    "source": "55dea232aaeee8cda32fd85fd5b3cfd628848469",
+    "capture_complete": true,
+    "all8_actual_treatments_exercised": true,
+    "raw_archive": "comparison-admitted-evidence.tar.gz",
+    "independent_reduction": "comparison-independent-physical.json",
+    "decision": "native-task-completion-decision.json",
+    "candidate_selected": false,
+    "native_policy": "all_workers"
+  }
+}

@@ -1,0 +1,112 @@
+{
+  "schema": "pubpres-final-third-native-authority-audit-v1",
+  "source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "source_tree": "351b947a50ce054361660eba9379006122527547",
+  "workflow_run": 45452580606,
+  "job_id": 138653665126,
+  "job_conclusion": "SUCCESS",
+  "artifact": {
+    "artifact": {
+      "id": 14950189219,
+      "name": "pubpres-final-native-45452580606-1",
+      "size_in_bytes": 33191,
+      "url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14950189219",
+      "archive_download_url": "https://api.github.com/repos/techrote/cybersand/actions/artifacts/14950189219/zip",
+      "expired": false,
+      "created_at": "2026-11-24T18:20:07Z",
+      "expires_at": "2027-02-22T17:48:19Z",
+      "updated_at": "2026-11-24T18:20:07Z",
+      "digest": "sha256:5f43bc750bef634b1a0641984622db311237c4ed119693a8196edfc960952ff5",
+      "workflow_run": {
+        "id": 45452580606,
+        "repository_id": 1350077435,
+        "head_repository_id": 1350077435,
+        "head_branch": "codex/pubpres-playability-final-001-20261124",
+        "head_sha": "c2f8a73d34448bc1496ecd84bca02f0812c80d27"
+      }
+    },
+    "archive_sha256": "5f43bc750bef634b1a0641984622db311237c4ed119693a8196edfc960952ff5",
+    "archive_bytes": 33191,
+    "all_zip_crc_pass": true,
+    "members": [
+      {
+        "path": "normal.log",
+        "bytes": 96177,
+        "sha256": "b79e4f600aa3a31f6652c2723d840eb8a1f4da2ff2b32491268c21ee92cfb329",
+        "zip_crc32": "80157901"
+      },
+      {
+        "path": "sanitizers.log",
+        "bytes": 80058,
+        "sha256": "ffb4cbb21b00b8c5887d7d40f958a17957b6d59f2224990b728ebebfb2a120a0",
+        "zip_crc32": "40031e28"
+      },
+      {
+        "path": "source.txt",
+        "bytes": 41,
+        "sha256": "ec2d0c201ab58693d1bed09273d752f19331a16252865b058084706acb3af2a1",
+        "zip_crc32": "2ddf20de"
+      }
+    ]
+  },
+  "job_log_sha256": "9dcdd893bc921a52711a87488dcde465ea4a4145f7d571a0f52d3d4a6eebff2f",
+  "commands": {
+    "normal": "timeout 3600 make test wave-flow-test wave-spill-test wave-body-boundary-test wave-empty-derived-test material-baseline-test",
+    "sanitizers": "timeout 3600 env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make sanitize wave-flow-sanitize wave-body-boundary-sanitize wave-empty-derived-sanitize"
+  },
+  "results": {
+    "normal.log": {
+      "log_sha256": "b79e4f600aa3a31f6652c2723d840eb8a1f4da2ff2b32491268c21ee92cfb329",
+      "general_native_tests": 192,
+      "wave_flow_tests": 34,
+      "body_boundary_runs": 50,
+      "body_boundary_ticks": 6000,
+      "body_boundary_result": "WAVE_BODY_BOUNDARY: seeds=2 runs=50 ticks=6000 scripted_waterline_crossings=350 relocations=438578 launches=26950 masked_refusals=6000 capacity_refusals=78442 paused_refusals=9204 region_changes=186 overfill_edits=150 drains=100 maximum_live=4096 parity=checkpoints failures=0",
+      "actual_empty_storage_invariant_enabled": true,
+      "empty_derived_lifecycle": [
+        {
+          "workers": 1,
+          "checkpoints": 153,
+          "canonical_checkpoints_sha256": "7b3aba189c3d73e917740d617dfe8e7fd8f5f928fc7f1fb2e6cdab7df497c137"
+        },
+        {
+          "workers": 4,
+          "checkpoints": 153,
+          "canonical_checkpoints_sha256": "7b3aba189c3d73e917740d617dfe8e7fd8f5f928fc7f1fb2e6cdab7df497c137"
+        }
+      ],
+      "sanitizer_diagnostics_found": 0,
+      "wave_spill_tests": 47,
+      "material_baseline_contracts": "PASS",
+      "retained_log": "final03-native-normal.txt"
+    },
+    "sanitizers.log": {
+      "log_sha256": "ffb4cbb21b00b8c5887d7d40f958a17957b6d59f2224990b728ebebfb2a120a0",
+      "general_native_tests": 192,
+      "wave_flow_tests": 34,
+      "body_boundary_runs": 50,
+      "body_boundary_ticks": 6000,
+      "body_boundary_result": "WAVE_BODY_BOUNDARY: seeds=2 runs=50 ticks=6000 scripted_waterline_crossings=350 relocations=438578 launches=26950 masked_refusals=6000 capacity_refusals=78442 paused_refusals=9204 region_changes=186 overfill_edits=150 drains=100 maximum_live=4096 parity=checkpoints failures=0",
+      "actual_empty_storage_invariant_enabled": true,
+      "empty_derived_lifecycle": [
+        {
+          "workers": 1,
+          "checkpoints": 153,
+          "canonical_checkpoints_sha256": "7b3aba189c3d73e917740d617dfe8e7fd8f5f928fc7f1fb2e6cdab7df497c137"
+        },
+        {
+          "workers": 4,
+          "checkpoints": 153,
+          "canonical_checkpoints_sha256": "7b3aba189c3d73e917740d617dfe8e7fd8f5f928fc7f1fb2e6cdab7df497c137"
+        }
+      ],
+      "sanitizer_diagnostics_found": 0,
+      "retained_log": "final03-native-sanitizers.txt"
+    }
+  },
+  "physical_acceptance": "HOLD",
+  "scope": "Source-exact hosted native correctness and scoped AddressSanitizer/UndefinedBehaviorSanitizer execution, not ordinary Workbench, GPU, process scheduling or performance qualification. Leak detection was disabled explicitly; no LeakSanitizer or ThreadSanitizer result is claimed.",
+  "all_normal_sanitized_one_four_worker_lifecycle_checkpoints_equal": true,
+  "makefile_sha256": "e1f8d94a72ae9d0c88eac4701bf64e7b6b47931ccffddfc26f4627b09ea5f48b",
+  "workflow_sha256": "a0d451c3f4ed0bf0ba25c8f7147df4f7f1ab2b32810b1dbe204b9e3dcc483e1d"
+}

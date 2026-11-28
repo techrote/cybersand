@@ -1,0 +1,42 @@
+{
+  "schema": "pubpres-mainline-objectshard-readonly-preview-v1",
+  "pubpres_checkpoint": "0670733eb0a418c8580458a9c5dd9aff24f342c6",
+  "pubpres_tree": "3df9cc4f11b0ef0a3009830a78720bf41bb9f1a9",
+  "pubpres_source_role": "Exact remote Q2 candidate; shared-feature execution failed and remains unaccepted",
+  "objectshard_application": "c4e10e3ca629c491f7340c6f383adcc347200fa5",
+  "objectshard_tree": "e88fd1a1d89d10bf4482cb619174325390ced44d",
+  "objectshard_source_role": "Frozen separate accepted-main integration; not consumed by PUBPRES",
+  "accepted_main": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+  "common_ancestor": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+  "command": [
+    "git",
+    "merge-tree",
+    "--write-tree",
+    "--name-only",
+    "--messages",
+    "0670733eb0a418c8580458a9c5dd9aff24f342c6",
+    "c4e10e3ca629c491f7340c6f383adcc347200fa5"
+  ],
+  "exit_code": 1,
+  "preview_tree": "15c385b675235af0bef65f748a03a64ae6414845",
+  "conflicted_paths": [
+    ".gitattributes",
+    "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+    "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+    "godot/addons/cybersand_native/runtime-provenance.json",
+    "godot/addons/cybersand_native/runtime-provenance.linux.json",
+    "godot/native_extension/cyber_native_cell_world.cpp",
+    "godot/scripts/main.gd",
+    "godot/scripts/shared_workbench.gd",
+    "godot/scripts/simulation_worker.gd",
+    "godot/shaders/material_palette.gdshader",
+    "tools/material_catalogue/compatibility.py"
+  ],
+  "checkout_or_branch_changed": false,
+  "combined_runtime_built": false,
+  "combined_application_executed": false,
+  "compatible_claimed": false,
+  "metadata_recovered_from_observed_tool_output": true,
+  "original_local_stdout_recovered": false,
+  "scope": "Exact remote candidate metadata from the completed read-only preview. Complete original stdout was not recovered after the executor became unavailable; no reconstructed transcript or combined-source qualification is claimed."
+}

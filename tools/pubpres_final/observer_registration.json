@@ -1,0 +1,19 @@
+{
+  "schema": "pubpres-final-observer-calibration-registration-v1",
+  "cases": ["wave_512_follow", "wave_gameplay_2048_follow"],
+  "order": [false, true, true, false],
+  "source": "same exact current candidate and independently built native runtime in all four arms",
+  "material": "full",
+  "full_image_slots": 2,
+  "physics": "early",
+  "presentation": "coherent",
+  "render_thread": "safe",
+  "same_frame_continuation": false,
+  "original_observer": "full unchanged V3 physical witness in every arm",
+  "external_cpu_observer": "same actual-process accounting sampler enabled in every arm",
+  "minimum_capture_usec": 10000000,
+  "minimum_real_steps": 144,
+  "maximum_capture_usec": 90000000,
+  "overhead_acceptance": "No owner budget supplied. Retain every physical rate, p50/p95/p99/max gap, severe count, callback cost and CPU result; do not infer zero overhead or inherit historical calibration.",
+  "scope": "Prospective bounded off/on/on/off calibration for the new submitted-pose/Follow sidecar. Disabled freshness remains unavailable. Exact physical outcomes, input tape and source/runtime/policy match are prerequisites. This is instrumentation qualification, not a gameplay optimization or physical NVIDIA acceptance."
+}

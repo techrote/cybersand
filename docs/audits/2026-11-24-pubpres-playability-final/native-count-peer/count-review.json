@@ -1,0 +1,102 @@
+{
+  "schema": "pubpres-count-independent-review-resolution-v1",
+  "reviewed_fix": "07bb22a1baa24a52e9ca0c3ded2c279386cf7d67",
+  "observed_repository_head": "4bde032f27e90e6e974b3ddc123264afa8fa5012",
+  "reader_sha256": "eafe6db0c5003c604ad73f95fa24cb09f9621b8c9a083374351ef88d0a83798a",
+  "source_files_sha256": {
+    "tools/pubpres_final/material_steps_contract.py": "2632c5e32a51100c495f752c62ab422468dfa7066a5c522107ae6c1e4e8e749f",
+    "tools/pubpres_final/material_steps_status.py": "cba875c94f68fcb1943938a313cce418d8f4fca442ebf68e816e82c4a5b31698",
+    "tools/pubpres_final/material_steps_oracle.py": "bf5dc8095d785a9cd2628d34a56b2c603cbaa7b2b77ca10c54f4fa838f9d750f",
+    "tools/pubpres_final/test_material_steps_contract.py": "d122fddab8703702572cea9e689d5013ec5da53668b00f2f0bd4d35124e44c80"
+  },
+  "stale_but_real_anchor": {
+    "actual_latest_step": 14,
+    "forged_anchor": 12,
+    "rejected": true,
+    "reason": "Material anchor is not the latest genuinely completed step at policy take"
+  },
+  "malformed_bridge_controls_rejected": 9,
+  "valid_signed64_controls": [
+    -9223372036854775808,
+    9223372036854775807,
+    -1234,
+    1234
+  ],
+  "registration_controls_rejected": [
+    {
+      "field": "full_image_slots",
+      "type": "float"
+    },
+    {
+      "field": "full_image_slots",
+      "type": "bool"
+    },
+    {
+      "field": "material_deadline_hz",
+      "type": "float"
+    },
+    {
+      "field": "material_deadline_hz",
+      "type": "bool"
+    },
+    {
+      "field": "minimum_capture_usec",
+      "type": "float"
+    },
+    {
+      "field": "minimum_capture_usec",
+      "type": "bool"
+    },
+    {
+      "field": "minimum_real_steps",
+      "type": "float"
+    },
+    {
+      "field": "minimum_real_steps",
+      "type": "bool"
+    },
+    {
+      "field": "maximum_capture_usec",
+      "type": "float"
+    },
+    {
+      "field": "maximum_capture_usec",
+      "type": "bool"
+    },
+    {
+      "field": "maximum_status_samples",
+      "type": "float"
+    },
+    {
+      "field": "maximum_status_samples",
+      "type": "bool"
+    },
+    {
+      "field": "scheduled_added_hold_usec",
+      "type": "float"
+    },
+    {
+      "field": "scheduled_added_hold_usec",
+      "type": "bool"
+    },
+    {
+      "field": "source_age_guard_usec",
+      "type": "float"
+    },
+    {
+      "field": "source_age_guard_usec",
+      "type": "bool"
+    },
+    {
+      "field": "order[0]",
+      "type": "bool"
+    },
+    {
+      "field": "order[1]",
+      "type": "float"
+    }
+  ],
+  "complete": true,
+  "physical_acceptance": "HOLD",
+  "scope": "Independent parser/source review only. The old ca006d22 reader accepted the stale12 anchor despite13/14 completing before take and misclassified it as deadline-only; the exact repaired source now refuses it. Main drain is synchronous outside the callback observer. The explicit pre-capture join cannot supply independent treatment credit. No runtime/timing result is created."
+}

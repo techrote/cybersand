@@ -287,6 +287,8 @@ may consume the interfaces without gaining mutable cell access.
 
 ## When can a render payload be reused?
 
+The [desktop evaluation](../operations/pubpres-integration-evaluation.md) specifies bounded independent baseline and dirty budgets, and the lifetime of queued staging images.
+
 **Current native lease:** `RenderSnapshotLease` exposes const payload spans;
 the final lease release permits slot reuse. Consumers may acquire/release
 concurrently with serialized publication. A lease retains shared slot state
@@ -305,6 +307,17 @@ before `acknowledge_render_snapshot`. Rejection requests a full refresh and
 does not acknowledge success. The worker clears accumulated patches only when
 the acknowledged serial covers the pending publication. Acquiring an older
 snapshot never authorizes clearing bytes it can still observe.
+
+**PUBPRES deadline experiment, default off:** Main may retain one additional
+reference to the worker's immutable cumulative publication before modifying its
+CPU image. Replacing that reference does not retire native dirty data or send an
+ACK. The worker's existing accumulated journal remains necessary, including when
+an older ACK has not yet been observed by its exclusive owner. A fixed deadline
+and actor session/epoch/World identity guard the one pending reference; owner
+retirement or failure clears it. Only actual accepted consumption advances the
+uploaded histories and ACK. The
+[rendering contract](rendering-and-gameplay-bridges.md) owns scheduling and
+recovery behavior; this reference is no lease for stale physical samples.
 
 **Current Web:** copied packets are consumed synchronously on the main thread;
 the desktop mutex/accumulation/acknowledgement protocol is not instantiated.

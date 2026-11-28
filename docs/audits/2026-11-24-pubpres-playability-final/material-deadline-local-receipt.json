@@ -1,0 +1,270 @@
+{
+  "schema": "pubpres-material-deadline-local-screen-v1",
+  "scope": "Native-independent policy execution, actual Main identity/cancellation without bodies or uploads, and headless Main GPU-fixture syntax only. No graphical, physical-step or performance acceptance.",
+  "source_base": "bbcb19da2214098a4b57bf86ce19c470822a90d4",
+  "dirty_script_inputs_sha256": {
+    "godot/scripts/main.gd": "e30a9d45b47562087b7b1b29e06f4d9039497f1cb8c037a5b04a7df56c32f53b",
+    "godot/scripts/material_publication_deadline.gd": "a3ee3e49b9269dfd1941d3bc9b2af9b8fe7956db70019c1289cd9791388eb20d",
+    "godot/tests/test_material_publication_deadline.gd": "8005da860f4cab45b555512b01d42ba7df2afc7c38b22cf39872c95373216a61",
+    "godot/tests/test_material_deadline_main_history.gd": "0b3e372690cf1ff8a0797fbebe4a2e9f164cc143d26b459326089fb47384bbd3",
+    "godot/tests/test_material_deadline_main_identity.gd": "8949afe1a3848827982fc7a075b6d3b5a3137e8fdccbeab0ddadb2495c03fb2e"
+  },
+  "engine": {
+    "version": "4.7.stable.official.5b4e0cb0f",
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75"
+  },
+  "native_runtime": {
+    "source_commit": "b21dca8fd6bd30bed9c19ce84601f85050405bed",
+    "sha256": "aeb83dc3795b8010437e8bbba037053aff6cf5b5c928d60e0eeedef6b6eb6bd1",
+    "source_inputs_count": 105,
+    "complete_native_closure_matches_worktree": true
+  },
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "runs": [
+    {
+      "name": "policy",
+      "command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/deadline-policy",
+        "--script",
+        "res://tests/test_material_publication_deadline.gd"
+      ],
+      "timeout_seconds": 45,
+      "started_at": "2026-11-24T16:21:33.007390+00:00",
+      "completed_at": "2026-11-24T16:21:34.083906+00:00",
+      "returncode": 0,
+      "output": "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\nMATERIAL_DEADLINE_RESULT {\"checks\":57,\"complete\":true,\"failures\":[],\"physical_credit\":false,\"policy_sha256\":\"a3ee3e49b9269dfd1941d3bc9b2af9b8fe7956db70019c1289cd9791388eb20d\",\"schema\":\"pubpres-material-deadline-policy-v1\",\"synthetic_clocks\":true}\n",
+      "log_sha256": "b25cff459721520215b7a7384220967c4fd990b7239533f25995e470680896de",
+      "result": {
+        "checks": 57,
+        "complete": true,
+        "failures": [],
+        "physical_credit": false,
+        "policy_sha256": "a3ee3e49b9269dfd1941d3bc9b2af9b8fe7956db70019c1289cd9791388eb20d",
+        "schema": "pubpres-material-deadline-policy-v1",
+        "synthetic_clocks": true
+      }
+    },
+    {
+      "name": "main_script_parse",
+      "command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/deadline-main-parse/project",
+        "--check-only",
+        "--script",
+        "res://tests/test_material_deadline_main_history.gd"
+      ],
+      "timeout_seconds": 45,
+      "started_at": "2026-11-24T16:21:34.084080+00:00",
+      "completed_at": "2026-11-24T16:21:39.702108+00:00",
+      "returncode": 0,
+      "output": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\n",
+      "log_sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+    },
+    {
+      "name": "main_identity",
+      "command": [
+        "/workspace/scratch/0b2a9bdf7883/toolchain/godot47/Godot_v4.7-stable_linux.x86_64",
+        "--headless",
+        "--path",
+        "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/deadline-main-parse/project",
+        "--script",
+        "res://tests/test_material_deadline_main_identity.gd"
+      ],
+      "timeout_seconds": 45,
+      "returncode": 0,
+      "log_written_at": "2026-11-24T16:24:47.850482+00:00",
+      "log_timestamp_kind": "filesystem mtime after completed subprocess; no invented process-start timestamp",
+      "output": "Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)\nGodot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org\n\n\u001b[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2\u001b[39m\u001b[0m\nMATERIAL_DEADLINE_IDENTITY_RESULT {\"cancelled_cases\":[\"changed actor epoch\",\"changed actor session\",\"incomplete material frame identity\",\"material and authoritative World disagreement\",\"pending actor reset\",\"pending physical replacement\",\"pending World transaction\",\"native failure before deadline drain\",\"failed latest snapshot before deadline drain\",\"failed offer invalidates pending packet\",\"actual physical owner closure\"],\"checks\":25,\"complete\":true,\"failures\":[],\"fixture_sha256\":\"8949afe1a3848827982fc7a075b6d3b5a3137e8fdccbeab0ddadb2495c03fb2e\",\"gpu_uploads\":0,\"main_sha256\":\"e30a9d45b47562087b7b1b29e06f4d9039497f1cb8c037a5b04a7df56c32f53b\",\"physical_credit\":false,\"schema\":\"pubpres-material-deadline-main-identity-v1\",\"synthetic_identity_fields\":true}\n",
+      "log_sha256": "c19253254d2d5c4c0dc3b45a077502edf74a047225e843fb0e23e116cc64f57d",
+      "result": {
+        "cancelled_cases": [
+          "changed actor epoch",
+          "changed actor session",
+          "incomplete material frame identity",
+          "material and authoritative World disagreement",
+          "pending actor reset",
+          "pending physical replacement",
+          "pending World transaction",
+          "native failure before deadline drain",
+          "failed latest snapshot before deadline drain",
+          "failed offer invalidates pending packet",
+          "actual physical owner closure"
+        ],
+        "checks": 25,
+        "complete": true,
+        "failures": [],
+        "fixture_sha256": "8949afe1a3848827982fc7a075b6d3b5a3137e8fdccbeab0ddadb2495c03fb2e",
+        "gpu_uploads": 0,
+        "main_sha256": "e30a9d45b47562087b7b1b29e06f4d9039497f1cb8c037a5b04a7df56c32f53b",
+        "physical_credit": false,
+        "schema": "pubpres-material-deadline-main-identity-v1",
+        "synthetic_identity_fields": true
+      }
+    }
+  ],
+  "graphical_fixture_executed": false,
+  "physical_credit": false,
+  "performance_claim": false,
+  "repository_gates": {
+    "docs": {
+      "report_sha256": "1563ff2f6e98852854be8305e0c19ecfbfc914ac1961e9c9e7666a01e62c72b7",
+      "result": {
+        "status": "failed",
+        "documents": 149,
+        "navigation_link_documents": 8,
+        "canonical_claims": 278,
+        "local_links": 4202,
+        "heading_anchors": 808,
+        "questions": 32,
+        "errors": [
+          "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+          "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+          "Q28: missing expected-fact source ../../tools/dev.py",
+          "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+          "Q29: missing expected-fact source ../../tools/dev.py",
+          "Q30: missing expected-fact source ../../validation/browser-results.json"
+        ],
+        "warnings": [],
+        "limitations": [
+          "Does not verify source semantics or runtime claims",
+          "Does not fetch external URLs",
+          "Does not rewrite or reattest historical audits",
+          "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+        ]
+      }
+    },
+    "m11": {
+      "report_sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d",
+      "result": {
+        "status": "passed",
+        "scope": "historical M11 integrity; no current runtime acceptance",
+        "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+        "records_checked": 18,
+        "source_hashes_checked": 28,
+        "compare_working_tree": false,
+        "working_tree_differences": [],
+        "errors": []
+      }
+    },
+    "repository": {
+      "report_sha256": "62b6bf5c6cc8e405d0c38b41ed34f3c741f8ba0b2b9580ab4cad176ac8a35067",
+      "result": {
+        "status": "failed",
+        "scope": "current source/documentation and artifact identity",
+        "documentation": {
+          "status": "failed",
+          "documents": 149,
+          "navigation_link_documents": 8,
+          "canonical_claims": 278,
+          "local_links": 4202,
+          "heading_anchors": 808,
+          "questions": 32,
+          "errors": [
+            "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+            "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+            "Q28: missing expected-fact source ../../tools/dev.py",
+            "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+            "Q29: missing expected-fact source ../../tools/dev.py",
+            "Q30: missing expected-fact source ../../validation/browser-results.json"
+          ],
+          "warnings": [],
+          "limitations": [
+            "Does not verify source semantics or runtime claims",
+            "Does not fetch external URLs",
+            "Does not rewrite or reattest historical audits",
+            "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+          ]
+        },
+        "materialized_runtime_files": [],
+        "unmaterialized_runtime_files": [
+          "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+          "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+          "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+          "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm"
+        ],
+        "errors": [
+          "Q01: missing expected-fact source ../../SOURCE-PROVENANCE.json",
+          "Q04: missing expected-fact source ../../docs/WEB_THREADING.md",
+          "Q28: missing expected-fact source ../../tools/dev.py",
+          "Q28: missing expected-fact source ../../docs/LOCAL_DEVELOPMENT.md",
+          "Q29: missing expected-fact source ../../tools/dev.py",
+          "Q30: missing expected-fact source ../../validation/browser-results.json",
+          "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+          "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+          "Windows x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world_wave.inc",
+          "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.cpp",
+          "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: godot/native_extension/cyber_native_cell_world.hpp",
+          "Linux x86_64 / real graphical Godot 4.7 requires rebuild for source input: native/src/world_wave.inc"
+        ],
+        "limitations": [
+          "Identity is not execution evidence; read the dated runtime acceptance report",
+          "Retained vendor binaries and platform execution have separate dated provenance",
+          "Historical M11 integrity is checked separately by check_m11_consistency.py"
+        ]
+      }
+    },
+    "retrieval": {
+      "report_sha256": "665fa8272a20bb317450387ba98fcef93d5575ba2ea4e67eb3dd5165956b86a1",
+      "result": {
+        "retrieval_policy": "historical-isolation-v1",
+        "authority": "current-documentation",
+        "historical_opt_in": false,
+        "link_expansion": false,
+        "cache_policy": "No persistent cache is read; external caches require rebuild with this policy and per-chunk authority.",
+        "created_utc": "2026-11-24T16:25:55.159648+00:00",
+        "corpus_root": "/workspace/scratch/0b2a9bdf7883/cybersand-native",
+        "method": {
+          "name": "heading-chunk BM25 lexical development baseline",
+          "k": 5,
+          "maximum_body_words": 420,
+          "overlap_words": 0,
+          "k1": 1.2,
+          "b": 0.75,
+          "metadata": "title, path, document-kind, status, scope, canonical-for, last-reviewed, heading path on every chunk when present",
+          "query_expansion": false,
+          "stemming": false,
+          "reranker": false,
+          "embeddings": false,
+          "corpus_policy": "explicit current manifest if present; otherwise focused directories plus navigation README/AGENTS; historical paths and tagged copies rejected"
+        },
+        "fixture_sha256": "21f22c828f89e422722527cbdff0132d7871815783ed8a25a101f4f8fbfbee3f",
+        "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+        "corpus_manifest_sha256": "8135f0c6311b200423777a361db25cc05ad139fa83eacb881f955cabb7a3d240",
+        "corpus_manifest": "docs/reference/retrieval-corpus.json",
+        "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+        "document_count": 149,
+        "chunk_count": 1990,
+        "summary": {
+          "questions": 32,
+          "canonical_hit_at_1": 19,
+          "canonical_hit_at_k": 30,
+          "mrr_at_k": 0.7318,
+          "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+        }
+      }
+    },
+    "git_diff_check": {
+      "returncode": 0,
+      "output": ""
+    }
+  }
+}

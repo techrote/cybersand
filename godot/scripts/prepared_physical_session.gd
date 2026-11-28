@@ -16,11 +16,21 @@ var _verified_physics_frames: int = 0
 var _terrain_installed: bool = false
 var _terrain_ready: bool = false
 var _adopted: bool = false
+# Optional Main-thread scalar observer. It is not an ownership/ready signal.
+var diagnostic_observer: Callable
+var _diagnostic_started_usec := 0
+
+func _diagnostic(phase: String, started_usec: int, details: Dictionary = {}) -> void:
+	if diagnostic_observer.is_valid(): diagnostic_observer.call(phase,started_usec,details)
+
 
 func prepare(parent: Node, definitions: Array, epoch: int) -> bool:
+	_diagnostic_started_usec = Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 	if viewport != null or not Session.valid_definitions(definitions) or epoch < 1:
 		last_error = "Invalid provisional physical owner configuration"
 		return false
+	_diagnostic("definition_validation",_diagnostic_started_usec,{"expected_epoch":epoch,"actors":definitions.size()})
+	var space_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 	viewport = SubViewport.new()
 	viewport.name = "PreparedPhysicalSpace"
 	viewport.size = Vector2i(2,2)
@@ -32,14 +42,19 @@ func prepare(parent: Node, definitions: Array, epoch: int) -> bool:
 	session.name = "PreparedPhysicalActors"
 	session.visible = false
 	viewport.add_child(session)
-	if not session.configure(definitions,viewport.world_2d.space,epoch):
+	_diagnostic("physical_space",space_started,{"expected_epoch":epoch})
+	if not session.configure(definitions,viewport.world_2d.space,epoch,diagnostic_observer):
 		last_error = session.last_error
 		close()
 		return false
 	# Bridge initialization disables automatic integration for this exact space.
 	# Frozen dynamic bodies add a second explicit hold across asynchronous frames.
+	var frozen_started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 	session.set_suspended(true)
-	return _capture_frozen_pose()
+	var captured := _capture_frozen_pose()
+	_diagnostic("frozen_pose",frozen_started,{"captured":captured})
+	_diagnostic("physical_preparation",_diagnostic_started_usec,{"accepted":captured,"expected_epoch":epoch})
+	return captured
 
 func physics_bridge() -> CyberRapierPhysicsBridge:
 	return session.bridge if session != null else null
@@ -120,6 +135,7 @@ func verify_physics_frame() -> bool:
 	return true
 
 func install_terrain(chunks: PackedInt32Array) -> bool:
+	var started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 	if _terrain_installed:
 		last_error = "Provisional terrain was already installed"
 		return false
@@ -128,6 +144,8 @@ func install_terrain(chunks: PackedInt32Array) -> bool:
 		last_error = "Provisional terrain snapshot refused"
 		return false
 	_terrain_installed = true
+	_diagnostic("terrain_packet",started,{"chunk_values":chunks.size(),
+		"since_preparation_usec":Time.get_ticks_usec()-_diagnostic_started_usec if _diagnostic_started_usec > 0 else 0})
 	return true
 
 func prepare_terrain_budget(chunks: int = 8, microseconds: int = 2000) -> bool:
@@ -135,8 +153,11 @@ func prepare_terrain_budget(chunks: int = 8, microseconds: int = 2000) -> bool:
 		last_error = "Provisional terrain preparation is unavailable"
 		return false
 	if not pose_unchanged(): return false
+	var started := Time.get_ticks_usec() if diagnostic_observer.is_valid() else 0
 	physics_bridge().process_hard_surface_collider_budget(chunks,microseconds)
 	_terrain_ready = physics_bridge().pending_hard_surface_chunks() == 0
+	_diagnostic("terrain_budget",started,{"pending_chunks":physics_bridge().pending_hard_surface_chunks(),
+		"ready":_terrain_ready,"frozen_physics_frames":_verified_physics_frames})
 	return true
 
 func ready() -> bool:
@@ -149,6 +170,7 @@ func adopt() -> void:
 	_adopted = true
 	for body: RigidBody2D in bodies(): body.freeze = false
 	if session != null: session.adopt_retained_motion()
+	_diagnostic("physical_adopted",_diagnostic_started_usec,{"frozen_physics_frames":_verified_physics_frames})
 
 func close() -> void:
 	_close_prepared_owner()

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "reviewed": "2026-11-24",
+  "scope": "Additive development questions for the isolated PUBPRES final continuation. Authored with its canonical page; not held-out retrieval evidence. Earlier questions and historical identities remain unchanged.",
+  "questions": [
+    {
+      "id": "PUBPRESFINAL-01",
+      "query": "Where is the active PUBPRES physical playability continuation of frozen757, and does a complete hosted campaign qualify gameplay or physical NVIDIA acceptance?",
+      "canonical": ["operations/pubpres-playability-final-001.md"],
+      "facts": [
+        "The continuation is Draft767 on codex/pubpres-playability-final-001-20261124; frozen757 c90dbc46e1f57f28e06b1f4205b83467335ff657 and negative predecessor evidence remain preserved.",
+        "Actual completed Rapier steps, full gap tails, responsiveness and coherent histories determine performance; upload duration, FPS and capture success alone do not.",
+        "Draft/HOLD forbids merge, Ready or automatic default promotion; physical Windows/NVIDIA acceptance is separate from hosted software rendering."
+      ],
+      "sources": ["operations/pubpres-playability-final-001.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESFINAL-02",
+      "query": "Does the occupied-mask Wave repair change material semantics or let physics reuse stale native body samples?",
+      "canonical": ["operations/pubpres-playability-final-001.md", "architecture/wave-flow-v1.md"],
+      "facts": [
+        "The exclusive native owner computes tight bounds of actual occupied mask cells; Wave skips only obstacle probes proven to be zero outside those bounds.",
+        "Configured mask dry/clean classification, material turns, coupling, Water accounting and consecutive sample admission stay authoritative.",
+        "Terrain revision alone cannot certify valid old occupancy, coupling or equipment history for an extra Rapier step."
+      ],
+      "sources": ["../native/src/world_wave.inc", "audits/2026-11-24-pubpres-playability-final/native-architecture.md"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESFINAL-03",
+      "query": "Does the three-slot Full-image publisher guarantee nonblocking GPU updates, and which texture histories and acknowledgments are preserved?",
+      "canonical": ["operations/pubpres-playability-final-001.md", "architecture/rendering-and-gameplay-bridges.md"],
+      "facts": [
+        "Only explicit CYBERSAND_DIAG_FULL_IMAGE_SLOTS=3 selects the bounded spare; ordinary Full remains two slots.",
+        "It updates the spare with immutable bytes before rotation and reconstructs exact current/previous history on structural refusal before acknowledgment.",
+        "One intervening publication is not a GPU completion fence, residency measurement or proof of nonblocking work; independent first GPU reads verify both histories."
+      ],
+      "sources": ["../godot/scripts/full_image_ring_publisher.gd", "../tools/pubpres_final/qualification_oracles.py"],
+      "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESFINAL-04",
+      "query": "What does the recovered Godot4.7 Separate EGL handoff repair fix, and does Separate remove Main rendering waits or provide exact draw serials?",
+      "canonical": ["operations/pubpres-playability-final-001.md"],
+      "facts": [
+        "The recovered609 patch clears a cached current window on EGL release so the receiving render owner binds the context; original source and artifact provenance are independently verified.",
+        "Godot Main still synchronizes the previous render each iteration; Separate is bounded overlap, not isolation of physical callbacks from rendering.",
+        "Separate defers frame_post_draw back to Main, so callback delivery time and contemporaneous Main serial cannot establish the exact drawn material or scanout."
+      ],
+      "sources": ["audits/2026-11-24-pubpres-playability-final/renderer-source-review.md", "../tools/pubpres_final/pubpres_final_gameplay.gd"],
+      "revision_sensitive": true
+    }
+  ]
+}

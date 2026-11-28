@@ -1,0 +1,171 @@
+name: PUBPRES recovery resulting-source qualification
+
+on:
+  push:
+    branches: [codex/pubpres-playability-final-001-20261124]
+    paths: ['.github/pubpres-recovery-run.json']
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  PUBPRES_NATIVE_SOURCE: 4bde032f27e90e6e974b3ddc123264afa8fa5012
+  PUBPRES_FROZEN: c90dbc46e1f57f28e06b1f4205b83467335ff657
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      phase: ${{ steps.request.outputs.phase }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Complete resulting source and deliberate recovery scope
+        id: request
+        run: python3 tools/pubpres_final_recovery/recovery_request.py
+      - name: Exact retained comparison and legacy capability sources
+        run: |
+          timeout 240 git fetch --no-tags --depth=1 origin "$PUBPRES_NATIVE_SOURCE" "$PUBPRES_FROZEN" c2f8a73d34448bc1496ecd84bca02f0812c80d27
+      - name: Frozen and additional adversarial contracts
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m unittest discover -s tools/pubpres_final -p 'test_*.py' -v
+          python3 -m unittest discover -s tools/pubpres_final_windows -p 'test_*.py' -v
+          python3 -m unittest discover -s tools/pubpres_final_observers -p 'test_*.py' -v
+          python3 tools/pubpres_final_observers/bundle.py --verify
+          python3 -m unittest discover -s tools/pubpres_final_recovery -p 'test_*.py' -v
+          python3 -m unittest discover -s tools/pubpres_recovery_engine -p 'test_*.py' -v
+          python3 tools/pubpres_recovery_engine/engine_contract.py --verify
+          python3 tools/ci/test_workbench_engine_provenance.py
+          python3 tools/pubpres_playability/test_results_same_frame.py
+
+  graphical-linux:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Canonical source bytes
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 1}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Independently retained source objects and exact Rapier
+        env:
+          RAPIER: libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+        run: |
+          git fetch --no-tags --depth=1 origin "$PUBPRES_NATIVE_SOURCE" "$PUBPRES_FROZEN"
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/$RAPIER" --exclude=''
+          python tools/pubpres_final_recovery/recovery_request.py --engine-record build/engine-artifact.json
+      - name: Linux graphics dependencies
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
+      - name: Restore exact original native artifacts and explicit input-equivalence binding
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PLATFORM: linux
+          PHASE: ${{ needs.plan.outputs.phase }}
+        run: |
+          engine_args=()
+          if [[ "$PLATFORM" == 'windows' && "$PHASE" == 'integration' ]]; then
+            engine_args=(--engine-record build/engine-artifact.json)
+          fi
+          python tools/pubpres_final_recovery/restore_inputs.py --platform "$PLATFORM" --output build/recovery-inputs "${engine_args[@]}"
+      - name: Pinned official Safe runtime
+        env:
+          PLATFORM: linux
+        run: python tools/pubpres_playability_build/download_engine.py --platform "$PLATFORM" --output "$RUNNER_TEMP/recovery-stock-engine"
+      - name: Actual process ownership and presentation observer contracts
+        run: |
+          python -m unittest discover -s tools/pubpres_final_observers -p 'test_*.py' -v
+          python tools/pubpres_final_observers/bundle.py --verify
+      - name: Source-bound ordinary correctness and actual application submission
+        run: python tools/pubpres_final_recovery/run_hosted.py --inputs build/recovery-inputs --engine-root "$RUNNER_TEMP/recovery-stock-engine" --output build/pubpres-recovery
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-recovery-graphical-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pubpres-recovery/
+            build/recovery-inputs/RESTORE.json
+            build/recovery-inputs/runtime/RESTORED-NATIVE.json
+            build/recovery-inputs/runtime/C/PUBPRES-NATIVE-INPUT-REUSE.json
+            build/recovery-inputs/*.metadata.json
+            !build/pubpres-recovery/**/project/**
+            !build/pubpres-recovery/**/projects/**
+            !build/pubpres-recovery/**/font-projects/**
+            !build/pubpres-recovery/**/startup-projects/**
+            !build/pubpres-recovery/**/two-slot-projects/**
+            !build/pubpres-recovery/**/template/**
+          retention-days: 90
+          if-no-files-found: warn
+
+  graphical-windows:
+    needs: plan
+    runs-on: windows-2022
+    timeout-minutes: 180
+    defaults:
+      run:
+        shell: bash
+    steps:
+      - name: Canonical source bytes
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 1}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Independently retained source objects and exact Rapier
+        env:
+          RAPIER: libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
+        run: |
+          git fetch --no-tags --depth=1 origin "$PUBPRES_NATIVE_SOURCE" "$PUBPRES_FROZEN"
+          git lfs install --local
+          git lfs pull --include="godot/addons/godot-rapier2d/bin/$RAPIER" --exclude=''
+          python tools/pubpres_final_recovery/recovery_request.py --engine-record build/engine-artifact.json
+      - name: Restore exact original native artifacts and explicit input-equivalence binding
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PLATFORM: windows
+          PHASE: ${{ needs.plan.outputs.phase }}
+        run: |
+          engine_args=()
+          if [[ "$PLATFORM" == 'windows' && "$PHASE" == 'integration' ]]; then
+            engine_args=(--engine-record build/engine-artifact.json)
+          fi
+          python tools/pubpres_final_recovery/restore_inputs.py --platform "$PLATFORM" --output build/recovery-inputs "${engine_args[@]}"
+      - name: Pinned official Safe runtime
+        env:
+          PLATFORM: windows
+        run: python tools/pubpres_playability_build/download_engine.py --platform "$PLATFORM" --output "$RUNNER_TEMP/recovery-stock-engine"
+      - name: Actual process ownership and presentation observer contracts
+        run: |
+          python -m unittest discover -s tools/pubpres_final_observers -p 'test_*.py' -v
+          python tools/pubpres_final_observers/bundle.py --verify
+      - name: Source-bound ordinary correctness and actual application submission
+        run: python tools/pubpres_final_recovery/run_hosted.py --inputs build/recovery-inputs --engine-root "$RUNNER_TEMP/recovery-stock-engine" --output build/pubpres-recovery
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-recovery-graphical-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pubpres-recovery/
+            build/recovery-inputs/RESTORE.json
+            build/recovery-inputs/runtime/RESTORED-NATIVE.json
+            build/recovery-inputs/runtime/C/PUBPRES-NATIVE-INPUT-REUSE.json
+            build/recovery-inputs/*.metadata.json
+            !build/pubpres-recovery/**/project/**
+            !build/pubpres-recovery/**/projects/**
+            !build/pubpres-recovery/**/font-projects/**
+            !build/pubpres-recovery/**/startup-projects/**
+            !build/pubpres-recovery/**/two-slot-projects/**
+            !build/pubpres-recovery/**/template/**
+          retention-days: 90
+          if-no-files-found: warn

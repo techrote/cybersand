@@ -267,7 +267,17 @@ func scoop() -> void:
 	cases.append(s)
 	var session: CyberPhysicalActorSession = host.physical_actor_session
 	s.shape_count = session.bodies()[0].get_child_count()
-	s.drawn_pieces = session.render_parts().filter(func(part: Dictionary) -> bool: return part.actor_id == 0).size()
+	# Since PR593, the Workbench renderer must receive an authenticated
+	# uploaded-native display frame. A bare render_parts() call is deliberately
+	# fail-closed and no longer substitutes unchecked live Rapier transforms.
+	var frame_ready: bool = await wait_for(func() -> bool:
+		var receipt: Dictionary = host.workbench_display_frame()
+		return host._valid_workbench_mask_frame(receipt) \
+			and receipt.get("instances",{}).has(1) \
+			and receipt.get("instances",{}).has(2))
+	if not require(frame_ready,"Scooper render receipt matches uploaded World and physics owner"): return
+	s.drawn_pieces = session.render_parts(host.workbench_display_frame()).filter(
+		func(part: Dictionary) -> bool: return part.actor_id == 0).size()
 	require(s.shape_count==5 and s.drawn_pieces==5 and session.bodies().size()==2,"five visible U pieces on one body plus passive prop")
 	require(ui.toggle_pause(),"begin ordinary Scooper play")
 	if not await phase(75,{"move":Vector2.ZERO,"effort":1.0},s): return

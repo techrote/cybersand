@@ -14,6 +14,7 @@ from contextlib import contextmanager
 from contextvars import ContextVar
 import copy
 import hashlib
+import importlib.util
 import json
 import os
 from pathlib import Path
@@ -70,6 +71,8 @@ SOURCE_FILES = tuple(dict.fromkeys((
     "tools/material_catalogue/world_case.py",
     "tools/material_catalogue/reaction_effects.py",
     "tools/material_catalogue/lab_native_probe.cpp",
+    "tools/ci/portable_lld.py",
+    "tools/ci/portable_compiler_utf8.py",
     *compatibility.SOURCE_ROLES,
 )))
 
@@ -419,6 +422,73 @@ def _toolchain(cxx: str | None = None) -> tuple[str, bool]:
     fail("/compiler", "No C++20 compiler was found. Install g++/clang++, or launch Godot from a Visual Studio x64 Developer Command Prompt with cl.exe available. CYBERSAND_LAB_CXX may select a compiler executable.")
 
 
+def _portable_lld_module():
+    """Load the verifier from this source tree, never from ambient sys.path."""
+    source = ROOT / "tools/ci/portable_lld.py"
+    if not source.is_file():
+        fail("/compiler/linker", "The pinned portable linker verifier is missing; refusing an unverified linker selection")
+    try:
+        source_bytes = source.read_bytes()
+        source_hash = hashlib.sha256(source_bytes).hexdigest()
+        source_path = source.resolve(strict=True)
+        module_name = "_cybersand_portable_lld_" + hashlib.sha256(str(source_path).encode("utf-8")).hexdigest()[:16]
+        module = sys.modules.get(module_name)
+        if module is not None and getattr(module, "_cybersand_source_sha256", None) == source_hash:
+            return module
+        spec = importlib.util.spec_from_file_location(module_name, source_path)
+        if spec is None or spec.loader is None:
+            fail("/compiler/linker", "Could not load the exact portable linker verifier source")
+        module = importlib.util.module_from_spec(spec)
+        sys.modules[module_name] = module
+        try:
+            spec.loader.exec_module(module)
+        except BaseException:
+            sys.modules.pop(module_name, None)
+            raise
+        module._cybersand_source_sha256 = source_hash
+        return module
+    except LabError:
+        raise
+    except Exception as error:
+        fail("/compiler/linker", "Could not load the exact portable linker verifier: " +
+             type(error).__name__ + ": " + str(error))
+
+
+def compiler_linker_options(cxx: str, msvc: bool = False) -> list[str]:
+    """Select pinned LLD only for a verified bundled GCC executable.
+
+    Standalone/source-checkout compilers without the package marker retain
+    their existing default linker. A present but invalid marker is a hard
+    refusal; it never falls back to GNU ld or another compiler.
+    """
+    if msvc or Path(cxx).name.casefold() != "g++.exe":
+        return []
+    if not Path(cxx).is_absolute():
+        # Production selection through _toolchain returns the resolved image
+        # path. A bare command name has no source-bound compiler root here.
+        return []
+    try:
+        compiler = Path(cxx).resolve(strict=True)
+    except OSError as error:
+        fail("/compiler/linker", "The selected GCC executable cannot be resolved: " + str(error))
+    if compiler.name.casefold() != "g++.exe" or compiler.parent.name.casefold() != "bin":
+        return []
+    compiler_root = compiler.parent.parent
+    marker = compiler_root / "CYBERSAND-PORTABLE-LINKER.json"
+    if not marker.exists() and not marker.is_symlink():
+        return []
+    verifier = _portable_lld_module()
+    try:
+        proof = verifier.verify(compiler_root, execute=False)
+    except Exception as error:
+        fail("/compiler/linker", "The packaged LLD marker or linker closure failed verification: " +
+             type(error).__name__ + ": " + str(error))
+    if (type(proof) is not dict or proof.get("schema") != "cybersand.portable-linker-v1"
+            or proof.get("status") != "verified"):
+        fail("/compiler/linker", "The packaged LLD verifier returned no recognized pinned proof")
+    return ["-fuse-ld=lld"]
+
+
 def _terminate_process_tree(process: subprocess.Popen, owner=None) -> None:
     """Kill compiler drivers and their children, not just the driver PID."""
     if os.name == "nt":
@@ -549,6 +619,7 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
     if reaction_effects.has_extended(normalized):
         fail("/reactions/effects", "keep_existing and set_state execute only in the compiled World backend. Open Candidate test and Compile + compare World; the descriptor/resolver probe does not apply endpoint state effects.")
     cxx, msvc = _toolchain(cxx)
+    linker_options = compiler_linker_options(cxx, msvc)
     if diagnostic is None:
         rules = normalized["reactions"]
         diagnostic = {"source": rules[0]["first"], "target": rules[0]["second"], "roll": 0} if rules else {"source": 2, "target": 3, "roll": 0}
@@ -593,6 +664,7 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
                        str(probe), str(ROOT / "native/src/material_rules.cpp"), "/Fe:" + str(executable)]
         else:
             command = [cxx, "-std=c++20", "-O1" if sanitize else "-O2", "-Wall", "-Wextra", "-Werror",
+                       *linker_options,
                        "-I", str(ROOT / "native/include"), "-I", str(generated),
                        str(probe), str(ROOT / "native/src/material_rules.cpp"), "-o", str(executable)]
             if sanitize:
@@ -624,6 +696,7 @@ def compile_test(candidate: Any, *, output_dir: Path | None = None, diagnostic: 
                    "candidate_digest": result["digest"], "compiled_catalogue_sha256": digest(catalogue),
                    "source_identity": identity_before, "compiler": Path(cxx).name,
                    "compiler_version": version_text[0] if version_text else "unavailable",
+                   "compiler_argv": command,
                    "platform": sys.platform, "sanitizers": "address,undefined" if sanitize else "none",
                    "sanitizer_runtime_options": {key: os.environ.get(key, "") for key in ("ASAN_OPTIONS", "UBSAN_OPTIONS")} if sanitize else {},
                    "native_executable_sha256": executable_digest,

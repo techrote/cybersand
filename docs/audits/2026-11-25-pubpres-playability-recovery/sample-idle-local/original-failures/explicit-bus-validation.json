@@ -1,0 +1,56 @@
+{
+  "schema": "pubpres-local-desktop-bus-control-v1",
+  "bus": "unix:path=/workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-explicit-bus/unavailable-session-bus",
+  "display": "127.0.0.1:101",
+  "scope": "Explicit absent local desktop service prevents libdbus autolaunch; original process-owner and source predicates unchanged.",
+  "import": {
+    "command": [
+      "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+      "--headless",
+      "--audio-driver",
+      "Dummy",
+      "--path",
+      "/workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project",
+      "--editor",
+      "--import"
+    ],
+    "source_commit": "0bd275a36669a18217f7861372bbf54a837af750",
+    "elapsed_seconds": 5.010941711999294,
+    "exit_code": 0,
+    "timed_out": false,
+    "surviving_children_at_exit": false,
+    "interruption": null,
+    "wrapper_pid": 10,
+    "observed_application_pid": 10,
+    "sampled_peak_rss_bytes": 781676544,
+    "memory_scope": "250ms actual Godot process working-set/RSS samples including setup and capture; valid only after receipt PID match. Windows virtual size unavailable; commit reported separately."
+  },
+  "graphical": {
+    "command": [
+      "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+      "--audio-driver",
+      "Dummy",
+      "--path",
+      "/workspace/scratch/8a0b6cd48416/native-runtime-dev/sample-idle-import-owner-display/stat-trace/project",
+      "--rendering-driver",
+      "opengl3",
+      "--render-thread",
+      "safe",
+      "--quit-after",
+      "20",
+      "--",
+      "--feature=shared_workbench"
+    ],
+    "source_commit": "0bd275a36669a18217f7861372bbf54a837af750",
+    "elapsed_seconds": 1.5106975849994342,
+    "exit_code": 0,
+    "timed_out": false,
+    "surviving_children_at_exit": false,
+    "interruption": null,
+    "wrapper_pid": 775,
+    "observed_application_pid": 775,
+    "sampled_peak_rss_bytes": 292200448,
+    "memory_scope": "250ms actual Godot process working-set/RSS samples including setup and capture; valid only after receipt PID match. Windows virtual size unavailable; commit reported separately."
+  },
+  "server_returncode": 0
+}

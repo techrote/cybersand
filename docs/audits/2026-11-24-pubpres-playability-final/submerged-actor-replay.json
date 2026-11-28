@@ -1,0 +1,23 @@
+{
+  "schema": "pubpres-endpoint-crop-byte-reconstruction-v1",
+  "receipt_sha256": "5b9bc187653ff32c5f6053cb43be7b59e017e84da2f33dc479a1a5763f3a70bf",
+  "application_source": "498fa47da062db702a74665f177e06f454d956aa",
+  "diagnostic_overlay_sha256": "495a75aa49bc6470f3a9ff6c09d9417b9b0a062e880716855cc22073eadb698c",
+  "native_build_source": "c2f8a73d34448bc1496ecd84bca02f0812c80d27",
+  "native_sha256": "33d9c39ecfca71c800f538dbf3edbbb85675c0c65be35d6af525f699b7d15dc0",
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "crop_planes_checked": 112,
+  "crops_checked": 112,
+  "terminal_actual_session_and_manual_steps": 600,
+  "hidden_slots": [
+    4,
+    5,
+    6
+  ],
+  "unresolved_and_current_previous_water_cells_per_hidden_slot": 21,
+  "terminal_guard_budget_vetoes": 0,
+  "performance_claim": false,
+  "gpu_visibility_claim": false,
+  "historical_mixed_capture_equivalence": false,
+  "physical_acceptance": "HOLD"
+}

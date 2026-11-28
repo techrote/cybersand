@@ -1,0 +1,26 @@
+{
+  "command": [
+    "/opt/codex/runtimes/codex-primary-runtime/dependencies/python/bin/python3",
+    "/workspace/scratch/9cef565acfec/presentation-runtime/owned_xorg.py",
+    "/workspace/scratch/9cef565acfec/engine-source/bin/godot.linuxbsd.template_debug.x86_64",
+    "--path",
+    "/workspace/scratch/9cef565acfec/presentation-evidence/atomic-fixed-isolated-safe0/project",
+    "--audio-driver",
+    "Dummy",
+    "--rendering-method",
+    "gl_compatibility",
+    "--rendering-driver",
+    "opengl3",
+    "--render-thread",
+    "safe",
+    "--script",
+    "res://tests/test_workbench_presentation_submission.gd",
+    "--",
+    "--submission-evidence=/workspace/scratch/9cef565acfec/presentation-evidence/atomic-fixed-isolated-safe0/test_workbench_presentation_submission-slots2/receipt.json"
+  ],
+  "timeout_seconds": 600,
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 22.358293056000548,
+  "log_sha256": "e64b5bd22e29b82de78abaa21466aa8df92af4efab7062d7e99c7ec8c0f46468"
+}

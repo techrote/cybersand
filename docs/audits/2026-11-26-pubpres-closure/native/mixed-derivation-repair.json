@@ -1,0 +1,26 @@
+{
+  "schema": "pubpres-native-mixed-driver-derivation-repair-v1",
+  "recorded_utc": "2026-11-26T08:15:18.724735+00:00",
+  "original_candidate": "864cf7dcbb4e5ea8d8cba8d06eb9988c3b99cf14",
+  "observer_unchanged_from_original_candidate": true,
+  "observer_sha256": "315e66bd937dd79dd21038f6f980246842559db5943fc517403f58e615675c7c",
+  "changes": [
+    "Exact pre-owner bool task-completion selector added to declared derivation.",
+    "Exact requested selector echo added to declared derivation.",
+    "Exact actual native mode/count readback added to declared derivation."
+  ],
+  "not_changed": [
+    "Frozen causal observer base",
+    "Mixed workload/paint tape",
+    "Existing callback/native/terrain/ownership predicates",
+    "Original candidate mixed observer bytes",
+    "Any performance threshold or completed comparative result"
+  ],
+  "pre_repair_result": "60 tests: 59 passed, one derivation admission error",
+  "post_repair_result": "61 tests passed, including exact foreign callback/readback/owner-selector refusals",
+  "comparison_execution_before_repair": false,
+  "files_sha256": {
+    "tools/pubpres_final/mixed_contract.py": "8d0663fd8dbb23ff80d3e3758403b62e3fda6f0873b8686ae857b32c4c12da65",
+    "tools/pubpres_final/test_mixed_contract.py": "a3820bc7aabd608d9521b81b83c6593a1a4dc8491087bafceb4af54da8e80c86"
+  }
+}

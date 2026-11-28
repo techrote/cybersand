@@ -36,6 +36,9 @@ var prepared_sha256 := ""
 var stopped_prefix := 0
 var simulation_evidence: Dictionary = {}
 var source_identity: Dictionary = {}
+var prior_art_audit: Dictionary = {}
+var same_frame_configuration := {"schema":"pubpres-authoring-continuation-evidence-v1",
+	"mode":"source-default","claim":"configuration-only","before":{},"after":{}}
 var started_usec := 0
 # Separate container invocations may reuse the same namespace-local PID.
 # This in-memory witness is never restored from the saved expectation.
@@ -82,7 +85,8 @@ func json_equivalent(actual: Variant,expected: Variant) -> bool:
 func identity() -> Dictionary:
 	var result := {"godot":Engine.get_version_info().string,"os":OS.get_name(),
 		"display":DisplayServer.get_name()}
-	for path: String in ["scripts/simulation_worker.gd","scripts/shared_workbench.gd",
+	for path: String in ["scripts/main.gd","scripts/workbench_same_frame_continuation.gd",
+		"scripts/simulation_worker.gd","scripts/shared_workbench.gd",
 		"scripts/workbench_generator_dialog.gd","scripts/art_batch_executor.gd",
 		"scripts/art_batch_panel.gd","scripts/art_provider.gd",
 		"scripts/workbench_liquid_equipment.gd","scripts/workbench_liquid_equipment_panel.gd",
@@ -94,6 +98,34 @@ func identity() -> Dictionary:
 		"cybersand_native.windows.x86_64.dll" if OS.get_name()=="Windows" else "libcybersand_native.linux.x86_64.so")
 	result.native_sha256 = FileAccess.get_sha256(native_path)
 	return result
+
+func observe_continuation_configuration() -> Dictionary:
+	# This authoring fixture checks the requested configuration around its
+	# transactions. It neither counts nor attributes any step to continuation.
+	var mode := str(same_frame_configuration.mode)
+	check(mode in ["source-default","off","on"],"combined continuation mode is explicit or source-default")
+	var expected_selectors := {"CYBERSAND_DIAG_SAME_FRAME_CONTINUATION":"1" if mode=="on" else "0",
+		"CYBERSAND_DIAG_NATIVE_RENDEZVOUS":"0","CYBERSAND_DIAG_PHYSICS_PUBLICATION":"early",
+		"CYBERSAND_DIAG_PRESENTATION":"coherent","CYBERSAND_DIAG_MATERIAL_TIMING":"measured",
+		"CYBERSAND_DIAG_RENDER_CADENCE":"repaired","CYBERSAND_MATERIAL_PUBLICATION":"blit",
+		"CYBERSAND_MATERIAL_QUEUE_THREAD":"safe","CYBERSAND_DIAG_MATERIAL_POOL_POLICY":"eager"}
+	var selectors := {}
+	for name: String in expected_selectors:
+		selectors[name] = OS.get_environment(name)
+	if not check(host.has_method("same_frame_continuation_status"),"Main exposes actual continuation configuration"):
+		return {"selectors":selectors,"status":{}}
+	var status: Variant = host.call("same_frame_continuation_status")
+	if not check(status is Dictionary,"Main continuation status is a dictionary"):
+		return {"selectors":selectors,"status":{}}
+	if mode in ["off","on"]:
+		check(selectors==expected_selectors,"all continuation and publication selectors match the requested test policy")
+		var enabled := mode=="on"
+		var expected_status := {"version":1,"requested":enabled,"enabled":enabled,"disabled_reason":"",
+			"mode":"same_frame_once" if enabled else "off","maximum_attempts_per_process_frame":1,
+			"maximum_mailbox_reads_per_attempt":1,"wait_usec":0,"new_physics_callbacks":0,
+			"carried_time_credit":false}
+		check(status==expected_status,"Main continuation configuration matches the explicit selector")
+	return {"selectors":selectors,"status":status.duplicate(true)}
 
 func screenshot(label: String) -> void:
 	var directory := OS.get_environment("WB_COMBINED_SCREENSHOTS")
@@ -119,7 +151,7 @@ func history_control(action: String,label: String) -> bool:
 
 func local(cell: Vector2i) -> Vector2:
 	var bounds: Rect2 = host.view_content_rect()
-	return bounds.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.camera_origin.floor())) \
+	return bounds.position+(Vector2(cell)+Vector2(0.5,0.5)-Vector2(host.presentation_camera_origin())) \
 		* bounds.size/Vector2(host.current_view_size)
 
 func gesture(tool: String,from: Vector2i,to: Vector2i,material: int = 58,
@@ -180,8 +212,53 @@ func complete_native_materials() -> PackedByteArray:
 
 func large_adaptive_fill() -> bool:
 	if map_side<1024: return true
+	var previous_origin: Vector2 = host.camera_origin
+	var previous_size: Vector2i = host.current_view_size
+	var overview := large_fill_view_geometry()
+	# A minified overview may omit a particular native cell from the physical
+	# pixel grid. Inspect this exact enclosure at more than one pixel per cell
+	# before sending the same real Rectangle/Outline gestures to PAINT.
+	bench._set_view(Vector2(LARGE_FILL_REGION.position-Vector2i(7,7)),Vector2i(400,400))
+	await process_frame
+	await process_frame
+	var inspected := large_fill_view_geometry()
+	var selectable := check(float(inspected.physical_pixels_per_cell[0])>=1.0
+		and float(inspected.physical_pixels_per_cell[1])>=1.0,
+		"large Fill inspection exposes every native cell at physical scale at least one")
+	selectable = check(inspected.first_pick==[560,64] and inspected.last_pick==[945,449],
+		"large Fill real gesture endpoints pick the exact required native enclosure") and selectable
+	print("WB_COMBINED_LARGE_FILL_VIEW ",JSON.stringify({"overview":overview,"inspection":inspected}))
+	var completed := false
+	if selectable: completed = await large_adaptive_fill_inspected()
+	bench._set_view(previous_origin,previous_size)
+	await process_frame
+	var restored := check(host.camera_origin==previous_origin and host.current_view_size==previous_size,
+		"large Fill inspection restores the previous camera for subsequent authoring")
+	return completed and restored
+
+func large_fill_view_geometry() -> Dictionary:
+	var view: Control = host.world_view
+	var content: Rect2 = host.view_content_rect()
+	# Compose the renderer's physical transform independently of Main's helper.
+	var screen := view.get_viewport().get_final_transform()*view.get_global_transform_with_canvas()
+	var basis := Vector2(screen.x.x,screen.y.y)*content.size/Vector2(host.current_view_size)
+	var first: Vector2i = host.world_cell_from_local_point(local(LARGE_FILL_REGION.position))
+	var last: Vector2i = host.world_cell_from_local_point(local(LARGE_FILL_REGION.end-Vector2i.ONE))
+	return {"root_size":[root.size.x,root.size.y],"world_view_size":[view.size.x,view.size.y],
+		"view_size":[host.current_view_size.x,host.current_view_size.y],
+		"requested_origin":[host.camera_origin.x,host.camera_origin.y],
+		"physical_pixels_per_cell":[basis.x,basis.y],"first_pick":[first.x,first.y],"last_pick":[last.x,last.y]}
+
+func large_adaptive_fill_inspected() -> bool:
 	if not await gesture("Rectangle",LARGE_FILL_REGION.position,LARGE_FILL_REGION.end-Vector2i.ONE,0): return false
 	if not await gesture("Outline",LARGE_FILL_REGION.position,LARGE_FILL_REGION.end-Vector2i.ONE,58): return false
+	var enclosure := await capture(LARGE_FILL_REGION)
+	var enclosure_exact := enclosure.size()==LARGE_FILL_REGION.get_area()
+	for index: int in enclosure.size():
+		var x: int = index%LARGE_FILL_REGION.size.x
+		var y: int = index/LARGE_FILL_REGION.size.x
+		if enclosure[index]!=(58 if x in [0,385] or y in [0,385] else 0): enclosure_exact=false
+	if not check(enclosure_exact,"large Fill begins with the exact native Empty interior and enclosing boundary"): return false
 	# No selection: this enclosed 384-square interior exceeds the initial
 	# 256-square capture and must trigger the bounded adaptive Fill path.
 	editor.selection = Rect2i()
@@ -591,7 +668,6 @@ func author() -> void:
 		"equipment":saved.setup.get("equipment",{}),
 		"prepared_sha256":prepared_sha256,"native_region":Marshalls.raw_to_base64(PackedByteArray(Array(actual))),
 		"provider_model":panel.model.text,"provider_context":panel.context_mode.selected,
-		"provider_archive":panel.provider.log_path,"provider_archive_sha256":FileAccess.get_sha256(panel.provider.log_path),
 		"source_identity":source_identity,"stop_prefix":stopped_prefix,"map_side":map_side,
 		"agent_undo_saved":phases.agent_undo_saved}
 	var file := FileAccess.open(EXPECTED_PATH,FileAccess.WRITE)
@@ -657,15 +733,32 @@ func reopen() -> void:
 		"reopened equipment starts stopped with authored supply, without saved transient effects")
 	check(panel.model.text==expected.provider_model and panel.context_mode.selected==expected.provider_context,
 		"provider model and context settings survive restart")
-	# ART-SESSION-LOG-001 keeps authored geometry and provider preferences while
-	# starting a new conversation. The previous audit remains immutable evidence.
-	check(panel.conversation_loaded and panel.conversation.is_empty(),
-		"fresh process starts an empty Art conversation without restoring prior instructions")
-	check(panel.provider.log_path.is_empty() and panel.provider.parent_log_path.is_empty()
-		and not panel.provider.resume_active,"fresh process does not bind the prior provider audit")
-	check(str(expected.provider_archive).begins_with("user://art-traffic/")
-		and FileAccess.get_sha256(expected.provider_archive)==expected.provider_archive_sha256,
-		"prior provider audit remains byte-identical after authored World reopening")
+	# Accepted ART-SESSION-LOG-001 makes model context session-local. The map
+	# and provider preferences persist; old conversation logs remain untouched.
+	# This donor fixture must not require the retired cross-session restore.
+	prior_art_audit = expected.get("closed_art_audit",{})
+	if not check(not prior_art_audit.is_empty()
+		and str(prior_art_audit.get("path","")).begins_with("user://art-traffic/")
+		and str(prior_art_audit.get("sha256","")).length()==64
+		and FileAccess.get_sha256(str(prior_art_audit.get("path","")))==str(prior_art_audit.get("sha256","")),
+		"prior process Art audit survives orderly shutdown byte-for-byte"): return
+	check(FileAccess.get_file_as_string(str(prior_art_audit.path)).contains(FOLLOWUP_PROMPT),
+		"prior fixture instruction remains in its original audit")
+	panel.popup_centered()
+	await process_frame
+	panel.hide()
+	check(panel.conversation_loaded and panel.conversation.is_empty()
+		and not panel.provider.resume_active and panel.provider.log_path.is_empty()
+		and panel.provider.parent_log_path.is_empty(),
+		"reopened Art starts fresh and never imports a previous session's model context")
+	if not check(panel.remember_turn("user","Fresh-process authoring acceptance session."),
+		"new session creates its own writable Art audit"): return
+	var new_audit := FileAccess.get_file_as_string(panel.provider.log_path)
+	check(not panel.provider.log_path.is_empty() and panel.provider.log_path!=prior_art_audit.path
+		and panel.provider.parent_log_path.is_empty() and new_audit.contains("session_start")
+		and new_audit.contains("Fresh-process authoring acceptance session.")
+		and not new_audit.contains("session_parent") and not new_audit.contains(FOLLOWUP_PROMPT),
+		"new Art audit is independent of the retained prior conversation")
 	phases.reopen = true
 	bench._set_view(Vector2.ZERO,Vector2i(960,540))
 	bench._brush.value = 0
@@ -700,11 +793,15 @@ func run() -> void:
 	art = panel.executor
 	worker = host.simulation_worker
 	dialog = bench._generated_dialog
+	var same_frame_mode := OS.get_environment("WB_COMBINED_SAME_FRAME")
+	if not same_frame_mode.is_empty(): same_frame_configuration.mode = same_frame_mode
+	same_frame_configuration.before = observe_continuation_configuration()
 	var reopening := OS.get_environment("WB_COMBINED_REOPEN")=="1"
 	var graphics_ok := OS.get_environment("WB_COMBINED_REQUIRE_GRAPHICS")!="1" or DisplayServer.get_name()!="headless"
 	var initial_wait_started := Time.get_ticks_msec()
 	# Allow cold graphical/native startup without extending authoring deadlines.
-	var initial_ready := check(graphics_ok,"requested graphical backend is active") and await until(ready,"full native Shared Workbench installed",180000)
+	var initial_ready := check(graphics_ok,"requested graphical backend is active") and failures.is_empty() \
+		and await until(ready,"full native Shared Workbench installed",180000)
 	print("WB_COMBINED_INITIAL_READY ",JSON.stringify({"ready":initial_ready,"budget_ms":180000,
 		"wait_ms":Time.get_ticks_msec()-initial_wait_started,"startup_ms":(Time.get_ticks_usec()-started_usec)/1000,
 		"applied":not bench.applied.is_empty(),"pending_install":not host.pending_microscenario_apply.is_empty(),
@@ -722,14 +819,34 @@ func run() -> void:
 			"late_response","human_after_agent","stop","agent_undo_saved","simulation_equipment","save"]:
 			check(bool(phases[phase]),"mandatory combined author phase executed: "+phase)
 		check(author_complete,"complete combined authoring flow reached Save")
+	same_frame_configuration.after = observe_continuation_configuration()
+	check(same_frame_configuration.before==same_frame_configuration.after,
+		"continuation selectors and actual configuration remain unchanged across authoring transactions")
 	check(source_identity==identity(),"tested source and native runtime bytes did not change during execution")
+	var closed_audit_path := str(panel.provider.log_path)
 	host.queue_free()
 	await process_frame
 	await process_frame
-	print("WB_COMBINED_EVIDENCE ",JSON.stringify({"checks":checks,"failures":failures,"phases":phases,
+	if not reopening and author_complete:
+		# Capture after _exit_tree has recorded any terminal session events.
+		# The fresh process verifies these exact immutable bytes, not a prefix
+		# captured before orderly shutdown has finished.
+		var expectation: Variant = JSON.parse_string(FileAccess.get_file_as_string(EXPECTED_PATH))
+		if check(expectation is Dictionary and not closed_audit_path.is_empty()
+			and FileAccess.file_exists(closed_audit_path),"closed author session has a retained audit"):
+			expectation.closed_art_audit = {"path":closed_audit_path,"sha256":FileAccess.get_sha256(closed_audit_path)}
+			var final_expectation := FileAccess.open(EXPECTED_PATH,FileAccess.WRITE)
+			if check(final_expectation!=null,"closed-session audit identity can be saved"):
+				final_expectation.store_string(JSON.stringify(expectation))
+				final_expectation.close()
+	elif reopening and not prior_art_audit.is_empty():
+		check(FileAccess.get_sha256(str(prior_art_audit.path))==str(prior_art_audit.sha256),
+			"continued authoring and fresh-session shutdown leave the prior audit unchanged")
+	print("WB_COMBINED_EVIDENCE ",JSON.stringify({"schema":"workbench-combined-authoring-v2",
+		"checks":checks,"failures":failures,"phases":phases,
 		"author_complete":author_complete,"reopen_complete":reopen_complete,"profile_count":profile_count,
 		"prepared_sha256":prepared_sha256,"stop_prefix":stopped_prefix,"map_side":map_side,"source_identity":source_identity,
-		"simulation_equipment":simulation_evidence,
+		"simulation_equipment":simulation_evidence,"same_frame_continuation":same_frame_configuration,
 		"provider_qualification":"deterministic completion fixture; separate transport suite; no inference",
 		"elapsed_usec":Time.get_ticks_usec()-started_usec}))
 	print("WB_COMBINED_AUTHORING checks=%d failures=%d author_complete=%s reopen_complete=%s" % [

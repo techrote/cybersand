@@ -1,0 +1,17 @@
+{
+  "command": [
+    "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "--path",
+    "/workspace/scratch/9cef565acfec/presentation-evidence/member-adversary-7854/project",
+    "--audio-driver",
+    "Dummy",
+    "--headless",
+    "--script",
+    "res://tests/test_workbench_presentation_member_history.gd"
+  ],
+  "timeout_seconds": 600,
+  "returncode": 0,
+  "timed_out": false,
+  "elapsed_seconds": 0.3184856149996449,
+  "log_sha256": "5cb5d8eed65631460f190b27473f42df762f7a0e58c469e3b8f9a092497e5583"
+}

@@ -1,0 +1,258 @@
+name: PUBPRES recovery final runtimes and playable evaluator
+
+on:
+  push:
+    branches: [codex/pubpres-playability-final-001-20261124]
+    paths: ['.github/pubpres-recovery-runtimes-run.json']
+
+permissions:
+  contents: read
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  PUBPRES_MAIN_REFERENCE: 00cdb02f103265b6dc5224c68283e9a0c8cb449f
+  PUBPRES_FROZEN: c90dbc46e1f57f28e06b1f4205b83467335ff657
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      water: ${{ steps.selection.outputs.water }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Exact final resulting-source runtime request
+        run: |
+          python3 tools/pubpres_final_recovery/runtime_request.py
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m unittest discover -s tools/pubpres_final_windows -p 'test_*.py'
+          python3 -m unittest discover -s tools/pubpres_recovery_windows -p 'test_*.py'
+          python3 -m unittest discover -s tools/pubpres_final_recovery -p 'test_*.py'
+      - name: Explicit selected owner configuration
+        id: selection
+        run: |
+          python3 - <<'PY_SELECTION'
+          import os,sys
+          sys.path.insert(0,'tools/pubpres_recovery_windows')
+          from recovery_policy import selection
+          value=selection()
+          with open(os.environ['GITHUB_OUTPUT'],'a') as writer:writer.write('water='+str(value['water_composition'])+'\n')
+          PY_SELECTION
+
+  runtimes:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        platform: [linux, windows]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 1}
+      - name: Frozen historical controls and exact dependency source
+        run: |
+          timeout 240 git fetch --no-tags origin "$PUBPRES_MAIN_REFERENCE" "$PUBPRES_FROZEN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-main-reference" "$PUBPRES_MAIN_REFERENCE"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-frozen" "$PUBPRES_FROZEN"
+          python3 -m venv "$RUNNER_TEMP/recovery-scons"
+          "$RUNNER_TEMP/recovery-scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/recovery-godot-cpp"
+          git -C "$RUNNER_TEMP/recovery-godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/recovery-godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/recovery-godot-cpp" checkout --detach FETCH_HEAD
+      - name: Pinned Windows cross compiler
+        if: matrix.platform == 'windows'
+        run: |
+          curl --fail --location --retry 3 --max-time 300 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+          echo "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/recovery-llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/recovery-llvm-mingw" --strip-components=1
+          ln -s llvm-ar "$RUNNER_TEMP/recovery-llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+      - name: One exact dependency followed by independent M C D native builds
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          GODOT_CPP_ROOT: ${{ runner.temp }}/recovery-godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/recovery-scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/recovery-llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/recovery-llvm-mingw/bin/x86_64-w64-mingw32-g++
+          PUBPRES_GODOT_CPP_BUILD_LOG: build/recovery-runtimes/godot-cpp.log
+        run: |
+          mkdir -p build/recovery-runtimes
+          timeout 2400 bash tools/build_pinned_godot_cpp.sh "$PLATFORM" > build/recovery-runtimes/godot-cpp.log 2>&1
+          status=0
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$RUNNER_TEMP/pubpres-main-reference" --source-sha "$PUBPRES_MAIN_REFERENCE" --output-dir build/recovery-runtimes/M || status=1
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$PWD" --source-sha "$GITHUB_SHA" --output-dir build/recovery-runtimes/C || status=1
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$RUNNER_TEMP/pubpres-frozen" --source-sha "$PUBPRES_FROZEN" --output-dir build/recovery-runtimes/D || status=1
+          if [[ "$status" != '0' ]]; then exit "$status"; fi
+          python3 tools/pubpres_final_recovery/verify_shared_runtimes.py --root build/recovery-runtimes --main-source "$RUNNER_TEMP/pubpres-main-reference" --donor-source "$RUNNER_TEMP/pubpres-frozen" --platform "$PLATFORM"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-recovery-shared-runtime-${{ matrix.platform }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/recovery-runtimes/
+          retention-days: 90
+          if-no-files-found: warn
+
+
+  graphical-linux:
+    needs: [plan, runtimes]
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 1}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-recovery-shared-runtime-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - name: Actual Linux graphics and exact native dependency
+        run: |
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
+          git lfs install --local
+          git lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+          python tools/pubpres_playability_build/download_engine.py --platform linux --output "$RUNNER_TEMP/godot"
+      - name: Frozen resulting-source native graphical correctness
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/pubpres-recovery-linux/stock-correctness --focus frozen --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
+      - name: Selected Water native graphical and first-read correctness
+        if: needs.plan.outputs.water == '1'
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/pubpres-recovery-linux/water-correctness --focus water --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-recovery-final-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pubpres-recovery-linux/
+            !build/pubpres-recovery-linux/**/project/**
+          retention-days: 90
+          if-no-files-found: warn
+
+  evaluator-windows:
+    needs: [plan, runtimes]
+    timeout-minutes: 180
+    runs-on: windows-2022
+    steps:
+      - name: Canonical Windows source bytes
+        shell: powershell
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 1, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-recovery-shared-runtime-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - name: Windows graphical dependencies and exact source
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git fetch --no-tags origin $env:PUBPRES_FROZEN
+          if ($LASTEXITCODE -ne 0) { throw 'Frozen source fetch failed' }
+          git worktree add --detach (Join-Path $env:RUNNER_TEMP 'pubpres-frozen') $env:PUBPRES_FROZEN
+          if ($LASTEXITCODE -ne 0) { throw 'Frozen checkout failed' }
+          git lfs install --local
+          foreach ($Source in @($PWD.Path, (Join-Path $env:RUNNER_TEMP 'pubpres-frozen'))) {
+            git -C $Source lfs pull --include='godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+            if ($LASTEXITCODE -ne 0) { throw 'Rapier runtime materialization failed' }
+          }
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output (Join-Path $env:RUNNER_TEMP 'godot')
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned engine preparation failed' }
+      - name: Parse shipped scripts with Windows PowerShell 5.1
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          $Scripts = @(Get-ChildItem tools/pubpres_recovery_windows -Filter '*.ps1') + @(Get-Item tools/pubpres_final/prepare_windows_dependencies.ps1)
+          foreach ($Script in $Scripts) {
+            $Tokens = $null; $ParseErrors = $null
+            [void][Management.Automation.Language.Parser]::ParseFile($Script.FullName,[ref]$Tokens,[ref]$ParseErrors)
+            if ($ParseErrors.Count -gt 0) { throw ($Script.Name+': '+($ParseErrors -join '; ')) }
+          }
+      - name: Signed VC runtime and pinned dependency notices
+        shell: powershell
+        run: ./tools/pubpres_final/prepare_windows_dependencies.ps1 -Output "${{ runner.temp }}/pubpres-recovery-dependencies"
+      - name: Resulting-source original Windows correctness
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --output build/pubpres-recovery-evaluator/stock-correctness --focus frozen
+      - name: Selected Water native graphical and first-read correctness
+        if: needs.plan.outputs.water == '1'
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --output build/pubpres-recovery-evaluator/water-correctness --focus water
+      - name: Assemble ordinary source-exact stock-engine Windows evaluator
+        id: package
+        shell: powershell
+        run: |
+          $ErrorActionPreference = 'Stop'
+          git merge-base --is-ancestor $env:PUBPRES_FROZEN $env:GITHUB_SHA
+          if ($LASTEXITCODE -ne 0 -and (git rev-parse --is-shallow-repository) -ceq 'true') {
+            git fetch --no-tags --unshallow origin $env:GITHUB_SHA
+            if ($LASTEXITCODE -ne 0) { throw 'Exact candidate ancestry fetch failed' }
+          }
+          $WaterArgs=@()
+          if ((Get-Content tools/pubpres_recovery_windows/selection.json -Raw|ConvertFrom-Json).water_composition -eq 1) { $WaterArgs=@('--water-correctness','build/pubpres-recovery-evaluator/water-correctness/SUMMARY.json') }
+          $Archive = Join-Path $PWD ('delivery/CyberSand-PUBPRES-PLAYABILITY-FINAL-RECOVERY-001-'+$env:GITHUB_SHA.Substring(0,12)+'-Windows.zip')
+          python tools/pubpres_recovery_windows/package_windows.py --candidate-root . --candidate-sha $env:GITHUB_SHA --candidate-runtime build/runtime/C --donor-root (Join-Path $env:RUNNER_TEMP 'pubpres-frozen') --donor-runtime build/runtime/D --godot-zip (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe.zip') --vc-runtime (Join-Path $env:RUNNER_TEMP 'pubpres-recovery-dependencies/vc') --notices (Join-Path $env:RUNNER_TEMP 'pubpres-recovery-dependencies/notices') --output-dir (Join-Path $env:RUNNER_TEMP 'pubpres-recovery-payload') --archive $Archive --stock-correctness build/pubpres-recovery-evaluator/stock-correctness/SUMMARY.json @WaterArgs
+          if ($LASTEXITCODE -ne 0) { throw 'Exact evaluator assembly failed' }
+          'archive='+$Archive | Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+      - name: Extract and execute actual shipped launchers, scenes, reopen and collector
+        if: always() && steps.package.outcome == 'success'
+        id: launchers
+        shell: powershell
+        run: ./tools/pubpres_recovery_windows/Test-Evaluator.ps1 -PackageRoot "${{ runner.temp }}/pubpres-recovery-payload" -ExpectedCandidate $env:GITHUB_SHA -ArtifactZip "${{ steps.package.outputs.archive }}" -Output build/pubpres-recovery-evaluator/checks
+      - name: Installed native authoring, Save and fresh-process graphical reopen
+        id: authoring
+        if: always() && steps.package.outcome == 'success'
+        run: python tools/pubpres_recovery_windows/qualify_installed.py --package build/pubpres-recovery-evaluator/checks/extracted --candidate "${{ github.sha }}" --output build/pubpres-recovery-evaluator/authoring
+      - name: Reverify pristine packaged source and runtime manifest
+        if: always() && steps.package.outcome == 'success'
+        run: python tools/pubpres_recovery_windows/package_windows.py --verify --candidate-sha "${{ github.sha }}" --output-dir "${{ runner.temp }}/pubpres-recovery-payload"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-recovery-evaluator-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/pubpres-recovery-evaluator/
+            !build/pubpres-recovery-evaluator/**/extracted/**
+            !build/pubpres-recovery-evaluator/**/project/**
+            !build/pubpres-recovery-evaluator/**/source/**
+            !build/pubpres-recovery-evaluator/checks/Runs/**/profile/**
+          retention-days: 90
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.package.outcome == 'success' && steps.launchers.outcome == 'success' && steps.authoring.outcome == 'success'
+        with:
+          name: pubpres-recovery-windows-evaluator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: delivery/
+          retention-days: 90
+          if-no-files-found: error
+
+  native-authority:
+    needs: plan
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env: {CXX: g++-13, CC: gcc-13}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Native material, Wave, body-boundary and sanitizers
+        run: |
+          mkdir -p build/pubpres-recovery-native
+          git rev-parse HEAD > build/pubpres-recovery-native/source.txt
+          status=0
+          timeout 3600 make test wave-flow-test wave-spill-test wave-body-boundary-test wave-empty-derived-test material-baseline-test > build/pubpres-recovery-native/normal.log 2>&1 || status=1
+          timeout 3600 env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make sanitize wave-flow-sanitize wave-body-boundary-sanitize wave-empty-derived-sanitize > build/pubpres-recovery-native/sanitizers.log 2>&1 || status=1
+          exit "$status"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-recovery-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/pubpres-recovery-native/
+          retention-days: 90
+          if-no-files-found: warn

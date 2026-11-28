@@ -1,0 +1,94 @@
+name: PUBPRES source-bound independent evaluator extraction
+
+on:
+  push:
+    branches: [codex/pubpres-playability-final-001-20261124]
+    paths: ['.github/pubpres-extracted-run.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pubpres-independent-extraction-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  GIT_CONFIG_COUNT: '2'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_CONFIG_KEY_1: core.eol
+  GIT_CONFIG_VALUE_1: lf
+  PYTHONUTF8: '1'
+  PYTHONDONTWRITEBYTECODE: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+
+jobs:
+  extracted-windows:
+    name: Independent downloaded Windows evaluator and authoring
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/pubpres-playability-final-001-20261124'
+    runs-on: windows-2022
+    timeout-minutes: 160
+    defaults:
+      run: {shell: pwsh}
+    env:
+      JAVA_HOME: ''
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '${{ github.sha }}', path: driver, persist-credentials: false, fetch-depth: 0, lfs: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - name: Read committed application identity
+        run: |
+          $request = Get-Content driver/.github/pubpres-extracted-run.json -Raw | ConvertFrom-Json
+          if ($request.application_commit -notmatch '^[a-f0-9]{40}$') { throw 'Invalid application identity' }
+          "APPLICATION_COMMIT=$($request.application_commit)" >> $env:GITHUB_ENV
+          "INNER_SHA256=$($request.inner_sha256)" >> $env:GITHUB_ENV
+          "PACKAGE_RUN=$($request.run_id)" >> $env:GITHUB_ENV
+          "PACKAGE_ARTIFACT=$($request.artifact_name)" >> $env:GITHUB_ENV
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {ref: '${{ env.APPLICATION_COMMIT }}', path: app, persist-credentials: false, fetch-depth: 0, lfs: false}
+      - name: Authenticate original uploaded archive and all 26 application gates
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python driver/tools/ci/check_ci_provider_policy.py --root driver
+          if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+          python -m unittest discover -s driver/tools/pubpres_mainline -p 'test_reextract.py'
+          if ($LASTEXITCODE -ne 0) { throw 'Admission negative controls failed' }
+          python -m unittest discover -s driver/tools/pubpres_mainline -p 'test_extracted_linker_audit.py'
+          if ($LASTEXITCODE -ne 0) { throw 'Linker audit positive/negative controls failed' }
+          python driver/tools/pubpres_mainline/reextract.py metadata --app app --output "$env:RUNNER_TEMP/evaluator-download-admission.json"
+          if ($LASTEXITCODE -ne 0) { throw 'Exact source/archive/gate admission failed' }
+      - name: Download actual uploaded owner archive on this separate runner
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.PACKAGE_RUN }}
+          name: ${{ env.PACKAGE_ARTIFACT }}
+          path: ${{ runner.temp }}/mainline-independent-archive
+      - name: Verify downloaded inner archive, manifest and source identity
+        run: |
+          python driver/tools/pubpres_mainline/reextract.py archive --folder "$env:RUNNER_TEMP/mainline-independent-archive"
+          if ($LASTEXITCODE -ne 0) { throw 'Delivered archive integrity failed' }
+      - name: Execute unchanged application extracted qualification including shipped launchers
+        run: |
+          python app/tools/pubpres_mainline/extracted.py --archive $env:INDEPENDENT_INNER_ARCHIVE --sha256 $env:INNER_SHA256 --installation "$env:RUNNER_TEMP/Owner (PUBPRES) Ω/nested/CyberSand Workbench" --output "$env:RUNNER_TEMP/mainline-extracted"
+          if ($LASTEXITCODE -ne 0) { throw 'Actual complete extracted application qualification failed' }
+      - name: Independently validate real Lab LLD commands and dependency custody
+        run: |
+          python driver/tools/pubpres_mainline/extracted_linker_audit.py --installation "$env:RUNNER_TEMP/Owner (PUBPRES) Ω/nested/CyberSand Workbench" --output "$env:RUNNER_TEMP/mainline-extracted"
+          if ($LASTEXITCODE -ne 0) { throw 'Actual extracted LLD receipt audit failed' }
+      - name: Preserve complete original execution including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-independent-extracted-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            ${{ runner.temp }}/mainline-extracted/
+            ${{ runner.temp }}/evaluator-download-admission.json
+            ${{ runner.temp }}/Owner (PUBPRES) Ω/nested/CyberSand Workbench/diagnostics/
+          include-hidden-files: true
+          if-no-files-found: warn
+          retention-days: 90

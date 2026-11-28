@@ -1,0 +1,772 @@
+name: PUBPRES closure source admission and playable Windows evaluator
+
+on:
+  push:
+    branches: [codex/pubpres-playability-final-001-20261124]
+    paths: ['.github/pubpres-closure-run.json']
+
+permissions:
+  contents: read
+  actions: read
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  PUBPRES_HISTORICAL_MAIN: 00cdb02f103265b6dc5224c68283e9a0c8cb449f
+  PUBPRES_FROZEN: c90dbc46e1f57f28e06b1f4205b83467335ff657
+  PUBPRES_ENGINE_BUILD_SOURCE: 1290c31dc262cdc6d31e9d53bde80fe3527585d7
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+  RECIPROCAL_LINUX: godot/tools/gentek_reciprocal
+  RECIPROCAL_WINDOWS: godot/tools/gentek_reciprocal.exe
+  RAPIER_LINUX: godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so
+  RAPIER_WINDOWS: godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll
+
+jobs:
+  plan:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    outputs:
+      phase: ${{ steps.request.outputs.phase }}
+      current_main: ${{ steps.request.outputs.current_main }}
+      windows_lanes: ${{ steps.request.outputs.windows_lanes }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Admit explicit resulting-source closure request
+        id: request
+        run: python3 tools/pubpres_recovery_windows/closure_request.py
+      - name: Compare delivery inputs with the measured 88bb application
+        if: steps.request.outputs.phase == 'delivery'
+        run: |
+          measured=88bb920c42755669ac8fba37b9fc46249c5bd0a6
+          git fetch --depth=1 --no-tags origin "$measured"
+          git diff --exit-code "$measured" HEAD -- godot native third_party examples \
+            tools/pubpres_final/ tools/pubpres_final_recovery/run_sustained_owner.py \
+            tools/pubpres_final_recovery/sustained_owner.gd \
+            ':(exclude)godot/tests/**' ':(exclude)godot/goblin/tests/**'
+          python3 - "$measured" <<'PY'
+          import json, subprocess, sys
+          sys.path.insert(0, 'tools/pubpres_recovery_windows')
+          import recovery_policy as policy
+          path = 'tools/pubpres_recovery_windows/selection.json'
+          prior = json.loads(subprocess.check_output(['git', 'show', f'{sys.argv[1]}:{path}']))
+          current = policy.selection()
+          for mode in ('selected', 'fallback'):
+              if (policy.configuration(prior, mode), policy.selectors(prior, mode)) != (policy.configuration(current, mode), policy.selectors(current, mode)):
+                  raise ValueError(f'Measured {mode} engine, thread or simulation selectors differ')
+          PY
+      - name: Source and focused evidence reader admission
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m unittest discover -s tools/pubpres_final_windows -p 'test_*.py'
+          python3 -m unittest discover -s tools/pubpres_recovery_windows -p 'test_*.py'
+          python3 -m unittest discover -s tools/pubpres_final_recovery -p 'test_*.py'
+
+  windows-admission:
+    needs: plan
+    if: needs.plan.outputs.phase != 'timing-replay'
+    strategy:
+      fail-fast: false
+      max-parallel: 4
+      matrix:
+        arm: ${{ fromJSON(needs.plan.outputs.phase == 'windows-focus' && '["stock-held-placement","atomic-submission-safe-0","atomic-submission-separate-0","atomic-submission-separate-4"]' || needs.plan.outputs.phase == 'water-focus' && '["stock-members","atomic-water-separate-0","atomic-water-separate-4"]' || '["admission"]') }}
+    runs-on: windows-2022
+    timeout-minutes: ${{ matrix.arm != 'admission' && 120 || 15 }}
+    env:
+      REPLAY_RUN: ${{ needs.plan.outputs.phase == 'water-focus' && '46032856091' || '46027331150' }}
+      REPLAY_SOURCE: ${{ needs.plan.outputs.phase == 'water-focus' && 'e17ce40722a3fabdd6130990eecfca384bf5b6dd' || '88bb920c42755669ac8fba37b9fc46249c5bd0a6' }}
+    steps:
+      - name: Canonical source bytes
+        shell: powershell
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 256}
+      - name: Actual PowerShell 5.1 parser and configuration refusal
+        shell: powershell
+        run: ./tools/pubpres_recovery_windows/Test-Configuration.ps1 -Output build/closure-admission/windows-configuration.json
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && (matrix.arm == 'admission' || matrix.arm == 'stock-held-placement')
+        with:
+          name: pubpres-closure-admission-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/closure-admission/
+          retention-days: 90
+          if-no-files-found: error
+
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        if: matrix.arm != 'admission'
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: matrix.arm != 'admission'
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.REPLAY_RUN }}
+          name: pubpres-closure-shared-runtime-windows-${{ env.REPLAY_RUN }}-1
+          path: build/runtime
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: matrix.arm != 'admission'
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.REPLAY_RUN }}
+          name: pubpres-closure-rapier-C-${{ env.REPLAY_RUN }}-1
+          path: build/transport-C
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: matrix.arm != 'admission'
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.REPLAY_RUN }}
+          name: pubpres-closure-original-engine02-${{ env.REPLAY_RUN }}-1
+          path: build/engine-build02
+      - name: Run this graphical input treatment with the retained exact inputs
+        if: matrix.arm != 'admission'
+        shell: bash
+        run: |
+          git fetch --no-tags origin "$REPLAY_SOURCE" "$PUBPRES_ENGINE_BUILD_SOURCE"
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output "$RUNNER_TEMP/godot"
+          python tools/pubpres_recovery_windows/run_held_replay.py --arm "${{ matrix.arm }}" --runtime build/runtime/C --rapier-transport build/transport-C --stock-engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/held-replay
+      - name: Fly with thruster Fire into native wall and Water contacts
+        if: matrix.arm == 'stock-held-placement'
+        shell: bash
+        run: python tools/pubpres_recovery_windows/run_owner_follow.py --contact --qualified build/held-replay/stock-held-placement --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --output build/held-replay/owner-contact
+      - name: Fly the two owner scenes in hosted Windows Follow
+        if: matrix.arm == 'stock-held-placement'
+        shell: bash
+        run: python tools/pubpres_recovery_windows/run_owner_follow.py --thruster-fire --qualified build/held-replay/stock-held-placement --engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --output build/held-replay/owner-follow
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: matrix.arm == 'stock-held-placement'
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46046627411
+          name: pubpres-closure-windows-evaluator-46046627411-1
+          path: ${{ runner.temp }}/owner-original
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        if: matrix.arm == 'stock-held-placement'
+        with:
+          github-token: ${{ github.token }}
+          run-id: 46046627411
+          name: pubpres-closure-shared-runtime-windows-46046627411-1
+          path: ${{ runner.temp }}/owner-original-runtime
+      - name: Package the exact Fire-on flight application
+        if: matrix.arm == 'stock-held-placement'
+        shell: pwsh
+        run: |
+          $source = Join-Path $env:RUNNER_TEMP 'owner-package-source'
+          git worktree add --detach $source $env:GITHUB_SHA
+          if ($LASTEXITCODE) { exit $LASTEXITCODE }
+          $original = @(Get-ChildItem (Join-Path $env:RUNNER_TEMP 'owner-original') -File -Recurse -Filter '*.zip')
+          if ($original.Count -ne 1) { throw 'Expected exactly one original evaluator ZIP' }
+          python (Join-Path $source 'tools/pubpres_recovery_windows/local_owner_retest.py') --original-archive $original[0].FullName --original-runtime (Join-Path $env:RUNNER_TEMP 'owner-original-runtime/C') --output (Join-Path $env:RUNNER_TEMP 'owner-release')
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: matrix.arm == 'stock-held-placement'
+        with:
+          name: pubpres-owner-fire-windows-${{ github.sha }}
+          path: |
+            ${{ runner.temp }}/owner-release/*.zip
+            ${{ runner.temp }}/owner-release/*.zip.sha256
+          compression-level: 0
+          retention-days: 90
+          if-no-files-found: error
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && matrix.arm != 'admission'
+        with:
+          name: pubpres-held-replay-${{ matrix.arm }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/held-replay/
+            !build/held-replay/bound-runtime/**
+            build/held-replay/bound-runtime/PUBPRES-NATIVE-INPUT-REUSE.json
+            !build/held-replay/**/project/**
+            !build/held-replay/**/profile/**
+            !build/held-replay/**/*-profile/**
+          retention-days: 90
+          if-no-files-found: warn
+
+  timing-replay-windows:
+    needs: plan
+    if: needs.plan.outputs.phase == 'timing-replay'
+    runs-on: windows-2022
+    timeout-minutes: 240
+    env:
+      MEASURED_SOURCE: 00478f29b9abaccb1e358137e8a9a48894c1690b
+      QUALIFICATION_RUN: '46046627411'
+    steps:
+      - name: Preserve committed source bytes
+        shell: powershell
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ env.MEASURED_SOURCE }}
+          fetch-depth: 128
+          persist-credentials: false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: build/replay-orchestrator
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.QUALIFICATION_RUN }}
+          name: pubpres-comparison-windows-evidence-${{ env.QUALIFICATION_RUN }}-1
+          path: build/closure-windows
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.QUALIFICATION_RUN }}
+          name: pubpres-closure-shared-runtime-windows-${{ env.QUALIFICATION_RUN }}-1
+          path: build/runtime
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.QUALIFICATION_RUN }}
+          name: pubpres-closure-original-engine02-${{ env.QUALIFICATION_RUN }}-1
+          path: build/engine-build02
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.QUALIFICATION_RUN }}
+          name: pubpres-closure-rapier-C-${{ env.QUALIFICATION_RUN }}-1
+          path: build/transport-C
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.QUALIFICATION_RUN }}
+          name: pubpres-closure-reciprocal-C-${{ env.QUALIFICATION_RUN }}-1
+          path: build/transport-reciprocal
+      - name: Restore archived application qualification on its recorded Windows paths
+        shell: bash
+        run: |
+          set -euo pipefail
+          test "$(git rev-parse HEAD)" = "$MEASURED_SOURCE"
+          git fetch --no-tags origin "$PUBPRES_ENGINE_BUILD_SOURCE"
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output "$RUNNER_TEMP/godot"
+          python tools/ci/lfs_runtime_artifact.py install --root . --include "$RAPIER_WINDOWS" --available "$RAPIER_LINUX" --available "$RAPIER_WINDOWS" --expected-source "$MEASURED_SOURCE" --run-id "$QUALIFICATION_RUN" --attempt 1 --artifact build/transport-C --output build/replay-custody/rapier-C
+          python tools/ci/lfs_runtime_artifact.py install --root . --include "$RECIPROCAL_WINDOWS" --include "$RECIPROCAL_LINUX" --expected-source "$MEASURED_SOURCE" --run-id "$QUALIFICATION_RUN" --attempt 1 --artifact build/transport-reciprocal --output build/replay-custody/gentek
+          python build/replay-orchestrator/tools/pubpres_recovery_windows/restore_comparison_evidence.py --source "$GITHUB_WORKSPACE" --runtime "$GITHUB_WORKSPACE/build/runtime/C" --correctness "$GITHUB_WORKSPACE/build/closure-windows/application" --stock-engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --atomic-root "$GITHUB_WORKSPACE/build/engine-build02/payload" --output "$GITHUB_WORKSPACE/build/replay-custody/rehydration.json"
+      - name: Run original observer calibrations and six arms against canonical evidence paths
+        shell: bash
+        run: |
+          python tools/pubpres_final_recovery/run_closure_comparison.py bounded --water-off-fallback --runtime-root "$GITHUB_WORKSPACE/build/runtime" --stock-engine "$RUNNER_TEMP/godot/Godot_v4.7-stable_win64.exe" --atomic-root "$GITHUB_WORKSPACE/build/engine-build02/payload" --correctness "$GITHUB_WORKSPACE/build/closure-windows/application" --output "$GITHUB_WORKSPACE/build/performance/bounded-water-off"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-registered-windows-timing-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/replay-custody/
+            build/performance/
+            !build/performance/**/project/**
+            !build/performance/**/projects/**
+            !build/performance/**/profile/**
+          retention-days: 90
+          if-no-files-found: error
+
+  runtimes:
+    needs: [plan, windows-admission]
+    if: needs.plan.outputs.phase == 'runtimes' || (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        platform: [linux, windows]
+    env:
+      PUBPRES_CURRENT_MAIN: ${{ needs.plan.outputs.current_main }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 1}
+      - name: Exact historical M, current N, frozen D and shared dependency
+        run: |
+          timeout 240 git fetch --no-tags origin "$PUBPRES_HISTORICAL_MAIN" "$PUBPRES_CURRENT_MAIN" "$PUBPRES_FROZEN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-historical-main" "$PUBPRES_HISTORICAL_MAIN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-current-main" "$PUBPRES_CURRENT_MAIN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-frozen" "$PUBPRES_FROZEN"
+          python3 -m venv "$RUNNER_TEMP/closure-scons"
+          "$RUNNER_TEMP/closure-scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/closure-godot-cpp"
+          git -C "$RUNNER_TEMP/closure-godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/closure-godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/closure-godot-cpp" checkout --detach FETCH_HEAD
+      - name: Pinned Windows cross compiler
+        if: matrix.platform == 'windows'
+        run: |
+          curl --fail --location --retry 3 --max-time 300 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+          echo "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/closure-llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/closure-llvm-mingw" --strip-components=1
+          ln -s llvm-ar "$RUNNER_TEMP/closure-llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+      - name: One pinned dependency and four independent source-exact native builds
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          GODOT_CPP_ROOT: ${{ runner.temp }}/closure-godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/closure-scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/closure-llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/closure-llvm-mingw/bin/x86_64-w64-mingw32-g++
+          PUBPRES_GODOT_CPP_BUILD_LOG: build/closure-runtimes/godot-cpp.log
+        run: |
+          mkdir -p build/closure-runtimes
+          timeout 2400 bash tools/build_pinned_godot_cpp.sh "$PLATFORM" > build/closure-runtimes/godot-cpp.log 2>&1
+          status=0
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$RUNNER_TEMP/pubpres-historical-main" --source-sha "$PUBPRES_HISTORICAL_MAIN" --output-dir build/closure-runtimes/M || status=1
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$RUNNER_TEMP/pubpres-current-main" --source-sha "$PUBPRES_CURRENT_MAIN" --output-dir build/closure-runtimes/N || status=1
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$PWD" --source-sha "$GITHUB_SHA" --output-dir build/closure-runtimes/C || status=1
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$RUNNER_TEMP/pubpres-frozen" --source-sha "$PUBPRES_FROZEN" --output-dir build/closure-runtimes/D || status=1
+          if [[ "$status" != '0' ]]; then exit "$status"; fi
+          python3 tools/pubpres_recovery_windows/verify_closure_runtimes.py --root build/closure-runtimes --historical-main "$RUNNER_TEMP/pubpres-historical-main" --current-main "$RUNNER_TEMP/pubpres-current-main" --donor "$RUNNER_TEMP/pubpres-frozen" --platform "$PLATFORM"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-closure-shared-runtime-${{ matrix.platform }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/closure-runtimes/
+          retention-days: 90
+          if-no-files-found: warn
+
+  dependencies:
+    needs: [plan, windows-admission]
+    if: needs.plan.outputs.phase == 'runtimes' || (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 35
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 1}
+      - name: Exact donor and original engine source
+        run: |
+          timeout 240 git fetch --no-tags origin "$PUBPRES_FROZEN" "$PUBPRES_ENGINE_BUILD_SOURCE"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-frozen" "$PUBPRES_FROZEN"
+      - name: Accepted bounded runtime acquisition and sealed same-attempt transport
+        run: |
+          python3 tools/ci/lfs_runtime_artifact.py stage --root . --include "$RAPIER_LINUX" --include "$RAPIER_WINDOWS" --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --output build/dependencies/C
+          python3 tools/ci/lfs_runtime_artifact.py stage --root "$RUNNER_TEMP/pubpres-frozen" --include "$RAPIER_WINDOWS" --expected-source "$PUBPRES_FROZEN" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --output build/dependencies/D
+      - name: Admit accepted Gentek reciprocal helpers against the native definition
+        run: |
+          python3 tools/ci/lfs_runtime_artifact.py stage --root . --include "$RECIPROCAL_LINUX" --include "$RECIPROCAL_WINDOWS" --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --output build/dependencies/reciprocal
+          python3 tools/ci/check_swarm_runtime.py --require-materialized
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-closure-reciprocal-C-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/dependencies/reciprocal/
+          retention-days: 90
+          if-no-files-found: error
+      - name: Reuse and independently admit original exact engine build02
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: python3 tools/pubpres_recovery_windows/restore_atomic.py --output build/engine-build02
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-closure-rapier-C-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/dependencies/C/
+          retention-days: 90
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-closure-rapier-D-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/dependencies/D/
+          retention-days: 90
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-closure-original-engine02-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/engine-build02/
+            !build/engine-build02/original-build02.zip
+          retention-days: 90
+          if-no-files-found: warn
+
+  graphical-linux:
+    needs: [plan, runtimes, dependencies]
+    if: |
+      always() && needs.plan.result == 'success' &&
+      (needs.plan.outputs.phase == 'linux-replay' ||
+       ((needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery') && needs.runtimes.result == 'success' && needs.dependencies.result == 'success'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 300
+    env:
+      ARTIFACT_RUN: ${{ needs.plan.outputs.phase == 'linux-replay' && '46022262388' || github.run_id }}
+      ARTIFACT_ATTEMPT: ${{ needs.plan.outputs.phase == 'linux-replay' && '1' || github.run_attempt }}
+      APPLICATION_SHA: ${{ needs.plan.outputs.phase == 'linux-replay' && '2ac2c0203844cf4431b57de0b1fe9c6a3f3b987e' || github.sha }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 1}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.ARTIFACT_RUN }}
+          name: pubpres-closure-shared-runtime-linux-${{ env.ARTIFACT_RUN }}-${{ env.ARTIFACT_ATTEMPT }}
+          path: build/runtime
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.ARTIFACT_RUN }}
+          name: pubpres-closure-rapier-C-${{ env.ARTIFACT_RUN }}-${{ env.ARTIFACT_ATTEMPT }}
+          path: build/transport-C
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          github-token: ${{ github.token }}
+          run-id: ${{ env.ARTIFACT_RUN }}
+          name: pubpres-closure-reciprocal-C-${{ env.ARTIFACT_RUN }}-${{ env.ARTIFACT_ATTEMPT }}
+          path: build/transport-reciprocal
+      - name: Actual Linux display and admitted exact runtime transport
+        run: |
+          cp tools/ci/lfs_runtime_artifact.py "$RUNNER_TEMP/lfs_runtime_artifact.py"
+          if [[ "$APPLICATION_SHA" != "$GITHUB_SHA" ]]; then
+            git fetch --depth=1 --no-tags origin "$APPLICATION_SHA"
+            git checkout --detach "$APPLICATION_SHA"
+          fi
+          test "$(git rev-parse HEAD)" = "$APPLICATION_SHA"
+          export PYTHONPATH="$PWD/tools/ci"
+          sudo apt-get update -qq
+          sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
+          python "$RUNNER_TEMP/lfs_runtime_artifact.py" install --root . --include "$RAPIER_LINUX" --available "$RAPIER_LINUX" --available "$RAPIER_WINDOWS" --expected-source "$APPLICATION_SHA" --run-id "$ARTIFACT_RUN" --attempt "$ARTIFACT_ATTEMPT" --artifact build/transport-C --output build/closure-linux/rapier-transport
+          python "$RUNNER_TEMP/lfs_runtime_artifact.py" install --root . --include "$RECIPROCAL_LINUX" --available "$RECIPROCAL_LINUX" --available "$RECIPROCAL_WINDOWS" --expected-source "$APPLICATION_SHA" --run-id "$ARTIFACT_RUN" --attempt "$ARTIFACT_ATTEMPT" --artifact build/transport-reciprocal --output build/closure-linux/gentek-transport
+          python tools/pubpres_playability_build/download_engine.py --platform linux --output "$RUNNER_TEMP/godot"
+      - name: Actual mounted native pool and World ownership
+        run: python tools/pubpres_recovery_windows/run_native_owner.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/mounted-native
+      - name: Resulting-source original frozen correctness inventory
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-frozen --focus frozen --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
+      - name: Actual Water and Sand native framebuffer qualification
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-water --focus water --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
+      - name: Actual multipart history, root Follow and individual-member mouse qualification
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-members --focus members --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
+      - name: Paused placement of a displayed moving multipart limb on Stock Safe
+        if: (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --output build/closure-linux/stock-held-placement --focus held-placement --display-wrapper tools/pubpres_playability_build/owned_xvfb.py
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-closure-linux-evidence-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/closure-linux/
+            !build/closure-linux/**/project/**
+          retention-days: 90
+          if-no-files-found: warn
+      - name: Registered post-consolidation N/C/C/N physical comparison
+        if: always() && hashFiles('build/closure-linux/stock-frozen/SUMMARY.json') != ''
+        shell: bash
+        env:
+          PUBPRES_CURRENT_MAIN: ${{ needs.plan.outputs.current_main }}
+        run: |
+          git fetch --no-tags origin "$PUBPRES_CURRENT_MAIN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-current-main" "$PUBPRES_CURRENT_MAIN"
+          python tools/pubpres_final_recovery/run_closure_comparison.py current --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_linux.x86_64" --display-wrapper tools/pubpres_playability_build/owned_xvfb.py --correctness build/closure-linux --current-main-source "$RUNNER_TEMP/pubpres-current-main" --output build/performance/current
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-closure-performance-linux-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/performance/
+            !build/performance/**/project/**
+            !build/performance/**/projects/**
+            !build/performance/**/profile/**
+          retention-days: 90
+          if-no-files-found: warn
+
+  evaluator-windows:
+    needs: [plan, runtimes, dependencies]
+    if: (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        lane: ${{ fromJSON(needs.plan.outputs.windows_lanes) }}
+    timeout-minutes: 360
+    runs-on: windows-2022
+    steps:
+      - name: Canonical Windows source bytes
+        shell: powershell
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {fetch-depth: 128, persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-shared-runtime-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-rapier-C-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/transport-C
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-rapier-D-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/transport-D
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-original-engine02-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/engine-build02
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-reciprocal-C-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/transport-reciprocal
+      - name: Exact source, admitted native dependencies, signed VC runtime and notices
+        id: prepare
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          git fetch --no-tags origin $env:PUBPRES_FROZEN $env:PUBPRES_ENGINE_BUILD_SOURCE
+          if($LASTEXITCODE -ne 0){throw 'Exact donor/engine source fetch failed'}
+          git worktree add --detach (Join-Path $env:RUNNER_TEMP 'pubpres-frozen') $env:PUBPRES_FROZEN
+          if($LASTEXITCODE -ne 0){throw 'Frozen donor checkout failed'}
+          python tools/ci/lfs_runtime_artifact.py install --root . --include $env:RAPIER_WINDOWS --available $env:RAPIER_LINUX --available $env:RAPIER_WINDOWS --expected-source $env:GITHUB_SHA --run-id $env:GITHUB_RUN_ID --attempt $env:GITHUB_RUN_ATTEMPT --artifact build/transport-C --output build/closure-windows/rapier-C
+          if($LASTEXITCODE -ne 0){throw 'Candidate runtime transport refused'}
+          python tools/ci/lfs_runtime_artifact.py install --root (Join-Path $env:RUNNER_TEMP 'pubpres-frozen') --include $env:RAPIER_WINDOWS --expected-source $env:PUBPRES_FROZEN --run-id $env:GITHUB_RUN_ID --attempt $env:GITHUB_RUN_ATTEMPT --artifact build/transport-D --output build/closure-windows/rapier-D
+          if($LASTEXITCODE -ne 0){throw 'Donor runtime transport refused'}
+          python tools/ci/lfs_runtime_artifact.py install --root . --include $env:RECIPROCAL_WINDOWS --include $env:RECIPROCAL_LINUX --expected-source $env:GITHUB_SHA --run-id $env:GITHUB_RUN_ID --attempt $env:GITHUB_RUN_ATTEMPT --artifact build/transport-reciprocal --output build/closure-windows/gentek-transport
+          if($LASTEXITCODE -ne 0){throw 'Source-matched Gentek reciprocal transport refused'}
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output (Join-Path $env:RUNNER_TEMP 'godot')
+          if($LASTEXITCODE -ne 0){throw 'Pinned stock engine acquisition failed'}
+          ./tools/pubpres_final/prepare_windows_dependencies.ps1 -Output (Join-Path $env:RUNNER_TEMP 'pubpres-closure-dependencies')
+      - name: Verify ordinary Stock Safe held-limb placement and owner replacement
+        id: placement
+        if: matrix.lane != 'comparison'
+        run: python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --output build/closure-windows/stock-held-placement --focus held-placement
+      - name: Actual resulting-source stock and atomic Windows application qualification
+        id: application
+        if: always() && steps.prepare.outcome == 'success'
+        run: python tools/pubpres_recovery_windows/run_closure_hosted.py --runtime build/runtime/C --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --output build/closure-windows/application ${{ matrix.lane == 'comparison' && '--architecture-comparison' || '' }}
+      - name: Registered observer calibrations and six-arm architecture comparison
+        if: always() && hashFiles('build/closure-windows/application/ADMITTED.json') != ''
+        run: python tools/pubpres_final_recovery/run_closure_comparison.py bounded --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --output build/performance/bounded
+      - name: Registered Water-off comparison after an isolated Water-on failure
+        if: always() && hashFiles('build/closure-windows/application/ADMITTED.json') == '' && hashFiles('build/closure-windows/application/WATER-OFF-ADMITTED.json') != ''
+        run: python tools/pubpres_final_recovery/run_closure_comparison.py bounded --water-off-fallback --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --output build/performance/bounded-water-off
+      - name: Assemble source-exact qualified selected and fallback Workbench
+        id: package
+        if: always() && matrix.lane != 'comparison' && steps.prepare.outcome == 'success' && steps.placement.outcome == 'success' && steps.application.outcome == 'success'
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          git merge-base --is-ancestor $env:PUBPRES_FROZEN $env:GITHUB_SHA
+          if($LASTEXITCODE -ne 0){throw 'Frozen donor ancestry is not available; bounded exact checkout must establish it'}
+          $Selection=Get-Content tools/pubpres_recovery_windows/selection.json -Raw|ConvertFrom-Json
+          $Extra=@()
+          if($Selection.water_composition -eq 1){$Extra+=@('--water-correctness','build/closure-windows/application/stock-water-correctness/SUMMARY.json')}
+          if($Selection.architecture -cne 'stock_safe' -or $Selection.experimental_architecture -cne 'none'){
+            $Extra+=@('--atomic-engine-directory','build/engine-build02/payload','--atomic-inventory','build/closure-windows/application/INVENTORY.json')
+          }
+          $Archive=Join-Path $PWD ('delivery/CyberSand-PUBPRES-PLAYABILITY-FINAL-CLOSURE-001-'+$env:GITHUB_SHA.Substring(0,12)+'-Windows.zip')
+          $ErrorActionPreference='Continue'
+          python tools/pubpres_recovery_windows/package_windows.py --candidate-root . --candidate-sha $env:GITHUB_SHA --candidate-runtime build/runtime/C --donor-root (Join-Path $env:RUNNER_TEMP 'pubpres-frozen') --donor-runtime build/runtime/D --godot-zip (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe.zip') --vc-runtime (Join-Path $env:RUNNER_TEMP 'pubpres-closure-dependencies/vc') --notices (Join-Path $env:RUNNER_TEMP 'pubpres-closure-dependencies/notices') --output-dir (Join-Path $env:RUNNER_TEMP 'pubpres-closure-payload') --archive $Archive --qualified-stock-engine (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe') --stock-correctness build/closure-windows/application/stock-frozen-correctness/SUMMARY.json --members-correctness build/closure-windows/application/stock-members-correctness/SUMMARY.json --native-correctness build/closure-windows/application/stock-native-owner/SUMMARY.json @Extra 2>&1 | Tee-Object -FilePath build/closure-windows/package.log
+          $PackageExit=$LASTEXITCODE
+          $ErrorActionPreference='Stop'
+          if($PackageExit -ne 0){throw 'Resulting-source Windows evaluator admission or assembly failed; see package.log'}
+          'archive='+$Archive|Out-File -FilePath $env:GITHUB_OUTPUT -Encoding utf8 -Append
+      - name: Actual shipped CMD launchers from pristine extraction with spaces
+        id: launchers
+        if: always() && steps.package.outcome == 'success'
+        shell: powershell
+        run: ./tools/pubpres_recovery_windows/Test-Evaluator.ps1 -PackageRoot "${{ runner.temp }}/pubpres-closure-payload" -ExpectedCandidate $env:GITHUB_SHA -ArtifactZip "${{ steps.package.outputs.archive }}" -Output build/closure-windows/checks
+      - name: Installed native authoring, Save and fresh-process graphical reopen
+        id: authoring
+        if: always() && steps.launchers.outcome == 'success'
+        shell: powershell
+        run: |
+          $ErrorActionPreference='Stop'
+          $Package='build/closure-windows/checks/extracted package with spaces'
+          python tools/pubpres_recovery_windows/qualify_installed.py --package $Package --candidate $env:GITHUB_SHA --mode selected --output build/closure-windows/authoring-selected
+          if($LASTEXITCODE -ne 0){throw 'Selected installed native authoring failed'}
+          python tools/pubpres_recovery_windows/qualify_installed.py --package $Package --candidate $env:GITHUB_SHA --mode fallback --output build/closure-windows/authoring-fallback
+          if($LASTEXITCODE -ne 0){throw 'Fallback installed native authoring failed'}
+          $Selection=Get-Content tools/pubpres_recovery_windows/selection.json -Raw|ConvertFrom-Json
+          if($Selection.experimental_architecture -cne 'none'){
+            python tools/pubpres_recovery_windows/qualify_installed.py --package $Package --candidate $env:GITHUB_SHA --mode experimental --output build/closure-windows/authoring-experimental
+            if($LASTEXITCODE -ne 0){throw 'Experimental installed native authoring failed'}
+          }
+      - name: Reverify immutable assembled payload
+        id: immutable
+        if: always() && steps.package.outcome == 'success'
+        run: python tools/pubpres_recovery_windows/package_windows.py --verify --candidate-sha "${{ github.sha }}" --output-dir "${{ runner.temp }}/pubpres-closure-payload"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ${{ matrix.lane == 'comparison' && 'pubpres-comparison-windows-evidence' || 'pubpres-closure-windows-evidence' }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/closure-windows/
+            !build/closure-windows/**/extracted package with spaces/**
+            !build/closure-windows/**/project/**
+            !build/closure-windows/**/source/**
+            !build/closure-windows/checks/Runs/**/profile/**
+          retention-days: 90
+          if-no-files-found: warn
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always() && steps.package.outcome == 'success' && steps.launchers.outcome == 'success' && steps.authoring.outcome == 'success' && steps.immutable.outcome == 'success'
+        with:
+          name: pubpres-closure-windows-evaluator-${{ github.run_id }}-${{ github.run_attempt }}
+          path: delivery/
+          retention-days: 90
+          if-no-files-found: error
+      - name: Registered post-consolidation N/C/C/N physical comparison
+        if: always() && matrix.lane != 'comparison' && hashFiles('build/closure-windows/application/stock-frozen-correctness/SUMMARY.json') != ''
+        shell: bash
+        env:
+          PUBPRES_CURRENT_MAIN: ${{ needs.plan.outputs.current_main }}
+        run: |
+          git fetch --no-tags origin "$PUBPRES_CURRENT_MAIN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-current-main" "$PUBPRES_CURRENT_MAIN"
+          python tools/pubpres_final_recovery/run_closure_comparison.py current --runtime-root build/runtime --stock-engine "${{ runner.temp }}/godot/Godot_v4.7-stable_win64.exe" --atomic-root build/engine-build02/payload --correctness build/closure-windows/application --current-main-source "$RUNNER_TEMP/pubpres-current-main" --output build/performance/current
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: ${{ matrix.lane == 'comparison' && 'pubpres-bounded-six-arm' || 'pubpres-closure-performance-windows' }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/performance/
+            !build/performance/**/project/**
+            !build/performance/**/projects/**
+            !build/performance/**/profile/**
+          retention-days: 90
+          if-no-files-found: warn
+
+  native-authority:
+    needs: [plan, windows-admission]
+    if: (needs.plan.outputs.phase == 'full' || needs.plan.outputs.phase == 'delivery')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 180
+    env: {CXX: g++-13, CC: gcc-13}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Full native material and Wave authority with scoped sanitizers
+        run: |
+          mkdir -p build/closure-native
+          git rev-parse HEAD > build/closure-native/source.txt
+          status=0
+          timeout 3600 make test wave-flow-test wave-spill-test wave-body-boundary-test wave-empty-derived-test material-baseline-test > build/closure-native/normal.log 2>&1 || status=1
+          timeout 3600 env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make sanitize wave-flow-sanitize wave-body-boundary-sanitize wave-empty-derived-sanitize > build/closure-native/sanitizers.log 2>&1 || status=1
+          exit "$status"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-closure-native-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/closure-native/
+          retention-days: 90
+          if-no-files-found: warn
+
+  comparison-fallback-linux:
+    needs: [plan, runtimes, dependencies]
+    if: needs.plan.outputs.phase == 'full'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    env:
+      PLATFORM: linux
+      PUBPRES_CURRENT_MAIN: ${{ needs.plan.outputs.current_main }}
+      STOCK_EXE: Godot_v4.7-stable_linux.x86_64
+      FROZEN: stock-frozen
+    steps: &fallback-comparison-steps
+      - name: Keep exact committed source bytes
+        shell: bash
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-shared-runtime-${{ env.PLATFORM }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-rapier-C-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/transport-C
+      - name: Admit exact current-main checkout, Rapier and stock engine
+        shell: bash
+        run: |
+          git fetch --no-tags origin "$PUBPRES_CURRENT_MAIN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-current-main" "$PUBPRES_CURRENT_MAIN"
+          rapier="$RAPIER_WINDOWS"
+          if [[ "$PLATFORM" == linux ]]; then
+            rapier="$RAPIER_LINUX"
+            sudo apt-get update -qq
+            sudo apt-get install -y xvfb libgl1-mesa-dri libx11-6 libxcursor1 libxinerama1 libxrandr2 libxi6
+          fi
+          python tools/ci/lfs_runtime_artifact.py install --root . --include "$rapier" --available "$RAPIER_LINUX" --available "$RAPIER_WINDOWS" --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --artifact build/transport-C --output build/rapier-install
+          python tools/pubpres_playability_build/download_engine.py --platform "$PLATFORM" --output "$RUNNER_TEMP/godot"
+      - name: Original nineteen Stock outcomes and independent Stock Safe fallback N/C/C/N
+        shell: bash
+        run: |
+          display=()
+          if [[ "$PLATFORM" == linux ]]; then display=(--display-wrapper tools/pubpres_playability_build/owned_xvfb.py); fi
+          python tools/pubpres_final_recovery/run_qualification.py --source . --runtime build/runtime/C --engine "$RUNNER_TEMP/godot/$STOCK_EXE" --output "build/prerequisite/$FROZEN" --focus frozen "${display[@]}"
+          python tools/pubpres_final_recovery/run_closure_comparison.py current --conservative --runtime-root build/runtime --stock-engine "$RUNNER_TEMP/godot/$STOCK_EXE" --current-main-source "$RUNNER_TEMP/pubpres-current-main" --correctness build/prerequisite --output build/performance "${display[@]}"
+      - name: Registered medium Wave, pressure and FreeMass physical controls
+        shell: bash
+        run: |
+          display=()
+          if [[ "$PLATFORM" == linux ]]; then display=(--display-wrapper tools/pubpres_playability_build/owned_xvfb.py); fi
+          python tools/pubpres_final/run_comparison.py --mode single --slots 2 --control-source . --control-runtime build/runtime/C --candidate-source . --candidate-runtime build/runtime/C --engine "$RUNNER_TEMP/godot/$STOCK_EXE" --output build/performance/controls --case wave_1024_follow_4 --case pressure_512_follow --case freemass_2048_follow "${display[@]}"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-fallback-abba-${{ env.PLATFORM }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/prerequisite/
+            build/performance/
+            !build/**/project/**
+            !build/**/projects/**
+            !build/**/profile/**
+          retention-days: 90
+          if-no-files-found: warn
+
+  comparison-fallback-windows:
+    needs: [plan, runtimes, dependencies]
+    if: needs.plan.outputs.phase == 'full'
+    runs-on: windows-2022
+    timeout-minutes: 90
+    env:
+      PLATFORM: windows
+      PUBPRES_CURRENT_MAIN: ${{ needs.plan.outputs.current_main }}
+      STOCK_EXE: Godot_v4.7-stable_win64.exe
+      FROZEN: stock-frozen-correctness
+    steps: *fallback-comparison-steps
+
+  sustained-owner-windows:
+    needs: [plan, runtimes, dependencies]
+    if: needs.plan.outputs.phase == 'full'
+    runs-on: windows-2022
+    timeout-minutes: 65
+    steps:
+      - name: Canonical Windows bytes
+        shell: bash
+        run: git config --global core.autocrlf false
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with: {python-version: '3.12'}
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-shared-runtime-windows-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/runtime
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-rapier-C-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/transport-C
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: pubpres-closure-original-engine02-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/engine-build02
+      - name: Same-run dependency and pinned official editor
+        shell: bash
+        run: |
+          python tools/ci/lfs_runtime_artifact.py install --root . --include "$RAPIER_WINDOWS" --available "$RAPIER_LINUX" --available "$RAPIER_WINDOWS" --expected-source "$GITHUB_SHA" --run-id "$GITHUB_RUN_ID" --attempt "$GITHUB_RUN_ATTEMPT" --artifact build/transport-C --output build/rapier-install
+          python tools/pubpres_playability_build/download_engine.py --platform windows --output "$RUNNER_TEMP/godot"
+      - name: Four real five-minute sessions in the evaluator's ordinary example scenes
+        shell: powershell
+        run: |
+          $Build=Get-Content tools/pubpres_recovery_windows/atomic-engine.json -Raw|ConvertFrom-Json
+          python tools/pubpres_final_recovery/run_sustained_owner.py --runtime build/runtime/C --stock-engine (Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64.exe') --output build/owner-play --engine-payload build/engine-build02/payload --engine-build-source $Build.source --engine-build-run $Build.run --engine-build-attempt $Build.attempt --engine-proof-sha256 $Build.proof_sha256
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-ordinary-play-${{ github.run_id }}-${{ github.run_attempt }}
+          path: |
+            build/owner-play/
+            !build/owner-play/**/project/**
+            !build/owner-play/**/profile/**
+          retention-days: 90
+          if-no-files-found: warn

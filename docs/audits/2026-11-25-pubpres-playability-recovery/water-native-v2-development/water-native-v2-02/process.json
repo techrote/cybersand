@@ -1,0 +1,31 @@
+{
+  "command": [
+    "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/8a0b6cd48416/pubpres-native/godot",
+    "--audio-driver",
+    "Dummy",
+    "--script",
+    "res://tests/test_workbench_water_composition_native.gd"
+  ],
+  "source": "dc9070436f0f04846f02f98666d890367af1462b",
+  "settings": {
+    "CYBERSAND_SOURCE_REVISION": "dc9070436f0f04846f02f98666d890367af1462b",
+    "CYBERSAND_SOURCE_SHA": "dc9070436f0f04846f02f98666d890367af1462b",
+    "CYBERSAND_DIAG_WATER_COMPOSITION": "1",
+    "CYBERSAND_DIAG_ACTUAL_SUBMISSION": "0",
+    "CYBERSAND_DIAG_PRESENTATION": "coherent",
+    "CYBERSAND_MATERIAL_PUBLICATION": "full",
+    "CYBERSAND_DIAG_FULL_IMAGE_SLOTS": "2",
+    "CYBERSAND_DIAG_MATERIAL_TIMING": "measured",
+    "CYBERSAND_DIAG_RENDER_CADENCE": "repaired",
+    "CYBERSAND_DIAG_PHYSICS_PUBLICATION": "early",
+    "CYBERSAND_DIAG_NATIVE_RENDEZVOUS": "0",
+    "CYBERSAND_DIAG_WORKBENCH_SAMPLE_IDLE": "0",
+    "CYBERSAND_WATER_COMPOSITION_OUTPUT": "/workspace/scratch/8a0b6cd48416/native-runtime-dev/water-native-v2-02/headless.json"
+  },
+  "exit_code": 1,
+  "elapsed_seconds": 11.007555877999039,
+  "scope": "Functional source-bound native fixture during concurrent engine compilation, no performance claim"
+}

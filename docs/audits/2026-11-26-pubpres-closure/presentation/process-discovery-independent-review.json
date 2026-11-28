@@ -1,0 +1,20 @@
+{
+  "schema": "pubpres-independent-source-review-v1",
+  "reviewer": "Specialist B",
+  "source_commit": "8205a72876b3db9a67aa64f33e119e6e7b4cd45f",
+  "disposition": "SOURCE_GO_PENDING_REGISTERED_COMPARATIVE_RESULTS",
+  "files": {
+    "tools/pubpres_final_observers/process_discovery.py": "38377b99ff28d73cf4307bbb0ac58194b8f2cd739a4f9631f79e295ad42c9151",
+    "tools/pubpres_final_observers/execute_with_resources.py": "fbf5004e9b3270dce2cdd6e6bec2c56a82c9096b09c5f3c4ca7a44a514538c20",
+    "tools/pubpres_final_observers/execution_contract.py": "ebc16803cfa7bc70ccb837ecd6bbc62b6484232af37991ce21a51322b6017f69",
+    "tools/pubpres_final_observers/test_process_discovery.py": "9666f121be8aaef59b7a341128462a81afc659182c7e65510c9f58316e3680a8"
+  },
+  "findings": [
+    "Fallback only for absent task children file; permission denial refuses instead of enumeration.",
+    "PPid graph rooted in exact owned process, pinned birth ticks and exact executable; every ancestor and child re-read before binding.",
+    "owned_root is restricted to actual one-node root chain.",
+    "Independent reducer joins executable/birth/ancestry to engine-reported PID and CPU creation identity.",
+    "Adversaries added for permission, child birth reuse and ancestor birth reuse; reported16 passing tests are execution evidence owned by A, not re-executed here.",
+    "Windows discovery preserved. No throughput inference from infrastructure correction."
+  ]
+}

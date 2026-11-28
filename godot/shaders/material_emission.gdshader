@@ -11,6 +11,11 @@ uniform vec2 world_size_px = vec2(1024.0, 1024.0);
 uniform vec2 view_size_px = vec2(320.0, 180.0);
 uniform vec2 camera_origin_px = vec2(0.0);
 uniform float condition_projection_enabled = 0.0;
+// Main proves that the published material plane contains only Empty, Sand,
+// Water and reinforced concrete. The live appearance program remains editable.
+uniform bool ambient_sources_absent = false;
+uniform bool ambient_bounds_valid = false;
+uniform vec4 ambient_source_bounds = vec4(0.0);
 uniform float sample_radius_px : hint_range(1.0, 12.0, 0.5) = 4.0;
 // Shared with the palette pass; negative keeps the engine TIME.
 uniform float presentation_time_override = -1.0;
@@ -84,30 +89,46 @@ vec3 emission_at(vec2 world_pixel) {
 	return emission_program.rgb * intensity * multiplier;
 }
 
+bool zero_emission_endpoints(float material_id) {
+	vec2 endpoints = texture(material_program_lut, vec2(0.625, (material_id + 0.5) / 256.0)).zw;
+	return all(equal(endpoints, vec2(0.0)));
+}
+
 void fragment() {
 	vec2 world_pixel = camera_origin_px + floor(UV * view_size_px);
-	float radius = sample_radius_px;
-	// The half-resolution texel covers a 2x2 block of cells; taking the brightest
-	// keeps single-cell emitters (activated fireworks, sparks) in the bloom.
-	// UV is at the output texel's centre: floor(UV * view_size_px) is the
-	// bottom-right cell at 2:1, not the block's origin. Derivatives also keep
-	// full-resolution fixtures at a one-cell footprint.
-	vec2 footprint = vec2(1.0) + step(vec2(1.5), fwidth(UV * view_size_px));
-	vec2 block_pixel = camera_origin_px + floor(UV * view_size_px / footprint) * footprint;
-	vec2 span = footprint - vec2(1.0);
-	vec3 emission = max(max(emission_at(block_pixel), emission_at(block_pixel + vec2(span.x, 0.0))),
-		max(emission_at(block_pixel + vec2(0.0, span.y)), emission_at(block_pixel + span))) * 0.22;
-	emission += emission_at(world_pixel + vec2(radius, 0.0)) * 0.09;
-	emission += emission_at(world_pixel + vec2(-radius, 0.0)) * 0.09;
-	emission += emission_at(world_pixel + vec2(0.0, radius)) * 0.09;
-	emission += emission_at(world_pixel + vec2(0.0, -radius)) * 0.09;
-	emission += emission_at(world_pixel + vec2(radius, radius)) * 0.045;
-	emission += emission_at(world_pixel + vec2(-radius, radius)) * 0.045;
-	emission += emission_at(world_pixel + vec2(radius, -radius)) * 0.045;
-	emission += emission_at(world_pixel + vec2(-radius, -radius)) * 0.045;
-	emission += emission_at(world_pixel + vec2(radius * 2.0, 0.0)) * 0.06;
-	emission += emission_at(world_pixel + vec2(-radius * 2.0, 0.0)) * 0.06;
-	emission += emission_at(world_pixel + vec2(0.0, radius * 2.0)) * 0.06;
-	emission += emission_at(world_pixel + vec2(0.0, -radius * 2.0)) * 0.06;
-	COLOR = vec4(emission, clamp(max(emission.r, max(emission.g, emission.b)), 0.0, 1.0));
+	// Account for the 2x2 block, both sampling radii and world-edge clamping.
+	vec2 sample_origin = clamp(world_pixel, vec2(0.0), world_size_px - vec2(1.0));
+	vec2 reach = vec2(max(2.0, ceil(2.0 * sample_radius_px) + 1.0));
+	bool outside_sources = ambient_bounds_valid && (
+		any(lessThan(sample_origin, ambient_source_bounds.xy - reach)) ||
+		any(greaterThanEqual(sample_origin, ambient_source_bounds.zw + reach)));
+	if ((ambient_sources_absent || outside_sources) && zero_emission_endpoints(0.0) && zero_emission_endpoints(2.0)
+			&& zero_emission_endpoints(3.0) && zero_emission_endpoints(58.0)) {
+		COLOR = vec4(0.0);
+	} else {
+		float radius = sample_radius_px;
+		// The half-resolution texel covers a 2x2 block of cells; taking the brightest
+		// keeps single-cell emitters (activated fireworks, sparks) in the bloom.
+		// UV is at the output texel's centre: floor(UV * view_size_px) is the
+		// bottom-right cell at 2:1, not the block's origin. Derivatives also keep
+		// full-resolution fixtures at a one-cell footprint.
+		vec2 footprint = vec2(1.0) + step(vec2(1.5), fwidth(UV * view_size_px));
+		vec2 block_pixel = camera_origin_px + floor(UV * view_size_px / footprint) * footprint;
+		vec2 span = footprint - vec2(1.0);
+		vec3 emission = max(max(emission_at(block_pixel), emission_at(block_pixel + vec2(span.x, 0.0))),
+			max(emission_at(block_pixel + vec2(0.0, span.y)), emission_at(block_pixel + span))) * 0.22;
+		emission += emission_at(world_pixel + vec2(radius, 0.0)) * 0.09;
+		emission += emission_at(world_pixel + vec2(-radius, 0.0)) * 0.09;
+		emission += emission_at(world_pixel + vec2(0.0, radius)) * 0.09;
+		emission += emission_at(world_pixel + vec2(0.0, -radius)) * 0.09;
+		emission += emission_at(world_pixel + vec2(radius, radius)) * 0.045;
+		emission += emission_at(world_pixel + vec2(-radius, radius)) * 0.045;
+		emission += emission_at(world_pixel + vec2(radius, -radius)) * 0.045;
+		emission += emission_at(world_pixel + vec2(-radius, -radius)) * 0.045;
+		emission += emission_at(world_pixel + vec2(radius * 2.0, 0.0)) * 0.06;
+		emission += emission_at(world_pixel + vec2(-radius * 2.0, 0.0)) * 0.06;
+		emission += emission_at(world_pixel + vec2(0.0, radius * 2.0)) * 0.06;
+		emission += emission_at(world_pixel + vec2(0.0, -radius * 2.0)) * 0.06;
+		COLOR = vec4(emission, clamp(max(emission.r, max(emission.g, emission.b)), 0.0, 1.0));
+	}
 }

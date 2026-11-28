@@ -1,0 +1,84 @@
+{
+  "schema": "pubpres-core-exhaustive-case-continuation-v1",
+  "binary_sha256": "f01d3b109f8d9a65e4f4fed14b260c342066f2ea7540192680d39be4bcb1c923",
+  "original_full_run_exit": 124,
+  "original_full_run_watchdog_seconds": 600,
+  "expected_case_count": 192,
+  "completed_before_interruption": 185,
+  "remaining_cases": [
+    "Workbench parallel PressureFlow heads match serial (all variants)",
+    "Pair reaction tables match the authored resolver",
+    "Active-core capacity counts distinct cores",
+    "Hard-surface bits match the display projection",
+    "Hard-surface invalidation is independent and tile exact",
+    "Hard-surface invalidation matches across worker counts",
+    "LCB-002 PressureFlow pocket sealed from open air is atmospheric"
+  ],
+  "continuations": [
+    {
+      "name": "Workbench parallel PressureFlow heads match serial (all variants)",
+      "returncode": 0,
+      "seconds": 83.86325731100032,
+      "completed": [
+        "Workbench parallel PressureFlow heads match serial (all variants)"
+      ],
+      "log": "core-continuation-00.txt"
+    },
+    {
+      "name": "Pair reaction tables match the authored resolver",
+      "returncode": 0,
+      "seconds": 0.16586229499989713,
+      "completed": [
+        "Pair reaction tables match the authored resolver"
+      ],
+      "log": "core-continuation-01.txt"
+    },
+    {
+      "name": "Active-core capacity counts distinct cores",
+      "returncode": 0,
+      "seconds": 0.11462248800035013,
+      "completed": [
+        "Active-core capacity counts distinct cores"
+      ],
+      "log": "core-continuation-02.txt"
+    },
+    {
+      "name": "Hard-surface bits match the display projection",
+      "returncode": 0,
+      "seconds": 0.0647773949999646,
+      "completed": [
+        "Hard-surface bits match the display projection"
+      ],
+      "log": "core-continuation-03.txt"
+    },
+    {
+      "name": "Hard-surface invalidation is independent and tile exact",
+      "returncode": 0,
+      "seconds": 0.16483720999985962,
+      "completed": [
+        "Hard-surface invalidation is independent and tile exact"
+      ],
+      "log": "core-continuation-04.txt"
+    },
+    {
+      "name": "Hard-surface invalidation matches across worker counts",
+      "returncode": 0,
+      "seconds": 0.11501769999995304,
+      "completed": [
+        "Hard-surface invalidation matches across worker counts"
+      ],
+      "log": "core-continuation-05.txt"
+    },
+    {
+      "name": "LCB-002 PressureFlow pocket sealed from open air is atmospheric",
+      "returncode": 0,
+      "seconds": 63.52922262700031,
+      "completed": [
+        "LCB-002 PressureFlow pocket sealed from open air is atmospheric"
+      ],
+      "log": "core-continuation-06.txt"
+    }
+  ],
+  "scope": "Unchanged built-in test-name filter executes only not-yet-completed cases from same binary. Not a passing uninterrupted full-process run.",
+  "all_cases_completed": true
+}

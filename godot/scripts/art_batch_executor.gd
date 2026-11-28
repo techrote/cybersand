@@ -278,6 +278,8 @@ func poll() -> void:
 	else:
 		admitted = worker.art_queue(chunk.points,chunk.material,area,guards,epoch,materials,approval)
 	if admitted.status == "queued":
+		if wb.host.has_method("material_edit_admitted"):
+			wb.host.material_edit_admitted()
 		approved_requested += chunk.points.size()/2
 		pending_chunk = {}
 		waiting = true

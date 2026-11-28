@@ -1,0 +1,58 @@
+{
+  "schema": "pubpres-empty-derived-independent-lifecycle-check-v1",
+  "processes": 4,
+  "checkpoints_per_process": 153,
+  "fields_per_checkpoint": 8,
+  "all_four_arrays_exact": true,
+  "same_worker_stdout_exact": true,
+  "nonzero_contact_checkpoints": 8,
+  "nonzero_ballistic_checkpoints": 52,
+  "manifest_sha256": "42c00f50d18817f6379b0f1ef70aa696ac2c0f6aca474731caf049d4b583165e",
+  "diagnostic_scope": "Native semantic differential plus actual storage assertion apparatus. No timing or ordinary Workbench/Rapier claim.",
+  "compile_command_custody": {
+    "manifest_sha256": "8cac22c14791b84b10a53d9aab01fd48ba1bb1aa062ade0fdc219e2b51bba2b8",
+    "compiler_binary_sha256": "6b3696e4dcb85e1c949c732a02befa50e3983ecf94ce7e8e58d9d503b954b79d",
+    "command_custody_scope": "Exact issued command arrays recorded after successful tool completion; compiler logs contain diagnostics, not self-attested command lines. No unobserved process-start timestamps invented.",
+    "builds": [
+      {
+        "arm": "control",
+        "input_count": 82,
+        "binary_sha256": "465ec335b5734eff19247918c33a2127caa47dbc720a98b8dad441a54d332568",
+        "diagnostic_macro_in_retained_command": true,
+        "other_fields": [
+          "arm",
+          "cwd",
+          "binary_sha256",
+          "exit_code",
+          "log_sha256"
+        ]
+      },
+      {
+        "arm": "candidate",
+        "input_count": 82,
+        "binary_sha256": "4010e82d33f250fc9473d418428dbcff627d2a6d4275ecd8501888a6c7212fda",
+        "diagnostic_macro_in_retained_command": true,
+        "other_fields": [
+          "arm",
+          "cwd",
+          "binary_sha256",
+          "exit_code",
+          "log_sha256"
+        ]
+      }
+    ],
+    "limitations": "Retained issued-command arrays and actual input/compiler/output hashes agree. Compiler diagnostic logs are not an independent compiler flag attestation; no process start time is inferred.",
+    "matching_diagnostic_logs": [
+      {
+        "path": "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/build-lifecycle-control.log",
+        "sha256": "5111e8faf78fa808a82f40a87d24db93c386a5611b285a038cc3d5b0ee39a43d",
+        "bytes": 1450
+      },
+      {
+        "path": "/workspace/scratch/0b2a9bdf7883/cybersand-native/build/pubpres-final/empty-derived/build-lifecycle-candidate.log",
+        "sha256": "5111e8faf78fa808a82f40a87d24db93c386a5611b285a038cc3d5b0ee39a43d",
+        "bytes": 1450
+      }
+    ]
+  }
+}

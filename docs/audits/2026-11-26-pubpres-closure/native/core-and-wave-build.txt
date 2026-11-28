@@ -1,0 +1,155 @@
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O0 -g3 native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_lcb_inertial.cpp native/tests/test_water_inertial.cpp native/tests/test_world.cpp native/tests/test_liquid_solver_policy.cpp native/tests/test_lcb_pressure.cpp native/tests/test_pressure_moving_mask.cpp native/tests/test_pressure_setup_capacity.cpp native/tests/test_water_cellular_yield.cpp native/tests/test_water_normalization.cpp native/tests/test_liquid_run_receipt.cpp native/tests/test_liquid_construction_refusal.cpp native/tests/test_quantity_ledger.cpp native/tests/test_ballistic_water.cpp native/tests/test_workbench_pressure_heads.cpp -o build/tests
+g++ -std=c++20 -Wall -Wextra -Wpedantic -Wconversion -Wshadow -Inative/include -O2 -g -pthread native/src/world.cpp native/src/material_rules.cpp native/src/scheduler_geometry.cpp native/src/settled_world_discovery.cpp native/src/render_snapshot.cpp native/src/c_api.cpp native/tests/test_wave_flow.cpp -o build/test_wave_flow
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3254:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3254 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5575:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+native/src/world.cpp: In member function ‘bool cybersand::World::try_move(cybersand::Material, int64_t, int64_t, int64_t, int64_t, bool, JobEffects*)’:
+native/src/world.cpp:3254:61: warning: conversion from ‘int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+ 3254 |             mix_after_motion(material,x,y,target_x,target_y,moved_mass,effects);
+      |                                                             ^~~~~~~~~~
+In file included from native/src/world.cpp:5575:
+native/src/world_pressure.inc: In member function ‘void cybersand::World::resolve_gas_topology(bool)’:
+native/src/world_pressure.inc:1144:26: warning: declaration of ‘position’ shadows a previous local [-Wshadow]
+ 1144 |         for (std::size_t position = 0; position < coordinates.size(); ++position)
+      |                          ^~~~~~~~
+native/src/world_pressure.inc:930:17: note: shadowed declaration is here
+  930 |     std::size_t position = 0;
+      |                 ^~~~~~~~
+native/src/world_pressure.inc: In lambda function:
+native/src/world_pressure.inc:1422:20: warning: declaration of ‘begin’ shadows a previous local [-Wshadow]
+ 1422 |         const auto begin = task.begin, end = task.end, group = task.group;
+      |                    ^~~~~
+native/src/world_pressure.inc:1356:17: note: shadowed declaration is here
+ 1356 |     std::size_t begin = 0, column_task = 0;
+      |                 ^~~~~
+native/tests/test_lcb_inertial.cpp: In function ‘void {anonymous}::test_inertial_sparse_serial_seam()’:
+native/tests/test_lcb_inertial.cpp:429:33: warning: loop variable ‘start’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  429 |                 for (const auto start : {std::pair{3, 7}, std::pair{-5, -1}}) {
+      |                                 ^~~~~
+native/tests/test_lcb_inertial.cpp:429:33: note: use reference type to prevent copying
+  429 |                 for (const auto start : {std::pair{3, 7}, std::pair{-5, -1}}) {
+      |                                 ^~~~~
+      |                                 &
+native/tests/test_lcb_inertial.cpp: In function ‘uint64_t {anonymous}::check_resting_body_contact(int, int, int, int)’:
+native/tests/test_lcb_inertial.cpp:916:21: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  916 |     for (const auto [x, y] : kContactOrigins) {
+      |                     ^~~~~~
+native/tests/test_lcb_inertial.cpp:916:21: note: use reference type to prevent copying
+  916 |     for (const auto [x, y] : kContactOrigins) {
+      |                     ^~~~~~
+      |                     &
+native/tests/test_lcb_inertial.cpp: In function ‘void {anonymous}::test_inertial_body_contact()’:
+native/tests/test_lcb_inertial.cpp:1019:25: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+ 1019 |         for (const auto [dx, dy] : std::array<std::pair<int, int>, 5>{{{0, 1}, {-1, 0}, {1, 0}, {-1, 1}, {1, 1}}}) {
+      |                         ^~~~~~~~
+native/tests/test_lcb_inertial.cpp:1019:25: note: use reference type to prevent copying
+ 1019 |         for (const auto [dx, dy] : std::array<std::pair<int, int>, 5>{{{0, 1}, {-1, 0}, {1, 0}, {-1, 1}, {1, 1}}}) {
+      |                         ^~~~~~~~
+      |                         &
+In file included from native/tests/test_water_inertial.cpp:4:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:48:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   48 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+native/tests/test_water_inertial.cpp: In function ‘void {anonymous}::body_contacts()’:
+native/tests/test_water_inertial.cpp:211:54: warning: loop variable ‘normal’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  211 |     for (const auto workers:{1U,4U}) for (const auto normal:std::array<std::pair<int,int>,3>{{{0,1},{-1,1},{1,1}}}) {
+      |                                                      ^~~~~~
+native/tests/test_water_inertial.cpp:211:54: note: use reference type to prevent copying
+  211 |     for (const auto workers:{1U,4U}) for (const auto normal:std::array<std::pair<int,int>,3>{{{0,1},{-1,1},{1,1}}}) {
+      |                                                      ^~~~~~
+      |                                                      &
+native/tests/test_water_inertial.cpp:215:25: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  215 |         for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}}) {
+      |                         ^~~~~
+native/tests/test_water_inertial.cpp:215:25: note: use reference type to prevent copying
+  215 |         for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}}) {
+      |                         ^~~~~
+      |                         &
+native/tests/test_water_inertial.cpp:222:29: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  222 |             for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}})
+      |                             ^~~~~
+native/tests/test_water_inertial.cpp:222:29: note: use reference type to prevent copying
+  222 |             for (const auto [x,y]:std::array<std::pair<int,int>,4>{{{11,11},{27,11},{11,27},{27,27}}})
+      |                             ^~~~~
+      |                             &
+native/tests/test_water_inertial.cpp: In function ‘void {anonymous}::unaligned_and_serial_activity()’:
+native/tests/test_water_inertial.cpp:533:20: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  533 |     for(const auto [chunk,block]:std::array<std::pair<int,int>,2>{{{10,3},{34,33}}})
+      |                    ^~~~~~~~~~~~~
+native/tests/test_water_inertial.cpp:533:20: note: use reference type to prevent copying
+  533 |     for(const auto [chunk,block]:std::array<std::pair<int,int>,2>{{{10,3},{34,33}}})
+      |                    ^~~~~~~~~~~~~
+      |                    &
+native/tests/test_water_inertial.cpp: In function ‘void test_water_inertial_carrying()’:
+native/tests/test_water_inertial.cpp:616:24: warning: loop variable ‘<structured bindings>’ creates a copy from type ‘const std::pair<int, int>’ [-Wrange-loop-construct]
+  616 |         for(const auto [x,y]:std::array<std::pair<int,int>,2>{{{55,40},{10,-24}}}) {
+      |                        ^~~~~
+native/tests/test_water_inertial.cpp:616:24: note: use reference type to prevent copying
+  616 |         for(const auto [x,y]:std::array<std::pair<int,int>,2>{{{55,40},{10,-24}}}) {
+      |                        ^~~~~
+      |                        &
+In file included from native/tests/test_world.cpp:2:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:48:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   48 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+native/tests/test_world.cpp: In function ‘void test_water_experiment_policy_validation_and_coherence()’:
+native/tests/test_world.cpp:2960:21: warning: loop variable ‘invalid_policy’ creates a copy from type ‘const std::pair<unsigned char, unsigned char>’ [-Wrange-loop-construct]
+ 2960 |     for (const auto invalid_policy : {
+      |                     ^~~~~~~~~~~~~~
+native/tests/test_world.cpp:2960:21: note: use reference type to prevent copying
+ 2960 |     for (const auto invalid_policy : {
+      |                     ^~~~~~~~~~~~~~
+      |                     &
+native/tests/test_lcb_pressure.cpp: In lambda function:
+native/tests/test_lcb_pressure.cpp:987:14: warning: declaration of ‘config’ shadows a previous local [-Wshadow]
+  987 |         auto config = pressure_config();
+      |              ^~~~~~
+native/tests/test_lcb_pressure.cpp:938:10: note: shadowed declaration is here
+  938 |     auto config = pressure_config();
+      |          ^~~~~~
+native/tests/test_lcb_pressure.cpp:991:14: warning: declaration of ‘world’ shadows a previous local [-Wshadow]
+  991 |         auto world = std::make_unique<World>(config);
+      |              ^~~~~
+native/tests/test_lcb_pressure.cpp:942:11: note: shadowed declaration is here
+  942 |     World world(config);
+      |           ^~~~~
+In file included from native/include/cybersand/default_demo_recipe.hpp:3,
+                 from native/tests/test_pressure_setup_capacity.cpp:1:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:48:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   48 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+In file included from native/tests/test_water_cellular_yield.cpp:5:
+native/include/cybersand/demo_snapshot.hpp: In function ‘void cybersand::demo::copy_level(cybersand::World&, std::span<unsigned char>)’:
+native/include/cybersand/demo_snapshot.hpp:48:51: warning: conversion from ‘uint16_t’ {aka ‘short unsigned int’} to ‘std::span<unsigned char>::element_type’ {aka ‘unsigned char’} may change value [-Wconversion]
+   48 |             bytes[offset++] = world.stored_state_a(x, y);
+      |                               ~~~~~~~~~~~~~~~~~~~~^~~~~~
+native/tests/test_water_cellular_yield.cpp: In function ‘void {anonymous}::admission_and_ingress()’:
+native/tests/test_water_cellular_yield.cpp:93:66: warning: conversion from ‘unsigned int’ to ‘uint16_t’ {aka ‘short unsigned int’} may change value [-Wconversion]
+   93 |         require(!world.set_cell_state(8,8,Material::Water,maximum-1U,0) &&
+      |                                                           ~~~~~~~^~~
+native/tests/test_ballistic_water.cpp: In function ‘void test_ballistic_water_persistence_and_parity()’:
+native/tests/test_ballistic_water.cpp:362:90: warning: conversion from ‘int64_t’ {aka ‘long int’} to ‘int32_t’ {aka ‘int’} may change value [-Wconversion]
+  362 |             (void)world.launch_ballistic_water(x, 50, centre(x), centre(48), (x % 5 - 2) * 150, -700 - (x % 7) * 40);
+      |                                                                              ~~~~~~~~~~~~^~~~~
+native/tests/test_ballistic_water.cpp:362:102: warning: conversion from ‘int64_t’ {aka ‘long int’} to ‘int32_t’ {aka ‘int’} may change value [-Wconversion]
+  362 |             (void)world.launch_ballistic_water(x, 50, centre(x), centre(48), (x % 5 - 2) * 150, -700 - (x % 7) * 40);
+      |                                                                                                 ~~~~~^~~~~~~~~~~~~~

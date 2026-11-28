@@ -1,0 +1,115 @@
+{
+  "schema": "pubpres-recovery-bounded-integration-registration-v1",
+  "status": "Draft/HOLD",
+  "predecessor_registration": "tools/pubpres_final/registration.json",
+  "frozen_donor": "c90dbc46e1f57f28e06b1f4205b83467335ff657",
+  "accepted_main": "be87b18b30506ccead610c7035ae1ffa8e65a347",
+  "primary_cases": [
+    "wave_512_follow",
+    "wave_gameplay_2048_follow"
+  ],
+  "confirmation_cases": [
+    "wave_1024_follow_4",
+    "wave_landscape_follow",
+    "pressure_512_follow",
+    "freemass_2048_follow"
+  ],
+  "minimum_capture_usec": 10000000,
+  "minimum_real_steps": 144,
+  "maximum_capture_usec": 90000000,
+  "order": [
+    {
+      "engine": "stock",
+      "render_thread": "safe",
+      "lookahead": 0
+    },
+    {
+      "engine": "bounded",
+      "render_thread": "separate",
+      "lookahead": 0
+    },
+    {
+      "engine": "bounded",
+      "render_thread": "separate",
+      "lookahead": 4
+    },
+    {
+      "engine": "bounded",
+      "render_thread": "separate",
+      "lookahead": 4
+    },
+    {
+      "engine": "bounded",
+      "render_thread": "separate",
+      "lookahead": 0
+    },
+    {
+      "engine": "stock",
+      "render_thread": "safe",
+      "lookahead": 0
+    }
+  ],
+  "comparisons": {
+    "bounded_same_engine_0_4_4_0": [
+      1,
+      2,
+      3,
+      4
+    ],
+    "stock_safe_to_selected_bounded": [
+      0,
+      2,
+      3,
+      5
+    ]
+  },
+  "policy": {
+    "material": "full",
+    "full_image_slots": 2,
+    "physics": "early",
+    "presentation": "coherent",
+    "same_frame_continuation": false,
+    "material_deadline_hz": 0,
+    "material_step_interval": 0,
+    "actual_submission": "enabled in both bounded0/4 arms with engine atomic admissionv2; legacy ordinary stock Safe reference disabled",
+    "water_composition": "explicit same value in every arm after graphical qualification",
+    "presentation_observer": "explicit same value in every arm, separately calibrated off/on/on/off"
+  },
+  "prerequisites": [
+    "Exact separately built four-patch atomic engine payload source/run/provenance and unchanged full engine input closure; original f408 three-patch component remains retained and unselected",
+    "Exact resulting application plus independently built or explicitly input-equivalent original native runtime",
+    "All frozen native/physical/material/actor/count/ACK correctness and original-size GPU-history gates",
+    "Actual resulting-source transaction graphical admission, refusal, lifecycle and first-read framebuffer tests",
+    "Actual selected engine and render-owner font/startup/two-slot history tests",
+    "Water pure, graphical and native graphical tests if its selector is enabled"
+  ],
+  "treatment_execution": "Both lookahead4 arms must show actual in-capture deferred producer opportunities joined to immutable application transactions and real render-owner CPU completions. Metadata eligibility, requested4, fast upload return or a whole-process startup-only deferral is insufficient.",
+  "performance_direction": "Use unchanged run_source_abba.compare_registered_direction on both registered comparisons. Every candidate rate must exceed every control, p95/p99 must be lower, maxima and severe-gap counts must not exceed the worse control. Retain all adverse and no-op outcomes.",
+  "product_recovery_targets": {
+    "scope": "Prospective additional product targets; failure retains experimental HOLD even if a relative direction is established.",
+    "physical_gap_p95_ms_max": 100,
+    "physical_gap_max_ms_max": 250,
+    "material_generation_age_p95_ms_max": 250,
+    "material_generation_age_max_ms_max": 500,
+    "visible_pose_completion_age_p95_ms_max": 150,
+    "visible_pose_completion_age_max_ms_max": 300,
+    "freshness_nonregression": "Both candidate p95/max material and verified actor ages no worse than the worse same-source stock Safe reference; withheld actor fraction no worse. An omitted actor is never a zero-age improvement.",
+    "resource_nonregression": "Report actual-process peak/RSS/commit samples separately from capture clocks. Candidate peak RSS must not exceed worse stock reference by more than one full 2048 RGBA image ring (32 MiB) plus 10 percent. Five-minute native graphical authoring/lifecycle and bounded retained-resource tests remain mandatory before delivery selection."
+  },
+  "scope": "New engine/application integration, not repetition of the falsified unchanged Separate or count2 architectures. Genuine Main opportunities are bounded by actual draw completion and coupled to immutable actual-submission bookkeeping. Whole-engine stock comparison is not attribution to a single patch. Hosted correctness and performance never qualify physical Windows11/NVIDIA display/input latency. No automatic selection, default change or promotion.",
+  "historical_accepted_main_runtime": "00cdb02f103265b6dc5224c68283e9a0c8cb449f",
+  "accepted_main_production_equivalence": "docs/audits/2026-11-25-pubpres-recovery/current-main-workbench-equivalence.json",
+  "observer_calibration": {
+    "order": [
+      false,
+      true,
+      true,
+      false
+    ],
+    "engines": [
+      "stock_safe",
+      "bounded_separate4"
+    ],
+    "scope": "Both resulting-source actual submission paths retain original complete physical, presentation and CPU oracles. No overhead budget is invented; all cross-arm ratios retained before the six-arm cohort."
+  }
+}

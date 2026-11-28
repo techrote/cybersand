@@ -323,6 +323,25 @@ REVIEWED_TRANSITIONS: tuple[dict, ...] = ({'path': 'native/src/world_pressure.in
    'issue': 292,
    'pr': 538})
 
+# The #566 native-pixel sampler is retained unchanged in the integrated Workbench.
+REVIEWED_TRANSITIONS += ({'path': 'godot/shaders/material_palette.gdshader',
+  'from_lf_sha256': 'f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1',
+  'to_lf_sha256': 'b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f',
+  'source_commit': '6a7069cc67167661497c319b4a73e8d381ea2564',
+  'record': 'docs/audits/2026-11-20-pubpres-sampler-transition.md',
+  'issue': 353,
+  'pr': 682},)
+
+REVIEWED_TRANSITIONS += ({
+    'path': 'godot/shaders/material_palette.gdshader',
+    'from_lf_sha256': 'b8e5542dae2c36fd6fbef0170a7b537bce5c853fc10920174cefe13dbec78d4f',
+    'to_lf_sha256': 'c63cc54c572a1c5a3cd26cc3480057f6fcbb4a0280764cafa27cea06ed706057',
+    'source_commit': '1d4b6756b1ef245ecd9c9aeba88733fdce513a19',
+    'record': 'docs/audits/2026-11-27-pubpres-definitive.md',
+    'issue': 717,
+    'pr': 767,
+},)
+
 # Bounded #353-B native capability consumer; retained values and identities are unchanged.
 REVIEWED_TRANSITIONS += ({'path': 'native/src/material_rules.cpp',
  'from_lf_sha256': '3afda824571842e387b0cac70218ee5f1f96005d07aaaafcf95c146c3eee3254',
@@ -558,6 +577,44 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'record': 'docs/audits/2026-11-27-persistent-area-world-integration.md',
   'issue': 591,
   'pr': 745},)
+
+
+# The reviewed mainline join retains RAMCACHE's World accounting and PUBPRES's
+# selected scheduling/publication implementation. Both parent histories remain.
+REVIEWED_TRANSITIONS += ({"path": "native/src/world.cpp",
+    "from_lf_sha256": "54a727f6eb0543c2d9cdd868ed0486bf6e68d1b98c03c7a86a260891b49b1c24",
+    "to_lf_sha256": "9cdc78a8f14122c68f1d0357d75bf9b40dcb62c9ca563b6f33de2f5a0ddbda10",
+    "source_commit": "378c478b800a87075f8f35fa24df9c3860720300",
+    "record": "docs/audits/2026-11-28-pubpres-mainline/world-transition.md",
+    "issue": 717, "pr": 767},)
+
+
+# Complete the inherited owner-evaluated shader transition without altering it.
+REVIEWED_TRANSITIONS += ({"path": "godot/shaders/material_palette.gdshader",
+    "from_lf_sha256": "c63cc54c572a1c5a3cd26cc3480057f6fcbb4a0280764cafa27cea06ed706057",
+    "to_lf_sha256": "57053b4c0aab9b9c7a811c017e0df752bfd1388319d5f7dfd49ff65677330f36",
+    "source_commit": "910ac36d5804cb49d2d7d13c67a6ee42115a8bdc",
+    "record": "docs/audits/2026-11-28-pubpres-mainline/shader-transition.md",
+    "issue": 717, "pr": 767},)
+
+
+# One immutable exact-input compiled value is reused; public validation,
+# directed carrying constraints and all produced transport integers are retained.
+REVIEWED_TRANSITIONS += ({"path": "godot/scripts/transport_profiles.gd",
+    "from_lf_sha256": "5497757c0950082b57be0f95760680cb05c631422940a1d6efcbff010a42b6a0",
+    "to_lf_sha256": "4e97c1d67ef87b8a610024c71837a506ff13d95181179bbc7bd8e17cd361241a",
+    "source_commit": "d906d18d0c63b471b176f99a8e4f57e87b836c2c",
+    "record": "docs/audits/2026-11-28-pubpres-mainline/transport-transition.md",
+    "issue": 717, "pr": 767},)
+
+
+# Keep unusual script-owned Object keys outside the pure value reuse lifetime.
+REVIEWED_TRANSITIONS += ({"path": "godot/scripts/transport_profiles.gd",
+    "from_lf_sha256": "4e97c1d67ef87b8a610024c71837a506ff13d95181179bbc7bd8e17cd361241a",
+    "to_lf_sha256": "ca36baa34c14cf4d95519cf7b7bc9b46dc9f794bf1882110eae5e7353b4c9b21",
+    "source_commit": "7f9bc26c1c5e51de9497868f4604ea07458c870c",
+    "record": "docs/audits/2026-11-28-pubpres-mainline/transport-transition.md",
+    "issue": 717, "pr": 767},)
 
 
 def lf(data: bytes) -> bytes:

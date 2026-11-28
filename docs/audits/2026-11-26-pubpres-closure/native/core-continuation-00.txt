@@ -1,0 +1,6 @@
+variant=0 cert_reuses=0 cert_invalidations=0 unknown=38042 wakes=15 gas_samples=179
+variant=1 cert_reuses=0 cert_invalidations=0 unknown=38042 wakes=15 gas_samples=179
+variant=2 cert_reuses=0 cert_invalidations=453619 unknown=38042 wakes=15 gas_samples=179
+WORKBENCH_PRESSURE_HEADS checks=14405631
+[pass] Workbench parallel PressureFlow heads match serial (all variants)
+1 tests passed

@@ -1,0 +1,13 @@
+{
+  "source": "e14c94c1f1ccdf02508a5e9e3ebce45b45f03b3d",
+  "command": [
+    "/workspace/scratch/8a0b6cd48416/runtime-cache/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--path",
+    "/workspace/scratch/8a0b6cd48416/cybersand/godot",
+    "--script",
+    "res://tests/test_workbench_member_presentation.gd"
+  ],
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "scope": "Actual mounted native owner/history/Follow reproduction; headless, no framebuffer or timing claim"
+}

@@ -1,0 +1,52 @@
+{
+  "schema": "pubpres-native-comparison-launch-registration-v1",
+  "recorded_before_launch_utc": "2026-11-26T08:16:41.128321+00:00",
+  "source_commit": "b6956cd94382218a270ad85df7bc84f30a66776f",
+  "source_tree": "bf514d096c33ed6f69361641c4c95785edc38543",
+  "command": [
+    "python3",
+    "/workspace/scratch/9cef565acfec/native-comparison-b695/tools/pubpres_final/run_comparison.py",
+    "--control-source",
+    "/workspace/scratch/9cef565acfec/native-comparison-b695",
+    "--control-runtime",
+    "/workspace/scratch/9cef565acfec/native-runtime-b695",
+    "--candidate-source",
+    "/workspace/scratch/9cef565acfec/native-comparison-b695",
+    "--candidate-runtime",
+    "/workspace/scratch/9cef565acfec/native-runtime-b695",
+    "--engine",
+    "/workspace/scratch/9cef565acfec/presentation-runtime/stock/Godot_v4.7-stable_linux.x86_64",
+    "--output",
+    "/workspace/scratch/9cef565acfec/native-task-abba-b695",
+    "--mode",
+    "task-completion-abba",
+    "--case",
+    "wave_512_follow",
+    "--case",
+    "wave_gameplay_2048_follow",
+    "--presentation-observer",
+    "--rapier-runtime",
+    "/workspace/scratch/9cef565acfec/presentation/godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+    "--display-wrapper",
+    "/workspace/scratch/9cef565acfec/native-apparatus/owned_xorg.py",
+    "--allow-development-toolchain-drift"
+  ],
+  "command_cwd": "/workspace/scratch/9cef565acfec/native-comparison-b695",
+  "stdout": "/workspace/scratch/9cef565acfec/native-task-abba-b695-run.txt",
+  "workload_order": [
+    "wave_512_follow",
+    "wave_gameplay_2048_follow"
+  ],
+  "native_policy_order": [
+    false,
+    true,
+    true,
+    false
+  ],
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "wrapper_sha256": "892dc269c5175f0bd3edede568b4a81dac4b791c2737f6089c64fbbcb845eb72",
+  "runtime_sha256": "a908b78028bd7e0ebe173b3f75a9ac143f863e20be66589b224cac3bbfd205b4",
+  "quiet_host_admission": "Lead reported engine compilation/link complete and all other local CPU-heavy runners stopped immediately before launch. Other specialists restricted to source/documentation/API work.",
+  "scope": "Frozen b695 native mechanism comparison on actual stock4.7 software rendering. Separate resulting integrated-source product and platform qualification remains mandatory.",
+  "physical_gpu_acceptance": false
+}

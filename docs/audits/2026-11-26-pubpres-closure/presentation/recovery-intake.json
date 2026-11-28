@@ -1,0 +1,66 @@
+{
+  "schema": "pubpres-closure-presentation-recovery-v1",
+  "source": "6ea6c85c89c77675fcb911c3713a0404077f27e1",
+  "tree": "e55f15cbe8a81ed2f7db7e754b002f89d9070eb8",
+  "state": "ORIGINAL_CORRECTED_WATER_COMPONENT_PASS_VISIBILITY_HOLD_AND_MEMBER_REFUSAL_REPRODUCED",
+  "checks": 259,
+  "failures": [],
+  "engine_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "native_sha256": "e550846d9e7656ffd6cc90dfa0db4b3a17e1dbe2908e8e89f5869076d3233b74",
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "ordinary_mouse_picks": 12,
+  "owner_refusal_controls": 5,
+  "body23_first_read": {
+    "body_slot": 23,
+    "hidden": [
+      0.0313720703125,
+      0.043121337890625,
+      0.070556640625,
+      1.0
+    ],
+    "pixel": [
+      640,
+      409
+    ],
+    "png_sha256": "c3fd18baef7d623f24e6936f791ab9101288f8a0e37facd8c3ba5f67a50ec91e",
+    "restored": [
+      0.7841796875,
+      0.52734375,
+      0.30859375,
+      1.0
+    ],
+    "shown": [
+      0.7841796875,
+      0.52734375,
+      0.30859375,
+      1.0
+    ]
+  },
+  "scope": "Actual six-actor/24-body Linux Xorg dummy llvmpipe qualification. No architecture selection, comparative timing, Windows or physical GPU acceptance. Original prepared root-picking repair passed; per-articulated-part hit-test coverage remains separately pending.",
+  "files": {
+    "native-input-equivalence-6ea6.json": "96b810b2a55cf73912763c3be3d180b1d5142107b9a148239f457c7095a44bfd",
+    "original-6ea6-member/launch.json": "0e4f7d1d9516c9db856cec183777a56f740737842aac8e8647db295bafd84987",
+    "original-6ea6-member/result.json": "c176879f9eeb001e3f5c5819bebbbfee58f14e46e11762178542e0b59004e341",
+    "original-6ea6-member/result.png": "c3fd18baef7d623f24e6936f791ab9101288f8a0e37facd8c3ba5f67a50ec91e",
+    "apparatus/owned_xorg.py": "f405f03a1bfe301ebb8f9567092c23ce37d71749f0762eb0a72a009f5212b235",
+    "original-6ea6-member/process/display-owner.xorg.log": "eb303535e61134f8e66ea38ca3b3431cae7723581701d35e0d9320d70157d565",
+    "original-6ea6-member/process/process.json": "7652ba41583b42fe8bc749386387cb555b5128baa28dd52b6ba97e780d0fccb6",
+    "original-6ea6-member/process/stdout.log": "eb012902b439859377fb1b01ac8854226184b5aa69be1ea083287416fe3133ce",
+    "original-6ea6-member/process/display-owner.json": "105702ffd93216443ce2b1ebde9bae99995b202b83849cd79e5bc2540fba2b50"
+  },
+  "water": {
+    "component_checks": 151,
+    "failures": [],
+    "actual_draws": 4837,
+    "hidden_body_frames": 214,
+    "moving_wet_distinct_poses": 19,
+    "receipt": "original-6ea6-water/test_workbench_water_composition_native-slots2/receipt.json",
+    "reduction": "original-water-omission-reduction.json"
+  },
+  "member_refusal_reproduction": {
+    "source": "7854af9ff4fb3a45a9df4414c4dde8d467aa1e23",
+    "checks": 574,
+    "failures": 6,
+    "receipt": "member-before-fix-7854/test_workbench_member_presentation-slots2/receipt.json"
+  }
+}

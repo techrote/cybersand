@@ -1,0 +1,337 @@
+{
+  "checks": 40,
+  "display": "X11",
+  "engine": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "failures": [
+    "draw resumption commits one fresh candidate without replaying deferred candidates",
+    "first-read framebuffer actor center has independently predicted solid actor colour"
+  ],
+  "input_hashes": {
+    "res://scripts/main.gd": "9e20f228bfd54c419fc25302bcd71114a9a87bc21dd2474e72f7cd6831a53d1e",
+    "res://scripts/workbench_presentation_submission.gd": "f8781e1c0f4cfe74d4bf30d6f026df29e98f188f7a707d472fde934bee7e4fbd",
+    "res://tests/test_workbench_presentation_submission.gd": "e5148adf81356899666e68c96a366a03064e9971723d9f40188748c88a0f0d7c"
+  },
+  "observations": [
+    {
+      "fairness_turn": 1,
+      "frame_process": 42,
+      "label": "initial",
+      "material_serial": 3,
+      "process_frame": 42,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 43,
+        "connected": true,
+        "draw_notifications": 43,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80950068722,
+        "prepared_count": 43,
+        "process_frame": 42,
+        "rejected_count": 0,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 0,
+        "unprepared_draws": 0
+      },
+      "submission_serial": 43,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 0,
+      "frame_process": 43,
+      "label": "superseded_and_duplicate",
+      "material_serial": 3,
+      "process_frame": 44,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 44,
+        "connected": true,
+        "draw_notifications": 45,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80950068722,
+        "prepared_count": 48,
+        "process_frame": 44,
+        "rejected_count": 0,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 4,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 44,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 0,
+      "frame_process": 49,
+      "label": "draw_resume",
+      "material_serial": 3,
+      "process_frame": 49,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 46,
+        "connected": true,
+        "draw_notifications": 47,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80950068722,
+        "prepared_count": 53,
+        "process_frame": 49,
+        "rejected_count": 0,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 7,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 46,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 0,
+      "frame_process": 49,
+      "label": "stale_camera",
+      "material_serial": 3,
+      "process_frame": 50,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 46,
+        "connected": true,
+        "draw_notifications": 48,
+        "enabled": true,
+        "last_rejection": "camera_changed",
+        "owner_instance": 80950068722,
+        "prepared_count": 54,
+        "process_frame": 50,
+        "rejected_count": 1,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 7,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 46,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 0,
+      "frame_process": 49,
+      "label": "stale_policy",
+      "material_serial": 3,
+      "process_frame": 51,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 46,
+        "connected": true,
+        "draw_notifications": 49,
+        "enabled": true,
+        "last_rejection": "policy_changed",
+        "owner_instance": 80950068722,
+        "prepared_count": 55,
+        "process_frame": 51,
+        "rejected_count": 2,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 7,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 46,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 0,
+      "frame_process": 49,
+      "label": "stale_material",
+      "material_serial": 3,
+      "process_frame": 52,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 46,
+        "connected": true,
+        "draw_notifications": 50,
+        "enabled": true,
+        "last_rejection": "material_changed",
+        "owner_instance": 80950068722,
+        "prepared_count": 56,
+        "process_frame": 52,
+        "rejected_count": 3,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 7,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 46,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 0,
+      "frame_process": 49,
+      "label": "stale_lifecycle",
+      "material_serial": 3,
+      "process_frame": 53,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 46,
+        "connected": true,
+        "draw_notifications": 51,
+        "enabled": true,
+        "last_rejection": "lifecycle_changed",
+        "owner_instance": 80950068722,
+        "prepared_count": 57,
+        "process_frame": 53,
+        "rejected_count": 4,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 7,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 46,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "fairness_turn": 1,
+      "frame_process": 54,
+      "label": "picking",
+      "material_serial": 3,
+      "process_frame": 54,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 47,
+        "connected": true,
+        "draw_notifications": 52,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80950068722,
+        "prepared_count": 58,
+        "process_frame": 54,
+        "rejected_count": 4,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 7,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 47,
+      "visible_parts": 2,
+      "world_generation": 3
+    },
+    {
+      "expected": [
+        0.459843158721924,
+        0.649568617343903,
+        0.819999992847443
+      ],
+      "label": "first_read",
+      "observed": [
+        0.0313720703125,
+        0.043121337890625,
+        0.070556640625
+      ],
+      "pixel": [
+        640,
+        450
+      ],
+      "submission_serial": 48
+    },
+    {
+      "fairness_turn": 1,
+      "frame_process": 93,
+      "label": "ordinary_lifecycle",
+      "material_serial": 18,
+      "process_frame": 94,
+      "rapier_step": 0,
+      "selected_steps": {
+        "0": 0,
+        "1": 0
+      },
+      "status": {
+        "candidate_ready": false,
+        "committed_count": 86,
+        "connected": true,
+        "draw_notifications": 91,
+        "enabled": true,
+        "last_rejection": "",
+        "owner_instance": 80950068722,
+        "prepared_count": 97,
+        "process_frame": 94,
+        "rejected_count": 4,
+        "schema": "pubpres-actual-submission-v1",
+        "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+        "source_valid": true,
+        "superseded_count": 7,
+        "unprepared_draws": 1
+      },
+      "submission_serial": 86,
+      "visible_parts": 2,
+      "world_generation": 4
+    }
+  ],
+  "platform": "Linux",
+  "schema": "workbench-actual-submission-graphical-v1",
+  "scope": "native mounted graphical draw admission; first framebuffer read; no GPU completion or physical NVIDIA acceptance",
+  "source_revision": "f4089809c7294336db26cf576b0ac3c57fc54775",
+  "submission_events": 86
+}
