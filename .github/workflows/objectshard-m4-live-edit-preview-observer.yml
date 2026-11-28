@@ -1,0 +1,94 @@
+name: ObjectShard M4 immutable live edit preview observer
+
+on:
+  push:
+    branches: [mission/objectshard-m4-live-edit-preview-20261128]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: objectshard-m4-live-edit-preview-observer-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  windows-preview-observer:
+    runs-on: windows-2022
+    timeout-minutes: 35
+    steps:
+      - name: Preserve source bytes
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - name: Separately identified observer source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          path: observer
+          persist-credentials: false
+      - name: Immutable application source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ace52bc6e9b3b958ed164f3328d02b07cf2d5c50
+          path: candidate
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Provider policy and immutable producer metadata
+        shell: pwsh
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          python observer/tools/ci/check_ci_provider_policy.py --root observer
+          if ($LASTEXITCODE -ne 0) { throw 'Observer provider policy failed' }
+          python candidate/tools/ci/check_ci_provider_policy.py --root candidate
+          if ($LASTEXITCODE -ne 0) { throw 'Application provider policy failed' }
+          if ((git -C observer rev-parse HEAD).Trim() -ne $env:GITHUB_SHA) { throw 'Observer identity differs' }
+          if ((git -C candidate rev-parse HEAD).Trim() -ne 'ace52bc6e9b3b958ed164f3328d02b07cf2d5c50') { throw 'Application identity differs' }
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          $headers = @{ Authorization = "Bearer $env:GH_TOKEN"; Accept = 'application/vnd.github+json'; 'X-GitHub-Api-Version' = '2022-11-28' }
+          $metadata = Invoke-RestMethod -Uri 'https://api.github.com/repos/techrote/cybersand/actions/artifacts/15252652797' -Headers $headers
+          if ($metadata.id -ne 15252652797 -or $metadata.expired -or $metadata.size_in_bytes -ne 2742556 -or $metadata.digest -ne 'sha256:d46252d62f2abdd76d7da2c37ff8bc39355b7fee992b40e5c26b940b6fb27875' -or $metadata.workflow_run.id -ne 46118132005 -or $metadata.workflow_run.head_sha -ne 'ace52bc6e9b3b958ed164f3328d02b07cf2d5c50') { throw 'Immutable artifact metadata differs' }
+          $metadata | ConvertTo-Json -Depth 20 | Set-Content evidence/producer-artifact.json -Encoding utf8
+      - name: Immutable producer artifact
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          repository: techrote/cybersand
+          run-id: '46118132005'
+          artifact-ids: '15252652797'
+          github-token: ${{ github.token }}
+          merge-multiple: true
+          path: candidate/build/objectshard-windows
+      - name: Pinned native, Rapier and Godot 4.7
+        working-directory: candidate
+        shell: pwsh
+        run: |
+          python tools/ci/native_candidate_identity.py build/objectshard-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Source-bound Windows candidate refused' }
+          Copy-Item build/objectshard-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll -Force
+          git lfs install --local
+          python tools/ci/materialize_lfs.py --expected-source ace52bc6e9b3b958ed164f3328d02b07cf2d5c50 --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output ../evidence/runtime-acquisition.json
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned dependencies unavailable' }
+          if ((Get-FileHash 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier SHA mismatch' }
+          $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9') { throw 'Godot archive SHA mismatch' }
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
+          "GODOT_EXE=$(Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe')" | Out-File -Append $env:GITHUB_ENV
+      - name: Exact committed preview fixture with actual ANGLE framebuffer
+        shell: pwsh
+        run: |
+          python observer/.github/scripts/objectshard_live_edit_preview_observer.py --application candidate --godot $env:GODOT_EXE --native-candidate candidate/build/objectshard-windows --artifact-metadata evidence/producer-artifact.json --output evidence/preview
+          if ($LASTEXITCODE -ne 0) { throw 'Actual Windows preview qualification failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: objectshard-m4-live-edit-preview-observer-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 60
