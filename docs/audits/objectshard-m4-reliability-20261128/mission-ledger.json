@@ -124,6 +124,22 @@
       "native_sanitizers": "FAIL: two obsolete single-cell .201-radian refusal assertions in external_fire; chemistry checks did not fail",
       "package": "not yet available",
       "publication": "hard-blocked by failed native dependency; exact-ref lease revoked when next source is published"
+    },
+    {
+      "kind": "repaired final campaign",
+      "source": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f",
+      "run": 46101473408,
+      "status": "Native Python qualification-contract gate FAILED; independent platform lanes continue",
+      "production_input_changes_from_54a": 0,
+      "presentation_linux": "PASS",
+      "windows_native": "PASS",
+      "native_sanitizers": "ASan/UBSan131759 checks plus192World cases PASS; benchmark4276351 checks/74 limits PASS; Python contracts84/85 pass, missing brush_revision ordinary-runner registration fails exact-set assertion. Test registration repair underway, no application/native change.",
+      "linux_workbench": "headless physical/regression matrix PASS; actual graphical profile running",
+      "windows_workbench": "headless matrix running",
+      "windows_native_presentation": "PASS actual native Windows camera and brush witnesses",
+      "package": "not yet available",
+      "publication": "Hard-blocked by failed native dependency; request4 unconsumed",
+      "presentation_windows": "PASS"
     }
   ],
   "delivery": null,
@@ -132,13 +148,14 @@
     "real-rendered corrected brush publication replay",
     "guarded Linux and Windows runtime publication",
     "actual archive clean extraction and shipped Open Workbench.cmd verification",
-    "physical owner acceptance; Draft/HOLD maintained"
+    "physical owner acceptance; Draft/HOLD maintained",
+    "Reconcile subsequently merged Strata main18e372 once its final qualified delivery is available; this evaluator remains pinned to9920."
   ],
   "main_reconciliation": {
     "baseline": "9920e7a7369f24e2818313c007cc33616c1a6a83",
     "source_conflicts": 0,
     "runtime_choice": "Retain prior PR754 efe3bc19 source-matched binary/manifest pair only as temporary baseline. Changed native candidate must rebuild and replace both OS runtimes plus provenance through guarded source-leased publication. No claim this old pair qualifies new source.",
-    "strata": "not yet merged; do not import candidate"
+    "strata": "Merged main18e372 observed03:33; actual-main native/GDE/RAMCACHE-Strata qualification remains incomplete. Retain previously qualified9920 baseline; explicit subsequent Strata reconciliation and graphical qualification required before acceptance on new main."
   },
   "early_checkpoint": {
     "commit": "a77b61f754ee44a648d99dac1f8292d8fc52a0ff",
@@ -165,20 +182,29 @@
   "baseline_recheck": {
     "at_utc": "2026-11-28T01:21:30Z",
     "strata_pr": 785,
-    "merged": false,
+    "merged": true,
     "candidate_not_adopted": "9dd0bb5923e5cdabe58ee3a61d9629515a2e12d4",
     "accepted_main_retained": "9920e7a7369f24e2818313c007cc33616c1a6a83",
-    "last_main_observed_utc": "2026-11-28T02:40:59Z",
-    "last_main_observed": "9920e7a7369f24e2818313c007cc33616c1a6a83"
+    "last_main_observed_utc": "2026-11-28T03:33:00Z",
+    "last_main_observed": "18e37259678fbf5097470fff030f5f7f16f52ae6",
+    "merged_at_utc": "2026-11-28T03:06:02Z",
+    "final_main_qualification": {
+      "ramcache_strata_run": 46101219741,
+      "ramcache_strata_status": "in_progress",
+      "native_run": 46101219746,
+      "native_status": "in_progress",
+      "gdextension_run": 46101219807,
+      "gdextension_status": "queued"
+    }
   },
-  "phase": "Refreeze after geometry-contract test correction; production inputs unchanged",
+  "phase": "Third final campaign dispatch; application/native source unchanged from54a, all known test contracts repaired",
   "current_source_note": "All demonstrated local correctness defects corrected and independently reviewed. Final native publication, combined graphical/source qualification and extracted Windows delivery remain pending.",
   "throughput_exploratory": {
     "tower_clean_pairs": "17.96/19.47 ->53.30/55.15 semantic ticks/s; full6s1/1awake cohort",
     "eight_clean_pairs": "15.76/14.96 ->29.36/29.75 semantic ticks/s in actual8/8awake cohorts; candidate active portions~3s, not fullwindow",
     "limitation": "Local shared execution host/headless60callbackcap; physical Windows not measured; fullmatrix and finalcorrectedsource pending"
   },
-  "last_updated_utc": "2026-11-28T03:08:26Z",
+  "last_updated_utc": "2026-11-28T03:35:00Z",
   "performance_final_local": {
     "paired_runs": 52,
     "measurement_source": "19485bbb5e474f0d4d90c40617a36b3120552f5b",
@@ -204,13 +230,13 @@
     "sequence": 4,
     "mode": "guarded source-leased Linux/Windows publication",
     "ref_rule": "Hold integration ref unchanged after triggering until publisher terminal",
-    "status": "sequence4 unconsumed; repaired source dispatch prepared"
+    "status": "Ready for repaired exact-source full campaign; sequence4 unconsumed"
   },
   "frozen_source": {
-    "commit": "54a7719e55be313820ebeb8d36efe6c230c1348c",
-    "tree": "bea92f2587c68f5e4cfbba299040d62baeb069e7",
-    "run": 46099370014,
-    "url": "https://github.com/techrote/cybersand/actions/runs/46099370014",
+    "commit": "69cea6f7f3484e7b13bd3c01a717ef0c1c64580f",
+    "tree": "9e749e481b01218d421fbddb84d4a0874c1054e1",
+    "run": 46101473408,
+    "url": "https://github.com/techrote/cybersand/actions/runs/46101473408",
     "ref_frozen": false
   },
   "publication_lease_decision": {
@@ -233,6 +259,22 @@
   "next_campaign": {
     "scope": "Complete pinned native, Linux/Windows Workbench, source/extracted graphical/package qualification and guarded publication",
     "early_gui_lane": "Additional parallel exact-source Windows native camera/brush lane; full matrices remain mandatory; publisher also requires early lane success",
-    "request_sequence": 4
+    "request_sequence": 4,
+    "reason": "One-line ordinary-runner test registration repair after fully passing native sanitizer/benchmark and actual early Windows GUI; complete full gates unchanged."
+  },
+  "gate_decisions": [
+    {
+      "at_utc": "2026-11-28T03:29:30Z",
+      "elapsed_minutes": 150,
+      "decision": "Stop speculative enhancements. Production changes frozen except demonstrated correctness defects. Complete qualification-contract repair, pinned publication and extracted evaluator verification."
+    }
+  ],
+  "test_registry_repair": {
+    "commit": "e977a6e69a709ff0a104c5c8d21d2e9afa6347f1",
+    "file": "tools/ci/run_godot_regressions.py",
+    "change": "Register mounted brush_revision in the existing ObjectShard opt-in case set; exact-set qualification assertion retained. No application/native change.",
+    "contracts": "85 tests:84PASS,1unchanged local PowerShell skip; skipped test passed hosted69.",
+    "actual_flagged_godot": "154checks/0failures,677callbacks,0coherence mismatch, source e977a6e69, native656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18",
+    "review": "Independent B approval: standard feature flag, unchanged assertions/timeouts/fresh-barrel and ordinary-default exclusions."
   }
 }

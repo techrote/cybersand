@@ -251,6 +251,7 @@ PERSISTENT_PROFILE_CASES = frozenset({
 # normal defaults, including an unbound M4 port where the fixture requires it.
 OBJECTSHARD_WORKBENCH_CASES = frozenset({
     "test_object_shard_m4_camera_lifecycle", "test_object_shard_m4_remote_barrel",
+    "test_object_shard_m4_brush_revision",
     "test_object_shard_m4_receipt_scheduling",
     "test_object_shard_m4_workbench_completion", "test_object_shard_m4_material_only_workbench",
     "test_object_shard_m4_fragment_reabsorption", "test_object_shard_m4_lifecycle_adverse",
