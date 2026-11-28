@@ -374,11 +374,10 @@ jobs:
           name: objectshard-m4-native-presentation-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
           path: evidence/
           retention-days: 60
-  windows-workbench:
-    outputs:
-      runtime-id: ${{ steps.runtime.outputs.artifact-id }}
-      evaluator-id: ${{ steps.evaluator.outputs.artifact-id }}
-      attempt: ${{ steps.producer.outputs.attempt }}
+  # Both full Windows matrices consume the same immutable native producer.
+  # Their independent clocks do not spend the evaluator job's packaging budget;
+  # guarded publication still requires both complete matrices and package replay.
+  windows-workbench-regressions:
     needs: windows-native
     runs-on: windows-2022
     timeout-minutes: 120
@@ -423,8 +422,109 @@ jobs:
         run: |
           python tools/objectshard/qualify_workbench.py --godot $env:GODOT_EXE --expected-source-sha $env:GITHUB_SHA --native-candidate build/objectshard-windows --regressions --profile --output evidence/headless
           if ($LASTEXITCODE -ne 0) { throw 'Actual Windows Workbench qualification failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: objectshard-m4-windows-regressions-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 60
+  windows-workbench-graphical:
+    needs: windows-native
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - name: Preserve source bytes
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: ${{ needs.windows-native.outputs.runtime-id }}
+          merge-multiple: true
+          path: build/objectshard-windows/
+      - name: Pinned native, Rapier and Godot 4.7
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          if ((git rev-parse HEAD).Trim() -ne $env:GITHUB_SHA) { throw 'Unexpected source SHA' }
+          python tools/ci/native_candidate_identity.py build/objectshard-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Source-bound candidate refused' }
+          Copy-Item build/objectshard-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll -Force
+          git lfs install --local
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output evidence/windows-runtime-acquisition.json
+          if ($LASTEXITCODE -ne 0) { throw 'Rapier download failed' }
+          if ((Get-FileHash 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier SHA mismatch' }
+          $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9') { throw 'Godot SHA mismatch' }
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
+          "GODOT_ARCHIVE=$zip" | Out-File -Append $env:GITHUB_ENV
+          "GODOT_EXE=$(Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe')" | Out-File -Append $env:GITHUB_ENV
+      - name: Windows actual graphical Workbench profile
+        shell: pwsh
+        run: |
           python tools/objectshard/qualify_workbench.py --godot $env:GODOT_EXE --expected-source-sha $env:GITHUB_SHA --native-candidate build/objectshard-windows --profile --render --output evidence/graphical
           if ($LASTEXITCODE -ne 0) { throw 'Actual graphical Workbench qualification failed' }
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: objectshard-m4-windows-graphical-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 60
+  windows-workbench:
+    outputs:
+      runtime-id: ${{ steps.runtime.outputs.artifact-id }}
+      evaluator-id: ${{ steps.evaluator.outputs.artifact-id }}
+      attempt: ${{ steps.producer.outputs.attempt }}
+    needs: windows-native
+    runs-on: windows-2022
+    timeout-minutes: 120
+    steps:
+      - name: Preserve source bytes
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          artifact-ids: ${{ needs.windows-native.outputs.runtime-id }}
+          merge-multiple: true
+          path: build/objectshard-windows/
+      - name: Pinned native, Rapier and Godot 4.7
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force evidence | Out-Null
+          if ((git rev-parse HEAD).Trim() -ne $env:GITHUB_SHA) { throw 'Unexpected source SHA' }
+          python tools/ci/native_candidate_identity.py build/objectshard-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Source-bound candidate refused' }
+          Copy-Item build/objectshard-windows/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll -Force
+          git lfs install --local
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --include godot/tools/gentek_reciprocal.exe --output evidence/windows-runtime-acquisition.json
+          if ($LASTEXITCODE -ne 0) { throw 'Rapier download failed' }
+          if ((Get-FileHash 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier SHA mismatch' }
+          $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9') { throw 'Godot SHA mismatch' }
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
+          "GODOT_ARCHIVE=$zip" | Out-File -Append $env:GITHUB_ENV
+          "GODOT_EXE=$(Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe')" | Out-File -Append $env:GITHUB_ENV
       - name: Portable ordinary Workbench evaluator and shipped launcher replay
         shell: pwsh
         run: |
@@ -539,7 +639,7 @@ jobs:
   publish-runtime:
     name: Publish source-leased ObjectShard production runtimes
     if: github.event_name == 'push' && github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/integration/objectshard-m4-mainline-20261122' && contains(github.event.head_commit.message, '[objectshard-m4-publish]')
-    needs: [native-sanitizers, linux-workbench, windows-workbench, windows-native-presentation, independent-windows-package]
+    needs: [native-sanitizers, linux-workbench, windows-workbench-regressions, windows-workbench-graphical, windows-workbench, windows-native-presentation, independent-windows-package]
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     permissions:

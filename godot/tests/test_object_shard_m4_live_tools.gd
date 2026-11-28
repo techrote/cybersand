@@ -103,11 +103,10 @@ func _run() -> void:
 	input.move(Vector2(end.position))
 	for callback: int in range(4): await process_frame
 	f.expect(input.admitted_count()==admitted_before,"slice drag previews without mutating before release")
-	if not await f.until(func(): return f.runtime()._interval_active and f.runtime()._pending_serial!=0,
-		"slice release is exercised during an actual in-flight physical interval"):
+	observations.slice_release_transaction = await input.release_during_physical_transaction()
+	if observations.slice_release_transaction.is_empty():
 		input.release(true); await _finish(); return
-	var release_usec: int = Time.get_ticks_usec()
-	input.release()
+	var release_usec: int = int(observations.slice_release_transaction.release_usec)
 	if not await f.until(func(): return input.admitted_count()>admitted_before,
 		"committed live slice receives a safe fresh-witness admission after release"):
 		await _finish(); return

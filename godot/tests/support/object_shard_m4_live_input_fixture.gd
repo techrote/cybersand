@@ -72,10 +72,54 @@ func tap(position: Vector2, which: int = MOUSE_BUTTON_LEFT) -> bool:
 	return await drain()
 
 func drain() -> bool:
-	return await f.until(func(): return f.bench.object_shard_m4_port.pending_count()==0 \
-		and f.runtime().physics_ready() and f.coherent() \
-		and f.bench.object_shard_m4_port.latest_edit_presented(f.runtime().publication,f.runtime().capabilities),
-		"native edit receipt, physical geometry and authoritative material publication finish together")
+	var action_id: int = admission_serial()
+	var port_generation: int = f.bench.object_shard_m4_port.generation
+	var owner: Dictionary = f.runtime().capabilities.duplicate(true)
+	var completed: bool = await f.until(func(): return _action_completed(action_id,port_generation,owner),
+		"selected native action retains its actual geometry and coherent presentation completion")
+	if not completed:
+		print("M4_INPUT_COMPLETION_WAIT ",JSON.stringify({"action_id":action_id,"port_generation":port_generation,
+			"last_presented_action":f.bench._object_shard_last_presented_action,
+			"current_port_generation":f.bench.object_shard_m4_port.generation,
+			"editing":f.bench.object_shard_edit_diagnostics()}))
+	return completed
+
+func _action_completed(action_id: int, port_generation: int, owner: Dictionary) -> bool:
+	var port: RefCounted = f.bench.object_shard_m4_port
+	var runtime: RefCounted = f.runtime()
+	if port.generation!=port_generation or port.pending_count()!=0 or not port.held_reason().is_empty(): return false
+	for key: String in ["native_instance_id","world_generation","session","owner_epoch","shard_session","world_incarnation","transport_generation"]:
+		if runtime.capabilities.get(key)!=owner.get(key): return false
+	# Main latches this only while genuine physics/geometry readiness and the
+	# exact later publication agree. It remains true when the next legitimate
+	# interval starts before this lower-cadence test callback can observe Ready.
+	if f.bench._object_shard_last_presented_action<action_id or not f.coherent() \
+			or not port.latest_edit_presented(runtime.publication,runtime.capabilities): return false
+	var native: Dictionary = {}
+	for terminal: Dictionary in port.results:
+		if int(terminal.get("action_id",-1))!=action_id or int(terminal.get("port_generation",-1))!=port_generation: continue
+		if terminal.get("outcome")!="Applied" or terminal.get("ok")!=true: return false
+		native = terminal.get("native_receipt",{})
+		break
+	if native.is_empty() or native.get("ok")!=true: return false
+	for shard: Dictionary in runtime.publication.get("shards",[]):
+		if shard.get("geometry_pending",false): return false
+	if native.get("domain","")=="terrain": return true
+	var id: int = int(native.get("owner",-1))
+	if runtime.bridge.bodies.has(id):
+		var installed: Dictionary = runtime.bridge.bodies[id]
+		return int(installed.body_generation)==int(native.get("body_generation",-1)) \
+			and int(installed.geometry_revision)>=int(native.get("geometry_revision",0))
+	# Complete removal is a real installed retirement. The existing native
+	# capacity policy can retain an empty Draining storage slot until the next
+	# semantic tick, so owns_inventory alone is not a nonempty-material census.
+	for shard: Dictionary in runtime.publication.get("shards",[]):
+		if int(shard.id)!=id: continue
+		if shard.get("has_body",false) or int(shard.get("body_generation",-1))!=int(native.get("body_generation",-1)) \
+				or int(shard.get("geometry_revision",0))<int(native.get("geometry_revision",0)): return false
+		for material: int in shard.get("materials",PackedByteArray()):
+			if material!=0: return false
+	return true
 
 func install_panel(kind: String = "panel") -> bool:
 	if not await f.pause(): return false
@@ -120,3 +164,31 @@ func owned_material() -> Dictionary:
 			var at := Vector2i(int(shard.origin_x)+index%int(shard.width),int(shard.origin_y)+index/int(shard.width))
 			result[str(at)] = int(shard.materials[index])
 	return result
+
+func release_during_physical_transaction() -> Dictionary:
+	# A completed Rapier interval still owns its semantic boundary until the
+	# native tick finishes. Fast rendered schedules can expose that phase while
+	# consuming every per-segment receipt between process_frame observations.
+	# Both branches require actual unfinished production work, never just Play.
+	var witness: Dictionary = {}
+	var observed: bool = await f.until(func():
+		var state: Dictionary = f.diagnostics()
+		var fence: Dictionary = state.get("worker_profile",{}).get("motion_fence",{})
+		var segment_pending: bool = f.runtime()._interval_active and int(state.get("pending_serial",0))>0
+		var native_tick_pending: bool = str(state.get("phase",""))=="AwaitingCompletedNativeTick" \
+			and bool(fence.get("tick_due",false)) and bool(fence.get("owner_busy",false))
+		if f.host.paused or not str(state.get("held_reason","")).is_empty() \
+			or not (segment_pending or native_tick_pending): return false
+		witness.assign({"scope":"actual unfinished physical/semantic transaction at pointer release",
+			"kind":"segment_receipt_pending" if segment_pending else "completed_interval_native_tick_pending",
+			"phase":state.get("phase"),"interval_active":f.runtime()._interval_active,
+			"pending_serial":state.get("pending_serial"),"pending_kind":state.get("pending_kind"),
+			"motion_lease":state.get("motion_lease"),"native_tick":state.get("native_tick"),
+			"physical_intervals":state.get("physical_intervals"),"world_generation":state.get("world_generation"),
+			"native_instance_id":state.get("native_instance_id"),"motion_fence":fence.duplicate(true)})
+		return true,
+		"slice release is captured during an actual unfinished physical/semantic transaction")
+	if not observed: return {}
+	witness.release_usec = Time.get_ticks_usec()
+	release()
+	return witness

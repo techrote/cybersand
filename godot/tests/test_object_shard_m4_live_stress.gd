@@ -195,6 +195,7 @@ func _finish() -> void:
 	if f!=null:
 		if f.host!=null:
 			observations.final = f.diagnostics()
+			observations.editing = f.bench.object_shard_edit_diagnostics()
 			observations.pointer_events = input.events
 			observations.cohorts = cohorts
 			f.validate_display()

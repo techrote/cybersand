@@ -1,0 +1,26 @@
+{
+  "schema_version": 1,
+  "reviewer": "native-transactions-specialist-A",
+  "reviewed_at": "2026-11-28T08:13:04.791245+00:00",
+  "baseline_source": "2b110ee70c4eb54b9aceeb388b0be93fe0720725",
+  "scope": "Independent read-only review of test observation corrections against unchanged production edit/presentation and native empty-carrier policies. This receipt is not an execution claim.",
+  "files": {
+    "godot/tests/support/object_shard_m4_live_input_fixture.gd": "7965f56522aa1de47bba69b8e9dda0961e0bd5b3e5e293679edb100f70b23af8",
+    "godot/tests/test_object_shard_m4_live_tools.gd": "8f0478d4492cd50035372437afdb7134215e47ba41677b8bdb4f728777e5f715",
+    "godot/tests/test_object_shard_m4_live_stress.gd": "90420d741bc4d2dcbfd0084d748c3c656d81a448063297fd78fb7fc42369f339",
+    "godot/scripts/shared_workbench.gd": "4e9867c277621887db6d7553a4df3675571c91cc12191f85f20e9e70dc3e8595",
+    "godot/scripts/object_shard_m4_workbench_port.gd": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd"
+  },
+  "findings": [
+    "The existing production presented-action latch is only advanced while physics_ready() and latest_edit_presented() both hold. Test callbacks can safely observe that durable fact after the next physical interval starts.",
+    "Completion still requires the exact Applied native receipt, unchanged port generation and all seven owner/session identity fields, coherent subsequent publication, zero pending port work, no hold and no pending geometry.",
+    "For an extant Rapier body, matching body generation and at least the receipt geometry revision remain mandatory.",
+    "For complete removal, the test requires no installed body, no has_body flag, matching generation and sufficient geometry revision, and an actual all-Empty material census. This matches the native Draining-slot policy independently qualified by the coordinator capacity regression.",
+    "Slice release requires real unfinished production work: either an active interval with a pending receipt, or AwaitingCompletedNativeTick with tick_due and owner_busy. The exact branch, phase and fence are retained in observations. Merely playing is insufficient."
+  ],
+  "status": "PASS",
+  "limitations": [
+    "Full hosted execution of the forthcoming corrected source remains required.",
+    "Production native and application code was not changed by this observer correction."
+  ]
+}

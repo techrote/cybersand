@@ -143,7 +143,11 @@ front owner wins for each sampled cell; real holes reveal lower material.
 | **Area ignition** | Hold or drag with adjustable Radius. | Eligible unburning Wood ignites through the native material law; existing countdowns are not reset. |
 
 Freehand brushes may intersect several owners. Each admitted native transaction
-is atomic for one owner and contains at most **4,096 requested cells**. A held
+targets one owner and contains at most **4,096 requested cells**. Expected stale,
+protected-target and capacity refusals are checked before material is written.
+An unexpected commit failure accounts any changed prefix, reports partial or
+uncertain completion and holds the owner for recovery; it does not claim rollback.
+A held
 brush services affected domains in a deterministic bounded sequence, acquiring
 new witnesses after each publication. The entire gesture is **not** an atomic
 cross-owner operation. Slice and Drill deliberately select one owner per

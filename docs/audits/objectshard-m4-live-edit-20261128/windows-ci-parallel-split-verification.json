@@ -1,0 +1,43 @@
+{
+  "schema_version": 1,
+  "verified_at": "2026-11-28T08:05:55.496795+00:00",
+  "baseline_source": "2b110ee70c4eb54b9aceeb388b0be93fe0720725",
+  "workflow_sha256": "1a7cba9324a8fee8c733aa16acb1563718028ed6fef47aa074ced4e79fef31da",
+  "yaml_parser": "PyYAML6.0.3 with duplicate-key refusal",
+  "status": "PASS",
+  "new_jobs": [
+    "windows-workbench-graphical",
+    "windows-workbench-regressions"
+  ],
+  "preserved_original_publication_gates": [
+    "native-sanitizers",
+    "linux-workbench",
+    "windows-workbench",
+    "windows-native-presentation",
+    "independent-windows-package"
+  ],
+  "publication_gates": [
+    "native-sanitizers",
+    "linux-workbench",
+    "windows-workbench-regressions",
+    "windows-workbench-graphical",
+    "windows-workbench",
+    "windows-native-presentation",
+    "independent-windows-package"
+  ],
+  "checks": [
+    "No duplicate YAML keys or job IDs.",
+    "Every original job other than evaluator/publisher is semantically identical.",
+    "Original evaluator job is semantically identical after removing only the combined full-matrix step; all package, launcher, extracted replay, production validation and output bindings preserved.",
+    "Both new jobs have byte-equivalent parsed pinned source/native/Rapier/Godot setup and consume the same native artifact output.",
+    "Each original headless/graphical qualifier command and failure check preserved exactly once in its new job, with no case filters or error suppression.",
+    "Both complete evidence trees always upload under unique source/run/attempt identities with60day retention.",
+    "All five original publisher dependencies retained and both new full matrices added; publisher implementation unchanged.",
+    "GitHub-hosted provider policy and git diff --check passed."
+  ],
+  "scope": "Static independent old/new parsed-workflow equivalence checks. Exact-source hosted execution remains required.",
+  "retained_python_contract_tests": 86,
+  "skipped_tests": 0,
+  "actual_powershell_version": "7.4.6",
+  "contract_log_sha256": "67336e0e27396cb862d4ebeedf61750022ff1903f1bc7dec538dba402a5513d4"
+}

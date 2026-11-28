@@ -41,6 +41,53 @@ excludes worker, Rapier, renderer and physical owner timing. The
 [preliminary idle comparison](local-throughput-preflight.json) retains both
 native/toolchain identities and is separate from the final pinned comparison.
 
+## Second campaign and durable completion observers
+
+Application `2b110ee70c4eb54b9aceeb388b0be93fe0720725` entered
+[campaign 46120081906](https://github.com/techrote/cybersand/actions/runs/46120081906).
+Its complete native gate passed: 138,280 ASan/UBSan checks, 192 ordinary World
+cases, 74 retained budgets, 86 Python/actual-PowerShell qualification contracts
+and 231 material-catalogue tests. The early actual Windows native renderer passed
+230 camera, 159 brush and 102 preview checks, including the previously failing
+Escape, late-layout and physical-window resize paths.
+
+The complete Linux lane passed all 77 headless cases, but two of its 65 graphical
+cases reached their 300-second fixture observation limits. `live_tools` tried to
+sample one brief outstanding-control subphase of an actual physical interval;
+`live_stress` required simultaneous global physics readiness after an edit while
+the next legitimate interval could already be running. The native owners kept
+progressing without a Held error. Actual shape installation, wake, applied
+receipts and presentation were retained; an independent five-callback/s pointer
+observer reproduced successful presentation while global readiness stayed false.
+This campaign remains **failed**, with its original evidence preserved.
+
+The revised test observer binds a selected action, port generation and complete
+owner identity to its authentic Applied receipt and Main's durable presentation
+latch, then checks coherent publication and actual installed geometry or
+acknowledged retirement. Slice release still requires a witnessed unfinished
+physical/semantic transaction, including a completed Rapier interval whose
+native tick is demonstrably still due. It does not substitute merely being in
+Play. Material, connectivity, actual physical fragmentation, release and scene
+replacement assertions remain in force. These are test-observer corrections;
+application/native editing behavior is unchanged from `2b110ee7`.
+The [independent observer review](observer-ci-independent-review.json) preserves
+the failed premises and both normal and deliberately slow callback checks. The
+empty Draining carrier is validated by its actual all-Empty material census,
+retired body and matching revisions; its retained ownership capability is not
+mistaken for surviving material before the next semantic retirement opportunity.
+
+Windows headless regressions, graphical qualification and evaluator production
+now run in parallel from the same immutable native producer. Each original
+command, case set, source check and exit gate is retained. Guarded publication
+requires both complete matrices in addition to the five original native,
+Linux, evaluator, early-renderer and fresh-extracted-package gates. This removes
+aggregate runner-time pressure without reducing qualification. The packaged
+owner guide also clarifies that an unexpected partial failure does not promise
+rollback. A fresh exact-source campaign must qualify these changed observer and
+pipeline inputs before delivery.
+[The parsed workflow comparison](windows-ci-parallel-split-verification.json)
+and all 86 retained qualification contracts independently verify this split.
+
 ## Baseline and owner evidence
 
 The inspected PR branch was

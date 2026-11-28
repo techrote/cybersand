@@ -1,0 +1,788 @@
+{
+  "schema": "objectshard-live-edit-independent-first-windows-matrix-v1",
+  "run": 46118132005,
+  "job": 140898196487,
+  "artifact": 15253243233,
+  "archive_bytes": 5885039,
+  "archive_sha256": "eedb2c977fae4701df1565eaac6377f6ac2ac66cb90924e467c0d2c106b30d98",
+  "source_commit": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+  "source_tree": "ff8f99e8292370a347cc9471c29038d15cfafd09",
+  "status": "failed",
+  "failures": [
+    "test_object_shard_m4_workbench_scene_refusal"
+  ],
+  "case_count": 77,
+  "cases": [
+    {
+      "name": "m4_workbench_import",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "bb43fc5cc38797cace0c801284fc410a49c582bcf61b80dc45d3c89dc2f366b1"
+    },
+    {
+      "name": "test_liquid_desktop_default_host",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "b4f3b3fc0783d585548c0e8e9f4224e3e340f01f2ac867b3f77d9d1b86ebe515"
+    },
+    {
+      "name": "test_liquid_trial_body",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "bc39f058044d09f597bf0e54d03a0dedd0944fa5fc3be57c28bd0e4092f4e6c9"
+    },
+    {
+      "name": "test_persistent_area_owner_adversarial",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "fed4325517c9b58e3a792fcf17a24a74183e21bed42167fe5403c0708f0b2b16"
+    },
+    {
+      "name": "test_object_shard_lab",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-lab-integration-test-v1",
+      "checks": 379,
+      "failures": 0,
+      "log_sha256": "5ee26d187e28bfe7228bb619ec3968114fb56a2005e2f6639d6b5bedd7c39760"
+    },
+    {
+      "name": "test_object_shard_fragment_motion",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-fragment-motion-v1",
+      "checks": 386,
+      "failures": [],
+      "log_sha256": "844de5041017cab0c02035858bc184470ebc6bf28de7078d0c3a8d79c007da07"
+    },
+    {
+      "name": "test_object_shard_physics_bridge",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-physics-bridge-test-v1",
+      "checks": 28,
+      "failures": 0,
+      "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6"
+    },
+    {
+      "name": "test_object_shard_rest_contacts",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-rest-contact-test-v1",
+      "checks": 37,
+      "failures": 0,
+      "log_sha256": "f4abcd8add541499196c1065d9bf4ae3c44b852dd84bd894bda83b4dd1d21608"
+    },
+    {
+      "name": "test_object_shard_m4_remote_barrel",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-remote-barrel-v1",
+      "checks": 118,
+      "failures": [],
+      "log_sha256": "2eefdf2633d3e65cdc595486594f37f06df8ce54480c98d9d20b8e4e7e8542e7"
+    },
+    {
+      "name": "test_object_shard_m4_small_fragment_chain",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-small-fragment-native-chain-v1",
+      "checks": 8471,
+      "failures": [],
+      "log_sha256": "c470acee0aa215914f733283f9ea1aebd5e2e2e23fe0de021ea7b30935cd6788"
+    },
+    {
+      "name": "test_object_shard_m4_sparse_parent_motion",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-sparse-parent-motion-v1",
+      "checks": 6223,
+      "failures": [],
+      "log_sha256": "9efdac4b272b9d1f52f95a03507c4116dcd60447130338b5acb2b84350de4c3f"
+    },
+    {
+      "name": "test_object_shard_m4_fresh_barrel",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-fresh-barrel-v1",
+      "checks": 212,
+      "failures": [],
+      "log_sha256": "ed1a0f329c064280cfb646ab8461fd3ab3ebc77c5f7aa702328188d553c76fab"
+    },
+    {
+      "name": "test_object_shard_m4_brush_revision",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-brush-revision-v1",
+      "checks": 158,
+      "failures": [],
+      "log_sha256": "81ba02b63c6a1485eb5e13225a0a34ea0e2262f64ae4487fdc9babfe398854ad"
+    },
+    {
+      "name": "test_object_shard_m4_camera_lifecycle",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-camera-lifecycle-v1",
+      "checks": 210,
+      "failures": [],
+      "log_sha256": "228d580f6a1af953cc3bfc7049882958522316434227f02bd4d5158c6a68b084"
+    },
+    {
+      "name": "test_object_shard_m4_receipt_scheduling",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-receipt-scheduling-v1",
+      "checks": 155,
+      "failures": [],
+      "log_sha256": "459bb4428f667cb7502509ae3281c0514f5055a49dd9d07396e6d653b59c41ef"
+    },
+    {
+      "name": "test_object_shard_m4_latency_probe",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-probe-test-v1",
+      "checks": 31,
+      "failures": 0,
+      "log_sha256": "a30c96a2bc9c6864dade2d16d419bdf258ae75bfca81f28f2abf2e2ce645163d"
+    },
+    {
+      "name": "test_object_shard_live_edit_diagnostics",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-live-edit-diagnostics-test-v1",
+      "checks": 27,
+      "failures": 0,
+      "log_sha256": "70ad6fdd3b3052bb0b00c6f3f51212f6312edabc2c1c7e935c202d04b849c922"
+    },
+    {
+      "name": "test_object_shard_live_edit_contract",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-live-edit-transport-contract-v1",
+      "checks": 65,
+      "failures": [],
+      "log_sha256": "5d75e9d2398d191e3abb8d9628ddc97d66ae89e52a2e917361763d68e4b579c1"
+    },
+    {
+      "name": "test_object_shard_m4_creative_scenes",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-creative-scenes-v1",
+      "checks": 61,
+      "failures": [],
+      "log_sha256": "0a49ae8f95847a6075ba22c5526799c836da9d89e4387d45ff037767730d0497"
+    },
+    {
+      "name": "test_object_shard_m4_creative_constructions",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-creative-constructions-v1",
+      "checks": 224,
+      "failures": [],
+      "log_sha256": "6a987cf761fc24b8c4a23fa4d7723d781bfff9ed72dde146523509469252a65c"
+    },
+    {
+      "name": "test_object_shard_m4_disabled_input",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-disabled-input-v1",
+      "checks": 9,
+      "failures": [],
+      "log_sha256": "2705192b667c9e5b10bbd6022f12caa063a84a0b5dd209f7821b7c85bc47809c"
+    },
+    {
+      "name": "test_object_shard_m4_live_input",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-live-input-v1",
+      "checks": 104,
+      "failures": [],
+      "log_sha256": "a1e3add362d2db8b759f2400a8d2193227ea50383c736b0803dac71321966b8e"
+    },
+    {
+      "name": "test_object_shard_m4_live_tools",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-live-tools-v1",
+      "checks": 215,
+      "failures": [],
+      "log_sha256": "b6cb8d16492a59c7b57d76d2269b50773851acc520f1d21e29a838a13868a512"
+    },
+    {
+      "name": "test_object_shard_m4_live_stress",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-live-stress-v1",
+      "checks": 224,
+      "failures": [],
+      "log_sha256": "c06b4c4b12e689a0001c3fd213940c33addbdc2c00c344201fbfd57a87bff346"
+    },
+    {
+      "name": "test_object_shard_m4_owner_authored",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-owner-authored-v1",
+      "checks": 147,
+      "failures": [],
+      "log_sha256": "b0e020fdc405e0b0f9cc59424df8b4fce9b9c54760b9febf8937afad9ddbb531"
+    },
+    {
+      "name": "test_object_shard_m4_visible_footprints",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-visible-footprints-v1",
+      "checks": 19,
+      "failures": [],
+      "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f"
+    },
+    {
+      "name": "test_object_shard_m4_edit_delivery_fence",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-edit-delivery-fence-v1",
+      "checks": 36,
+      "failures": [],
+      "log_sha256": "fd9221e1f48175668440dff653ef13959e4b54c334431c9847d8351e25d77699"
+    },
+    {
+      "name": "test_object_shard_m4_optional_diagnostics",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-optional-diagnostics-v1",
+      "checks": 36,
+      "failures": [],
+      "log_sha256": "dcf07728e8b3f708b010f614025eaf971ad3645528768e73cec7c50e4f689d9c"
+    },
+    {
+      "name": "test_object_shard_m4_same_world_extension",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-actual-godot-sameworld-v1",
+      "checks": 59,
+      "failures": [],
+      "log_sha256": "e65f3c5a45e7084a776f7fb129294809e126cfdf7d1169d397622fe75e47dfd2"
+    },
+    {
+      "name": "test_object_shard_m4_shared_main_rapier",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-existing-main-rapier-v1",
+      "checks": 18,
+      "failures": [],
+      "log_sha256": "10cf4dfe066095e89e757b68eeaba0cd561dfec7253e45bf8082bd9bd955e608"
+    },
+    {
+      "name": "test_object_shard_m4_same_world_physical_chain",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-sameworld-rapier-physical-chain-v1",
+      "checks": 49,
+      "failures": [],
+      "log_sha256": "85fd852645a0284cd59513f207fe2f653afb0b916d6ef349f3f67d573b1940f4"
+    },
+    {
+      "name": "test_object_shard_m4_compact_motion_packets",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-compact-motion-packet-v1",
+      "checks": 9,
+      "failures": [],
+      "log_sha256": "c890403c31846afc11e76c5a4bc3adef1b8f4db62d76307f1efdcb47dda4d59a"
+    },
+    {
+      "name": "test_object_shard_m4_workbench_scene_refusal",
+      "status": "failed",
+      "returncode": 1,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "a673d7f1e4f874c43c55d72e923506cc6015c8f3ea1aa5e9b9804a095b217306"
+    },
+    {
+      "name": "test_object_shard_m4_workbench_completion",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-completion-v1",
+      "checks": 192,
+      "failures": [],
+      "log_sha256": "bf53966aa39c5061f4e83743d9d00e490d3e3c1a1c27443fd6452b179cc6ecea"
+    },
+    {
+      "name": "m4_fresh_authored_reopen",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-fresh-authored-reopen-v1",
+      "checks": 9,
+      "failures": [],
+      "log_sha256": "d050cc7710303e652d7e0cb6b1c0657fd87256f4992c89eb5b3b60bcab5ec448"
+    },
+    {
+      "name": "test_object_shard_m4_material_only_workbench",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-material-only-workbench-v1",
+      "checks": 71,
+      "failures": [],
+      "log_sha256": "1a9e5f671e2da8d344d8ac272a43de854a84b7bee201a4db04f990b0d514107d"
+    },
+    {
+      "name": "test_object_shard_m4_fragment_reabsorption",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-fragment-reabsorption-v1",
+      "checks": 137,
+      "failures": [],
+      "log_sha256": "62a056803a802c3d1b10005d66edad3fd3e5a1dbaf9ddeb518c81bc905ba910a"
+    },
+    {
+      "name": "test_object_shard_m4_lifecycle_adverse",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-lifecycle-adverse-v1",
+      "checks": 122,
+      "failures": [],
+      "log_sha256": "9c9323106c360f00b25fd61785409595cb2adce82ea76f38c53454086689caac"
+    },
+    {
+      "name": "test_object_shard_m4_completed_sample",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-completed-sample-v1",
+      "checks": 108,
+      "failures": [],
+      "log_sha256": "5bb6e6f69c5d11d05cea31e11fc3800922045ff83580b1f4ad8afcf54b3f2c24"
+    },
+    {
+      "name": "test_object_shard_m4_equipment_completion",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-equipment-completion-v1",
+      "checks": 99,
+      "failures": [],
+      "log_sha256": "72b1761ecfc3e8f45ea493fc3ebb2b97da62170ba3d434e779083aea0b55c91f"
+    },
+    {
+      "name": "test_object_shard_m4_actor_clock",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-actor-clock-v1",
+      "checks": 96,
+      "failures": [],
+      "log_sha256": "38f68eb34316300262691a4504049fb066a405f52a17bf394e1e87a08a1339b9"
+    },
+    {
+      "name": "test_object_shard_m4_long_burn",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-long-burn-v1",
+      "checks": 233,
+      "failures": [],
+      "log_sha256": "9bfdaae4079e5b40653323a94e789e437fc8a227ee0f5cbae0af29d9b059d379"
+    },
+    {
+      "name": "test_object_shard_m4_lifecycle_fuzz",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-lifecycle-fuzz-v1",
+      "checks": 1019,
+      "failures": [],
+      "log_sha256": "db6d12bf1d4d2d8c34c873ef18a1806752b8bae913e200b0061846157f726ab2"
+    },
+    {
+      "name": "test_object_shard_m4_optional_diagnostics_cli",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-optional-diagnostics-v1",
+      "checks": 36,
+      "failures": [],
+      "log_sha256": "6798e0fba92829c61f4673af1c4b4f4ef6112f5a06efeee644603db917acdb61"
+    },
+    {
+      "name": "test_workbench_canvas",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "09cfcaf4036cd41062bc734b158ecbca9b4cc7c566c2ed09f6f9bed98d2ebb7b"
+    },
+    {
+      "name": "test_workbench_wave",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "39a8998482f7785803505f694504e9560b6cd34efaf270981ae2b6c72f03e309"
+    },
+    {
+      "name": "test_workbench_wave_spill",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "51ff3f62bb87a1aa0e3a37ea3905b834b579c3f44c6e09659e967a63f0c06d1b"
+    },
+    {
+      "name": "test_workbench_failure_containment",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "9eb9b8c7a403977d4386cd3070a313a7b33fcdf4daf17489e5b803e882d5139c"
+    },
+    {
+      "name": "test_workbench_failure_recovery",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "092338f404816f7596a3d9d8b518d179c4f8bb54f1f65c4e2d450b91bb9911fa"
+    },
+    {
+      "name": "test_workbench_liquid_equipment",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "b6a8eeee08f285f204758ac5e8edb2c173d614d07dfb7207d01326f5055e7917"
+    },
+    {
+      "name": "test_physical_actor_session",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "b53c36aa74dfe1b78bd6f4cd0fe8f5d8a58b0ad1784de1e2161e247732299d72"
+    },
+    {
+      "name": "test_actor_usables_integration",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "2bfb794122172a1e8705b1a6e721a50d7c4d6cbcedcaa8b6b0b10dbd3bfec0a7"
+    },
+    {
+      "name": "test_physical_usable_equipment",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "94e16781920d418f726714d38136df7087520a51727f3865899762618f558fc5"
+    },
+    {
+      "name": "test_workbench_actor_composition_native",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "96bf7acb6158dc9a507de7709216a0b71f34e06a72e4e3c6b03ab445d4a4ed1f"
+    },
+    {
+      "name": "test_workbench_actor_composition_session",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "d384e20fac6d6090022a4f39e214d960231d1237c1c9a74aa9583b7b967da8f9"
+    },
+    {
+      "name": "test_persistent_area_residency_native",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": null,
+      "checks": null,
+      "failures": null,
+      "log_sha256": "63f0108a07f3c45149d023ee74ab1d5a8aa484a8dc7615f5060aacab59a8e5c2"
+    },
+    {
+      "name": "retained_lab_profile",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-lab-profile-v1",
+      "checks": 719,
+      "failures": 0,
+      "log_sha256": "81076d9379efcd1f97ede1335aa3fdd257d460c95e4ec9cda62005e9b40bfadf"
+    },
+    {
+      "name": "m4_throughput_disabled_off_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-throughput-v1",
+      "checks": 13,
+      "failures": [],
+      "log_sha256": "126ca4e29a69867e82aa7936da9d68e15dc49278472951c7815fff06677560f5"
+    },
+    {
+      "name": "m4_throughput_empty_off_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-throughput-v1",
+      "checks": 44,
+      "failures": [],
+      "log_sha256": "34b1111e309c13140b857d1039cacfcdef7b2ae40ac255c9ad8a2486f29d45e2"
+    },
+    {
+      "name": "m4_throughput_tower_off_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-throughput-v1",
+      "checks": 111,
+      "failures": [],
+      "log_sha256": "fb7825ad9d2ddaa69560b77a9942d0b010139abf4de573d0b3aa10b3f588bc8f"
+    },
+    {
+      "name": "m4_throughput_stress_off_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-throughput-v1",
+      "checks": 344,
+      "failures": [],
+      "log_sha256": "2dc602992180736a0dc4fd8d087c15a3821ae3725c34669d6d2218f13736fa87"
+    },
+    {
+      "name": "m4_throughput_sleeping_off_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-throughput-v1",
+      "checks": 80,
+      "failures": [],
+      "log_sha256": "bb8b69f4c03e67951df85b3c7962d8f7b54fc981466b46a4e148e732a7e51039"
+    },
+    {
+      "name": "m4_throughput_tower_on_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-throughput-v1",
+      "checks": 111,
+      "failures": [],
+      "log_sha256": "77b90c485458df2bd692d7d003106959b3305c4fc83cf4d219a25a3e6cd92f33"
+    },
+    {
+      "name": "m4_disabled_controls",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-disabled-control-v1",
+      "checks": 25,
+      "failures": [],
+      "log_sha256": "8d052768faede3496d50858c878fa617128ed88d38aa9ab24f6813d6fcbfa316"
+    },
+    {
+      "name": "m4_workbench_tower_overview_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 150,
+      "failures": [],
+      "log_sha256": "29f47dea291274442c728e532f81df817f77e57e2e27f53af653112a83aed784"
+    },
+    {
+      "name": "m4_workbench_tower_zoom_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 150,
+      "failures": [],
+      "log_sha256": "e7f2a9c88614dde963dac6bcce929028e087cf433a177452044cb7fb2f7fa9b5"
+    },
+    {
+      "name": "m4_workbench_viaduct_overview_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 227,
+      "failures": [],
+      "log_sha256": "31954b4a9984455e00fa91e60688fc68a35d3657268eabdf7eb7fca42ccf3f6e"
+    },
+    {
+      "name": "m4_workbench_viaduct_zoom_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 227,
+      "failures": [],
+      "log_sha256": "1d3161271672abf543450c03e7015df0deee7d135003e8bb2509270cdc0bb5a7"
+    },
+    {
+      "name": "m4_workbench_timber_overview_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 171,
+      "failures": [],
+      "log_sha256": "e6dae63ea28f84137e9e7040e209847d487844e72fdd7a4ec04cf74b64db18a4"
+    },
+    {
+      "name": "m4_workbench_timber_zoom_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 171,
+      "failures": [],
+      "log_sha256": "0432c0c7dc61cb79c1b002554a4182e01616905433364babfecd05b8ae6889af"
+    },
+    {
+      "name": "m4_workbench_mixed_overview_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 152,
+      "failures": [],
+      "log_sha256": "2a552e4afbaec585330b8585cdffbdb4802a8fa966fcc5f4044acf8822b5c73f"
+    },
+    {
+      "name": "m4_workbench_mixed_zoom_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 152,
+      "failures": [],
+      "log_sha256": "e22e617ca596e756e2c16f476bd83eec919df466f5ab12ac0c736a0b1eeb8ea5"
+    },
+    {
+      "name": "m4_workbench_stress_overview_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 383,
+      "failures": [],
+      "log_sha256": "dda34d990b3e47202bc7dc9aa7863fbf936317b3c560b6468bfc1f853c15c093"
+    },
+    {
+      "name": "m4_workbench_stress_zoom_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 383,
+      "failures": [],
+      "log_sha256": "eea3f4f6992f0a7f7e720a324a74e311e0560498547a6fa495d2f44cbc86d846"
+    },
+    {
+      "name": "m4_workbench_tower_overview_light_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 149,
+      "failures": [],
+      "log_sha256": "baf4010df48bf56431835c226cbd8b2eea6a4badf98c28323d2484e0ad8d3405"
+    },
+    {
+      "name": "m4_workbench_tower_overview_light_recording_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 150,
+      "failures": [],
+      "log_sha256": "11bb793273c95a3976f36ff8d06caa529fa0860a7be55ba4f4489550fcbd29c2"
+    },
+    {
+      "name": "m4_workbench_stress_overview_light_headless",
+      "status": "passed",
+      "returncode": 0,
+      "headless": true,
+      "schema": "objectshard-m4-workbench-profile-v1",
+      "checks": 382,
+      "failures": [],
+      "log_sha256": "8816246da10feb5eb8ed1a52673aa9153f972db12b65f0211ad9e060a94a5bf9"
+    }
+  ],
+  "scope": "Exact first candidate Windows headless/native integration results; overall failed on retained scene-refusal premises. No evaluator was produced and no extracted-package qualification is claimed."
+}

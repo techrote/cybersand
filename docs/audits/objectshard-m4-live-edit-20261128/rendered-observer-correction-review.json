@@ -1,0 +1,333 @@
+{
+  "schema": "objectshard-m4-rendered-observer-correction-review-v1",
+  "reviewed_at": "2026-11-28T08:12:10.241995+00:00",
+  "reviewer": "Specialist B; test-observer correction author and independent reviewer of C slice predicate",
+  "application_source": "2b110ee70c4eb54b9aceeb388b0be93fe0720725",
+  "helper": {
+    "path": "godot/tests/support/object_shard_m4_live_input_fixture.gd",
+    "sha256": "7965f56522aa1de47bba69b8e9dda0961e0bd5b3e5e293679edb100f70b23af8"
+  },
+  "scope": "Test-observer corrections only. Application/native code unchanged. Local runs include these uncommitted test deltas and are not exact-source qualification of a future commit.",
+  "original_failure": {
+    "run_id": 46120081906,
+    "artifact_id": 15254602484,
+    "artifact_bytes": 32546092,
+    "artifact_sha256": "b5ce645ff3985abcd44cb6ad082b3c7e3c74cbfc85b4621d85339a24f64665a4",
+    "headless_cases": 77,
+    "headless_status": "passed",
+    "graphical_cases": 65,
+    "graphical_status": "failed",
+    "failures": [
+      {
+        "case": "test_object_shard_m4_live_tools",
+        "checks": 49,
+        "seconds": 314.309,
+        "reason": "process-frame polling never observed simultaneous interval_active and pending_serial despite 6643 native ticks and a healthy owner"
+      },
+      {
+        "case": "test_object_shard_m4_live_stress",
+        "checks": 23,
+        "seconds": 329.286,
+        "reason": "process-frame drain never sampled global Ready together with completed selected edit; actual installed geometry and 3141 native ticks remained healthy"
+      }
+    ]
+  },
+  "forced_low_callback_before": {
+    "log": "slow-callback-completion-before.log",
+    "log_sha256": "25902a208387155129f64af113158dfc2d2d42069af4d79e4bed6a1ecfcc7c6f",
+    "maximum_process_fps": 5,
+    "checks": 22,
+    "failures": [],
+    "actual_pointer_action_id": 2,
+    "samples": [
+      {
+        "diagnostic_presented": 2,
+        "interval_active": false,
+        "pending_serial": 0,
+        "phase": "AwaitingCompletedNativeTick",
+        "publication": 115,
+        "ready": false,
+        "tick": 62
+      },
+      {
+        "diagnostic_presented": 2,
+        "interval_active": false,
+        "pending_serial": 0,
+        "phase": "AwaitingCompletedNativeTick",
+        "publication": 123,
+        "ready": false,
+        "tick": 66
+      },
+      {
+        "diagnostic_presented": 2,
+        "interval_active": false,
+        "pending_serial": 0,
+        "phase": "AwaitingCompletedNativeTick",
+        "publication": 131,
+        "ready": false,
+        "tick": 70
+      },
+      {
+        "diagnostic_presented": 2,
+        "interval_active": false,
+        "pending_serial": 0,
+        "phase": "AwaitingCompletedNativeTick",
+        "publication": 137,
+        "ready": false,
+        "tick": 73
+      },
+      {
+        "diagnostic_presented": 2,
+        "interval_active": false,
+        "pending_serial": 0,
+        "phase": "AwaitingCompletedNativeTick",
+        "publication": 145,
+        "ready": false,
+        "tick": 77
+      },
+      {
+        "diagnostic_presented": 2,
+        "interval_active": false,
+        "pending_serial": 0,
+        "phase": "AwaitingCompletedNativeTick",
+        "publication": 153,
+        "ready": false,
+        "tick": 81
+      },
+      {
+        "diagnostic_presented": 2,
+        "interval_active": true,
+        "pending_serial": 462,
+        "phase": "RealRapierInterval",
+        "publication": 163,
+        "ready": false,
+        "tick": 86
+      },
+      {
+        "diagnostic_presented": 2,
+        "interval_active": false,
+        "pending_serial": 0,
+        "phase": "AwaitingCompletedNativeTick",
+        "publication": 171,
+        "ready": false,
+        "tick": 90
+      }
+    ],
+    "ui_message": "Structural erase applied \u00b7 29 changed cells \u00b7 native transaction 3 \u00b7 presented.",
+    "interpretation": "Actual installed and coherently presented edit is already complete, while the next real interval makes global physics_ready false. Production completion latch and status are correct; the new test drain must observe that durable selected-action fact."
+  },
+  "drain_correction": {
+    "retained_guards": [
+      "selected action and port generation",
+      "full unchanged native/World/session/transport identity",
+      "exact authenticated Applied native receipt",
+      "production last-presented-action latch minted only at actual ready geometry/publication boundary",
+      "current coherent publication after selected native transaction",
+      "no pending geometry in displayed publication",
+      "actual installed bridge body generation and sufficient geometry revision, or actual no-RID/no-has_body empty-material retirement"
+    ],
+    "no_application_behavior_change": true
+  },
+  "slice_correction": {
+    "author": "Specialist C",
+    "independent_B_review": "approved",
+    "contract": "Release requires an actual active segment with pending receipt, or AwaitingCompletedNativeTick with actual worker tick_due and owner_busy. Paused/held owners are excluded. Exact native/World/lease/serial/fence witness is retained immediately before production pointer release; substantial cut, connectivity and separate physical fragments remain required."
+  },
+  "stress_after": {
+    "log": "live-stress-slow-callback-after.log",
+    "log_sha256": "9b4ac0a9c7f12d0a58024198950b8f260ab2004509a06b2cee0156dfd39d5b17",
+    "maximum_process_fps": 5,
+    "checks": 213,
+    "failures": [],
+    "small_owner_edits": 8,
+    "native_tick_before": 220,
+    "native_tick_after": 334,
+    "diagnostic_counts": {
+      "admitted": 12,
+      "attempt": 14,
+      "cancel": 12,
+      "presented": 12,
+      "receipt": 12,
+      "wait": 21
+    }
+  },
+  "empty_retirement": {
+    "actual_removed_material_cells": 147,
+    "retained_material_slots": 210,
+    "nonempty_material_slots": 0,
+    "has_body": false,
+    "owns_inventory_metadata": true,
+    "geometry_pending": false,
+    "body_generation": 1,
+    "geometry_revision": 2,
+    "before": {
+      "log": "empty-retirement-completion-before.log",
+      "sha256": "4ff5f511683250213f957bfe57ede5b0b1f37fcf045a3ab029450657aed7480e",
+      "samples": [
+        {
+          "body_count": 0,
+          "completion_predicate": false,
+          "diagnostic_presented": 2,
+          "interval_active": false,
+          "last_presented_action": 2,
+          "pending_serial": 0,
+          "phase": "Ready",
+          "publication": 34,
+          "ready": true,
+          "selected_action": 2,
+          "terminal_action": 2,
+          "tick": 23
+        },
+        {
+          "body_count": 0,
+          "completion_predicate": false,
+          "diagnostic_presented": 2,
+          "interval_active": false,
+          "last_presented_action": 2,
+          "pending_serial": 0,
+          "phase": "Ready",
+          "publication": 34,
+          "ready": true,
+          "selected_action": 2,
+          "terminal_action": 2,
+          "tick": 23
+        },
+        {
+          "body_count": 0,
+          "completion_predicate": false,
+          "diagnostic_presented": 2,
+          "interval_active": false,
+          "last_presented_action": 2,
+          "pending_serial": 0,
+          "phase": "Ready",
+          "publication": 34,
+          "ready": true,
+          "selected_action": 2,
+          "terminal_action": 2,
+          "tick": 23
+        },
+        {
+          "body_count": 0,
+          "completion_predicate": false,
+          "diagnostic_presented": 2,
+          "interval_active": false,
+          "last_presented_action": 2,
+          "pending_serial": 0,
+          "phase": "Ready",
+          "publication": 34,
+          "ready": true,
+          "selected_action": 2,
+          "terminal_action": 2,
+          "tick": 23
+        }
+      ]
+    },
+    "after": {
+      "log": "empty-retirement-completion-after.log",
+      "sha256": "72c764e685fd98918e59d0ddcf1d063ae56510e9963157c77b16cbc70fbf769a",
+      "samples": [
+        {
+          "body_count": 0,
+          "completion_predicate": true,
+          "diagnostic_presented": 2,
+          "interval_active": false,
+          "last_presented_action": 2,
+          "pending_serial": 0,
+          "phase": "Ready",
+          "publication": 35,
+          "ready": true,
+          "selected_action": 2,
+          "terminal_action": 2,
+          "tick": 23
+        },
+        {
+          "body_count": 0,
+          "completion_predicate": true,
+          "diagnostic_presented": 2,
+          "interval_active": false,
+          "last_presented_action": 2,
+          "pending_serial": 0,
+          "phase": "Ready",
+          "publication": 35,
+          "ready": true,
+          "selected_action": 2,
+          "terminal_action": 2,
+          "tick": 23
+        },
+        {
+          "body_count": 0,
+          "completion_predicate": true,
+          "diagnostic_presented": 2,
+          "interval_active": false,
+          "last_presented_action": 2,
+          "pending_serial": 0,
+          "phase": "Ready",
+          "publication": 35,
+          "ready": true,
+          "selected_action": 2,
+          "terminal_action": 2,
+          "tick": 23
+        },
+        {
+          "body_count": 0,
+          "completion_predicate": true,
+          "diagnostic_presented": 2,
+          "interval_active": false,
+          "last_presented_action": 2,
+          "pending_serial": 0,
+          "phase": "Ready",
+          "publication": 35,
+          "ready": true,
+          "selected_action": 2,
+          "terminal_action": 2,
+          "tick": 23
+        }
+      ]
+    },
+    "correction": "The established native capacity policy retains an empty Draining carrier until semantic exchange. Completion requires no RID/no has_body, matching generation/sufficient revision and all actual material slots Empty; an owns_inventory metadata flag alone is not evidence of surviving material."
+  },
+  "local_runtime": {
+    "sha256": "3e80c5e8183e36f9b3f2c528bb8c862a74daa7ef07fcc5548b67d614aa5a504e",
+    "scope": "Previously tested local v5 extension; explicit GCC14.2 development toolchain drift, not the final pinned hosted Linux artifact."
+  },
+  "independent_reviews": [
+    "C independently confirmed the transient Ready sampling defect and reviewed B selected-action/geometry completion checks.",
+    "B independently reviewed C unfinished physical/semantic transaction release witness.",
+    "A independently reviewed current fixture against production presentation latch and port publication contract; no native contract objection."
+  ],
+  "remaining_gate": "Fresh exact-source complete hosted campaign and actual extracted Windows evaluator qualification. The failed Linux campaign remains failed.",
+  "full_tools_after": {
+    "author": "Specialist C",
+    "log": "/tmp/cybersand-live-edit/evidence/c-testing/observer-correction-tools-5fps-final.log",
+    "log_sha256": "6a2cb033130df77f8e63c39a24c1a46b509c2e0c8709db3155e1bb70351c82ef",
+    "maximum_process_fps": 5,
+    "checks": 210,
+    "failures": [],
+    "slice_release_transaction": {
+      "interval_active": true,
+      "kind": "segment_receipt_pending",
+      "motion_fence": {
+        "completed_sample": -1,
+        "current_sample": -1,
+        "due_sample": -1,
+        "lease": 288,
+        "ordinary_refusal": "",
+        "owner_busy": false,
+        "prepared_sample": -1,
+        "reused_prepared_samples": 287,
+        "tick_due": false
+      },
+      "motion_lease": 288,
+      "native_instance_id": -9223371950351448520,
+      "native_tick": 285,
+      "pending_kind": "motion",
+      "pending_serial": 1442,
+      "phase": "RealRapierInterval",
+      "physical_intervals": 287,
+      "release_usec": 23089330,
+      "scope": "actual unfinished physical/semantic transaction at pointer release",
+      "world_generation": 4
+    },
+    "complete_removal_cells": 147
+  }
+}

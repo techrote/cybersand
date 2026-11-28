@@ -1,0 +1,321 @@
+{
+  "schema": "objectshard-m4-independent-render-review-v1",
+  "reviewer": "Specialist B, independent hosted result verification; original interaction author",
+  "verified_at": "2026-11-28T07:29:40.805436+00:00",
+  "source_commit": "2b110ee70c4eb54b9aceeb388b0be93fe0720725",
+  "source_tree": "c50aa8aa932a0840eb77ba4d055128ad13aed830",
+  "run_id": 46120081906,
+  "artifact": {
+    "id": 15254220451,
+    "bytes": 7871458,
+    "sha256": "b1600efbf462226aab089ff06d8bd1c2589fe9c89031a24a944d991fa2830b08"
+  },
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "bc9cdf8173cbe2039e64d6267b480d6769578c3fe2a4011d45fba1525673a732",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "cases": {
+    "camera_lifecycle": {
+      "checks": 230,
+      "failures": [],
+      "log_sha256": "c95384472bab25f70ab761adcd0d1bf799d217180c90a78f761f2577ce759cd7"
+    },
+    "brush_revision": {
+      "checks": 159,
+      "failures": [],
+      "log_sha256": "2f5ad7dd30acd63615454a880c56d67dd25baed461b2d72045f0459363b2019e"
+    },
+    "edit_preview_render": {
+      "checks": 102,
+      "failures": [],
+      "log_sha256": "3697e0014e0caefc95f1412f223c6bda7a61937a9fd6ded8080c0979c4d9c963"
+    }
+  },
+  "capture_sha256_verification": [
+    {
+      "label": "structural-eraser",
+      "sha256": "1e05d5c6f2adfe6b519e2c6acdca53c5a8c22636550a4d63352a94de77d51a14",
+      "size": [
+        1920,
+        1080
+      ],
+      "bytes": 123824
+    },
+    {
+      "label": "precision-cell",
+      "sha256": "565397464be1811ccab7370215f1b32ea2ab8a5b1e4b48df0bfddd4c69aad907",
+      "size": [
+        1920,
+        1080
+      ],
+      "bytes": 122189
+    },
+    {
+      "label": "drill-opening",
+      "sha256": "c1aa3e555e019107110fd42e154935fcc83c2a6ce2c8a5ff367dab8e9d10ffeb",
+      "size": [
+        1920,
+        1080
+      ],
+      "bytes": 123928
+    },
+    {
+      "label": "weathering-extent",
+      "sha256": "19582ed5ccf443f60aa4dd851e48a5b6f6cd628a74eae5f752b8d4464e803d34",
+      "size": [
+        1920,
+        1080
+      ],
+      "bytes": 124078
+    },
+    {
+      "label": "area-ignition",
+      "sha256": "33be33ad8004af2c9703aa02b7dfd4dd5f2827b8356825adb95956f07afcd06f",
+      "size": [
+        1920,
+        1080
+      ],
+      "bytes": 124196
+    },
+    {
+      "label": "ordinary-unified-eraser",
+      "sha256": "ae57d028199ac0e4d7a3dc5992876da790e723822c4adeb98a843e9e0532f0a0",
+      "size": [
+        1920,
+        1080
+      ],
+      "bytes": 123256
+    },
+    {
+      "label": "slice-preview",
+      "sha256": "113fdd1548334e2bc70dc1f6edb831633a963a1f75e6e6105e8e86f28466f22d",
+      "size": [
+        1920,
+        1080
+      ],
+      "bytes": 124820
+    },
+    {
+      "label": "zoomed-eraser",
+      "sha256": "6fc8ac94bdecc835c12d3ccf7695bb2b51cf22db4217143c8617ca8dfbb97ddc",
+      "size": [
+        1920,
+        1080
+      ],
+      "bytes": 119594
+    },
+    {
+      "label": "panned-drill",
+      "sha256": "046e4d87e039933095fedcb46077525367e5f3a309698c689294954c8014515b",
+      "size": [
+        1920,
+        1080
+      ],
+      "bytes": 118790
+    },
+    {
+      "label": "resized-weathering",
+      "sha256": "6a049c1ccd4e5cc6cd57a0403789cc79c2ee40626ae7bf478964e8b0c5776fc2",
+      "size": [
+        1360,
+        765
+      ],
+      "bytes": 88917
+    },
+    {
+      "label": "structures-controls-top",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "size": [
+        740,
+        650
+      ],
+      "bytes": 87704
+    },
+    {
+      "label": "structures-weathering-controls",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "size": [
+        740,
+        650
+      ],
+      "bytes": 87704
+    }
+  ],
+  "preview_summary": {
+    "rendered_frames": 133,
+    "injected_events": 33,
+    "maximum_projection_error_cells": 2.6702880859375e-05,
+    "outline_controls": 10,
+    "every_outline_changed_samples": 13
+  },
+  "navigation": [
+    {
+      "kind": "escape",
+      "native_action_serial": 0,
+      "paused_after": true,
+      "paused_before": true,
+      "pointer_tool": -1
+    },
+    {
+      "kind": "window_resize",
+      "new_framebuffer": "(1360, 765)",
+      "new_logical_view": "(1880.0, 853.0)",
+      "new_screen_transform": "[X: (0.708333, 0.0), Y: (0.0, 0.708333), O: (0.0, 48.0)]",
+      "new_window": "(1360, 860)",
+      "old_framebuffer": "(1920, 1080)",
+      "old_logical_view": "(1880.0, 853.0)",
+      "old_screen_transform": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (0.0, 0.0)]",
+      "old_window": "(1920, 1080)",
+      "pointer_tool": -1
+    }
+  ],
+  "final_owner": {
+    "held_reason": "",
+    "paused": true,
+    "phase": "Ready",
+    "pointer_tool": -1,
+    "slice_committing": false
+  },
+  "camera_regressions": [
+    {
+      "label": "held-lease-far-pan",
+      "phase": "Held",
+      "publication": {
+        "owner_epoch": 6,
+        "publication_sequence": 278,
+        "render_serial": 103,
+        "session": 3,
+        "shard_session": 3,
+        "transport_generation": 6,
+        "world_generation": 5,
+        "world_incarnation": 3,
+        "world_revision": 103
+      },
+      "requested_origin": [
+        720.0,
+        720.0
+      ],
+      "terrain_image_extent": [
+        1024,
+        1024
+      ],
+      "terrain_rect": [
+        372.0,
+        0.0,
+        1136.0,
+        852.0
+      ],
+      "terrain_shader_extent": [
+        256.0,
+        192.0
+      ],
+      "terrain_shader_origin": [
+        720.0,
+        720.0
+      ],
+      "tick": 60,
+      "user_status": "Held: LeasedPresentationFixtureHold \u00b7 Structures \u2192 Save diagnostics; Restore start to recover",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 278,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(720.0, 720.0)",
+          "(256.0, 192.0)",
+          "[P: (372.0, 0.0), S: (1136.0, 852.0)]"
+        ],
+        "view_updates": 5
+      },
+      "window_size": [
+        1280,
+        720
+      ],
+      "world_view_size": [
+        1880.0,
+        852.0
+      ]
+    },
+    {
+      "label": "held-lease-resize",
+      "phase": "Held",
+      "publication": {
+        "owner_epoch": 6,
+        "publication_sequence": 278,
+        "render_serial": 103,
+        "session": 3,
+        "shard_session": 3,
+        "transport_generation": 6,
+        "world_generation": 5,
+        "world_incarnation": 3,
+        "world_revision": 103
+      },
+      "requested_origin": [
+        736.0,
+        736.0
+      ],
+      "terrain_image_extent": [
+        1024,
+        1024
+      ],
+      "terrain_rect": [
+        514.0,
+        0.0,
+        852.0,
+        852.0
+      ],
+      "terrain_shader_extent": [
+        192.0,
+        192.0
+      ],
+      "terrain_shader_origin": [
+        736.0,
+        736.0
+      ],
+      "tick": 60,
+      "user_status": "Held: LeasedPresentationFixtureHold \u00b7 Structures \u2192 Save diagnostics; Restore start to recover",
+      "view": {
+        "body_count": 1,
+        "content_clipped": true,
+        "publication_sequence": 278,
+        "scope": "retained acknowledged material publication under the ordinary terrain camera; no physics advancement",
+        "view": [
+          "(736.0, 736.0)",
+          "(192.0, 192.0)",
+          "[P: (514.0, 0.0), S: (852.0, 852.0)]"
+        ],
+        "view_updates": 6
+      },
+      "window_size": [
+        1080,
+        820
+      ],
+      "world_view_size": [
+        1880.0,
+        852.0
+      ]
+    }
+  ],
+  "visually_inspected": [
+    "edit-preview-captures/slice-preview.png",
+    "edit-preview-captures/resized-weathering.png",
+    "edit-preview-captures/structures-controls-top.png",
+    "edit-preview-captures/precision-cell.png",
+    "camera-lifecycle-captures/held-lease-far-pan.png"
+  ],
+  "visual_findings": [
+    "Thin white slice capsule and precision cell outline align with the targeted authored wall without obscuring it.",
+    "Resized weathering preview remains circular, with the paused state preserved and correct physical-screen scaling.",
+    "Structures popup displays all nine named constructions, weathering density/seed/filter and diagnostics controls legibly.",
+    "Held far-pan shows the remote terrain marker with retained material presentation and no unexpected owned overlay."
+  ],
+  "limitations": [
+    "Hosted Windows ANGLE software rendering is not owner TITAN RTX performance.",
+    "Preview fixture observes production rendering, targeting, navigation and cancellation; its authored circular wall openings are not evidence of drill mutation.",
+    "Actual drilling, cutting, weathering, ignition and physical progression are independently exercised by the live-input/live-tools/stress suites and remain separately qualified.",
+    "This early native source lane is not verification of the final extracted Windows evaluator package."
+  ],
+  "status": "passed"
+}
