@@ -1,0 +1,46 @@
+{
+  "additional_local_controls": {
+    "actual_win32_owned_and_foreign_processes": "passed during development; one owned root, concurrent foreign process excluded; not hosted compiler qualification",
+    "firewall_read_only_preflight": "passed: MpsSvc Running and Domain/Private/Public enabled; no local firewall settings changed",
+    "workflow_yaml": "parsed with PyYAML 6.0.2"
+  },
+  "complete_extracted_qualification": "pending",
+  "date": "2026-11-28",
+  "hosted_qualification": "pending",
+  "limitations": [
+    "These changes repair the witness; no compiler/linker root cause or portable authoring repair is yet established.",
+    "Production Materials Lab and native build inputs are unchanged at this checkpoint.",
+    "An optional local full original-archive download was cancelled after no payload was received; its small custody artifact was successfully retrieved instead."
+  ],
+  "local_delta_sha256": {
+    ".github/workflows/pubpres-portable-authoring-witness.yml": "b5cd677aa188afce5141cc157043d606caae90e6a889a74ffb8c45451cefe4d2",
+    "tools/pubpres_mainline/portable_authoring.py": "16c581ddd655044508ba795492e473f0ef1ab2dc5e21be863ae7ba536e5186a9",
+    "tools/pubpres_mainline/portable_lab_witness.py": "0a11ec037d50444abd3417dec6b680974b11119465d5e31b60e9c03b8ca8ea87",
+    "tools/pubpres_mainline/test_portable_lab_guard.py": "619545f185335de961d6ab0344683cfc4bfc68cb268a15025ef010700031c1dc",
+    "tools/pubpres_mainline/test_portable_lineage.py": "a6ebd5a3703a862f1e9e1b9a0005019c8e28717e1eb0e7ea961721f2382afd3d"
+  },
+  "local_tests": {
+    "command": "python -B -m unittest discover -s tools/pubpres_mainline -p 'test_*.py'",
+    "elapsed_seconds": 7.232,
+    "platform": "Windows 11 local host",
+    "python": "3.13.16",
+    "result": "passed",
+    "tests": 50,
+    "timeout_seconds": 120
+  },
+  "merge_authorized": false,
+  "mission": "PUBPRES-DELIVERY-RECOVERY-001",
+  "original_compiler_custody": {
+    "artifact_id": 15264827144,
+    "compiler_files": 13764,
+    "full_hosted_population_comparison": "pending focused run",
+    "manifest_sha256": "3384839616bdced47a97c67811b0b31269fd2410d50d146a508aa994466daef6",
+    "run": 46147576269
+  },
+  "physical_owner_acceptance": "HOLD",
+  "review": {
+    "lineage": "Independent agent reviewed suspended root registration, held process handles and creation/exit lifetime joins; no blocker found",
+    "offline_guard": "Independent agent reviewed pre-execution firewall rule and real World receipt hash checks; subsequent guard narrowing tested with compiler inside TEMP"
+  },
+  "source_parent": "4c90e8b34eaf1352fa52e39066e796ddb1a4a20d"
+}
