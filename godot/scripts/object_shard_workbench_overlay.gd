@@ -151,8 +151,10 @@ func present(value: Dictionary) -> void:
 				_canvas.add_child(sprite)
 			sprite.texture = texture
 			if projected:
-				var material: ShaderMaterial = ShaderMaterial.new()
-				material.shader = body_shader()
+				var material: ShaderMaterial = sprite.material as ShaderMaterial
+				if material == null:
+					material = ShaderMaterial.new()
+					material.shader = body_shader()
 				var extent := Vector2(int(shard.width),int(shard.height))
 				var capture_origin := Vector2(float(shard.get("origin_x",0)),float(shard.get("origin_y",0)))
 				material.set_shader_parameter("world_size_px",extent)

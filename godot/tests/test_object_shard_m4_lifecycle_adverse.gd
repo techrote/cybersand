@@ -100,7 +100,11 @@ func _run() -> void:
 	# Retry only that actual scheduling state, while Main polling stays off.
 	# The bound is wall time, not a platform-dependent count of render callbacks.
 	while Time.get_ticks_msec()<attempt_deadline and total_attempts<4096:
-		f.host._physics_process(1.0/60.0)
+		# The ordinary physical callback now deliberately consumes available
+		# receipts before admission. Challenge the same actual permit API with
+		# the deliberately retained stale frame, while both pumps remain off.
+		# Calling Main here would validly synchronize the new publication.
+		f.runtime().acquire_interval()
 		final_attempt = _clocks()
 		final_attempt["refusal"] = f.runtime().last_motion_permit.duplicate(true)
 		total_attempts += 1

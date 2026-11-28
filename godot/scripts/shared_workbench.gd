@@ -2065,7 +2065,8 @@ func object_shard_user_status(now_ms: int = -1) -> String:
 	if failure.is_empty(): failure = object_shard_m4_port.held_reason()
 	if not failure.is_empty():
 		return "Held: %s · Structures → Save diagnostics; Restore start to recover" % failure
-	if not runtime.owns_terrain(): return "Starting"
+	if not runtime.owns_terrain():
+		return "Paused · Play to start structures" if host.paused and runtime.phase == "AwaitingFirstNativeTick" else "Starting"
 	var now: int = Time.get_ticks_msec() if now_ms < 0 else now_ms
 	var rebuilding: bool = bool(runtime.frame.get("promotion",{}).get("present",false)) \
 		or bool(runtime.frame.get("reabsorption",{}).get("present",false))

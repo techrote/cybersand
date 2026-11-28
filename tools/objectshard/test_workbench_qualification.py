@@ -119,6 +119,37 @@ class ActualWorkloadTests(unittest.TestCase):
                 qualify_workbench.validate_profile(value, "a" * 40, False)
 
 
+class LightThroughputTests(unittest.TestCase):
+    def profile(self, rendered: bool = False) -> dict:
+        return {"source_commit": "a" * 40, "workload": "tower", "process_fps_cap": 60,
+                "canvas_extent": [512, 512], "authored_rectangles_sha256": "b" * 64,
+                "elapsed_usec": 6_000_000, "semantic_ticks": 240, "rapier_segments": 960,
+                "semantic_ticks_per_second": 40.0, "renderer_callbacks": 360 if rendered else 0,
+                "display_driver": "windows" if rendered else "headless", "recording_enabled": False,
+                "latency": {"enabled": False}, "cohorts": {"1/1": {"wall_usec": 6_000_000, "callbacks": 360}},
+                "after": {"native_pose_acknowledgements": 960, "native_pose_echo_checks": 960},
+                "runtime_counter_deltas": {"physical_intervals": 240}}
+
+    def test_source_clocks_cohorts_and_recording_are_bound(self) -> None:
+        for rendered in (False, True):
+            qualify_workbench.validate_throughput(self.profile(rendered), "a" * 40, rendered)
+        for mutation in ({"source_commit": "b" * 40}, {"process_fps_cap": 0}, {"elapsed_usec": 0},
+                         {"semantic_ticks_per_second": 60.0}, {"cohorts": {}}, {"workload": "stress"},
+                         {"runtime_counter_deltas": {"physical_intervals": 242}},
+                         {"after": {"native_pose_acknowledgements": 960, "native_pose_echo_checks": 959}},
+                         {"recording_enabled": True}, {"renderer_callbacks": 360}):
+            with self.subTest(mutation=mutation), self.assertRaises(ValueError):
+                qualify_workbench.validate_throughput({**self.profile(), **mutation}, "a" * 40, False)
+
+    def test_sleeping_claim_cannot_include_an_awake_cohort(self) -> None:
+        value = {**self.profile(), "workload": "sleeping",
+                 "cohorts": {"1/0": {"wall_usec": 6_000_000, "callbacks": 360}}}
+        qualify_workbench.validate_throughput(value, "a" * 40, False)
+        value["cohorts"]["1/1"] = {"wall_usec": 1, "callbacks": 1}
+        with self.assertRaisesRegex(ValueError, "body cohort"):
+            qualify_workbench.validate_throughput(value, "a" * 40, False)
+
+
 class RenderControlTests(unittest.TestCase):
     def disabled(self, rendered: bool) -> dict:
         return {"source_commit": "a" * 40, "scene": "tower", "camera": "overview",

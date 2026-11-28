@@ -6,8 +6,9 @@ extends RefCounted
 const Bridge = preload("res://scripts/object_shard_physics_bridge.gd")
 const Overlay = preload("res://scripts/object_shard_workbench_overlay.gd")
 const RECEIPT_BUDGET_USEC: int = 8000
-const MAX_PUMP_OPERATIONS: int = 48
+const MAX_PUMP_OPERATIONS: int = 128
 const RECEIPT_DEADLINE_USEC: int = 15000000
+const MOTION_PERMIT_BUDGET_USEC: int = 2000
 const PHYSICS_DELTA: float = 1.0/60.0
 var enabled: bool = false
 var phase: String = "Disabled"
@@ -39,10 +40,13 @@ var _last_synced_sequence: int = -1
 var _physics_ready: bool = false
 var _motion_lease: int = 0
 var motion_permits_refused: int = 0
+var motion_permit_waits_recovered: int = 0
+var motion_permit_refusal_kinds: Dictionary = {}
 var last_motion_permit: Dictionary = {}
 var last_reabsorption_receipt: Dictionary = {}
 var _reabsorption_action_serial: int = 0
 var _costs: Dictionary = {}
+var _control_timing: Dictionary = {}
 var deferred_world_uploads: int = 0
 var physical_steps: int = 0
 var physical_intervals: int = 0
@@ -50,6 +54,10 @@ var native_pose_acknowledgements: int = 0
 var native_pose_echo_checks: int = 0
 var total_pump_usec: int = 0
 var max_pump_usec: int = 0
+var pump_calls: int = 0
+var pump_operation_exhaustions: int = 0
+var pump_budget_exhaustions: int = 0
+var pump_waits: int = 0
 var controls_completed: int = 0
 var redundant_readiness_receipts_suppressed: int = 0
 var owner_replacements: int = 0
@@ -105,15 +113,22 @@ func poll(host: Control) -> void:
 		_hold("NativeWorldFailed")
 		return
 	var started: int = Time.get_ticks_usec()
+	pump_calls += 1
+	var operations: int = 0
 	for operation: int in range(MAX_PUMP_OPERATIONS):
-		if Time.get_ticks_usec()-started >= RECEIPT_BUDGET_USEC: break
+		if Time.get_ticks_usec()-started >= RECEIPT_BUDGET_USEC:
+			pump_budget_exhaustions += 1
+			break
+		operations += 1
 		var progressed: bool = _poll_once()
 		if not held_reason.is_empty(): break
 		if not progressed:
 			if _pending_serial == 0 and phase != "AwaitingCompletedNativeTick": break
 			# Bounded rendezvous only for work already admitted. This creates no
 			# semantic ticks and never invokes native or Rapier on the worker.
+			pump_waits += 1
 			OS.delay_usec(100)
+	if operations == MAX_PUMP_OPERATIONS: pump_operation_exhaustions += 1
 	var elapsed: int = Time.get_ticks_usec()-started
 	total_pump_usec += elapsed
 	max_pump_usec = maxi(max_pump_usec,elapsed)
@@ -158,16 +173,23 @@ func _poll_once() -> bool:
 	if _pending_serial != 0:
 		var replies: Array = worker.object_shard_take_owner_results(8)
 		for row: Variant in replies:
-			if not row is Dictionary or int(row.get("serial",-1)) != _pending_serial \
-				or int(row.get("world_generation",-1)) != _bound_generation \
-				or int(row.get("shard_session",-1)) != int(capabilities.shard_session):
+			if not _receipt_matches_pending(row):
 				_hold("ForeignOrUnexpectedOwnerReceipt")
 				return false
 			var kind: String = _pending_kind
 			_pending_serial = 0
 			_pending_kind = ""
 			last_receipt = row.get("result",{})
-			frame = row.get("frame",{})
+			var compact_motion: bool = row.get("compact_motion",false) == true
+			if compact_motion:
+				if kind != "motion" or PHYSICS_DELTA-_interval_completed-_pending_delta <= 0.000000001 \
+					or last_receipt.get("pose_echo_contract") != "bounded-owner-readback-v1" \
+					or last_receipt.get("pose_echo_complete") != true:
+					_hold("InvalidCompactNativeMotionReceipt")
+					return false
+			else:
+				frame = row.get("frame",{})
+			_record_control_timing(kind,row.get("timing",{}))
 			controls_completed += 1
 			if not last_receipt.get("ok",false):
 				if kind=="complete" and _motion_lease==0 and not frame.get("quarantined",true):
@@ -190,7 +212,8 @@ func _poll_once() -> bool:
 				if not bridge._valid_motion_receipt(last_receipt,_pending_poses,_semantic_tick):
 					_hold("UnprovedNativePoseApplication",last_receipt)
 					return false
-				if not _native_pose_echo_matches(_pending_poses):
+				var echoed: Dictionary = {"shards":last_receipt.get("applied_pose_echoes",[])} if compact_motion else frame
+				if not _native_pose_echo_matches(_pending_poses,echoed):
 					_hold("NativePoseEchoDiffersFromActualRapierSegment")
 					return false
 				native_pose_echo_checks += _pending_poses.size()
@@ -239,13 +262,21 @@ func _poll_once() -> bool:
 		return _synchronize()
 	return false
 
-func _native_pose_echo_matches(expected: Array) -> bool:
+func _receipt_matches_pending(row: Variant) -> bool:
+	return row is Dictionary and int(row.get("serial",-1)) == _pending_serial \
+		and int(row.get("world_generation",-1)) == _bound_generation \
+		and int(row.get("shard_session",-1)) == int(capabilities.get("shard_session",-1))
+
+func _native_pose_echo_matches(expected: Array, observed: Dictionary = {}) -> bool:
+	var source: Dictionary = frame if observed.is_empty() else observed
 	var active: int = 0
-	for shard: Dictionary in frame.get("shards",[]):
+	for shard: Dictionary in source.get("shards",[]):
 		if shard.get("has_body",false): active += 1
 	if active!=expected.size(): return false
 	for pose: Dictionary in expected:
-		var actual: Dictionary = _find_shard(int(pose.id))
+		var actual: Dictionary = {}
+		for shard: Dictionary in source.get("shards",[]):
+			if int(shard.get("id",0)) == int(pose.id): actual = shard; break
 		if actual.is_empty(): return false
 		for key: String in ["session","id","generation","body_generation","geometry_revision","pose_serial"]:
 			if actual.get(key)!=pose.get(key): return false
@@ -395,12 +426,25 @@ func acquire_interval() -> bool:
 	var expected: Dictionary = {}
 	for key: String in ["world_generation","session","world_incarnation","publication_sequence","tick","next_transaction"]:
 		expected[key] = frame.get(key)
-	last_motion_permit = _host.simulation_worker.object_shard_acquire_motion(expected)
+	var started: int = Time.get_ticks_usec()
+	var waited: bool = false
+	for attempt: int in range(24):
+		last_motion_permit = _host.simulation_worker.object_shard_acquire_motion(expected)
+		if last_motion_permit.get("ok",false): break
+		var reason: String = str(last_motion_permit.get("outcome",""))
+		motion_permit_refusal_kinds[reason] = int(motion_permit_refusal_kinds.get(reason,0))+1
+		if reason != "OwnerBusy" or Time.get_ticks_usec()-started >= MOTION_PERMIT_BUDGET_USEC: break
+		# A completed native publication can precede the worker's final ordinary
+		# snapshot copy. Retry only this transport-busy refusal; every attempt
+		# revalidates the exact frame and no forces/actor time have been consumed.
+		waited = true
+		OS.delay_usec(100)
 	if not last_motion_permit.get("ok",false):
 		motion_permits_refused += 1
 		if str(last_motion_permit.get("outcome","")) in ["InstalledFrameChanged","NativeBarrierPending","NativeGeometryPending"]:
 			_physics_ready = false
 		return false
+	if waited: motion_permit_waits_recovered += 1
 	_motion_lease = int(last_motion_permit.lease)
 	return true
 
@@ -434,7 +478,7 @@ func _advance_segment() -> bool:
 			_hold("InvalidPhysicalVelocity")
 			return false
 		if speed > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_TRANSLATION*0.5/speed)
-		if angular > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_ROTATION*0.5/angular)
+		if angular > 0.0: delta = minf(delta,Bridge.segment_rotation_limit(float(body.bounds_diagonal))*0.5/angular)
 		var corner_speed: float = speed+float(body.bounds_diagonal)*angular
 		if corner_speed > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_CORNER_MOTION*0.5/corner_speed)
 	var available: int = Bridge.MAX_MOTION_SUBSTEPS-_interval_segments
@@ -461,7 +505,8 @@ func _advance_segment() -> bool:
 			_hold("CompletedMainActorPoseCaptureFailed")
 			return false
 	_record_cost("pose_packet_capture","publication_prepare",capture_started,{"scope":"completed shard and GCR RID reads plus copied packet construction"})
-	return _send("accept_motion",{"poses":_pending_poses,"workbench_sample":workbench_sample},"motion")
+	return _send("accept_motion",{"poses":_pending_poses,"workbench_sample":workbench_sample,
+		"final_segment":PHYSICS_DELTA-_interval_completed-delta<=0.000000001},"motion")
 
 func _record_cost(name: String, stage: String, started: int, detail: Dictionary) -> void:
 	var ended: int = Time.get_ticks_usec()
@@ -472,6 +517,32 @@ func _record_cost(name: String, stage: String, started: int, detail: Dictionary)
 	_costs[name].max_usec = maxi(int(_costs[name].max_usec),elapsed)
 	if _host != null and _host.object_shard_m4_probe.enabled:
 		_host.object_shard_m4_probe.record_duration(stage,started,ended,detail)
+
+func _record_control_timing(kind: String, timing: Dictionary) -> void:
+	# These clocks belong to this exact serial's transport envelope. They do
+	# not grant time, authenticate a pose, or replace native acknowledgements.
+	# Queue/service/publication/delivery partition this one control's round
+	# trip; other commands and Main/worker activity may overlap that span.
+	var keys: Array[String] = ["admitted_usec","execution_started_usec",
+		"execution_finished_usec","receipt_ready_usec"]
+	var stamps: Array[int] = []
+	for key: String in keys:
+		if not timing.get(key) is int: return
+		stamps.append(int(timing[key]))
+	stamps.append(Time.get_ticks_usec())
+	for index: int in range(stamps.size()-1):
+		if stamps[index] < 0 or stamps[index+1] < stamps[index]: return
+	if not _control_timing.has(kind): _control_timing[kind] = {}
+	var stages: Array[String] = ["queue","owner_service","publication_copy","delivery"]
+	for index: int in range(stages.size()):
+		var stage: String = stages[index]
+		if not _control_timing[kind].has(stage):
+			_control_timing[kind][stage] = {"calls":0,"usec":0,"max_usec":0}
+		var elapsed: int = stamps[index+1]-stamps[index]
+		var counter: Dictionary = _control_timing[kind][stage]
+		counter.calls += 1
+		counter.usec += elapsed
+		counter.max_usec = maxi(int(counter.max_usec),elapsed)
 
 func _send(command: String, values: Dictionary, kind: String) -> bool:
 	if _pending_serial != 0: return false
@@ -643,13 +714,19 @@ func diagnostics() -> Dictionary:
 		"body_count":bridge.bodies.size(),"has_live_inventory":has_live_inventory(),
 		"physical_steps":physical_steps,"physical_intervals":physical_intervals,
 		"motion_lease":_motion_lease,"motion_permits_refused":motion_permits_refused,"last_motion_permit":last_motion_permit.duplicate(true),
+		"motion_permit_waits_recovered":motion_permit_waits_recovered,
+		"motion_permit_refusal_kinds":motion_permit_refusal_kinds.duplicate(),
 		"native_pose_acknowledgements":native_pose_acknowledgements,"controls_completed":controls_completed,
 		"redundant_readiness_receipts_suppressed":redundant_readiness_receipts_suppressed,
 		"native_pose_echo_checks":native_pose_echo_checks,
 		"pump_usec_total":total_pump_usec,"pump_usec_max":max_pump_usec,"owner_replacements":owner_replacements,
+		"pump_calls":pump_calls,"pump_operation_exhaustions":pump_operation_exhaustions,
+		"pump_budget_exhaustions":pump_budget_exhaustions,"pump_waits":pump_waits,
 		"receipt":last_receipt.duplicate(true),"physics":bridge.diagnostics(),
 		"reabsorption_receipt":last_reabsorption_receipt.duplicate(true),
 		"worker_profile":_host.simulation_worker.object_shard_owner_profile() if _host != null and _host.simulation_worker != null else {},
 		"main_costs":_costs.duplicate(true),"main_cost_scope":"cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+		"control_timing":_control_timing.duplicate(true),
+		"control_timing_scope":"exact serial queue, owner native-call service, snapshot/receipt copy and Main delivery spans; distinct from ordinary snapshot receipt_delivery and not additive to Main/worker stage totals",
 		"deferred_world_uploads":deferred_world_uploads,
 		"save_scope":"authored-start-only; moving inventory is never serialized as World cells"}

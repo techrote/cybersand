@@ -22,6 +22,8 @@ struct Config {
     std::uint32_t transfer_budget{64};
     std::uint32_t max_pause_calls{240};
     double max_translation_per_step{4.0};
+    // Nominal large-body ceiling. Small-body extra rotation is constrained by
+    // contact::motion_envelope's 4-cell corner arc and quarter-turn cap.
     double max_rotation_per_step{0.20};
     // Attached World displacement has a global candidate-work limit, in
     // addition to its finite radius and preallocated relocation inventory.

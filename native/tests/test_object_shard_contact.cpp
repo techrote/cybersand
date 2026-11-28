@@ -70,6 +70,49 @@ void portable_magnitude_preserves_admitted_envelope_boundaries() {
     CHECK(extent.outcome == Outcome::Unsupported && std::isfinite(extent.translation));
 }
 
+void small_fragment_motion_preserves_geometric_and_work_limits() {
+    const Pose before{20,30,0};
+    const auto small=motion_envelope(3,3);
+    CHECK(small.max_translation==4.0 && small.max_corner_motion==8.0);
+    CHECK(small.sample_spacing==0.5 && small.max_samples==32);
+    // Recorded owner values and an independent real-Rapier ledge-impact
+    // witness. Both exceed the old .20 ceiling while moving little material.
+    for (const Pose after : {Pose{20.804,30,0.274462},Pose{20.236560643,30,0.296369716}}) {
+        Envelope old;old.max_rotation=.20;
+        CHECK(plan_sweep(before,after,3,3,old).outcome==Outcome::Unsupported);
+        const auto sweep=plan_sweep(before,after,3,3,small);
+        CHECK(sweep.outcome==Outcome::Accepted);
+        CHECK(sweep.samples>=2 && sweep.samples<=17);
+        CHECK(sweep.corner_motion/(sweep.samples-1)<=.5);
+        // Dense independent material-corner samples between every consecutive
+        // sweep sample remain within the unchanged .5-cell sampling envelope.
+        for (unsigned step=0;step+1<sweep.samples;++step) {
+            const auto start=frame(interpolated_pose(before,after,
+                static_cast<double>(step)/(sweep.samples-1)));
+            for (unsigned piece=1;piece<=40;++piece) {
+                const auto current=frame(interpolated_pose(before,after,
+                    (static_cast<double>(step)+piece/40.0)/(sweep.samples-1)));
+                for (const Vec corner : {Vec{0,0},Vec{3,0},Vec{0,3},Vec{3,3}}) {
+                    const auto a=to_world(start,corner),b=to_world(current,corner);
+                    CHECK(std::hypot(a.x-b.x,a.y-b.y)<=.5+1e-12);
+                }
+            }
+        }
+    }
+    CHECK(segment_rotation_limit(20)==.20);
+    CHECK(motion_envelope(20,1).max_rotation==.20);
+    CHECK(plan_sweep(before,{20,30,.2000001},20,1,motion_envelope(20,1)).outcome==Outcome::Unsupported);
+    CHECK(plan_sweep(before,{20,30,.1},100,1,motion_envelope(100,1)).outcome==Outcome::Unsupported);
+    CHECK(plan_sweep(before,{24.0000001,30,0},3,3,small).outcome==Outcome::Unsupported);
+    CHECK(plan_sweep(before,{20,30,small.max_rotation+1e-6},3,3,small).outcome==Outcome::Unsupported);
+    CHECK(plan_sweep(before,{20,30,6.283185307179586},1,1,motion_envelope(1,1)).outcome==Outcome::Unsupported);
+    CHECK(plan_sweep(before,{20,30,std::numeric_limits<double>::infinity()},3,3,small).outcome==Outcome::Invalid);
+    CHECK(segment_rotation_limit(.1)==kMaximumObservedRotation);
+    CHECK(segment_rotation_limit(0)==0 && segment_rotation_limit(-1)==0);
+    CHECK(segment_rotation_limit(std::numeric_limits<double>::quiet_NaN())==0);
+    CHECK(segment_rotation_limit(3,.3)==0);
+}
+
 // Independent Sutherland-Hodgman polygon clipping oracle. It uses vertices and
 // area, rather than the tested SAT centre/projection implementation.
 double clipped_area(Frame value, int local_x, int local_y, int world_x, int world_y) {
@@ -318,6 +361,7 @@ void curved_trajectory_has_no_hidden_wall_crossing() {
 int main() {
     portable_magnitude_matches_independent_reference();
     portable_magnitude_preserves_admitted_envelope_boundaries();
+    small_fragment_motion_preserves_geometric_and_work_limits();
     sat_matches_polygon_oracle();
     aperture_and_motion_contract();
     bounded_wide_aperture_and_rotated_world_carriers();

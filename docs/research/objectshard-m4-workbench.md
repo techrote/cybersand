@@ -4,21 +4,23 @@ status: Current
 document-kind: contract
 scope: Draft/HOLD same-World destructible architecture, main-space Rapier, composed occupancy, moving edits and scoped lifecycle; qualification is source-bound and physical owner acceptance is separate
 canonical-for: [objectshard-m4-workbench-integration, objectshard-m4-owner-protocol, objectshard-m4-performance-evidence]
-last-reviewed: 2026-11-25
+last-reviewed: 2026-11-28
 related-documents: [objectshard-001.md, objectshard-m3-preflight.md, ../operations/objectshard-workbench-playtest.md, ../audits/2026-11-24-objectshard-m4-source-recovery.md, ../audits/2026-11-24-objectshard-m4-world-transition.md, ../architecture/data-ownership-and-lifetimes.md, ../architecture/rigid-body-and-cellular-coupling.md]
 ---
 
 # ObjectShard M4 ordinary Workbench integration
 
-**Engineering qualified for owner evaluation; PR #754 remains Draft/HOLD.** This contract describes the opt-in ordinary
-Workbench implementation. It does not change accepted-main defaults, grant
+**Reliability-convergence candidate; PR #754 remains Draft/HOLD.** This contract describes the opt-in ordinary
+Workbench implementation. The [28 November evidence](../audits/objectshard-m4-reliability-20261128/presentation-delivery.md)
+records the current candidate's qualification state; the 25 November completion
+below remains historical evidence for its exact source. It does not change accepted-main defaults, grant
 merge or Ready authority, qualify retained production binaries, or record
 physical Windows/NVIDIA acceptance. Use the
 [ordinary Workbench playtest guide](../operations/objectshard-workbench-playtest.md)
 for the user-facing controls and evaluator. The separate Lab and M3 rehearsal
 remain independent facilities with their original evidence and limits.
 
-## Completion decision — 25 November 2026
+## Historical completion decision — 25 November 2026
 
 The qualified application/native-build/package source is
 `5f0722ae231d955a98a83b0fbb9a0e7517ef2d8a`, tree
@@ -120,6 +122,22 @@ unchanged, and no separate Equipment development branch is imported.
 A geometry edit preserves the body's angular velocity and adjusts
 linear velocity for the centre-of-mass shift; it must not restore an unrelated
 sleep state or manufacture angular energy.
+
+## Geometry-sensitive segment admission — 28 November candidate
+
+The native coordinator, contact sweeps and Main bridge use one geometry-sensitive
+angular bound, `min(pi/2, max(0.20, 4/r))`, where `r` is the stable storage-bound
+corner radius used by the existing motion proof. A corner radius of at least
+20 cells retains the historical 0.20-radian bound. Smaller bodies can rotate
+further only while their added rotational arc remains at most four cells. The four-cell rotational allowance is the existing eight-cell
+corner budget less the four-cell translation budget.
+Translation remains at most four cells, combined corner travel at most eight,
+sweep spacing at most half a cell, and the existing 32-segment capacity remains.
+The [physics witness](../audits/objectshard-m4-reliability-20261128/physics.md)
+records actual off-centre Rapier impacts, independent barrel scenarios and
+native refusal controls. This changes admission for small geometric envelopes;
+it does not clamp angular velocity, skip acknowledgements, teleport, delete
+fragments or replay completed physical time.
 
 ## Occupancy composition protects both body domains
 
@@ -298,6 +316,46 @@ bounded diagnostic transaction outside timed profiles, not another simulation
 owner or a full rasterization on each frame. Ordinary **Save diagnostics**
 continues to produce its compact operational report.
 
+## Retained camera and ordinary material presentation
+
+The structural overlay consumes only the coherent acknowledged publication.
+Its view is independently synchronized to the actual ordinary terrain shader's
+camera origin, view extent and aspect-fit content rectangle, including when
+physics is paused or Held. A clipped content child prevents off-view body
+pixels from entering letterbox margins. Camera updates neither publish new
+material authority nor sample a live Rapier pose. World retirement clears the
+visuals and their complete World/session/body/material identities.
+
+Native carrier snapshots retain an immutable RG8 material/visual-condition
+array, projected through the same `project_visual_state` helper as ordinary
+terrain and cached by material revision. A single shared palette-shader variant
+uses the ordinary finish routines, but samples local body storage in its stable
+capture coordinates. Its Empty carriers are transparent; ordinary actor and
+background decoration remain in their existing presentation owners. A rigid
+rotation therefore carries material patterns with it. Source-era RGBA Lab and
+synthetic publications remain supported as an explicit legacy input; new
+ordinary snapshots supply RG8. Native parent storage bounds remain stable as
+edges erode. A fragment's captured origin is the parent origin plus its local
+crop offset, while its physical pose applies the rotated same offset. Thus
+captured origin plus local pixel preserves the original finish coordinates
+through fragmentation, geometry replacement and body rotation. Per-body texture and shader-material allocation
+is reused across pose-only and same-size material updates. At most the existing
+16 admitted bodies acquire a visual node; no per-cell render objects exist.
+
+The ordinary shader's default branch is unchanged. This is not a new Strata
+optical compositor, interpolated motion authority or full fluid rendering
+architecture. Standalone shader tests use synthetic copied publications and
+claim framebuffer/material parity only; the separate mounted Workbench test
+qualifies actual native projection, view transitions, Held inspection, Restore
+and scene replacement. The [presentation evidence](../audits/objectshard-m4-reliability-20261128/presentation-delivery.md)
+keeps these scopes separate.
+
+The principal status readout groups short control/ACK phases as **Running**.
+It shows **Paused/Pausing**, debounced **Editing / rebuilding**, sustained
+**Waiting for native transaction**, and a leading actionable **Held** refusal.
+Detailed internal phases remain in the tooltip and diagnostics. A status label
+never releases a physics/native barrier or hides a protective refusal.
+
 ## Ordinary authoring and lifecycle
 
 The consolidated structural owner supports ground actor assemblies, equipped
@@ -372,8 +430,13 @@ material revision changes. Hard terrain rebuilds follow its source revision.
 The bounded Main receipt rendezvous services admitted transactions without
 creating extra cellular ticks or allowing unbounded waits.
 
-The rendezvous has an eight-millisecond budget and at most 48 operations per
-Main poll. It can finish several already admitted segments in one poll. Initial
+The rendezvous has an eight-millisecond budget and at most 128 operations per
+Main poll. It runs before the fixed-physics admission gate as well as in the
+ordinary process callback, allowing already delivered receipts to finish before
+the next physical interval is considered. Each fixed callback still starts at
+most one new 1/60-second interval. A two-millisecond bounded retry handles only
+an ordinary worker's `OwnerBusy` permit refusal; each attempt revalidates the
+same source frame before any force or actor time is consumed. Initial
 physics binding still requires a positive native readiness receipt. After that
 binding, a completed native publication and installed geometry/terrain establish
 local readiness without another zero-lease worker round trip. The next physical
@@ -381,6 +444,26 @@ interval still needs the exclusive worker's exact-publication motion permit,
 and every completed segment still needs its exact native pose acknowledgement.
 The suppressed-readiness counter measures only the redundant control commands;
 it is not a count of skipped physical or native acknowledgements.
+
+Inside an exclusive motion lease, the worker services `accept_motion` without
+running another ordinary semantic tick. Only a successful explicitly nonfinal
+segment with a complete bounded native `OwnerReadback` proof can omit the full
+carrier snapshot. Main checks every actual pose echo against the completed
+Rapier poses, including active-body cardinality and all owner/geometry/pose
+identities. The final segment, incomplete proof, failed or legacy receipt, and
+ordinary native completion retain full snapshots. Existing pending-interval
+guards prevent intermediate retained data from being presented as a completed
+World publication.
+
+Command timestamps separately record queue wait, native service, publication
+copy and Main receipt pickup. The older diagnostic `receipt_delivery` sample
+measures the age of an ordinary worker snapshot when Main receives it; it is
+not a direct measurement of an ObjectShard transaction's service time. The
+short matched workload profile measures disabled, enabled-empty, one active,
+eight active and naturally sleeping cohorts with the same light observer and
+60-process-callback cap. Its recording-on/off pair remains separate from the
+older exhaustive profile, and neither headless nor renderer callback cadence
+establishes physical display FPS.
 
 The moving-material texture cache includes World generation, World incarnation,
 session, shard identity and generation, body generation, material revision and

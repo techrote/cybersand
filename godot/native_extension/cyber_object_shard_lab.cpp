@@ -280,6 +280,39 @@ Dictionary CyberObjectShardLab::advance_native(const Array& poses, bool semantic
                 identities.push_back(identity);
             }
             receipt["accepted_pose_serials"] = identities;
+            // An intermediate M4 transport receipt may omit the full material
+            // presentation only when Main can independently compare every
+            // actual installed native pose. Copy the bounded owner readback;
+            // never echo caller values as evidence of applied coordinates.
+            if (applied.outcome == os::Outcome::Accepted) {
+                const auto proof = coordinator_->m4_owner_readback();
+                Array echoes;
+                for (std::size_t index = 0; index < proof.copied_count; ++index) {
+                    const auto& body = proof.bodies[index];
+                    if (!body.has_body) continue;
+                    const auto& pose = body.pose;
+                    Dictionary echo;
+                    echo["has_body"] = true;
+                    echo["session"] = static_cast<std::int64_t>(body.shard.session);
+                    echo["id"] = static_cast<std::int64_t>(body.shard.id);
+                    echo["generation"] = static_cast<std::int64_t>(body.shard.generation);
+                    echo["body_generation"] = static_cast<std::int64_t>(body.body_generation);
+                    echo["geometry_revision"] = static_cast<std::int64_t>(pose.geometry_revision);
+                    echo["pose_serial"] = static_cast<std::int64_t>(pose.pose_serial);
+                    echo["position_x"] = pose.x; echo["position_y"] = pose.y;
+                    echo["rotation"] = pose.rotation;
+                    echo["vx"] = pose.vx; echo["vy"] = pose.vy;
+                    echo["angular_velocity"] = pose.angular_velocity;
+                    echo["sleeping"] = pose.sleeping;
+                    echoes.push_back(echo);
+                }
+                receipt["pose_echo_contract"] = "bounded-owner-readback-v1";
+                receipt["pose_echo_complete"] = proof.world_available && !proof.paused &&
+                    !proof.quarantined && !proof.truncated &&
+                    proof.active_count == static_cast<std::uint32_t>(poses.size()) &&
+                    echoes.size() == poses.size();
+                receipt["applied_pose_echoes"] = echoes;
+            }
         }
         return receipt;
     }

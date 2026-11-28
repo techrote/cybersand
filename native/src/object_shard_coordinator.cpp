@@ -1392,10 +1392,8 @@ Outcome Coordinator::apply_poses(std::span<const PoseSample> poses) {
             p.geometry_revision!=shard->applied_physics_revision() || p.pose_serial<=b->pose.pose_serial ||
             !std::isfinite(p.x) || !std::isfinite(p.y) || !std::isfinite(p.rotation) ||
             !std::isfinite(p.vx) || !std::isfinite(p.vy) || !std::isfinite(p.angular_velocity)) return Outcome::Stale;
-        if (contact::magnitude(p.x-b->pose.x,p.y-b->pose.y)>config_.max_translation_per_step ||
-            std::abs(p.rotation-b->pose.rotation)>config_.max_rotation_per_step) return Outcome::Unsupported;
-        contact::Envelope envelope;envelope.max_translation=config_.max_translation_per_step;
-        envelope.max_rotation=config_.max_rotation_per_step;
+        const auto envelope=contact::motion_envelope(shard->bounds().width,shard->bounds().height,
+            config_.max_translation_per_step,config_.max_rotation_per_step);
         if (contact::plan_sweep(contact_pose(b->pose),contact_pose(p),shard->bounds().width,
             shard->bounds().height,envelope).outcome!=Outcome::Accepted) return Outcome::Unsupported;
         for (const auto& other:poses) if (&other!=&p && other.shard==p.shard) return Outcome::Invalid;
@@ -1614,8 +1612,8 @@ Outcome Coordinator::capture_water(Shard& shard,const BodyView& body) {
         return Outcome::Accepted;
     const auto started=now_ns();
     const auto bounds=shard.bounds();
-    contact::Envelope envelope;envelope.max_translation=config_.max_translation_per_step;
-    envelope.max_rotation=config_.max_rotation_per_step;
+    const auto envelope=contact::motion_envelope(bounds.width,bounds.height,
+        config_.max_translation_per_step,config_.max_rotation_per_step);
     const auto before=contact_pose(body.previous_pose),after=contact_pose(body.pose);
     const auto sweep=contact::plan_sweep(before,after,bounds.width,bounds.height,envelope);
     if (sweep.outcome!=Outcome::Accepted) return sweep.outcome;
@@ -1861,7 +1859,9 @@ void Coordinator::automatic_ingress(bool transfer) {
                 for (auto wx=candidates.min_x;wx<=candidates.max_x;++wx) {
                     if (!resident(wx,wy) || world_->stored_material(wx,wy)!=Material::Sand) continue;
                     const auto witness=contact::sand_pocket_witness(*shard,contact_pose(b.previous_pose),contact_pose(b.pose),
-                        {static_cast<double>(wx)+.5,static_cast<double>(wy)+.5});
+                        {static_cast<double>(wx)+.5,static_cast<double>(wy)+.5},
+                        contact::motion_envelope(bounds.width,bounds.height,
+                            config_.max_translation_per_step,config_.max_rotation_per_step));
                     if (witness.outcome!=Outcome::Accepted || witness.slot!=at) {
                         const auto local=contact::to_local(frame,{static_cast<double>(wx)+.5,static_cast<double>(wy)+.5});
                         if (witness.outcome==Outcome::DestinationUnavailable &&
@@ -1958,7 +1958,9 @@ Result Coordinator::ingest(const TransferRequest& r) {
     if (shard->occupied(r.cell) || world_->transient_obstacle_at(r.world_x,r.world_y)) return done(Outcome::DestinationUnavailable);
     if (pocket_fenced(r.shard,r.cell)) return done(Outcome::Fenced,"previous side entry awaits a genuinely empty aperture");
     const auto witness=contact::sand_pocket_witness(*shard,contact_pose(b->previous_pose),contact_pose(b->pose),
-        {static_cast<double>(r.world_x)+.5,static_cast<double>(r.world_y)+.5});
+        {static_cast<double>(r.world_x)+.5,static_cast<double>(r.world_y)+.5},
+        contact::motion_envelope(shard->bounds().width,shard->bounds().height,
+            config_.max_translation_per_step,config_.max_rotation_per_step));
     if (witness.outcome!=Outcome::Accepted || witness.slot!=r.cell || witness.incarnation!=r.incarnation) {
         const auto local=contact::to_local(contact::frame(contact_pose(b->pose)),
             {static_cast<double>(r.world_x)+.5,static_cast<double>(r.world_y)+.5});

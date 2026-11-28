@@ -1,0 +1,38 @@
+{
+  "base_commit": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+  "platform": "Linux x86_64",
+  "scope": "local focused implementation tests; integrated source-matched GDExtension qualification pending",
+  "source_files": {
+    "godot/scripts/object_shard_physics_bridge.gd": "25a1d51e3fcb75f3cfcfec4f8af194ce472ddfac3def6871b5cc421a2b6fad7d",
+    "godot/tests/test_object_shard_rest_contacts.gd": "a0b6ce0cda35dc387bfd11550f15c7af09073c2340b8c1d7c85b19f71853461e",
+    "godot/tests/test_object_shard_fragment_motion.gd": "95a51ecad924837b89743e89ce968f824bf3c42e1168a85823e8147730ae95e7",
+    "godot/tests/test_object_shard_m4_remote_barrel.gd": "d73157ecae8c887e23bcb2e0c4755a3bc9b6f53c5ee3ff96fe3670f5c3208a24",
+    "native/include/cybersand/object_shard_contact.hpp": "074552c7717831688416f10811d60d15e699b2198f5245f8d627097b88c9555b",
+    "native/include/cybersand/object_shard_coordinator.hpp": "c7b6813d477967fe758fb6e754ef11e66a10bee1657081fec5380943cf10213e",
+    "native/src/object_shard_coordinator.cpp": "283715eefbd14a1a5b62294cb8e18227d2b08065a5912630077a15f12cf7d28d",
+    "native/tests/test_object_shard_contact.cpp": "93453fbc6a1214872365a6d2ad71218862649dd37e2065aa5a3b478331d853c8",
+    "native/tests/test_object_shard_coordinator.cpp": "593366208f45a9bb12e1e7a275fa0016445a596e779eddab5b8e3909bc552a5a"
+  },
+  "runtime_files": {
+    "/workspace/scratch/9b78ce6eff8d/runtime/Godot_v4.7-stable_linux.x86_64": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "/workspace/scratch/9b78ce6eff8d/runtime/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+    "/workspace/scratch/9b78ce6eff8d/runtime/libcybersand_native.baseline.linux.x86_64.so": "5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20"
+  },
+  "original_logs": {
+    "native-motion-run.log": "3fba9645b57dd0d6d7a48c3dbec025bf982479a792085b92910b508e5f448192",
+    "collision-baseline.log": "74cce33502067f3459f00ec20f0fc6069a7a43a7ed9013cf557f0cbb2a64d2a8",
+    "import.log": "fce1d0169d64ae087a94eeec58f5e1fd45f030949a166932c2c4e326dcef5430",
+    "rest-contacts.log": "57c82dcd2ec3a38d8206746bd91fdad0d78a00033412a4144aa5a2e0b16b8fe6",
+    "collision-corrected.log": "3be929992bcc98a07ebbea3f4a83df493c29f9dc3b6693776bcb1c5cd194d52e",
+    "fragment-motion.log": "0d661432f881ac97da1ad19f87b70af49d4582085a4c44eda629f098825f75d8",
+    "barrel-baseline.log": "012f4aa6cf527f5158cd774d54fe520f60b277d45142d6704ff59c97a40c171b"
+  },
+  "baseline_refusal_count": 5,
+  "corrected_refusal_count": 0,
+  "fixture_commands": [
+    "Godot_v4.7-stable_linux.x86_64 --headless --path godot --script tests/test_object_shard_fragment_motion.gd",
+    "Godot_v4.7-stable_linux.x86_64 --headless --path godot --script tests/test_object_shard_m4_remote_barrel.gd",
+    "Godot_v4.7-stable_linux.x86_64 --headless --path godot --script tests/test_object_shard_rest_contacts.gd",
+    "python3 tools/objectshard/run_native_tests.py --suite contact --suite coordinator --jobs 2 --build-timeout 600"
+  ]
+}

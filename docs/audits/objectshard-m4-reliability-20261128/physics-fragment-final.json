@@ -1,0 +1,274 @@
+{
+  "cases": [
+    {
+      "initial_downward_speed": 60.0,
+      "maximum_segment_rotation": 1.5128059915881e-09,
+      "ok": true,
+      "peak_angular_velocity": 2.16723879020719e-06,
+      "physical_segments": 12,
+      "x": 27.0
+    },
+    {
+      "initial_downward_speed": 100.0,
+      "maximum_segment_rotation": 4.65652672670958e-11,
+      "ok": true,
+      "peak_angular_velocity": 1.070887645227e-08,
+      "physical_segments": 12,
+      "x": 27.0
+    },
+    {
+      "initial_downward_speed": 140.0,
+      "maximum_segment_rotation": 4.65661259552164e-11,
+      "ok": true,
+      "peak_angular_velocity": 0.0,
+      "physical_segments": 12,
+      "x": 27.0
+    },
+    {
+      "initial_downward_speed": 180.0,
+      "maximum_segment_rotation": 4.65661259552164e-11,
+      "ok": true,
+      "peak_angular_velocity": 0.0,
+      "physical_segments": 12,
+      "x": 27.0
+    },
+    {
+      "initial_downward_speed": 60.0,
+      "maximum_segment_rotation": 2.11329688681872e-06,
+      "ok": true,
+      "peak_angular_velocity": 2.90173662875759e-08,
+      "physical_segments": 12,
+      "x": 27.2
+    },
+    {
+      "initial_downward_speed": 100.0,
+      "maximum_segment_rotation": 2.10825828617089e-06,
+      "ok": true,
+      "peak_angular_velocity": 2.42048918153159e-06,
+      "physical_segments": 12,
+      "x": 27.2
+    },
+    {
+      "initial_downward_speed": 140.0,
+      "maximum_segment_rotation": 2.11323435905797e-06,
+      "ok": true,
+      "peak_angular_velocity": 1.79387882326409e-06,
+      "physical_segments": 12,
+      "x": 27.2
+    },
+    {
+      "initial_downward_speed": 180.0,
+      "maximum_segment_rotation": 2.11331416721805e-06,
+      "ok": true,
+      "peak_angular_velocity": 7.29980854430323e-07,
+      "physical_segments": 12,
+      "x": 27.2
+    },
+    {
+      "initial_downward_speed": 60.0,
+      "maximum_segment_rotation": 4.77848507216549e-05,
+      "ok": true,
+      "peak_angular_velocity": 5.35077333552181e-07,
+      "physical_segments": 12,
+      "x": 27.4
+    },
+    {
+      "initial_downward_speed": 100.0,
+      "maximum_segment_rotation": 4.85233199007951e-05,
+      "ok": true,
+      "peak_angular_velocity": 8.45328429477377e-07,
+      "physical_segments": 12,
+      "x": 27.4
+    },
+    {
+      "initial_downward_speed": 140.0,
+      "maximum_segment_rotation": 4.77881812912528e-05,
+      "ok": true,
+      "peak_angular_velocity": 4.14957412431249e-06,
+      "physical_segments": 12,
+      "x": 27.4
+    },
+    {
+      "initial_downward_speed": 180.0,
+      "maximum_segment_rotation": 4.77851199320867e-05,
+      "ok": true,
+      "peak_angular_velocity": 3.62648819418609e-07,
+      "physical_segments": 12,
+      "x": 27.4
+    },
+    {
+      "initial_downward_speed": 60.0,
+      "maximum_segment_rotation": 0.047467922559008,
+      "ok": true,
+      "peak_angular_velocity": 11.236141204834,
+      "physical_segments": 12,
+      "x": 27.6
+    },
+    {
+      "initial_downward_speed": 100.0,
+      "maximum_segment_rotation": 0.219715863466263,
+      "ok": true,
+      "peak_angular_velocity": 52.7848739624023,
+      "physical_segments": 12,
+      "x": 27.6
+    },
+    {
+      "initial_downward_speed": 140.0,
+      "maximum_segment_rotation": 0.296369716059417,
+      "ok": true,
+      "peak_angular_velocity": 65.4128723144531,
+      "physical_segments": 12,
+      "x": 27.6
+    },
+    {
+      "initial_downward_speed": 180.0,
+      "maximum_segment_rotation": 0.210643291473389,
+      "ok": true,
+      "peak_angular_velocity": 50.6011505126953,
+      "physical_segments": 12,
+      "x": 27.6
+    },
+    {
+      "initial_downward_speed": 60.0,
+      "maximum_segment_rotation": 0.115893661975861,
+      "ok": true,
+      "peak_angular_velocity": 27.8222236633301,
+      "physical_segments": 12,
+      "x": 27.8
+    },
+    {
+      "initial_downward_speed": 100.0,
+      "maximum_segment_rotation": 0.189836382865906,
+      "ok": true,
+      "peak_angular_velocity": 45.5949325561523,
+      "physical_segments": 12,
+      "x": 27.8
+    },
+    {
+      "initial_downward_speed": 140.0,
+      "maximum_segment_rotation": 0.264893293380737,
+      "ok": true,
+      "peak_angular_velocity": 63.6674461364746,
+      "physical_segments": 12,
+      "x": 27.8
+    },
+    {
+      "initial_downward_speed": 180.0,
+      "maximum_segment_rotation": 0.341548681259155,
+      "ok": true,
+      "peak_angular_velocity": 82.1714324951172,
+      "physical_segments": 12,
+      "x": 27.8
+    },
+    {
+      "control": "natural-gravity-fall",
+      "initial_horizontal_velocity": 1.0,
+      "maximum_segment_rotation": 0.219228684902191,
+      "ok": true,
+      "peak_angular_velocity": 52.6675987243652,
+      "physical_segments": 240
+    },
+    {
+      "control": "natural-gravity-fall",
+      "initial_horizontal_velocity": 1.3,
+      "maximum_segment_rotation": 0.553995741531253,
+      "ok": true,
+      "peak_angular_velocity": 126.744972229004,
+      "physical_segments": 240
+    },
+    {
+      "negative_control": "large_rotation",
+      "receipt": {
+        "motion": {
+          "detail": {
+            "corner_motion": 7.49145989814221,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.24967522919178,
+            "translation": 2.49171733856201
+          },
+          "reason": "SegmentMotionEnvelopeExceeded"
+        },
+        "ok": false,
+        "outcome": "SegmentMotionEnvelopeExceeded",
+        "session": 1923
+      }
+    },
+    {
+      "negative_control": "translation",
+      "receipt": {
+        "motion": {
+          "detail": {
+            "corner_motion": 5.00000047683716,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.0,
+            "translation": 5.00000047683716
+          },
+          "reason": "SegmentMotionEnvelopeExceeded"
+        },
+        "ok": false,
+        "outcome": "SegmentMotionEnvelopeExceeded",
+        "session": 1924
+      }
+    },
+    {
+      "negative_control": "corner_motion",
+      "receipt": {
+        "motion": {
+          "detail": {
+            "corner_motion": 12.949366604723,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.124959334731102,
+            "translation": 0.452808678150177
+          },
+          "reason": "SegmentMotionEnvelopeExceeded"
+        },
+        "ok": false,
+        "outcome": "SegmentMotionEnvelopeExceeded",
+        "session": 1925
+      }
+    },
+    {
+      "negative_control": "corrupt_angular_readback",
+      "receipt": {
+        "motion": {
+          "detail": {
+            "corner_motion": 1.63085913724962,
+            "delta": 0.00416666666666667,
+            "id": 1,
+            "rotation": 0.775532245635986,
+            "translation": 0.534090936183929
+          },
+          "reason": "UnresolvedCompleteRotation"
+        },
+        "ok": false,
+        "outcome": "UnresolvedCompleteRotation",
+        "session": 1926
+      }
+    },
+    {
+      "control": "same-chunk-terrain-replacement",
+      "maximum_barrel_displacement": 0.0,
+      "maximum_barrel_upward_speed": 3.6592092155085e-19,
+      "replacements": 8
+    }
+  ],
+  "checks": 384,
+  "engine": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "failures": [],
+  "platform": "Linux",
+  "schema": "objectshard-fragment-motion-v1",
+  "scope": "actual Rapier natural off-centre collision, bridge readback and protective envelope controls; native ACK is independently covered by coordinator/integration suites"
+}

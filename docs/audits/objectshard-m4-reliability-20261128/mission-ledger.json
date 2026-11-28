@@ -37,9 +37,36 @@
     {
       "area": "delivery",
       "finding": "Historical full campaign approximately 66 minutes; initiate stable combined source early."
+    },
+    {
+      "area": "barrel",
+      "finding": "Representative independent tower support-cut/detachment witness passes114 checks with unchanged barrel RID,zero displacement and upward velocity.Original owner jump not reproduced;same-compound geometry replacement control also unchanged."
+    },
+    {
+      "area": "motion",
+      "finding": "Natural gravity high-spin impact disproved initial2-cell rotational arc. Final proposed4-cell arc derived from8corner\u22124translation;quarter-turn ceiling and actual corner/sample bounds retained. Both failed2cell and passing4cell evidence preserved."
+    },
+    {
+      "area": "camera",
+      "finding": "Held early-return prevented overlay camera invalidation; fixed independent presentation sync with actual terrain camera uniforms and content clipping."
+    },
+    {
+      "area": "sparse-parent motion",
+      "status": "CONFIRMED OPEN",
+      "finding": "26-cell Wood strip eroded through25 exact moving-cell cuts leaves mass1/inertia1/6 at COM(26.5,1.5) in28x3storage. Natural impact angular55.8113, rotation.232286;COMtranslation.287659cells but storage-origin translation6.29239/corner12.8336 triggersHeld. Bounded COM-reference/sweep correction in progress; carrier coordinates remain unchanged."
     }
   ],
-  "qualification": [],
+  "qualification": [
+    {
+      "kind": "early synthetic immutable RG8 actual-renderer smoke",
+      "source": "60a71358de549877d65d0bcac08ef6e8bb1573c0",
+      "tree": "570492828ca43c8be38a9bce91eeda015cd25c88",
+      "run": 46091912379,
+      "linux": "PASS:27 shader guards,11 texture identity,19 material/camera/clip checks",
+      "windows": "PASS:27 shader guards,11 texture identity,19 material/camera/clip checks; actual ANGLE Microsoft Basic Render Driver",
+      "native_qualification": false
+    }
+  ],
   "delivery": null,
   "remaining": [
     "reproduce/fix fragment halt",
@@ -55,5 +82,41 @@
     "source_conflicts": 0,
     "runtime_choice": "Retain prior PR754 efe3bc19 source-matched binary/manifest pair only as temporary baseline. Changed native candidate must rebuild and replace both OS runtimes plus provenance through guarded source-leased publication. No claim this old pair qualifies new source.",
     "strata": "not yet merged; do not import candidate"
+  },
+  "early_checkpoint": {
+    "commit": "a77b61f754ee44a648d99dac1f8292d8fc52a0ff",
+    "tree": "23e5b6d7a0b1387c2246c36f0954c96c9724f95b"
+  },
+  "local_checkpoints": {
+    "physics_initial": "10d23d43abdd5c1dd82888cb8b6553cf8ca3f6f0",
+    "physics_natural_fall_correction": "047c89f19b4181fd031cd1114ffba65b4a05ce29",
+    "presentation_initial": "e702b6029de3387cc83d0c4f5c0efd9bb95bd895"
+  },
+  "baseline_checks": {
+    "source": "a77b61f754ee44a648d99dac1f8292d8fc52a0ff",
+    "docs": "PASS after materializing pinned companion docs6a583119; initial missing-companion failure retained outside source",
+    "repository": "PASS after same companion restoration",
+    "historical_m11": "PASS",
+    "retrieval": {
+      "questions": 33,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 31,
+      "mrr_at_k": 0.7146,
+      "scope": "retrieval ranking,not semantic answer correctness"
+    }
+  },
+  "baseline_recheck": {
+    "at_utc": "2026-11-28T01:21:30Z",
+    "strata_pr": 785,
+    "merged": false,
+    "candidate_not_adopted": "6641ac0edc4341013026d5ab900dd64fcc9fd42e",
+    "accepted_main_retained": "9920e7a7369f24e2818313c007cc33616c1a6a83"
+  },
+  "phase": "First combined qualification preparation; sparse-parent correction in progress",
+  "current_source_note": "First combined campaign is an intermediate candidate, not final convergence. A confirmed ordinary sparse-parent false motion refusal is being corrected.",
+  "throughput_exploratory": {
+    "tower_clean_pairs": "17.96/19.47 ->53.30/55.15 semantic ticks/s; full6s1/1awake cohort",
+    "eight_clean_pairs": "15.76/14.96 ->29.36/29.75 semantic ticks/s in actual8/8awake cohorts; candidate active portions~3s, not fullwindow",
+    "limitation": "Local shared execution host/headless60callbackcap; physical Windows not measured; fullmatrix and finalcorrectedsource pending"
   }
 }

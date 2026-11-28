@@ -14,6 +14,16 @@ const BASE_MOTION_SUBSTEPS: int = 4
 const MAX_SEGMENT_TRANSLATION: float = 4.0
 const MAX_SEGMENT_ROTATION: float = 0.20
 const MAX_SEGMENT_CORNER_MOTION: float = 8.0
+const SMALL_BODY_ROTATION_ARC: float = MAX_SEGMENT_CORNER_MOTION - MAX_SEGMENT_TRANSLATION
+const MAX_OBSERVED_ROTATION: float = PI / 2.0
+
+
+# Mirror native contact::motion_envelope. Extra angular displacement on a small
+# offcut costs at most four cells of conservative corner arc. The original
+# translation/corner/sampling budgets and the large-body .20 ceiling remain.
+static func segment_rotation_limit(bounds_diagonal: float) -> float:
+	if not is_finite(bounds_diagonal) or bounds_diagonal <= 0.0: return 0.0
+	return minf(MAX_OBSERVED_ROTATION,maxf(MAX_SEGMENT_ROTATION,SMALL_BODY_ROTATION_ARC/bounds_diagonal))
 
 var session: int = 0
 var body_capacity: int = MAX_BODIES
@@ -299,6 +309,7 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 	body["geometry_digest"] = str(shard.geometry_digest)
 	body["com"] = new_com
 	body["rectangles"] = PackedInt32Array(shard.rectangles)
+	body["bounds_diagonal"] = _bounds_diagonal(shard)
 	body["last_geometry_step"] = steps
 	body["last_geometry_usec"] = Time.get_ticks_usec() - started
 	_event("GeometryInstalled", int(shard.id), {"geometry_revision": revision,
@@ -358,7 +369,7 @@ func capture_completed_main_step(main_step_serial: int, completed_delta: float =
 		var evidence := {"id":id,"delta":completed_delta,"translation":distance,"rotation":angle,"corner_motion":corner_motion}
 		if not pose.is_finite() or not is_finite(angular) or absf(angular)*completed_delta>=PI:
 			return _motion_hold("UnresolvedCompleteRotation",evidence)
-		if distance>MAX_SEGMENT_TRANSLATION or absf(angle)>MAX_SEGMENT_ROTATION or corner_motion>MAX_SEGMENT_CORNER_MOTION:
+		if distance>MAX_SEGMENT_TRANSLATION or absf(angle)>segment_rotation_limit(float(body.bounds_diagonal)) or corner_motion>MAX_SEGMENT_CORNER_MOTION:
 			return _motion_hold("SegmentMotionEnvelopeExceeded",evidence)
 		observed[id] = {"pose":pose,"rotation":float(body.rotation)+angle,
 			"sleeping":bool(PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_SLEEPING))}
@@ -447,7 +458,7 @@ func step() -> Dictionary:
 			motion_refused = true
 			return _refuse("UnresolvedCompleteRotation")
 		var delta: float = wrapf(wrapped - float(body.wrapped_rotation), -PI, PI)
-		if absf(delta) > 0.20 + 0.00001:
+		if absf(delta) > segment_rotation_limit(float(body.bounds_diagonal)) + 0.00001:
 			motion_refused = true
 			return _refuse("RotationEnvelopeExceeded")
 		body["rotation"] = float(body.rotation) + delta
@@ -548,7 +559,7 @@ func advance_motion_segment() -> Dictionary:
 		if speed > 0.0:
 			delta = minf(delta, 0.5 * MAX_SEGMENT_TRANSLATION / speed)
 		if angular > 0.0:
-			delta = minf(delta, 0.5 * MAX_SEGMENT_ROTATION / angular)
+			delta = minf(delta, 0.5 * segment_rotation_limit(float(body.bounds_diagonal)) / angular)
 		var corner_speed: float = speed + float(body.bounds_diagonal) * angular
 		if corner_speed > 0.0:
 			delta = minf(delta, 0.5 * MAX_SEGMENT_CORNER_MOTION / corner_speed)
@@ -583,7 +594,7 @@ func advance_motion_segment() -> Dictionary:
 			"after_x": pose.origin.x, "after_y": pose.origin.y}
 		if not pose.origin.is_finite() or not is_finite(angle) or not is_finite(angular) or absf(angular) * delta >= PI:
 			return _motion_hold("UnresolvedCompleteRotation", evidence)
-		if distance > MAX_SEGMENT_TRANSLATION or absf(angle) > MAX_SEGMENT_ROTATION or corner_motion > MAX_SEGMENT_CORNER_MOTION:
+		if distance > MAX_SEGMENT_TRANSLATION or absf(angle) > segment_rotation_limit(float(body.bounds_diagonal)) or corner_motion > MAX_SEGMENT_CORNER_MOTION:
 			return _motion_hold("SegmentMotionEnvelopeExceeded", evidence)
 		next_angles[id] = {"rotation": float(body.rotation) + angle, "wrapped": pose.get_rotation()}
 	# All body segments passed before any new angle is published.
@@ -771,7 +782,8 @@ func diagnostics() -> Dictionary:
 			"reported_contacts": state.get_contact_count() if state != null else -1,
 			"shape_count": PhysicsServer2D.body_get_shape_count(body.rid),
 			"last_geometry_step": body.last_geometry_step, "last_geometry_usec": body.last_geometry_usec,
-			"nominal_rotation_headroom": 0.20 - absf(angular) * FIXED_DELTA,
+			"segment_rotation_limit": segment_rotation_limit(float(body.bounds_diagonal)),
+			"nominal_rotation_headroom": segment_rotation_limit(float(body.bounds_diagonal)) - absf(angular) * FIXED_DELTA,
 			"nominal_translation_headroom": 4.0 - velocity.length() * FIXED_DELTA})
 	return {"session": session, "physics_steps": steps, "last_sampled_pose_serial": pose_serial,
 		"motion_refused": motion_refused, "last_error": last_error,

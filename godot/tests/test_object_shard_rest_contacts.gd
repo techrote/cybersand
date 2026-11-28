@@ -47,6 +47,8 @@ func _run() -> void:
 	shard.geometry_revision = 4
 	shard.geometry_digest = "shorter-contact-4"
 	_expect(bridge.install_geometry(shard).get("ok", false), "real support-face geometry shrinks")
+	_expect(is_equal_approx(float(bridge.bodies[1].bounds_diagonal),Vector2(20,8).length()),
+		"changed geometry refreshes the conservative motion radius without moving its lattice origin")
 	_expect(not _sleeping(rid), "changed contact graph must be awake")
 	_expect(PhysicsServer2D.body_get_shape(rid, 0) != shape, "changed collider replaces obsolete occupied geometry")
 	var after_install: Transform2D = PhysicsServer2D.body_get_state(rid, PhysicsServer2D.BODY_STATE_TRANSFORM)

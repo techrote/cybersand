@@ -2382,7 +2382,48 @@ void m4_returned_inventory_resumes_exact_ordinary_world_chemistry() {
     }
 }
 
+void small_low_inertia_fragment_accepts_bounded_actual_segment() {
+    Coordinator coordinator(small_config());
+    CHECK(coordinator.edit(40,30,{Material::Wood,170,0,200}).outcome==Outcome::Accepted);
+    CHECK(coordinator.edit(40,31,{Material::Wall,0,0,200}).outcome==Outcome::Accepted);
+    CHECK(coordinator.edit(40,31,empty()).outcome==Outcome::Accepted);
+    const auto prepared=discover(coordinator);
+    CHECK(prepared.outcome==Outcome::Accepted);
+    if (prepared.outcome!=Outcome::Accepted) return;
+    CHECK(activate(coordinator,prepared.shard));
+    const auto* shard=coordinator.registry().find(prepared.shard);
+    CHECK(shard && shard->counts().structural==1);
+    if (!shard) return;
+    CHECK(shard->bounds().width==3 && shard->bounds().height==3);
+    const auto original=shard->payload_digest();
+    const auto tick=coordinator.world().completed_tick_index();
+    auto poses=next_poses(coordinator);
+    poses[0].x+=.804;poses[0].rotation+=.274462;poses[0].angular_velocity=68.27;
+    CHECK(coordinator.accept_motion(poses).outcome==Outcome::Accepted);
+    CHECK(coordinator.world().completed_tick_index()==tick);
+    const auto accepted=coordinator.snapshot().bodies[0].pose;
+    CHECK(accepted.rotation==poses[0].rotation && accepted.angular_velocity==68.27);
+    CHECK(accepted.pose_serial==poses[0].pose_serial && shard->payload_digest()==original);
+    CHECK(owned_population(coordinator,Material::Wood)==1);
+    check_population_balance(coordinator);
+    CHECK(coordinator.accept_motion(poses).outcome==Outcome::Stale);
+    auto refused=next_poses(coordinator);refused[0].rotation+=.95;
+    CHECK(coordinator.accept_motion(refused).outcome==Outcome::Unsupported);
+    CHECK(coordinator.snapshot().bodies[0].pose.pose_serial==accepted.pose_serial);
+    refused=next_poses(coordinator);refused[0].x+=4.001;
+    CHECK(coordinator.accept_motion(refused).outcome==Outcome::Unsupported);
+    CHECK(coordinator.world().completed_tick_index()==tick);
+    poses=next_poses(coordinator);poses[0].rotation+=.296369716;
+    CHECK(coordinator.accept_motion(poses).outcome==Outcome::Accepted);
+    CHECK(coordinator.world().completed_tick_index()==tick);
+    CHECK(coordinator.step(next_poses(coordinator)).outcome==Outcome::Accepted);
+    CHECK(coordinator.world().completed_tick_index()==tick+1);
+    CHECK(owned_population(coordinator,Material::Wood)==1);
+    check_population_balance(coordinator);
+}
+
 int main() {
+    small_low_inertia_fragment_accepts_bounded_actual_segment();
     m4_attached_displacement_crosses_original_mixed_pool_with_exact_inventory();
     m4_displacement_radius_and_work_refuse_before_any_material_move();
     m4_sparse_occupancy_matches_legacy_and_reuse_requires_fresh_witnesses();

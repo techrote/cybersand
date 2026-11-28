@@ -45,6 +45,33 @@ struct Envelope {
     double sample_spacing{0.5};
     std::uint16_t max_samples{32};
 };
+
+// The fixed large-body angular ceiling is not a useful displacement bound for
+// a low-inertia offcut. Permit additional rotation only while the conservative
+// origin-to-farthest-corner arc remains <= 4 cells, and never beyond a quarter
+// turn. Translation, total corner travel, sample spacing and work capacity are
+// unchanged. Four cells is the existing total corner allowance minus the
+// existing translation allowance (8 - 4), not a larger total motion budget.
+// A radius >= 4/nominal_rotation retains the original angular limit.
+// This is an explicit coordinator contract; callers of plan_sweep with their
+// own Envelope retain that envelope's exact absolute angular ceiling.
+inline constexpr double kSmallBodyRotationArc = Envelope{}.max_corner_motion - Envelope{}.max_translation;
+inline constexpr double kMaximumObservedRotation = 1.57079632679489661923;
+[[nodiscard]] inline double segment_rotation_limit(double radius,
+        double nominal_rotation = 0.20) noexcept {
+    if (!std::isfinite(radius) || radius <= 0.0 || !std::isfinite(nominal_rotation) ||
+        nominal_rotation <= 0.0 || nominal_rotation > 0.25) return 0.0;
+    return std::min(kMaximumObservedRotation,
+        std::max(nominal_rotation, kSmallBodyRotationArc / radius));
+}
+[[nodiscard]] inline Envelope motion_envelope(std::uint16_t width, std::uint16_t height,
+        double max_translation = 4.0, double nominal_rotation = 0.20) noexcept {
+    Envelope result;
+    result.max_translation = max_translation;
+    result.max_rotation = segment_rotation_limit(magnitude(static_cast<double>(width),
+        static_cast<double>(height)), nominal_rotation);
+    return result;
+}
 struct Sweep {
     Outcome outcome{Outcome::Invalid};
     std::uint16_t samples{}; // Includes both endpoints; never less than two.

@@ -21,6 +21,7 @@ class ViewHost extends Control:
 var checks: int = 0
 var failures: Array[String] = []
 var captures: Array[Dictionary] = []
+var first_use: Dictionary = {}
 var output: String = "user://objectshard-presentation"
 var source: PackedByteArray
 var palette: ImageTexture
@@ -79,13 +80,45 @@ func _publication(sequence: int,rotation: float = 0.0) -> Dictionary:
 			"origin_x":ORIGIN.x,"origin_y":ORIGIN.y,"position_x":ORIGIN.x+(SIZE.y if rotation != 0.0 else 0),
 			"position_y":ORIGIN.y,"rotation":rotation}]}
 
+func _fragment_publication(sequence: int,rotation: float = 0.0) -> Dictionary:
+	# Native Registry keeps the parent's storage origin and gives the child a
+	# cropped origin = parent origin + local crop offset. Coordinator rotates
+	# that same offset into the child's physical pose. The captured finish must
+	# therefore survive both recropping and rotation without resetting its phase.
+	var value: Dictionary = _publication(sequence,rotation)
+	var parent: Dictionary = value.shards[0]
+	var retained: PackedByteArray = source.duplicate()
+	var child_pixels := PackedByteArray()
+	child_pixels.resize((SIZE.x/2)*SIZE.y*2)
+	for y: int in range(SIZE.y):
+		for x: int in range(SIZE.x/2,SIZE.x):
+			var before: int = (y*SIZE.x+x)*2
+			var after: int = (y*(SIZE.x/2)+x-SIZE.x/2)*2
+			child_pixels[after] = source[before]
+			child_pixels[after+1] = source[before+1]
+			retained[before] = 0
+			retained[before+1] = 0
+	parent.render_cells = retained
+	var child: Dictionary = parent.duplicate(true)
+	child.id = 2
+	child.width = SIZE.x/2
+	child.origin_x = ORIGIN.x+SIZE.x/2
+	child.render_cells = child_pixels
+	var offset := Vector2(SIZE.x/2,0).rotated(rotation)
+	child.position_x += offset.x
+	child.position_y += offset.y
+	value.shards.append(child)
+	return value
+
 func _capture(view: SubViewport,name: String) -> Image:
+	var started: int = Time.get_ticks_usec()
 	await process_frame
 	await RenderingServer.frame_post_draw
 	var image: Image = view.get_texture().get_image()
 	var path: String = output.path_join(name+".png")
 	_check(image.save_png(path)==OK,"save actual framebuffer "+name)
-	captures.append({"name":name,"sha256":FileAccess.get_sha256(path),"width":image.get_width(),"height":image.get_height()})
+	captures.append({"name":name,"sha256":FileAccess.get_sha256(path),"width":image.get_width(),"height":image.get_height(),
+		"elapsed_usec":Time.get_ticks_usec()-started})
 	return image
 
 func _compare(reference: Image,actual: Image,label: String,rotated: bool = false) -> void:
@@ -128,6 +161,7 @@ func _run() -> void:
 			source[at] = ids[(y/16)*2+(x/16)]
 			source[at+1] = 130 if source[at]==7 and y>7 else 0
 			if x in range(14,18) and y in range(14,18): source[at] = 0
+	var started: int = Time.get_ticks_usec()
 	var reference_view: SubViewport = _viewport()
 	var reference_texture: ImageTexture = _world_texture()
 	var reference := TextureRect.new()
@@ -136,6 +170,13 @@ func _run() -> void:
 	reference.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
 	reference.material = _setup_material(reference_texture)
 	reference_view.add_child(reference)
+	first_use.ordinary_setup_usec = Time.get_ticks_usec()-started
+	# Draw the ordinary shader alone before creating the detached variant. The
+	# separate timings include frame wait, readback and PNG I/O as well as any
+	# first-use compilation; they are not per-frame cost or monitor FPS.
+	var original: Image = await _capture(reference_view,"ordinary-materials")
+	first_use.ordinary_first_capture_usec = captures.back().elapsed_usec
+	started = Time.get_ticks_usec()
 	var body_view: SubViewport = _viewport()
 	var host := ViewHost.new()
 	host.world_view = Control.new()
@@ -148,16 +189,19 @@ func _run() -> void:
 	overlay.size = Vector2(SIZE*SCALE)
 	host.world_view.add_child(overlay)
 	overlay.present(_publication(1))
-	var original: Image = await _capture(reference_view,"ordinary-materials")
+	first_use.detached_setup_usec = Time.get_ticks_usec()-started
 	var detached: Image = await _capture(body_view,"detached-materials")
+	first_use.detached_first_capture_usec = captures.back().elapsed_usec
 	_compare(original,detached,"unrotated detachment")
 	_check(overlay.textures[1].projected and overlay.textures[1].texture.get_image().get_data()==source,
 		"the uploaded RG8 bytes retain exact native-style material and condition channels")
 	var retained_texture: ImageTexture = overlay.textures[1].texture
+	var retained_material: ShaderMaterial = overlay.textures[1].sprite.material
 	overlay.present(_publication(2,PI/2.0))
 	var rotated: Image = await _capture(body_view,"rotated-materials")
 	_compare(original,rotated,"quarter-turn capture-coordinate finish",true)
 	_check(overlay.textures[1].texture==retained_texture,"same-size updates retain texture allocation")
+	_check(overlay.textures[1].sprite.material==retained_material,"material revisions reuse the owner's shader material")
 	var edit: int = (8*SIZE.x+8)*2
 	source[edit] = 62
 	overlay.present(_publication(3))
@@ -168,6 +212,25 @@ func _run() -> void:
 	var edited_reference: Image = await _capture(reference_view,"ordinary-edited")
 	var edited_body: Image = await _capture(body_view,"detached-edited")
 	_compare(edited_reference,edited_body,"moving material edit")
+	# A two-cell cut opens separate islands. The right child is recropped with
+	# its empty ring, while the parent's stable storage extent is unchanged.
+	for y: int in range(SIZE.y):
+		for x: int in [15,16]:
+			source[(y*SIZE.x+x)*2] = 0
+			source[(y*SIZE.x+x)*2+1] = 0
+	var cut_world: ImageTexture = _world_texture()
+	reference.texture = cut_world
+	reference.material = _setup_material(cut_world)
+	host.world_shader = reference.material
+	overlay.present(_fragment_publication(4))
+	var cut_reference: Image = await _capture(reference_view,"ordinary-fragment-cut")
+	var cut_body: Image = await _capture(body_view,"detached-fragment-cut")
+	_compare(cut_reference,cut_body,"child storage-origin recrop")
+	_check(overlay.textures.size()==2 and overlay.textures[1].sprite.material==retained_material,
+		"fragment admission adds one independent owner while retaining the parent's material allocation")
+	overlay.present(_fragment_publication(5,PI/2.0))
+	var cut_rotated: Image = await _capture(body_view,"rotated-fragment-cut")
+	_compare(cut_reference,cut_rotated,"rotated child storage-origin recrop",true)
 	var publication_before: int = overlay.publication_sequence
 	var update_before: int = overlay.view_updates
 	host.world_shader.set_shader_parameter("camera_origin_px",Vector2(ORIGIN)+Vector2(2,3))
@@ -188,6 +251,7 @@ func _run() -> void:
 	await process_frame
 	print(JSON.stringify({"schema":"objectshard-m4-material-presentation-v1","checks":checks,"failures":failures,
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"display_driver":DisplayServer.get_name(),
-		"rendering_driver":RenderingServer.get_current_rendering_driver_name(),"captures":captures,
-		"scope":"synthetic immutable RG8 publications; actual ordinary/shared-shader framebuffer parity, rotation, edit, view and retirement; not native or physical-motion qualification"}))
+		"rendering_driver":RenderingServer.get_current_rendering_driver_name(),"captures":captures,"first_use":first_use,
+		"timing_scope":"sequential ordinary-only then detached first use; setup and capture elapsed include frame wait/readback/PNG I/O; no steady-state or physical display claim",
+		"scope":"synthetic immutable RG8 publications; actual ordinary/shared-shader framebuffer parity, rotation, edit, child-origin recrop, view and retirement; not native or physical-motion qualification"}))
 	quit(0 if failures.is_empty() else 1)

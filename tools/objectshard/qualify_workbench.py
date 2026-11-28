@@ -27,6 +27,12 @@ from qualify_lab import RAPIER_HASHES, VERSION, require_custody
 from process_resources import run_observed_case
 
 FOCUSED = (
+    ("test_object_shard_fragment_motion", "objectshard-fragment-motion-v1"),
+    ("test_object_shard_m4_remote_barrel", "objectshard-m4-remote-barrel-v1"),
+    ("test_object_shard_m4_small_fragment_chain", "objectshard-m4-small-fragment-native-chain-v1"),
+    ("test_object_shard_m4_fresh_barrel", "objectshard-m4-fresh-barrel-v1"),
+    ("test_object_shard_m4_camera_lifecycle", "objectshard-m4-camera-lifecycle-v1"),
+    ("test_object_shard_m4_receipt_scheduling", "objectshard-m4-receipt-scheduling-v1"),
     ("test_object_shard_m4_latency_probe", "objectshard-m4-workbench-probe-test-v1"),
     ("test_object_shard_m4_edit_delivery_fence", "objectshard-m4-edit-delivery-fence-v1"),
     ("test_object_shard_m4_optional_diagnostics", "objectshard-m4-optional-diagnostics-v1"),
@@ -128,6 +134,47 @@ def validate_profile(value: dict, source: str, rendered: bool) -> None:
         events = contacts.get("relocated_" + material + "_cells")
         if value["scene"] in scenes and (type(events) is not int or events <= 0):
             raise ValueError("Missing committed native " + material + " interaction")
+
+
+def validate_throughput(value: dict, source: str, rendered: bool) -> None:
+    """Bind the light matched window to actual clocks, populations and source."""
+    workload = value.get("workload")
+    if value.get("source_commit") != source or workload not in ("disabled", "empty", "tower", "stress", "sleeping"):
+        raise ValueError("Throughput workload or source identity mismatch")
+    if value.get("process_fps_cap") != 60 or value.get("canvas_extent") != [512, 512] or not re.fullmatch(
+            r"[0-9a-f]{64}", str(value.get("authored_rectangles_sha256", ""))):
+        raise ValueError("Throughput matched process cap or authored workload is missing")
+    for field, minimum in (("elapsed_usec", 3_000_000), ("semantic_ticks", 1), ("rapier_segments", 1)):
+        if type(value.get(field)) is not int or value[field] < minimum:
+            raise ValueError("Throughput lacks actual clock progression: " + field)
+    rate = value.get("semantic_ticks_per_second")
+    if type(rate) not in (int, float) or not math.isfinite(rate) or not math.isclose(
+            rate, value["semantic_ticks"] * 1_000_000 / value["elapsed_usec"], rel_tol=1e-8):
+        raise ValueError("Throughput rate does not follow its measured native clock")
+    draws = value.get("renderer_callbacks")
+    if type(draws) is not int or draws < (1 if rendered else 0) or \
+            rendered == (value.get("display_driver") == "headless") or (not rendered and draws != 0):
+        raise ValueError("Throughput headless/rendered evidence scopes disagree")
+    if type(value.get("recording_enabled")) is not bool or \
+            value.get("latency", {}).get("enabled") is not value["recording_enabled"] or \
+            (value["recording_enabled"] and value["latency"].get("events_retained", 0) <= 0):
+        raise ValueError("Throughput recording state lacks its actual probe witness")
+    expected = {"disabled": "0/0", "empty": "0/0", "tower": "1/1", "stress": "8/8", "sleeping": "1/0"}[workload]
+    cohorts = value.get("cohorts", {})
+    cohort = cohorts.get(expected, {})
+    if type(cohort.get("wall_usec")) is not int or cohort["wall_usec"] <= 0 or \
+            type(cohort.get("callbacks")) is not int or cohort["callbacks"] <= 0 or \
+            (workload in ("disabled", "empty", "sleeping") and set(cohorts) != {expected}):
+        raise ValueError("Throughput lacks the requested actual body cohort")
+    if workload != "disabled":
+        after = value.get("after", {})
+        acknowledgements = after.get("native_pose_acknowledgements")
+        if type(acknowledgements) is not int or type(after.get("native_pose_echo_checks")) is not int or \
+                acknowledgements != after["native_pose_echo_checks"]:
+            raise ValueError("Throughput loses a native pose acknowledgement echo")
+        intervals = value.get("runtime_counter_deltas", {}).get("physical_intervals")
+        if type(intervals) is not int or abs(intervals - value["semantic_ticks"]) > 1:
+            raise ValueError("Throughput physical and semantic clocks disagree")
 
 
 def validate_render_control(value: dict, source: str) -> None:
@@ -258,7 +305,9 @@ def qualify(args: argparse.Namespace) -> dict:
             if args.render and name.endswith("long_burn"):
                 continue # Natural lifetime/retirement is qualified in the headless lane.
             flags = runner.script_case_flags(name)
-            graphical_diagnostics = args.render and name.endswith("optional_diagnostics")
+            graphical_diagnostics = (args.render and name.endswith("optional_diagnostics")) or ((args.render or args.package) and name.endswith("camera_lifecycle"))
+            if name.endswith("camera_lifecycle"):
+                flags += ("--output=" + str(output / "camera-lifecycle-captures"),)
             if graphical_diagnostics:
                 flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + flags
             cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0,
@@ -282,7 +331,29 @@ def qualify(args: argparse.Namespace) -> dict:
             cases.append((runner.Case("retained_lab_profile", ("--script", "res://tests/profile_object_shard_lab.gd", "--",
                 "--objectshard-profile=" + str(output / "retained_lab_profile.json")),
                 int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), "objectshard-lab-profile-v1"))
+        if args.render or args.package:
+            # DummyRenderer cannot supply texture updates/framebuffers. Both
+            # source and clean extracted application execute these real draws.
+            for name, schema in (("test_object_shard_m4_overlay_identity", "objectshard-m4-overlay-identity-v1"),
+                                 ("test_object_shard_m4_material_presentation_render", "objectshard-m4-material-presentation-v1")):
+                flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3",
+                         "--script", "res://tests/" + name + ".gd", "--",
+                         "--output=" + str(output / "material-presentation-captures"))
+                cases.append((runner.Case(name, flags, int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True), schema))
         if args.profile:
+            for workload, recording in (("disabled", "off"), ("empty", "off"), ("tower", "off"),
+                                        ("stress", "off"), ("sleeping", "off"), ("tower", "on")):
+                name = f"m4_throughput_{workload}_{recording}_" + ("render" if args.render else "headless")
+                flags = ("--max-fps", "60", "--script", "res://tests/profile_object_shard_m4_throughput.gd", "--")
+                if workload != "disabled":
+                    flags += ("--objectshard-m4-workbench",)
+                flags += ("--workload=" + workload, "--seconds=6", "--recording=" + recording,
+                          "--output=" + str(output / (name + ".json")))
+                if args.render:
+                    flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3") + flags
+                cases.append((runner.Case(name, flags,
+                              int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, args.render),
+                              "objectshard-m4-throughput-v1"))
             disabled_flags = ("--script", "res://tests/profile_object_shard_m4_disabled_control.gd", "--",
                               "--output=" + str(output / "m4_disabled_controls.json"))
             if args.render:
@@ -291,13 +362,6 @@ def qualify(args: argparse.Namespace) -> dict:
                           int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, args.render),
                           "objectshard-m4-disabled-control-v1"))
             if args.render:
-                # Godot 4.7 DummyRenderer texture_2d_update is a no-op; real
-                # ImageTexture pixel readback belongs only to a renderer lane.
-                overlay_flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3",
-                                 "--script", "res://tests/test_object_shard_m4_overlay_identity.gd")
-                cases.append((runner.Case("test_object_shard_m4_overlay_identity", overlay_flags,
-                              int(execution_policy.watchdog_seconds("graphical_case_seconds")), 0, True),
-                              "objectshard-m4-overlay-identity-v1"))
                 flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3",
                          "--script", "res://tests/profile_object_shard_m4_render_control.gd", "--",
                          "--objectshard-m4-workbench", "--output=" + str(output / "m4_render_controls.json"))
@@ -361,6 +425,8 @@ def qualify(args: argparse.Namespace) -> dict:
                     record["receipt"] = completion(output / record["log"], schema)
                     if schema == "objectshard-m4-workbench-profile-v1":
                         validate_profile(record["receipt"], commit, case.requires_display)
+                    elif schema == "objectshard-m4-throughput-v1":
+                        validate_throughput(record["receipt"], commit, case.requires_display)
                     elif schema == "objectshard-m4-render-control-v1":
                         validate_render_control(record["receipt"], commit)
                     elif schema == "objectshard-m4-disabled-control-v1":

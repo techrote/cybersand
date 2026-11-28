@@ -522,6 +522,10 @@ var _m4_inventory_serial: int = 0
 var _m4_inventory_request: Dictionary = {} # one mutex-owned on-demand read request
 var _m4_inventory_result: Dictionary = {} # one immutable copied result, consumed once
 var _m4_inventory_inflight: bool = false
+var _m4_segment_service_turns: int = 0
+var _m4_segment_idle_polls: int = 0
+var _m4_compact_motion_receipts: int = 0
+var _m4_full_motion_publications: int = 0
 
 var _scenario_request_serial: int = 0
 var _scenario_request_applied: bool = false
@@ -1591,6 +1595,8 @@ func object_shard_owner_profile() -> Dictionary:
 	var result := {"snapshot_calls":_m4_snapshot_calls,"snapshot_usec":_m4_snapshot_usec,
 		"snapshot_max_usec":_m4_snapshot_max_usec,"frame_copy_calls":_m4_frame_copy_calls,
 		"frame_copy_usec":_m4_frame_copy_usec,"frame_copy_max_usec":_m4_frame_copy_max_usec,
+		"segment_service_turns":_m4_segment_service_turns,"segment_idle_polls":_m4_segment_idle_polls,
+		"compact_motion_receipts":_m4_compact_motion_receipts,"full_motion_publications":_m4_full_motion_publications,
 		"snapshot_scope":"native coordinator snapshot plus Godot dictionary and packed-array marshalling",
 		"frame_copy_scope":"Main copied publication including mutex wait; excludes control receipt copy",
 		"counter_scope":"cumulative ordinary worker lifetime",
@@ -1781,7 +1787,7 @@ func object_shard_submit_owner_control(command: String, values: Dictionary) -> D
 		_m4_control_queue.append({"serial":_m4_serial,"command":command,"values":values.duplicate(true),
 			"world_generation":_m4_capabilities.world_generation,"shard_session":_m4_capabilities.shard_session,
 			"completion_sample":completion_sample,"completion_usables":completion_usables,
-			"completion_effects":completion_effects})
+			"completion_effects":completion_effects,"admitted_usec":Time.get_ticks_usec()})
 	var ticket: Dictionary = {"ok":valid,"outcome":"M4ControlQueued" if valid else "M4OwnerOrCapacityRefused",
 		"serial":_m4_serial if valid else 0}
 	if not valid:
@@ -1922,19 +1928,27 @@ func _m4_publish_owner() -> void:
 	_m4_last_frame = frame
 	_mutex.unlock()
 
-func _m4_drain_controls() -> void:
+func _m4_drain_controls(segment_only: bool = false) -> void:
 	if not _m4_live:
 		return
 	if _m4_world_generation != _world_generation:
 		_m4_retire_owner("WorldGenerationChanged")
 		return
 	_mutex.lock()
-	var pending: Array[Dictionary] = _m4_control_queue.duplicate(true)
-	_m4_control_queue.clear()
+	var pending: Array[Dictionary] = []
+	if segment_only:
+		# Transfer just the ordered segment prefix. Completion remains on the
+		# full ordinary worker path that consumes its pinned actor work/tick.
+		while not _m4_control_queue.is_empty() and _m4_control_queue[0].command == "accept_motion":
+			pending.append(_m4_control_queue.pop_front())
+	else:
+		pending = _m4_control_queue.duplicate(true)
+		_m4_control_queue.clear()
 	var current_workbench_session: int = int(_workbench_sample.get("session",-1))
 	var current_workbench_epoch: int = int(_workbench_sample.get("epoch",-1))
 	_mutex.unlock()
 	for row: Dictionary in pending:
+		var execution_started_usec: int = Time.get_ticks_usec()
 		var command: String = str(row.command)
 		var values: Dictionary = row.values
 		var result: Dictionary = {"ok":false,"outcome":"M4ControlRefused"}
@@ -2012,16 +2026,61 @@ func _m4_drain_controls() -> void:
 					"native_tick_before_prepare":tick_before,"native_tick_after_prepare":int(_world.get_tick_index()),
 					"captured_equipment_request_ids":row.completion_usables.map(func(request: Dictionary) -> String: return str(request.request_id)),
 					"captured_effect_count":row.completion_effects.size()}
-		if _m4_live:
+		var execution_finished_usec: int = Time.get_ticks_usec()
+		var compact_motion: bool = _m4_compact_motion_eligible(command,values,result)
+		if _m4_live and not compact_motion:
 			_m4_publish_owner()
 		_mutex.lock()
+		if command == "accept_motion":
+			if compact_motion: _m4_compact_motion_receipts += 1
+			else: _m4_full_motion_publications += 1
 		if _m4_control_results.size() == M4_OWNER_QUEUE_LIMIT:
 			_m4_held = "UnconsumedNativeControlResults"
 		else:
 			_m4_control_results.append({"serial":row.serial,"command":command,"result":result.duplicate(true),
-				"frame":_m4_last_frame.duplicate(true),"world_generation":row.world_generation,
-				"shard_session":row.shard_session})
+				"frame":{} if compact_motion else _m4_last_frame.duplicate(true),
+				"compact_motion":compact_motion,"world_generation":row.world_generation,
+				"shard_session":row.shard_session,"timing":{"admitted_usec":row.admitted_usec,
+					"execution_started_usec":execution_started_usec,"execution_finished_usec":execution_finished_usec,
+					"receipt_ready_usec":Time.get_ticks_usec()}})
 		_mutex.unlock()
+
+static func _m4_compact_motion_eligible(command: String, values: Dictionary, result: Dictionary) -> bool:
+	# Final segments, failed/unapplied receipts, legacy packets and incomplete
+	# native readbacks always retain their full presentation/diagnostic frame.
+	return command == "accept_motion" and values.get("final_segment") is bool \
+		and values.final_segment == false and result.get("ok") == true and result.get("applied") == true \
+		and result.get("pose_echo_contract") == "bounded-owner-readback-v1" \
+		and result.get("pose_echo_complete") == true and result.get("applied_pose_echoes") is Array
+
+func _m4_service_leased_segments() -> bool:
+	# The active physical lease already forbids cellular ticks, edits and
+	# geometry changes. Service only its exact pose acknowledgements while
+	# that fence holds, without rebuilding an ordinary render/actor snapshot
+	# for each intermediate segment. Final completion, Pause acknowledgement,
+	# replacement and failure still enter the unchanged full owner turn.
+	if not _m4_live: return false
+	_mutex.lock()
+	var eligible: bool = _running and not _simulation_failed and _m4_held.is_empty() \
+		and _m4_motion_lease > 0 and not _m4_interval_tick_due \
+		and not _world_change_inflight and not _reset_requested and _lab_request.is_empty() \
+		and not _persistent_lease and _pending_physical_liquid.is_empty()
+	var has_segments: bool = eligible and not _m4_control_queue.is_empty() \
+		and _m4_control_queue[0].command == "accept_motion"
+	if eligible and not _m4_control_queue.is_empty() and not has_segments: eligible = false
+	if eligible and has_segments: _m4_owner_busy = true
+	if eligible and not has_segments: _m4_segment_idle_polls += 1
+	_mutex.unlock()
+	if not eligible: return false
+	if not has_segments:
+		OS.delay_usec(WORKBENCH_SAMPLE_POLL_USEC)
+		return true
+	_m4_drain_controls(true)
+	_mutex.lock()
+	_m4_segment_service_turns += 1
+	_m4_owner_busy = false
+	_mutex.unlock()
+	return true
 
 func _m4_take_interval_actor_work() -> Dictionary:
 	# Exclusive worker, only after successful final preparation. Remove exactly
@@ -3900,6 +3959,7 @@ func _worker_loop() -> void:
 			_mutex.unlock()
 			lockstep_hold_start_usec = -1
 			lockstep_hold_timed_out = false
+		if _m4_service_leased_segments(): continue
 		var local_body_publication: int = 0
 		var lockstep_ticked: bool = false
 		var local_running: bool = false

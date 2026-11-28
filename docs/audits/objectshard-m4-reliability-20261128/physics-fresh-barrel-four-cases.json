@@ -1,0 +1,78 @@
+{
+  "cases": [
+    {
+      "anomalies": [],
+      "end_tick": 120,
+      "final_y": 457.000366210938,
+      "initial_x": 408.0,
+      "initial_y": 432.0,
+      "maximum_upward_speed_cells_s": 1.48393297649818e-08,
+      "maximum_y": 457.000366210938,
+      "minimum_y": 432.0,
+      "mode": "structures_disabled",
+      "observed_callbacks": 295,
+      "start_tick": 0,
+      "structural_bodies": 0
+    },
+    {
+      "anomalies": [],
+      "end_tick": 122,
+      "final_y": 457.0,
+      "initial_x": 408.0,
+      "initial_y": 432.054992675781,
+      "maximum_upward_speed_cells_s": 0.0,
+      "maximum_y": 457.0,
+      "minimum_y": 432.054992675781,
+      "mode": "pristine",
+      "observed_callbacks": 288,
+      "start_tick": 2,
+      "structural_bodies": 0
+    },
+    {
+      "anomalies": [],
+      "end_tick": 123,
+      "final_y": 457.0,
+      "initial_x": 408.0,
+      "initial_y": 432.054992675781,
+      "maximum_upward_speed_cells_s": 0.0,
+      "maximum_y": 457.0,
+      "minimum_y": 432.054992675781,
+      "mode": "cut_before_resume",
+      "observed_callbacks": 233,
+      "start_tick": 2,
+      "structural_bodies": 1
+    },
+    {
+      "anomalies": [],
+      "end_tick": 128,
+      "final_y": 457.0,
+      "initial_x": 408.0,
+      "initial_y": 432.054992675781,
+      "maximum_upward_speed_cells_s": 0.0,
+      "maximum_y": 457.0,
+      "minimum_y": 432.054992675781,
+      "mode": "cut_after_four_ticks",
+      "observed_callbacks": 288,
+      "start_tick": 2,
+      "structural_bodies": 1
+    }
+  ],
+  "checks": 212,
+  "engine": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "failures": [],
+  "platform": "Linux",
+  "raw_log_sha256": "928053fd7f2d2043396362a0d05436de4bd86f66fcc032816c04d906ab10c7df",
+  "schema": "objectshard-m4-fresh-barrel-v1",
+  "scope": "actual fresh Tower and independent barrel: Structures-disabled reference, pristine enabled owner and two early distant cutting schedules; initial attachment may consume a few native ticks; not owner pointer-sequence reconstruction",
+  "source_composition": "A f85cf1ff0 + B f25b1aaa2 application composition, unchanged aa015 native; fresh-barrel fixture SHA256 3a85ad15057522810051864f8918be1747ba8dba9a492720e4f19b69f7ad59fa"
+}

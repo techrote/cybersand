@@ -1,0 +1,62 @@
+{
+  "cases": [
+    {
+      "anomalies": [],
+      "end_tick": 121,
+      "final_y": 457.0,
+      "initial_x": 408.0,
+      "initial_y": 432.015991210938,
+      "maximum_upward_speed_cells_s": 0.0,
+      "maximum_y": 457.0,
+      "minimum_y": 432.015991210938,
+      "mode": "pristine",
+      "observed_callbacks": 448,
+      "start_tick": 1,
+      "structural_bodies": 0
+    },
+    {
+      "anomalies": [],
+      "end_tick": 121,
+      "final_y": 457.0,
+      "initial_x": 408.0,
+      "initial_y": 432.015991210938,
+      "maximum_upward_speed_cells_s": 3.72141384374913e-09,
+      "maximum_y": 457.0,
+      "minimum_y": 432.015991210938,
+      "mode": "cut_before_resume",
+      "observed_callbacks": 595,
+      "start_tick": 1,
+      "structural_bodies": 1
+    },
+    {
+      "anomalies": [],
+      "end_tick": 125,
+      "final_y": 457.0,
+      "initial_x": 408.0,
+      "initial_y": 432.015991210938,
+      "maximum_upward_speed_cells_s": 0.0,
+      "maximum_y": 457.0,
+      "minimum_y": 432.015991210938,
+      "mode": "cut_after_four_ticks",
+      "observed_callbacks": 759,
+      "start_tick": 1,
+      "structural_bodies": 1
+    }
+  ],
+  "checks": 195,
+  "engine": {
+    "build": "official",
+    "hash": "5b4e0cb0fd279832bbdd69fed5354d4e5ad26f88",
+    "hex": 263936,
+    "major": 4,
+    "minor": 7,
+    "patch": 0,
+    "status": "stable",
+    "string": "4.7-stable (official)",
+    "timestamp": 0
+  },
+  "failures": [],
+  "platform": "Linux",
+  "schema": "objectshard-m4-fresh-barrel-v1",
+  "scope": "actual fresh Tower and independent barrel, pristine and two early distant cutting schedules; initial attachment may consume a few native ticks; not owner pointer-sequence reconstruction"
+}
