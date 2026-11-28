@@ -1,0 +1,147 @@
+{
+  "format": "cybersand-strata-composition-v1",
+  "id": "factory-service-bay",
+  "name": "Factory service bay",
+  "modules": [
+    "cargo-cell",
+    "distant-spire",
+    "rear-truss-bay",
+    "vent-stack"
+  ],
+  "stages": [
+    {
+      "id": "rear-bay",
+      "plane": "scripted",
+      "region": [0, 0, 128, 80],
+      "depends_on": [],
+      "allowed_materials": [0, 62, 63, 79],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "rear-truss-bay",
+          "origin": [0, 0],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "cargo",
+      "plane": "scripted",
+      "region": [0, 92, 128, 96],
+      "depends_on": [
+        "rear-bay"
+      ],
+      "allowed_materials": [0, 62, 64, 76],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "cargo-cell",
+          "origin": [0, 92],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "vent",
+      "plane": "effects",
+      "region": [132, 56, 96, 128],
+      "depends_on": [
+        "rear-bay"
+      ],
+      "allowed_materials": [0, 62, 66, 68, 79],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "vent-stack",
+          "origin": [132, 56],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "far-spire",
+      "plane": "background",
+      "region": [64, 32, 96, 128],
+      "depends_on": [],
+      "allowed_materials": [
+        0,
+        62,
+        72,
+        77,
+        114,
+        130
+      ],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "distant-spire",
+          "origin": [64, 32],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "provenance": {
+      "kind": "original-layered-design",
+      "generator": "tools/strata2_build_part_recipes.py",
+      "generator_version": 1,
+      "semantic_limits": "Explicit decorative parts, no Play mutation and no load-bearing solver."
+    },
+    "visual_proposal": {
+      "planes": [
+        {
+          "id": "scripted",
+          "opacity": 0.82,
+          "depth": 0.3
+        },
+        {
+          "id": "effects",
+          "opacity": 0.82,
+          "depth": 0.15
+        },
+        {
+          "id": "background",
+          "opacity": 0.45,
+          "depth": 0.82
+        }
+      ],
+      "presentation": {
+        "parallax_strength": 0.45,
+        "fog_strength": 0.28
+      }
+    },
+    "atmosphere_proposal": {
+      "scope": "Anchor-relative regions; separately review and apply; native plan does not apply atmosphere.",
+      "configuration": {
+        "version": 1,
+        "enabled": true,
+        "paused": false,
+        "seed": 1207,
+        "effects": [
+          {
+            "id": "factory-steam",
+            "kind": "steam",
+            "plane": "effects",
+            "region": [150, 62, 60, 88],
+            "seed": 101,
+            "count": 22,
+            "speed": 16.0,
+            "strength": 0.75,
+            "direction": [0.1, -1.0],
+            "colour": [0.62, 0.76, 0.82, 0.8],
+            "enabled": true
+          }
+        ]
+      }
+    }
+  }
+}

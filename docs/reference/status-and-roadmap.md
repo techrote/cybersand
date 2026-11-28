@@ -10,11 +10,15 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 # Status and foundational roadmap
 
+## RAMCACHE and Strata owner-accepted integration — 2026-11-28
+
+**Approved integration / implemented candidate:** [RAMCACHE-STRATA-INTEGRATION-001](../operations/ramcache-strata-integration.md) integrates #745 and the complete #776/#785 Strata lineage with accepted main. The owner physically accepted both original evaluators and waived only the optional-optics 90% retention gate. Classic remains default, original failed measurements remain preserved, and persistent-area/Strata composition is explicitly refused. Current-source qualification, actual main merges and the definitive package retain separate evidence in the mission record. ObjectShard M4, PUBPRES development and deferred UX remain outside this mission.
+
 ## ObjectShard M4 live structural editing — 2026-11-28
 
 The opt-in [M4 live-edit candidate](../research/objectshard-m4-workbench.md) is
 qualified at application `ba6d8de45bd4d38717d92bdece7153bff115c0f0`; PR #754 remains
-**Draft/HOLD** for physical evaluation and subsequent mainline integration.
+**Draft/HOLD**. The owner positively physically evaluated the frozen live-edit application; the reconciled mainline source is undergoing independent merge qualification.
 [Campaign 46125028803](https://github.com/techrote/cybersand/actions/runs/46125028803)
 passes exact-source native and ordinary Workbench gates on Linux/Windows, plus
 a fresh Windows execution of the actual uploaded evaluator. Guarded publication
@@ -33,57 +37,22 @@ construction reconstruction, not a live rigid-body checkpoint.
 Native batching avoids repeated reconstruction, but the matched inactive-edit
 moving-tower medians are 4.60%/6.45% lower in this short Linux campaign; the
 [performance finding](../audits/objectshard-m4-live-edit-20261128/performance-results.md)
-remains unresolved. Physical acceptance of this archive is pending; the owner's
-positive `b7d889b9` predecessor evaluation is preserved separately.
+remains unresolved. The owner has positively evaluated this frozen live-edit archive; that observation is recorded separately from acceptance of the reconciled source.
 
-Existing RAMCACHE ancestry is retained. Strata/shared Workbench and mainline
-portable-package changes need focused reconciliation and combined-source
-qualification. Impact, repair, welding, stress/fatigue, M5 scheduling and live
-body saves remain outside this mission. No merge, Ready or default promotion
-is conferred by the candidate.
+Accepted RAMCACHE, Strata Theatre and portable-package work are now the
+reconciliation baseline. Shared Workbench ownership boundaries are combined
+explicitly, including refusal of simultaneous layered-Strata and active
+ObjectShard structural ownership. PUBPRES remains independently owned.
+Combined-source qualification and Windows delivery remain required before
+merger. Impact, repair, welding, stress/fatigue, M5 debris demotion and live
+body saves remain outside this mission. No Ready or default promotion is
+conferred by the candidate.
 
-## ObjectShard M0–M3 research candidates — 2026-11-22
+## GEN-006 persistent authored areas
 
-The [M3 continuous-play candidate](../research/objectshard-m3-preflight.md) reconstructs the recovered exclusive-worker rehearsal and retains a separate World/Rapier scene. Mutable geometry cannot enter the ordinary immutable Workbench GCR roster; the current PUBPRES successor remains a separately owned interface. Full ordinary Workbench binding, persistence and owner acceptance remain Planned.
+The [owner-accepted RAMCACHE integration #745](https://github.com/techrote/cybersand/pull/745) preserves #725/#734 and implements [native HOT ownership, bounded WARM/COLD caching, explicit asynchronous durability and real destination prefetch](../systems/persistent-area-residency.md). The [November 22 ledger](../audits/2026-11-22-gen006-ramcache.md) separates implementation, exact-source platform qualification, performance targets and the then-pending physical owner acceptance. The 28 November owner decision above supersedes that pending status for the original evaluator. It changes no ordinary production default and does not complete broader GEN-006.
 
-The [M3 final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md)
-delivers Draft/HOLD #741 at qualified source `e034f229`: fresh Linux/Windows
-execution, an actual verified Windows ZIP, controlled navigation disposal and
-three independent final reviews. Continuous editing, real detachment/motion and
-bounded capture are executable. The slower hosted timing observations, 1.93-second
-burst tail and production runtime-provenance failure remain explicit.
-
-The inherited Fire consumer's missing compatibility transition is completed at
-`73018218`, with 231 catalogue tests passing and the original lock/refusal rules
-preserved. This guard-only completion leaves the `e034f229` executable and ZIP
-unchanged; production runtime provenance remains unpassed.
-
-The separate M2 child [001R finisher #738](../audits/2026-11-22-objectshard-001r-final-qualification.md)
-is qualified as a Draft/HOLD Windows evaluation candidate. Exact-source native,
-actual Rapier rest/erosion, Linux/Windows and delivered-ZIP gates passed. Its
-size/age admission, wake-safe geometry, bounded motion and owner capture remain
-isolated Lab capabilities. Original M2 timing failures are retained. M3 preflight
-is a separate child; it does not authorize production Workbench changes or claim
-owner physical acceptance.
-
-The [implementation record](../research/objectshard-001.md) and
-[independent Lab procedure](../operations/objectshard-lab-playtest.md) describe
-the staged Draft/HOLD candidate, beginning with M0 #726 and M1 #728. The M2 child
-adds real product output, physical Sand lodging and selected Water extinction.
-The M2 [final delivery record](../audits/2026-11-22-objectshard-final-acceptance.md)
-records the completed exact-source Linux/Windows campaign, verified owner package
-and unresolved native timing gate. No Ready promotion or merge occurred.
-Native/local-Godot iteration, exact-source hosted Windows qualification and
-owner Windows11/NVIDIA physical acceptance are separate claims. The ordinary
-World/Workbench defaults and protected concurrent branches remain unchanged.
-Fracture, advanced solver transfers and durable persistence remain outside M0–M2.
-Do not infer production readiness or merge authority from a passing Lab probe.
-
-## GEN-006 persistent authored areas candidate
-
-The [stacked Draft/HOLD RAM-cache successor #734](https://github.com/techrote/cybersand/pull/734) implements [native HOT ownership, bounded WARM/COLD caching, explicit asynchronous durability and real destination prefetch](../systems/persistent-area-residency.md). The [November 22 ledger](../audits/2026-11-22-gen006-ramcache.md) separates implementation, exact-source platform qualification, performance targets and pending physical owner acceptance. It changes no ordinary production default and does not complete broader GEN-006.
-
-The opt-in [three-area prototype](../systems/persistent-authored-areas.md) implements the owner-authorised #591 milestone with native CYPS2 continuation, separate durable area identities, bounded completed-game-time catch-up and Simulate Ahead. Actor/controller/Rapier and unsupported solver dependencies refuse travel; ordinary Workbench defaults remain unchanged. The [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) owns current evidence and remaining gates. Draft/HOLD; broader #194 streaming, arbitrary eviction and recipe reconciliation remain Planned.
+The opt-in [three-area prototype](../systems/persistent-authored-areas.md) implements the owner-authorised #591 milestone with native CYPS2 continuation, separate durable area identities, bounded completed-game-time catch-up and Simulate Ahead. Actor/controller/Rapier and unsupported solver dependencies refuse travel; ordinary Workbench defaults remain unchanged. The [qualification ledger](../audits/2026-11-21-gen006-persistent-areas.md) retains original evidence; the [combined integration record](../operations/ramcache-strata-integration.md) owns current acceptance and final-source gates. Broader #194 streaming, arbitrary eviction and recipe reconciliation remain Planned.
 
 ## Unified SWARM-004/005/006 definitive candidate — 2026-11-24
 
@@ -2429,6 +2398,22 @@ The [physical actor programme](../operations/physical-actor-programme.md) retain
 ## Strata Theatre integration — 2026-10-18
 
 The opt-in [depth prototype](../systems/depth-layers-and-parallax.md) supplies four native material worlds and five compositor modes. It remains a synchronous comparison host, separate from ordinary asynchronous gameplay; production layering, immutable native-event forwarding, persistence and browser qualification remain Planned.
+
+**24 November 2026 successors, Draft/HOLD:**
+[#769](https://github.com/techrote/cybersand/pull/769) established the ordinary
+borrowed-Play adapter, three static editable native planes and authored
+persistence. [STRATA-THEATRE-002 / #776](https://github.com/techrote/cybersand/pull/776)
+retains that ancestry and adds [native import and finite layered construction](../systems/strata-authoring.md),
+eight reusable parts, three layered presets, six bounded visual motif kinds and
+five substantial [native environments](../systems/strata-environments.md).
+[Ownership and persistence](../systems/strata-workbench.md) retain default-OFF,
+one Play authority, v1 compatibility and strict v2 authored metadata. The
+[decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md) and
+[owner evaluation](../operations/strata-workbench-evaluation.md) distinguish
+actual platform/package evidence from physical Windows/NVIDIA acceptance.
+Cross-plane transfer, independently simulated decoration, broad Art integration,
+browser acceptance and default activation remain outside this candidate.
+The standalone host retains its earlier capabilities and evidence scope.
 
 ## WORKBENCH-001 / #391 integration candidate
 

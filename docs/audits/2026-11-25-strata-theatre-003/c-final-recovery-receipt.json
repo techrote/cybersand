@@ -1,0 +1,164 @@
+{
+  "schema": "strata3-c-final-compact-recovery-v1",
+  "recorded_date": "2026-11-26",
+  "evidence_base": "75b60f4aab9512ca668da12d58d51220e5b2cdef",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "scope": "Compact reconstruction of completed pre-outage observations from retained tool results and local commit identities. This is not a recovered byte-identical copy of the unavailable detailed local JSON receipts and not a new run.",
+  "unavailable_local_commits": [
+    {
+      "sha_prefix": "dd490a68",
+      "contents": "Independent actual two-host A1v2 MD/JSON review"
+    },
+    {
+      "sha_prefix": "5d63fc12",
+      "contents": "Final Windows UI/motion MD/JSON review"
+    },
+    {
+      "sha_prefix": "ce9884f1",
+      "contents": "Owner feedback route"
+    }
+  ],
+  "package_check": {
+    "executed_before_environment_outage": true,
+    "extracted_or_modified_package": false,
+    "method": "Unchanged external inspect_archive: streamed exact ZIP SHA/size and all2549 member hashes against complete embedded manifest; original-name safety and no shipped generated cache; embedded manifest identical to separately supplied manifest.",
+    "members": 2549,
+    "outer_artifact_sha256": "cc6d27dbf377cb62ac397c2db0b3ba6f9b2f3b3b294a3bc89b7fbbc18767b1ee",
+    "outer_artifact_bytes": 477073937,
+    "request": {
+      "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+      "armed": true,
+      "manifest_sha256": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+      "package_artifact_id": 15080761776,
+      "package_artifact_name": "strata3-workbench-windows-evaluator-fd0830abcfadd9ae19162e5677943bb131223e59-1",
+      "package_bytes": 477296145,
+      "package_filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+      "package_run_id": 45721790366,
+      "package_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+      "quit_after_callbacks": 180,
+      "schema": "strata3-cold-launch-request-v1",
+      "timeout_seconds": 180
+    }
+  },
+  "cold_observer": {
+    "reviewed_unarmed_source": "572567ebf06709827c49d503bdde41cde4e1ec6d",
+    "unarmed_tree": "f705751c327caef94b2d753b9411fdb0cd7144b2",
+    "local_review_commit": "84064baeff871c61a36b4374d93c22fca697c3d9",
+    "prearming_controls_passed": 21,
+    "prearming_other_checks": [
+      "actionlint passed",
+      "CI provider policy passed",
+      "Python compilation passed",
+      "git diff --check passed"
+    ],
+    "local_postarming_tests_started": false,
+    "local_postarming_commit_created": false,
+    "blockage": "exec-server transport disconnected before process creation; environment explicitly became unavailable after request write.",
+    "armed_source": "3f37d27bb7637e6ef7107e968d6e27fb4128ce2e",
+    "armed_tree": "e2892998bf42a8b2a9a8194d2f3268a14ed0f314",
+    "request_blob": "87ff36fff3f20e62e7813aa127b123406efbf92b",
+    "independently_checked_remote_delta": [
+      "tools/ci/strata3-cold-launch-request.json"
+    ],
+    "workflow_run": 45741693665,
+    "workflow_state_at_this_recovery": "in_progress",
+    "cold_execution_qualified_at_this_recovery": false
+  },
+  "windows_motion": {
+    "run": 45721790366,
+    "artifact": 15078368890,
+    "artifact_zip_sha256": "84671ae068d7a759112cd6ca84a5485ec555db3aa3a04342f3c7a9bd2927ee13",
+    "report_path": "optics-readability-challenge/motion/result.json",
+    "report_sha256": "b6f93b249015d021549867aae0d8a7ba88250137dd58c6cd5f86c777888b01b4",
+    "checks": 2090,
+    "failures": [],
+    "unchanged_frozen_motion_validator_passed": true,
+    "all40_image_hashes_and_actual_png_dimensions_checked": true,
+    "visually_inspected_indices": [
+      0,
+      6,
+      9
+    ],
+    "visually_inspected_profiles": [
+      "classic",
+      "gameplay_clarity",
+      "cinematic_deep_focus",
+      "diorama"
+    ],
+    "completed_physical_steps": [
+      96,
+      103,
+      99,
+      109
+    ],
+    "native_deltas": [
+      96,
+      104,
+      100,
+      109
+    ],
+    "ordinary_actor_count_each": 3,
+    "picking_max_error": 0,
+    "extra_worlds": 0,
+    "native_pose_injected": false,
+    "decorative_capture_and_upload_deltas": 0,
+    "static_decorative_hashes_unchanged": true,
+    "world_image_extent": [
+      1600,
+      900
+    ],
+    "requested_window_extent": [
+      1600,
+      1000
+    ],
+    "lab_original_path": "industrial-underworks/install/optics-lab.png",
+    "lab_sha256": "a1f80e4ff529149355f6a2ff0f6ecc23b02ec6ed8079fa3d93046f36ba3b5943",
+    "lab_extent": [
+      817,
+      607
+    ],
+    "visual_limits": "All three bodies resolved in the initial close view. Final close view shows the pilot only because the other two are outside camera framing. Clarity subordinates rear lattice; Deep preserves misleading crossbars; Diorama loses rear texture. Selected still sequence, not smoothness/FPS/input-to-photon or physical GPU proof."
+  },
+  "a1_actual_review": {
+    "run": 45733231981,
+    "observer": "55951750466dc76e0482954f3d9e8bd9a9d1ada4",
+    "unmodified_published_strict_reader_passed_both_hosts": true,
+    "independent_recomputation": "All30 native-window completed-step tick sequences, counter-derived native/Rapier rates, completion gaps and nearest-rank p95 values recomputed before outage.",
+    "linux": {
+      "artifact": 15077982082,
+      "zip_sha256": "70eccf59fc91c96d88c0f390cc48995454022a5567405457d7ea7c1c8e51464a",
+      "report_sha256": "72ab1f6551cdceb761b16feeecee8cd6b3455d25a05fbbef22422fab69989483",
+      "architectural_native_ratio": 0.8968207923988452,
+      "clarity_native_ratio": 0.9046625798188784,
+      "architectural_p95_ms": 201.378,
+      "clarity_p95_ms": 183.013,
+      "p95_limit_ms": 207.762,
+      "architectural_rate_target_met": false
+    },
+    "windows": {
+      "artifact": 15078960632,
+      "zip_sha256": "ca2a65fc25e40e5e6bdaad898fdc8ba8fc1c7d9314bf100c81b8b4d2bb7f59e4",
+      "report_sha256": "8de6ce0e282c0c05a3e7ec47a08badfdd07a60ab694ea66b0f74079047f438af",
+      "architectural_native_ratio": 0.9075285602179264,
+      "clarity_native_ratio": 0.901952923624176,
+      "architectural_p95_ms": 370.074,
+      "clarity_p95_ms": 372.136,
+      "p95_limit_ms": 401.8224,
+      "initial_admission_ms": 63802,
+      "admission_target_ms": 45000,
+      "architectural_max_interval_ms": 1040.738,
+      "clarity_max_interval_ms": 1054.236
+    },
+    "disposition": "Credible deferred optimization only. Narrow passes, Linux Architectural rate failure, Windows admission failure and >1s individual intervals remain. No adoption into frozen fd; no historical v1 timing admission or transfer of results into principal evaluator."
+  },
+  "navigation_corrections": [
+    "Exact selectable label is Optics Readability Challenge, not Physical Readability Challenge.",
+    "Uncheck Solo before Stack; choosing Stack alone does not clear Solo.",
+    "After Bypass/wipe comparison, turn Bypass off and Processed share to1 before Show physical Play.",
+    "Assistance is bounded suppression; Play Solo is definitive ownership inspection.",
+    "Preset and scene names/saves are independent; fresh Load start uses the saved scene name.",
+    "Default challenge has one actor; three-actor motion is an explicitly separate fixture variant."
+  ]
+}

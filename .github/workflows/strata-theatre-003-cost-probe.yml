@@ -1,0 +1,192 @@
+# Separate observational annex; application checkout remains immutable. Draft/HOLD.
+name: Strata Theatre 003 exact-output shader cost experiment
+'on':
+  push:
+    branches:
+    - qualification/strata-theatre-003-cost-probe
+    paths:
+    - .github/workflows/strata-theatre-003-cost-probe.yml
+    - tools/ci/strata3_shader_cost.py
+    - tools/ci/strata3_shader_cost.gd
+    - tools/ci/test_strata3_shader_cost.py
+    - tools/ci/experiments/strata3_optical_override_test.gd
+    - tools/ci/experiments/strata3_optical_empty_coverage_a1.gdshader
+    - tools/ci/experiments/strata3_shader_identity_diagnostic.gd
+permissions:
+  contents: read
+  actions: read
+concurrency:
+  group: strata3-shader-cost-${{ github.run_id }}
+  cancel-in-progress: false
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+jobs:
+  linux:
+    name: Actual Linux shader equivalence and matched physical cost
+    runs-on: ubuntu-24.04
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: application
+    steps:
+    - name: Check out immutable external observer
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: ${{ github.sha }}
+        path: observer
+        fetch-depth: 0
+        persist-credentials: false
+    - name: Check out frozen application without observer changes
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: fd0830abcfadd9ae19162e5677943bb131223e59
+        path: application
+        fetch-depth: 0
+        persist-credentials: false
+    - name: Validate observer and obtain exact retained native inputs
+      run: |
+        set -euo pipefail
+        python3 ../observer/tools/ci/check_ci_provider_policy.py
+        python3 ../observer/tools/ci/test_strata3_shader_cost.py
+        git lfs install --local
+        downloaded=false
+        for attempt in 1 2 3; do
+          if git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''; then
+            downloaded=true
+            break
+          fi
+          if (( attempt < 3 )); then sleep "$((attempt * 5))"; fi
+        done
+        if [[ $downloaded != true ]]; then
+          # GitHub's LFS batch service can time out while its immutable media
+          # endpoint remains available. Accept only the exact committed OIDs.
+          python3 - <<'PYTHON'
+        import hashlib,pathlib,re,subprocess,urllib.request
+        revision=subprocess.check_output(['git','rev-parse','HEAD']).decode().strip()
+        assert re.fullmatch('[0-9a-f]{40}',revision)
+        names=('godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so',
+               'godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so')
+        for name in names:
+            pointer=subprocess.check_output(['git','show','HEAD:'+name]).decode()
+            match=re.fullmatch(r'version https://git-lfs.github.com/spec/v1\noid sha256:([0-9a-f]{64})\nsize (\d+)\n',pointer)
+            assert match,'Expected committed LFS identity: '+name
+            expected,size=match.group(1),int(match.group(2))
+            target=pathlib.Path(name)
+            if target.stat().st_size==size and hashlib.sha256(target.read_bytes()).hexdigest()==expected:continue
+            temporary=target.with_suffix(target.suffix+'.download')
+            digest,count=hashlib.sha256(),0
+            try:
+                with urllib.request.urlopen('https://media.githubusercontent.com/media/techrote/cybersand/'+revision+'/'+name,timeout=120) as response,temporary.open('wb') as output:
+                    while block:=response.read(1024*1024):
+                        count+=len(block)
+                        assert count<=size,'Runtime download exceeded committed size'
+                        digest.update(block);output.write(block)
+                assert count==size and digest.hexdigest()==expected,'Runtime download differs from committed identity'
+                temporary.replace(target)
+                print('Verified immutable media fallback:',name,size,expected)
+            finally:
+                temporary.unlink(missing_ok=True)
+        PYTHON
+        fi
+    - name: Prepare official pinned Godot and graphical display
+      run: |
+        set -euo pipefail
+        missing=()
+        command -v Xvfb >/dev/null || missing+=(xvfb)
+        command -v xauth >/dev/null || missing+=(xauth)
+        for package in libgl1 libegl1 libxrandr2 libxi6 libxinerama1 libxcursor1 libasound2t64; do
+          [[ $(dpkg-query -W -f='${Status}' "$package" 2>/dev/null) == 'install ok installed' ]] || missing+=("$package")
+        done
+        if (( ${#missing[@]} )); then
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends "${missing[@]}"
+        fi
+        curl --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output "$RUNNER_TEMP/godot47.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
+        echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot47.zip" | sha256sum --check --strict
+        unzip -q "$RUNNER_TEMP/godot47.zip" -d "$RUNNER_TEMP/godot47"
+        chmod +x "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64"
+    - name: Compare exact shader pixels and matched native progression
+      run: |
+        set -euo pipefail
+        xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 ../observer/tools/ci/strata3_shader_cost.py --application-root . --godot "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64" --output build/strata3-shader-cost-linux
+    - name: Preserve original shader and physical receipts including failures
+      if: always()
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: strata3-shader-cost-linux-fd0830ab-${{ github.sha }}-${{ github.run_attempt }}
+        path: application/build/strata3-shader-cost-linux/
+        if-no-files-found: error
+        retention-days: 90
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+  windows:
+    name: Actual Windows shader equivalence and matched physical cost
+    runs-on: windows-2022
+    timeout-minutes: 45
+    defaults:
+      run:
+        working-directory: application
+    steps:
+    - name: Check out immutable external observer
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: ${{ github.sha }}
+        path: observer
+        fetch-depth: 0
+        persist-credentials: false
+    - name: Check out frozen application without observer changes
+      uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      with:
+        ref: fd0830abcfadd9ae19162e5677943bb131223e59
+        path: application
+        fetch-depth: 0
+        persist-credentials: false
+    - name: Validate observer and obtain exact retained native inputs
+      run: |
+        python ../observer/tools/ci/check_ci_provider_policy.py
+        if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+        python ../observer/tools/ci/test_strata3_shader_cost.py
+        if ($LASTEXITCODE -ne 0) { throw 'External observer controls failed' }
+        git lfs install --local
+        if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
+        for ($attempt = 1; $attempt -le 3; $attempt++) {
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -eq 0) { break }
+          if ($attempt -eq 3) { throw 'Retained runtime download failed after three attempts' }
+          Start-Sleep -Seconds (5 * $attempt)
+        }
+      shell: pwsh
+    - name: Authenticate the exact pinned graphical Godot runtime
+      shell: pwsh
+      run: |
+        $archive = Join-Path $env:RUNNER_TEMP 'godot-windows.zip'
+        curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+        if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot download failed' }
+        $env:STRATA_GODOT_ARCHIVE = $archive
+        @'
+        import os, pathlib, sys
+        sys.path.insert(0, 'tools/ci')
+        from run_windows_godot_regressions import prepare_godot
+        executable, record = prepare_godot(pathlib.Path(os.environ['STRATA_GODOT_ARCHIVE']))
+        with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as stream:
+            stream.write('GODOT_EXE='+str(executable)+'\nWINDOWS_DEPENDENCIES='+str(executable.parent)+'\n')
+        '@ | python -
+        if ($LASTEXITCODE -ne 0) { throw 'Godot pin verification failed' }
+    - name: Compare exact shader pixels and matched native progression
+      run: |
+        python ../observer/tools/ci/strata3_shader_cost.py --application-root . --godot $env:GODOT_EXE --output build/strata3-shader-cost-windows
+        if ($LASTEXITCODE -ne 0) { throw 'Shader cost experiment failed' }
+      shell: pwsh
+    - name: Preserve original shader and physical receipts including failures
+      if: always()
+      uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+      with:
+        name: strata3-shader-cost-windows-fd0830ab-${{ github.sha }}-${{ github.run_attempt }}
+        path: application/build/strata3-shader-cost-windows/
+        if-no-files-found: error
+        retention-days: 90

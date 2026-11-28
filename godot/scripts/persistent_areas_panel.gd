@@ -326,7 +326,7 @@ func _open_recovery_exit() -> void:
 func _refresh_details() -> void:
 	var state := _last_state
 	var lines := PackedStringArray([
-		"GEN-006 / persistent authored areas — experimental, Draft/HOLD",
+		"GEN-006 / persistent authored areas — optional experimental profile",
 		"",
 		"One 512 × 512 native area is active. The optional RAM cache retains admitted native Worlds. A hot return transfers an existing World; warm and cold returns reconstruct its validated native continuation. Remaining game-time debt stays visible.",
 		"",

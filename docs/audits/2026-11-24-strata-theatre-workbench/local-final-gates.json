@@ -1,0 +1,46 @@
+{
+  "schema": "strata-local-final-gates-v1",
+  "gates": {
+    "documentation": {
+      "status": "passed",
+      "report": "final-docs-check.json",
+      "sha256": "42c26e7e23f8a9376b15a0f55b7306ebca7dfbb597bd2aa0da17aea3d62b0459"
+    },
+    "repository": {
+      "status": "passed",
+      "report": "final-repository-check.json",
+      "sha256": "be5b5a9e0929186821d2922827e55a947e603b884217cb4926efd77ad7b530a1"
+    },
+    "historical_m11": {
+      "status": "passed",
+      "report": "final-m11-check.json",
+      "sha256": "8a902e9528f585b5d77d40881ac2df4076bff609ad23191bf56b26a0b8d79f3d"
+    },
+    "execution_input_preservation": {
+      "status": "passed",
+      "qualified_application": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+      "input_count": 1105,
+      "changed_inputs": [],
+      "map_sha256": "abd8df5c1d0bc85ef0497e0f843e21e3b59d767f632f7e579743e132efbf5de2",
+      "scope": "Working tree after documentation/evidence changes; final Git tree checked again before branch update."
+    },
+    "retrieval": {
+      "status": "reviewed",
+      "report": "final-retrieval-review.json",
+      "fixture_changes": "Only added STRATA-WB-01;32frozen and164priorchallenge objects unchanged",
+      "limits": "Lexical ranks and source-fact review are distinct."
+    },
+    "evidence_byte_custody": {
+      "status": "passed",
+      "staged_original_receipts_checked": 116,
+      "scope": "Every retained-file ledger entry compared to its staged Git blob; audit-local .gitattributes preserves original Windows line endings/BOM.",
+      "all_final_staged_paths_within_docs": true,
+      "private_library_ids_and_sensitive_tokens_in_staged_files": false
+    },
+    "authored_whitespace": {
+      "status": "passed",
+      "files": 21,
+      "scope": "Authored Markdown, Python and attributes only; original JSON/log evidence retains original CRLF and whitespace, so unrestricted git diff --check reports those original bytes."
+    }
+  }
+}

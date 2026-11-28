@@ -1,0 +1,53 @@
+{
+  "kind": "independent-artistic-baseline-inspection",
+  "reviewer": "Specialist B",
+  "date": "2026-11-25",
+  "source": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "archive": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+  "artifact_id": 14978334114,
+  "owner_zip_sha256": "1a619b8b9c6af51529517f1609b457a7f25ed727deccbac8cd92269c7c23a547",
+  "captures": [
+    {
+      "scene": "orbital-terminal",
+      "file": "orbital-terminal/reference-composite.png",
+      "sha256": "5d2c59e864f76b61ab3e52f87e1117400783d6a55a4cf8e0b134dbddb64276f3",
+      "visual_observation": "Bright physical decks are already prominent. Rear suspended frames and long trusses retain similar straight-edge language and can look supporting. Distant docks are already very dark; broad further dimming would destroy detail."
+    },
+    {
+      "scene": "neon-rain-arcology",
+      "file": "neon-rain-arcology/reference-composite.png",
+      "sha256": "ccbf13e5c90958ae379d4dceb7e4f82c10f282fc99dcd88e5afdc5fa2064c568",
+      "visual_observation": "Bright physical lips separate roofs, but rear building borders, signs and skybridges compete at overview. Windows remain useful depth/scale texture. Prefer detail compression over blanket blur."
+    },
+    {
+      "scene": "industrial-underworks",
+      "file": "industrial-underworks/reference-composite.png",
+      "sha256": "7c8768ef846e8c3535e88e20eda15f59bba25219e6ac4fe70aeaf3d8e6967c1d",
+      "visual_observation": "Orange lower rear truss and central copper pipe appear continuous beneath the pilot. Rear reactor frames and rings can resemble collision. Maintain Play light lips while quieting rear edges."
+    },
+    {
+      "scene": "abyss-foundry",
+      "file": "abyss-foundry/reference-composite.png",
+      "sha256": "baea74d283d300b63e6ef07229c1a4922c747b31cefb2d0403133ecf7a6f5b39",
+      "visual_observation": "Central orange rear gantry can be mistaken for a usable platform. Side cave shelves and their bright physical lips are legible, while distant mineral pattern is already low contrast."
+    },
+    {
+      "scene": "vertical-transfer-spine",
+      "file": "vertical-transfer-spine/reference-composite.png",
+      "sha256": "26f1791361f9d3eb55e65ab71b2efb277464e49c734e1ddcf3bf19fcecb89779",
+      "visual_observation": "Repeated rear trusses cross the open physical central shaft. Portrait overview compresses all native detail and actor size; a profile cannot replace zoom or an explicit physical inspection control."
+    }
+  ],
+  "limits": [
+    "Visual judgment from actual original Windows application captures, not physical owner observation.",
+    "Does not establish human perceptual success or GPU performance.",
+    "All five 002 final extracted Windows admissions missed the unchanged 45-second target."
+  ],
+  "implementation_checkpoint": {
+    "profiles": 11,
+    "profile_value_checks": 97,
+    "atmosphere_checks": 72,
+    "runtime": "4.7.stable.official.5b4e0cb0f",
+    "scope": "Headless schema and lifecycle checks only; new optical rendering pending integrated graphical execution."
+  }
+}

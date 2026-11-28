@@ -1,0 +1,43 @@
+{
+  "after": {
+    "material_runtime_code_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+    "runtime_code_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+    "script_constant_property_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+    "separate_runtime_code_sha256": "50518cda2c8b9635d4b15b71ade65752fa9f859f447624940c9705acf814995f",
+    "statistics_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb"
+  },
+  "before": {
+    "runtime_code_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+    "statistics_sha256": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb"
+  },
+  "live_id": "-9223372009440803370",
+  "restored": "b64c8fe105fb981b56aab38f44cfca2f875ea975792593c11dd9692892a0e8eb",
+  "same_resource": true,
+  "scope": "Headless resource/constant evaluation diagnostic, not graphical or performance qualification",
+  "separate_id": "-9223372009440803370",
+  "version": "4.7-stable (official)",
+  "external_script_sha256": "83adf427e141355792aca75f37b6be58fa2c1e0602637f87720382bd2ec09a3e",
+  "godot_binary_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "process_log_sha256": "616cc1b944f1516dc1e78485b1b417f9f179ae6af1673397337285af7c1a6edd",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "command": [
+    "/workspace/scratch/119285bae098/runtime/Godot_v4.7-stable_linux.x86_64",
+    "--headless",
+    "--audio-driver",
+    "Dummy",
+    "--path",
+    "/workspace/scratch/119285bae098/cybersand/godot",
+    "--script",
+    "/tmp/strata003-shader-resource-diagnostic.gd"
+  ],
+  "exit_code": 0,
+  "schema": "strata003-independent-runtime-shader-identity-diagnostic-v1",
+  "assessor": "Specialist C",
+  "executed_script_utf8": "extends SceneTree\n\nconst Renderer = preload(\"res://scripts/depth/strata_optical_renderer.gd\")\nconst SeparatelyPreloaded = preload(\"res://shaders/strata_optical_plane.gdshader\")\n\nfunc _initialize() -> void:\n\tvar renderer = Renderer.new()\n\tvar live: Shader = renderer.OPTICAL_SHADER\n\tvar separate: Shader = SeparatelyPreloaded\n\tvar original := FileAccess.get_file_as_string(\"res://shaders/strata_optical_plane.gdshader\")\n\tvar candidate := FileAccess.get_file_as_string(\"/home/agent/strata003-cost-probe/tools/ci/experiments/strata3_optical_empty_coverage_a1.gdshader\")\n\tvar material := ShaderMaterial.new()\n\tmaterial.shader = live\n\tvar record := {\"scope\":\"Headless resource/constant evaluation diagnostic, not graphical or performance qualification\",\n\t\t\"version\":Engine.get_version_info().string,\n\t\t\"same_resource\":live == separate,\n\t\t\"live_id\":str(live.get_instance_id()),\"separate_id\":str(separate.get_instance_id()),\n\t\t\"before\":{\"runtime_code_sha256\":live.code.sha256_text(),\"statistics_sha256\":renderer.statistics().shader_sha256}}\n\tlive.code = candidate\n\trecord.after = {\"runtime_code_sha256\":live.code.sha256_text(),\n\t\t\"separate_runtime_code_sha256\":separate.code.sha256_text(),\n\t\t\"material_runtime_code_sha256\":material.shader.code.sha256_text(),\n\t\t\"statistics_sha256\":renderer.statistics().shader_sha256,\n\t\t\"script_constant_property_sha256\":Renderer.OPTICAL_SHADER.code.sha256_text()}\n\tlive.code = original\n\trecord.restored = live.code.sha256_text()\n\tprint(\"STRATA3_SHADER_RESOURCE_DIAGNOSTIC \",JSON.stringify(record))\n\tquit(0)\n",
+  "diagnostic_headless": true,
+  "graphical_qualification": false,
+  "native_cost_qualification": false,
+  "supersedes_inference_in_commit": "a4d557365aa31b1fd3e798958e807d192c15cd9a",
+  "interpretation": "Runtime resource and attached-material reads track the mutation; frozen constant/property expression and statistics do not. Compiler folding is an inference, not compiler-source proof. V1 remains rejected and its native attachment is not retroactively established.",
+  "raw_log_custody": "Original process.log remains local diagnostic evidence; its hash is retained here. Raw process logs are not committed under repository policy."
+}

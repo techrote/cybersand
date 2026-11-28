@@ -1,0 +1,248 @@
+name: Strata Theatre ordinary Workbench qualification
+
+# Explicit bounded Draft/HOLD evaluation on the owner's isolated feature branch.
+# Retained native inputs must remain exact. No runtime publication or promotion.
+on:
+  push:
+    branches: [feat/strata-theatre-workbench-001-20261124]
+    paths:
+      - 'godot/scripts/depth/**'
+      - 'godot/shaders/depth*'
+      - 'godot/data/strata/**'
+      - 'godot/scripts/shared_workbench.gd'
+      - 'godot/scripts/workbench_paint_editor_controller.gd'
+      - 'godot/tools/qualify_workbench_strata*.gd'
+      - 'godot/tests/test_workbench_strata*.gd'
+      - 'tools/ci/qualify_strata_workbench.py'
+      - 'tools/ci/test_strata_qualification.py'
+      - 'tools/ci/test_strata_campaign_custody.py'
+      - 'tools/ci/strata_process_metrics.py'
+      - 'tools/ci/test_strata_process_metrics.py'
+      - 'tools/package_strata_workbench.py'
+      - '.github/workflows/strata-theatre-workbench.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: strata-theatre-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GIT_CONFIG_COUNT: '1'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PYTHONUTF8: '1'
+
+jobs:
+  linux:
+    name: Actual Linux graphical Workbench and native layer ownership
+    runs-on: ubuntu-24.04
+    timeout-minutes: 50
+    env:
+      LIBGL_ALWAYS_SOFTWARE: '1'
+      LP_NUM_THREADS: '2'
+    steps:
+      - name: Check out exact qualification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate scope and fetch unchanged retained native inputs
+        run: |
+          set -euo pipefail
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 tools/ci/test_strata_qualification.py
+          python3 tools/ci/test_strata_campaign_custody.py
+          python3 tools/ci/test_strata_process_metrics.py
+          git lfs install --local
+          git lfs pull --include='godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so,godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' --exclude=''
+      - name: Prepare official pinned Godot and graphical display
+        run: |
+          set -euo pipefail
+          sudo apt-get update -qq
+          sudo apt-get install -y --no-install-recommends xvfb xauth libgl1 libegl1 libxrandr2 libxi6 libxinerama1 libxcursor1 libasound2t64
+          curl --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output "$RUNNER_TEMP/godot47.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot47.zip" | sha256sum --check --strict
+          unzip -q "$RUNNER_TEMP/godot47.zip" -d "$RUNNER_TEMP/godot47"
+          chmod +x "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64"
+      - name: Execute actual graphical native readback, identity and fresh reopening
+        run: |
+          set -euo pipefail
+          xvfb-run -a -s '-screen 0 1600x1000x24 -nolisten tcp' python3 tools/ci/qualify_strata_workbench.py --godot "$RUNNER_TEMP/godot47/Godot_v4.7-stable_linux.x86_64" --output build/strata-linux
+      - name: Preserve original Linux receipts including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: strata-linux-${{ github.sha }}-${{ github.run_attempt }}
+          path: build/strata-linux/
+          if-no-files-found: error
+          retention-days: 90
+
+  windows:
+    name: Actual Windows graphical Workbench and fresh-process composition
+    runs-on: windows-2022
+    timeout-minutes: 50
+    steps:
+      - name: Check out exact qualification source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - name: Validate scope and fetch retained Windows runtime
+        shell: pwsh
+        run: |
+          python tools/ci/check_ci_provider_policy.py
+          if ($LASTEXITCODE -ne 0) { throw 'CI provider policy failed' }
+          python tools/ci/test_strata_qualification.py
+          if ($LASTEXITCODE -ne 0) { throw 'Evidence adverse controls failed' }
+          python tools/ci/test_strata_campaign_custody.py
+          if ($LASTEXITCODE -ne 0) { throw 'Independent campaign custody controls failed' }
+          python tools/ci/test_strata_process_metrics.py
+          if ($LASTEXITCODE -ne 0) { throw 'Process resource observation controls failed' }
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Retained runtime download failed' }
+      - name: Authenticate pinned Godot and complete portable dependencies
+        shell: pwsh
+        run: |
+          $archive = Join-Path $env:RUNNER_TEMP 'godot-windows.zip'
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 300 --output $archive 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Pinned Godot download failed' }
+          $env:STRATA_GODOT_ARCHIVE = $archive
+          @'
+          import os, pathlib, sys
+          sys.path.insert(0, 'tools/ci')
+          from run_windows_godot_regressions import prepare_godot
+          executable, record = prepare_godot(pathlib.Path(os.environ['STRATA_GODOT_ARCHIVE']))
+          with open(os.environ['GITHUB_ENV'], 'a', encoding='utf-8') as stream:
+              stream.write('GODOT_EXE='+str(executable)+'\nWINDOWS_DEPENDENCIES='+str(executable.parent)+'\n')
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Godot pin verification failed' }
+          $dependencies = Join-Path $env:RUNNER_TEMP 'godot-windows'
+          foreach ($name in @('LICENSE.txt','COPYRIGHT.txt')) {
+            curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output (Join-Path $dependencies "Godot-$name") "https://raw.githubusercontent.com/godotengine/godot/5b4e0cb0f/$name"
+            if ($LASTEXITCODE -ne 0) { throw 'Godot notice download failed' }
+          }
+          $runtimeLicense = Join-Path $dependencies 'Microsoft-Visual-C-Runtime-LICENSE.docx'
+          $developerLicense = Join-Path $dependencies 'Microsoft-Visual-Studio-2022-LICENSE.docx'
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $runtimeLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/09/Visual-C-Runtime-2015-2022-License-1.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft runtime notice download failed' }
+          curl.exe --fail --location --retry 2 --connect-timeout 20 --max-time 120 --output $developerLicense 'https://visualstudio.microsoft.com/wp-content/uploads/2021/11/Visual-Studio-2022-Enterprise-Professional-License-EN.docx'
+          if ($LASTEXITCODE -ne 0) { throw 'Microsoft redistribution notice download failed' }
+          $vc = Join-Path $env:RUNNER_TEMP 'strata-vc-runtime'
+          & tools/ci/stage_windows_vc_runtime.ps1 -Output $vc -License $runtimeLicense -DeveloperLicense $developerLicense
+          if ($LASTEXITCODE -ne 0) { throw 'VC runtime staging failed' }
+          Copy-Item (Join-Path $vc 'vcruntime140.dll') $dependencies
+          Copy-Item (Join-Path $vc 'vc-runtime-provenance.json') $dependencies
+      - name: Execute ordinary graphical Workbench and all three fresh reopening pairs
+        shell: pwsh
+        run: |
+          python tools/ci/qualify_strata_workbench.py --godot $env:GODOT_EXE --output build/strata-windows
+          if ($LASTEXITCODE -ne 0) { throw 'Windows Strata qualification failed' }
+      - name: Preserve original Windows receipts including failures
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: strata-windows-${{ github.sha }}-${{ github.run_attempt }}
+          path: build/strata-windows/
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain authenticated portable dependencies for the same source
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: strata-dependencies-${{ github.sha }}-${{ github.run_attempt }}
+          path: ${{ env.WINDOWS_DEPENDENCIES }}/
+          if-no-files-found: error
+          retention-days: 7
+
+  package:
+    name: Pristine extracted Windows evaluator and ordinary launcher
+    needs: [linux, windows]
+    runs-on: windows-2022
+    timeout-minutes: 50
+    steps:
+      - name: Check out the same frozen source
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          ref: ${{ github.sha }}
+          fetch-depth: 0
+          persist-credentials: false
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: strata-linux-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/linux
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: strata-windows-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/windows
+      - uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
+        with:
+          name: strata-dependencies-${{ github.sha }}-${{ github.run_attempt }}
+          path: dependencies
+      - name: Verify retained payload and build the complete evaluator
+        shell: pwsh
+        run: |
+          git lfs install --local
+          if ($LASTEXITCODE -ne 0) { throw 'LFS setup failed' }
+          git lfs pull --include='godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll,godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' --exclude=''
+          if ($LASTEXITCODE -ne 0) { throw 'Retained runtime download failed' }
+          $archive = "build/CyberSand-Strata-Workbench-Windows-$($env:GITHUB_SHA.Substring(0,12)).zip"
+          python tools/package_strata_workbench.py build --dependencies dependencies --linux evidence/linux --windows evidence/windows --output build/evaluation --archive $archive
+          if ($LASTEXITCODE -ne 0) { throw 'Source-bound portable package refused' }
+          'STRATA_ARCHIVE=' + $archive | Out-File -Append -FilePath $env:GITHUB_ENV
+      - name: Extract pristine shipped bytes and repeat native graphical save/reopen
+        shell: pwsh
+        run: |
+          $extracted = Join-Path $env:RUNNER_TEMP 'strata owner package'
+          Expand-Archive -LiteralPath $env:STRATA_ARCHIVE -DestinationPath $extracted
+          python tools/package_strata_workbench.py verify --pristine $extracted
+          if ($LASTEXITCODE -ne 0) { throw 'Pristine extracted package identity failed' }
+          python tools/ci/qualify_strata_workbench.py --godot (Join-Path $extracted 'Godot_v4.7-stable_win64_console.exe') --project (Join-Path $extracted 'godot') --output evidence/extracted
+          if ($LASTEXITCODE -ne 0) { throw 'Extracted Windows graphical execution failed' }
+          $start = New-Object System.Diagnostics.ProcessStartInfo
+          $start.FileName = $env:ComSpec
+          $start.Arguments = '/d /s /c ""' + (Join-Path $extracted 'Open Workbench.cmd') + '" --audio-driver Dummy --rendering-method gl_compatibility --rendering-driver opengl3 --quit-after 180"'
+          $start.UseShellExecute = $false
+          $start.RedirectStandardOutput = $true
+          $start.RedirectStandardError = $true
+          $process = New-Object System.Diagnostics.Process
+          $process.StartInfo = $start
+          [void]$process.Start()
+          $stdout = $process.StandardOutput.ReadToEndAsync()
+          $stderr = $process.StandardError.ReadToEndAsync()
+          if (!$process.WaitForExit(180000)) { $process.Kill($true); throw 'Ordinary graphical launcher exceeded 180 seconds' }
+          $stdout.Result | Set-Content evidence/launcher.stdout.log
+          $stderr.Result | Set-Content evidence/launcher.stderr.log
+          if ($process.ExitCode -ne 0 -or ($stdout.Result + $stderr.Result) -match 'SCRIPT ERROR:|Parse Error:|Failed to load script|ERROR:') { throw 'Ordinary graphical launcher failed' }
+          $admittedLines = @($stdout.Result -split "`r?`n" | Where-Object { $_.StartsWith('STRATA_WORKBENCH_LAUNCH_ADMITTED ') })
+          if ($admittedLines.Count -ne 1) { throw 'One actual ordinary Workbench admission receipt is required' }
+          $admitted = $admittedLines[0].Substring('STRATA_WORKBENCH_LAUNCH_ADMITTED '.Length) | ConvertFrom-Json
+          if ($admitted.source_revision -ne $env:GITHUB_SHA -or $admitted.workbench_script -ne 'res://scripts/shared_workbench.gd' -or $admitted.world_generation -le 0 -or ($admitted.worker_id -isnot [string] -or $admitted.worker_id -notmatch '^-?[1-9][0-9]{0,18}$') -or $admitted.strata_enabled -ne $false -or $admitted.extent.Count -ne 2 -or $admitted.extent[0] -ne 2048 -or $admitted.extent[1] -ne 2048) { throw 'Ordinary default play World admission identity is invalid' }
+          @{ command = $start.FileName + ' ' + $start.Arguments; wrapper_pid = $process.Id; exit_code = $process.ExitCode; admitted = $admitted; source_revision = $env:GITHUB_SHA; pristine_directory = $extracted } | ConvertTo-Json -Depth 8 | Set-Content evidence/launcher.json
+          python tools/package_strata_workbench.py verify $extracted
+          if ($LASTEXITCODE -ne 0) { throw 'Original payload changed during extracted execution' }
+      - name: Retain qualified evaluator, checksum and complete payload manifest
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: strata-workbench-windows-evaluator-${{ github.sha }}-${{ github.run_attempt }}
+          path: |
+            build/CyberSand-Strata-Workbench-Windows-*.zip
+            build/CyberSand-Strata-Workbench-Windows-*.zip.sha256
+            build/CyberSand-Strata-Workbench-Windows-*.manifest.json
+          if-no-files-found: error
+          retention-days: 90
+      - name: Retain original extracted-package and launcher evidence
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: strata-package-evidence-${{ github.sha }}-${{ github.run_attempt }}
+          path: evidence/
+          if-no-files-found: error
+          retention-days: 90

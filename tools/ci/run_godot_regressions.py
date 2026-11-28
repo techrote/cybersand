@@ -243,7 +243,9 @@ PERSISTENT_PROFILE_CASES = frozenset({
     "test_persistent_area_ramcache", "test_persistent_area_responsiveness",
     "test_persistent_area_recoverable_workbench", "test_persistent_area_hot_recovery",
     "test_persistent_area_resident_storage_recovery", "test_persistent_area_advance_recovery",
+    "test_ramcache_strata_boundaries",
 })
+
 
 
 # Only these fixtures exercise the mounted optional Structures controls.
@@ -272,7 +274,6 @@ def script_case_flags(name: str) -> tuple[str, ...]:
     if name in OBJECTSHARD_WORKBENCH_CASES:
         flags += ("--", "--objectshard-m4-workbench")
     return flags
-
 
 def _case_requires_display(name: str) -> bool:
     return name.endswith("_render") or name in architecture_context.GRAPHICAL_CASES
@@ -824,6 +825,18 @@ def run_case(godot: str, case: Case, output_dir: Path, role: str, *,
     process_env["CYBERSAND_TEST_ARTIFACT_DIR"] = str(
         (output_dir / (case.name + "-artifacts")).resolve()
     )
+    if case.name in {"test_strata_owner_preference", "test_strata_optics_configuration"}:
+        # The exact preset-count and independent quality assertions require a
+        # fresh user profile. The dedicated integration campaign separately
+        # reopens this same authored scene in a second process.
+        evidence = Path(process_env["CYBERSAND_TEST_ARTIFACT_DIR"])
+        evidence.mkdir(parents=True, exist_ok=True)
+        userdata = tempfile.mkdtemp(prefix="userdata-", dir=evidence)
+        process_env.update({key: userdata for key in
+                            ("APPDATA", "LOCALAPPDATA", "XDG_DATA_HOME", "XDG_CONFIG_HOME")})
+        process_env.update(STRATA_PHASE="install", STRATA_EVIDENCE=str(evidence),
+                           STRATA_REPORT=str(evidence / "result.json"),
+                           STRATA3_TEST_ISOLATED_USERDATA="1")
     with log_path.open("w", encoding="utf-8") as log, ExitStack() as fixtures:
         try:
             # This registered regression requires a real local HTTP service.

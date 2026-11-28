@@ -10,6 +10,12 @@ related-documents: [material-appearance-and-rendering.md, ../operations/deepwork
 
 # Depth layers and parallax prototypes
 
+The 24 November Draft/HOLD [ordinary Workbench adapter](strata-workbench.md) is a
+scoped successor with one borrowed play authority and three static authorable
+native planes. Its explicit-size surface API preserves old caller defaults.
+This page continues to describe the separate prototype hosts; their clocks and
+event rules are not inherited by the Workbench integration.
+
 ## Purpose
 
 res://depth_lab.tscn is an opt-in comparison host for visual and figurative
@@ -192,7 +198,11 @@ admitted changed packet: **2 MiB per changed layer upload**. Region texture
 uploads or a smaller presentation backing are the clearest follow-up
 optimizations.
 
-## Strata Theatre controls
+## Standalone Strata Theatre controls
+
+These are the separate prototype's controls and immutable-background policy.
+The ordinary Workbench's opt-in all-plane editing, clocks and save behavior are
+defined in [Strata Theatre in the Shared Workbench](strata-workbench.md).
 
 - **1-5** — Flat / Relief / Four layers / Hybrid / Diorama.
 - **WASD / arrows** — camera pan.

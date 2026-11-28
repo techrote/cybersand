@@ -1,0 +1,64 @@
+[
+  {
+    "workflow_run": 45721790366,
+    "artifact_id": 15078368890,
+    "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "zip_sha256": "84671ae068d7a759112cd6ca84a5485ec555db3aa3a04342f3c7a9bd2927ee13",
+    "zip_bytes": 142359818,
+    "zip_path": "/home/agent/strata003-campaign6-windows.zip",
+    "extracted_path": "/tmp/strata003-campaign6/windows",
+    "members": 1145,
+    "uncompressed_bytes": 186207151,
+    "root_names": [
+      "xeno-resonance-grotto",
+      "vertical-transfer-spine",
+      "userdata",
+      "sunward-freight-megastructure",
+      "regressions",
+      "orbital-terminal",
+      "optics-readability-challenge",
+      "neon-rain-arcology",
+      "lunar-terminator-observatory",
+      "industrial-underworks",
+      "campaign.json",
+      "import",
+      "abyss-foundry"
+    ]
+  },
+  {
+    "workflow_run": 45721790366,
+    "artifact_id": 15078378766,
+    "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "zip_sha256": "5cf98513696d691071ad388fb698e015ad8fba78bf985ea5341c2da969155928",
+    "zip_bytes": 82497854,
+    "zip_path": "/home/agent/strata003-campaign6-controls-windows.zip",
+    "extracted_path": "/home/agent/strata003-campaign6-controls-windows",
+    "members": 893,
+    "uncompressed_bytes": 119608265,
+    "root_names": [
+      "strata3-predecessor-windows",
+      "strata3-compatibility-windows"
+    ]
+  },
+  {
+    "workflow_run": 45721790366,
+    "artifact_id": 15078682951,
+    "source_commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "zip_sha256": "abe7a5ee17ea6d025bf701386ac75d36c1daae68d09daf9d2d903ae5dd4909bb",
+    "zip_bytes": 85321006,
+    "zip_path": "/home/agent/strata003-campaign6-dependencies.zip",
+    "extracted_path": "/home/agent/strata003-campaign6-dependencies",
+    "members": 8,
+    "uncompressed_bytes": 179015566,
+    "root_names": [
+      "vcruntime140.dll",
+      "vc-runtime-provenance.json",
+      "Microsoft-Visual-Studio-2022-LICENSE.docx",
+      "Microsoft-Visual-C-Runtime-LICENSE.docx",
+      "Godot_v4.7-stable_win64_console.exe",
+      "Godot-LICENSE.txt",
+      "Godot_v4.7-stable_win64.exe",
+      "Godot-COPYRIGHT.txt"
+    ]
+  }
+]

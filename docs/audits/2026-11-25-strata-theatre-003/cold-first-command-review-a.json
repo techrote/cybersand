@@ -1,0 +1,231 @@
+{
+  "schema": "strata3-cold-independent-outcome-review-a-v1",
+  "reviewer": "Specialist A",
+  "review_method": "Read exact remote source/delta and original GitHub job logs plus API metadata. Local workspace unavailable; no local execution, extraction, or separate artifact re-read.",
+  "application": {
+    "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+    "tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+    "unchanged": true
+  },
+  "observer": {
+    "commit": "92ec0280bba341b49345f292c4f89331b11a341b",
+    "tree": "25dbd1371fa052e5f02de32c57e585d1b4846981",
+    "parent": "3f37d27bb7637e6ef7107e968d6e27fb4128ce2e"
+  },
+  "run": {
+    "id": 45743337775,
+    "job_id": 139653387374,
+    "url": "https://github.com/techrote/cybersand/actions/runs/45743337775"
+  },
+  "prior_rejected_run": {
+    "id": 45741693665,
+    "job_id": 139647997400,
+    "artifact_id": 15081990856,
+    "artifact_bytes": 242423,
+    "artifact_sha256": "00595d7c3830b17ba2d5eceb0a9539d960fbc9553f19d7a2095def295c8b5cfc",
+    "failure": "Missing frozen verifier/process observer custody",
+    "boundary": "Before any Godot command; not a shipped launcher failure",
+    "hosted_controls_passed": 21
+  },
+  "source_review": {
+    "schema": "strata3-cold-v2-independent-source-review-a-v1",
+    "reviewer": "Specialist A",
+    "observer_commit": "92ec0280bba341b49345f292c4f89331b11a341b",
+    "observer_tree": "25dbd1371fa052e5f02de32c57e585d1b4846981",
+    "parent": "3f37d27bb7637e6ef7107e968d6e27fb4128ce2e",
+    "files": [
+      ".github/workflows/strata-theatre-003-cold-launch.yml",
+      "docs/audits/2026-11-25-strata-theatre-003/cold-first-command-v2-correction.md",
+      "tools/ci/strata3_cold_launcher.py",
+      "tools/ci/test_strata3_cold_launcher.py"
+    ],
+    "disposition": "source-review-approved-for-hosted-qualification",
+    "actual_local_execution": false,
+    "checks": {
+      "module_registered_before_execution": true,
+      "failed_load_restores_or_removes_registry_entry": true,
+      "positive_control_executes_actual_loader_and_inventory": true,
+      "negative_control_executes_failed_module": true,
+      "mandatory_frozen_verifier_and_metrics_unchanged": true,
+      "hidden_files_limited_to_existing_evidence_path": true,
+      "request_and_package_identity_unchanged": true,
+      "first_cmd_order_and_watchdog_unchanged": true,
+      "original_rejection_retained": true
+    },
+    "new_run": {
+      "id": 45743337775,
+      "job_id": 139653387374,
+      "status": "hosted-success-with-final-strict-receipt"
+    }
+  },
+  "package": {
+    "run_id": 45721790366,
+    "artifact_id": 15080761776,
+    "filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+    "bytes": 477296145,
+    "sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "manifest_sha256": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c"
+  },
+  "limitations": [
+    "No independent local artifact extraction or strict re-read after workspace outage.",
+    "No physical Windows 11/NVIDIA acceptance.",
+    "No nine-scene rerun in the cold annex.",
+    "Command lifetimes are not scene-admission times or input-to-photon latency.",
+    "Frozen enabled-optics performance HOLD and original 45-second scene target failures remain.",
+    "No A1 shader adoption; application and evaluator unchanged."
+  ],
+  "hosted_controls": {
+    "count": 23,
+    "elapsed_seconds": 0.152,
+    "timestamp": "2026-11-26T02:35:41.8325639Z",
+    "result": "passed"
+  },
+  "job": {
+    "id": 139653387374,
+    "conclusion": "success",
+    "started_at": "2026-11-26T02:34:42Z",
+    "completed_at": "2026-11-26T02:38:22Z",
+    "steps": [
+      {
+        "name": "Set up job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 1,
+        "started_at": "2026-11-26T02:34:43Z",
+        "completed_at": "2026-11-26T02:34:45Z"
+      },
+      {
+        "name": "Check out immutable external observer",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 2,
+        "started_at": "2026-11-26T02:34:45Z",
+        "completed_at": "2026-11-26T02:35:15Z"
+      },
+      {
+        "name": "Check out frozen static verifier only",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 3,
+        "started_at": "2026-11-26T02:35:15Z",
+        "completed_at": "2026-11-26T02:35:38Z"
+      },
+      {
+        "name": "Validate external observer without invoking Godot",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 4,
+        "started_at": "2026-11-26T02:35:38Z",
+        "completed_at": "2026-11-26T02:35:41Z"
+      },
+      {
+        "name": "Authenticate one exact already shipped evaluator artifact",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 5,
+        "started_at": "2026-11-26T02:35:41Z",
+        "completed_at": "2026-11-26T02:35:43Z"
+      },
+      {
+        "name": "Download exact original evaluator without executing it",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 6,
+        "started_at": "2026-11-26T02:35:43Z",
+        "completed_at": "2026-11-26T02:35:51Z"
+      },
+      {
+        "name": "Run untouched owner CMD before any editor or test preparation",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 7,
+        "started_at": "2026-11-26T02:35:51Z",
+        "completed_at": "2026-11-26T02:38:17Z"
+      },
+      {
+        "name": "Preserve original cold-command evidence including failures",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 8,
+        "started_at": "2026-11-26T02:38:17Z",
+        "completed_at": "2026-11-26T02:38:18Z"
+      },
+      {
+        "name": "Post Check out frozen static verifier only",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 15,
+        "started_at": "2026-11-26T02:38:18Z",
+        "completed_at": "2026-11-26T02:38:20Z"
+      },
+      {
+        "name": "Post Check out immutable external observer",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 16,
+        "started_at": "2026-11-26T02:38:20Z",
+        "completed_at": "2026-11-26T02:38:21Z"
+      },
+      {
+        "name": "Complete job",
+        "status": "completed",
+        "conclusion": "success",
+        "number": 17,
+        "started_at": "2026-11-26T02:38:21Z",
+        "completed_at": "2026-11-26T02:38:21Z"
+      }
+    ]
+  },
+  "strict_reader": {
+    "timestamp": "2026-11-26T02:38:16.9995106Z",
+    "receipt": {
+      "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "observation": {
+        "admission": {
+          "extent": [
+            2048,
+            2048
+          ],
+          "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "strata_enabled": false,
+          "workbench_script": "res://scripts/shared_workbench.gd",
+          "worker_id": "-9223371959310481934",
+          "world_generation": 2
+        },
+        "cmd_process_seconds": 90.025416,
+        "cold_import_command_seconds": 11.1453828,
+        "console_process_ids": [
+          3196,
+          5840
+        ],
+        "engine_process_ids": [
+          3432,
+          6572
+        ],
+        "godot_headers": [
+          "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+          "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org"
+        ],
+        "observed_process_tree_cpu_seconds": 152.171875,
+        "ordinary_workbench_command_seconds": 78.8635987,
+        "peak_observed_process_tree_rss_bytes": 757346304,
+        "rendering_backend": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      },
+      "observer_source": "92ec0280bba341b49345f292c4f89331b11a341b",
+      "package_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+      "schema": "strata3-cold-first-command-verification-v1",
+      "scope": "First shipped CMD on a new extraction with no prior Godot invocation. Cold import command lifetime and ordinary native Workbench admission/shutdown; no nine-scene rerun or physical GPU acceptance.",
+      "verified": true
+    }
+  },
+  "artifact": {
+    "id": 15082655904,
+    "name": "strata3-cold-windows-fd0830ab-92ec0280bba341b49345f292c4f89331b11a341b-1",
+    "bytes": 635667,
+    "sha256": "8bae9a314d010f5bbe09637bd217c6d15948316a783437d24bfeb76208311e9e",
+    "url": "https://github.com/techrote/cybersand/actions/runs/45743337775/artifacts/15082655904",
+    "metadata_source": "https://api.github.com/repos/techrote/cybersand/actions/runs/45743337775/artifacts?per_page=100",
+    "downloaded_or_extracted_by_this_review": false
+  },
+  "disposition": "HOSTED COLD FIRST-COMMAND QUALIFICATION PASS; APPLICATION PERFORMANCE HOLD UNCHANGED"
+}

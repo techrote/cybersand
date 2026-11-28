@@ -1,6 +1,8 @@
 
 # CyberSand
 
+The owner-accepted RAMCACHE and Strata Theatre integration is documented in the [combined Workbench guide](docs/operations/ramcache-strata-integration.md). RAMCACHE remains an opt-in persistent-area mode; Strata starts in Classic and enhanced optical profiles remain optional.
+
 <img width="1196" height="2644" alt="cybersand_material_tiles_preview" src="https://github.com/user-attachments/assets/f49ebc85-d2bc-4404-96f2-a4eac07b6deb" />
 
 Desktop opens the [combined feature launcher](docs/operations/physical-actor-programme.md): showcase maps, the Deepworks exhibition, actor/material sandboxes, sampled and physical Thunderbowl, Strata Theatre depth studies, generation authoring and the retained barrel/Ripper Blacksite comparison. F2 returns to the launcher and closes the current session.
@@ -122,8 +124,9 @@ area ignition through the ordinary World, worker and Main Rapier space. Its
 [M4 integration contract](docs/research/objectshard-m4-workbench.md) defines
 same-World ownership, composed occupancy, bounded structural admission, scoped
 save/reopen and separate progression/render measurements. PR #754 remains
-Draft/HOLD; source-bound qualification and physical owner acceptance are
-separate requirements. Ordinary launch defaults are unchanged.
+Draft/HOLD. The owner positively evaluated the frozen live-edit Windows application;
+that physical acceptance does not transfer automatically to this reconciled source.
+Ordinary launch defaults are unchanged.
 
 ### Retained ObjectShard laboratories
 

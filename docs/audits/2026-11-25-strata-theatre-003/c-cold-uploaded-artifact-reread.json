@@ -1,0 +1,135 @@
+{
+  "schema": "strata3-c-uploaded-cold-artifact-reread-v1",
+  "reviewer": "Specialist C",
+  "reviewed_at_utc": "2026-11-26T02:48:49.171031+00:00",
+  "disposition": "PASS — unchanged reader accepted actual uploaded evidence; application PERFORMANCE HOLD unchanged",
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "application_tree": "fd4dc12d6bfd3e13d6b4d26eede8a1171ca1b499",
+  "observer_source": "92ec0280bba341b49345f292c4f89331b11a341b",
+  "observer_tree": "25dbd1371fa052e5f02de32c57e585d1b4846981",
+  "observer_checkout_clean_before_and_after": true,
+  "source_inputs_raw_sha256": {
+    ".github/workflows/strata-theatre-003-cold-launch.yml": "9538919d61d5712a80c926b0392f6d2f993fe595b79dcd5696c9a43222f712da",
+    "docs/audits/2026-11-25-strata-theatre-003/cold-first-command-registration.md": "f0bbea16ee83d8bbcaade88f0797317f4a75f85f6fa1221ad13ab08138df1ae0",
+    "tools/ci/strata3-cold-launch-request.json": "940eadf31d55984669e76e4b32849a47244733c8d904ab975c706cc8526a68ec",
+    "tools/ci/strata3_cold_launcher.py": "78d345ccdeef3ad5f98fe297ef190047306bc1f47f08fe5bcfb9da5a84788005",
+    "tools/ci/test_strata3_cold_launcher.py": "25c8547e4a5c18b8340beaa6f8f1c5788cfd23d62c5b897022bc71b5ef907985"
+  },
+  "hosted_execution": {
+    "run_id": 45743337775,
+    "job_id": 139653387374
+  },
+  "cold_artifact": {
+    "id": 15082655904,
+    "bytes": 635667,
+    "sha256": "8bae9a314d010f5bbe09637bd217c6d15948316a783437d24bfeb76208311e9e",
+    "zip_members": 15,
+    "uncompressed_bytes": 2153105,
+    "evidence_ledger_entries": 14
+  },
+  "package_artifact": {
+    "id": 15080761776,
+    "run_id": 45721790366,
+    "outer_bytes": 477073937,
+    "outer_sha256": "cc6d27dbf377cb62ac397c2db0b3ba6f9b2f3b3b294a3bc89b7fbbc18767b1ee",
+    "inner_filename": "CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip",
+    "inner_bytes": 477296145,
+    "inner_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+    "inner_members": 2549,
+    "manifest_sha256": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+    "sidecar_manifest_bytes_identical": true
+  },
+  "independent_execution": {
+    "platform": "linux",
+    "python": "3.12.14",
+    "command": [
+      "python3",
+      "tools/ci/strata3_cold_launcher.py",
+      "verify",
+      "--output",
+      "/tmp/strata003-cold-upload-review/evidence",
+      "--package-archive",
+      "/tmp/strata003-cold-upload-review/owner-package/CyberSand-Strata3-Workbench-Windows-fd0830abcfad.zip"
+    ],
+    "cwd": "/tmp/strata003-cold-reader-92ec",
+    "exit_code": 0,
+    "stdout_bytes": 1479,
+    "stdout_sha256": "0f4d554c3fe708d06c478245d506768e05b3e0552a5de3b44dc357914cf8b3e8",
+    "stderr_bytes": 0,
+    "stderr_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "godot_invoked": false,
+    "reader_or_evidence_modified": false,
+    "result": {
+      "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "observation": {
+        "admission": {
+          "extent": [
+            2048,
+            2048
+          ],
+          "source_revision": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "strata_enabled": false,
+          "workbench_script": "res://scripts/shared_workbench.gd",
+          "worker_id": "-9223371959310481934",
+          "world_generation": 2
+        },
+        "cmd_process_seconds": 90.025416,
+        "cold_import_command_seconds": 11.1453828,
+        "console_process_ids": [
+          3196,
+          5840
+        ],
+        "engine_process_ids": [
+          3432,
+          6572
+        ],
+        "godot_headers": [
+          "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org",
+          "Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org"
+        ],
+        "observed_process_tree_cpu_seconds": 152.171875,
+        "ordinary_workbench_command_seconds": 78.8635987,
+        "peak_observed_process_tree_rss_bytes": 757346304,
+        "rendering_backend": "OpenGL API OpenGL ES 3.0 (ANGLE 2.1.1 git hash: aaebda1c5a40) - Compatibility - Using Device: Google Inc. (Microsoft) - ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+      },
+      "observer_source": "92ec0280bba341b49345f292c4f89331b11a341b",
+      "package_sha256": "f76a5b718c89c5906f8c6f51fdf9ece5f9bbd7c51601352b226c429b8a2daa07",
+      "schema": "strata3-cold-first-command-verification-v1",
+      "scope": "First shipped CMD on a new extraction with no prior Godot invocation. Cold import command lifetime and ordinary native Workbench admission/shutdown; no nine-scene rerun or physical GPU acceptance.",
+      "verified": true
+    }
+  },
+  "uploaded_original_files_sha256": {
+    "request.json": "940eadf31d55984669e76e4b32849a47244733c8d904ab975c706cc8526a68ec",
+    "payload.json": "1e45ef5525538288fc91b90252abeb19183331c3d349abd51bafd0a90013f760",
+    "observer-identity.json": "81ef076789e377c15638ae1304f42c1e522568566b0a2e1c6dcb80fcea7cd429",
+    "evaluation-manifest.json": "a2531d05f17227448c5dd2264e59a472df87ec2d079fa68d6cc707aa5580197c",
+    "cold-launch.json": "1f1001183dfc5a2a7dfe49cac05c5113e913ebb606978f442ad1b84644f3251b",
+    "artifact-metadata.json": "a071fa122ac50a28e6a4302d60cec0fdcc23f8193c8a022435be1d5e548b26bf",
+    "launcher/resources.json": "1e7f396e8abb3dad135e7929878cffba4d28c2673bbaabe5b6bcc19065699908",
+    "launcher/process.log": "38d845c0c72c993fe6beb9355afa8afca018369e3de196122c93c8b051599b4b",
+    "launcher/process.json": "33435f745fcfaeec722a67c6c2a883b8ffe8018dd6560a4523cb401aef312e23",
+    "launcher/lifetimes.json": "f63f9bc5175044975f61c65340daeff9faa9303c05b39d1b23bf230feb725766",
+    "observer/tools/ci/test_strata3_cold_launcher.py": "25c8547e4a5c18b8340beaa6f8f1c5788cfd23d62c5b897022bc71b5ef907985",
+    "observer/tools/ci/strata3_cold_launcher.py": "78d345ccdeef3ad5f98fe297ef190047306bc1f47f08fe5bcfb9da5a84788005",
+    "observer/tools/ci/strata3-cold-launch-request.json": "940eadf31d55984669e76e4b32849a47244733c8d904ab975c706cc8526a68ec",
+    "observer/docs/audits/2026-11-25-strata-theatre-003/cold-first-command-registration.md": "f0bbea16ee83d8bbcaade88f0797317f4a75f85f6fa1221ad13ab08138df1ae0",
+    "observer/.github/workflows/strata-theatre-003-cold-launch.yml": "9538919d61d5712a80c926b0392f6d2f993fe595b79dcd5696c9a43222f712da"
+  },
+  "verified_observations": {
+    "hidden_workflow_present": true,
+    "hidden_workflow_sha256": "9538919d61d5712a80c926b0392f6d2f993fe595b79dcd5696c9a43222f712da",
+    "full_evidence_ledger_exact": true,
+    "local_result_matches_original_host_observation": true,
+    "original_package_manifest_complete": true,
+    "all_original_native_and_runtime_package_bytes_checked_by_unchanged_reader": true
+  },
+  "scope": "Independent portable Linux re-read of exact uploaded Windows cold evidence, with exact delivered ZIP. No new native execution, timing cohort, image capture or GPU qualification.",
+  "prior_review_preserved": "c-cold-first-command-v2-review.md and .json remain unchanged as the earlier source/log review.",
+  "remaining_limits": [
+    "Enabled optical progression PERFORMANCE HOLD remains.",
+    "The 45-second scene-admission target and its recorded failures remain.",
+    "Physical Windows 11/NVIDIA and owner artistic acceptance remain pending.",
+    "Cold command lifetimes are not scene-admission latency."
+  ]
+}

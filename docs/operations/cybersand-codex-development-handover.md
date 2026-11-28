@@ -10,6 +10,32 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 # Development handover
 
+## RAMCACHE-STRATA-INTEGRATION-001 — 2026-11-28
+
+The owner authorized full integration and delivery of #745 RAMCACHE and #785 Strata Theatre 003 with its intended 002 predecessor. Read the [integration guide](ramcache-strata-integration.md) for acceptance scope, safe mode boundaries and source/runtime/package custody. Preserve current main features, Classic defaults and all historical failures. The optional enhanced-optics 90% retention gate is explicitly waived; unrelated correctness/performance gates remain. Root alone performs final mainline merges. ObjectShard M4 and ongoing PUBPRES remain excluded.
+
+## Strata Theatre 002 successor — 2026-11-24
+
+[Draft PR #776](https://github.com/techrote/cybersand/pull/776) retains immutable
+#769 archival ancestry `80623d039aa49bc0c1d84a9206d89812ffa99ea6` over accepted
+main `00cdb02f103265b6dc5224c68283e9a0c8cb449f`. It extends the ordinary borrowed-Play
+[composition contract](../systems/strata-workbench.md) with reviewed local
+[native/raster import and layered construction](../systems/strata-authoring.md),
+bounded presentation-only atmosphere and five [native environments](../systems/strata-environments.md).
+The ordinary World, worker, camera, actor session and publication remain owned
+by Workbench. Three decorative native Worlds remain static at zero Hz.
+
+Read the [successor decision packet](../audits/2026-11-24-strata-theatre-002/decision-packet.md)
+for source/runtime/package custody and exact qualification status; the
+[owner guide](strata-workbench-evaluation.md) covers import, composition,
+atmosphere and fresh-process authored Save. The original #769 application and
+acceptance package are preserved; their passes cannot qualify this union.
+#770 contributes a source-pinned read-only module schema adapter, not its moving
+application. Art #773 remains Play-only and no model-provider permission is
+extended. PUBPRES, AMBIENT and all other active programmes remain independently
+owned and unimported. Keep Draft/HOLD: no Ready, merge, default activation or
+physical Windows/NVIDIA acceptance is implied.
+
 ## ObjectShard M4 live structural editing — 2026-11-28
 
 The qualified live-edit application is `ba6d8de45bd4d38717d92bdece7153bff115c0f0`,
@@ -18,7 +44,7 @@ with guarded runtime publication `302f982943c0e03c30968368da8264cfb3c431ce`.
 passed the exact-source native, Linux, Windows and fresh extracted-package gates.
 The [complete evaluator](https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748)
 launches the ordinary Workbench at the tower with all six required editing tools.
-PR #754 remains **Draft/HOLD**, open and unmerged for physical owner evaluation.
+PR #754 remains **Draft/HOLD**, open and unmerged. The owner positively physically evaluated this frozen live-edit application; the reconciled mainline source still requires independent qualification.
 
 Start with the [M4 contract](../research/objectshard-m4-workbench.md),
 [owner guide](objectshard-workbench-playtest.md),
@@ -37,54 +63,14 @@ remains unresolved. Do not claim zero inactive-edit overhead or TITAN RTX
 performance from hosted results. Source, local, hosted, package and physical
 owner claims remain distinct. Saved starts remain construction recipes.
 
-Main was refreshed at `50e3bcb839211eac2abe1e065750cbcba4d36f8c`. RAMCACHE ancestry
-is retained; the frozen application is 194 commits beyond the common base while
-main has 48 distinct commits. Five merge-preview conflicts and shared-code
-semantic review remain for the subsequent M4 integration mission. No unrestricted
-mergedown, PUBPRES import, M5 implementation, Ready promotion or automatic merge
-is included. Preserve failed campaigns and all source-bound evidence.
-
-## ObjectShard M0–M3 — 2026-11-22
-
-The [M3 recovery ledger](../audits/2026-11-22-objectshard-m3-recovery.md) identifies the recovered 26-file staging handoff and fresh implementation. Use the [continuous-play guide](objectshard-m3-preflight-playtest.md) for the opt-in worker scene, and the [contract](../research/objectshard-m3-preflight.md) for exact target fences, copied receipts and the ordinary Workbench seam.
-
-[Draft/HOLD #741 final qualification](../audits/2026-11-22-objectshard-m3-final-qualification.md)
-binds runtime source `e034f2294663e0485cfb9adcc8ada46a6e977cee` to 41 Linux,
-41 Windows and 32 extracted-package cases, complete native/sanitizer World
-regressions and the repaired F2 lifecycle. Use its final owner ZIP, not the
-superseded `68235b12` M3 candidate. The unchanged 001R native matrix passes 74/74
-limits with only 14,176 bytes of margin. Rendered burst latency reaches 1.93
-seconds; the separate-World rehearsal is not ordinary Workbench attachment.
-Production provenance and physical Windows 11/NVIDIA owner acceptance remain
-unpassed/unrecorded respectively.
-
-The missing inherited Fire consumer transition is now reviewed and admitted by
-`73018218`; its 231-test ordinary catalogue workflow passes. Native/Godot/package
-inputs remain at `e034f229`. Carry the reviewed entry and audit to the appropriate
-#738 head before a future authorized mergedown, preserving source ancestry. The
-six production runtime-provenance errors remain a separate unpassed condition.
-
-The separate OBJECTSHARD-001R finisher #738 has a
-[source-bound final qualification record](../audits/2026-11-22-objectshard-001r-final-qualification.md)
-and a verified corrected Windows ZIP. Follow its exact native/platform/package
-identities rather than substituting the historical M2 evaluator. M3 Workbench
-preflight follows as a separate executable preparation child. Historical M0/M1/M2
-heads and failures are preserved; all successor work remains Draft/HOLD with no
-merge authority.
-
-Evaluate the dedicated staged Draft/HOLD ObjectShard stack M0 #726 → M1 #728 →
-M2 #730; use the [implementation and evidence record](../research/objectshard-001.md)
-and [Windows Lab procedure](objectshard-lab-playtest.md). Shared World changes
-are limited to the opt-in mutation journal and behavior-preserving lifecycle
-seam; the Lab has a separate native facade and revisioned Rapier adapter.
-The [final acceptance record](../audits/2026-11-22-objectshard-final-acceptance.md)
-binds runtime source `8f55a4e...` to successful Linux/Windows execution and the
-verified Windows package. The separate native performance matrix retains ten
-failed timing limits. Owner physical acceptance and strict production runtime
-publication remain outstanding; do not infer merge readiness from the Lab pass.
-Preserve PUBPRES, GEN-006, SWARM and CI mission ownership. The owner authorized
-M0–M2 implementation and qualification, not Ready, merge, production defaults or
-release. Source-bound Windows automation does not establish physical acceptance.
+Merge preparation now reconciles ObjectShard M4 against accepted main
+`50e3bcb839211eac2abe1e065750cbcba4d36f8c`, including accepted RAMCACHE,
+Strata Theatre and portable-evaluator work. Shared Workbench semantics are
+explicitly combined rather than selected wholesale. PUBPRES remains excluded
+from the integration candidate. Combined-source qualification, guarded native
+publication when required and a fresh extracted Windows evaluator remain merge
+gates; M5 debris demotion remains a separate successor. Preserve failed
+campaigns and every source-bound evidence identity.
 
 ## Persistent authored areas
 

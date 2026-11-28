@@ -1,0 +1,75 @@
+{
+  "schema": "strata2-live-ownership-refresh-v1",
+  "observed_utc": "2026-11-25T00:26:13.620Z",
+  "repository": "techrote/cybersand",
+  "refs": [
+    {
+      "kind": "accepted-main",
+      "commit": "00cdb02f103265b6dc5224c68283e9a0c8cb449f"
+    },
+    {
+      "number": 767,
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "f4089809c7294336db26cf576b0ac3c57fc54775",
+      "title": "[Draft/HOLD] PUBPRES FINAL: physical progression recovery and playable Workbench qualification",
+      "updated_at": "2026-11-24T20:50:36Z"
+    },
+    {
+      "number": 770,
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "f5f6e9f35727d81868bcced4da8b913b470ea635",
+      "title": "[Draft/HOLD] WORLD-STEER-BATCH M3–M5: native modules, GOLDMAPS retrieval and staged architecture",
+      "updated_at": "2026-11-24T20:15:09Z"
+    },
+    {
+      "number": 773,
+      "state": "open",
+      "draft": false,
+      "merged": false,
+      "head": "fa22d386b802b686c371bb6e12996c7a93c18588",
+      "title": "[Draft/HOLD] ART-WORKBENCH-FINAL-001 — Art Workbench finisher",
+      "updated_at": "2026-11-25T00:06:47Z"
+    },
+    {
+      "number": 774,
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "700c89c451903fac07188196a2f94b5c8997cb53",
+      "title": "DOCS-RENAISSANCE-001: rebuild current documentation and retrieval assurance [Draft/HOLD]",
+      "updated_at": "2026-11-25T00:17:39Z"
+    },
+    {
+      "number": 775,
+      "state": "open",
+      "draft": false,
+      "merged": false,
+      "head": "22902a155fd8e32a84b89f25bfa45bdfefd1f211",
+      "title": "Draft/HOLD: AMBIENT-001 modular procedural actors and native perception",
+      "updated_at": "2026-11-24T23:50:26Z"
+    },
+    {
+      "number": 776,
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+      "title": "STRATA-THEATRE-002: layered native authoring and environmental atmosphere — Draft/HOLD",
+      "updated_at": "2026-11-24T23:31:46Z"
+    },
+    {
+      "number": 777,
+      "state": "open",
+      "draft": true,
+      "merged": false,
+      "head": "d948deab5d280adfe1e890bddf85725b2efd59bc",
+      "title": "[Draft/HOLD] WORLD-STEER M6–M7 — Collaborative native architecture, rich parts and bounded delegation",
+      "updated_at": "2026-11-24T23:48:54Z"
+    }
+  ],
+  "decision": "Accepted main remains exact original base. No concurrent source absorbed. Successor #776 remains Draft. PR UI draft flags for other programmes are recorded independently from their Draft/HOLD titles."
+}

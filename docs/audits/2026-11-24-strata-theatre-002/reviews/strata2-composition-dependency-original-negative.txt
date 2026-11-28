@@ -1,0 +1,10 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ERROR: STRATA_SESSION duplicate declared dependency cannot conceal a second supplied and used part
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] check (res://tests/test_strata_construction_session.gd:128)
+       [1] run (res://tests/test_strata_construction_session.gd:281)
+STRATA_SESSION {"checks":76,"completed":true,"failures":["duplicate declared dependency cannot conceal a second supplied and used part"],"scope":"adversarial owner-contract fixtures, actual native mutation and framebuffer qualified separately"}

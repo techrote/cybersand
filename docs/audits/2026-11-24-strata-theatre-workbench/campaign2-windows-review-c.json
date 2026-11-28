@@ -1,0 +1,153 @@
+{
+  "source_commit": "99d3d9ef8cbf112e13979e6d64ed3113b4ec55fc",
+  "source_tree": "21d47b1ca2210ad61cfeac8997019586f8e0d639",
+  "source_inputs_verified": 1105,
+  "platform": "win32",
+  "campaign_status": "failed",
+  "maximum_original_failure": {
+    "error": "[WinError 183] Cannot create a file when that file already exists: 'D:\\\\a\\\\cybersand\\\\cybersand\\\\build\\\\strata-windows\\\\maximum'",
+    "status": "failed"
+  },
+  "scene_receipts_independently_verified": [
+    {
+      "scene": "industrial-assembly",
+      "phase": "install",
+      "checks": 880,
+      "engine_pid": 7172,
+      "wrapper_pid": 4664,
+      "native_hashes": {
+        "background": "f3ad2d641ac4c947f7a44adeeb8b2afa25387f17babdfc63b790dc32be4011b3",
+        "effects": "8f23683c735de8a3d0bbf910be6c77879c6fe24a8b9874c78ca2aea7787ef95c",
+        "play": "8f52fc578c3a9191a501344740a531f9fefe5010c6eb24ff41b7e0e59b875156",
+        "scripted": "77b24f6f4b8c480ccfd0dcc9cc7b40493a5cf58744a9bd83a81cd74711b615af"
+      },
+      "bootstrap_ms": 58095,
+      "deadline_rechecks": [
+        {
+          "elapsed_ms": 55473,
+          "label": "play and all three decorative native owners adopted",
+          "limit_ms": 45000
+        }
+      ],
+      "process_seconds": 249.515,
+      "observed_cpu_seconds": 603.484375,
+      "peak_observed_tree_rss_bytes": 1036013568,
+      "sample_count": 459,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    },
+    {
+      "scene": "industrial-assembly",
+      "phase": "reopen",
+      "checks": 162,
+      "engine_pid": 3672,
+      "wrapper_pid": 3088,
+      "native_hashes": {
+        "background": "f3ad2d641ac4c947f7a44adeeb8b2afa25387f17babdfc63b790dc32be4011b3",
+        "effects": "8f23683c735de8a3d0bbf910be6c77879c6fe24a8b9874c78ca2aea7787ef95c",
+        "play": "8f52fc578c3a9191a501344740a531f9fefe5010c6eb24ff41b7e0e59b875156",
+        "scripted": "77b24f6f4b8c480ccfd0dcc9cc7b40493a5cf58744a9bd83a81cd74711b615af"
+      },
+      "bootstrap_ms": 5788,
+      "deadline_rechecks": [],
+      "process_seconds": 28.391,
+      "observed_cpu_seconds": 74.21875,
+      "peak_observed_tree_rss_bytes": 777179136,
+      "sample_count": 53,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    },
+    {
+      "scene": "arcology",
+      "phase": "install",
+      "checks": 880,
+      "engine_pid": 4780,
+      "wrapper_pid": 7128,
+      "native_hashes": {
+        "background": "3b8528c5d54dddb54edea15b7325283ccb6178d05d2fb1a93f1ea44588808356",
+        "effects": "aad3835b9c1c49ea225858425509e22921200a872cb34dc3746556f2cd3e67ce",
+        "play": "9e77d5ffbcc6813bbe79fce92ec0365108e9f8b546946b14d4ab19b910af19d3",
+        "scripted": "05bd73e04c452d03da02acad31750c287e2005f4cee54a7e1182b05877f9fd3f"
+      },
+      "bootstrap_ms": 56526,
+      "deadline_rechecks": [
+        {
+          "elapsed_ms": 54705,
+          "label": "play and all three decorative native owners adopted",
+          "limit_ms": 45000
+        }
+      ],
+      "process_seconds": 247.812,
+      "observed_cpu_seconds": 603.921875,
+      "peak_observed_tree_rss_bytes": 1150185472,
+      "sample_count": 454,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    },
+    {
+      "scene": "arcology",
+      "phase": "reopen",
+      "checks": 162,
+      "engine_pid": 1900,
+      "wrapper_pid": 3312,
+      "native_hashes": {
+        "background": "3b8528c5d54dddb54edea15b7325283ccb6178d05d2fb1a93f1ea44588808356",
+        "effects": "aad3835b9c1c49ea225858425509e22921200a872cb34dc3746556f2cd3e67ce",
+        "play": "9e77d5ffbcc6813bbe79fce92ec0365108e9f8b546946b14d4ab19b910af19d3",
+        "scripted": "05bd73e04c452d03da02acad31750c287e2005f4cee54a7e1182b05877f9fd3f"
+      },
+      "bootstrap_ms": 5738,
+      "deadline_rechecks": [],
+      "process_seconds": 27.234,
+      "observed_cpu_seconds": 72.203125,
+      "peak_observed_tree_rss_bytes": 777220096,
+      "sample_count": 51,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    },
+    {
+      "scene": "cavern",
+      "phase": "install",
+      "checks": 880,
+      "engine_pid": 6584,
+      "wrapper_pid": 7416,
+      "native_hashes": {
+        "background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856",
+        "effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+        "play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+        "scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea"
+      },
+      "bootstrap_ms": 57825,
+      "deadline_rechecks": [
+        {
+          "elapsed_ms": 56026,
+          "label": "play and all three decorative native owners adopted",
+          "limit_ms": 45000
+        }
+      ],
+      "process_seconds": 252.125,
+      "observed_cpu_seconds": 613.875,
+      "peak_observed_tree_rss_bytes": 1159208960,
+      "sample_count": 458,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    },
+    {
+      "scene": "cavern",
+      "phase": "reopen",
+      "checks": 162,
+      "engine_pid": 1344,
+      "wrapper_pid": 5852,
+      "native_hashes": {
+        "background": "5beb0071ff9ace3e849481d8c5f4d81d5d1fbc4ae5fd6a166594616ecb1fb856",
+        "effects": "35a558f081278b19ae808a65c555a68ad3fd1e22c7fbd01420639150f8aa2b0a",
+        "play": "e413047410cc851e8d8da4e9b8c584f12be552bea642f5ea197725c85769a89a",
+        "scripted": "9a4a4a47be237d68a2d1b13172b548188b61a602d5f26410c1d9b5778ccd63ea"
+      },
+      "bootstrap_ms": 5849,
+      "deadline_rechecks": [],
+      "process_seconds": 28.453,
+      "observed_cpu_seconds": 76.484375,
+      "peak_observed_tree_rss_bytes": 778891264,
+      "sample_count": 53,
+      "rendering_adapter": "ANGLE (Microsoft, Microsoft Basic Render Driver (0x0000008C) Direct3D11 vs_5_0 ps_5_0, D3D11-10.0.20348.5756)"
+    }
+  ],
+  "original_evidence_hashes_verified": 126,
+  "note": "Read-only verification of successful original component cases; this does not promote the failed campaign."
+}

@@ -1,0 +1,568 @@
+{
+  "schema": "ramcache-strata-integration-ramcache-review-v1",
+  "date": "2026-11-28",
+  "reviewed_source": "af45bfb332f9822780db9304779ff0cdf55661df",
+  "reviewed_tree": "91223c4427ef6896140368f7a28ca6c8e7ba75b0",
+  "main_at_reconnaissance": "7a15691a7c537d07ff10a1bc4da9d46491c0b9d6",
+  "main_tree_at_reconnaissance": "6a90d3ea9ff8dada4b50053aa34d830accc50a42",
+  "native_build_source": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+  "native_publication_child": "fa0c7aa65c1b8a27426da69ae0d62c9227f56479",
+  "owner_acceptance": {
+    "origin": "Owner instructions for RAMCACHE-STRATA-INTEGRATION-001",
+    "physical_platform": "Windows 11 / NVIDIA TITAN RTX",
+    "reported_hot_ms": 200,
+    "reported_waterworks_ms": 3200,
+    "waterworks_delay_accepted": true,
+    "statement": "Successful persistent travel and authored/evolved state retention after full application close/reopen; hover destination preparation invoked successfully. These values were supplied by the owner, not newly measured by this review."
+  },
+  "objectshard_exclusion": {
+    "pr": 754,
+    "head": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+    "comparison": "diverged",
+    "common_ancestor": "78e8d626c8ac2c5764c270ce7060732d33299d88",
+    "specific_paths_checked": [
+      "godot/native_extension/cyber_object_shard_lab.cpp",
+      "godot/native_extension/cyber_object_shard_lab.hpp",
+      "godot/object_shard_lab.tscn",
+      "godot/object_shard_worker_rehearsal.tscn",
+      "godot/scripts/object_shard_capture.gd",
+      "godot/scripts/object_shard_lab.gd",
+      "godot/scripts/object_shard_lab_presets.gd",
+      "godot/scripts/object_shard_lab_session.gd",
+      "godot/scripts/object_shard_lab_view.gd",
+      "godot/scripts/object_shard_m4_latency_probe.gd",
+      "godot/scripts/object_shard_m4_runtime.gd",
+      "godot/scripts/object_shard_m4_workbench_port.gd",
+      "godot/scripts/object_shard_native_worker.gd",
+      "godot/scripts/object_shard_physics_bridge.gd",
+      "godot/scripts/object_shard_workbench_overlay.gd",
+      "godot/scripts/object_shard_workbench_scenes.gd",
+      "godot/scripts/object_shard_worker_host.gd",
+      "godot/scripts/object_shard_worker_rehearsal.gd",
+      "godot/tests/capture_object_shard_finisher.gd",
+      "godot/tests/capture_object_shard_lab.gd",
+      "godot/tests/capture_object_shard_worker.gd",
+      "godot/tests/fixtures/object_shard_m4_authored_reopen.gd",
+      "godot/tests/fixtures/objectshard_owner_d_retained_actions.json",
+      "godot/tests/probe_object_shard_package_boot.gd",
+      "godot/tests/probe_object_shard_rest_stability.gd",
+      "godot/tests/probe_object_shard_retained_actions.gd",
+      "godot/tests/probe_object_shard_workbench_package.gd",
+      "godot/tests/probe_object_shard_worker_package_boot.gd",
+      "godot/tests/profile_object_shard_lab.gd",
+      "godot/tests/profile_object_shard_m4_disabled_control.gd",
+      "godot/tests/profile_object_shard_m4_render_control.gd",
+      "godot/tests/profile_object_shard_m4_workbench.gd",
+      "godot/tests/profile_object_shard_worker.gd",
+      "godot/tests/replay_object_shard_trace.gd",
+      "godot/tests/replay_object_shard_worker_trace.gd",
+      "godot/tests/support/object_shard_m4_workbench_fixture.gd",
+      "godot/tests/test_object_shard_boundary.gd",
+      "godot/tests/test_object_shard_capture.gd",
+      "godot/tests/test_object_shard_continuous_physics.gd",
+      "godot/tests/test_object_shard_continuous_play.gd",
+      "godot/tests/test_object_shard_incremental_motion.gd",
+      "godot/tests/test_object_shard_lab.gd",
+      "godot/tests/test_object_shard_m4_actor_clock.gd",
+      "godot/tests/test_object_shard_m4_compact_motion_packets.gd",
+      "godot/tests/test_object_shard_m4_completed_sample.gd",
+      "godot/tests/test_object_shard_m4_edit_delivery_fence.gd",
+      "godot/tests/test_object_shard_m4_equipment_completion.gd",
+      "godot/tests/test_object_shard_m4_fragment_reabsorption.gd",
+      "godot/tests/test_object_shard_m4_latency_probe.gd",
+      "godot/tests/test_object_shard_m4_lifecycle_adverse.gd",
+      "godot/tests/test_object_shard_m4_lifecycle_fuzz.gd",
+      "godot/tests/test_object_shard_m4_long_burn.gd",
+      "godot/tests/test_object_shard_m4_material_only_workbench.gd",
+      "godot/tests/test_object_shard_m4_optional_diagnostics.gd",
+      "godot/tests/test_object_shard_m4_overlay_identity.gd",
+      "godot/tests/test_object_shard_m4_same_world_extension.gd",
+      "godot/tests/test_object_shard_m4_same_world_physical_chain.gd",
+      "godot/tests/test_object_shard_m4_shared_main_rapier.gd",
+      "godot/tests/test_object_shard_m4_workbench_completion.gd",
+      "godot/tests/test_object_shard_m4_workbench_port.gd",
+      "godot/tests/test_object_shard_m4_workbench_scene_refusal.gd",
+      "godot/tests/test_object_shard_motion_segments.gd",
+      "godot/tests/test_object_shard_native_worker.gd",
+      "godot/tests/test_object_shard_physics_bridge.gd",
+      "godot/tests/test_object_shard_physics_identity.gd",
+      "godot/tests/test_object_shard_playability.gd",
+      "godot/tests/test_object_shard_rest_contacts.gd",
+      "godot/tests/test_object_shard_workbench_contract.gd",
+      "godot/tests/test_object_shard_worker_adverse.gd",
+      "godot/tests/test_object_shard_worker_commands.gd",
+      "godot/tests/test_object_shard_worker_input_fences.gd",
+      "godot/tests/test_object_shard_worker_navigation.gd",
+      "godot/tests/test_object_shard_worker_recovery.gd",
+      "godot/tests/test_object_shard_worker_rehearsal.gd",
+      "godot/tests/test_object_shard_worker_replay_admission.gd",
+      "godot/tests/test_object_shard_worker_resources.gd",
+      "godot/tests/test_object_shard_worker_scene.gd",
+      "native/bench/object_shard_admission.cpp",
+      "native/include/cybersand/material_lifecycle.hpp",
+      "native/include/cybersand/object_shard.hpp",
+      "native/include/cybersand/object_shard_contact.hpp",
+      "native/include/cybersand/object_shard_coordinator.hpp",
+      "native/include/cybersand/object_shard_discovery.hpp",
+      "native/include/cybersand/object_shard_m4_mutable_adapter.hpp",
+      "native/include/cybersand/object_shard_mutation.hpp",
+      "native/src/object_shard.cpp",
+      "native/src/object_shard_coordinator.cpp",
+      "native/src/object_shard_fire.inc",
+      "native/tests/benchmark_object_shard.cpp",
+      "native/tests/test_object_shard_admission.cpp",
+      "native/tests/test_object_shard_chemistry.cpp",
+      "native/tests/test_object_shard_contact.cpp",
+      "native/tests/test_object_shard_coordinator.cpp",
+      "native/tests/test_object_shard_external_fire.cpp",
+      "native/tests/test_object_shard_storage.cpp",
+      "tools/objectshard/analyze_owner_evidence.py",
+      "tools/objectshard/check_preset_connectivity.py",
+      "tools/objectshard/lab_budgets.json",
+      "tools/objectshard/lab_performance.py",
+      "tools/objectshard/native_budgets.json",
+      "tools/objectshard/native_receipt.py",
+      "tools/objectshard/package_windows_lab.py",
+      "tools/objectshard/package_windows_workbench.py",
+      "tools/objectshard/process_resources.py",
+      "tools/objectshard/production_runtime.py",
+      "tools/objectshard/production_runtime_request.json",
+      "tools/objectshard/qualify_lab.py",
+      "tools/objectshard/qualify_m4_workbench.py",
+      "tools/objectshard/qualify_windows_zip.py",
+      "tools/objectshard/qualify_workbench.py",
+      "tools/objectshard/qualify_workbench_zip.py",
+      "tools/objectshard/run_benchmarks.py",
+      "tools/objectshard/run_native_tests.py",
+      "tools/objectshard/test_lab_performance.py",
+      "tools/objectshard/test_m3_package.py",
+      "tools/objectshard/test_package_verifier.py",
+      "tools/objectshard/test_process_resources.py",
+      "tools/objectshard/test_production_runtime.py",
+      "tools/objectshard/test_qualification_receipts.py",
+      "tools/objectshard/test_windows_zip.py",
+      "tools/objectshard/test_workbench_package_inputs.py",
+      "tools/objectshard/test_workbench_provenance.py",
+      "tools/objectshard/test_workbench_qualification.py",
+      "tools/objectshard/verify_package.ps1",
+      "tools/objectshard/verify_package.py",
+      "tools/objectshard/verify_workbench_package.ps1",
+      "tools/objectshard/verify_workbench_package.py"
+    ],
+    "paths_found": [],
+    "implementation_symbols_found": [],
+    "nonimplementation_text": "Existing Material Audition capability description says ObjectShard ownership is unsupported."
+  },
+  "source_change_scope": {
+    "since_native_build": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json",
+      "tools/ci/test_verify_linux_godot_shards.py",
+      "tools/ci/verify_godot_shard_command.py",
+      "tools/ci/verify_linux_godot_shards.py",
+      "tools/ci/verify_windows_godot_shards.py"
+    ],
+    "product_gdscript_or_native_changes": []
+  },
+  "coverage_artifacts": [
+    {
+      "platform": "linux",
+      "run_id": 45968901250,
+      "id": 15185512638,
+      "sha256": "34039596272da03af7a3f11e290c909a6d7f73db041b425a9c28254b0ae6d793",
+      "crc_passed": true,
+      "cases": 480,
+      "shards": 32
+    },
+    {
+      "platform": "windows",
+      "run_id": 45968901250,
+      "id": 15185278645,
+      "sha256": "ad7e7b9db7fb84290a97b227120fad6a8eba3194b46d54ffe6d91a067fb78c8f",
+      "crc_passed": true,
+      "cases": 457,
+      "shards": 30,
+      "producer_raw_logs_verified": 487
+    }
+  ],
+  "coverage_scope": "Original aggregate receipts downloaded, CRC/hash/source identity checked. Raw 937-case execution not replayed by this reviewer.",
+  "guarded_run": {
+    "run_id": 45943912926,
+    "jobs": [
+      {
+        "id": 140324145603,
+        "name": "validate isolated publication and evaluator guards",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140324145863,
+        "name": "Windows PowerShell 5 portable smoke failure guards",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140324529887,
+        "name": "require explicit request and unchanged GEN-006 branch",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140324621777,
+        "name": "real native continuation, new-process restore and sanitizers",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140326203136,
+        "name": "source-build Windows DLL with pinned LLVM-MinGW",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140326203141,
+        "name": "source-built Linux graphical persistence campaign",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140327691611,
+        "name": "actual Windows graphical recovery and extracted owner evaluator",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140365605760,
+        "name": "append both qualified runtimes to unchanged GEN-006 branch",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "art_run": {
+    "run_id": 45968908059,
+    "jobs": [
+      {
+        "id": 140404217651,
+        "name": "Identify separately registered mergedown campaign",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140404423967,
+        "name": "Verify application qualification source",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140404686984,
+        "name": "Linux 4.7 native and displayed collaborative Art",
+        "status": "completed",
+        "conclusion": "success"
+      },
+      {
+        "id": 140404687047,
+        "name": "Windows 4.7 collaborative Art and installed evaluator",
+        "status": "completed",
+        "conclusion": "success"
+      }
+    ]
+  },
+  "local_runtime_scope": "Pinned Godot 4.7 Linux headless diagnostic tests only; not graphical or physical-owner acceptance.",
+  "native_ledgers": [
+    {
+      "manifest": "runtime-provenance.json",
+      "source": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+      "tree": "790b071e118de953f7a063418951e7c7596e6337",
+      "inputs_verified": 114,
+      "input_mismatches": [],
+      "actual_binary_sha256": "3646940af7df53002db67260b8e45dc9500e434ca755ff0b2fa7c5613eb2c0f3",
+      "actual_binary_size": 6884864
+    },
+    {
+      "manifest": "runtime-provenance.linux.json",
+      "source": "e48deb7fc292ded32bbfd6fb47ecafab4c1b31f4",
+      "tree": "790b071e118de953f7a063418951e7c7596e6337",
+      "inputs_verified": 114,
+      "input_mismatches": [],
+      "actual_binary_sha256": "1584987d7d3d21474701d5228981ee1821e57f0647975b52a97b6b8642e62583",
+      "actual_binary_size": 5617072
+    }
+  ],
+  "companion": {
+    "source": "6a58311982941b75f46e22109a0829e5acb83c7e",
+    "files": [
+      {
+        "path": "SOURCE-PROVENANCE.json",
+        "sha256": "49b86e67fa7b753f7e0904923a66192aed0348c280a46ef6750c0392e193f30d",
+        "size": 74804
+      },
+      {
+        "path": "docs/WEB_THREADING.md",
+        "sha256": "85b13f5d943ad6017fa4fa264bf8f9a54c9d49f80e40697a770d0524a3b9cd34",
+        "size": 540
+      },
+      {
+        "path": "tools/dev.py",
+        "sha256": "e9aaee35d135012f24b030acccb25d76f0e38893c58ff019138880f73f50f8ea",
+        "size": 10390
+      },
+      {
+        "path": "docs/LOCAL_DEVELOPMENT.md",
+        "sha256": "fafc00052588507c63380fbe312b875345699a5a145a4135ea81de461d0ab95d",
+        "size": 6224
+      },
+      {
+        "path": "validation/browser-results.json",
+        "sha256": "de154dd896b78384069be360c0f9424efa2ade182e6729eca6a242fcf9839839",
+        "size": 5978
+      }
+    ]
+  },
+  "local_tests": {
+    "source": "af45bfb332f9822780db9304779ff0cdf55661df",
+    "graphical": false,
+    "records": [
+      {
+        "script": "test_persistent_area_clock.gd",
+        "command": [
+          "PINNED_GODOT_4_7",
+          "--headless",
+          "--path",
+          "godot",
+          "--audio-driver",
+          "Dummy",
+          "--script",
+          "res://tests/test_persistent_area_clock.gd"
+        ],
+        "exit": 0,
+        "seconds": 0.315,
+        "log": "test_persistent_area_clock.gd.log",
+        "markers": [
+          "GEN006_CLOCK checks=28 failures=0"
+        ],
+        "log_sha256": "8946784b8b35823fc6211a81b8063e789c0acb7dbd6974f22f10c064e61b8f95"
+      },
+      {
+        "script": "test_persistent_area_background_clock.gd",
+        "command": [
+          "PINNED_GODOT_4_7",
+          "--headless",
+          "--path",
+          "godot",
+          "--audio-driver",
+          "Dummy",
+          "--script",
+          "res://tests/test_persistent_area_background_clock.gd"
+        ],
+        "exit": 0,
+        "seconds": 0.415,
+        "log": "test_persistent_area_background_clock.gd.log",
+        "markers": [
+          "GEN006_RAMCACHE_BACKGROUND_CLOCK checks=1524 failures=0"
+        ],
+        "log_sha256": "d199c6fae03f0575c72a9e64db6382a6477a4af6f52e06901995852f3ce1289c"
+      },
+      {
+        "script": "test_persistent_area_cache.gd",
+        "command": [
+          "PINNED_GODOT_4_7",
+          "--headless",
+          "--path",
+          "godot",
+          "--audio-driver",
+          "Dummy",
+          "--script",
+          "res://tests/test_persistent_area_cache.gd"
+        ],
+        "exit": 0,
+        "seconds": 1.368,
+        "log": "test_persistent_area_cache.gd.log",
+        "markers": [
+          "GEN006_RAMCACHE_CACHE checks=470 failures=0"
+        ],
+        "log_sha256": "b06d77ff50adf20cf0ea68f57335e5557fdbedb8ea2ddb5f27acee7136bc5bd1"
+      },
+      {
+        "script": "test_persistent_area_writeback.gd",
+        "command": [
+          "PINNED_GODOT_4_7",
+          "--headless",
+          "--path",
+          "godot",
+          "--audio-driver",
+          "Dummy",
+          "--script",
+          "res://tests/test_persistent_area_writeback.gd"
+        ],
+        "exit": 0,
+        "seconds": 10.745,
+        "log": "test_persistent_area_writeback.gd.log",
+        "markers": [
+          "GEN006_RAMCACHE_WRITEBACK checks=63 failures=0 pid=50"
+        ],
+        "log_sha256": "1942a5fe644813db09f85c1e7b713e98b44f987052d26d15d7302c47ded78c19"
+      },
+      {
+        "script": "test_persistent_area_metadata_bounds.gd",
+        "command": [
+          "PINNED_GODOT_4_7",
+          "--headless",
+          "--path",
+          "godot",
+          "--audio-driver",
+          "Dummy",
+          "--script",
+          "res://tests/test_persistent_area_metadata_bounds.gd"
+        ],
+        "exit": 0,
+        "seconds": 0.265,
+        "log": "test_persistent_area_metadata_bounds.gd.log",
+        "markers": [
+          "GEN006_RAMCACHE_METADATA_BOUNDS checks=145 failures=0"
+        ],
+        "log_sha256": "5db9b2e1187ba5003ceed659111251217ce24b6cb5a6956ffdbffc7b8b189adf"
+      },
+      {
+        "script": "test_persistent_area_native_bridge.gd",
+        "command": [
+          "PINNED_GODOT_4_7",
+          "--headless",
+          "--path",
+          "godot",
+          "--audio-driver",
+          "Dummy",
+          "--script",
+          "res://tests/test_persistent_area_native_bridge.gd"
+        ],
+        "exit": 0,
+        "seconds": 2.621,
+        "log": "test_persistent_area_native_bridge.gd.log",
+        "markers": [
+          "GEN006_NATIVE_BRIDGE assertions=136 failures=0 native_catchup_ticks=65 native_step_us=68936 checkpoint_bytes=4891390 final_physical=35d29d0f7f85d568"
+        ],
+        "log_sha256": "656d5be2c9a2d7be7d9908d31c39e04e5a3191042f2ad29e2fd2c5d729e1d95f"
+      },
+      {
+        "script": "test_persistent_area_residency_native.gd",
+        "command": [
+          "PINNED_GODOT_4_7",
+          "--headless",
+          "--path",
+          "godot",
+          "--audio-driver",
+          "Dummy",
+          "--script",
+          "res://tests/test_persistent_area_residency_native.gd"
+        ],
+        "exit": 0,
+        "seconds": 7.286,
+        "log": "test_persistent_area_residency_native.gd.log",
+        "markers": [
+          "GEN006_NATIVE_RESIDENCY_RESULT assertions=1584 failures=[] native_hot_samples=188"
+        ],
+        "log_sha256": "60bf991cae4e0374a0c61bd996a34a1a264171b2555f9d64f39b73d5bd050b14"
+      },
+      {
+        "script": "test_persistent_area_residency_owner_review.gd",
+        "command": [
+          "PINNED_GODOT_4_7",
+          "--headless",
+          "--path",
+          "godot",
+          "--audio-driver",
+          "Dummy",
+          "--script",
+          "res://tests/test_persistent_area_residency_owner_review.gd"
+        ],
+        "exit": 0,
+        "seconds": 3.925,
+        "log": "test_persistent_area_residency_owner_review.gd.log",
+        "markers": [
+          "GEN006_RAMCACHE_OWNER_REVIEW checks=66 failures=0"
+        ],
+        "log_sha256": "b310a36caa9f0cb72f32a6c03d95f8e4c73451082eb725a81d1936790df7c718"
+      }
+    ]
+  },
+  "repository_materialized_check": {
+    "status": "passed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 186,
+      "navigation_link_documents": 8,
+      "canonical_claims": 334,
+      "local_links": 4461,
+      "heading_anchors": 814,
+      "questions": 33,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+      "godot/tools/gentek_reciprocal",
+      "godot/tools/gentek_reciprocal.exe"
+    ],
+    "unmaterialized_runtime_files": [],
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "documentation_checks": {
+    "check_docs": {
+      "exit": 0,
+      "status": "passed"
+    },
+    "check_m11_consistency": {
+      "exit": 0,
+      "status": "passed",
+      "scope": "historical M11 integrity; no current runtime acceptance",
+      "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+      "records_checked": 18,
+      "source_hashes_checked": 28,
+      "errors": []
+    },
+    "retrieval_eval": {
+      "exit": 0,
+      "documents": 186,
+      "chunks": 2325,
+      "questions": 33,
+      "canonical_hit_at_1": 19,
+      "canonical_hit_at_k": 31,
+      "mrr_at_k": 0.7197,
+      "misses": [
+        "Q19",
+        "Q32"
+      ],
+      "interpretation": "Lexical retrieval metrics do not establish source semantics or answer correctness."
+    }
+  }
+}

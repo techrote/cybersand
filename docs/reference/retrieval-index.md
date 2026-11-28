@@ -10,6 +10,13 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 # Retrieval question index
 
+## RAMCACHE and Strata integration
+
+| Question | Canonical route |
+| --- | --- |
+| What did the owner accept, which optical target is waived, and what is excluded? | [Combined integration policy](../operations/ramcache-strata-integration.md) |
+| Can persistent profiles contain Strata layers, and which native runtime does the integrated application use? | [Ownership boundaries and native identity](../operations/ramcache-strata-integration.md#source-and-ownership-boundaries) |
+
 ## ObjectShard M4 ordinary Workbench — Draft/HOLD
 
 | Question | Canonical route |
@@ -26,19 +33,6 @@ related-documents: [../README.md, retrieval-corpus.json, ../operations/documenta
 
 [Additive M4 questions](retrieval-questions-objectshard-m4.json) preserve the
 frozen M0–M3 fixtures and distinguish current implementation from qualification.
-
-## ObjectShard moving materials — Draft/HOLD candidate
-
-| Question | Canonical route |
-| --- | --- |
-| How does native material ownership transfer into a moving, burning ObjectShard? | [Promotion, shared chemistry and M2 contract](../research/objectshard-001.md) |
-| What prevents duplicate Fire, stale Sand capture or lost Water contact? | [M2 ownership and exchange](../research/objectshard-001.md#m2-ownership-and-exchange) |
-| Are fracture, arbitrary liquids, internal gas transport and durable saves supported? | [Capability and lifecycle boundary](../research/objectshard-001.md#capability-and-lifecycle-boundary) |
-| How do I launch the exact Windows evaluator and record physical PASS/FAIL? | [ObjectShard Lab owner evaluation](../operations/objectshard-lab-playtest.md) |
-| Which final ObjectShard checks passed, and what remains on HOLD? | [Final source-bound delivery](../research/objectshard-001.md#final-source-bound-delivery) |
-
-[Additive ObjectShard questions](retrieval-questions-objectshard.json) distinguish
-this implemented branch candidate from accepted-main behavior and owner acceptance.
 
 ## Persistent authored areas · GEN-006
 
@@ -79,6 +73,27 @@ Use the [owner workflow](../operations/world-steer-architecture.md) for harvesti
 ## Native Workbench Batch Lab
 
 For independent native tiles, 2×2/4×4 operation, Stop/replay, P0–P3 controls, source-grounded references, blinded review and Windows evaluator custody, use the [Batch Lab guide](../operations/world-steer-batch-lab.md). This is an M0–M2 Draft/HOLD candidate; model-quality and physical owner acceptance are separate. [Focused questions](retrieval-questions-batch-lab.json) are additive.
+
+## Editable Strata layers in ordinary Workbench
+
+For **STRATA-THEATRE-003 Draft/HOLD**, retrieve the [optical rendering and persistence contract](../systems/strata-optics.md),
+[composition guide](../operations/strata-optical-composition.md) and [owner walkthrough](../operations/strata-optics-evaluation.md).
+Optical depth is independent of native geometry; Play stays unprocessed, old documents open in Classic,
+and temporary inspection is excluded from scene saves. Hosted evidence does not decide physical GPU acceptance.
+
+For the **STRATA-THEATRE-002 Draft/HOLD successor** native scenes, reusable
+composition library, bounded presentation-only atmosphere and exact reference
+image/mask provenance, retrieve [Strata environments](../systems/strata-environments.md).
+For PNG alpha/mask policy, native modules, finite construction, exact approval
+fences, Stop/history and provenance, retrieve [native Strata authoring](../systems/strata-authoring.md).
+
+For the single play authority, three static native decorative planes, exact
+view/edit transforms, visibility/lock/solo, per-plane history and the authored
+save domain, retrieve [the Strata Workbench contract](../systems/strata-workbench.md).
+For industrial, arcology and cavern examples, launch and physical Windows owner
+checks, retrieve [the evaluation guide](../operations/strata-workbench-evaluation.md).
+This Draft/HOLD successor does not adopt PUBPRES branches or the standalone
+prototype's independent simulation clocks.
 
 ## World Art inspection, capture and Windows evaluation
 

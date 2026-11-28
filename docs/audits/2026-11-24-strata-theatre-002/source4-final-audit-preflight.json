@@ -1,0 +1,28 @@
+{
+  "artifacts": [
+    {
+      "id": 14978334114,
+      "name": "strata2-workbench-windows-evaluator-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+      "bytes": 208493785,
+      "sha256": "6d642a243fbe982dd07bc5ac3f79e65379221188ad2d6f59d27bed51e06f3645",
+      "run_id": 45509477752,
+      "run_attempt": 1
+    },
+    {
+      "id": 14978448778,
+      "name": "strata2-package-evidence-934cc0c0eef70dad528155e9a92eebe25e2757eb-1",
+      "bytes": 223384971,
+      "sha256": "2211905b26c4caf5db06fa8dd32a35b29194269de1069517032044b19682a52e",
+      "run_id": 45509477752,
+      "run_attempt": 1
+    }
+  ],
+  "outer_package_uncompressed_bytes": 209017687,
+  "pristine_payload_uncompressed_bytes": 331412951,
+  "pristine_entries": 1689,
+  "execution_uncompressed_bytes": 295312792,
+  "execution_entries": 2210,
+  "required_additional_bytes": 835743430,
+  "free_bytes_before_extract": 1448669184,
+  "margin_bytes": 612925754
+}

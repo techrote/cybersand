@@ -1,0 +1,153 @@
+{
+  "authority_unchanged": [
+    "No native write, actor, Play, camera, worker, renderer or physics interface changed by this five-file delta.",
+    "No tolerance, material expectation, source identity, approval-token, Stop or native readback gate relaxed.",
+    "Session producer unchanged; transient ACK and candidate fencing behavior remain at source3."
+  ],
+  "base": "986c9d4117bf755799178790e67e8ef6597aaf5f",
+  "disposition": "No material source-review blocker. Full source4 graphical and extracted-package qualification required. Draft/HOLD.",
+  "future_artifact_requirements": [
+    "Source4 complete Linux and Windows source-bound campaigns.",
+    "Package/execution artifacts must match source, run_id and the same positive run_attempt suffix, plus their authenticated outer sizes and digests.",
+    "Actual extracted Windows full campaign, shipped default-OFF launcher, complete raw payload checks and actual Windows runtime byte hashes remain separate gates.",
+    "Physical Windows/NVIDIA acceptance remains owner-only."
+  ],
+  "local_execution_review": {
+    "exact_candidate_delta_verified": true,
+    "files": {
+      "harness-parse.log": {
+        "bytes": 221,
+        "sha256": "b6354f16b8459dc19d5193c3f40a595a1e52931f8a415b10b2ef42cc1ba6c3a8"
+      },
+      "processes.json": {
+        "bytes": 6689,
+        "sha256": "658cca87346e5e035ccceaf1e7e2235ac83534a05fb874918d210b846fc00122"
+      },
+      "ui.log": {
+        "bytes": 4397,
+        "sha256": "4b44e6ebddc801acbd48f877b0f742e8d7f9e745f77fa843bec6cffd266f82af"
+      },
+      "workflow.json": {
+        "bytes": 81884,
+        "sha256": "25cb7e6ee1ed1cb86076212dfbd56acba2a67d7dd0753b7c142feb7cb9d557a9"
+      },
+      "workflow.log": {
+        "bytes": 572,
+        "sha256": "c6d1df3a082920197272e19832dc211a2be3b22db34a4c730f5280b8912cce1d"
+      }
+    },
+    "performed_by": "lead integrator",
+    "processes": [
+      {
+        "command": [
+          "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/tmp/strata2-recovered/godot",
+          "--check-only",
+          "--script",
+          "res://tools/qualify_workbench_strata2.gd"
+        ],
+        "elapsed_seconds": 2.327585458755493,
+        "exit": 0,
+        "name": "harness-parse"
+      },
+      {
+        "checks": 48,
+        "command": [
+          "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/tmp/strata2-recovered/godot",
+          "--script",
+          "res://tests/test_strata2_authoring_ui.gd"
+        ],
+        "elapsed_seconds": 0.3892037868499756,
+        "exit": 0,
+        "name": "ui",
+        "scope": "synthetic mediator; actual controls; no native or framebuffer claim"
+      },
+      {
+        "checks": 430,
+        "command": [
+          "/workspace/scratch/051e78157ffb/runtime/godot-4.7/Godot_v4.7-stable_linux.x86_64",
+          "--headless",
+          "--path",
+          "/tmp/strata2-recovered/godot",
+          "--script",
+          "res://tests/test_strata2_workflow.gd"
+        ],
+        "elapsed_seconds": 19.28052520751953,
+        "exit": 0,
+        "name": "workflow",
+        "scope": "Actual Main/Workbench native execution, headless; not graphical execution."
+      }
+    ],
+    "reviewed_by": "specialist-A",
+    "scope": "Independent receipt/source-byte review, not a second local execution."
+  },
+  "recorded_utc": "2026-11-24T23:21:05.870197+00:00",
+  "review_findings": [
+    {
+      "finding": "Ready backend text ends in one space when history warnings are empty; existing UI strips edge whitespace. Source3 compared that visible text to the untrimmed message.",
+      "id": "SOURCE3-STATUS-WHITESPACE",
+      "resolution": "Source4 records both actual strings and independently requires the full displayed content equal to the defined edge-trimmed backend text. Missing raw message, changed warning content and changed interior spaces are refused.",
+      "scope": "Source3 original report did not record raw backend_message. Diagnosis combines exact frozen producer/UI source and observed displayed text; original failures are retained.",
+      "severity": "qualification-oracle-error"
+    },
+    {
+      "finding": "Ready Import summary showed region em dash because the exact rectangle lived in its admitted stage rather than a top-level alias.",
+      "id": "SOURCE3-IMPORT-REGION",
+      "resolution": "UI uses actual reviewed single-stage plane/region, overrides stale conversion summaries, and explicitly directs multi-stage location review to Compose. Graphical receipt records the actual first summary line and independent Python validation compares its entire integer coordinate array to the pinned fixture.",
+      "severity": "owner-review-clarity"
+    }
+  ],
+  "reviewed_delta": [
+    {
+      "additions": 13,
+      "deletions": 1,
+      "path": "godot/scripts/depth/workbench_strata_authoring_panel.gd",
+      "sha": "07e9c3a6f6afc270b2f3073f43d20f1213944a79",
+      "status": "modified"
+    },
+    {
+      "additions": 9,
+      "deletions": 1,
+      "path": "godot/tests/test_strata2_authoring_ui.gd",
+      "sha": "0eff0ee5d594a3ff12b203142c1f58f05c1a82c6",
+      "status": "modified"
+    },
+    {
+      "additions": 8,
+      "deletions": 2,
+      "path": "godot/tools/qualify_workbench_strata2.gd",
+      "sha": "a38f1e4b2db5697e8b98fa3a80d83698b15bab6b",
+      "status": "modified"
+    },
+    {
+      "additions": 15,
+      "deletions": 1,
+      "path": "tools/ci/qualify_strata2_workbench.py",
+      "sha": "8e59913e12772474ddaa6e107760a91cc231fbfb",
+      "status": "modified"
+    },
+    {
+      "additions": 22,
+      "deletions": 0,
+      "path": "tools/ci/test_strata2_qualification.py",
+      "sha": "aee9f004400bd557fb0e8191ce559dc8946bdef3",
+      "status": "modified"
+    }
+  ],
+  "reviewer": "specialist-A",
+  "schema": "strata2-independent-source4-review-v1",
+  "scope_limits": [
+    "No source4 hosted or extracted-package execution claimed by this review.",
+    "No new native gameplay, callback or memory observation was made by the reviewer.",
+    "Source3 original failed results and predecessor qualification retain their exact historical scopes."
+  ],
+  "source3_failure_receipt": "source3-linux-negative-review-a.json",
+  "source_commit": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "source_runtime_custody": "source-runtime-custody-934cc0c.json",
+  "source_tree": "0c30ea3eaea61c5091c23b984837f29d7b7c828e"
+}

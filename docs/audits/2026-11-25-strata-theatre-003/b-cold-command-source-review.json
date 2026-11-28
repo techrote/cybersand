@@ -1,0 +1,53 @@
+{
+  "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "date": "2026-11-26",
+  "disposition": "Source boundary review complete; request unarmed and actual final package/cold execution still pending at this review.",
+  "findings": [
+    {
+      "result": "Source orders original archive verification, absent spaced-path extraction, unchanged static package.verify(pristine=True), pristine-state witness, then the untouched shipped CMD as first Godot invocation.",
+      "topic": "cold-boundary"
+    },
+    {
+      "result": "Read-only source inspection of frozen package.verify and its called checks found no Godot invocation; static verification does not silently pre-import the extracted project.",
+      "topic": "verifier-boundary"
+    },
+    {
+      "result": "Raw ZIP orig_filename is checked before normalized member spelling; NUL/backslash and collision/link cases refuse. Nested cold-launch.json is included in the evidence inventory.",
+      "topic": "raw-container-custody"
+    },
+    {
+      "result": "B identified missing root FILETIME/actual invocation clock binding. C now requires creation within5seconds of recorded start and root lifetime<=actual monotonic wall+1second; wrong-clock and implausibly-long-lifetime controls pass.",
+      "topic": "clock-correction"
+    },
+    {
+      "result": "Every original shipped byte, including original importer sidecars, must remain exact; generated cache/userdata and new sidecars are separately inventoried.",
+      "topic": "original-payload"
+    },
+    {
+      "result": "Actual runtime must prove default2048-square native Workbench admission, two ordered console stages and bundled engine children, successful exit and bounded teardown. It does not rerun nine-scene interaction or establish physicalGPU performance.",
+      "topic": "scope"
+    }
+  ],
+  "observer_commit": "572567ebf06709827c49d503bdde41cde4e1ec6d",
+  "reviewed_source_clean": true,
+  "schema": "strata3-specialist-b-cold-command-source-review-v1",
+  "source_inputs_sha256": {
+    ".github/workflows/strata-theatre-003-cold-launch.yml": "c1556d13382c61f69ec94c5846e6e8f85bc532f7ed24b0d4a75229a5a70d486e",
+    "docs/audits/2026-11-25-strata-theatre-003/cold-first-command-registration.md": "f0bbea16ee83d8bbcaade88f0797317f4a75f85f6fa1221ad13ab08138df1ae0",
+    "tools/ci/strata3-cold-launch-request.json": "0416e3d745c1fbabd3b78f337d3edee87f0295e64d0664e28e81178940257d5c",
+    "tools/ci/strata3_cold_launcher.py": "df8d28df8e97392feec75f9d15f6b515af5325deb9cb4f0662a02fa60288edc6",
+    "tools/ci/test_strata3_cold_launcher.py": "2c483680d633a232f4fc98a39bc6b009cc751ec682acb5802f714caee577e7eb"
+  },
+  "tests": {
+    "command": [
+      "python3",
+      "tools/ci/test_strata3_cold_launcher.py",
+      "-v"
+    ],
+    "errors": 0,
+    "failures": 0,
+    "host": "linux",
+    "run": 21,
+    "scope": "Source/adverse controls only; no real Windows owner CMD execution."
+  }
+}

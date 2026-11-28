@@ -1,0 +1,24 @@
+Initialize godot-rust (API v4.7.stable.official, runtime v4.7.stable.official, safeguards balanced)
+Godot Engine v4.7.stable.official.5b4e0cb0f - https://godotengine.org
+
+[92mPHYSICS ENGINE 2D: Rapier2D v0.35.2[39m[0m
+ERROR: Condition "len == 0" is true. Returning: FAILED
+   at: update (core/crypto/hashing_context.cpp:54)
+   GDScript backtrace (most recent call first):
+       [0] _digest (res://scripts/depth/workbench_layer_document.gd:127)
+       [1] write_named (res://scripts/depth/workbench_layer_document.gd:177)
+       [2] _run (res://tests/test_workbench_strata_layers.gd:104)
+ERROR: authored composition Save failed
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] expect (res://tests/test_workbench_strata_layers.gd:20)
+       [1] _run (res://tests/test_workbench_strata_layers.gd:104)
+ERROR: saved composition was not recognized
+   at: push_error (core/variant/variant_utility.cpp:1023)
+   GDScript backtrace (most recent call first):
+       [0] expect (res://tests/test_workbench_strata_layers.gd:20)
+       [1] _run (res://tests/test_workbench_strata_layers.gd:106)
+SCRIPT ERROR: Out of bounds get index '-1' (on base: 'PackedByteArray')
+          at: _run (res://tests/test_workbench_strata_layers.gd:117)
+          GDScript backtrace (most recent call first):
+              [0] _run (res://tests/test_workbench_strata_layers.gd:117)

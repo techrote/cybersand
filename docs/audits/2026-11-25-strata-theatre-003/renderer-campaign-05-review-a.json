@@ -1,0 +1,377 @@
+{
+  "schema": "strata003-specialist-a-renderer-pixel-review-v1",
+  "source_commit": "146cead1ac41147efa993b0bf8b634da08695182",
+  "workflow_run": "https://github.com/techrote/cybersand/actions/runs/45720008446",
+  "artifact_id": 15070878821,
+  "platform": "linux",
+  "engine": "4.7.stable.official.5b4e0cb0f",
+  "renderer": "OpenGL4.5 Core Mesa25.2.8-0ubuntu0.24.04.5 Compatibility; llvmpipe LLVM20.1.2 256bits",
+  "actual_checks": 108,
+  "actual_failures": 1,
+  "failed_assertion": "Wipe Classic half remains exact under nonzero haze and parent opacity",
+  "process_json_sha256": "eb46cd1d9cb255c998c0b0218e3ebc19c650281e76c324efb5cc1b23d136d451",
+  "process_log_sha256": "184f1da6dc7082eed3427b3ec42a370267b27bfa811d552f6d4fc0347a423eee",
+  "captures": [
+    {
+      "filename": "frequency-reference.png",
+      "sha256": "96072a5451f68b157b11de895da998e290041c4bcab9f31389490f4d390418a0",
+      "size": [
+        192,
+        64
+      ],
+      "rgba8_probes": [
+        {
+          "xy": [
+            14,
+            14
+          ],
+          "rgba": [
+            229,
+            229,
+            229,
+            255
+          ]
+        },
+        {
+          "xy": [
+            15,
+            14
+          ],
+          "rgba": [
+            25,
+            25,
+            25,
+            255
+          ]
+        },
+        {
+          "xy": [
+            40,
+            16
+          ],
+          "rgba": [
+            255,
+            255,
+            255,
+            255
+          ]
+        },
+        {
+          "xy": [
+            44,
+            44
+          ],
+          "rgba": [
+            0,
+            0,
+            127,
+            127
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "frequency-detail.png",
+      "sha256": "5793ad31e4cc4ca68cd76ed8fe996afb6d8125556ef2b251d4353f14a6bd3cdc",
+      "size": [
+        192,
+        64
+      ],
+      "rgba8_probes": [
+        {
+          "xy": [
+            14,
+            14
+          ],
+          "rgba": [
+            153,
+            153,
+            153,
+            255
+          ]
+        },
+        {
+          "xy": [
+            15,
+            14
+          ],
+          "rgba": [
+            102,
+            102,
+            102,
+            255
+          ]
+        },
+        {
+          "xy": [
+            40,
+            16
+          ],
+          "rgba": [
+            255,
+            255,
+            255,
+            255
+          ]
+        },
+        {
+          "xy": [
+            44,
+            44
+          ],
+          "rgba": [
+            0,
+            0,
+            127,
+            127
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "frequency-diffusion.png",
+      "sha256": "acb40fc9b5d59efe5c5766835b4f93eb033d914e56fe60c452e64154191e9b8b",
+      "size": [
+        192,
+        64
+      ],
+      "rgba8_probes": [
+        {
+          "xy": [
+            38,
+            16
+          ],
+          "rgba": [
+            4,
+            4,
+            4,
+            4
+          ]
+        },
+        {
+          "xy": [
+            40,
+            16
+          ],
+          "rgba": [
+            255,
+            255,
+            255,
+            255
+          ]
+        },
+        {
+          "xy": [
+            44,
+            44
+          ],
+          "rgba": [
+            0,
+            0,
+            127,
+            127
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "frequency-aperture-6.png",
+      "sha256": "427699ef32a85cc6b513285b59f8d527bc9be340c1449a20b9d60c48b43161b1",
+      "size": [
+        192,
+        64
+      ],
+      "rgba8_probes": [
+        {
+          "xy": [
+            14,
+            14
+          ],
+          "rgba": [
+            127,
+            127,
+            127,
+            255
+          ]
+        },
+        {
+          "xy": [
+            15,
+            14
+          ],
+          "rgba": [
+            127,
+            127,
+            127,
+            255
+          ]
+        },
+        {
+          "xy": [
+            39,
+            16
+          ],
+          "rgba": [
+            25,
+            25,
+            25,
+            25
+          ]
+        },
+        {
+          "xy": [
+            40,
+            16
+          ],
+          "rgba": [
+            58,
+            58,
+            58,
+            58
+          ]
+        },
+        {
+          "xy": [
+            63,
+            44
+          ],
+          "rgba": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "frequency-low-aperture.png",
+      "sha256": "936599580d6dac9c9fd8426eee7dfc523a60031b0e6badfbaad0005e150aa8fd",
+      "size": [
+        192,
+        64
+      ],
+      "rgba8_probes": [
+        {
+          "xy": [
+            39,
+            16
+          ],
+          "rgba": [
+            32,
+            32,
+            32,
+            32
+          ]
+        },
+        {
+          "xy": [
+            34,
+            16
+          ],
+          "rgba": [
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "filename": "frequency-haze-opacity-wipe.png",
+      "sha256": "fbe6f0786fb78fc991438c502492497125d5fd4004c25a7c81a449f5489c2713",
+      "size": [
+        192,
+        64
+      ],
+      "rgba8_probes": [
+        {
+          "xy": [
+            142,
+            14
+          ],
+          "rgba": [
+            82,
+            84,
+            86,
+            128
+          ]
+        },
+        {
+          "xy": [
+            143,
+            14
+          ],
+          "rgba": [
+            11,
+            13,
+            14,
+            128
+          ]
+        },
+        {
+          "xy": [
+            168,
+            16
+          ],
+          "rgba": [
+            91,
+            93,
+            95,
+            128
+          ]
+        },
+        {
+          "xy": [
+            172,
+            44
+          ],
+          "rgba": [
+            1,
+            2,
+            25,
+            64
+          ]
+        }
+      ]
+    }
+  ],
+  "aperture_progression": [
+    {
+      "radius_cells": 0,
+      "checker_contrast_u8": 204,
+      "thin_white_rgb_equals_alpha": true
+    },
+    {
+      "radius_cells": 1,
+      "checker_contrast_u8": 0,
+      "thin_white_rgb_equals_alpha": true
+    },
+    {
+      "radius_cells": 2,
+      "checker_contrast_u8": 0,
+      "thin_white_rgb_equals_alpha": true
+    },
+    {
+      "radius_cells": 3,
+      "checker_contrast_u8": 0,
+      "thin_white_rgb_equals_alpha": true
+    },
+    {
+      "radius_cells": 6,
+      "checker_contrast_u8": 0,
+      "thin_white_rgb_equals_alpha": true
+    }
+  ],
+  "detail_exact_coverage": true,
+  "limitations": [
+    "The entire candidate remains failed despite positive dense-kernel, detail, diffusion and actor-reveal evidence.",
+    "The failed test did not retain its nonzero-haze Classic baseline; expected legacy pixels from the separate EGL probe are not mislabeled as original Godot capture values.",
+    "No physical GPU or human perceptual success is established.",
+    "Original complete captures and logs remain in the named workflow artifact; no raw log is committed."
+  ],
+  "corrective_commit": "bdd7a6cf7c004b7b020d9ef2c95be4153a250013",
+  "next_exact_application": "fd0830abcfadd9ae19162e5677943bb131223e59",
+  "next_workflow_run": "https://github.com/techrote/cybersand/actions/runs/45721790366"
+}

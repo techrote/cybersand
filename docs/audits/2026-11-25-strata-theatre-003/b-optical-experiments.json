@@ -1,0 +1,2147 @@
+{
+  "schema": "strata3-specialist-art-experiments-v1",
+  "author": "SpecialistB",
+  "date": "2026-11-25",
+  "baseline_application": "934cc0c0eef70dad528155e9a92eebe25e2757eb",
+  "baseline_archive": "410ac8e5e613b1454928699dbc9a68cd035f0894",
+  "checkpoint_source": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+  "experiments": [
+    {
+      "id": "B-TONAL-ARCHITECTURE",
+      "hypothesis": "Moderate value compression and detail hierarchy can preserve intricate native rear architecture while separating it from physical Play without blur.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_optical_profiles.gd",
+          "sha256": "3a1bcc09ed7bdb5310f3893ed6ed1ec9980efa7f7ee1047ec96ef2299167786b"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/scripts/depth/strata_optical_profiles.gd",
+          "sha256": "91d696a1feac21638df8e207be4c8fe7d99a3a849dd6801705e95fda0784765e"
+        }
+      ],
+      "parameters": {
+        "profiles": [
+          "architectural",
+          "gameplay_clarity",
+          "cinematic_deep_focus"
+        ],
+        "defocus_disabled": true
+      },
+      "applicable_scenes": [
+        "orbital-terminal",
+        "industrial-underworks",
+        "vertical-transfer-spine"
+      ],
+      "comparative_captures": [
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-classic.png",
+          "profile": "classic",
+          "sha256": "515abac21fba33c78da2330db471755eecfaf5f23783b6b06099db14d57e152d"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "9c27c090375b7588c2b706b3cc2c530c372e27cb252830a6529215b9d926bc5c",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-architectural.png",
+          "profile": "architectural",
+          "sha256": "38b87def4195903bb143a6496968f0cef2bfa253b2a0b74f9e2878cb66329ec1"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-gameplay_clarity.png",
+          "profile": "gameplay_clarity",
+          "sha256": "41758ed292112dfd0deb616dac6a0182ef2db74c100050572cec0290b3c6c249"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-cinematic_deep_focus.png",
+          "profile": "cinematic_deep_focus",
+          "sha256": "c0302a611fc5a94f6e5322b77e175d596127f862cb38c01d5fd62f089479441b"
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "classic",
+          "path": "sunward-freight-megastructure/install/profile-classic.png",
+          "sha256": "223948be821010120ebe38d2f033f12309ba21c9c67a7b441fc0a18a458f262b",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "gameplay_clarity",
+          "path": "sunward-freight-megastructure/install/profile-gameplay_clarity.png",
+          "sha256": "9233952210821c7f4e73851d5c9e7d0f72182b904568fd6fea61c3515182557a",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "cinematic_deep_focus",
+          "path": "sunward-freight-megastructure/install/profile-cinematic_deep_focus.png",
+          "sha256": "8cc4b450030141c758bb093f22e0e7c54345b9ec9d43ab2a257dbf306054465d",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "classic",
+          "path": "xeno-resonance-grotto/install/profile-classic.png",
+          "sha256": "57540c9ff7f3d811a019378e6f592f838e4bc781f802684bc890fa8269ae8820",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "gameplay_clarity",
+          "path": "xeno-resonance-grotto/install/profile-gameplay_clarity.png",
+          "sha256": "3b0d053c04876744c52b355f58c2cbf0aded718c304f200bba1870e5ba6a384e",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "cinematic_deep_focus",
+          "path": "xeno-resonance-grotto/install/profile-cinematic_deep_focus.png",
+          "sha256": "2917b5b2f72947004595b0f397f16ee23c474bb9267ae61b4f9fee627da95476",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "classic",
+          "path": "lunar-terminator-observatory/install/profile-classic.png",
+          "sha256": "355440642e2e94781c4f793b42ef5f300e6c431d51705179bbc20b583d1ecb63",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "gameplay_clarity",
+          "path": "lunar-terminator-observatory/install/profile-gameplay_clarity.png",
+          "sha256": "e60a4964b732e29fc74d9609e9020b54f66dfd2d1df135a51826f577311da1d3",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "cinematic_deep_focus",
+          "path": "lunar-terminator-observatory/install/profile-cinematic_deep_focus.png",
+          "sha256": "95b66a64b0c2044bf8fdb9227e24e4a422dce7e4414aac09704ab51b97042036",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        }
+      ],
+      "performance_evidence": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "optics-readability-challenge",
+          "extent": [
+            1024,
+            768
+          ],
+          "report_path": "optics-readability-challenge/progression/result.json",
+          "report_sha256": "999e061358c09ae67e7011e4d26c6887550439f38c8bd15727c2c2d8618e2b9e",
+          "metric": "median completed native ticks per second over three forward/reverse/forward samples",
+          "median_native_ticks_per_second": {
+            "classic": 8.8098034701123,
+            "architectural": 7.0432912334449,
+            "cinematic_deep_focus": 7.18259545750066,
+            "gameplay_clarity": 6.61265391509234,
+            "diorama": 6.64664656890022
+          },
+          "median_ratio_to_classic": {
+            "classic": 1.0,
+            "architectural": 0.7994833548035003,
+            "cinematic_deep_focus": 0.8152957647543416,
+            "gameplay_clarity": 0.7506017515062736,
+            "diorama": 0.7544602545844866
+          },
+          "scope": "Hosted software rendering; same reset geometry and observer. This integrated profile cost does not isolate individual shader or motif costs and is not physical Windows/NVIDIA performance. Visual preference is not performance acceptance.",
+          "disposition": "Material physical-progression regression observed relative to Classic; no ordinary-profile performance promotion."
+        }
+      ],
+      "correctness_evidence": [
+        "Profile strict-schema/native-Play-protection/value-copy suite97 checks passed at pinned official Godot4.7; no live rendered conclusion.",
+        "Underworks actual913-check install/415-check fresh reopen passed on hosted Linux and Windows; exact four-plane native hashes and saved optics preserved. Source/configuration/capture custody independently checked byB; see b-underworks-reveal-review.json.",
+        "Actual fd0830ab full Linux corpus passed unchanged root qualifier and strict offline gallery reader: nine scenes,99 matched profile captures,74 supplementals, registered40 motion frames; source/runtime/image/configuration custody verified. This is not the separate performance acceptance gate."
+      ],
+      "artistic_assessment": {
+        "status": "final-source-integrated-linux-observation",
+        "human_acceptance": false,
+        "review": "b-final-corpus-review.json",
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "platform": "linux",
+        "finding": "Clarity most strongly subordinates false rear routes in all three new overviews; Deep Focus retains more detail. A known rear truss can still imply support, so tonal separation is not a complete route-understanding guarantee."
+      },
+      "disposition": "artistic-utility-observed-performance-hold",
+      "historical_artistic_assessments": [
+        {
+          "status": "provisional-source-bound-single-scene-review",
+          "human_acceptance": false,
+          "review": "b-underworks-blind-review.json",
+          "reveal": "b-underworks-reveal-review.json",
+          "limitation": "Initial scores are unchanged after reveal. Actor readability relies on label/ring; rear false routes remain. Broader environments and movement remain open."
+        }
+      ]
+    },
+    {
+      "id": "B-LENS-DISTINCTION",
+      "hypothesis": "A small pixel aperture and highlight diffusion provide meaningfully different artistic tradeoffs.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_optical_profiles.gd",
+          "sha256": "3a1bcc09ed7bdb5310f3893ed6ed1ec9980efa7f7ee1047ec96ef2299167786b"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/scripts/depth/strata_optical_profiles.gd",
+          "sha256": "91d696a1feac21638df8e207be4c8fe7d99a3a849dd6801705e95fda0784765e"
+        }
+      ],
+      "parameters": {
+        "profiles": [
+          "optical_lens",
+          "diorama",
+          "atmospheric_industrial"
+        ],
+        "techniques": [
+          "pixel",
+          "diffusion"
+        ]
+      },
+      "applicable_scenes": [
+        "neon-rain-arcology",
+        "industrial-underworks"
+      ],
+      "comparative_captures": [
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-classic.png",
+          "profile": "classic",
+          "sha256": "515abac21fba33c78da2330db471755eecfaf5f23783b6b06099db14d57e152d"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-optical_lens.png",
+          "profile": "optical_lens",
+          "sha256": "308ee0d63a842866fc0046a308f168fbc9f5b2b9bd5fb6c3141015df41eb170e"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-diorama.png",
+          "profile": "diorama",
+          "sha256": "8b77ae51eb5291e9f205f987f4a109811a41d5696440d0f82badee0d3b2d4ea7"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-atmospheric_industrial.png",
+          "profile": "atmospheric_industrial",
+          "sha256": "4a906f56262e8c96a12ed1fb70db0f2b319cf1edd4f7edcba1fd8c8a68cc92fa"
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "classic",
+          "path": "sunward-freight-megastructure/install/profile-classic.png",
+          "sha256": "223948be821010120ebe38d2f033f12309ba21c9c67a7b441fc0a18a458f262b",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "diorama",
+          "path": "sunward-freight-megastructure/install/profile-diorama.png",
+          "sha256": "901d3fad5ae2716c07beedf9e514e918489ef24b93024e7cb62f2be7883b720d",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "atmospheric_industrial",
+          "path": "sunward-freight-megastructure/install/profile-atmospheric_industrial.png",
+          "sha256": "786a4d762c47add541b3ef5255ba1ef3154cbea4fe239b5e1346878cd3a142e6",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "classic",
+          "path": "xeno-resonance-grotto/install/profile-classic.png",
+          "sha256": "57540c9ff7f3d811a019378e6f592f838e4bc781f802684bc890fa8269ae8820",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "optical_lens",
+          "path": "xeno-resonance-grotto/install/profile-optical_lens.png",
+          "sha256": "3f3fd666fd045f644159ab5e51f54a98b233f15ed43b82ce76e3bcafedcd0ed4",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "diorama",
+          "path": "xeno-resonance-grotto/install/profile-diorama.png",
+          "sha256": "053b644a4db21db4afb4bdc55526d768444fd05399a4d5ce308a892a1a51a8da",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "classic",
+          "path": "lunar-terminator-observatory/install/profile-classic.png",
+          "sha256": "355440642e2e94781c4f793b42ef5f300e6c431d51705179bbc20b583d1ecb63",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "optical_lens",
+          "path": "lunar-terminator-observatory/install/profile-optical_lens.png",
+          "sha256": "d559e2be615a8635a71c4546f1dc29179a82589ef56d1c0b6d6af58e1f9dbcfe",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "diorama",
+          "path": "lunar-terminator-observatory/install/profile-diorama.png",
+          "sha256": "189e62faba4a07b11437c1abfa43d24e5fa0978dd65f2032d8eea1c2fcbf6495",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        }
+      ],
+      "performance_evidence": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "optics-readability-challenge",
+          "extent": [
+            1024,
+            768
+          ],
+          "report_path": "optics-readability-challenge/progression/result.json",
+          "report_sha256": "999e061358c09ae67e7011e4d26c6887550439f38c8bd15727c2c2d8618e2b9e",
+          "metric": "median completed native ticks per second over three forward/reverse/forward samples",
+          "median_native_ticks_per_second": {
+            "classic": 8.8098034701123,
+            "architectural": 7.0432912334449,
+            "cinematic_deep_focus": 7.18259545750066,
+            "gameplay_clarity": 6.61265391509234,
+            "diorama": 6.64664656890022
+          },
+          "median_ratio_to_classic": {
+            "classic": 1.0,
+            "architectural": 0.7994833548035003,
+            "cinematic_deep_focus": 0.8152957647543416,
+            "gameplay_clarity": 0.7506017515062736,
+            "diorama": 0.7544602545844866
+          },
+          "scope": "Hosted software rendering; same reset geometry and observer. This integrated profile cost does not isolate individual shader or motif costs and is not physical Windows/NVIDIA performance. Visual preference is not performance acceptance.",
+          "disposition": "Material physical-progression regression observed relative to Classic; no ordinary-profile performance promotion."
+        }
+      ],
+      "correctness_evidence": [
+        "Catalogue contains distinct full parameter configurations; shader correctness is SpecialistA scope.",
+        "Underworks actual913-check install/415-check fresh reopen passed on hosted Linux and Windows; exact four-plane native hashes and saved optics preserved. Source/configuration/capture custody independently checked byB; see b-underworks-reveal-review.json.",
+        "Actual fd0830ab full Linux corpus passed unchanged root qualifier and strict offline gallery reader: nine scenes,99 matched profile captures,74 supplementals, registered40 motion frames; source/runtime/image/configuration custody verified. This is not the separate performance acceptance gate."
+      ],
+      "artistic_assessment": {
+        "status": "final-source-integrated-linux-observation",
+        "human_acceptance": false,
+        "review": "b-final-corpus-review.json",
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "platform": "linux",
+        "finding": "Final dense lens images were inspected independently of prior sparse scores. Diorama is attractive in open Lunar composition and preserves grid identity, but removes more fine mineral texture in Xeno. Bounded support and directional response remain explicit; no calibrated photographic or motion-comfort claim."
+      },
+      "disposition": "optional-artistic-experiment-with-detail-and-cost-tradeoffs",
+      "historical_artistic_assessments": [
+        {
+          "status": "provisional-source-bound-single-scene-review",
+          "human_acceptance": false,
+          "review": "b-underworks-blind-review.json",
+          "reveal": "b-underworks-reveal-review.json",
+          "limitation": "Initial scores are unchanged after reveal. Actor readability relies on label/ring; rear false routes remain. Broader environments and movement remain open. OpticalLens/Diorama visibly soften wheel material texture; no conclusion is transferred to the pending dense aperture revision."
+        }
+      ]
+    },
+    {
+      "id": "B-ENVIRONMENT-COLOUR",
+      "hypothesis": "Depth need not be universally blue: warm industrial, violet organic and cool orbital scattering should suit distinct environments.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_optical_profiles.gd",
+          "sha256": "3a1bcc09ed7bdb5310f3893ed6ed1ec9980efa7f7ee1047ec96ef2299167786b"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/scripts/depth/strata_optical_profiles.gd",
+          "sha256": "91d696a1feac21638df8e207be4c8fe7d99a3a849dd6801705e95fda0784765e"
+        }
+      ],
+      "parameters": {
+        "profiles": [
+          "atmospheric_industrial",
+          "alien_bioluminescence",
+          "cold_orbital",
+          "sunlit_megastructure"
+        ]
+      },
+      "applicable_scenes": [
+        "sunward-freight-megastructure",
+        "xeno-resonance-grotto",
+        "lunar-terminator-observatory"
+      ],
+      "comparative_captures": [
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-classic.png",
+          "profile": "classic",
+          "sha256": "515abac21fba33c78da2330db471755eecfaf5f23783b6b06099db14d57e152d"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-atmospheric_industrial.png",
+          "profile": "atmospheric_industrial",
+          "sha256": "4a906f56262e8c96a12ed1fb70db0f2b319cf1edd4f7edcba1fd8c8a68cc92fa"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-alien_bioluminescence.png",
+          "profile": "alien_bioluminescence",
+          "sha256": "a5973c8ee4836ff1806fc2f4dcd26211609d5c3d70c20930aec8c3997534d448"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-cold_orbital.png",
+          "profile": "cold_orbital",
+          "sha256": "9a7f269ba23118c509d0bb8b645540a7a8b17a558928bc42130dc78735d11a7c"
+        },
+        {
+          "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+          "platform": "linux",
+          "scene": "industrial-underworks",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "geometry_group_sha256": "e0c5ffe6a06e328355193d128d30e8444a6482ae8ea95747412dcf45be5b7d43",
+          "path": "industrial-underworks/install/profile-sunlit_megastructure.png",
+          "profile": "sunlit_megastructure",
+          "sha256": "4748ecbe7c2a951fa8902652e1f5f74d0c6d7dce940cf3811cf2b544b466bd06"
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "classic",
+          "path": "sunward-freight-megastructure/install/profile-classic.png",
+          "sha256": "223948be821010120ebe38d2f033f12309ba21c9c67a7b441fc0a18a458f262b",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "atmospheric_industrial",
+          "path": "sunward-freight-megastructure/install/profile-atmospheric_industrial.png",
+          "sha256": "786a4d762c47add541b3ef5255ba1ef3154cbea4fe239b5e1346878cd3a142e6",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "sunlit_megastructure",
+          "path": "sunward-freight-megastructure/install/profile-sunlit_megastructure.png",
+          "sha256": "1b820cf1956421cc057db6cc2d1b785b7a98c1cfe2549c5223c6c2fedeade7c4",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "classic",
+          "path": "xeno-resonance-grotto/install/profile-classic.png",
+          "sha256": "57540c9ff7f3d811a019378e6f592f838e4bc781f802684bc890fa8269ae8820",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "alien_bioluminescence",
+          "path": "xeno-resonance-grotto/install/profile-alien_bioluminescence.png",
+          "sha256": "9a590b90b74f41fc03378b3ef6f5151f7be201fbc01bdd1fc814fb33407f7ead",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "classic",
+          "path": "lunar-terminator-observatory/install/profile-classic.png",
+          "sha256": "355440642e2e94781c4f793b42ef5f300e6c431d51705179bbc20b583d1ecb63",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "cold_orbital",
+          "path": "lunar-terminator-observatory/install/profile-cold_orbital.png",
+          "sha256": "7ce8c52c0bd2e796c158bc3be35b48e292e9c359944f4adf031288740f8cca9f",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        }
+      ],
+      "performance_evidence": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "optics-readability-challenge",
+          "extent": [
+            1024,
+            768
+          ],
+          "report_path": "optics-readability-challenge/progression/result.json",
+          "report_sha256": "999e061358c09ae67e7011e4d26c6887550439f38c8bd15727c2c2d8618e2b9e",
+          "metric": "median completed native ticks per second over three forward/reverse/forward samples",
+          "median_native_ticks_per_second": {
+            "classic": 8.8098034701123,
+            "architectural": 7.0432912334449,
+            "cinematic_deep_focus": 7.18259545750066,
+            "gameplay_clarity": 6.61265391509234,
+            "diorama": 6.64664656890022
+          },
+          "median_ratio_to_classic": {
+            "classic": 1.0,
+            "architectural": 0.7994833548035003,
+            "cinematic_deep_focus": 0.8152957647543416,
+            "gameplay_clarity": 0.7506017515062736,
+            "diorama": 0.7544602545844866
+          },
+          "scope": "Hosted software rendering; same reset geometry and observer. This integrated profile cost does not isolate individual shader or motif costs and is not physical Windows/NVIDIA performance. Visual preference is not performance acceptance.",
+          "disposition": "Material physical-progression regression observed relative to Classic; no ordinary-profile performance promotion."
+        }
+      ],
+      "correctness_evidence": [
+        "Complete profiles preserve unprocessed Play and canonical JSON precision; actual appearance pending.",
+        "Underworks actual913-check install/415-check fresh reopen passed on hosted Linux and Windows; exact four-plane native hashes and saved optics preserved. Source/configuration/capture custody independently checked byB; see b-underworks-reveal-review.json.",
+        "Actual fd0830ab full Linux corpus passed unchanged root qualifier and strict offline gallery reader: nine scenes,99 matched profile captures,74 supplementals, registered40 motion frames; source/runtime/image/configuration custody verified. This is not the separate performance acceptance gate."
+      ],
+      "artistic_assessment": {
+        "status": "final-source-integrated-linux-observation",
+        "human_acceptance": false,
+        "review": "b-final-corpus-review.json",
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "platform": "linux",
+        "finding": "Muted violet Alien separation suits Xeno; graphite/cool profiles suit Lunar; warm Sunlit/Industrial treatments suit freight bays. Some related warm-profile differences are subtle at Overview. Colour is supplemental to structural/value cues."
+      },
+      "disposition": "environment-dependent-palette-utility-observed-no-universal-winner",
+      "historical_artistic_assessments": [
+        {
+          "status": "provisional-source-bound-single-scene-review",
+          "human_acceptance": false,
+          "review": "b-underworks-blind-review.json",
+          "reveal": "b-underworks-reveal-review.json",
+          "limitation": "Initial scores are unchanged after reveal. Actor readability relies on label/ring; rear false routes remain. Broader environments and movement remain open."
+        }
+      ]
+    },
+    {
+      "id": "B-LIGHT-SHAFTS",
+      "hypothesis": "A few local stepped light bands can connect architectural planes without a fullscreen volumetric pass.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_atmosphere.gd",
+          "sha256": "9763e5852f39f5cc8f941e9e394d7df06a25b4f38990fd772d1477d098700b1f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_atmosphere_profiles.gd",
+          "sha256": "78c391fbe9c1c0d47767949a631c978fceeecae254601cfe6d8f95ec41f19aa1"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/scripts/depth/strata_atmosphere.gd",
+          "sha256": "9763e5852f39f5cc8f941e9e394d7df06a25b4f38990fd772d1477d098700b1f"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/scripts/depth/strata_atmosphere_profiles.gd",
+          "sha256": "78c391fbe9c1c0d47767949a631c978fceeecae254601cfe6d8f95ec41f19aa1"
+        }
+      ],
+      "parameters": {
+        "kind": "light_shaft",
+        "bands_per_source": 8,
+        "default_speed": 0.0,
+        "default_count": 3,
+        "shared_region_limit": 12,
+        "shared_motif_limit": 384
+      },
+      "applicable_scenes": [
+        "sunward-freight-megastructure",
+        "xeno-resonance-grotto",
+        "lunar-terminator-observatory"
+      ],
+      "comparative_captures": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "classic",
+          "path": "sunward-freight-megastructure/install/profile-classic.png",
+          "sha256": "223948be821010120ebe38d2f033f12309ba21c9c67a7b441fc0a18a458f262b",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "gameplay_clarity",
+          "path": "sunward-freight-megastructure/install/profile-gameplay_clarity.png",
+          "sha256": "9233952210821c7f4e73851d5c9e7d0f72182b904568fd6fea61c3515182557a",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "classic",
+          "path": "xeno-resonance-grotto/install/profile-classic.png",
+          "sha256": "57540c9ff7f3d811a019378e6f592f838e4bc781f802684bc890fa8269ae8820",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "gameplay_clarity",
+          "path": "xeno-resonance-grotto/install/profile-gameplay_clarity.png",
+          "sha256": "3b0d053c04876744c52b355f58c2cbf0aded718c304f200bba1870e5ba6a384e",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "classic",
+          "path": "lunar-terminator-observatory/install/profile-classic.png",
+          "sha256": "355440642e2e94781c4f793b42ef5f300e6c431d51705179bbc20b583d1ecb63",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "gameplay_clarity",
+          "path": "lunar-terminator-observatory/install/profile-gameplay_clarity.png",
+          "sha256": "e60a4964b732e29fc74d9609e9020b54f66dfd2d1df135a51826f577311da1d3",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        }
+      ],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "72 atmosphere schema/lifecycle checks passed at pinned Godot4.7. Static defaults perform no recurring callback; hidden optional breathing stops.",
+        "No native World/capture/publication/material APIs added. Rendered blockiness at strong/extreme settings remains an explicit risk.",
+        "Actual fd0830ab full Linux corpus passed unchanged root qualifier and strict offline gallery reader: nine scenes,99 matched profile captures,74 supplementals, registered40 motion frames; source/runtime/image/configuration custody verified. This is not the separate performance acceptance gate."
+      ],
+      "artistic_assessment": {
+        "status": "final-source-integrated-linux-observation",
+        "human_acceptance": false,
+        "review": "b-final-corpus-review.json",
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "platform": "linux",
+        "finding": "No conspicuous motif panel or band artifact is apparent at the reviewed Overview scale, but individual new shafts/pools are too understated to establish convincing volumetric or localized illumination. Native luminous accent geometry and optical tonal washes are separate contributors. Isolated motif on/off, closer views and stronger authored variants remain open.",
+        "isolated_motif_comparison": false
+      },
+      "disposition": "interactive-bounded-prototype-artistic-volume-success-unestablished",
+      "historical_artistic_assessments": [
+        {
+          "status": "pending-actual-capture-review",
+          "human_acceptance": false
+        }
+      ]
+    },
+    {
+      "id": "B-LIGHT-POOLS",
+      "hypothesis": "Localized restrained rectangular diffusion can suggest luminous machinery or organisms without uncontrolled bloom.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_atmosphere.gd",
+          "sha256": "9763e5852f39f5cc8f941e9e394d7df06a25b4f38990fd772d1477d098700b1f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/scripts/depth/strata_atmosphere_profiles.gd",
+          "sha256": "78c391fbe9c1c0d47767949a631c978fceeecae254601cfe6d8f95ec41f19aa1"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/scripts/depth/strata_atmosphere.gd",
+          "sha256": "9763e5852f39f5cc8f941e9e394d7df06a25b4f38990fd772d1477d098700b1f"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/scripts/depth/strata_atmosphere_profiles.gd",
+          "sha256": "78c391fbe9c1c0d47767949a631c978fceeecae254601cfe6d8f95ec41f19aa1"
+        }
+      ],
+      "parameters": {
+        "kind": "light_pool",
+        "bands_per_source": 4,
+        "default_speed": 0.0,
+        "default_count": 3,
+        "breathing_amplitude": 0.1
+      },
+      "applicable_scenes": [
+        "sunward-freight-megastructure",
+        "xeno-resonance-grotto",
+        "lunar-terminator-observatory"
+      ],
+      "comparative_captures": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "classic",
+          "path": "sunward-freight-megastructure/install/profile-classic.png",
+          "sha256": "223948be821010120ebe38d2f033f12309ba21c9c67a7b441fc0a18a458f262b",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "gameplay_clarity",
+          "path": "sunward-freight-megastructure/install/profile-gameplay_clarity.png",
+          "sha256": "9233952210821c7f4e73851d5c9e7d0f72182b904568fd6fea61c3515182557a",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "classic",
+          "path": "xeno-resonance-grotto/install/profile-classic.png",
+          "sha256": "57540c9ff7f3d811a019378e6f592f838e4bc781f802684bc890fa8269ae8820",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "gameplay_clarity",
+          "path": "xeno-resonance-grotto/install/profile-gameplay_clarity.png",
+          "sha256": "3b0d053c04876744c52b355f58c2cbf0aded718c304f200bba1870e5ba6a384e",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "classic",
+          "path": "lunar-terminator-observatory/install/profile-classic.png",
+          "sha256": "355440642e2e94781c4f793b42ef5f300e6c431d51705179bbc20b583d1ecb63",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "gameplay_clarity",
+          "path": "lunar-terminator-observatory/install/profile-gameplay_clarity.png",
+          "sha256": "e60a4964b732e29fc74d9609e9020b54f66dfd2d1df135a51826f577311da1d3",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        }
+      ],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "72 atmosphere schema/lifecycle checks passed; source position fixed, optional presentation clock only.",
+        "Overlapping dense tiny regions may appear as tinted panels; no visual acceptance claimed.",
+        "Actual fd0830ab full Linux corpus passed unchanged root qualifier and strict offline gallery reader: nine scenes,99 matched profile captures,74 supplementals, registered40 motion frames; source/runtime/image/configuration custody verified. This is not the separate performance acceptance gate."
+      ],
+      "artistic_assessment": {
+        "status": "final-source-integrated-linux-observation",
+        "human_acceptance": false,
+        "review": "b-final-corpus-review.json",
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "platform": "linux",
+        "finding": "No conspicuous motif panel or band artifact is apparent at the reviewed Overview scale, but individual new shafts/pools are too understated to establish convincing volumetric or localized illumination. Native luminous accent geometry and optical tonal washes are separate contributors. Isolated motif on/off, closer views and stronger authored variants remain open.",
+        "isolated_motif_comparison": false
+      },
+      "disposition": "interactive-bounded-prototype-artistic-volume-success-unestablished",
+      "historical_artistic_assessments": [
+        {
+          "status": "pending-actual-capture-review",
+          "human_acceptance": false
+        }
+      ]
+    },
+    {
+      "id": "B-SHOWCASE-SUNWARD",
+      "hypothesis": "Large negative space with warm light shafts, physical terraces and rear crane cages provides a useful industrial depth comparison.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/strata3_build_showcases.py",
+          "sha256": "9cc38156ea6e0e0af68c4ed9d49a735d51da7ea67bc3d3c710fe92fd682aa45f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/data/strata3/sunward-freight-megastructure.json",
+          "sha256": "1a9a509e1e00aee86daf99143f15cdb811722832ea47a66a5179f565493c97d5"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/data/strata3/sunward-freight-megastructure.json",
+          "sha256": "1a9a509e1e00aee86daf99143f15cdb811722832ea47a66a5179f565493c97d5"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "tools/strata3_build_showcases.py",
+          "sha256": "9cc38156ea6e0e0af68c4ed9d49a735d51da7ea67bc3d3c710fe92fd682aa45f"
+        }
+      ],
+      "parameters": {
+        "extent": [
+          1536,
+          1024
+        ],
+        "native_rectangles": [
+          260,
+          1957,
+          28,
+          459
+        ],
+        "motifs": 55
+      },
+      "applicable_scenes": [
+        "sunward-freight-megastructure"
+      ],
+      "comparative_captures": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "classic",
+          "path": "sunward-freight-megastructure/install/profile-classic.png",
+          "sha256": "223948be821010120ebe38d2f033f12309ba21c9c67a7b441fc0a18a458f262b",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "gameplay_clarity",
+          "path": "sunward-freight-megastructure/install/profile-gameplay_clarity.png",
+          "sha256": "9233952210821c7f4e73851d5c9e7d0f72182b904568fd6fea61c3515182557a",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "cinematic_deep_focus",
+          "path": "sunward-freight-megastructure/install/profile-cinematic_deep_focus.png",
+          "sha256": "8cc4b450030141c758bb093f22e0e7c54345b9ec9d43ab2a257dbf306054465d",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "diorama",
+          "path": "sunward-freight-megastructure/install/profile-diorama.png",
+          "sha256": "901d3fad5ae2716c07beedf9e514e918489ef24b93024e7cb62f2be7883b720d",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "atmospheric_industrial",
+          "path": "sunward-freight-megastructure/install/profile-atmospheric_industrial.png",
+          "sha256": "786a4d762c47add541b3ef5255ba1ef3154cbea4fe239b5e1346878cd3a142e6",
+          "configuration_sha256": "4788b726e9bbaed12499dc7b884482a4aaef64328dcce7a93c4796cc38ed6f52",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "profile": "sunlit_megastructure",
+          "path": "sunward-freight-megastructure/install/profile-sunlit_megastructure.png",
+          "sha256": "1b820cf1956421cc057db6cc2d1b785b7a98c1cfe2549c5223c6c2fedeade7c4",
+          "configuration_sha256": "8d8b54100150de0638ebaf5f20eac06eca45a7848ec7361bfdfd3c4f997747fb",
+          "geometry_group_sha256": "6ffe45232bb5ae6a997ad96363f087a6818e94522d995a970919391b9c86d4c4",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        }
+      ],
+      "performance_evidence": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "sunward-freight-megastructure",
+          "metric": "scene admission",
+          "observation": {
+            "elapsed_ms": 13578,
+            "target_ms": 45000,
+            "target_met": true
+          },
+          "scope": "One source-bound install observation, not matched optical-cost or physical Windows/NVIDIA acceptance."
+        }
+      ],
+      "correctness_evidence": [
+        "Generator exact-byte reproduction passed; actual radius34 geometric route envelopes clear.",
+        "41 new showcase source/candidate checks and71 retained source/candidate checks passed; no full actor traversal claim.",
+        "Actual fd0830ab full Linux corpus passed unchanged root qualifier and strict offline gallery reader: nine scenes,99 matched profile captures,74 supplementals, registered40 motion frames; source/runtime/image/configuration custody verified. This is not the separate performance acceptance gate."
+      ],
+      "artistic_assessment": {
+        "status": "final-source-integrated-linux-observation",
+        "human_acceptance": false,
+        "review": "b-final-corpus-review.json",
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "platform": "linux",
+        "finding": "Substantial detailed freight composition with a clear central void; strong clarity improvement but remaining false-route ambiguity and understated local-light evidence.",
+        "inspected_profiles": [
+          "classic",
+          "gameplay_clarity",
+          "sunlit_megastructure",
+          "atmospheric_industrial",
+          "cinematic_deep_focus",
+          "diorama"
+        ]
+      },
+      "disposition": "native-composition-graphically-reviewed-owner-play-and-artistic-acceptance-open",
+      "historical_artistic_assessments": [
+        {
+          "status": "pending-actual-capture-review",
+          "human_acceptance": false
+        }
+      ]
+    },
+    {
+      "id": "B-SHOWCASE-XENO",
+      "hypothesis": "Organic rear mineral ribs and luminous growth can preserve readable horizontal physical shelves around a clear void.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/strata3_build_showcases.py",
+          "sha256": "9cc38156ea6e0e0af68c4ed9d49a735d51da7ea67bc3d3c710fe92fd682aa45f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/data/strata3/xeno-resonance-grotto.json",
+          "sha256": "cc79583f8e34c341947a7c7f33a1543e38ef34dbbb50a740f49a0b741a01022b"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/data/strata3/xeno-resonance-grotto.json",
+          "sha256": "cc79583f8e34c341947a7c7f33a1543e38ef34dbbb50a740f49a0b741a01022b"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "tools/strata3_build_showcases.py",
+          "sha256": "9cc38156ea6e0e0af68c4ed9d49a735d51da7ea67bc3d3c710fe92fd682aa45f"
+        }
+      ],
+      "parameters": {
+        "extent": [
+          1024,
+          1024
+        ],
+        "native_rectangles": [
+          300,
+          5177,
+          608,
+          1412
+        ],
+        "motifs": 72
+      },
+      "applicable_scenes": [
+        "xeno-resonance-grotto"
+      ],
+      "comparative_captures": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "classic",
+          "path": "xeno-resonance-grotto/install/profile-classic.png",
+          "sha256": "57540c9ff7f3d811a019378e6f592f838e4bc781f802684bc890fa8269ae8820",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "gameplay_clarity",
+          "path": "xeno-resonance-grotto/install/profile-gameplay_clarity.png",
+          "sha256": "3b0d053c04876744c52b355f58c2cbf0aded718c304f200bba1870e5ba6a384e",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "cinematic_deep_focus",
+          "path": "xeno-resonance-grotto/install/profile-cinematic_deep_focus.png",
+          "sha256": "2917b5b2f72947004595b0f397f16ee23c474bb9267ae61b4f9fee627da95476",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "optical_lens",
+          "path": "xeno-resonance-grotto/install/profile-optical_lens.png",
+          "sha256": "3f3fd666fd045f644159ab5e51f54a98b233f15ed43b82ce76e3bcafedcd0ed4",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "diorama",
+          "path": "xeno-resonance-grotto/install/profile-diorama.png",
+          "sha256": "053b644a4db21db4afb4bdc55526d768444fd05399a4d5ce308a892a1a51a8da",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "profile": "alien_bioluminescence",
+          "path": "xeno-resonance-grotto/install/profile-alien_bioluminescence.png",
+          "sha256": "9a590b90b74f41fc03378b3ef6f5151f7be201fbc01bdd1fc814fb33407f7ead",
+          "configuration_sha256": "73e0f62e1db3d95c5e0dc630c6425bb5a9ab14f8225bba0e08fe520ca03ae53a",
+          "geometry_group_sha256": "5d09ed6a4bec5d11a22c9b991296f3c6dd0bc6093f733108420fb398da6c0ebb",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        }
+      ],
+      "performance_evidence": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "xeno-resonance-grotto",
+          "metric": "scene admission",
+          "observation": {
+            "elapsed_ms": 11369,
+            "target_ms": 45000,
+            "target_met": true
+          },
+          "scope": "One source-bound install observation, not matched optical-cost or physical Windows/NVIDIA acceptance."
+        }
+      ],
+      "correctness_evidence": [
+        "Generator exact-byte reproduction and radius34 geometric clearance passed; same strict candidate checks as other new scenes.",
+        "More than5000 rear rectangles remain inside existing32768 per-plane cap; startup cost must be measured.",
+        "Actual fd0830ab full Linux corpus passed unchanged root qualifier and strict offline gallery reader: nine scenes,99 matched profile captures,74 supplementals, registered40 motion frames; source/runtime/image/configuration custody verified. This is not the separate performance acceptance gate."
+      ],
+      "artistic_assessment": {
+        "status": "final-source-integrated-linux-observation",
+        "human_acceptance": false,
+        "review": "b-final-corpus-review.json",
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "platform": "linux",
+        "finding": "Useful playable composition with preferred clarity/deep-focus/alien starting points; local volumetric-light success remains limited by subtle visible contribution and lack of isolated motif comparisons.",
+        "inspected_profiles": [
+          "classic",
+          "gameplay_clarity",
+          "alien_bioluminescence",
+          "cinematic_deep_focus",
+          "optical_lens",
+          "diorama"
+        ]
+      },
+      "disposition": "native-composition-graphically-reviewed-owner-play-and-artistic-acceptance-open",
+      "historical_artistic_assessments": [
+        {
+          "status": "pending-actual-capture-review",
+          "human_acceptance": false
+        }
+      ]
+    },
+    {
+      "id": "B-SHOWCASE-LUNAR",
+      "hypothesis": "Sparse physical decks and large quiet sky should make distant instrument frames and planetary context spatially legible with little haze.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/strata3_build_showcases.py",
+          "sha256": "9cc38156ea6e0e0af68c4ed9d49a735d51da7ea67bc3d3c710fe92fd682aa45f"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "godot/data/strata3/lunar-terminator-observatory.json",
+          "sha256": "c1c35204039cb564134ec1b9cb939798e2eca79742140aa7866e170472e07e24"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "godot/data/strata3/lunar-terminator-observatory.json",
+          "sha256": "c1c35204039cb564134ec1b9cb939798e2eca79742140aa7866e170472e07e24"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "tools/strata3_build_showcases.py",
+          "sha256": "9cc38156ea6e0e0af68c4ed9d49a735d51da7ea67bc3d3c710fe92fd682aa45f"
+        }
+      ],
+      "parameters": {
+        "extent": [
+          1536,
+          768
+        ],
+        "native_rectangles": [
+          122,
+          720,
+          18,
+          1083
+        ],
+        "motifs": 8
+      },
+      "applicable_scenes": [
+        "lunar-terminator-observatory"
+      ],
+      "comparative_captures": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "classic",
+          "path": "lunar-terminator-observatory/install/profile-classic.png",
+          "sha256": "355440642e2e94781c4f793b42ef5f300e6c431d51705179bbc20b583d1ecb63",
+          "configuration_sha256": "5208693280f4589740d8d109e83af295e65618495260bae7711eb1e496843907",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "gameplay_clarity",
+          "path": "lunar-terminator-observatory/install/profile-gameplay_clarity.png",
+          "sha256": "e60a4964b732e29fc74d9609e9020b54f66dfd2d1df135a51826f577311da1d3",
+          "configuration_sha256": "4d4c44d0a73e4c3f0c28f46f6b815822bf0833255f1ef58e01eb4206b6cbf32f",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "cinematic_deep_focus",
+          "path": "lunar-terminator-observatory/install/profile-cinematic_deep_focus.png",
+          "sha256": "95b66a64b0c2044bf8fdb9227e24e4a422dce7e4414aac09704ab51b97042036",
+          "configuration_sha256": "4c283fa5f171bd508c3dd54b6d4dffd08dea0943d3a70e3dbd2e0063d74a092a",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "optical_lens",
+          "path": "lunar-terminator-observatory/install/profile-optical_lens.png",
+          "sha256": "d559e2be615a8635a71c4546f1dc29179a82589ef56d1c0b6d6af58e1f9dbcfe",
+          "configuration_sha256": "3c532a2640276ed92c33d0b13de6788c53b8fbcb77cca9adc5046a5b1c2ff6e7",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "diorama",
+          "path": "lunar-terminator-observatory/install/profile-diorama.png",
+          "sha256": "189e62faba4a07b11437c1abfa43d24e5fa0978dd65f2032d8eea1c2fcbf6495",
+          "configuration_sha256": "ea5c75b145420a61447e617a4036afb458e2f214627019ebe1998abe48812e6c",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        },
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "profile": "cold_orbital",
+          "path": "lunar-terminator-observatory/install/profile-cold_orbital.png",
+          "sha256": "7ce8c52c0bd2e796c158bc3be35b48e292e9c359944f4adf031288740f8cca9f",
+          "configuration_sha256": "e1c0a487e844b2a1a7a201d0ad2b7b24b0d79567d85a6f0a3e5c21f95cb28816",
+          "geometry_group_sha256": "7e72282dbcdc28a4ed3dc0b980ccf21c6aaf56ffb76f36546840c38d21b85fa3",
+          "framebuffer_pixels": [
+            1600,
+            900
+          ],
+          "comparison_scope": "Integrated profile comparison; no isolated procedural-motif on/off control."
+        }
+      ],
+      "performance_evidence": [
+        {
+          "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "platform": "linux",
+          "scene": "lunar-terminator-observatory",
+          "metric": "scene admission",
+          "observation": {
+            "elapsed_ms": 14435,
+            "target_ms": 45000,
+            "target_met": true
+          },
+          "scope": "One source-bound install observation, not matched optical-cost or physical Windows/NVIDIA acceptance."
+        }
+      ],
+      "correctness_evidence": [
+        "Generator exact-byte reproduction and radius34 geometric clearance passed; same strict candidate checks as other new scenes.",
+        "Actual fd0830ab full Linux corpus passed unchanged root qualifier and strict offline gallery reader: nine scenes,99 matched profile captures,74 supplementals, registered40 motion frames; source/runtime/image/configuration custody verified. This is not the separate performance acceptance gate."
+      ],
+      "artistic_assessment": {
+        "status": "final-source-integrated-linux-observation",
+        "human_acceptance": false,
+        "review": "b-final-corpus-review.json",
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "platform": "linux",
+        "finding": "Useful open orbital composition with retained negative space and an attractive optional lens treatment; physical clarity still benefits most from stronger rear suppression.",
+        "inspected_profiles": [
+          "classic",
+          "gameplay_clarity",
+          "cold_orbital",
+          "cinematic_deep_focus",
+          "optical_lens",
+          "diorama"
+        ]
+      },
+      "disposition": "native-composition-graphically-reviewed-owner-play-and-artistic-acceptance-open",
+      "historical_artistic_assessments": [
+        {
+          "status": "pending-actual-capture-review",
+          "human_acceptance": false
+        }
+      ]
+    },
+    {
+      "id": "B-GALLERY-CUSTODY",
+      "hypothesis": "Source-bound matched captures and explicit supplemental scopes make optical comparisons inspectable without replacing real application evidence.",
+      "implementation": [
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/build_strata3_gallery.py",
+          "sha256": "924bda064cbe6f425d41309e532f35d4e922f91780369ce6a375708ad1f77dad"
+        },
+        {
+          "commit": "31ed6663e58c0923e54ea503d5e9230f7d68627f",
+          "path": "tools/ci/test_strata3_gallery.py",
+          "sha256": "1675c13ad42aff9b0d5fae893e7f91a07d86d844bafd27c5b2ddd1374db24837"
+        },
+        {
+          "commit": "8b841a40d66ec9d76147c91a22d6380df2647164",
+          "path": "tools/build_strata3_gallery.py",
+          "sha256": "6063eba2b1ad354e888f02b9dedd754f6784bb63d928361b8826b049b43c879b"
+        },
+        {
+          "commit": "8b841a40d66ec9d76147c91a22d6380df2647164",
+          "path": "tools/ci/test_strata3_gallery.py",
+          "sha256": "1703dc3c05eed7004565687c9970a2be2b10f180a21476b66beb89377c18db93"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "tools/build_strata3_gallery.py",
+          "sha256": "6063eba2b1ad354e888f02b9dedd754f6784bb63d928361b8826b049b43c879b"
+        },
+        {
+          "commit": "fd0830abcfadd9ae19162e5677943bb131223e59",
+          "path": "tools/ci/test_strata3_gallery.py",
+          "sha256": "1703dc3c05eed7004565687c9970a2be2b10f180a21476b66beb89377c18db93"
+        }
+      ],
+      "parameters": {
+        "matched_profiles_per_scene": 11,
+        "required_supplemental_views_per_scene": 8,
+        "profiles": [
+          "classic",
+          "architectural",
+          "gameplay_clarity",
+          "cinematic_deep_focus",
+          "optical_lens",
+          "diorama",
+          "atmospheric_industrial",
+          "noir",
+          "cold_orbital",
+          "alien_bioluminescence",
+          "sunlit_megastructure"
+        ],
+        "motion_profiles": 4,
+        "motion_frames_per_profile": 10,
+        "motion_review_frames_per_second": 3,
+        "motion_playback_is_runtime_fps": false
+      },
+      "applicable_scenes": [
+        "all9"
+      ],
+      "comparative_captures": [],
+      "performance_evidence": [],
+      "correctness_evidence": [
+        "26 synthetic document-builder tests passed. They are not graphical or native execution.",
+        "Rejects changed evidence/source/configuration, unmatched camera/actor/geometry, missing fresh-process/supplementals, path/link/PNG/HTML failures.",
+        "45 synthetic custody tests passed after admission/progression/motion additions; generated JavaScript syntax checked.",
+        "Ten-frame sequences require original bytes and dimensions, exact profile configuration, camera/actor witnesses and strictly advancing completed native/Rapier ticks. No invariant Play hash is required while physics evolves.",
+        "Actual fd0830ab full Linux corpus passed unchanged root qualifier and strict offline gallery reader: nine scenes,99 matched profile captures,74 supplementals, registered40 motion frames; source/runtime/image/configuration custody verified. This is not the separate performance acceptance gate."
+      ],
+      "artistic_assessment": {
+        "status": "final-source-integrated-linux-observation",
+        "human_acceptance": false,
+        "review": "b-final-corpus-review.json",
+        "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+        "platform": "linux",
+        "finding": "Strict reader built the actual final Linux corpus successfully, including original stills and motion frames. Browser interaction and final Windows package gallery remain separate pending checks.",
+        "gallery_html_sha256": "6a5af05437e2f558e35962b5ab152b1a3ca6bdf9b63fbe01ad9e37236016cce6"
+      },
+      "disposition": "actual-linux-gallery-built-and-source-verified-browser-and-windows-open",
+      "historical_artistic_assessments": [
+        {
+          "status": "pending-actual-capture-review",
+          "human_acceptance": false
+        }
+      ]
+    }
+  ],
+  "retained_corrections": [
+    {
+      "id": "B-TONAL-DARKENING-CLAIM",
+      "observation": "Contrast compression about0.5 may brighten dark pixels despite brightness below1.",
+      "action": "Profile wording changed from categorical darkening to reduced decorative emphasis; graphical selection deferred.",
+      "kind": "source-derived artistic qualification"
+    },
+    {
+      "id": "B-SHADOW-MATERIAL-FAMILY",
+      "observation": "First shader subset omitted basalt100/obsidian101/aluminium114/brass119 used by actual scenes.",
+      "action": "Reported toA; A traced authoritative nativeSolid family and added complete mask/negative controls.",
+      "kind": "independent source review; integrated code and rendered tests owned byA"
+    },
+    {
+      "id": "B-LOCAL-DISPLAY-LIMIT",
+      "observation": "Root reported local graphical display creation denied by environment sockets.",
+      "action": "No bypass attempted. Await hosted source-pinned actual graphical captures.",
+      "kind": "environment qualification limitation"
+    },
+    {
+      "id": "B-WHOLE-SCENE-BACKEND-EQUALITY",
+      "observation": "Simple192x64 shader witnesses are byte-identical across hosted Windows/Linux, but native Underworks world pixels are not. Most differences are1u8 with sparse larger fine-edge differences also present inClassic.",
+      "action": "Retain exact per-platform Classic restoration separately; do not generalise simple-fixture parity to whole scenes or physical NVIDIA.",
+      "kind": "independent original-PNG numerical inspection; b-underworks-reveal-review.json"
+    },
+    {
+      "id": "B-LIGHT-MOTIF-VISIBILITY",
+      "observation": "Integrated new-scene overviews preserve negative space and show no strong motif panel artifact, but new light shafts/pools are too understated to establish the claimed volumetric impression. Native green lights and broad optical tint must not be attributed to the procedural motifs.",
+      "action": "Retain as bounded interactive prototypes with qualified source/lifecycle, but keep artistic volume success and isolated motif comparison open.",
+      "kind": "actual-source-bound-negative-artistic-observation"
+    }
+  ],
+  "limitations": [
+    "Actual artistic findings are bound to their reviewed source, scene and stills; no final full-corpus or revised dense-kernel qualification is inferred from earlier captures.",
+    "No human perceptual or physical Windows/NVIDIA acceptance.",
+    "Original five Strata002 admission misses retain unchanged45-second target.",
+    "All three new scene route probes are authoring geometry checks, not actual physical traversal.",
+    "Actual final-source Linux profile progression is materially below Classic in the registered challenge. Functional source/correctness passes and artistic preferences do not establish performance acceptance. Full final Windows artifacts and physical owner acceptance remain pending."
+  ],
+  "review_checkpoints": [
+    {
+      "application_source": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+      "scene": "industrial-underworks",
+      "reviewed_profile_count": 11,
+      "review_receipts": [
+        {
+          "path": "docs/audits/2026-11-25-strata-theatre-003/b-shader-witness-review.json",
+          "sha256": "3db8ef931250592726c3c6d10d865ba0733cd185fd8c32e5ac72a8a0c332c26f"
+        },
+        {
+          "path": "docs/audits/2026-11-25-strata-theatre-003/b-underworks-blind-review.json",
+          "sha256": "1427de030576acf1d6f947e28d1bf2be1c9fa74a846bcb624de30cd8dd203ab5"
+        },
+        {
+          "path": "docs/audits/2026-11-25-strata-theatre-003/b-underworks-reveal-review.json",
+          "sha256": "b387d5224eb3ec7fd4301da536c5f1c12e7b0be2dac879694133dd0b5e9e8145"
+        }
+      ],
+      "blind_order_scores_saved_before_key": true,
+      "human_study": false,
+      "status": "provisional-single-scene-artistic-assessment",
+      "pending_renderer_change": "Lead reports denser aperture sampling under investigation after high-frequency sparse-kernel aliasing. Prior lens judgements apply only to the captured source until the revised renderer is graphically reviewed."
+    },
+    {
+      "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "platform": "linux",
+      "scenes": [
+        "sunward-freight-megastructure",
+        "xeno-resonance-grotto",
+        "lunar-terminator-observatory"
+      ],
+      "reviewed_profile_count_per_scene": 6,
+      "review_receipts": [
+        "b-final-corpus-review.json",
+        "b-challenge-opaque-packet.json",
+        "b-challenge-reveal-key.json"
+      ],
+      "human_study": false,
+      "status": "source-bound-integrated-still-review-with-performance-hold",
+      "independent_challenge_initial_score_commit": "76df950a",
+      "independent_challenge_initial_score_sha256": "8af0549e54137f78e387446fd4f424ce2ef2660b5da45e5a6c9ae64f4127043f"
+    },
+    {
+      "application_source": "fd0830abcfadd9ae19162e5677943bb131223e59",
+      "platform": "linux",
+      "scenes": [
+        "orbital-terminal",
+        "neon-rain-arcology",
+        "industrial-underworks",
+        "abyss-foundry",
+        "vertical-transfer-spine"
+      ],
+      "reviewed_capture_count": 16,
+      "review_receipts": [
+        "b-final-corpus-review.json",
+        "b-final-artistic-recommendations.md"
+      ],
+      "status": "old-five-final-source-stills-reviewed-with-performance-hold",
+      "human_study": false,
+      "finding": "Clarity gives stronger route hierarchy across all five; Deep Focus preserves construction but leaves bright false supports. Final dense Diorama preserves Underworks wheel/spokes with fine-detail loss."
+    }
+  ],
+  "provisional_underworks_preferences": {
+    "balanced": [
+      "cold_orbital",
+      "cinematic_deep_focus"
+    ],
+    "physical_priority": [
+      "gameplay_clarity",
+      "noir"
+    ],
+    "distinctive_colour": "alien_bioluminescence",
+    "optional_lens": [
+      "optical_lens",
+      "diorama"
+    ],
+    "compatibility_default": "classic",
+    "no_automatic_default_change": true,
+    "source_commit": "a57aaeeabfb5bde47276a6e2981ea80823759730",
+    "ordinary_movement_qualified": false
+  },
+  "new_showcase_review_queue": [
+    {
+      "priority": 1,
+      "scene": "xeno-resonance-grotto",
+      "recipe_path": "godot/data/strata3/xeno-resonance-grotto.json",
+      "recipe_sha256": "cc79583f8e34c341947a7c7f33a1543e38ef34dbbb50a740f49a0b741a01022b",
+      "capture_location": "<final campaign>/xeno-resonance-grotto/install/profile-<id>.png",
+      "profiles": [
+        "classic",
+        "gameplay_clarity",
+        "alien_bioluminescence",
+        "noir",
+        "cinematic_deep_focus",
+        "diorama"
+      ],
+      "light_motifs": [
+        {
+          "id": "organic-light",
+          "kind": "light_pool",
+          "plane": "effects",
+          "region": [
+            118,
+            212,
+            800,
+            580
+          ],
+          "seed": 11,
+          "count": 6,
+          "speed": 0.22,
+          "strength": 0.62,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.21,
+            0.84,
+            0.66,
+            0.42
+          ],
+          "enabled": true
+        },
+        {
+          "id": "ceiling-light",
+          "kind": "light_shaft",
+          "plane": "background",
+          "region": [
+            340,
+            156,
+            360,
+            700
+          ],
+          "seed": 14,
+          "count": 2,
+          "speed": 0.0,
+          "strength": 0.42,
+          "direction": [
+            -0.08,
+            1.0
+          ],
+          "colour": [
+            0.42,
+            0.55,
+            0.78,
+            0.4
+          ],
+          "enabled": true
+        }
+      ],
+      "native_detail_views": [
+        {
+          "id": "physical-shelf-and-organic-rib",
+          "center": [
+            298,
+            350
+          ],
+          "zoom": 1.4
+        },
+        {
+          "id": "luminous-relic-and-void",
+          "center": [
+            644,
+            654
+          ],
+          "zoom": 1.25
+        }
+      ],
+      "review_questions": [
+        "Dark physical basalt shelves must dominate rear mineral-ring edges.",
+        "Cyan-green pools and violet mist must retain horizontal traversable openings and avoid tinted-block appearance.",
+        "Dense background rectangle budget requires actual scene-admission timing."
+      ],
+      "status": "six-final-source-profiles-visually-reviewed-at-overview",
+      "review_receipt": "b-final-corpus-review.json",
+      "remaining": "Close-zoom ordinary movement, isolated light-motif on/off and physical owner acceptance remain separate."
+    },
+    {
+      "priority": 2,
+      "scene": "sunward-freight-megastructure",
+      "recipe_path": "godot/data/strata3/sunward-freight-megastructure.json",
+      "recipe_sha256": "1a9a509e1e00aee86daf99143f15cdb811722832ea47a66a5179f565493c97d5",
+      "capture_location": "<final campaign>/sunward-freight-megastructure/install/profile-<id>.png",
+      "profiles": [
+        "classic",
+        "architectural",
+        "cinematic_deep_focus",
+        "atmospheric_industrial",
+        "sunlit_megastructure",
+        "gameplay_clarity"
+      ],
+      "light_motifs": [
+        {
+          "id": "sun-shafts",
+          "kind": "light_shaft",
+          "plane": "effects",
+          "region": [
+            330,
+            155,
+            900,
+            680
+          ],
+          "seed": 3,
+          "count": 4,
+          "speed": 0.0,
+          "strength": 0.6,
+          "direction": [
+            0.26,
+            1.0
+          ],
+          "colour": [
+            1.0,
+            0.82,
+            0.48,
+            0.45
+          ],
+          "enabled": true
+        },
+        {
+          "id": "machine-pools",
+          "kind": "light_pool",
+          "plane": "scripted",
+          "region": [
+            126,
+            670,
+            1280,
+            105
+          ],
+          "seed": 4,
+          "count": 5,
+          "speed": 0.0,
+          "strength": 0.7,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.26,
+            0.7,
+            0.84,
+            0.42
+          ],
+          "enabled": true
+        }
+      ],
+      "native_detail_views": [
+        {
+          "id": "physical-terrace-rear-crane",
+          "center": [
+            500,
+            590
+          ],
+          "zoom": 1.1
+        },
+        {
+          "id": "freight-light-and-silhouette",
+          "center": [
+            1080,
+            390
+          ],
+          "zoom": 1.25
+        }
+      ],
+      "review_questions": [
+        "Physical terraces and central shaft must remain distinct from rear crane cages.",
+        "Eight-band local shafts must suggest illumination rather than solid geometry or broad rectangular overpainting.",
+        "Cool machinery pools should stay local and preserve warm/cool depth hierarchy."
+      ],
+      "status": "six-final-source-profiles-visually-reviewed-at-overview",
+      "review_receipt": "b-final-corpus-review.json",
+      "remaining": "Close-zoom ordinary movement, isolated light-motif on/off and physical owner acceptance remain separate."
+    },
+    {
+      "priority": 3,
+      "scene": "lunar-terminator-observatory",
+      "recipe_path": "godot/data/strata3/lunar-terminator-observatory.json",
+      "recipe_sha256": "c1c35204039cb564134ec1b9cb939798e2eca79742140aa7866e170472e07e24",
+      "capture_location": "<final campaign>/lunar-terminator-observatory/install/profile-<id>.png",
+      "profiles": [
+        "classic",
+        "cold_orbital",
+        "cinematic_deep_focus",
+        "sunlit_megastructure",
+        "gameplay_clarity",
+        "optical_lens"
+      ],
+      "light_motifs": [
+        {
+          "id": "instrument-light",
+          "kind": "light_pool",
+          "plane": "scripted",
+          "region": [
+            510,
+            360,
+            640,
+            155
+          ],
+          "seed": 21,
+          "count": 3,
+          "speed": 0.0,
+          "strength": 0.42,
+          "direction": [
+            0.0,
+            0.0
+          ],
+          "colour": [
+            0.32,
+            0.6,
+            0.85,
+            0.38
+          ],
+          "enabled": true
+        },
+        {
+          "id": "sunward-rim-light",
+          "kind": "light_shaft",
+          "plane": "background",
+          "region": [
+            320,
+            100,
+            940,
+            530
+          ],
+          "seed": 22,
+          "count": 2,
+          "speed": 0.0,
+          "strength": 0.32,
+          "direction": [
+            0.42,
+            1.0
+          ],
+          "colour": [
+            0.92,
+            0.82,
+            0.59,
+            0.32
+          ],
+          "enabled": true
+        }
+      ],
+      "native_detail_views": [
+        {
+          "id": "physical-deck-rear-instrument",
+          "center": [
+            350,
+            418
+          ],
+          "zoom": 1.3
+        },
+        {
+          "id": "solar-lattice-and-rim",
+          "center": [
+            994,
+            364
+          ],
+          "zoom": 1.3
+        }
+      ],
+      "review_questions": [
+        "Large quiet sky must remain negative space; no tint should bleed into transparent native surfaces.",
+        "Rear instrument frames and solar lattices must not appear to extend physical observation decks.",
+        "Subtle shafts/pools must remain subordinate to the stepped planetary rim and physical deck lips."
+      ],
+      "status": "six-final-source-profiles-visually-reviewed-at-overview",
+      "review_receipt": "b-final-corpus-review.json",
+      "remaining": "Close-zoom ordinary movement, isolated light-motif on/off and physical owner acceptance remain separate."
+    }
+  ],
+  "last_review_date_utc": "2026-11-26"
+}

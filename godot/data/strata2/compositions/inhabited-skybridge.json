@@ -1,0 +1,173 @@
+{
+  "format": "cybersand-strata-composition-v1",
+  "id": "inhabited-skybridge",
+  "name": "Inhabited skybridge",
+  "modules": [
+    "distant-spire",
+    "habitation-lattice",
+    "rear-truss-bay",
+    "signal-panel"
+  ],
+  "stages": [
+    {
+      "id": "rear-lattice",
+      "plane": "scripted",
+      "region": [0, 0, 128, 128],
+      "depends_on": [],
+      "allowed_materials": [0, 62, 63, 77, 79],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "habitation-lattice",
+          "origin": [0, 0],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "bridge-a",
+      "plane": "scripted",
+      "region": [130, 48, 128, 80],
+      "depends_on": [
+        "rear-lattice"
+      ],
+      "allowed_materials": [0, 62, 63, 79],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "rear-truss-bay",
+          "origin": [130, 48],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "bridge-b",
+      "plane": "scripted",
+      "region": [258, 48, 128, 80],
+      "depends_on": [
+        "bridge-a"
+      ],
+      "allowed_materials": [0, 62, 63, 79],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "rear-truss-bay",
+          "origin": [258, 48],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "sign",
+      "plane": "effects",
+      "region": [130, 136, 64, 96],
+      "depends_on": [
+        "rear-lattice"
+      ],
+      "allowed_materials": [
+        0,
+        62,
+        77,
+        78,
+        79,
+        80
+      ],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "signal-panel",
+          "origin": [130, 136],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    },
+    {
+      "id": "far-spire",
+      "plane": "background",
+      "region": [252, 2, 96, 128],
+      "depends_on": [],
+      "allowed_materials": [
+        0,
+        62,
+        72,
+        77,
+        114,
+        130
+      ],
+      "protected_regions": [],
+      "placements": [
+        {
+          "module_id": "distant-spire",
+          "origin": [252, 2],
+          "transform": "identity",
+          "palette": {},
+          "empty_mode": "preserve"
+        }
+      ]
+    }
+  ],
+  "metadata": {
+    "provenance": {
+      "kind": "original-layered-design",
+      "generator": "tools/strata2_build_part_recipes.py",
+      "generator_version": 1,
+      "semantic_limits": "Explicit decorative parts, no Play mutation and no load-bearing solver."
+    },
+    "visual_proposal": {
+      "planes": [
+        {
+          "id": "scripted",
+          "opacity": 0.78,
+          "depth": 0.31
+        },
+        {
+          "id": "effects",
+          "opacity": 0.85,
+          "depth": 0.16
+        },
+        {
+          "id": "background",
+          "opacity": 0.44,
+          "depth": 0.86
+        }
+      ],
+      "presentation": {
+        "parallax_strength": 0.5,
+        "fog_strength": 0.34
+      }
+    },
+    "atmosphere_proposal": {
+      "scope": "Anchor-relative regions; separately review and apply; native plan does not apply atmosphere.",
+      "configuration": {
+        "version": 1,
+        "enabled": true,
+        "paused": false,
+        "seed": 1207,
+        "effects": [
+          {
+            "id": "skybridge-rain",
+            "kind": "rain",
+            "plane": "effects",
+            "region": [0, 0, 384, 230],
+            "seed": 103,
+            "count": 48,
+            "speed": 42.0,
+            "strength": 0.75,
+            "direction": [0.2, 1.0],
+            "colour": [0.4, 0.68, 0.9, 0.75],
+            "enabled": true
+          }
+        ]
+      }
+    }
+  }
+}

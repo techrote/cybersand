@@ -1,0 +1,14 @@
+{
+  "archive": "CyberSand-Strata-Workbench-Windows-d365f78190af.zip",
+  "bytes": 204378995,
+  "sha256": "344ff7de0caf120096baa377967585918fd985fd9d35ad7b7620e1c6c9b03a71",
+  "payload_manifest": "CyberSand-Strata-Workbench-Windows-d365f78190af.manifest.json",
+  "payload_manifest_sha256": "0b6f88603afa07b6a44f713ab8ac06887db4ad34c91d0e6c153f5a18c01594a8",
+  "payload_files": 1359,
+  "source_commit": "d365f78190af0e006ee9998a17b453f04f31b3ae",
+  "source_tree": "4e2e44513355c6f976d6b672d5dc958f20331add",
+  "transport_artifact_id": 14953297332,
+  "transport_artifact_sha256": "293eb6348b9e5a51c3c370923b624a2b8344fbc079b546f3dfff151ad3e024a7",
+  "evidence_artifact_id": 14954041935,
+  "evidence_artifact_sha256": "7d81349bad6e67e5621f36108a11a8ce919fedc98b0e75112510ace1c92bb35c"
+}

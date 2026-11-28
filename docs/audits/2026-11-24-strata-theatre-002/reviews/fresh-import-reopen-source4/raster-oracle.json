@@ -1,0 +1,34 @@
+{
+  "actual_fresh_native_play_sha256": "563aad1004a14db0ed1258ff862860a9a4fb73dcff7e1952aa0830b4a0cd1a5d",
+  "actual_native_probes": {
+    "120.0,80.0": 58,
+    "121.0,81.0": 0,
+    "123.0,83.0": 0,
+    "126.0,81.0": 131
+  },
+  "alpha_mode": "overlay",
+  "alpha_threshold": 128,
+  "counts": {
+    "cyan131": 1,
+    "mapped": 47,
+    "no_write": 17,
+    "red58": 46
+  },
+  "full_original_play_sha256": "c3538604b1ad48f748a2e577beff3f445710e69a9578eb53fc74ca857a0888fd",
+  "independent_full_imported_play_sha256": "563aad1004a14db0ed1258ff862860a9a4fb73dcff7e1952aa0830b4a0cd1a5d",
+  "input_extent": [
+    8,
+    8
+  ],
+  "input_sha256": "30aed4710ecadd79c3bb5522a64dcac5d25b76485515aef711837e86dcaef434",
+  "mapping": {
+    "00ffff": 131,
+    "ff0000": 58
+  },
+  "origin": [
+    120,
+    80
+  ],
+  "schema": "strata2-independent-original-raster-surviving-footprint-v1",
+  "scope": "Independent Pillow decode of the unchanged original writer PNG plus independent Python reconstruction of the original static floor and overlay, matching actual fresh-process native readback. No conversion implementation reused."
+}
