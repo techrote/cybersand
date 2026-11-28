@@ -174,10 +174,13 @@ the simulation viewport or the shared Workbench's controls.
 The integrated PUBPRES delivery recovery has a separate
 [portable-authoring correction and qualification status](pubpres-mainline-convergence.md#delivery-recovery-qualification-status).
 Its copied GNU tools receive a recorded UTF-8 process manifest for Unicode
-installation paths; native compiler code sections and unrelated resources are
-verified unchanged. This candidate packaging change grants no pass to an old
-archive or a newly built evaluator before actual independent extraction and
-Materials Lab compilation. Earlier standalone Lab package evidence retains its
+installation paths; native compiler code payloads and unrelated resources are
+verified unchanged, with any loader relocation-table movement proved separately.
+Verified packaged Lab commands retain GCC 14.2 and select the pinned GNU-compatible
+LLVM LLD linker and its bundled DLL closure. The six-path hosted compiler and real
+offline World comparison controls passed. This grants no pass to an old archive
+or a newly built evaluator before actual independent extraction and Materials Lab
+compilation. Earlier standalone Lab package evidence retains its
 original source, tools and tested paths.
 
 The branch-scoped **Materials Lab source-matched native runtime publication**
