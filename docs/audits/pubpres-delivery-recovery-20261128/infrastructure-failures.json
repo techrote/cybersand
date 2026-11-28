@@ -25,7 +25,11 @@
     {
       "run": 46174517955,
       "result": "standard Documentation actionlint rejected constant-false performance gate; downstream docs/provenance checks skipped"
+    },
+    {
+      "run": 46175572107,
+      "result": "Admission failed before runtime gates: Win32-only sampler test invoked unavailable ctypes Windows APIs on Linux and timed out. Windows execution of the identical assertions had already passed; test now explicitly Windows-scoped with its original watchdog."
     }
   ],
-  "corrections": "Archive input path is set inside actual Windows run step; fixture paths compare canonical file identity; source-validated CLI emits hold-observer-contract for performance admission and pinned actionlint passed. Original runs retain failures."
+  "corrections": "Archive input path is set inside actual Windows run step; fixture paths compare canonical file identity; source-validated CLI emits hold-observer-contract for performance admission and pinned actionlint passed. Original runs retain failures. Windows seal writer now writes canonical LF bytes, preserving exact committed-request admission; Win32 sampler test is Windows-scoped with explicit Linux skip, not credited as a Linux pass."
 }

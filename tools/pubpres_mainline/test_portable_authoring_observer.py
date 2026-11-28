@@ -109,6 +109,7 @@ print('negative-control-contract-controls-passed')
         self.assertEqual(completed.returncode, 0, completed.stderr.decode("utf-8", errors="replace"))
         self.assertIn(b"negative-control-contract-controls-passed", completed.stdout)
 
+    @unittest.skipUnless(sys.platform == "win32", "Win32 sampler API control; executed by the Windows portability gate")
     def test_pid_query_races_are_warnings_without_process_credit(self):
         program = r'''
 import ctypes, sys, threading
