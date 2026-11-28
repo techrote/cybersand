@@ -307,6 +307,8 @@ jobs:
             python3 tools/ci/check_repository.py > build/mainline-source/published-repository.json
           fi
           python3 -m unittest discover -s tools/pubpres_mainline -p 'test_*.py' > build/mainline-source/driver-tests.log 2>&1
+          python3 -m unittest discover -s tools/ci -p 'test_portable_compiler_utf8.py' > build/mainline-source/compiler-metadata-tests.log 2>&1
+          python3 -m unittest discover -s tools/ci -p 'test_portable_authoring_environment.py' > build/mainline-source/compiler-environment-tests.log 2>&1
           git diff --check HEAD
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

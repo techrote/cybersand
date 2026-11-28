@@ -17,6 +17,7 @@ import sys
 
 sys.path.insert(0, str(Path(__file__).resolve().parents[1]))
 import package_materials_lab_candidate as lab
+import portable_compiler_utf8
 from package_wave_flow_candidate import REGENERATED_RAPIER_IMPORTS
 
 WINDOWS_LFS = frozenset({
@@ -237,9 +238,16 @@ def dependency_identity(destination: Path, *, execute: bool) -> dict:
             require(version and len(version) < 16384, "Missing/unbounded portable tool version")
             item["version"] = version
         tools[name] = item
-    return {"schema": "ramcache-strata-offline-lab-tools-v1", "tools": tools,
-            "git_native_prefix": prefixes[0], "licenses_sha256": notices,
-            "scope": "offline candidate compilation; published application runtime unchanged"}
+    record = {"schema": "ramcache-strata-offline-lab-tools-v1", "tools": tools,
+              "git_native_prefix": prefixes[0], "licenses_sha256": notices,
+              "scope": "offline candidate compilation; published application runtime unchanged"}
+    # Older immutable evaluators retain their original identity shape. Every
+    # newly staged toolchain below receives a source-bound UTF-8 resource
+    # receipt; archive verification also authenticates its derived executables.
+    if (destination / "cxx/CYBERSAND-COMPILER-UTF8.json").is_file():
+        record["compiler_utf8"] = portable_compiler_utf8.verify(
+            destination / "cxx", execute=execute and os.name == "nt")
+    return record
 
 
 def _ignore_compiler_python_cache(directory: str, names: list[str]) -> set[str]:
@@ -275,7 +283,10 @@ def stage_dependencies(destination: Path, *, python_root: Path = Path(sys.base_p
     lab.copy_python(python_root, destination / "python")
     lab.copy_git(git_root, destination / "git")
     lab.copy_portable_tree(compiler_root, destination / "cxx", ignore=_ignore_compiler_python_cache)
-    return dependency_identity(destination, execute=True)
+    portable_compiler_utf8.prepare(destination / "cxx")
+    record = dependency_identity(destination, execute=True)
+    require("compiler_utf8" in record, "New portable compiler lacks UTF-8 resource custody")
+    return record
 
 
 def verify_dependencies(destination: Path, record: dict, *, execute: bool = True) -> dict:

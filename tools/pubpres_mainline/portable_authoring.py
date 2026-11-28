@@ -3,9 +3,10 @@
 
 This is a focused preflight for the full PUBPRES evaluator. It uses the same
 dependency copier and environment builder as the evaluator, records GCC's
-program-search answers, compiles and runs a small C++ program at each adverse
-installation path, and runs the actual Materials Lab World comparison once at
-the combined path used by the independent extraction workflow.
+program-search answers, compiles and runs a bounded C++ process-observability
+control at each adverse path, reproduces the original Unicode linker failure
+with the untouched source toolchain, and runs the actual Materials Lab World
+comparison at the combined path used by the independent extraction workflow.
 """
 from __future__ import annotations
 
@@ -34,10 +35,13 @@ import common
 import ramcache_strata_lab_package as portable_stack
 import lab
 
-SCHEMA = "pubpres-portable-authoring-witness-v1"
+SCHEMA = "pubpres-portable-authoring-witness-v2"
 EXPECTED_GCC_SHA256 = "eccc5963340f7b57805b3750efc182c25c6d4eddb828c8cee2b0f974a0d943ac"
 PROCESS_NAMES = {"g++.exe", "gcc.exe", "cc1plus.exe", "collect2.exe", "ld.exe", "as.exe"}
 RULE_PREFIX = "PUBPRES-Portable-Authoring-"
+PROBE_FUNCTION_COUNT = 128
+PROBE_VOLATILE_ASSIGNMENTS_PER_FUNCTION = 128
+PROBE_MASK = (1 << 64) - 1
 
 
 def need(condition: bool, message: str) -> None:
@@ -149,6 +153,8 @@ class ProcessPathObserver:
         self._handles: dict[tuple[int, int], object] = {}
         self._lock = threading.Lock()
         self._errors: list[str] = []
+        self._sampling_warnings: dict[tuple[str, int | None, str, int | None, int | None], dict] = {}
+        self._sampling_warning_overflow = 0
         self._kernel = ctypes.WinDLL("kernel32", use_last_error=True)
         self._snapshot = self._kernel.CreateToolhelp32Snapshot
         self._snapshot.argtypes = [wintypes.DWORD, wintypes.DWORD]
@@ -198,19 +204,62 @@ class ProcessPathObserver:
                 if row is not None:
                     row["exit_filetime_100ns"] = ended or None
             except BaseException as error:
-                if len(self._errors) < 20:
-                    self._errors.append("process exit identity: " + type(error).__name__ + ": " + str(error))
+                row = roots.get(key, observations.get(key, {}))
+                if key in roots:
+                    self._record_observer_error("root exit identity", error)
+                else:
+                    self._record_sampling_warning("GetProcessTimes(exit)", row.get("pid"),
+                                                   Path(row.get("image_path", "")).name, error,
+                                                   creation_filetime_100ns=row.get("creation_filetime_100ns"))
             finally:
                 self._close(handle)
         roots_list, observations_list = list(roots.values()), list(observations.values())
         correlated = self._correlated(roots_list, observations_list)
         correlated_keys = {(entry["pid"], entry["creation_filetime_100ns"]) for entry in correlated}
+        with self._lock:
+            warnings = sorted((dict(row) for row in self._sampling_warnings.values()),
+                              key=lambda row: (row["phase"], row.get("pid") or 0,
+                                               row["image_name"], row.get("winerror") or 0,
+                                               row.get("creation_filetime_100ns") or 0))
         return {"poll_interval_ms": self.interval_seconds * 1000,
                 "roots": sorted(roots_list, key=lambda row: (row["creation_filetime_100ns"], row["pid"])),
                 "observations": sorted(correlated, key=lambda row: (row["creation_filetime_100ns"], row["pid"])),
                 "uncorrelated_observation_count": sum(1 for row in observations_list
                     if (row["pid"], row["creation_filetime_100ns"]) not in correlated_keys),
-                "observer_errors": self._errors}
+                "observer_errors": self._errors,
+                "sampling_warnings": warnings,
+                "sampling_warning_overflow": self._sampling_warning_overflow}
+
+    def _record_observer_error(self, phase: str, error: BaseException) -> None:
+        with self._lock:
+            if len(self._errors) < 20:
+                self._errors.append(phase + ": " + type(error).__name__ + ": " + str(error)[:500])
+
+    def _record_sampling_warning(self, phase: str, pid: int | None, image_name: str,
+                                 error: BaseException, *,
+                                 creation_filetime_100ns: int | None = None) -> None:
+        """Keep individual-process read races visible without crediting their identities."""
+        winerror = getattr(error, "winerror", None)
+        if type(winerror) is not int:
+            winerror = None
+        name = image_name.casefold()
+        key = (phase, pid, name, winerror, creation_filetime_100ns)
+        now = datetime.now(timezone.utc).isoformat()
+        with self._lock:
+            row = self._sampling_warnings.get(key)
+            if row is not None:
+                row["count"] += 1
+                row["last_seen_utc"] = now
+                return
+            if len(self._sampling_warnings) >= 100:
+                self._sampling_warning_overflow += 1
+                return
+            self._sampling_warnings[key] = {
+                "phase": phase, "pid": pid, "image_name": name or None,
+                "winerror": winerror, "creation_filetime_100ns": creation_filetime_100ns,
+                "identity_verified": creation_filetime_100ns is not None,
+                "error": type(error).__name__ + ": " + str(error)[:500],
+                "first_seen_utc": now, "last_seen_utc": now, "count": 1}
 
     @staticmethod
     def _correlated(roots: list[dict], observations: list[dict]) -> list[dict]:
@@ -280,23 +329,39 @@ class ProcessPathObserver:
 
     def _sample(self) -> None:
         while not self._stop.is_set():
+            snapshot = None
             try:
+                ctypes.set_last_error(0)
                 handle = self._snapshot(self.TH32CS_SNAPPROCESS, 0)
                 if handle == wintypes.HANDLE(-1).value:
-                    raise ctypes.WinError(ctypes.get_last_error())
-                try:
-                    entry = self.Entry()
-                    entry.dwSize = ctypes.sizeof(self.Entry)
-                    ok = self._first(handle, ctypes.byref(entry))
-                    while ok:
-                        if entry.szExeFile.casefold() in self.names:
-                            process = self._open(self.PROCESS_QUERY_LIMITED_INFORMATION, False,
-                                                 entry.th32ProcessID)
-                            if process:
-                                keep = False
+                    raise ctypes.WinError(ctypes.get_last_error() or 1)
+                snapshot = handle
+                entry = self.Entry()
+                entry.dwSize = ctypes.sizeof(self.Entry)
+                ctypes.set_last_error(0)
+                ok = bool(self._first(snapshot, ctypes.byref(entry)))
+                if not ok:
+                    raise ctypes.WinError(ctypes.get_last_error() or 18)
+                while ok:
+                    process_name = entry.szExeFile
+                    pid = int(entry.th32ProcessID)
+                    if process_name.casefold() in self.names:
+                        ctypes.set_last_error(0)
+                        process = self._open(self.PROCESS_QUERY_LIMITED_INFORMATION, False, pid)
+                        if not process:
+                            code = ctypes.get_last_error()
+                            error = ctypes.WinError(code) if code else OSError(
+                                "OpenProcess returned a null handle without a Win32 error")
+                            self._record_sampling_warning("OpenProcess", pid, process_name, error)
+                        else:
+                            keep = False
+                            try:
                                 try:
-                                    row = self._identity(process, int(entry.th32ProcessID),
-                                                         int(entry.th32ParentProcessID))
+                                    row = self._identity(process, pid, int(entry.th32ParentProcessID))
+                                except BaseException as error:
+                                    self._record_sampling_warning("process identity read", pid,
+                                                                  process_name, error)
+                                else:
                                     key = (row["pid"], row["creation_filetime_100ns"])
                                     stamp = datetime.now(timezone.utc).isoformat()
                                     with self._lock:
@@ -307,15 +372,21 @@ class ProcessPathObserver:
                                         if key not in self._handles:
                                             self._handles[key] = process
                                             keep = True
-                                finally:
-                                    if not keep:
-                                        self._close(process)
-                        ok = self._next(handle, ctypes.byref(entry))
-                finally:
-                    self._close(handle)
+                            finally:
+                                if not keep:
+                                    self._close(process)
+                    entry.dwSize = ctypes.sizeof(self.Entry)
+                    ctypes.set_last_error(0)
+                    ok = bool(self._next(snapshot, ctypes.byref(entry)))
+                    if not ok:
+                        code = ctypes.get_last_error()
+                        if code != 18:  # ERROR_NO_MORE_FILES is the documented end of the snapshot.
+                            raise ctypes.WinError(code or 1)
             except BaseException as error:  # keep diagnostic failures in the receipt
-                if len(self._errors) < 20:
-                    self._errors.append(type(error).__name__ + ": " + str(error))
+                self._record_observer_error("snapshot enumeration", error)
+            finally:
+                if snapshot is not None:
+                    self._close(snapshot)
             self._stop.wait(self.interval_seconds)
 
 
@@ -547,15 +618,72 @@ def _tool_identity(package: Path, env: dict[str, str]) -> dict:
     return result
 
 
-def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressRules | None) -> dict:
+def compiler_probe_source() -> tuple[str, dict, str]:
+    """Generate bounded observable C++ work so the real assembler is sampleable."""
+    lines = [
+        "// Bounded compiler-observability control; this is not a performance workload.\n",
+        "#include <iostream>\n",
+        "using probe_word = unsigned long long;\n",
+        "using probe_function = probe_word (*)(probe_word);\n",
+    ]
+    expected_checksum = 0
+    for function_index in range(PROBE_FUNCTION_COUNT):
+        lines.extend((
+            f'extern "C" probe_word portable_material_probe_{function_index:03d}(probe_word input) {{\n',
+            "    volatile probe_word value = input;\n",
+        ))
+        value = (function_index + 17) & PROBE_MASK
+        for operation_index in range(PROBE_VOLATILE_ASSIGNMENTS_PER_FUNCTION):
+            addend = (((function_index + 1) * 0x9E3779B97F4A7C15)
+                      + ((operation_index + 1) * 0xBF58476D1CE4E5B9)) & PROBE_MASK
+            xor_mask = ((((function_index + 1) * 0x94D049BB133111EB)
+                         ^ ((operation_index + 1) * 0xD6E8FEB86659FD93)) & PROBE_MASK)
+            lines.append(f"    value = (value + 0x{addend:016x}ULL) ^ 0x{xor_mask:016x}ULL;\n")
+            value = ((value + addend) & PROBE_MASK) ^ xor_mask
+        lines.append("    return value;\n}\n")
+        expected_checksum ^= value
+    lines.extend((
+        "int main() {\n",
+        "    probe_function probes[] = {\n",
+    ))
+    lines.extend(f"        &portable_material_probe_{index:03d},\n"
+                 for index in range(PROBE_FUNCTION_COUNT))
+    lines.extend((
+        "    };\n",
+        "    probe_word checksum = 0;\n",
+        "    for (probe_word index = 0; index < sizeof(probes) / sizeof(probes[0]); ++index)\n",
+        "        checksum ^= probes[index](index + 17);\n",
+        '    std::cout << "offline-material-ok:" << checksum << "\\n";\n',
+        "    return 0;\n",
+        "}\n",
+    ))
+    source = "".join(lines)
+    evidence = {
+        "kind": "bounded volatile-operation C++ control to keep real compiler and assembler output observable",
+        "representative_performance_workload": False,
+        "reason": "The original tiny source let as.exe finish between process polls; this bounded source emits enough genuine assembly for process-path sampling.",
+        "function_count": PROBE_FUNCTION_COUNT,
+        "volatile_assignments_per_function": PROBE_VOLATILE_ASSIGNMENTS_PER_FUNCTION,
+        "volatile_assignment_count": PROBE_FUNCTION_COUNT * PROBE_VOLATILE_ASSIGNMENTS_PER_FUNCTION,
+        "source_bytes": len(source.encode("ascii")),
+        "expected_executable_stdout": f"offline-material-ok:{expected_checksum}",
+    }
+    return source, evidence, evidence["expected_executable_stdout"]
+
+
+def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressRules | None, *,
+                    expected_link_success: bool = True, probe_directory: Path | None = None) -> dict:
     compiler = package / "dependencies/cxx/bin/g++.exe"
     # Installation roots vary one property at a time. Putting Unicode into
     # every probe's own directory would invalidate the ASCII control.
-    directory = package / "authoring-temp" / "minimal-cpp"
+    directory = probe_directory or package / "authoring-temp" / "minimal-cpp"
+    need(_under(directory.parent, package / "authoring-temp"),
+         "Compiler probe directory escaped the isolated package authoring area")
     directory.mkdir()
     source = directory / "portable-material.cpp"
     executable = directory / "portable-material.exe"
-    source.write_text('#include <iostream>\nint main(){ std::cout << "offline-material-ok\\n"; return 0; }\n', encoding="utf-8")
+    source_text, source_workload, expected_stdout = compiler_probe_source()
+    source.write_bytes(source_text.encode("ascii"))
     observer = ProcessPathObserver()
     observer.start()
     started = datetime.now(timezone.utc).isoformat()
@@ -563,15 +691,24 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
     execution = None
     compile_error = None
     execution_error = None
+    failure_markers = ["collect2.exe: fatal error: cannot find", "'ld'", "compilation terminated."]
     try:
         try:
             with capture_popen_roots(observer):
                 compile_result = lab._run([str(compiler), "-std=c++20", "-O2", "-Wall", "-Wextra", "-Werror",
-                                           str(source), "-o", str(executable)], directory, 120)
-            need(executable.is_file(), "The production compiler returned success without a linked executable")
+                                           str(source), "-o", str(executable)], directory, 120, check=False)
+            if compile_result.returncode == 0:
+                need(executable.is_file() and executable.stat().st_size > 0,
+                     "The production compiler returned success without a nonempty linked executable")
+            elif expected_link_success:
+                compile_error = (f"process returned {compile_result.returncode}: "
+                                 + (compile_result.stderr or compile_result.stdout).strip())
+            else:
+                compile_error = (f"expected-link-failure returned {compile_result.returncode}: "
+                                 + (compile_result.stderr or compile_result.stdout).strip())
         except BaseException as error:
             compile_error = type(error).__name__ + ": " + str(error)
-        if compile_error is None:
+        if compile_result is not None and compile_result.returncode == 0 and expected_link_success:
             try:
                 if firewall is not None:
                     firewall.block_one(executable)
@@ -585,7 +722,17 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
     for row in observed["observations"]:
         paths.setdefault(Path(row["image_path"]).name.casefold(), []).append(row["image_path"])
     needed = {"g++.exe", "cc1plus.exe", "collect2.exe", "ld.exe", "as.exe"}
-    all_seen = needed <= set(paths)
+    expected_absent = {"ld.exe"} if not expected_link_success else set()
+    required = needed - expected_absent
+    all_seen = required <= set(paths)
+    expected_absent_observed = sorted(expected_absent & set(paths))
+    role_observations = {
+        name: [{"pid": row["pid"],
+                "creation_filetime_100ns": row["creation_filetime_100ns"],
+                "samples": row["samples"], "image_path": row["image_path"]}
+               for row in observed["observations"]
+               if Path(row["image_path"]).name.casefold() == name]
+        for name in sorted(needed)}
     expected_compiler = (package / "dependencies/cxx/bin/g++.exe").resolve()
     root_compilers = [row for row in observed["roots"]
                       if Path(row["image_path"]).name.casefold() == "g++.exe"]
@@ -593,29 +740,156 @@ def _mini_link_test(package: Path, env: dict[str, str], firewall: OfflineEgressR
                                  for row in root_compilers)
     observed_inside = all(all(_under(Path(path), package / "dependencies/cxx") for path in paths.get(name, []))
                           for name in needed if name in paths)
-    execution_ok = execution is not None and execution.returncode == 0 and execution.stdout.strip() == "offline-material-ok"
-    status = "passed" if (compile_error is None and execution_ok and all_seen and observed_inside
-                           and compiler_root_observed and not observed["observer_errors"]) else "failed"
-    return {"status": status, "started_utc": started,
+    execution_ok = (execution is not None and execution.returncode == 0
+                    and execution.stdout.strip() == expected_stdout)
+    compiler_succeeded = compile_result is not None and compile_result.returncode == 0
+    failure_output = ((compile_result.stderr + "\n" + compile_result.stdout)
+                      if compile_result is not None else compile_error or "").casefold()
+    expected_failure_markers_seen = [marker for marker in failure_markers
+                                     if marker.casefold() in failure_output]
+    executable_absent = not executable.exists()
+    expected_failure_observed = (not expected_link_success and compile_result is not None
+                                 and compile_result.returncode != 0
+                                 and len(expected_failure_markers_seen) == len(failure_markers)
+                                 and executable_absent)
+    if expected_link_success:
+        status = "passed" if (compiler_succeeded and execution_ok and all_seen and observed_inside
+                               and compiler_root_observed and not observed["observer_errors"]) else "failed"
+    else:
+        expected_failure = (expected_failure_observed and all_seen and not expected_absent_observed
+                            and observed_inside and compiler_root_observed
+                            and not observed["observer_errors"])
+        status = "reproduced_expected_failure" if expected_failure else "failed"
+    return {"status": status,
+            "qualification_credit": "positive_compiler_control" if expected_link_success else "negative_control_only",
+            "expected_behavior": "compile_link_execute" if expected_link_success else "collect2_missing_ld_failure",
+            "started_utc": started,
             "compiler_argv": [str(compiler), "-std=c++20", "-O2", "-Wall", "-Wextra", "-Werror",
                               str(source), "-o", str(executable)],
             "source_sha256": sha(source),
+            "source_workload": source_workload,
             "executable_sha256": sha(executable) if executable.is_file() else None,
+            "executable_bytes": executable.stat().st_size if executable.is_file() else None,
             "compiler_exit": compile_result.returncode if compile_result else None,
             "compiler_error": compile_error,
+            "compiler_stdout": compile_result.stdout if compile_result else "",
+            "compiler_stderr": compile_result.stderr if compile_result else "",
+            "expected_failure_markers": failure_markers if not expected_link_success else [],
+            "expected_failure_markers_seen": expected_failure_markers_seen,
+            "expected_failure_observed": expected_failure_observed,
+            "executable_absent": executable_absent,
             "execution_exit": execution.returncode if execution else None,
             "execution_error": execution_error,
             "execution_stdout": execution.stdout.strip() if execution else "",
             "execution_stderr": execution.stderr.strip() if execution else "",
-            "required_actual_processes_observed": sorted(name for name in needed if name in paths),
-            "required_actual_processes_missing": sorted(needed - set(paths)),
+            "required_actual_processes": sorted(required),
+            "required_actual_processes_observed": sorted(name for name in required if name in paths),
+            "required_actual_processes_missing": sorted(required - set(paths)),
+            "expected_absent_processes": sorted(expected_absent),
+            "expected_absent_processes_observed": expected_absent_observed,
+            "required_role_observations": role_observations,
             "compiler_root_observed": compiler_root_observed,
             "actual_process_paths_inside_bundle": observed_inside,
             "observed_roots": observed["roots"],
             "observed_process_paths": observed["observations"],
             "uncorrelated_observation_count": observed["uncorrelated_observation_count"],
             "observer_errors": observed["observer_errors"],
-            "network_egress_blocked_for_linked_executable": firewall is not None}
+            "sampling_warnings": observed["sampling_warnings"],
+            "sampling_warning_overflow": observed["sampling_warning_overflow"],
+            "compiler_tools_egress_blocked": firewall is not None,
+            "network_egress_blocked_for_linked_executable":
+                firewall is not None and str(executable.resolve(strict=False)) in firewall.executables}
+
+
+def _original_unicode_control(parent: Path, args, firewall: OfflineEgressRules,
+                              path_variants: list[dict]) -> dict:
+    """Reproduce the admitted compiler failure without the corrected compiler preparation."""
+    control_root = parent / "Ω"
+    dependencies = control_root / "dependencies"
+    compiler_source = args.compiler_root.resolve()
+    source_gxx = compiler_source / "bin/g++.exe"
+    need(compiler_source.is_dir() and source_gxx.is_file(),
+         "The original compiler source root is unavailable for the Unicode negative control")
+    source_gxx_sha = sha(source_gxx)
+    need(source_gxx_sha == EXPECTED_GCC_SHA256,
+         "The original Unicode control compiler differs from the admitted GCC identity")
+    need(not control_root.exists(), "Refuse to overwrite the original Unicode compiler control")
+    copied_compiler = dependencies / "cxx"
+    copy_ignore = portable_stack._ignore_compiler_python_cache
+    portable_stack.lab.copy_portable_tree(compiler_source, copied_compiler, ignore=copy_ignore)
+    copied_gxx = copied_compiler / "bin/g++.exe"
+    copied_gxx_sha = sha(copied_gxx)
+    need(copied_gxx_sha == source_gxx_sha,
+         "The copied original compiler identity differs from its admitted source")
+    utf8_receipt = copied_compiler / "CYBERSAND-COMPILER-UTF8.json"
+    need(not utf8_receipt.exists(),
+         "The negative-control compiler unexpectedly contains corrected UTF-8 preparation")
+    package = control_root
+    env = _environment(package)
+    compiler_executables = _compiler_executables(dependencies)
+    firewall.block(compiler_executables)
+    compiler_rules = [str(path.resolve()) for path in compiler_executables]
+    need(set(compiler_rules) <= set(firewall.executables),
+         "Not every original compiler executable received a verified outbound firewall block")
+    started = datetime.now(timezone.utc).isoformat()
+    with _environment_scope(env):
+        identity = _tool_identity(package, env)
+
+    positive_hashes = [row.get("minimal_compile_link_execute", {}).get("source_sha256")
+                       for row in path_variants]
+    positive_hashes = [value for value in positive_hashes if type(value) is str]
+    expected_positive_hash = (positive_hashes[0] if positive_hashes
+                              and len(set(positive_hashes)) == 1 else None)
+    attempts: list[dict] = []
+    for index in range(3):
+        probe_directory = package / "authoring-temp" / f"original-unicode-attempt-{index + 1}"
+        with _environment_scope(env):
+            attempt = _mini_link_test(package, env, firewall, expected_link_success=False,
+                                      probe_directory=probe_directory)
+        attempt["attempt"] = index + 1
+        attempts.append(attempt)
+        if (not attempt["expected_failure_observed"] or attempt["observer_errors"]
+                or attempt["expected_absent_processes_observed"]):
+            break
+        if attempt["status"] == "reproduced_expected_failure":
+            break
+
+    same_source = (expected_positive_hash is not None and bool(attempts)
+                   and all(row["source_sha256"] == expected_positive_hash for row in attempts))
+    fully_observed_attempts = [row for row in attempts
+                               if row["status"] == "reproduced_expected_failure"]
+    all_attempts_reproduced = bool(attempts) and all(row["expected_failure_observed"]
+                                                      and row["executable_absent"]
+                                                      and not row["expected_absent_processes_observed"]
+                                                      for row in attempts)
+    status = ("reproduced_expected_failure" if same_source and all_attempts_reproduced
+              and fully_observed_attempts else "failed")
+    return {
+        "status": status,
+        "qualification_credit": "negative_control_only",
+        "started_utc": started,
+        "control_installation": str(control_root.resolve()),
+        "compiler_source_root": str(compiler_source),
+        "compiler_copied_root": str(copied_compiler.resolve()),
+        "compiler_source_gxx_sha256": source_gxx_sha,
+        "compiler_copied_gxx_sha256": copied_gxx_sha,
+        "compiler_utf8_preparation_present": utf8_receipt.exists(),
+        "copy_method": "portable_stack.lab.copy_portable_tree with the production embedded-Python-cache ignore callback; no UTF-8 preparation",
+        "copy_ignore": getattr(copy_ignore, "__name__", str(copy_ignore)),
+        "effective_authoring_environment": {key: env.get(key, "") for key in (
+            "PATH", "CYBERSAND_LAB_CXX", "TEMP", "TMP", "SystemRoot")},
+        "compiler_executables_blocked": compiler_rules,
+        "compiler_readback": identity,
+        "expected_positive_source_sha256": expected_positive_hash,
+        "attempt_source_sha256s": [row["source_sha256"] for row in attempts],
+        "same_probe_source_as_corrected_controls": same_source,
+        "attempt_limit": 3,
+        "attempt_count": len(attempts),
+        "fully_observed_expected_failure_attempts": [row["attempt"] for row in fully_observed_attempts],
+        "evidence_join_policy": "Each attempt has its own suspended compiler root and process lineage; process roles are never joined across attempts.",
+        "all_actual_attempts_reproduced_expected_failure_without_executable": all_attempts_reproduced,
+        "attempts": attempts,
+    }
 
 
 def _actual_lab_world(package: Path, env: dict[str, str], firewall: OfflineEgressRules | None) -> dict:
@@ -745,6 +1019,8 @@ def _actual_lab_world(package: Path, env: dict[str, str], firewall: OfflineEgres
             "observed_process_paths": observed["observations"],
             "uncorrelated_observation_count": observed["uncorrelated_observation_count"],
             "observer_errors": observed["observer_errors"],
+            "sampling_warnings": observed["sampling_warnings"],
+            "sampling_warning_overflow": observed["sampling_warning_overflow"],
             "network_egress_blocked_for_packaged_python_and_generated_world_probes": generated_probes_blocked,
             "generated_world_probe_firewall_rules": world_rules}
 
@@ -773,8 +1049,10 @@ def run(args) -> dict:
               "expected_original_gcc_sha256": EXPECTED_GCC_SHA256,
               "original_gcc_identity_match": observed_gcc_sha == EXPECTED_GCC_SHA256,
             "path_variants": [], "actual_materials_lab": None,
+              "original_unicode_control": None,
             "production_temp_environment": {key: os.environ.get(key, "") for key in ("TEMP", "TMP", "SystemRoot")},
               "offline_network_policy": "verified per-executable outbound Windows Firewall blocks for the packaged authoring tools and generated World probe executables",
+              "process_observer_policy": "Snapshot/enumeration failures and suspended-root identity/lifetime failures are fatal; per-process open/query/exit races are recorded as sampling_warnings and receive no process credit. Required correlated process roles must still be observed.",
               "timeouts_seconds": {"tool_queries": 30, "minimal_compile": 120,
                                     "minimal_execution": 30, "lab_world": 420}}
     write_json(output / "portable-authoring-witness.json", report)
@@ -809,6 +1087,8 @@ def run(args) -> dict:
                 else:
                     _hardlink_tree(variants[0][1] / "dependencies", install / "dependencies")
                     receipt = portable_stack.dependency_identity(install / "dependencies", execute=True)
+                need(receipt.get("compiler_utf8", {}).get("status") == "verified",
+                     "Candidate path lacks a verified UTF-8 compiler preparation receipt")
                 source_receipt = None
                 if label == "combined_adverse":
                     source_receipt = portable_stack.stage_source(
@@ -855,6 +1135,25 @@ def run(args) -> dict:
                               "ld_reported": ld.get("reported_by_compiler"),
                               "ld_resolved": ld.get("resolved_path")},
                              ensure_ascii=False, sort_keys=True), flush=True)
+        try:
+            report["original_unicode_control"] = _original_unicode_control(
+                root, args, firewall, report["path_variants"])
+        except BaseException as error:
+            report["original_unicode_control"] = {
+                "status": "failed", "qualification_credit": "negative_control_only",
+                "error": type(error).__name__ + ": " + str(error)}
+        report["status"] = ("passed" if all(row["status"] == "passed" for row in report["path_variants"])
+                            and report["original_unicode_control"].get("status") == "reproduced_expected_failure"
+                            else "failed")
+        write_json(output / "portable-authoring-witness.json", report)
+        control = report["original_unicode_control"]
+        attempts = control.get("attempts", [])
+        print(json.dumps({"path": "original_unicode_control", "status": control["status"],
+                          "attempt_count": len(attempts),
+                          "failure_reproduced": control.get("all_actual_attempts_reproduced_expected_failure_without_executable"),
+                          "fully_observed_attempts": control.get("fully_observed_expected_failure_attempts", []),
+                          "ld_reported": control.get("compiler_readback", {}).get("ld", {}).get("reported_by_compiler")},
+                         ensure_ascii=True, sort_keys=True), flush=True)
     finally:
         if firewall is not None:
             report["offline_blocked_executables"] = list(firewall.executables)
@@ -880,6 +1179,9 @@ def run(args) -> dict:
     need(len(report["path_variants"]) == len(variants), "Not all installation path controls completed")
     need(all(row["status"] == "passed" for row in report["path_variants"]),
          "At least one portable compiler installation path failed")
+    need(type(report["original_unicode_control"]) is dict
+         and report["original_unicode_control"].get("status") == "reproduced_expected_failure",
+         "Original Unicode compiler negative control did not reproduce the admitted collect2 missing-ld failure")
     need(report["actual_materials_lab"] is not None,
          "The combined adverse path did not execute the actual Materials Lab World backend")
     report["status"] = "passed"

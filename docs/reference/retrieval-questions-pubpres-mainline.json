@@ -77,6 +77,22 @@
         "operations/pubpres-mainline-convergence.md"
       ],
       "revision_sensitive": true
+    },
+    {
+      "id": "PUBPRESMAIN-06",
+      "query": "Why did portable Windows Materials Lab compilation fail in a Unicode installation, and is the recovery evaluator qualified?",
+      "canonical": [
+        "operations/pubpres-mainline-convergence.md"
+      ],
+      "facts": [
+        "The exact original compiler population contains ld; Unicode paths reproduce collect2 linker discovery failure with inherited GNU search overrides empty.",
+        "A copied-tool per-process UTF-8 manifest is a candidate correction with original and derived byte custody, unchanged compiler instruction sections and no owner system-locale or PATH change.",
+        "Focused compiler and real Lab execution, complete independent extraction, and physical owner acceptance remain separate results; a candidate implementation is not an evaluator pass."
+      ],
+      "sources": [
+        "operations/pubpres-mainline-convergence.md"
+      ],
+      "revision_sensitive": true
     }
   ]
 }

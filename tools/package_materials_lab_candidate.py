@@ -145,7 +145,10 @@ def copy_git(source: Path, destination: Path) -> None:
 
 def dependency_environment(package: Path) -> dict[str, str]:
     result = clean_git_environment()
-    for key in ("PYTHONHOME", "PYTHONPATH", "PYTHONSTARTUP", "GIT_EXEC_PATH", "GIT_TEMPLATE_DIR"):
+    for key in ("PYTHONHOME", "PYTHONPATH", "PYTHONSTARTUP", "GIT_EXEC_PATH", "GIT_TEMPLATE_DIR",
+                "GCC_EXEC_PREFIX", "COMPILER_PATH", "LIBRARY_PATH", "GCC_SPECS", "CPATH",
+                "C_INCLUDE_PATH", "CPLUS_INCLUDE_PATH", "OBJC_INCLUDE_PATH",
+                "COLLECT_GCC", "COLLECT_LTO_WRAPPER", "COLLECT_GCC_OPTIONS"):
         result.pop(key, None)
     system = Path(os.environ.get("SystemRoot", r"C:\Windows"))
     result["PATH"] = os.pathsep.join(str(path) for path in (

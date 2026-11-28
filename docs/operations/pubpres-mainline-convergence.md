@@ -203,6 +203,28 @@ for local validation limits and the
 for the retained history-exhaustion omissions, repeated poses and legacy budget
 refusals. These inspections grant no new physical owner acceptance.
 
+The [exact original compiler reproduction](../audits/pubpres-delivery-recovery-20261128/original-compiler-reproduction.json)
+admitted all 13,764 compiler files against the failed archive and reproduced
+`collect2`'s missing-linker error on Unicode installation paths, including the
+real Materials Lab World build. The linker exists and GCC's program readback
+resolves it; inherited GNU search overrides were empty. Successful binary
+execution in the spaces/nested controls did not earn qualification when the
+original observer lacked complete process evidence.
+
+**Current implementation, candidate qualification pending:** the shared Windows
+copier applies a per-process UTF-8 Fusion manifest to the exact copied GNU 14.2
+UCRT tools. It does not change system locale, owner PATH or compiler instruction
+sections. The [resource transformer](../../tools/ci/portable_compiler_utf8.py)
+pins originals, preserves other resources and records derived hashes; portable
+verification works independently of the extraction directory. Compiler search
+and include overrides are cleared from the package environment. Production
+native runtime inputs and Materials Lab's isolated World backend are unchanged.
+The focused witness compares six corrected paths with an untouched original
+Unicode negative control, and executes the real Lab backend with verified
+outbound blocks for its tools and both generated World probes. Neither that
+candidate implementation nor a local resource-API control is an extracted
+evaluator pass. The complete newly built archive remains a separate gate.
+
 ## Owner route and subsequent ObjectShard integration
 
 The [complete Windows owner playtest](../audits/2026-11-28-pubpres-mainline-owner-route.md)

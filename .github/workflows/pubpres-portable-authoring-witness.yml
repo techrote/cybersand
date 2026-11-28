@@ -12,6 +12,8 @@ on:
       - 'tools/pubpres_mainline/package.py'
       - 'tools/pubpres_mainline/extracted.py'
       - 'tools/ci/ramcache_strata_lab_package.py'
+      - 'tools/ci/portable_compiler_utf8.py'
+      - 'tools/ci/test_portable_compiler_utf8.py'
       - 'tools/package_materials_lab_candidate.py'
       - 'tools/material_catalogue/**'
 
@@ -49,6 +51,10 @@ jobs:
         run: |
           python -B -m unittest discover -s tools/pubpres_mainline -p 'test_portable*.py' -v
           if ($LASTEXITCODE -ne 0) { throw 'Portable witness positive/negative controls failed' }
+          python -B -m unittest discover -s tools/ci -p 'test_portable_compiler_utf8.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Compiler metadata preservation controls failed' }
+          python -B -m unittest discover -s tools/ci -p 'test_portable_authoring_environment.py' -v
+          if ($LASTEXITCODE -ne 0) { throw 'Portable compiler environment isolation controls failed' }
       - name: Acquire original failed package custody manifest
         uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093
         with:
