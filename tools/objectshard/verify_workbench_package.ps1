@@ -178,9 +178,68 @@ if ($sourceCount -eq 0 -or @($candidate.source_inputs.PSObject.Properties).Count
 if ($null -ne $reuse) {
     if ($reuse.source_input_count -ne $sourceCount) { throw 'Reused native input count mismatch' }
     $canonicalParts = foreach ($entry in ($manifest.native.source_inputs.PSObject.Properties | Sort-Object Name)) {
-        $nameJson = ConvertTo-Json -InputObject ([string]$entry.Name) -Compress
-        $valueJson = ConvertTo-Json -InputObject ([string]$entry.Value) -Compress
-        $nameJson + ':' + $valueJson
+        if ($entry.Name -notmatch '^[A-Za-z0-9_./-]+
+Write-Host 'Physical Windows/NVIDIA acceptance is separate from this exact-byte verification.'
+ -or
+        ($reuse.source_input_count -isnot [int] -and $reuse.source_input_count -isnot [long]) -or
+        $reuse.source_input_count -le 0 -or
+        ($reuse.qualified_workflow_run -isnot [int] -and $reuse.qualified_workflow_run -isnot [long]) -or
+        $reuse.qualified_workflow_run -le 0 -or
+        ($reuse.qualified_artifact_id -isnot [int] -and $reuse.qualified_artifact_id -isnot [long]) -or
+        $reuse.qualified_artifact_id -le 0) {
+        throw 'Reused native candidate equivalence provenance mismatch'
+    }
+}
+$sourceCount = 0
+foreach ($entry in $manifest.native.source_inputs.PSObject.Properties) {
+    $relative = $entry.Name
+    if ($null -eq $manifest.files_sha256.PSObject.Properties[$relative] -or
+        $candidate.source_inputs.PSObject.Properties[$relative].Value -ne $entry.Value) { throw "Native build ledger mismatch: $relative" }
+    $text = [IO.File]::ReadAllText((Join-Path $root $relative)).Replace("`r`n", "`n")
+    $hash = [Security.Cryptography.SHA256]::Create()
+    try {
+        $actual = [BitConverter]::ToString($hash.ComputeHash([Text.Encoding]::UTF8.GetBytes($text))).Replace('-', '').ToLowerInvariant()
+    } finally { $hash.Dispose() }
+    if ($actual -ne $entry.Value) { throw "Native source differs from built candidate: $relative" }
+    $sourceCount += 1
+}
+if ($sourceCount -eq 0 -or @($candidate.source_inputs.PSObject.Properties).Count -ne $sourceCount) { throw 'Incomplete native source ledger' }
+if ($null -ne $reuse -and $reuse.source_input_count -ne $sourceCount) { throw 'Reused native input count mismatch' }
+Write-Host "Workbench package PASS: $count files; source $($manifest.source_commit)"
+Write-Host 'Physical Windows/NVIDIA acceptance is separate from this exact-byte verification.'
+ -or $entry.Value -notmatch '^[0-9a-f]{64}
+Write-Host 'Physical Windows/NVIDIA acceptance is separate from this exact-byte verification.'
+ -or
+        ($reuse.source_input_count -isnot [int] -and $reuse.source_input_count -isnot [long]) -or
+        $reuse.source_input_count -le 0 -or
+        ($reuse.qualified_workflow_run -isnot [int] -and $reuse.qualified_workflow_run -isnot [long]) -or
+        $reuse.qualified_workflow_run -le 0 -or
+        ($reuse.qualified_artifact_id -isnot [int] -and $reuse.qualified_artifact_id -isnot [long]) -or
+        $reuse.qualified_artifact_id -le 0) {
+        throw 'Reused native candidate equivalence provenance mismatch'
+    }
+}
+$sourceCount = 0
+foreach ($entry in $manifest.native.source_inputs.PSObject.Properties) {
+    $relative = $entry.Name
+    if ($null -eq $manifest.files_sha256.PSObject.Properties[$relative] -or
+        $candidate.source_inputs.PSObject.Properties[$relative].Value -ne $entry.Value) { throw "Native build ledger mismatch: $relative" }
+    $text = [IO.File]::ReadAllText((Join-Path $root $relative)).Replace("`r`n", "`n")
+    $hash = [Security.Cryptography.SHA256]::Create()
+    try {
+        $actual = [BitConverter]::ToString($hash.ComputeHash([Text.Encoding]::UTF8.GetBytes($text))).Replace('-', '').ToLowerInvariant()
+    } finally { $hash.Dispose() }
+    if ($actual -ne $entry.Value) { throw "Native source differs from built candidate: $relative" }
+    $sourceCount += 1
+}
+if ($sourceCount -eq 0 -or @($candidate.source_inputs.PSObject.Properties).Count -ne $sourceCount) { throw 'Incomplete native source ledger' }
+if ($null -ne $reuse -and $reuse.source_input_count -ne $sourceCount) { throw 'Reused native input count mismatch' }
+Write-Host "Workbench package PASS: $count files; source $($manifest.source_commit)"
+Write-Host 'Physical Windows/NVIDIA acceptance is separate from this exact-byte verification.'
+) {
+            throw "Unsafe native input ledger entry: $($entry.Name)"
+        }
+        '"' + [string]$entry.Name + '":"' + [string]$entry.Value + '"'
     }
     $canonicalInputs = '{' + ($canonicalParts -join ',') + '}'
     $inputHash = [Security.Cryptography.SHA256]::Create()
