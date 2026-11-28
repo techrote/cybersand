@@ -180,11 +180,14 @@ foreach ($entry in $manifest.native.source_inputs.PSObject.Properties) {
 if ($sourceCount -eq 0 -or @($candidate.source_inputs.PSObject.Properties).Count -ne $sourceCount) { throw 'Incomplete native source ledger' }
 if ($null -ne $reuse) {
     if ($reuse.source_input_count -ne $sourceCount) { throw 'Reused native input count mismatch' }
-    $canonicalParts = foreach ($entry in ($manifest.native.source_inputs.PSObject.Properties | Sort-Object Name)) {
-        if ($entry.Name -notmatch '^[A-Za-z0-9_./-]+$' -or $entry.Value -notmatch '^[0-9a-f]{64}$') {
-            throw "Unsafe native input ledger entry: $($entry.Name)"
+    $inputNames = @($manifest.native.source_inputs.PSObject.Properties | ForEach-Object { [string]$_.Name })
+    [Array]::Sort($inputNames, [StringComparer]::Ordinal)
+    $canonicalParts = foreach ($name in $inputNames) {
+        $value = [string]$manifest.native.source_inputs.PSObject.Properties[$name].Value
+        if ($name -notmatch '^[A-Za-z0-9_./-]+$' -or $value -notmatch '^[0-9a-f]{64}$') {
+            throw "Unsafe native input ledger entry: $name"
         }
-        '"' + [string]$entry.Name + '":"' + [string]$entry.Value + '"'
+        '"' + $name + '":"' + $value + '"'
     }
     $canonicalInputs = '{' + ($canonicalParts -join ',') + '}'
     $inputHash = [Security.Cryptography.SHA256]::Create()
