@@ -643,9 +643,13 @@ jobs:
 # all current-source Windows correctness arms. Original raw prerequisite
 # artifacts remain immutable; Fire-on runs only on a separately copied project.
   performance-windows:
-    name: Windows balanced M-P-C comparison (${{ matrix.case }})
+    name: 'Windows balanced M-P-C comparison (skipped: observer contract repair pending) - ${{ matrix.case }}'
     needs: [admission, qualification-windows]
-    if: needs.admission.outputs.phase == 'delivery'
+    # The original three-source campaigns failed registered observation/input
+    # contracts. Keep this job visibly skipped until the step-addressed adapter
+    # and its positive/negative controls are integrated. Do not award comparison
+    # credit to an incomplete or known-invalid cohort.
+    if: ${{ false }}
     runs-on: windows-2022
     timeout-minutes: 90
     defaults:
@@ -894,7 +898,7 @@ jobs:
     needs: admission
     if: needs.admission.outputs.phase == 'delivery'
     runs-on: windows-2022
-    timeout-minutes: 35
+    timeout-minutes: 40
     defaults:
       run: {shell: pwsh}
     steps:
@@ -923,7 +927,7 @@ jobs:
           if ($LASTEXITCODE -ne 0) { throw 'Pinned engine or original native build custody failed' }
       - name: Run unchanged Wave512 and Mixed2048 spawn workloads in balanced source and recorder order
         run: |
-          python tools/pubpres_mainline/run_spawn_pair.py --owner-source "$env:RUNNER_TEMP/spawn-owner-source" --candidate-source $env:GITHUB_WORKSPACE --owner-runtime runtimes/P --candidate-runtime runtimes/C --engine $env:GODOT_EXE --output "$env:RUNNER_TEMP/spawn-pair" --budget-seconds 1200
+          python tools/pubpres_mainline/run_spawn_pair.py --owner-source "$env:RUNNER_TEMP/spawn-owner-source" --candidate-source $env:GITHUB_WORKSPACE --owner-runtime runtimes/P --candidate-runtime runtimes/C --engine $env:GODOT_EXE --output "$env:RUNNER_TEMP/spawn-pair" --budget-seconds 1800
           if ($LASTEXITCODE -ne 0) { throw 'Registered spawn comparison failed; preserve every original arm' }
       - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
         if: always()

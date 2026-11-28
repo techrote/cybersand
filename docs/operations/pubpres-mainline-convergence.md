@@ -183,6 +183,26 @@ gap objectives remain unwaived. Hosted ANGLE and local llvmpipe results never
 stand in for physical NVIDIA acceptance. Draft-skipped broad PR gates remain
 skipped, even when this scoped source-owned campaign passes.
 
+## Delivery recovery qualification status
+
+**Current, 28 November 2026:** delivery recovery retains Draft/HOLD. The
+principal comparison driver now binds its runtime reader implementation to the
+measurement source while passing the measured application's explicit root to
+the original native verifier. Synthetic publication fixtures retain canonical
+LF bytes on Windows. The spawn workflow carries the successful isolated
+follow-up's 1,800-second aggregate allowance and 40-minute job ceiling; each
+individual process retains its 240-second watchdog.
+
+The delivery workflow explicitly skips the general three-source performance
+matrix until the observer/input contract is repaired and its controls pass.
+Skipped comparison jobs provide no performance acceptance. This does not remove
+any application, packaging or independent extraction prerequisite. See the
+[initial recovery review](../audits/2026-11-28-pubpres-delivery-recovery-review.md)
+for local validation limits and the
+[residual correctness review](../audits/pubpres-delivery-recovery-20261128/residual-correctness-review.md)
+for the retained history-exhaustion omissions, repeated poses and legacy budget
+refusals. These inspections grant no new physical owner acceptance.
+
 ## Owner route and subsequent ObjectShard integration
 
 The [complete Windows owner playtest](../audits/2026-11-28-pubpres-mainline-owner-route.md)
