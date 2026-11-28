@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import argparse
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -15,6 +16,7 @@ RENDERING_DRIVER = "opengl3_angle"
 RETAINED_PROVENANCE = "godot/addons/cybersand_native/runtime-provenance.json"
 RETAINED_REFERENCE = "godot/addons/cybersand_native/retained-runtime-provenance.reference.json"
 CANDIDATE_PROVENANCE = "source-built-candidate-provenance.json"
+CANDIDATE_REUSE_PROVENANCE = "qualified-candidate-reuse-provenance.json"
 WINDOWS_RECIPROCAL = "godot/tools/gentek_reciprocal.exe"
 WINDOWS_RECIPROCAL_BINDING = "godot/tools/swarm004-runtime.windows.json"
 
@@ -86,8 +88,13 @@ def verify_committed_godot_inputs(root: Path, expected: dict[str, str], *, forei
     return locations
 
 
+def _input_digest(inputs: dict[str, str]) -> str:
+    payload = json.dumps(inputs, sort_keys=True, separators=(",", ":")).encode("utf-8")
+    return hashlib.sha256(payload).hexdigest()
+
+
 def verify_candidate(root: Path, manifest: dict) -> None:
-    """Require the actual source-built Windows ledger, not a lookalike manifest."""
+    """Require the original build ledger and, when reused, its explicit equivalence receipt."""
     inventory = manifest["files_sha256"]
     binary = safe_path(root, NATIVE)
     candidate = json.loads(safe_path(root, CANDIDATE_PROVENANCE).read_text(encoding="utf-8"))
@@ -99,14 +106,33 @@ def verify_candidate(root: Path, manifest: dict) -> None:
     with binary.open("rb") as stream:
         if stream.read(2) != b"MZ":
             raise ValueError("Native candidate is not a Windows PE runtime")
-    for field in ("source_commit", "source_tree"):
-        if candidate.get(field) != manifest[field]:
-            raise ValueError("Candidate source identity mismatch")
-    if candidate.get("build_commit") != manifest["source_commit"]:
-        raise ValueError("Candidate build identity mismatch")
     inputs = manifest["native"].get("source_inputs", {})
     if not inputs or candidate.get("source_inputs") != inputs or candidate.get("sha256") != inventory[NATIVE]:
         raise ValueError("Native build ledger mismatch")
+    same_source = (candidate.get("source_commit") == manifest["source_commit"]
+                   and candidate.get("source_tree") == manifest["source_tree"]
+                   and candidate.get("build_commit") == manifest["source_commit"])
+    if not same_source:
+        reuse_path = root / CANDIDATE_REUSE_PROVENANCE
+        if CANDIDATE_REUSE_PROVENANCE not in inventory or not reuse_path.is_file():
+            raise ValueError("Reused native candidate lacks explicit equivalence provenance")
+        reuse = json.loads(reuse_path.read_text(encoding="utf-8"))
+        if (reuse.get("schema_version") != 1
+                or reuse.get("kind") != "qualified-windows-candidate-input-equivalence"
+                or reuse.get("artifact") != NATIVE
+                or reuse.get("qualified_source_commit") != candidate.get("source_commit")
+                or candidate.get("build_commit") != candidate.get("source_commit")
+                or reuse.get("current_source_commit") != manifest["source_commit"]
+                or reuse.get("current_source_tree") != manifest["source_tree"]
+                or reuse.get("source_inputs_sha256") != _input_digest(inputs)
+                or reuse.get("source_input_count") != len(inputs)
+                or reuse.get("sha256") != inventory[NATIVE]
+                or reuse.get("size") != binary.stat().st_size
+                or type(reuse.get("qualified_workflow_run")) is not int
+                or reuse["qualified_workflow_run"] <= 0
+                or type(reuse.get("qualified_artifact_id")) is not int
+                or reuse["qualified_artifact_id"] <= 0):
+            raise ValueError("Reused native candidate equivalence provenance mismatch")
     for relative, expected in inputs.items():
         if relative not in inventory or digest(safe_path(root, relative), source=True) != expected:
             raise ValueError("Native source differs from built candidate: " + relative)
