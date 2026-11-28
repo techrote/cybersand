@@ -46,7 +46,7 @@ func _target_for_source(position: Vector2i) -> Dictionary:
 
 func _target_for_shard(shard: Dictionary) -> Dictionary:
 	if shard.is_empty(): return {}
-	var roles: PackedByteArray = shard.get("roles",PackedByteArray())
+	var roles: PackedInt32Array = shard.get("roles",PackedInt32Array())
 	var width: int = int(shard.width)
 	for index: int in range(roles.size()):
 		if int(roles[index])!=1: continue
