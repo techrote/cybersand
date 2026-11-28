@@ -1,7 +1,7 @@
 name: ObjectShard M4 ordinary Workbench completion
 on:
   push:
-    branches: [integration/objectshard-m4-mainline-20261122, mission/objectshard-m4-completion-20261124, mission/objectshard-m4-focused-windows-20261128]
+    branches: [integration/objectshard-m4-mainline-20261122, mission/objectshard-m4-completion-20261124, mission/objectshard-m4-focused-windows-20261128, mission/objectshard-m4-package-final-20261128]
   workflow_dispatch:
 permissions:
   contents: read
