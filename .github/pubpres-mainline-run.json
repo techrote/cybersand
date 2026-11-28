@@ -1,0 +1,13 @@
+{
+  "schema": "pubpres-mainline-request-v1",
+  "phase": "build",
+  "purpose": "Build matched accepted-main, physically evaluated PUBPRES and integrated native runtimes; independently run native gates",
+  "accepted_main": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+  "owner_reference": "9f2127256a555d177536cbb5fad2be7dcb322c8e",
+  "payload_sha256": "a0faa2f40e71ea71ba2136fb28f43d1cd7e34a82ffd04a3074e62ae49f909548",
+  "runtime_run": null,
+  "runtime_attempt": null,
+  "runtime_source": null,
+  "physical_acceptance": "HOLD",
+  "promotion": "DRAFT_ONLY"
+}

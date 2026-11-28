@@ -1,0 +1,146 @@
+name: PUBPRES mainline convergence and source-exact qualification
+
+on:
+  push:
+    branches: [codex/pubpres-playability-final-001-20261124]
+    paths: ['.github/pubpres-mainline-run.json']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pubpres-mainline-${{ github.run_id }}
+  cancel-in-progress: false
+
+env:
+  GIT_LFS_SKIP_SMUDGE: '1'
+  GIT_CONFIG_COUNT: '2'
+  GIT_CONFIG_KEY_0: core.autocrlf
+  GIT_CONFIG_VALUE_0: 'false'
+  GIT_CONFIG_KEY_1: core.eol
+  GIT_CONFIG_VALUE_1: lf
+  PYTHONUTF8: '1'
+  GODOT_SILENCE_ROOT_WARNING: '1'
+  PUBPRES_MAIN: 50e3bcb839211eac2abe1e065750cbcba4d36f8c
+  PUBPRES_OWNER: 9f2127256a555d177536cbb5fad2be7dcb322c8e
+  GODOT_CPP_COMMIT: 101ae38034304346a46ea9ea84ae156d3e860496
+
+jobs:
+  admission:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    outputs:
+      phase: ${{ steps.request.outputs.phase }}
+      runtime_run: ${{ steps.request.outputs.runtime_run }}
+      runtime_attempt: ${{ steps.request.outputs.runtime_attempt }}
+      runtime_source: ${{ steps.request.outputs.runtime_source }}
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - name: Admit exact principal source, accepted main and physical owner reference
+        id: request
+        run: |
+          python3 tools/ci/check_ci_provider_policy.py
+          python3 -m unittest discover -s tools/pubpres_mainline -p 'test_*.py'
+          python3 tools/pubpres_mainline/request.py
+
+  runtimes:
+    needs: admission
+    if: needs.admission.outputs.phase == 'build'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 150
+    strategy:
+      fail-fast: false
+      max-parallel: 2
+      matrix:
+        platform: [linux, windows]
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false, fetch-depth: 0}
+      - name: Stage three independent source roles and one pinned dependency
+        run: |
+          set -euo pipefail
+          git worktree add --detach "$RUNNER_TEMP/pubpres-main" "$PUBPRES_MAIN"
+          git worktree add --detach "$RUNNER_TEMP/pubpres-owner" "$PUBPRES_OWNER"
+          python3 -m venv "$RUNNER_TEMP/pubpres-scons"
+          "$RUNNER_TEMP/pubpres-scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt
+          git init "$RUNNER_TEMP/pubpres-godot-cpp"
+          git -C "$RUNNER_TEMP/pubpres-godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/pubpres-godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/pubpres-godot-cpp" checkout --detach FETCH_HEAD
+      - name: Acquire exact Windows cross compiler
+        if: matrix.platform == 'windows'
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --max-time 300 --output "$RUNNER_TEMP/llvm-mingw.tar.xz" https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
+          echo "cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65  $RUNNER_TEMP/llvm-mingw.tar.xz" | sha256sum --check --strict
+          mkdir "$RUNNER_TEMP/pubpres-llvm-mingw"
+          tar -xJf "$RUNNER_TEMP/llvm-mingw.tar.xz" -C "$RUNNER_TEMP/pubpres-llvm-mingw" --strip-components=1
+          ln -s llvm-ar "$RUNNER_TEMP/pubpres-llvm-mingw/bin/x86_64-w64-mingw32-gcc-ar"
+      - name: Build independent accepted-main, owner-evaluated and integrated native runtimes
+        env:
+          PLATFORM: ${{ matrix.platform }}
+          GODOT_CPP_ROOT: ${{ runner.temp }}/pubpres-godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/pubpres-scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          LINUX_CXX: /usr/bin/g++-13
+          LLVM_MINGW_ROOT: ${{ runner.temp }}/pubpres-llvm-mingw
+          WINDOWS_CXX: ${{ runner.temp }}/pubpres-llvm-mingw/bin/x86_64-w64-mingw32-g++
+          PUBPRES_GODOT_CPP_BUILD_LOG: build/mainline-runtimes/godot-cpp.log
+        run: |
+          set -euo pipefail
+          mkdir -p build/mainline-runtimes
+          timeout 2400 bash tools/build_pinned_godot_cpp.sh "$PLATFORM" > build/mainline-runtimes/godot-cpp.log 2>&1
+          status=0
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$RUNNER_TEMP/pubpres-main" --source-sha "$PUBPRES_MAIN" --output-dir build/mainline-runtimes/M || status=1
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$RUNNER_TEMP/pubpres-owner" --source-sha "$PUBPRES_OWNER" --output-dir build/mainline-runtimes/P || status=1
+          python3 tools/pubpres_playability_build/build_runtime.py --platform "$PLATFORM" --source-root "$PWD" --source-sha "$GITHUB_SHA" --output-dir build/mainline-runtimes/C || status=1
+          if [[ "$status" != '0' ]]; then exit "$status"; fi
+          python3 tools/pubpres_mainline/verify_runtimes.py --runtime-root build/mainline-runtimes --accepted-main "$RUNNER_TEMP/pubpres-main" --owner-reference "$RUNNER_TEMP/pubpres-owner" --candidate "$PWD" --platform "$PLATFORM"
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-mainline-runtimes-${{ matrix.platform }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/mainline-runtimes/
+          retention-days: 90
+          if-no-files-found: warn
+
+  native:
+    needs: admission
+    if: needs.admission.outputs.phase == 'build'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 100
+    strategy:
+      fail-fast: false
+      max-parallel: 3
+      matrix:
+        kind: [normal, sanitizers, ownership]
+    env:
+      CXX: g++-13
+      CC: gcc-13
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with: {persist-credentials: false}
+      - name: Execute native material, Water, lifetime, continuation and ownership gates
+        env:
+          NATIVE_KIND: ${{ matrix.kind }}
+        run: |
+          set -euo pipefail
+          mkdir -p build/mainline-native
+          git rev-parse HEAD > build/mainline-native/source.txt
+          if [[ "$NATIVE_KIND" == 'normal' ]]; then
+            timeout 5400 make test wave-flow-test wave-spill-test wave-body-boundary-test wave-empty-derived-test material-baseline-test persistent-area-test persistent-area-residency-test worker-pool-test > build/mainline-native/normal.log 2>&1
+          elif [[ "$NATIVE_KIND" == 'sanitizers' ]]; then
+            timeout 5400 env ASAN_OPTIONS=detect_leaks=0:strict_string_checks=1 UBSAN_OPTIONS=halt_on_error=1 make sanitize wave-flow-sanitize wave-body-boundary-sanitize wave-empty-derived-sanitize persistent-area-sanitize persistent-area-residency-sanitize worker-pool-sanitize > build/mainline-native/sanitizers.log 2>&1
+          else
+            timeout 1800 make worker-pool-thread-sanitize > build/mainline-native/thread-sanitizer.log 2>&1
+          fi
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: pubpres-mainline-native-${{ matrix.kind }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: build/mainline-native/
+          retention-days: 90
+          if-no-files-found: warn

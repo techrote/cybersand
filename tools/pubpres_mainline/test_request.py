@@ -1,0 +1,34 @@
+"""A stale request or a foreign source must not dispatch qualification/publication."""
+import copy
+import unittest
+import request
+
+
+class RequestTests(unittest.TestCase):
+    def setUp(self):
+        self.good = {"schema": "pubpres-mainline-request-v1", "phase": "build", "purpose": "Three exact native builds",
+            "accepted_main": request.MAIN, "owner_reference": request.OWNER, "payload_sha256": "a" * 64,
+            "runtime_run": None, "runtime_attempt": None, "runtime_source": None,
+            "physical_acceptance": "HOLD", "promotion": "DRAFT_ONLY"}
+
+    def test_fresh_build_and_bound_qualification(self):
+        request.validate_record(self.good)
+        self.good.update(phase="qualify", runtime_run=123, runtime_attempt=1, runtime_source="b" * 40)
+        request.validate_record(self.good)
+
+    def test_foreign_roles_authority_and_incomplete_runtime_refuse(self):
+        for key, value in (("accepted_main", "a" * 40), ("owner_reference", "b" * 40),
+                           ("physical_acceptance", "PASS"), ("promotion", "MERGE"),
+                           ("phase", "unknown"), ("payload_sha256", "short"),
+                           ("runtime_run", 42), ("purpose", "")):
+            bad = copy.deepcopy(self.good)
+            bad[key] = value
+            with self.subTest(key=key), self.assertRaises(ValueError):
+                request.validate_record(bad)
+        bad = dict(self.good, phase="qualify")
+        with self.assertRaises(ValueError):
+            request.validate_record(bad)
+
+
+if __name__ == "__main__":
+    unittest.main()

@@ -52,6 +52,8 @@ var composed_frames := 0
 var hidden_body_frames := 0
 var interstitial_composed_body_frames := 0
 var first_interstitial_witness: Dictionary = {}
+var revalidated_held_body_frames := 0
+var previous_composed_draws: Dictionary = {}
 var native_identity_valid := true
 var last_step_by_body: Dictionary = {}
 var selected_compound := ""
@@ -250,12 +252,25 @@ func observe_frame() -> void:
 		var entry: Dictionary = frame.get("mask_frame",{}).get("instances",{}).get(int(member.instance_id),{})
 		var kind: String = str(proof.get("kind",""))
 		var visible: Dictionary = proof.get("visible_material",{})
+		var held_material: Dictionary = proof.get("held_material_revalidation",{})
 		var witness: Dictionary = {}
 		if proof.get("step",-1) != selected or proof.get("instance_id",-1) != member.instance_id \
 				or proof.get("generation",-1) != member.generation:
 			native_identity_valid = false
 		var pose: Transform2D = frame.poses[slot]
 		var selected_observation: Dictionary = frame.get("selected_observations",{}).get(slot,{})
+		if not held_material.is_empty():
+			revalidated_held_body_frames += 1
+			var prior: Dictionary = previous_composed_draws.get(identity,{})
+			if frame.get("sources",{}).get(slot) != "held" or held_material.get("selected_step",-1) != selected \
+					or held_material.get("selected_pose") != pose or prior.get("pose") != pose \
+					or prior.get("step",-1) != selected:
+				native_identity_valid = false
+			# The prior actual draw supplies the independent physical/native
+			# witness. New material coverage cannot rewrite those fields.
+			for key_name: String in ["kind","step","sample","native_tick","completed_usec",
+					"native_completed_usec","instance_id","generation","consumed_by_step","physical_completion_claim"]:
+				if proof.get(key_name) != prior.get("proof",{}).get(key_name): native_identity_valid = false
 		if kind == "current_completed_native_dependency":
 			var key := str(frame.world_generation)+":"+str(bridge._session)+":"+str(bridge._epoch)+":"+str(selected)+":"+str(slot)
 			witness = host.dependency_witnesses.get(key,{})
@@ -277,8 +292,11 @@ func observe_frame() -> void:
 			for key_name: String in ["sample","native_tick","native_completed_usec","completed_usec"]:
 				if proof.get(key_name,-1) != witness.get(key_name,-2): native_identity_valid = false
 		else:
-			if proof.get("sample",-1) != entry.get("sample",-2) \
-					or proof.get("native_tick",-1) != frame.get("mask_native_tick",-2) \
+			var original_visible: Dictionary = held_material.get("original_visible_material",{})
+			var proof_sample: int = original_visible.get("native_sample",-2) if not held_material.is_empty() else entry.get("sample",-2)
+			var proof_tick: int = original_visible.get("native_tick",-2) if not held_material.is_empty() else frame.get("mask_native_tick",-2)
+			if proof.get("sample",-1) != proof_sample \
+					or proof.get("native_tick",-1) != proof_tick \
 					or proof.get("consumed_by_step") != (kind == "consumed_native_dependency"):
 				native_identity_valid = false
 			if kind == "initialized_authoring_closure" and (selected != 0 \
@@ -291,6 +309,7 @@ func observe_frame() -> void:
 				or visible.get("native_tick",-1) != frame.mask_native_tick \
 				or visible.get("native_sample",-1) != entry.get("sample",-2)):
 			native_identity_valid = false
+		previous_composed_draws[identity] = {"pose":pose,"step":selected,"proof":proof.duplicate(true)}
 		if observations.size() >= 1200 or int(stored_by_stage.get(stage,0)) >= 128: continue
 		stored_by_stage[stage] = int(stored_by_stage.get(stage,0))+1
 		var direct := PhysicsServer2D.body_get_direct_state(bridge._body_rids[slot])
@@ -857,6 +876,7 @@ func _run() -> void:
 				if host.has_method("workbench_presentation_submission_status") else {}},
 		"engine":Engine.get_version_info(),"engine_sha256":FileAccess.get_sha256(OS.get_executable_path()),
 		"interstitial_composed_body_frames":interstitial_composed_body_frames,"first_interstitial_witness":first_interstitial_witness,
+		"revalidated_held_body_frames":revalidated_held_body_frames,
 		"observed_frames":observed_frames,"composed_body_frames":composed_frames,"hidden_body_frames":hidden_body_frames,
 		"omitted_by_stage_and_slot":omitted_by_stage,"omission_reasons":omission_reasons,
 		"observed_frames_by_stage":observed_frames_by_stage,
