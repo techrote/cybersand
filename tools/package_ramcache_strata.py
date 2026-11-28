@@ -156,9 +156,9 @@ remain: Deep Focus 80.59%, Architectural 78.26%, Gameplay Clarity 75.68%, Dioram
 Those are historical measurements, not new performance results for this archive.
 Classic stays default; correctness, source identity and regression gates are not waived.
 Bright-daylight readability and camera rotation retain their previous qualification limits.
-Actor reveal assists cover at most eight actors and the first 64 composed parts per
-actor. Larger compositions remain visible, but parts beyond that bound do not receive
-this optional optical assistance.
+Optical actor reveal uses at most eight actor rectangles and scans the first 64
+published body parts. Ordinary rendering, labels and physics retain their accepted
+capacity; actors outside this bound do not gain the optional assistance.
 
 `evaluation-manifest.json` records the application, original native build source,
 exact runtime hashes, six source-campaign identities, package input blobs and every
