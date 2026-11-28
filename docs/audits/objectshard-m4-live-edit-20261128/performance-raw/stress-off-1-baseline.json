@@ -1,0 +1,1536 @@
+{
+	"after": {
+		"attached": true,
+		"body_count": 8,
+		"control_timing": {
+			"activated": {
+				"delivery": {
+					"calls": 8,
+					"max_usec": 894,
+					"usec": 3305
+				},
+				"owner_service": {
+					"calls": 8,
+					"max_usec": 16,
+					"usec": 99
+				},
+				"publication_copy": {
+					"calls": 8,
+					"max_usec": 2073,
+					"usec": 8115
+				},
+				"queue": {
+					"calls": 8,
+					"max_usec": 387,
+					"usec": 2409
+				}
+			},
+			"complete": {
+				"delivery": {
+					"calls": 214,
+					"max_usec": 2644,
+					"usec": 57022
+				},
+				"owner_service": {
+					"calls": 214,
+					"max_usec": 390,
+					"usec": 48319
+				},
+				"publication_copy": {
+					"calls": 214,
+					"max_usec": 3728,
+					"usec": 273354
+				},
+				"queue": {
+					"calls": 214,
+					"max_usec": 475,
+					"usec": 48409
+				}
+			},
+			"motion": {
+				"delivery": {
+					"calls": 855,
+					"max_usec": 8224,
+					"usec": 655964
+				},
+				"owner_service": {
+					"calls": 855,
+					"max_usec": 18063,
+					"usec": 2501240
+				},
+				"publication_copy": {
+					"calls": 855,
+					"max_usec": 4804,
+					"usec": 339054
+				},
+				"queue": {
+					"calls": 855,
+					"max_usec": 5429,
+					"usec": 142925
+				}
+			},
+			"reserved": {
+				"delivery": {
+					"calls": 8,
+					"max_usec": 1243,
+					"usec": 2965
+				},
+				"owner_service": {
+					"calls": 8,
+					"max_usec": 3304,
+					"usec": 23639
+				},
+				"publication_copy": {
+					"calls": 8,
+					"max_usec": 1719,
+					"usec": 8843
+				},
+				"queue": {
+					"calls": 8,
+					"max_usec": 258,
+					"usec": 1131
+				}
+			},
+			"terrain": {
+				"delivery": {
+					"calls": 8,
+					"max_usec": 553,
+					"usec": 2417
+				},
+				"owner_service": {
+					"calls": 8,
+					"max_usec": 1959,
+					"usec": 9269
+				},
+				"publication_copy": {
+					"calls": 8,
+					"max_usec": 1589,
+					"usec": 8281
+				},
+				"queue": {
+					"calls": 8,
+					"max_usec": 457,
+					"usec": 2178
+				}
+			}
+		},
+		"control_timing_scope": "exact serial queue, owner native-call service, snapshot/receipt copy and Main delivery spans; distinct from ordinary snapshot receipt_delivery and not additive to Main/worker stage totals",
+		"controls_completed": 1093,
+		"deferred_world_uploads": 18,
+		"enabled": true,
+		"has_live_inventory": true,
+		"held_reason": "",
+		"last_motion_permit": {
+			"lease": 214,
+			"ok": true,
+			"outcome": "MotionReserved"
+		},
+		"main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+		"main_costs": {
+			"owner_control_admission": {
+				"calls": 1094,
+				"max_usec": 380,
+				"usec": 43275
+			},
+			"pose_packet_capture": {
+				"calls": 856,
+				"max_usec": 522,
+				"usec": 94169
+			},
+			"rapier_segment": {
+				"calls": 856,
+				"max_usec": 3312,
+				"usec": 230627
+			}
+		},
+		"material_preparation": {
+			"rendered": false,
+			"runs": 0,
+			"scope": "headless admission only; no shader draw or compilation qualification",
+			"state": "headless"
+		},
+		"motion_lease": 214,
+		"motion_permit_refusal_kinds": {
+			"OwnerBusy": 36
+		},
+		"motion_permit_waits_recovered": 16,
+		"motion_permits_refused": 0,
+		"native_instance_id": -9223371950619883978,
+		"native_pose_acknowledgements": 5768,
+		"native_pose_echo_checks": 5768,
+		"native_tick": 214,
+		"owner_replacements": 1,
+		"pending_kind": "motion",
+		"pending_serial": 1094,
+		"phase": "ReadyForNextSegment",
+		"physical_intervals": 213,
+		"physical_steps": 856,
+		"physics": {
+			"awaiting_native": false,
+			"bodies": [
+				{
+					"active": true,
+					"angular_velocity": 0.0296788737177849,
+					"backend_rotation": 0.0966829657554626,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 1,
+					"inertia": 997660.375,
+					"last_geometry_step": 120,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.199505352104704,
+					"nominal_translation_headroom": 3.98221879204114,
+					"reported_contacts": 7,
+					"rotation": 0.0966829657554626,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 1.06687247753143,
+					"vy": -0.0000128357278299518,
+					"x": 46.5000343322754,
+					"y": 385.134307861328
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0299089010804892,
+					"backend_rotation": 0.0961856171488762,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 2,
+					"inertia": 997660.375,
+					"last_geometry_step": 124,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.199501518315325,
+					"nominal_translation_headroom": 3.98208087086678,
+					"reported_contacts": 7,
+					"rotation": 0.0961856171488762,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 1.07514774799347,
+					"vy": -0.0000128320043586427,
+					"x": 102.460998535156,
+					"y": 385.14208984375
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0301399361342192,
+					"backend_rotation": 0.0956838801503181,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 3,
+					"inertia": 997660.375,
+					"last_geometry_step": 128,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.199497667731096,
+					"nominal_translation_headroom": 3.98194234569867,
+					"reported_contacts": 7,
+					"rotation": 0.0956838801503181,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 1.08345925807953,
+					"vy": -0.000012921374036523,
+					"x": 158.421478271484,
+					"y": 385.14990234375
+				},
+				{
+					"active": true,
+					"angular_velocity": -0.0107077406719327,
+					"backend_rotation": 0.0899868011474609,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 4,
+					"inertia": 997660.375,
+					"last_geometry_step": 132,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.199821537655468,
+					"nominal_translation_headroom": 3.99352540473143,
+					"reported_contacts": 9,
+					"rotation": 0.0899868011474609,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": -0.388475716114044,
+					"vy": 0.0000045876463445893,
+					"x": 214.003723144531,
+					"y": 385.242980957031
+				},
+				{
+					"active": true,
+					"angular_velocity": -0.00209470512345433,
+					"backend_rotation": -0.0703692436218262,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 5,
+					"inertia": 997660.375,
+					"last_geometry_step": 136,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.199965088247942,
+					"nominal_translation_headroom": 3.99873291340967,
+					"reported_contacts": 12,
+					"rotation": -0.0703692436218262,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": -0.0759961381554604,
+					"vy": -0.00210165022872388,
+					"x": 257.653442382812,
+					"y": 388.735015869141
+				},
+				{
+					"active": true,
+					"angular_velocity": -0.00589547725394368,
+					"backend_rotation": -0.185262247920036,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 6,
+					"inertia": 997660.375,
+					"last_geometry_step": 140,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.199901742045768,
+					"nominal_translation_headroom": 3.99643381511172,
+					"reported_contacts": 15,
+					"rotation": -0.185262247920036,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": -0.213889315724373,
+					"vy": -0.00591515190899372,
+					"x": 305.062744140625,
+					"y": 392.353881835938
+				},
+				{
+					"active": true,
+					"angular_velocity": -0.00531400926411152,
+					"backend_rotation": -0.359052062034607,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 7,
+					"inertia": 997660.375,
+					"last_geometry_step": 144,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.199911433178931,
+					"nominal_translation_headroom": 3.99652141531308,
+					"reported_contacts": 6,
+					"rotation": -0.359052062034607,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": -0.200043484568596,
+					"vy": -0.0595364272594452,
+					"x": 350.344512939453,
+					"y": 396.006958007812
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0312084276229143,
+					"backend_rotation": 0.0923878401517868,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 8,
+					"inertia": 997660.375,
+					"last_geometry_step": 148,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.199479859539618,
+					"nominal_translation_headroom": 3.98112908601761,
+					"reported_contacts": 5,
+					"rotation": 0.0923878401517868,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 1.13225483894348,
+					"vy": -0.0000133849789563101,
+					"x": 438.193603515625,
+					"y": 385.201843261719
+				}
+			],
+			"events": [
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 1,
+					"kind": "BodyActivated",
+					"physics_step": 120
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 2,
+					"kind": "BodyActivated",
+					"physics_step": 124
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 3,
+					"kind": "BodyActivated",
+					"physics_step": 128
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 4,
+					"kind": "BodyActivated",
+					"physics_step": 132
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 5,
+					"kind": "BodyActivated",
+					"physics_step": 136
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 6,
+					"kind": "BodyActivated",
+					"physics_step": 140
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 7,
+					"kind": "BodyActivated",
+					"physics_step": 144
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 8,
+					"kind": "BodyActivated",
+					"physics_step": 148
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 5,
+					"kind": "Sleeping",
+					"physics_step": 516
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 5,
+					"kind": "Waking",
+					"physics_step": 636
+				}
+			],
+			"last_completed_semantic_tick": -1,
+			"last_error": "",
+			"last_physics_session": 1,
+			"last_sampled_pose_serial": 856,
+			"motion": {},
+			"motion_phase": "Idle",
+			"motion_refused": false,
+			"operation_sequence": 0,
+			"physics_steps": 856,
+			"segment_sequence": 0,
+			"session": 1
+		},
+		"physics_ready": false,
+		"publication_sequence": 516,
+		"pump_budget_exhaustions": 539,
+		"pump_calls": 1179,
+		"pump_operation_exhaustions": 0,
+		"pump_usec_max": 13732,
+		"pump_usec_total": 5110612,
+		"pump_waits": 24138,
+		"reabsorption_receipt": {},
+		"receipt": {
+			"accepted_pose_serials": [
+				{
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"id": 1,
+					"pose_serial": 855,
+					"session": 1
+				},
+				{
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"id": 2,
+					"pose_serial": 855,
+					"session": 1
+				},
+				{
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"id": 3,
+					"pose_serial": 855,
+					"session": 1
+				},
+				{
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"id": 4,
+					"pose_serial": 855,
+					"session": 1
+				},
+				{
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"id": 5,
+					"pose_serial": 855,
+					"session": 1
+				},
+				{
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"id": 6,
+					"pose_serial": 855,
+					"session": 1
+				},
+				{
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"id": 7,
+					"pose_serial": 855,
+					"session": 1
+				},
+				{
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"id": 8,
+					"pose_serial": 855,
+					"session": 1
+				}
+			],
+			"applied": true,
+			"applied_pose_echoes": [
+				{
+					"angular_velocity": 0.0297360178083181,
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"has_body": true,
+					"id": 1,
+					"pose_serial": 855,
+					"position_x": 46.4902801513672,
+					"position_y": 385.13623046875,
+					"rotation": 0.0965588539838791,
+					"session": 1,
+					"sleeping": false,
+					"vx": 1.06892657279968,
+					"vy": -0.0000128617939481046
+				},
+				{
+					"angular_velocity": 0.0299664810299873,
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"has_body": true,
+					"id": 2,
+					"pose_serial": 855,
+					"position_x": 102.451171875,
+					"position_y": 385.144012451172,
+					"rotation": 0.0960605591535568,
+					"session": 1,
+					"sleeping": false,
+					"vx": 1.07721757888794,
+					"vy": -0.0000128487608890282
+				},
+				{
+					"angular_velocity": 0.030197961255908,
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"has_body": true,
+					"id": 3,
+					"pose_serial": 855,
+					"position_x": 158.411590576172,
+					"position_y": 385.15185546875,
+					"rotation": 0.09555783867836,
+					"session": 1,
+					"sleeping": false,
+					"vx": 1.08554518222809,
+					"vy": -0.000012954887097294
+				},
+				{
+					"angular_velocity": -0.0107280034571886,
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"has_body": true,
+					"id": 4,
+					"pose_serial": 855,
+					"position_x": 214.007263183594,
+					"position_y": 385.242218017578,
+					"rotation": 0.0900316089391708,
+					"session": 1,
+					"sleeping": false,
+					"vx": -0.389210879802704,
+					"vy": 0.00000460254113932024
+				},
+				{
+					"angular_velocity": -0.00239746831357479,
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"has_body": true,
+					"id": 5,
+					"pose_serial": 855,
+					"position_x": 257.654174804688,
+					"position_y": 388.734710693359,
+					"rotation": -0.0703599154949188,
+					"session": 1,
+					"sleeping": false,
+					"vx": -0.0869804173707962,
+					"vy": -0.00240542367100716
+				},
+				{
+					"angular_velocity": -0.0056291320361197,
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"has_body": true,
+					"id": 6,
+					"pose_serial": 855,
+					"position_x": 305.064514160156,
+					"position_y": 392.353149414062,
+					"rotation": -0.185237228870392,
+					"session": 1,
+					"sleeping": false,
+					"vx": -0.204226240515709,
+					"vy": -0.00564758293330669
+				},
+				{
+					"angular_velocity": -0.00507005164399743,
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"has_body": true,
+					"id": 7,
+					"pose_serial": 855,
+					"position_x": 350.345947265625,
+					"position_y": 396.006439208984,
+					"rotation": -0.359030991792679,
+					"session": 1,
+					"sleeping": false,
+					"vx": -0.190859824419022,
+					"vy": -0.0567946918308735
+				},
+				{
+					"angular_velocity": 0.031267985701561,
+					"body_generation": 1,
+					"generation": 1,
+					"geometry_revision": 1,
+					"has_body": true,
+					"id": 8,
+					"pose_serial": 855,
+					"position_x": 438.183288574219,
+					"position_y": 385.203918457031,
+					"rotation": 0.0922573283314705,
+					"session": 1,
+					"sleeping": false,
+					"vx": 1.13441550731659,
+					"vy": -0.0000134110459839576
+				}
+			],
+			"detail": "motion segment occupancy and contact applied; semantic tick unchanged",
+			"generation": 0,
+			"id": 0,
+			"native_instance_id": -9223371950619883978,
+			"ok": true,
+			"outcome": "Accepted",
+			"phase": "Active",
+			"pose_echo_complete": true,
+			"pose_echo_contract": "bounded-owner-readback-v1",
+			"semantic_tick": 214,
+			"session": 0,
+			"transaction": 0,
+			"workbench_epoch": 1,
+			"workbench_sample_applied": true,
+			"workbench_session": 1
+		},
+		"redundant_readiness_receipts_suppressed": 308,
+		"save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+		"shared_main_space_id": 18622,
+		"worker_profile": {
+			"actor_work": {
+				"due_effects": 0,
+				"due_usables": 0,
+				"pending_effects": 0,
+				"pending_usables": 0
+			},
+			"compact_motion_receipts": 642,
+			"counter_scope": "cumulative ordinary worker lifetime",
+			"frame_copy_calls": 309,
+			"frame_copy_max_usec": 1198,
+			"frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+			"frame_copy_usec": 79095,
+			"full_motion_publications": 213,
+			"motion_fence": {
+				"completed_sample": 1070,
+				"current_sample": 1070,
+				"due_sample": -1,
+				"lease": 214,
+				"ordinary_refusal": "",
+				"owner_busy": true,
+				"prepared_sample": 1070,
+				"reused_prepared_samples": 213,
+				"tick_due": false
+			},
+			"segment_idle_polls": 3737,
+			"segment_service_turns": 855,
+			"snapshot_calls": 760,
+			"snapshot_max_usec": 8016,
+			"snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+			"snapshot_usec": 1068475
+		},
+		"world_generation": 3
+	},
+	"authored_rectangles_sha256": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+	"before": {
+		"attached": true,
+		"body_count": 8,
+		"control_timing": {
+			"activated": {
+				"delivery": {
+					"calls": 8,
+					"max_usec": 894,
+					"usec": 3305
+				},
+				"owner_service": {
+					"calls": 8,
+					"max_usec": 16,
+					"usec": 99
+				},
+				"publication_copy": {
+					"calls": 8,
+					"max_usec": 2073,
+					"usec": 8115
+				},
+				"queue": {
+					"calls": 8,
+					"max_usec": 387,
+					"usec": 2409
+				}
+			},
+			"complete": {
+				"delivery": {
+					"calls": 38,
+					"max_usec": 511,
+					"usec": 6811
+				},
+				"owner_service": {
+					"calls": 38,
+					"max_usec": 342,
+					"usec": 7660
+				},
+				"publication_copy": {
+					"calls": 38,
+					"max_usec": 1459,
+					"usec": 15066
+				},
+				"queue": {
+					"calls": 38,
+					"max_usec": 473,
+					"usec": 8310
+				}
+			},
+			"motion": {
+				"delivery": {
+					"calls": 148,
+					"max_usec": 2056,
+					"usec": 19905
+				},
+				"owner_service": {
+					"calls": 148,
+					"max_usec": 3495,
+					"usec": 68956
+				},
+				"publication_copy": {
+					"calls": 148,
+					"max_usec": 1608,
+					"usec": 19249
+				},
+				"queue": {
+					"calls": 148,
+					"max_usec": 336,
+					"usec": 21547
+				}
+			},
+			"reserved": {
+				"delivery": {
+					"calls": 8,
+					"max_usec": 1243,
+					"usec": 2965
+				},
+				"owner_service": {
+					"calls": 8,
+					"max_usec": 3304,
+					"usec": 23639
+				},
+				"publication_copy": {
+					"calls": 8,
+					"max_usec": 1719,
+					"usec": 8843
+				},
+				"queue": {
+					"calls": 8,
+					"max_usec": 258,
+					"usec": 1131
+				}
+			},
+			"terrain": {
+				"delivery": {
+					"calls": 8,
+					"max_usec": 553,
+					"usec": 2417
+				},
+				"owner_service": {
+					"calls": 8,
+					"max_usec": 1959,
+					"usec": 9269
+				},
+				"publication_copy": {
+					"calls": 8,
+					"max_usec": 1589,
+					"usec": 8281
+				},
+				"queue": {
+					"calls": 8,
+					"max_usec": 457,
+					"usec": 2178
+				}
+			}
+		},
+		"control_timing_scope": "exact serial queue, owner native-call service, snapshot/receipt copy and Main delivery spans; distinct from ordinary snapshot receipt_delivery and not additive to Main/worker stage totals",
+		"controls_completed": 210,
+		"deferred_world_uploads": 18,
+		"enabled": true,
+		"has_live_inventory": true,
+		"held_reason": "",
+		"last_motion_permit": {
+			"lease": 37,
+			"ok": true,
+			"outcome": "MotionReserved"
+		},
+		"main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+		"main_costs": {
+			"owner_control_admission": {
+				"calls": 210,
+				"max_usec": 380,
+				"usec": 5348
+			},
+			"pose_packet_capture": {
+				"calls": 148,
+				"max_usec": 191,
+				"usec": 6305
+			},
+			"rapier_segment": {
+				"calls": 148,
+				"max_usec": 651,
+				"usec": 18063
+			}
+		},
+		"material_preparation": {
+			"rendered": false,
+			"runs": 0,
+			"scope": "headless admission only; no shader draw or compilation qualification",
+			"state": "headless"
+		},
+		"motion_lease": 0,
+		"motion_permit_refusal_kinds": {
+			"OwnerBusy": 15
+		},
+		"motion_permit_waits_recovered": 7,
+		"motion_permits_refused": 0,
+		"native_instance_id": -9223371950619883978,
+		"native_pose_acknowledgements": 112,
+		"native_pose_echo_checks": 112,
+		"native_tick": 38,
+		"owner_replacements": 1,
+		"pending_kind": "",
+		"pending_serial": 0,
+		"phase": "Ready",
+		"physical_intervals": 37,
+		"physical_steps": 148,
+		"physics": {
+			"awaiting_native": false,
+			"bodies": [
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": 0.0,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 1,
+					"inertia": 997660.375,
+					"last_geometry_step": 120,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 3.69849119186401,
+					"reported_contacts": 0,
+					"rotation": 0.0,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 0.0,
+					"vy": 18.0905284881592,
+					"x": 39.0,
+					"y": 300.066925048828
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": 0.0,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 2,
+					"inertia": 997660.375,
+					"last_geometry_step": 124,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 3.74134893417358,
+					"reported_contacts": 0,
+					"rotation": 0.0,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 0.0,
+					"vy": 15.519063949585,
+					"x": 95.0,
+					"y": 299.785430908203
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": 0.0,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 3,
+					"inertia": 997660.375,
+					"last_geometry_step": 128,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 3.7842781384786,
+					"reported_contacts": 0,
+					"rotation": 0.0,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 0.0,
+					"vy": 12.9433116912842,
+					"x": 151.0,
+					"y": 299.546905517578
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": 0.0,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 4,
+					"inertia": 997660.375,
+					"last_geometry_step": 132,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 3.82727893193563,
+					"reported_contacts": 0,
+					"rotation": 0.0,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 0.0,
+					"vy": 10.3632640838623,
+					"x": 207.0,
+					"y": 299.351348876953
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": 0.0,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 5,
+					"inertia": 997660.375,
+					"last_geometry_step": 136,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 3.87035142580668,
+					"reported_contacts": 0,
+					"rotation": 0.0,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 0.0,
+					"vy": 7.77891445159912,
+					"x": 263.0,
+					"y": 299.198760986328
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": 0.0,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 6,
+					"inertia": 997660.375,
+					"last_geometry_step": 140,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 3.91349562009176,
+					"reported_contacts": 0,
+					"rotation": 0.0,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 0.0,
+					"vy": 5.19026279449463,
+					"x": 319.0,
+					"y": 299.089294433594
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": 0.0,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 7,
+					"inertia": 997660.375,
+					"last_geometry_step": 144,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 3.956711769104,
+					"reported_contacts": 0,
+					"rotation": 0.0,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 0.0,
+					"vy": 2.59729385375977,
+					"x": 375.0,
+					"y": 299.023040771484
+				},
+				{
+					"active": true,
+					"angular_velocity": 0.0,
+					"backend_rotation": 0.0,
+					"body_generation": 1,
+					"com_x": 22.9995670318604,
+					"com_y": 40.646068572998,
+					"generation": 1,
+					"geometry_digest": "15774498492241021392",
+					"geometry_revision": 1,
+					"id": 8,
+					"inertia": 997660.375,
+					"last_geometry_step": 148,
+					"last_geometry_usec": 0,
+					"mass": 1157.0,
+					"motion_radius": 46.7024911064523,
+					"motion_reference": "(22.99957, 40.64607)",
+					"nominal_rotation_headroom": 0.2,
+					"nominal_translation_headroom": 4.0,
+					"reported_contacts": 0,
+					"rotation": 0.0,
+					"rotation_radius": 89.6939239859646,
+					"segment_rotation_limit": 0.2,
+					"shape_count": 9,
+					"sleeping": false,
+					"vx": 0.0,
+					"vy": 0.0,
+					"x": 431.0,
+					"y": 299.0
+				}
+			],
+			"events": [
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 1,
+					"kind": "BodyActivated",
+					"physics_step": 120
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 2,
+					"kind": "BodyActivated",
+					"physics_step": 124
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 3,
+					"kind": "BodyActivated",
+					"physics_step": 128
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 4,
+					"kind": "BodyActivated",
+					"physics_step": 132
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 5,
+					"kind": "BodyActivated",
+					"physics_step": 136
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 6,
+					"kind": "BodyActivated",
+					"physics_step": 140
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 7,
+					"kind": "BodyActivated",
+					"physics_step": 144
+				},
+				{
+					"detail": {
+						"geometry_revision": 1
+					},
+					"id": 8,
+					"kind": "BodyActivated",
+					"physics_step": 148
+				}
+			],
+			"last_completed_semantic_tick": -1,
+			"last_error": "",
+			"last_physics_session": 1,
+			"last_sampled_pose_serial": 148,
+			"motion": {},
+			"motion_phase": "Idle",
+			"motion_refused": false,
+			"operation_sequence": 0,
+			"physics_steps": 148,
+			"segment_sequence": 0,
+			"session": 1
+		},
+		"physics_ready": true,
+		"publication_sequence": 164,
+		"pump_budget_exhaustions": 51,
+		"pump_calls": 457,
+		"pump_operation_exhaustions": 0,
+		"pump_usec_max": 8855,
+		"pump_usec_total": 574776,
+		"pump_waits": 2150,
+		"reabsorption_receipt": {},
+		"receipt": {
+			"detail": "accepted",
+			"generation": 1,
+			"id": 8,
+			"native_instance_id": -9223371950619883978,
+			"ok": true,
+			"outcome": "Accepted",
+			"phase": "Active",
+			"session": 1,
+			"transaction": 8
+		},
+		"redundant_readiness_receipts_suppressed": 132,
+		"save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+		"shared_main_space_id": 18622,
+		"worker_profile": {
+			"actor_work": {
+				"due_effects": 0,
+				"due_usables": 0,
+				"pending_effects": 0,
+				"pending_usables": 0
+			},
+			"compact_motion_receipts": 111,
+			"counter_scope": "cumulative ordinary worker lifetime",
+			"frame_copy_calls": 133,
+			"frame_copy_max_usec": 1198,
+			"frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+			"frame_copy_usec": 31323,
+			"full_motion_publications": 37,
+			"motion_fence": {
+				"completed_sample": 189,
+				"current_sample": 189,
+				"due_sample": -1,
+				"lease": 0,
+				"ordinary_refusal": "",
+				"owner_busy": false,
+				"prepared_sample": 189,
+				"reused_prepared_samples": 37,
+				"tick_due": false
+			},
+			"segment_idle_polls": 210,
+			"segment_service_turns": 148,
+			"snapshot_calls": 232,
+			"snapshot_max_usec": 8016,
+			"snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+			"snapshot_usec": 364529
+		},
+		"world_generation": 3
+	},
+	"camera_origin": [
+		0.0,
+		0.0
+	],
+	"canvas_extent": [
+		512,
+		512
+	],
+	"checks": 333,
+	"cohorts": {
+		"8/7": {
+			"awake": 7,
+			"callbacks": 65,
+			"owned": 8,
+			"semantic_ticks": 30,
+			"wall_usec": 1086350
+		},
+		"8/8": {
+			"awake": 8,
+			"callbacks": 296,
+			"owned": 8,
+			"semantic_ticks": 146,
+			"wall_usec": 4917376
+		}
+	},
+	"control_timing_deltas": {
+		"activated": {
+			"delivery": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			},
+			"owner_service": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			},
+			"publication_copy": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			},
+			"queue": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			}
+		},
+		"complete": {
+			"delivery": {
+				"calls": 176,
+				"max_usec": 2133,
+				"usec": 50211
+			},
+			"owner_service": {
+				"calls": 176,
+				"max_usec": 48,
+				"usec": 40659
+			},
+			"publication_copy": {
+				"calls": 176,
+				"max_usec": 2269,
+				"usec": 258288
+			},
+			"queue": {
+				"calls": 176,
+				"max_usec": 2,
+				"usec": 40099
+			}
+		},
+		"motion": {
+			"delivery": {
+				"calls": 707,
+				"max_usec": 6168,
+				"usec": 636059
+			},
+			"owner_service": {
+				"calls": 707,
+				"max_usec": 14568,
+				"usec": 2432284
+			},
+			"publication_copy": {
+				"calls": 707,
+				"max_usec": 3196,
+				"usec": 319805
+			},
+			"queue": {
+				"calls": 707,
+				"max_usec": 5093,
+				"usec": 121378
+			}
+		},
+		"reserved": {
+			"delivery": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			},
+			"owner_service": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			},
+			"publication_copy": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			},
+			"queue": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			}
+		},
+		"terrain": {
+			"delivery": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			},
+			"owner_service": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			},
+			"publication_copy": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			},
+			"queue": {
+				"calls": 0,
+				"max_usec": 0,
+				"usec": 0
+			}
+		}
+	},
+	"display_driver": "headless",
+	"elapsed_usec": 6003762,
+	"engine_version": "4.7-stable (official)",
+	"failures": [],
+	"latency": {
+		"cadence": {
+			"body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+			"capacity_dropped_intervals": 0,
+			"cohort_capacity": 64,
+			"display_backend": "headless",
+			"hardware_present_verified": false,
+			"native_progress_delivery": [],
+			"percentile_scope": "most_recent_bounded_intervals_per_workload",
+			"post_draw_intervals": [],
+			"progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+			"render_scope": "headless_callback_only"
+		},
+		"enabled": false,
+		"epoch": 1,
+		"events_retained": 0,
+		"frame_serial_coherence_proven": false,
+		"input_to_post_draw_causally_proven": false,
+		"no_additive_stage_total": true,
+		"post_draw_callbacks_after_upload": 0,
+		"proven_presented_uploads": 0,
+		"schema": "objectshard-m4-workbench-latency-v1",
+		"scope": "ordinary_Workbench_opt_in_main_thread_observation",
+		"stages": {},
+		"worker_metrics": {}
+	},
+	"process_callbacks": 361,
+	"process_callbacks_per_second": 60.1289658051069,
+	"process_fps_cap": 60,
+	"rapier_segments": 708,
+	"recording_enabled": false,
+	"renderer_callbacks": 0,
+	"renderer_callbacks_per_second": 0.0,
+	"rendering_method": "gl_compatibility",
+	"requested_seconds": 6.0,
+	"runtime_counter_deltas": {
+		"body_count": 0,
+		"controls_completed": 883,
+		"deferred_world_uploads": 0,
+		"motion_lease": 214,
+		"motion_permit_waits_recovered": 9,
+		"motion_permits_refused": 0,
+		"native_instance_id": 0,
+		"native_pose_acknowledgements": 5656,
+		"native_pose_echo_checks": 5656,
+		"native_tick": 176,
+		"owner_replacements": 0,
+		"pending_serial": 1094,
+		"physical_intervals": 176,
+		"physical_steps": 708,
+		"publication_sequence": 352,
+		"pump_budget_exhaustions": 488,
+		"pump_calls": 722,
+		"pump_operation_exhaustions": 0,
+		"pump_usec_max": 4877,
+		"pump_usec_total": 4535836,
+		"pump_waits": 21988,
+		"redundant_readiness_receipts_suppressed": 176,
+		"shared_main_space_id": 0,
+		"world_generation": 0
+	},
+	"schema": "objectshard-m4-throughput-v1",
+	"scope": "actual native semantic ticks and Main Rapier intervals; renderer callbacks are not physical monitor FPS; callback-end awake cohorts; no full per-callback diagnostic/coherence observers",
+	"semantic_ticks": 176,
+	"semantic_ticks_per_second": 29.3149528578914,
+	"source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+	"view_size": [
+		512,
+		512
+	],
+	"worker_counter_deltas": {
+		"compact_motion_receipts": 531,
+		"frame_copy_calls": 176,
+		"frame_copy_max_usec": 0,
+		"frame_copy_usec": 47772,
+		"full_motion_publications": 176,
+		"segment_idle_polls": 3527,
+		"segment_service_turns": 707,
+		"snapshot_calls": 528,
+		"snapshot_max_usec": 0,
+		"snapshot_usec": 703946
+	},
+	"workload": "stress"
+}

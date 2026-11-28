@@ -12,23 +12,37 @@ related-documents: [source-checkpoint-and-recovery.md, ../reference/product-inte
 
 ## ObjectShard M4 live structural editing — 2026-11-28
 
-Continue on Draft/HOLD PR #754 using the [M4 contract](../research/objectshard-m4-workbench.md),
-[owner guide](objectshard-workbench-playtest.md) and
-[live-edit evidence ledger](../audits/objectshard-m4-live-edit-20261128/README.md).
-The positively evaluated reliability predecessor is `b7d889b9`; its final evidence
-HEAD was `327afc58`. New editing adds bounded native transactions and unified
-input while preserving ordinary worker/native authority and Main Rapier ownership.
-The owner recording and exact authored tower recipe are retained with source and
-scope. Authored-start reconstruction is not a live rigid-body checkpoint.
+The qualified live-edit application is `ba6d8de45bd4d38717d92bdece7153bff115c0f0`,
+with guarded runtime publication `302f982943c0e03c30968368da8264cfb3c431ce`.
+[Campaign 46125028803](https://github.com/techrote/cybersand/actions/runs/46125028803)
+passed the exact-source native, Linux, Windows and fresh extracted-package gates.
+The [complete evaluator](https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748)
+launches the ordinary Workbench at the tower with all six required editing tools.
+PR #754 remains **Draft/HOLD**, open and unmerged for physical owner evaluation.
 
-Qualification must use exact source-matched native runtimes, actual Workbench
-input, retained regressions and the extracted Windows evaluator. Keep local,
-hosted, package and physical-owner claims distinct. The latest accepted main
-at mission inspection was `50e3bcb8`; RAMCACHE is in branch ancestry, while Strata
-and later shared Workbench changes require a subsequent focused reconciliation.
-No merge, Ready promotion, M5 implementation, unrelated PUBPRES import or
-unqualified runtime publication is authorized. Preserve failed runs and all
-prior exact-source evidence.
+Start with the [M4 contract](../research/objectshard-m4-workbench.md),
+[owner guide](objectshard-workbench-playtest.md),
+[definitive delivery record](../audits/objectshard-m4-live-edit-20261128/delivery-record.json)
+and [integration handover](../audits/objectshard-m4-live-edit-20261128/integration-handover.md).
+The actual uploaded archive, its native DLL and both clean Windows replay scopes
+are independently bound. Final repository guide clarifications do not modify
+the qualified archive or its bundled guide. The positively evaluated physical
+predecessor remains `b7d889b9` / evidence `327afc58`; acceptance of that source
+does not transfer to this new evaluator.
+
+The native batch comparison removes per-cell reconstruction amplification.
+Forty matched pinned Linux windows preserve workload invariants, but the moving
+tower medians are 4.60%/6.45% lower with recording off/on; this descriptive decline
+remains unresolved. Do not claim zero inactive-edit overhead or TITAN RTX
+performance from hosted results. Source, local, hosted, package and physical
+owner claims remain distinct. Saved starts remain construction recipes.
+
+Main was refreshed at `50e3bcb839211eac2abe1e065750cbcba4d36f8c`. RAMCACHE ancestry
+is retained; the frozen application is 194 commits beyond the common base while
+main has 48 distinct commits. Five merge-preview conflicts and shared-code
+semantic review remain for the subsequent M4 integration mission. No unrestricted
+mergedown, PUBPRES import, M5 implementation, Ready promotion or automatic merge
+is included. Preserve failed campaigns and all source-bound evidence.
 
 ## ObjectShard M0–M3 — 2026-11-22
 

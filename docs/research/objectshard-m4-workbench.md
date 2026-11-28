@@ -10,7 +10,7 @@ related-documents: [objectshard-001.md, objectshard-m3-preflight.md, ../operatio
 
 # ObjectShard M4 ordinary Workbench integration
 
-**Live structural editing candidate; PR #754 remains Draft/HOLD.** This contract
+**Qualified live structural editing evaluator; PR #754 remains Draft/HOLD.** This contract
 describes the opt-in ordinary Workbench implementation, including the bounded
 native editing interface introduced by OBJECTSHARD-M4-LIVE-EDIT-001. Source
 implementation, local checks, hosted qualification, extracted-package verification
@@ -20,6 +20,37 @@ records each completed gate and its exact identities. Use the
 [Workbench playtest guide](../operations/objectshard-workbench-playtest.md)
 for controls and the delivered evaluator. Ordinary launch defaults and the
 separate Lab/M3 facilities retain their existing scopes.
+
+## Qualified live-edit evaluator — 28 November 2026
+
+Application `ba6d8de45bd4d38717d92bdece7153bff115c0f0`, tree
+`33fa2aab1433fc1fece80cb38a413816cc845603`, passes
+[campaign 46125028803](https://github.com/techrote/cybersand/actions/runs/46125028803).
+Guarded runtime publication is `302f982943c0e03c30968368da8264cfb3c431ce`.
+The [definitive record](../audits/objectshard-m4-live-edit-20261128/delivery-record.json)
+binds the exact native source, pinned toolchains, uploaded evaluator and fresh
+independent Windows extraction. Both ordinary Workbench matrices pass 77
+headless and 65 graphical-lane cases; producer and fresh extracted-package
+replays each pass 45 cases, including 12 actual rendered cases. Each also
+verifies four shipped-launcher extraction paths. Native ASan/UBSan, material, ordinary World, capacity,
+worker, physics, camera and provenance gates retain their scope and assertions.
+
+The [complete Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748)
+contains the engine, project, DLL, Rapier and runtime dependencies. Its inner ZIP
+has SHA-256 `cf0f63259a2fd9be6e4835d8f741b21d0651bb47aec692c9a3a59bcd4238a31e`
+and 96,795,210 bytes. The Windows DLL is
+`da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9`,
+7,346,176 bytes. Final documentation adds precise operating clarifications;
+the immutable qualified archive and application code remain unchanged.
+
+[Measured performance](../audits/objectshard-m4-live-edit-20261128/performance-results.md)
+separates native transaction cost from whole-application progression and hosted
+input stages. Native batching removes per-cell reconstruction amplification.
+All forty matched pinned Linux idle windows pass workload invariants, while the
+moving tower medians are 4.60%/6.45% lower with recording off/on. This descriptive
+finding is unresolved; no statistical equivalence or physical GPU throughput is
+claimed. The new archive awaits physical owner evaluation. Mainline integration
+and acceptance remain separate work; PR #754 stays Draft/HOLD.
 
 ## Positively evaluated predecessor — 28 November 2026
 
@@ -359,8 +390,10 @@ The shared radius is 0–24 cells. Circular footprints and swept discs are bound
 to 4,096 unique cells, 65,536 candidate probes and 2,048 line steps. A long freehand
 stroke advances through bounded capsules; only the current segment and current
 pointer remain retained. Release cancels all unadmitted remainder. At most one
-native edit is outstanding, with a 30-transactions/s admission ceiling. Input
-gets a fresh displayed-witness opportunity before Main acquires the next physical
+native edit is outstanding. Continued stroke service is throttled to approximately
+30 admissions/s; fresh presses and explicit Slice commits can request immediate
+service through the same one-outstanding-edit and ownership guards. Input gets a
+fresh displayed-witness opportunity before Main acquires the next physical
 interval; it cannot mutate concurrently with Rapier. Admission, native completion,
 geometry installation and displayed publication remain separate fences.
 
@@ -383,8 +416,9 @@ editing can start a fresh gesture.
 
 **Weathering** uses the same authoritative removal transaction with adjustable
 density, seed and optional selected-material filtering. Each admitted pass
-advances the recorded seed; resetting the scene or setting the seed restarts the
-sequence. It is reproducible for the same authored start, footprint and pass
+advances the recorded seed; resetting the scene or changing the seed restarts the
+sequence. Re-entering an unchanged seed value does not reset the pass. It is
+reproducible for the same authored start, footprint and pass
 sequence, not a cosmetic shader or a claim of deterministic physical replay.
 **Area ignition** shares adjustable/swept footprints and the unchanged Wood
 combustion law. Impact, repair, addition, welding, stress and fatigue remain

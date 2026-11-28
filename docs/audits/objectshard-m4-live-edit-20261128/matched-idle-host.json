@@ -1,0 +1,29 @@
+{
+  "schema": "objectshard-matched-throughput-host-v1",
+  "captured_utc": "2026-11-28T08:58:40.151266+00:00",
+  "os": "Linux",
+  "release": "6.18.57",
+  "machine": "x86_64",
+  "cpu": {
+    "vendor_id": "AuthenticAMD",
+    "cpu family": "25",
+    "model": "17",
+    "model name": "AMD EPYC 9V74 80-Core Processor",
+    "stepping": "1"
+  },
+  "visible_logical_cpus": 9,
+  "process_cpu_affinity": [
+    0,
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    7,
+    8
+  ],
+  "cgroup": {},
+  "execution": "Sequential headless Godot processes in the same shared Linux execution environment. No explicit CPU pinning or owner hardware equivalence is claimed. Remote Windows CI does not execute in this container.",
+  "comparison_started_from": "final-throughput-before.json"
+}

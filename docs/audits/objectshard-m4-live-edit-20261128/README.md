@@ -10,12 +10,19 @@ related-documents: [../../research/objectshard-m4-workbench.md, ../../operations
 
 # OBJECTSHARD-M4-LIVE-EDIT-001
 
-**Disposition at the initial implementation checkpoint: implementation and local
-integration checks complete; exact-source hosted and extracted Windows
-qualification pending. PR #754 remains Draft/HOLD.** The definitive delivery
-section will bind the final application, native producer, guarded publication
-and evaluator identities after those gates complete. A predecessor pass never
-qualifies a later build.
+**Qualified Draft/HOLD implementation candidate for physical owner evaluation.**
+All required exact-source native, Linux, Windows, rendered and independently
+extracted Windows package gates passed for application
+`ba6d8de45bd4d38717d92bdece7153bff115c0f0`. Guarded publication
+`302f982943c0e03c30968368da8264cfb3c431ce` changes only the two validated native
+runtimes and their provenance files. PR #754 remains open, Draft and unmerged.
+
+**[Download the complete Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748).**
+The [final delivery section](#final-qualification-and-delivery) and
+[machine-readable record](delivery-record.json) bind its exact identities.
+The moving-tower idle median decline and the hosted publication-latency tail
+remain explicit limitations. Physical owner acceptance of this new archive is
+pending. Earlier failed campaigns below retain their original disposition.
 
 ## First hosted campaign and corrective candidate
 
@@ -59,7 +66,13 @@ the next legitimate interval could already be running. The native owners kept
 progressing without a Held error. Actual shape installation, wake, applied
 receipts and presentation were retained; an independent five-callback/s pointer
 observer reproduced successful presentation while global readiness stayed false.
-This campaign remains **failed**, with its original evidence preserved.
+The Windows lane subsequently passed 77/77 headless and 64/65 graphical
+cases; only `live_stress` hit the same transient-Ready observation premise.
+Its actual geometry revision 2 was installed and the sleeping body woke;
+native progression continued for 4,391 ticks without a Held error before the
+old observer deadline. The [independent Windows failure audit](second-windows-failed-independent-audit.json)
+retains all 142 logs, source hashes and the original failed result. This
+campaign remains **failed**, with its original evidence preserved.
 
 The revised test observer binds a selected action, port generation and complete
 owner identity to its authentic Applied receipt and Main's durable presentation
@@ -112,7 +125,8 @@ poses or eroded bodies.
 - One native edit transaction accepts at most 4,096 exact targets for one
   structural owner, or one separately fenced ordinary terrain batch. Deduplication,
   deterministic selection and exact geometry preflight precede mutation.
-- A changed structural owner rebuilds connectivity/mass/geometry once per batch.
+- A structural owner changed by material removal rebuilds connectivity/mass/geometry once per batch.
+  Ignition and no-ops do not rebuild collision geometry.
   Fragment transfer retains the established child reservation and ownership
   acknowledgements. Geometry capacity refuses before material debit; unexpected
   post-write failure quarantines and reports uncertain completion.
@@ -206,7 +220,125 @@ expanded questions achieve 13/13. Ranking is not answer-correctness evidence.
 
 ## Final qualification and delivery
 
-Pending the exact-source hosted campaign, guarded native publication,
-independent extracted Windows evaluator verification and final package identity
-record. Physical evaluation of the new live-edit candidate remains with the
-owner, independently of the positively evaluated predecessor.
+**Qualified development evaluator; Draft/HOLD for physical owner evaluation.**
+The complete exact-source campaign and both actual extracted-package executions
+passed. The guarded publisher then installed only the two validated native
+runtimes and their two provenance ledgers. No application source changed after
+qualification; this final evidence/documentation commit does not replace the
+frozen application identity.
+
+- Application: `ba6d8de45bd4d38717d92bdece7153bff115c0f0`.
+- Application tree: `33fa2aab1433fc1fece80cb38a413816cc845603`.
+- Campaign: [46125028803](https://github.com/techrote/cybersand/actions/runs/46125028803), attempt 1, publication request 7.
+- Guarded runtime publication: `302f982943c0e03c30968368da8264cfb3c431ce`, single parent equal to the application SHA.
+- [Complete Windows evaluator](https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748).
+- Inner archive: `objectshard-workbench-evaluator.zip`, **96,795,210 bytes**.
+- Inner SHA-256: `cf0f63259a2fd9be6e4835d8f741b21d0651bb47aec692c9a3a59bcd4238a31e`.
+- Windows DLL: **7,346,176 bytes**, SHA-256 `da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9`.
+- Linux runtime: **6,149,752 bytes**, SHA-256 `ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e`.
+
+The [machine-readable delivery record](delivery-record.json) binds runtime
+provenance, package hashes, manifest identity, final jobs/artifacts, independent
+reviews and acceptance limits. The [package manifest copy](windows-package-manifest.canonical.json)
+is explicitly canonical LF text; [its transform record](windows-package-manifest-copy.json)
+preserves the exact original CRLF manifest hash
+`4d2f983ef06b94427e5af0cb675cdae565b4a581c0dc017233bd73b6caa016a7`.
+The original manifest remains unmodified inside the delivered ZIP. All 1,499
+manifest payloads were independently hashed. Source custody verifies 1,483 exact
+Git byte matches, two Git LFS payloads and two exact declared PowerShell CRLF
+materializations, rather than silently normalizing arbitrary source differences.
+
+### Qualification scopes
+
+| Gate | Final result | Evidence |
+|---|---|---|
+| Native ASan/UBSan | 138,280 checks; 192 ordinary World tests | [Independent native audit](final-native-hosted-review.json) |
+| Native limits and supporting contracts | 4,276,351 checks across all 74 budgets; 86 Python/actual-PowerShell contracts, zero skips; 231 material tests | [Independent native audit](final-native-hosted-review.json) |
+| Linux ordinary Workbench | 77/77 headless and 65/65 graphical-lane cases | [Linux audit](final-linux-workbench-review.json) |
+| Windows ordinary Workbench | 77/77 headless and 65/65 graphical-lane cases | [Headless audit](final-windows-regressions-review.json), [graphical audit](final-windows-graphical-review.json) |
+| Actual Windows native presentation | 230 camera, 159 brush and 102 preview checks; ten outline controls and twelve verified captures | [Independent renderer audit](final-native-renderer-independent-review.json) |
+| Producer's extracted evaluator | 45/45 cases, including 12 rendered cases; four launcher roots, two payload and eight provenance refusal checks | [Producer-package audit](final-producer-package-execution-review.json) |
+| Fresh independent Windows extraction | Same immutable uploaded evaluator, four shipped-launcher roots, all 45/45 packaged cases and 12 rendered cases | [Fresh-package audit](final-independent-package-review.json) |
+| Exact downloaded archive | Inner/outer hashes, complete manifest inventory, source and runtime identity | [Independent byte/source audit](final-evaluator-extraction-review.json) |
+| Guarded publication | All seven required jobs passed; exact source lease, single parent and four allowed paths | [Independent publication audit](final-guarded-publication-review.json) |
+
+The Linux graphical lane contains 35 actual display-required cases; the remaining
+cases retain their declared non-rendered scope. Package lanes contain 12
+display-required cases each. Lane totals are not counts of unique tests.
+
+The [acceptance coverage](final-acceptance-coverage.md) maps the fourteen required
+Workbench behaviors and adversarial boundaries to production input fixtures,
+actual native/physical assertions and rendered observations. It preserves the
+scope distinction between real pointer/cursor routes and synthetic coordinate
+contract cases. The [stage timing report](final-edit-timing-summary.md) binds
+input, admission, native execution and coherent Main publication by actual action
+identity, with actual Main geometry installation recorded separately.
+In the fresh Windows package's eleven complete stress actions, median input to
+admission is 20.777 ms and admission to coherent Main publication is 118.035 ms;
+the latter maximum is 1,274.907 ms. This hosted tail remains explicit. These
+small software-rendered samples are not a universal latency bound or an owner
+hardware benchmark.
+The fresh-package stress snapshot contains 12 admitted/Applied actions but only
+11 presented events. Its final pause/resume probe is explicitly
+`applied_awaiting_publication` before intentional scene replacement; the fixture
+does not drain that probe. The timing report retains eleven complete triples
+and one censored publication interval. It neither substitutes a zero duration
+nor invents a twelfth completion. The [independent source/receipt review](final-fresh-package-timing-review.json)
+binds this classification to the exact action, original log and retirement path.
+
+The prior failed campaigns remain failed. Corrected test observers use durable
+receipt/presentation/installed-geometry witnesses instead of sampling a brief
+global-idle phase. The final source does not weaken material, fragmentation,
+release, ownership or scene-replacement assertions. Retained presentation-only
+fixtures are recorded separately and are not substituted for native execution.
+
+### Performance and remaining limits
+
+The [performance results](performance-results.md) and
+[independently reviewed method](performance-method.md) separate native batching,
+matched inactive-edit progression and end-to-end action observations. A matched
+797-cell native cut takes a 0.473 ms batched median against 226.401 ms for
+individual-cell transactions, reducing parent reconstruction from 797 passes
+to one. This native-only result excludes worker, Rapier and renderer cost.
+
+All forty pinned same-host idle windows pass their material/physics invariants.
+There are two windows per revision for each workload/recording setting.
+The other four workloads’ medians remain within 0.75% of the reliability baseline
+in both recording modes, but the
+moving tower is **4.60% lower with recording off and 6.45% lower with recording
+on**. Individual pairs vary and change sign. This decline remains unresolved;
+no zero-overhead or statistical-equivalence claim is made. These Linux and
+hosted Windows observations are not physical TITAN RTX performance.
+
+Cross-owner gestures are sequential, not atomic. Slice and Drill select one
+owner per placement. Radius, cell count, scan work and outstanding transactions
+remain bounded. Geometry/capacity refusals are explicit, and unexpected
+post-write failures do not promise rollback. Impact and broader M5 work remain
+deferred. Authored saving is not a live body checkpoint.
+
+### Owner handoff
+
+Extract the GitHub outer ZIP, then its inner evaluator ZIP. Run **Open
+Workbench.cmd**; it verifies the package and opens the ObjectShard-enabled
+ordinary Workbench at the tower. Godot, native DLL, Rapier, required runtime
+files and licences are bundled. No build or manual native assembly is required.
+Wait for initial material preparation, then use the twelve-step route in the
+[owner guide](../../operations/objectshard-workbench-playtest.md).
+
+The final repository guide clarifies three existing behaviors without changing
+the archive: hold live Drill until admission or pause for precise clicks;
+release does not roll back admitted work and scene replacement retires old
+receipt generations; changing the weathering seed or restoring the scene resets
+its pass, while re-entering an unchanged seed value does not.
+
+The [principal delivered-image review](final-principal-delivered-render-review.json)
+and [specialist render review](final-producer-package-render-review.json) retain
+actual package captures of drilling, weathering, slicing, the timber shed, mixed
+yard and Structures controls. Exact hole counts and physical fragments are
+proved by receipts and tests, not solely by those overview screenshots.
+
+Physical evaluation of this new archive remains **pending**. PR #754 is open,
+Draft/HOLD and unmerged. The [integration handover](integration-handover.md)
+records mainline divergence, five unresolved merge paths and the subsequent
+M4 acceptance/M5 boundaries. No automatic merge, Ready promotion or unrestricted
+mainline mergedown occurred.

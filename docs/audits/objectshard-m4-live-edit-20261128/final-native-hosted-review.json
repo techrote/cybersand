@@ -1,0 +1,167 @@
+{
+  "schema_version": 1,
+  "reviewer": "native-transactions-specialist-A",
+  "verified_at": "2026-11-28T08:36:56.189679+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "workflow_attempt": 1,
+  "job_id": 140917627621,
+  "job_url": "https://github.com/techrote/cybersand/actions/runs/46125028803/job/140917627621",
+  "job_conclusion": "success",
+  "artifact_id": 15256121073,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256121073",
+  "archive_sha256": "4c93830e84b0b1bd101433e9ed643a7557c42b6b60f266bc409d16adae779363",
+  "archive_bytes": 138715641,
+  "unique_git_blob_inputs_verified": 136,
+  "native_input_digest": "2e3708200d848634ca5c270c539746b17abaf4dacdb995cc762f448485d67d6f",
+  "native_inputs_verified": 133,
+  "native_compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+  "native_checks": 138280,
+  "ordinary_world_test_cases": 192,
+  "sanitizers": [
+    "address",
+    "undefined"
+  ],
+  "leak_sanitizer": false,
+  "suites": {
+    "admission": {
+      "status": "passed",
+      "checks": 28092,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "76061ac67d703a7db3e16b623eca587e784a88ec089f284684887e03aadeaff1",
+      "execution_seconds": 1.3095584340000528,
+      "log_sha256": "0c2146664d17b4b84bafc5991477b1ca0ba6d1b105078c4b9920bbc8b1bad4bb"
+    },
+    "chemistry": {
+      "status": "passed",
+      "checks": 4472,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "92846ee381ef37f08b815bb43de15450683dc20169120ad1d7b21823a3d0d998",
+      "execution_seconds": 1.3005612489999976,
+      "log_sha256": "06a8fc85daa6e3943d6b22f779c2e62bb84c745dcc8e0eeb0dd708fff3233bda"
+    },
+    "contact": {
+      "status": "passed",
+      "checks": 81255,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "9a579ad49fa01f634e341837b99c02848d96dc92f016845edda766446c947f1a",
+      "execution_seconds": 0.01594129399995836,
+      "log_sha256": "51f393c131c2d1f86e6dfbe04fdcb5f941472d12c8ea781bcad3b582ae8a35d7"
+    },
+    "coordinator": {
+      "status": "passed",
+      "checks": 7100,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "3dadad99be85a58342323988bbe15787ea17d1cc271e1b1d9df9a89cd8d0712f",
+      "execution_seconds": 13.991404629000044,
+      "log_sha256": "9f6d6b17c4198a12742c8c5170ab8ca67bd61ddc6e608a5a4ee06e975ba86015"
+    },
+    "external_fire": {
+      "status": "passed",
+      "checks": 3689,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "707906be809446a592769ab8d2bb4fea9c2b7a0d1346bbe1573d9b63b456783d",
+      "execution_seconds": 0.8320761570000172,
+      "log_sha256": "153d38884d50f76a4fe7adfb7c83d85245b591fa3a7936be4e0b5fbf6167139c"
+    },
+    "storage": {
+      "status": "passed",
+      "checks": 13672,
+      "count_unit": "checks",
+      "failures": 0,
+      "binary_sha256": "320be68455c18650c7adc302f3101bacad4d3bc45768ce8e98dbe107047e0029",
+      "execution_seconds": 0.13726926800001138,
+      "log_sha256": "6d0f2e8a0c47fd5b71aa605f506094e5e86f1d59d6cff54198a8e976f1fc74b8"
+    },
+    "world": {
+      "status": "passed",
+      "checks": 192,
+      "count_unit": "test_cases",
+      "failures": 0,
+      "binary_sha256": "0437775667d3bdfb1217d4f8c2a9a5b7f9ce282bb7ab69e55a9c5c49e50f5869",
+      "execution_seconds": 434.422820689,
+      "log_sha256": "602f6e4c0c856e3e549e6d24d5579242dcaf495946189923d6e52154ad40dd48"
+    }
+  },
+  "native_suite_elapsed_seconds": 629.805707014,
+  "budget_input_digest": "d9d819fb408afa13bd8219f26a379ea72799cc23159bc7057fb30c44a8e2d37a",
+  "budget_binary_sha256": "cf4dddd66a0c59e299550df9cb7b25376864a45707394acb66a194555c4b13f6",
+  "budget_checks": 4276351,
+  "budget_limits_checked": 74,
+  "budget_ticks": 1200,
+  "budget_repetitions": 3,
+  "budget_status": "PASS",
+  "python_qualification_contract_tests": 86,
+  "python_qualification_skips": 0,
+  "actual_portable_powershell_test": "PASS",
+  "portable_powershell_scope": "Actual PowerShell verifier exercised by hosted Python fixture, including generator, missing-scene and package-input refusals. Hosted PowerShell version not separately retained. Local correction also passed all86 tests with release-hash-verified PowerShell7.4.6.",
+  "material_catalogue_tests": 231,
+  "material_compatibility_status": "PASS",
+  "material_compiled_parity_status": "PASS",
+  "material_compiled_parity_scope": "Native parity for shadow metadata and authenticated constant consumers; no World execution",
+  "provider_policy_status": "passed",
+  "members": {
+    "native/summary.json": {
+      "sha256": "376368b61ab486a73b0b177cbaf4973e7d2979b9e7e6df1474816967dc58a2a1",
+      "bytes": 20819
+    },
+    "retained-lab-native-budgets/summary.json": {
+      "sha256": "04d9a61946afb08d4d85f894ec2b9d07201f368f91b1c3ba1c8c66ed57d30881",
+      "bytes": 3718
+    },
+    "material-compatibility-gate.json": {
+      "sha256": "7bcff308358e610836fa679ed0e7490d971b7ca3baf408abd5b03b6c04f4c1ab",
+      "bytes": 24707
+    },
+    "material-catalogue-check.json": {
+      "sha256": "bc00bbaa8af2e9783c6242fdca6a311bfd422d439248b0952bf8c94199f76acc",
+      "bytes": 82
+    },
+    "material-native-parity.json": {
+      "sha256": "12d183ef8c2af889e0ab547cdc90973b36f5533723c967ca50be95a2d70ad33f",
+      "bytes": 36906
+    },
+    "qualification-contracts.log": {
+      "sha256": "21572be2e15153005c5000d53be9ee1800c95557971ba948069f193084c82520",
+      "bytes": 14235
+    },
+    "material-compatibility.log": {
+      "sha256": "c9ae0b6896fbc2a52df36de81300f88a99642d71653edc27058ea4efaf4b6cd3",
+      "bytes": 37355
+    },
+    "provider-policy.log": {
+      "sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f",
+      "bytes": 280
+    },
+    "retained-lab-native-budgets/20261128T082722.139177Z-d9d819fb408a/benchmark.json": {
+      "sha256": "b93a0faa4979da998f6ea37410d0326e36c5ea78773f88da1f39eae4de67283c",
+      "bytes": 42269
+    }
+  },
+  "windows_native_producer": {
+    "job_id": 140917627477,
+    "artifact_id": 15255840239,
+    "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+    "native_bytes": 7346176,
+    "unique_git_blob_inputs_verified": 1518,
+    "status": "PASS"
+  },
+  "input_continuity": {
+    "first_campaign_source": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+    "first_campaign_publication_gate_status": "FAILED",
+    "native_and_budget_input_digests_identical": true,
+    "matched_benchmark_original_execution_source": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+    "matched_benchmark_identical_git_inputs": 96,
+    "matched_benchmark_report_sha256": "60be0222b7d684952c0acc08296dac24f4db84999da20a83c42569d5b24bec41",
+    "matched_benchmark_scope": "Original585checks/15matchedpairs executed at ace52bc6; all96 native inputs independently rehashed identical at ba6d8de4. Original timing/execution identity preserved; this continuity proof is not another benchmark execution."
+  },
+  "transaction_contract_qualification": "Expected stale/foreign/protected/capacity refusals preflight before material debit. One-owner batches do not claim whole-gesture atomicity or rollback after an unexpected commit failure; changed prefixes are accounted, reported partial/Quarantined and held for authoritative recovery.",
+  "scope": "Exact-source Linux hosted native sanitizer, retained native budget, qualification/PowerShell/material/provider gates plus independently verified Windows crossbuilt producer identity. Windows target execution, extracted evaluator qualification and physical owner evaluation are separate evidence.",
+  "status": "PASS"
+}

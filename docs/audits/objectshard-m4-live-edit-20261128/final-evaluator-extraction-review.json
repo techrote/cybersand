@@ -1,0 +1,91 @@
+{
+  "schema": "objectshard-live-edit-independent-evaluator-extraction-v1",
+  "status": "byte-and-source-audit-passed",
+  "reviewer": "Specialist C",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "artifact_id": 15256411748,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748",
+  "outer_sha256": "b98fc26773f3054958debef4ce1a45c0eb3b05c8d3807f8ada371b97c539ac82",
+  "outer_bytes": 96410466,
+  "inner_sha256": "cf0f63259a2fd9be6e4835d8f741b21d0651bb47aec692c9a3a59bcd4238a31e",
+  "inner_bytes": 96795210,
+  "inner_uncompressed_bytes": 219363682,
+  "manifest_sha256": "4d2f983ef06b94427e5af0cb675cdae565b4a581c0dc017233bd73b6caa016a7",
+  "verified_manifest_files": 1499,
+  "exact_git_source_files": 1483,
+  "exact_git_lfs_payloads": [
+    "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "godot/tools/gentek_reciprocal.exe"
+  ],
+  "declared_crlf_source_materializations": [
+    {
+      "path": "tools/objectshard/verify_package.ps1",
+      "git_blob_sha256": "96cf420907aa43fd7e1bc2899518c43117e46a61969b8056c761d55ab6ce152b",
+      "shipped_sha256": "163a69b2872d47092707fa8b6cea204decfd5b2617ce1efdded639d963b5398d",
+      "transform": "exact LF-to-CRLF materialization required by committed .gitattributes"
+    },
+    {
+      "path": "tools/objectshard/verify_workbench_package.ps1",
+      "git_blob_sha256": "e3163cda2d0c26d50efd23c741183edae901f8d5b05b40f5145b114de6cabdd4",
+      "shipped_sha256": "938835e6f956a0a06cad66c2d0bae4b788c6ac958726bc8eb553d01710c758c4",
+      "transform": "exact LF-to-CRLF materialization required by committed .gitattributes"
+    }
+  ],
+  "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+  "native_bytes": 7346176,
+  "native_format": "AMD64 PE",
+  "native_source_input_count": 126,
+  "candidate_ledger_sha256": "b1e8ab56cedebbfb0021e7e7931bb9f184742ef6a054e2e544a9fc5c1aeb64fc",
+  "rapier": {
+    "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+    "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "godot": {
+    "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "archive_size": 83764371,
+    "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "entry": {
+    "host": "ordinary-workbench",
+    "launcher": "Open Workbench.cmd",
+    "opt_in": true,
+    "rendering_driver": "opengl3_angle",
+    "scenario_ids": [
+      "tower",
+      "viaduct",
+      "timber",
+      "mixed",
+      "stress",
+      "perforated",
+      "weathered",
+      "editing_yard",
+      "owner_tower"
+    ],
+    "scene": "godot/main.tscn",
+    "startup_scene": "godot/feature_launcher.tscn"
+  },
+  "extracted_package": "/tmp/cybersand-live-edit/extraction/final-ba6d8de/Workbench-independent-extraction",
+  "scope": "Actual downloaded immutable artifact; strict local extraction, complete manifest inventory, exact Git source and LFS byte binding, exact producer DLL. Hosted Windows execution is a separately bound gate.",
+  "physical_owner_acceptance": "pending",
+  "initial_raw_byte_only_audit_finding": {
+    "path": "tools/objectshard/verify_package.ps1",
+    "raw_git_bytes": 6488,
+    "raw_package_bytes": 6581,
+    "git_sha256": "96cf420907aa43fd7e1bc2899518c43117e46a61969b8056c761d55ab6ce152b",
+    "package_sha256": "163a69b2872d47092707fa8b6cea204decfd5b2617ce1efdded639d963b5398d",
+    "resolution": "Git attributes explicitly require CRLF for .ps1. Exact LF-to-CRLF equivalence was required for each affected path; no broad normalization and no artifact mutation. All manifest file hashes remain raw delivered-byte hashes."
+  },
+  "independent_shipped_powershell_verifier": {
+    "status": "passed",
+    "exit_code": 0,
+    "runtime": "Official PowerShell 7.4.6 on Linux",
+    "script": "tools/objectshard/verify_workbench_package.ps1",
+    "scope": "Strict actual extracted file/manifest/provenance verification only; no local Windows execution claim.",
+    "log_sha256": "aa56d1d34ef4ce9f801a478a8153266167a9ac04b53bcc9dc8f6360e8c2b8d07",
+    "log_bytes": 166
+  }
+}

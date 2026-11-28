@@ -1,0 +1,1625 @@
+{
+  "schema": "objectshard-live-edit-final-acceptance-coverage-v1",
+  "generated_utc": "2026-11-28T09:46:24.561857+00:00",
+  "application_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "workflow_run": 46125028803,
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "scope": "Fresh matrix from only the listed exact-source passing receipts. Earlier campaigns retain their failed disposition and are not inherited as qualification. Native gate and immutable evaluator custody are separately bound evidence.",
+  "lanes": {
+    "windows_headless": {
+      "status": "passed",
+      "cases": 77,
+      "qualification_sha256": "679115f589c34b855ed1384331f81e210f35790ea078f11c31014d54827a5166",
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "package_manifest_sha256": null,
+      "scope": "source checkout execution"
+    },
+    "windows_native_renderer": {
+      "status": "passed",
+      "cases": 4,
+      "qualification_sha256": "354f35d4eb938ab305bda66a145e3494d29f9ebf5543b387c3e420b07162dc22",
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "package_manifest_sha256": null,
+      "scope": "source checkout execution"
+    },
+    "linux_headless": {
+      "status": "passed",
+      "cases": 77,
+      "qualification_sha256": "e8fffc3da2dc73a444f43678fd157e9a69b77293cff22245490ccf87e2901434",
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "package_manifest_sha256": null,
+      "scope": "source checkout execution"
+    },
+    "linux_graphical": {
+      "status": "passed",
+      "cases": 65,
+      "qualification_sha256": "1ace89746d1d1e5e3e25a6eb3d5714e8d6ad8e6912fa19cf1f78c7b7ec56428c",
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "package_manifest_sha256": null,
+      "scope": "source checkout execution"
+    },
+    "windows_graphical": {
+      "status": "passed",
+      "cases": 65,
+      "qualification_sha256": "56d9bae450ab3ed5a35fe0e394e0d0372c5ded1396806f92623d4ecaff855866",
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "package_manifest_sha256": null,
+      "scope": "source checkout execution"
+    },
+    "windows_package": {
+      "status": "passed",
+      "cases": 45,
+      "qualification_sha256": "1ded7d312a4977f82efb7318dc57449d913fca3f851d68d93f49b747db7755c8",
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "package_manifest_sha256": "4d2f983ef06b94427e5af0cb675cdae565b4a581c0dc017233bd73b6caa016a7",
+      "scope": "producer extracted package"
+    },
+    "independent_windows_package": {
+      "status": "passed",
+      "cases": 45,
+      "qualification_sha256": "fcd8352307d87d066c981823e7c6f6ebd48ed9f226859ea626c04e8617c958e8",
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "package_manifest_sha256": "4d2f983ef06b94427e5af0cb675cdae565b4a581c0dc017233bd73b6caa016a7",
+      "scope": "fresh extracted artifact"
+    }
+  },
+  "fixtures": {
+    "input": {
+      "path": "godot/tests/test_object_shard_m4_live_input.gd",
+      "sha256": "3d7ae014fcea09ab68d27b8216a7ca0fff0d28cd5f36c65eb83608f65f5de989",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 109,
+          "schema": "objectshard-m4-live-input-v1",
+          "seconds": 11.616,
+          "log_sha256": "874b3fdef0ceccadc263bad29bd80706963e48d8ec1737f412d3700536c4decc",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 109,
+          "schema": "objectshard-m4-live-input-v1",
+          "seconds": 7.713,
+          "log_sha256": "c654ffd98d60b0ec646552615400e2e229a700753cd2818914cd9a6b32debe79",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 125,
+          "schema": "objectshard-m4-live-input-v1",
+          "seconds": 23.251,
+          "log_sha256": "f3c9536917822379d78fce606a8695b34c47b58c7ff07e2d2c70c5f7f5f341e4",
+          "actual_render_execution": true
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 125,
+          "schema": "objectshard-m4-live-input-v1",
+          "seconds": 155.024,
+          "log_sha256": "971786138c59d5324acdb0c8662e51b2c63c72156e3a314990e0fcee4fca6638",
+          "actual_render_execution": true
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 125,
+          "schema": "objectshard-m4-live-input-v1",
+          "seconds": 106.101,
+          "log_sha256": "53ead9efe5296acdbbfa3529f097e7ef695b773c69dc5b04c7ede33613e0c275",
+          "actual_render_execution": true
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 125,
+          "schema": "objectshard-m4-live-input-v1",
+          "seconds": 156.432,
+          "log_sha256": "d1edb3d2434ee0208202f037d725612d41d541c1569fcff64509ea54a9e9860a",
+          "actual_render_execution": true
+        }
+      }
+    },
+    "tools": {
+      "path": "godot/tests/test_object_shard_m4_live_tools.gd",
+      "sha256": "8f0478d4492cd50035372437afdb7134215e47ba41677b8bdb4f728777e5f715",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 215,
+          "schema": "objectshard-m4-live-tools-v1",
+          "seconds": 15.522,
+          "log_sha256": "b5c5b477f8b09febbc5014b0eba7cfb27926500dfb74594bb07ee7d45a972666",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 215,
+          "schema": "objectshard-m4-live-tools-v1",
+          "seconds": 13.022,
+          "log_sha256": "fe29a15645849071e4d790d96c03126b3a24a3d85b60a6e0747679344b83898e",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 221,
+          "schema": "objectshard-m4-live-tools-v1",
+          "seconds": 30.173,
+          "log_sha256": "b5ac2c707effbc442c2501f38fa3ce2661e55b07d06cad5601b799f7d5e53dfa",
+          "actual_render_execution": true
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 221,
+          "schema": "objectshard-m4-live-tools-v1",
+          "seconds": 163.959,
+          "log_sha256": "c45d45006baf5803a78b35faa5af68ac2c551a0cc89844148c1800d9513a543c",
+          "actual_render_execution": true
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 221,
+          "schema": "objectshard-m4-live-tools-v1",
+          "seconds": 125.362,
+          "log_sha256": "1f5cf78db91a61e028df0551e51f9191267b5911b5495921ee888c6be0bd4920",
+          "actual_render_execution": true
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 221,
+          "schema": "objectshard-m4-live-tools-v1",
+          "seconds": 172.454,
+          "log_sha256": "18b1dc837ce91f195bafbb1722d9078d9f7e8a3f0e69c8b8491971441419b0e6",
+          "actual_render_execution": true
+        }
+      }
+    },
+    "stress": {
+      "path": "godot/tests/test_object_shard_m4_live_stress.gd",
+      "sha256": "90420d741bc4d2dcbfd0084d748c3c656d81a448063297fd78fb7fc42369f339",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 224,
+          "schema": "objectshard-m4-live-stress-v1",
+          "seconds": 17.29,
+          "log_sha256": "9c111338f7750d0e077fa012aa02019c255f4d10712df7cb06258fc7b0c77fab",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 224,
+          "schema": "objectshard-m4-live-stress-v1",
+          "seconds": 14.788,
+          "log_sha256": "01f04f2a399068562ca9f7b4007c26ed5edc826db6365363238c10f698fc986c",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 226,
+          "schema": "objectshard-m4-live-stress-v1",
+          "seconds": 45.697,
+          "log_sha256": "8e87321d5195e9ac00a425ac0e1a4a6ba4d6b21d07f57fb297e73e0067db2b58",
+          "actual_render_execution": true
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 226,
+          "schema": "objectshard-m4-live-stress-v1",
+          "seconds": 160.155,
+          "log_sha256": "794ccf1fa0579efc3dad2abb6d0c74ddf440d1ff9ed717daf898bee13df51b86",
+          "actual_render_execution": true
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 226,
+          "schema": "objectshard-m4-live-stress-v1",
+          "seconds": 126.065,
+          "log_sha256": "eb33403001761f9b7affb92aa9d17af5b37469c672f43c8d2ab83a7dfa1a7602",
+          "actual_render_execution": true
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 226,
+          "schema": "objectshard-m4-live-stress-v1",
+          "seconds": 164.671,
+          "log_sha256": "e80a3130d753595a0829a722ae9b50cd7a0509877e3de3ba5edfa3233d5e73ca",
+          "actual_render_execution": true
+        }
+      }
+    },
+    "disabled": {
+      "path": "godot/tests/test_object_shard_m4_disabled_input.gd",
+      "sha256": "0d92a6ee15c94031cc98e38d6cfbdba5f8643bb1b9d529eaff11c7bdb15cb4cd",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-disabled-input-v1",
+          "seconds": 5.855,
+          "log_sha256": "2705192b667c9e5b10bbd6022f12caa063a84a0b5dd209f7821b7c85bc47809c",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-disabled-input-v1",
+          "seconds": 5.009,
+          "log_sha256": "8493586af3c24ce5dbb8179061b8fffec0554fcae7bbf4a92c9f7dcd188f4ade",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-disabled-input-v1",
+          "seconds": 7.215,
+          "log_sha256": "063bccd249d8227571c3bbb343b49c87dc7a21d2316a700c1577a7ff7839bdd8",
+          "actual_render_execution": true
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-disabled-input-v1",
+          "seconds": 76.31,
+          "log_sha256": "68986b622845bf05844ed6b6712639ae914b229a3d293c8e3ee4706217b8ba8b",
+          "actual_render_execution": true
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-disabled-input-v1",
+          "seconds": 55.37,
+          "log_sha256": "68986b622845bf05844ed6b6712639ae914b229a3d293c8e3ee4706217b8ba8b",
+          "actual_render_execution": true
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 9,
+          "schema": "objectshard-m4-disabled-input-v1",
+          "seconds": 78.06,
+          "log_sha256": "68986b622845bf05844ed6b6712639ae914b229a3d293c8e3ee4706217b8ba8b",
+          "actual_render_execution": true
+        }
+      }
+    },
+    "footprints": {
+      "path": "godot/tests/test_object_shard_m4_visible_footprints.gd",
+      "sha256": "6597d226ffa1f8e881dea228e5243d835df62f26f61b1712298a99cee5c3ae0b",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 19,
+          "schema": "objectshard-m4-visible-footprints-v1",
+          "seconds": 1.576,
+          "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 19,
+          "schema": "objectshard-m4-visible-footprints-v1",
+          "seconds": 1.303,
+          "log_sha256": "a990fa475869e9694103fe76aa5045010b378d1334d06e537110c694a4e63c40",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 19,
+          "schema": "objectshard-m4-visible-footprints-v1",
+          "seconds": 1.304,
+          "log_sha256": "a990fa475869e9694103fe76aa5045010b378d1334d06e537110c694a4e63c40",
+          "actual_render_execution": false
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 19,
+          "schema": "objectshard-m4-visible-footprints-v1",
+          "seconds": 2.352,
+          "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+          "actual_render_execution": false
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 19,
+          "schema": "objectshard-m4-visible-footprints-v1",
+          "seconds": 2.151,
+          "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+          "actual_render_execution": false
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 19,
+          "schema": "objectshard-m4-visible-footprints-v1",
+          "seconds": 2.249,
+          "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+          "actual_render_execution": false
+        }
+      }
+    },
+    "recipes": {
+      "path": "godot/tests/test_object_shard_m4_creative_scenes.gd",
+      "sha256": "d8dc20accb00cd65ca3618be6de13df05efa0735cfb5709d145c6fdf6d7de05f",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 61,
+          "schema": "objectshard-m4-creative-scenes-v1",
+          "seconds": 0.924,
+          "log_sha256": "0a49ae8f95847a6075ba22c5526799c836da9d89e4387d45ff037767730d0497",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 61,
+          "schema": "objectshard-m4-creative-scenes-v1",
+          "seconds": 0.717,
+          "log_sha256": "ef4a123bc940ab76c5353970a65fbcb02b4f8b9babe0903e70625edda2bd947d",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 61,
+          "schema": "objectshard-m4-creative-scenes-v1",
+          "seconds": 0.717,
+          "log_sha256": "ef4a123bc940ab76c5353970a65fbcb02b4f8b9babe0903e70625edda2bd947d",
+          "actual_render_execution": false
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 61,
+          "schema": "objectshard-m4-creative-scenes-v1",
+          "seconds": 1.422,
+          "log_sha256": "0a49ae8f95847a6075ba22c5526799c836da9d89e4387d45ff037767730d0497",
+          "actual_render_execution": false
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 61,
+          "schema": "objectshard-m4-creative-scenes-v1",
+          "seconds": 1.316,
+          "log_sha256": "0a49ae8f95847a6075ba22c5526799c836da9d89e4387d45ff037767730d0497",
+          "actual_render_execution": false
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 61,
+          "schema": "objectshard-m4-creative-scenes-v1",
+          "seconds": 1.316,
+          "log_sha256": "0a49ae8f95847a6075ba22c5526799c836da9d89e4387d45ff037767730d0497",
+          "actual_render_execution": false
+        }
+      }
+    },
+    "constructions": {
+      "path": "godot/tests/test_object_shard_m4_creative_constructions.gd",
+      "sha256": "cba67e978a0d66eab75413d56101945f4ad1f94c4230000f634cfc53d451382c",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 224,
+          "schema": "objectshard-m4-creative-constructions-v1",
+          "seconds": 13.936,
+          "log_sha256": "f6a570e038b522baef0ed7fb687330d84ad31638cda371b25a324fc505c08e19",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 224,
+          "schema": "objectshard-m4-creative-constructions-v1",
+          "seconds": 11.622,
+          "log_sha256": "b4a9a4e0841f6875f179155d29f786ee144fdabb3448fa60b2bbda37b3612c48",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 228,
+          "schema": "objectshard-m4-creative-constructions-v1",
+          "seconds": 29.426,
+          "log_sha256": "70aaaefb70021a89e4533b664d24a87a637dec8bae91c8078bacece0c04ff587",
+          "actual_render_execution": true
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 228,
+          "schema": "objectshard-m4-creative-constructions-v1",
+          "seconds": 152.442,
+          "log_sha256": "4f77c9d6e860196be647eb7a43747ea1047c4ffe828acd22fdfc677921eac9b3",
+          "actual_render_execution": true
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 228,
+          "schema": "objectshard-m4-creative-constructions-v1",
+          "seconds": 114.204,
+          "log_sha256": "6100825fd925af3485bf1be021dcd50d9a1d6e001fbb17bf25c0ecb8bab3095a",
+          "actual_render_execution": true
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 228,
+          "schema": "objectshard-m4-creative-constructions-v1",
+          "seconds": 131.629,
+          "log_sha256": "bc965d78b9b75e9a70b1413649974d399df78520bc7a7398fd4e30f7553bcab7",
+          "actual_render_execution": true
+        }
+      }
+    },
+    "owner": {
+      "path": "godot/tests/test_object_shard_m4_owner_authored.gd",
+      "sha256": "d5f1f048467d741c2185850e8489fe03fe33ec08eac27fb2072d393fbfa471ce",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 147,
+          "schema": "objectshard-m4-owner-authored-v1",
+          "seconds": 8.743,
+          "log_sha256": "3472a6d7a8f67f1096bb6a2aed583045937ddd7d65fd66c286bdf977f5270ed2",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 147,
+          "schema": "objectshard-m4-owner-authored-v1",
+          "seconds": 7.243,
+          "log_sha256": "71d7583842e925381082e2bdefd9d744f42c76cc5352001dddb0818d95727c94",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 148,
+          "schema": "objectshard-m4-owner-authored-v1",
+          "seconds": 15.131,
+          "log_sha256": "abbad602019ed2ec88f33fca1572bc23adac6492a4d65d97eb4291aaec00c0e9",
+          "actual_render_execution": true
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 148,
+          "schema": "objectshard-m4-owner-authored-v1",
+          "seconds": 128.931,
+          "log_sha256": "5a5f22fcf6f3bdeddcc7320c6ce6102331dad06e5726e4960900be38029a9e1c",
+          "actual_render_execution": true
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 148,
+          "schema": "objectshard-m4-owner-authored-v1",
+          "seconds": 98.117,
+          "log_sha256": "b855ae3316518bfcaaaf24b6d7e8c6687ee25dfd2adae99323557df85f2dae76",
+          "actual_render_execution": true
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 148,
+          "schema": "objectshard-m4-owner-authored-v1",
+          "seconds": 131.384,
+          "log_sha256": "f05ef3e13aa386e3f7a8725a0b293447bcee52bab757b0b1536b53e03ebdd728",
+          "actual_render_execution": true
+        }
+      }
+    },
+    "bridge": {
+      "path": "godot/tests/test_object_shard_physics_bridge.gd",
+      "sha256": "1710969b699d9bcd2b946162ea816bbdbac0282f4849b08effa3ae6cae0daa15",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 28,
+          "schema": "objectshard-physics-bridge-test-v1",
+          "seconds": 0.273,
+          "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 28,
+          "schema": "objectshard-physics-bridge-test-v1",
+          "seconds": 0.265,
+          "log_sha256": "a38808835468d94853988b41a3f523038ae8c1f6ea59fb770c16c820aaafef84",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 28,
+          "schema": "objectshard-physics-bridge-test-v1",
+          "seconds": 0.265,
+          "log_sha256": "a38808835468d94853988b41a3f523038ae8c1f6ea59fb770c16c820aaafef84",
+          "actual_render_execution": false
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 28,
+          "schema": "objectshard-physics-bridge-test-v1",
+          "seconds": 0.404,
+          "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+          "actual_render_execution": false
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 28,
+          "schema": "objectshard-physics-bridge-test-v1",
+          "seconds": 0.383,
+          "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+          "actual_render_execution": false
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 28,
+          "schema": "objectshard-physics-bridge-test-v1",
+          "seconds": 0.387,
+          "log_sha256": "e490d3a2efeeb3e7b36b8b5e829dacd8e777b61ae6112e62b8255faaa9ded0e6",
+          "actual_render_execution": false
+        }
+      }
+    },
+    "rest": {
+      "path": "godot/tests/test_object_shard_rest_contacts.gd",
+      "sha256": "3e508979566ae603902d9e2318e661b7169c6d27b45d2ccaf57da002596a8ba9",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 37,
+          "schema": "objectshard-rest-contact-test-v1",
+          "seconds": 0.459,
+          "log_sha256": "f4abcd8add541499196c1065d9bf4ae3c44b852dd84bd894bda83b4dd1d21608",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 37,
+          "schema": "objectshard-rest-contact-test-v1",
+          "seconds": 0.265,
+          "log_sha256": "59c06736643160bf3c16592c3202855066e431b9826d8fee2401614e4d0d2cc3",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 37,
+          "schema": "objectshard-rest-contact-test-v1",
+          "seconds": 0.265,
+          "log_sha256": "59c06736643160bf3c16592c3202855066e431b9826d8fee2401614e4d0d2cc3",
+          "actual_render_execution": false
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 37,
+          "schema": "objectshard-rest-contact-test-v1",
+          "seconds": 0.678,
+          "log_sha256": "f4abcd8add541499196c1065d9bf4ae3c44b852dd84bd894bda83b4dd1d21608",
+          "actual_render_execution": false
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 37,
+          "schema": "objectshard-rest-contact-test-v1",
+          "seconds": 0.663,
+          "log_sha256": "f4abcd8add541499196c1065d9bf4ae3c44b852dd84bd894bda83b4dd1d21608",
+          "actual_render_execution": false
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 37,
+          "schema": "objectshard-rest-contact-test-v1",
+          "seconds": 0.666,
+          "log_sha256": "f4abcd8add541499196c1065d9bf4ae3c44b852dd84bd894bda83b4dd1d21608",
+          "actual_render_execution": false
+        }
+      }
+    },
+    "preview": {
+      "path": "godot/tests/test_object_shard_m4_edit_preview_render.gd",
+      "sha256": "c6c5c2e29e76f0669c8a8c10552ac74a4f16274d4b533fefa3a61ad8a8d598c4",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_native_renderer": {
+          "status": "passed",
+          "checks": 102,
+          "schema": "objectshard-m4-edit-preview-render-v1",
+          "seconds": 158.498,
+          "log_sha256": "1ee01a4fad967047d195ffe3263437540825e83ac352b0d3a3e492fdbc9750eb",
+          "actual_render_execution": true
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 102,
+          "schema": "objectshard-m4-edit-preview-render-v1",
+          "seconds": 25.513,
+          "log_sha256": "2685054977df5aa40d1df03f8476e148882c1dfc2df0cc8def69eb1c5f1d5029",
+          "actual_render_execution": true
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 102,
+          "schema": "objectshard-m4-edit-preview-render-v1",
+          "seconds": 162.027,
+          "log_sha256": "a1a07d84de5c8b5dcffd55391f8ca150af28115ff210a08882c025ca272b209d",
+          "actual_render_execution": true
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 102,
+          "schema": "objectshard-m4-edit-preview-render-v1",
+          "seconds": 132.575,
+          "log_sha256": "41114934c0f0c24f36378a285a255cff978c97495d819568fe116727666a17e9",
+          "actual_render_execution": true
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 102,
+          "schema": "objectshard-m4-edit-preview-render-v1",
+          "seconds": 208.102,
+          "log_sha256": "41114934c0f0c24f36378a285a255cff978c97495d819568fe116727666a17e9",
+          "actual_render_execution": true
+        }
+      }
+    },
+    "transport": {
+      "path": "godot/tests/test_object_shard_live_edit_contract.gd",
+      "sha256": "9b49002c171be5f222851825910f712de060967eea3186e38c9ba9b348a5f833",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 65,
+          "schema": "objectshard-live-edit-transport-contract-v1",
+          "seconds": 1.483,
+          "log_sha256": "5d75e9d2398d191e3abb8d9628ddc97d66ae89e52a2e917361763d68e4b579c1",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 65,
+          "schema": "objectshard-live-edit-transport-contract-v1",
+          "seconds": 1.203,
+          "log_sha256": "8d18d7031e9faafd6e4b7ffdc9ae56886c5f9dd350e0160800b94b14e2d8ae69",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 65,
+          "schema": "objectshard-live-edit-transport-contract-v1",
+          "seconds": 1.203,
+          "log_sha256": "8d18d7031e9faafd6e4b7ffdc9ae56886c5f9dd350e0160800b94b14e2d8ae69",
+          "actual_render_execution": false
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 65,
+          "schema": "objectshard-live-edit-transport-contract-v1",
+          "seconds": 2.258,
+          "log_sha256": "5d75e9d2398d191e3abb8d9628ddc97d66ae89e52a2e917361763d68e4b579c1",
+          "actual_render_execution": false
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 65,
+          "schema": "objectshard-live-edit-transport-contract-v1",
+          "seconds": 2.057,
+          "log_sha256": "5d75e9d2398d191e3abb8d9628ddc97d66ae89e52a2e917361763d68e4b579c1",
+          "actual_render_execution": false
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 65,
+          "schema": "objectshard-live-edit-transport-contract-v1",
+          "seconds": 2.056,
+          "log_sha256": "5d75e9d2398d191e3abb8d9628ddc97d66ae89e52a2e917361763d68e4b579c1",
+          "actual_render_execution": false
+        }
+      }
+    },
+    "diagnostics": {
+      "path": "godot/tests/test_object_shard_live_edit_diagnostics.gd",
+      "sha256": "0e08a5e9ed8c7112dc298aed45e9b077cb9bef49517aa04624e7ca8d4f7fb926",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 27,
+          "schema": "objectshard-live-edit-diagnostics-test-v1",
+          "seconds": 0.282,
+          "log_sha256": "70ad6fdd3b3052bb0b00c6f3f51212f6312edabc2c1c7e935c202d04b849c922",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 27,
+          "schema": "objectshard-live-edit-diagnostics-test-v1",
+          "seconds": 0.165,
+          "log_sha256": "20d4d3f266b73948b00ce7ea8fc6ee848932095845ff34f17e0339a68400c85e",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 27,
+          "schema": "objectshard-live-edit-diagnostics-test-v1",
+          "seconds": 0.165,
+          "log_sha256": "20d4d3f266b73948b00ce7ea8fc6ee848932095845ff34f17e0339a68400c85e",
+          "actual_render_execution": false
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 27,
+          "schema": "objectshard-live-edit-diagnostics-test-v1",
+          "seconds": 0.299,
+          "log_sha256": "70ad6fdd3b3052bb0b00c6f3f51212f6312edabc2c1c7e935c202d04b849c922",
+          "actual_render_execution": false
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 27,
+          "schema": "objectshard-live-edit-diagnostics-test-v1",
+          "seconds": 0.29,
+          "log_sha256": "70ad6fdd3b3052bb0b00c6f3f51212f6312edabc2c1c7e935c202d04b849c922",
+          "actual_render_execution": false
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 27,
+          "schema": "objectshard-live-edit-diagnostics-test-v1",
+          "seconds": 0.29,
+          "log_sha256": "70ad6fdd3b3052bb0b00c6f3f51212f6312edabc2c1c7e935c202d04b849c922",
+          "actual_render_execution": false
+        }
+      }
+    },
+    "facade": {
+      "path": "godot/tests/test_object_shard_m4_same_world_extension.gd",
+      "sha256": "8eda5c200803e4efee435a585c478ab5e8bed047fe7cac9f85b81824c1b5bbda",
+      "implemented": true,
+      "exact_source_received_receipts": {
+        "windows_headless": {
+          "status": "passed",
+          "checks": 59,
+          "schema": "objectshard-m4-actual-godot-sameworld-v1",
+          "seconds": 0.366,
+          "log_sha256": "e65f3c5a45e7084a776f7fb129294809e126cfdf7d1169d397622fe75e47dfd2",
+          "actual_render_execution": false
+        },
+        "linux_headless": {
+          "status": "passed",
+          "checks": 59,
+          "schema": "objectshard-m4-actual-godot-sameworld-v1",
+          "seconds": 0.365,
+          "log_sha256": "d7c0adf8b92d5bf07b20e5466bfbf804814c7cc64a20c963ac3eb68f87b5b8d3",
+          "actual_render_execution": false
+        },
+        "linux_graphical": {
+          "status": "passed",
+          "checks": 59,
+          "schema": "objectshard-m4-actual-godot-sameworld-v1",
+          "seconds": 0.365,
+          "log_sha256": "d7c0adf8b92d5bf07b20e5466bfbf804814c7cc64a20c963ac3eb68f87b5b8d3",
+          "actual_render_execution": false
+        },
+        "windows_graphical": {
+          "status": "passed",
+          "checks": 59,
+          "schema": "objectshard-m4-actual-godot-sameworld-v1",
+          "seconds": 0.587,
+          "log_sha256": "e65f3c5a45e7084a776f7fb129294809e126cfdf7d1169d397622fe75e47dfd2",
+          "actual_render_execution": false
+        },
+        "windows_package": {
+          "status": "passed",
+          "checks": 59,
+          "schema": "objectshard-m4-actual-godot-sameworld-v1",
+          "seconds": 0.475,
+          "log_sha256": "e65f3c5a45e7084a776f7fb129294809e126cfdf7d1169d397622fe75e47dfd2",
+          "actual_render_execution": false
+        },
+        "independent_windows_package": {
+          "status": "passed",
+          "checks": 59,
+          "schema": "objectshard-m4-actual-godot-sameworld-v1",
+          "seconds": 0.478,
+          "log_sha256": "e65f3c5a45e7084a776f7fb129294809e126cfdf7d1169d397622fe75e47dfd2",
+          "actual_render_execution": false
+        }
+      }
+    }
+  },
+  "workbench_requirements": [
+    {
+      "requirement": 1,
+      "description": "Ordinary eraser removes a structural support",
+      "fixtures": [
+        "input",
+        "stress"
+      ],
+      "assertions": "Production world_view.gui_input right-button/motion events remove authored ordinary supports; stress Slice debits all48 terrain cells across8 support stems.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 2,
+      "description": "Structure detaches and falls",
+      "fixtures": [
+        "input",
+        "constructions"
+      ],
+      "assertions": "After support removal, native owned bodies appear and semantic ticks progress; each new demonstration runs45 physical ticks with material accounting.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 3,
+      "description": "Same interaction continues against detached material",
+      "fixtures": [
+        "input",
+        "constructions"
+      ],
+      "assertions": "Held ordinary mode0 eraser transitions from terrain support into detached material without tool change; mixed yard then routes the same eraser into its rooted ordinary wing.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 4,
+      "description": "Brush mutates multiple cells with one reconstruction per owner",
+      "fixtures": [
+        "input",
+        "tools",
+        "stress"
+      ],
+      "assertions": "Actual admitted multi-cell edits require successful native receipts, exact removed-material census and one geometry reconstruction per affected owner; wide radius 24 edits must actually mutate eligible material.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 5,
+      "description": "Falling or rotating body remains editable",
+      "fixtures": [
+        "input",
+        "tools",
+        "footprints"
+      ],
+      "assertions": "Actual falling material remains editable; Slice release records an unfinished segment or completed interval whose native tick is still due/busy, followed by safe admission and real severing. Rotated coordinate/occlusion math has separate value-contract coverage.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 6,
+      "description": "Sleeping body can be cut and wake or fragment",
+      "fixtures": [
+        "input",
+        "tools",
+        "rest"
+      ],
+      "assertions": "Natural Rapier sleeping body is cut and wakes; settled panel Slice produces connected-island split and actual child bodies; retained support-removal tests verify natural wake.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 7,
+      "description": "Slice severs a substantial structural member",
+      "fixtures": [
+        "tools"
+      ],
+      "assertions": "169-cell slice changes islands 1->2, installs fragmentation and continues30 actual physical ticks.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 8,
+      "description": "Weathering is bounded and reproducible",
+      "fixtures": [
+        "tools"
+      ],
+      "assertions": "Seed91999, density35%, radius8 removes69 actual cells; a fresh authored replay reproduces the exact removed coordinates.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 9,
+      "description": "Drill creates an actual structural hole",
+      "fixtures": [
+        "tools"
+      ],
+      "assertions": "Radius4 circular Drill removes49 cells, native center becomes Empty and receipt records one owner reconstruction.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 10,
+      "description": "Area ignition does not perpetually reset combustion",
+      "fixtures": [
+        "tools"
+      ],
+      "assertions": "49-cell ignition followed by60 semantic ticks and repeat application preserves existing nonzero countdown rather than restarting it.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 11,
+      "description": "Pointer release stops future admission",
+      "fixtures": [
+        "input",
+        "stress"
+      ],
+      "assertions": "Global outside-canvas release produces no new admitted capsule over16 callbacks; maximum-radius release drops the remaining stroke tail. Already admitted work may finish.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 12,
+      "description": "Camera changes preserve targeting",
+      "fixtures": [
+        "input",
+        "footprints",
+        "preview"
+      ],
+      "assertions": "Production canvas input edits remain camera-correct after pan, zoom and resize, and stale gestures cancel. The separate real-cursor render fixture injects viewport mouse events, checks ten framebuffer outline controls and records Escape/window-resize cancellation. Synthetic footprint and foreground-order mathematics remain separately identified value-contract coverage.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": false,
+        "windows_native_renderer": false,
+        "linux_headless": false,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true,
+      "evidence_components": {
+        "production_canvas_input": {
+          "fixture": "input",
+          "receipts": {
+            "windows_headless": {
+              "status": "passed",
+              "checks": 109,
+              "schema": "objectshard-m4-live-input-v1",
+              "seconds": 11.616,
+              "log_sha256": "874b3fdef0ceccadc263bad29bd80706963e48d8ec1737f412d3700536c4decc",
+              "actual_render_execution": false
+            },
+            "linux_headless": {
+              "status": "passed",
+              "checks": 109,
+              "schema": "objectshard-m4-live-input-v1",
+              "seconds": 7.713,
+              "log_sha256": "c654ffd98d60b0ec646552615400e2e229a700753cd2818914cd9a6b32debe79",
+              "actual_render_execution": false
+            },
+            "linux_graphical": {
+              "status": "passed",
+              "checks": 125,
+              "schema": "objectshard-m4-live-input-v1",
+              "seconds": 23.251,
+              "log_sha256": "f3c9536917822379d78fce606a8695b34c47b58c7ff07e2d2c70c5f7f5f341e4",
+              "actual_render_execution": true
+            },
+            "windows_graphical": {
+              "status": "passed",
+              "checks": 125,
+              "schema": "objectshard-m4-live-input-v1",
+              "seconds": 155.024,
+              "log_sha256": "971786138c59d5324acdb0c8662e51b2c63c72156e3a314990e0fcee4fca6638",
+              "actual_render_execution": true
+            },
+            "windows_package": {
+              "status": "passed",
+              "checks": 125,
+              "schema": "objectshard-m4-live-input-v1",
+              "seconds": 106.101,
+              "log_sha256": "53ead9efe5296acdbbfa3529f097e7ef695b773c69dc5b04c7ede33613e0c275",
+              "actual_render_execution": true
+            },
+            "independent_windows_package": {
+              "status": "passed",
+              "checks": 125,
+              "schema": "objectshard-m4-live-input-v1",
+              "seconds": 156.432,
+              "log_sha256": "d1edb3d2434ee0208202f037d725612d41d541c1569fcff64509ea54a9e9860a",
+              "actual_render_execution": true
+            }
+          }
+        },
+        "synthetic_projection_and_foreground_math": {
+          "fixture": "footprints",
+          "receipts": {
+            "windows_headless": {
+              "status": "passed",
+              "checks": 19,
+              "schema": "objectshard-m4-visible-footprints-v1",
+              "seconds": 1.576,
+              "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+              "actual_render_execution": false
+            },
+            "linux_headless": {
+              "status": "passed",
+              "checks": 19,
+              "schema": "objectshard-m4-visible-footprints-v1",
+              "seconds": 1.303,
+              "log_sha256": "a990fa475869e9694103fe76aa5045010b378d1334d06e537110c694a4e63c40",
+              "actual_render_execution": false
+            },
+            "linux_graphical": {
+              "status": "passed",
+              "checks": 19,
+              "schema": "objectshard-m4-visible-footprints-v1",
+              "seconds": 1.304,
+              "log_sha256": "a990fa475869e9694103fe76aa5045010b378d1334d06e537110c694a4e63c40",
+              "actual_render_execution": false
+            },
+            "windows_graphical": {
+              "status": "passed",
+              "checks": 19,
+              "schema": "objectshard-m4-visible-footprints-v1",
+              "seconds": 2.352,
+              "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+              "actual_render_execution": false
+            },
+            "windows_package": {
+              "status": "passed",
+              "checks": 19,
+              "schema": "objectshard-m4-visible-footprints-v1",
+              "seconds": 2.151,
+              "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+              "actual_render_execution": false
+            },
+            "independent_windows_package": {
+              "status": "passed",
+              "checks": 19,
+              "schema": "objectshard-m4-visible-footprints-v1",
+              "seconds": 2.249,
+              "log_sha256": "82b85c49b3ea7051a0b6442e3f7129b96781d8476b9b91d18f21018d55d8e61f",
+              "actual_render_execution": false
+            }
+          }
+        },
+        "real_warped_cursor_and_framebuffer_preview": {
+          "fixture": "preview",
+          "receipts": {
+            "windows_native_renderer": {
+              "status": "passed",
+              "checks": 102,
+              "schema": "objectshard-m4-edit-preview-render-v1",
+              "seconds": 158.498,
+              "log_sha256": "1ee01a4fad967047d195ffe3263437540825e83ac352b0d3a3e492fdbc9750eb",
+              "actual_render_execution": true
+            },
+            "linux_graphical": {
+              "status": "passed",
+              "checks": 102,
+              "schema": "objectshard-m4-edit-preview-render-v1",
+              "seconds": 25.513,
+              "log_sha256": "2685054977df5aa40d1df03f8476e148882c1dfc2df0cc8def69eb1c5f1d5029",
+              "actual_render_execution": true
+            },
+            "windows_graphical": {
+              "status": "passed",
+              "checks": 102,
+              "schema": "objectshard-m4-edit-preview-render-v1",
+              "seconds": 162.027,
+              "log_sha256": "a1a07d84de5c8b5dcffd55391f8ca150af28115ff210a08882c025ca272b209d",
+              "actual_render_execution": true
+            },
+            "windows_package": {
+              "status": "passed",
+              "checks": 102,
+              "schema": "objectshard-m4-edit-preview-render-v1",
+              "seconds": 132.575,
+              "log_sha256": "41114934c0f0c24f36378a285a255cff978c97495d819568fe116727666a17e9",
+              "actual_render_execution": true
+            },
+            "independent_windows_package": {
+              "status": "passed",
+              "checks": 102,
+              "schema": "objectshard-m4-edit-preview-render-v1",
+              "seconds": 208.102,
+              "log_sha256": "41114934c0f0c24f36378a285a255cff978c97495d819568fe116727666a17e9",
+              "actual_render_execution": true
+            }
+          }
+        }
+      },
+      "combined_windows_source_coverage": {
+        "lanes": [
+          "windows_headless",
+          "windows_native_renderer"
+        ],
+        "covered": true,
+        "scope": "The actual input and mathematical footprint fixtures run in the Windows headless matrix; the real cursor, viewport dispatch and framebuffer fixture runs in the exact-source native renderer lane."
+      }
+    },
+    {
+      "requirement": 13,
+      "description": "Scene replacement retires previous input and owner",
+      "fixtures": [
+        "input",
+        "stress"
+      ],
+      "assertions": "Restore/replacement during held or pending gestures cancels future admission and installs a new session; no prior scene tail mutates the replacement.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    },
+    {
+      "requirement": 14,
+      "description": "ObjectShard-disabled ordinary editing stays compatible",
+      "fixtures": [
+        "disabled"
+      ],
+      "assertions": "Actual Main without the opt-in flag receives ordinary right-button eraser input, removes the intended Wall cell, preserves its neighbour and creates no hidden structural owner.",
+      "implemented": true,
+      "physical_owner_status": "pending",
+      "received_lane_coverage": {
+        "windows_headless": true,
+        "windows_native_renderer": false,
+        "linux_headless": true,
+        "linux_graphical": true,
+        "windows_graphical": true,
+        "windows_package": true,
+        "independent_windows_package": true
+      },
+      "received_cross_lane_coverage": true
+    }
+  ],
+  "important_boundaries": [
+    {
+      "boundary": "Single-cell equivalence and maximum native batch",
+      "evidence": "native storage: batched_erase_is_atomic_bounded_and_rebuilds_once; maximum_batch_and_single_cell_equivalence",
+      "assertion": "Exact single-cell equivalence, duplicate elimination, all 4,096-cell removal and bounded maximum.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Atomic witness prevalidation",
+      "evidence": "native coordinator: m4_batch_witness_atomicity_and_material_accounting; facade",
+      "assertion": "Every witness validated before debit; stale/foreign revisions and malformed outer position refuse; valid different projected positions may dedupe to one material cell.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Collider complexity/capacity",
+      "evidence": "native storage batched erase preflight",
+      "assertion": "Exact surviving geometry prepared before mutation; capacity refusal preserves inventory and collider state.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Fragment owner capacity",
+      "evidence": "native coordinator: m4_batch_fragment_capacity_retains_inventory_and_recovers",
+      "assertion": "Existing capacity policy retains compound inventory under pressure and later recovers, with no silent loss.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Terrain generation overflow",
+      "evidence": "native coordinator: m4_batch_world_generation_preflight_is_nonwrapping",
+      "assertion": "World journal preflight refuses nonwrapping capacity before any debit.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Deterministic selection and no-op",
+      "evidence": "native coordinator: m4_batch_weathering_and_ignition_are_deterministic; tools",
+      "assertion": "Native deterministic coordinate selection independent of request order; no-op has zero rebuild and existing fire is not reset.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Foreground ownership and hidden terrain",
+      "evidence": "native coordinator: m4_world_batch_is_witnessed_deduplicated_and_owner_protected; footprints",
+      "assertion": "Actual Product material in a true collider hole protects hidden terrain; synthetic overlapping owners test Cargo/Product foreground ranking and true Empty visibility.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Large footprint and long Slice",
+      "evidence": "footprints; stress",
+      "assertion": "Radius 24 bounded footprints \u2264 4,096 with bounded scan count; partial freehand capsule is observable, oversized deliberate Slice refuses without a clipped success; actual wide edits must report Applied.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Malformed/lost/stale/uncertain receipt",
+      "evidence": "live_edit_contract; retained edit_delivery",
+      "assertion": "Strict scalar/envelope/source-target echoes and terrain subsets are checked; malformed or uncertain completion retains defensive state rather than a fabricated success.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Mass, inertia, COM and velocity",
+      "evidence": "physics_bridge; actual input/tools/constructions f.validate",
+      "assertion": "Surviving occupied material drives physical properties; COM changes preserve the velocity field of surviving material. Open-system erasure does not claim total momentum conservation.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Natural sleeping support removal",
+      "evidence": "rest_contacts; live_input",
+      "assertion": "Sleeping bodies remain eligible; removal of support causes natural wake rather than artificial suspension.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Sparse carrier and retained physical regressions",
+      "evidence": "retained fragment_reabsorption; physics_bridge; retained source/package matrices",
+      "assertion": "Sparse parent geometry, exact child geometry, reabsorption and conservative occupied motion bounds retain their existing assertions.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Complete owner retirement",
+      "evidence": "live_tools",
+      "assertion": "All 147 remaining owned cells (144 Wood plus 3 Wall support-cap cells) are intentionally erased and body is retired; accounting includes every material.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Prolonged interaction with 8 owned bodies",
+      "evidence": "live_stress",
+      "assertion": "180 semantic ticks precede edits; all 8 original owners are edited; owned and awake counts are recorded separately; repeated mutations and wider edits preserve progression and no Held state.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Rapid controls and cancellation",
+      "evidence": "live_stress; preview render fixture",
+      "assertion": "Tool switching, pause/resume, release and scene replacement cancel unadmitted work; actual viewport wheel/pan/Escape preview cancellation is separate graphical qualification.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Owner authored recipe",
+      "evidence": "owner_authored; creative_scenes",
+      "assertion": "Exact 4,207-byte attached recipe SHA ad00c753..., 5,465 Wood/Brick cells, 90 native ticks, fresh reconstruction and explicit original_live_state_restored=false.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "New creative constructions",
+      "evidence": "creative_scenes; creative_constructions",
+      "assertion": "Perforated wall, weathered timber shed and mixed terrain/owned yard use ordinary demo routes and genuine material holes; owner tower extends preserved original five scenes.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    },
+    {
+      "boundary": "Delivered package custody and launchers",
+      "evidence": "fresh independent-windows-package workflow; verify_workbench_package.py/.ps1",
+      "assertion": "Immutable uploaded artifact ID, four clean shipped CMD path probes with negative mutations, exact source/native/runtime manifest checks and package-only engine/scripts replay.",
+      "qualification_scope": "Use the exact-source fixture receipts above and separately bound native/package audit below; no previous campaign status is inherited."
+    }
+  ],
+  "independent_native_report": {
+    "schema_version": 1,
+    "reviewer": "native-transactions-specialist-A",
+    "verified_at": "2026-11-28T08:36:56.189679+00:00",
+    "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+    "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+    "workflow_run": 46125028803,
+    "workflow_attempt": 1,
+    "job_id": 140917627621,
+    "job_url": "https://github.com/techrote/cybersand/actions/runs/46125028803/job/140917627621",
+    "job_conclusion": "success",
+    "artifact_id": 15256121073,
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256121073",
+    "archive_sha256": "4c93830e84b0b1bd101433e9ed643a7557c42b6b60f266bc409d16adae779363",
+    "archive_bytes": 138715641,
+    "unique_git_blob_inputs_verified": 136,
+    "native_input_digest": "2e3708200d848634ca5c270c539746b17abaf4dacdb995cc762f448485d67d6f",
+    "native_inputs_verified": 133,
+    "native_compiler": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.",
+    "native_checks": 138280,
+    "ordinary_world_test_cases": 192,
+    "sanitizers": [
+      "address",
+      "undefined"
+    ],
+    "leak_sanitizer": false,
+    "suites": {
+      "admission": {
+        "status": "passed",
+        "checks": 28092,
+        "count_unit": "checks",
+        "failures": 0,
+        "binary_sha256": "76061ac67d703a7db3e16b623eca587e784a88ec089f284684887e03aadeaff1",
+        "execution_seconds": 1.3095584340000528,
+        "log_sha256": "0c2146664d17b4b84bafc5991477b1ca0ba6d1b105078c4b9920bbc8b1bad4bb"
+      },
+      "chemistry": {
+        "status": "passed",
+        "checks": 4472,
+        "count_unit": "checks",
+        "failures": 0,
+        "binary_sha256": "92846ee381ef37f08b815bb43de15450683dc20169120ad1d7b21823a3d0d998",
+        "execution_seconds": 1.3005612489999976,
+        "log_sha256": "06a8fc85daa6e3943d6b22f779c2e62bb84c745dcc8e0eeb0dd708fff3233bda"
+      },
+      "contact": {
+        "status": "passed",
+        "checks": 81255,
+        "count_unit": "checks",
+        "failures": 0,
+        "binary_sha256": "9a579ad49fa01f634e341837b99c02848d96dc92f016845edda766446c947f1a",
+        "execution_seconds": 0.01594129399995836,
+        "log_sha256": "51f393c131c2d1f86e6dfbe04fdcb5f941472d12c8ea781bcad3b582ae8a35d7"
+      },
+      "coordinator": {
+        "status": "passed",
+        "checks": 7100,
+        "count_unit": "checks",
+        "failures": 0,
+        "binary_sha256": "3dadad99be85a58342323988bbe15787ea17d1cc271e1b1d9df9a89cd8d0712f",
+        "execution_seconds": 13.991404629000044,
+        "log_sha256": "9f6d6b17c4198a12742c8c5170ab8ca67bd61ddc6e608a5a4ee06e975ba86015"
+      },
+      "external_fire": {
+        "status": "passed",
+        "checks": 3689,
+        "count_unit": "checks",
+        "failures": 0,
+        "binary_sha256": "707906be809446a592769ab8d2bb4fea9c2b7a0d1346bbe1573d9b63b456783d",
+        "execution_seconds": 0.8320761570000172,
+        "log_sha256": "153d38884d50f76a4fe7adfb7c83d85245b591fa3a7936be4e0b5fbf6167139c"
+      },
+      "storage": {
+        "status": "passed",
+        "checks": 13672,
+        "count_unit": "checks",
+        "failures": 0,
+        "binary_sha256": "320be68455c18650c7adc302f3101bacad4d3bc45768ce8e98dbe107047e0029",
+        "execution_seconds": 0.13726926800001138,
+        "log_sha256": "6d0f2e8a0c47fd5b71aa605f506094e5e86f1d59d6cff54198a8e976f1fc74b8"
+      },
+      "world": {
+        "status": "passed",
+        "checks": 192,
+        "count_unit": "test_cases",
+        "failures": 0,
+        "binary_sha256": "0437775667d3bdfb1217d4f8c2a9a5b7f9ce282bb7ab69e55a9c5c49e50f5869",
+        "execution_seconds": 434.422820689,
+        "log_sha256": "602f6e4c0c856e3e549e6d24d5579242dcaf495946189923d6e52154ad40dd48"
+      }
+    },
+    "native_suite_elapsed_seconds": 629.805707014,
+    "budget_input_digest": "d9d819fb408afa13bd8219f26a379ea72799cc23159bc7057fb30c44a8e2d37a",
+    "budget_binary_sha256": "cf4dddd66a0c59e299550df9cb7b25376864a45707394acb66a194555c4b13f6",
+    "budget_checks": 4276351,
+    "budget_limits_checked": 74,
+    "budget_ticks": 1200,
+    "budget_repetitions": 3,
+    "budget_status": "PASS",
+    "python_qualification_contract_tests": 86,
+    "python_qualification_skips": 0,
+    "actual_portable_powershell_test": "PASS",
+    "portable_powershell_scope": "Actual PowerShell verifier exercised by hosted Python fixture, including generator, missing-scene and package-input refusals. Hosted PowerShell version not separately retained. Local correction also passed all86 tests with release-hash-verified PowerShell7.4.6.",
+    "material_catalogue_tests": 231,
+    "material_compatibility_status": "PASS",
+    "material_compiled_parity_status": "PASS",
+    "material_compiled_parity_scope": "Native parity for shadow metadata and authenticated constant consumers; no World execution",
+    "provider_policy_status": "passed",
+    "members": {
+      "native/summary.json": {
+        "sha256": "376368b61ab486a73b0b177cbaf4973e7d2979b9e7e6df1474816967dc58a2a1",
+        "bytes": 20819
+      },
+      "retained-lab-native-budgets/summary.json": {
+        "sha256": "04d9a61946afb08d4d85f894ec2b9d07201f368f91b1c3ba1c8c66ed57d30881",
+        "bytes": 3718
+      },
+      "material-compatibility-gate.json": {
+        "sha256": "7bcff308358e610836fa679ed0e7490d971b7ca3baf408abd5b03b6c04f4c1ab",
+        "bytes": 24707
+      },
+      "material-catalogue-check.json": {
+        "sha256": "bc00bbaa8af2e9783c6242fdca6a311bfd422d439248b0952bf8c94199f76acc",
+        "bytes": 82
+      },
+      "material-native-parity.json": {
+        "sha256": "12d183ef8c2af889e0ab547cdc90973b36f5533723c967ca50be95a2d70ad33f",
+        "bytes": 36906
+      },
+      "qualification-contracts.log": {
+        "sha256": "21572be2e15153005c5000d53be9ee1800c95557971ba948069f193084c82520",
+        "bytes": 14235
+      },
+      "material-compatibility.log": {
+        "sha256": "c9ae0b6896fbc2a52df36de81300f88a99642d71653edc27058ea4efaf4b6cd3",
+        "bytes": 37355
+      },
+      "provider-policy.log": {
+        "sha256": "4e64d073155dc5a1655bf13eb2060b8f9930ba169e749c6ec486ba2248b1618f",
+        "bytes": 280
+      },
+      "retained-lab-native-budgets/20261128T082722.139177Z-d9d819fb408a/benchmark.json": {
+        "sha256": "b93a0faa4979da998f6ea37410d0326e36c5ea78773f88da1f39eae4de67283c",
+        "bytes": 42269
+      }
+    },
+    "windows_native_producer": {
+      "job_id": 140917627477,
+      "artifact_id": 15255840239,
+      "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+      "native_bytes": 7346176,
+      "unique_git_blob_inputs_verified": 1518,
+      "status": "PASS"
+    },
+    "input_continuity": {
+      "first_campaign_source": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+      "first_campaign_publication_gate_status": "FAILED",
+      "native_and_budget_input_digests_identical": true,
+      "matched_benchmark_original_execution_source": "ace52bc6e9b3b958ed164f3328d02b07cf2d5c50",
+      "matched_benchmark_identical_git_inputs": 96,
+      "matched_benchmark_report_sha256": "60be0222b7d684952c0acc08296dac24f4db84999da20a83c42569d5b24bec41",
+      "matched_benchmark_scope": "Original585checks/15matchedpairs executed at ace52bc6; all96 native inputs independently rehashed identical at ba6d8de4. Original timing/execution identity preserved; this continuity proof is not another benchmark execution."
+    },
+    "transaction_contract_qualification": "Expected stale/foreign/protected/capacity refusals preflight before material debit. One-owner batches do not claim whole-gesture atomicity or rollback after an unexpected commit failure; changed prefixes are accounted, reported partial/Quarantined and held for authoritative recovery.",
+    "scope": "Exact-source Linux hosted native sanitizer, retained native budget, qualification/PowerShell/material/provider gates plus independently verified Windows crossbuilt producer identity. Windows target execution, extracted evaluator qualification and physical owner evaluation are separate evidence.",
+    "status": "PASS"
+  },
+  "independent_native_report_sha256": "5192f5e83984a70d9c153963d39ae619463abb5748b9d5de1fdd871166e25c06",
+  "known_limits": [
+    "Slice and Drill place one owner transaction; a continuous gesture may visit multiple owners in a deterministic sequence but is not atomic across owners.",
+    "During play, hold Drill until native admission, or pause for a precise click. Releasing before admission cancels the placement; admitted work remains tracked through its authoritative result.",
+    "Native owner batch is at most 4,096 cells; UI radius is 0\u201324. Long freehand movement is bounded/coalesced; a too-large deliberate Slice refuses visibly.",
+    "Slice release commits one immutable intent with a 2-second safe-admission deadline; camera/tool/scene/new-gesture cancellation retires it before native admission.",
+    "Capacity pressure uses retained M4 compound ownership and explicit refusal. No debris-budget redesign is included.",
+    "Weathering removes authoritative material with deterministic selection. Repair, addition, welding, composition, stress/fatigue and Impact are not part of this candidate.",
+    "Saved authored-start constructions reconstruct a new World. They are not serialized live rigid-body checkpoints.",
+    "Local headless and hosted software-rendered timings are not physical Ryzen 5 5600X/TITAN RTX performance. Owner physical acceptance remains pending.",
+    "PR #754 remains Draft/HOLD. Mainline reconciliation and definitive integration acceptance belong to the subsequent mission.",
+    "The immutable evaluator retains its original bundled guide. Final repository delivery notes clarify live Drill admission, admitted-work cancellation semantics, continued-stroke throttling and weathering-pass reset behavior against the same frozen application."
+  ],
+  "physical_owner_acceptance": "pending"
+}

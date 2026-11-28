@@ -1,0 +1,38 @@
+{
+  "schema": "objectshard-live-edit-final-mainline-review-v1",
+  "reviewed_utc": "2026-11-28T08:18:23.162992+00:00",
+  "application_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "main_source": "50e3bcb839211eac2abe1e065750cbcba4d36f8c",
+  "merge_base": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+  "main_only_commits": 48,
+  "application_only_commits": 194,
+  "preview_exit_code": 1,
+  "conflicted_uncommitted_tree": "2edac079c46da524da944111a6b97cb5b621ef76",
+  "conflict_paths": [
+    "docs/operations/cybersand-codex-development-handover.md",
+    "docs/reference/retrieval-index.md",
+    "docs/reference/status-and-roadmap.md",
+    "godot/scripts/feature_launcher.gd",
+    "godot/scripts/shared_workbench.gd"
+  ],
+  "worktree_and_branch_unchanged": true,
+  "scope": "Read-only tree computation; no merge/index/worktree update and no combined mainline qualification.",
+  "automatic_merge_needs_semantic_review": [
+    "godot/scripts/workbench_paint_editor_controller.gd",
+    "tools/ci/run_godot_regressions.py"
+  ],
+  "next_mission": [
+    "Reconcile shared Workbench and feature-launcher changes with accepted Strata; preserve opt-in ObjectShard routing and ordinary disabled behavior.",
+    "Reconcile canonical status/handover/retrieval claims while retaining original source-bound evidence.",
+    "Run combined native, actual input, renderer and complete evaluator qualification against the reconciled source; never substitute one lineage runtime for another."
+  ],
+  "unchanged_scope_boundaries": [
+    "No M5 implementation.",
+    "No unrelated PUBPRES import.",
+    "No automatic merge or Ready promotion.",
+    "RAMCACHE accepted ancestry retained; accepted Strata/main package repair work remains outside this branch merge."
+  ],
+  "preview_output_sha256": "2c2b32be0910401eb0e8cadb77fe15515db549d66ca1d112dea9a0780cf08bf2",
+  "delivery_rechecked_utc": "2026-11-28T09:23:59.708106+00:00",
+  "delivery_recheck_main_unchanged": "50e3bcb839211eac2abe1e065750cbcba4d36f8c"
+}

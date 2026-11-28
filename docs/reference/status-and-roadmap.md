@@ -12,23 +12,35 @@ related-documents: [validation-evidence.md, invariants.md, ../operations/documen
 
 ## ObjectShard M4 live structural editing — 2026-11-28
 
-The opt-in [M4 candidate](../research/objectshard-m4-workbench.md) remains on
-Draft/HOLD PR #754. The owner positively evaluated the reliability-convergence
-Windows source `b7d889b9`; later live-edit changes require their own qualification.
-The implementation now adds one-owner bounded native batches, the unified
-eraser, swept radius controls, slices, drilling, seeded weathering, area ignition
-and bounded input-to-publication diagnostics. Native World/worker authority and
-Main's existing Rapier owner are retained. The [owner guide](../operations/objectshard-workbench-playtest.md)
-covers nine authored starts; saving remains authored-start-only.
+The opt-in [M4 live-edit candidate](../research/objectshard-m4-workbench.md) is
+qualified at application `ba6d8de45bd4d38717d92bdece7153bff115c0f0`; PR #754 remains
+**Draft/HOLD** for physical evaluation and subsequent mainline integration.
+[Campaign 46125028803](https://github.com/techrote/cybersand/actions/runs/46125028803)
+passes exact-source native and ordinary Workbench gates on Linux/Windows, plus
+a fresh Windows execution of the actual uploaded evaluator. Guarded publication
+`302f982943c0e03c30968368da8264cfb3c431ce` installs the two validated runtimes and provenance files only.
+The [delivery ledger](../audits/objectshard-m4-live-edit-20261128/README.md) binds
+all source, package, native, publication and independent review identities.
 
-The [live-edit ledger](../audits/objectshard-m4-live-edit-20261128/README.md)
-separates implementation, local checks, hosted execution, extracted evaluator
-verification and physical owner acceptance. Existing RAMCACHE ancestry is retained.
-Mainline Strata/shared Workbench and portable-package changes need a subsequent
-focused reconciliation; no unrestricted mergedown or PUBPRES import is included.
-Impact, repair, welding, stress, M5 high-population scheduling and durable live
-body saves remain outside this mission. No merge, Ready or default promotion is
-authorized by this candidate.
+Bounded one-owner native batches now power the unified eraser, swept radius
+controls, precision cutting, Slice, Drill, seeded Weathering and Area ignition.
+Visible material remains editable through ordinary supports, collapse and
+sleeping fragments, while native World/worker authority and Main Rapier ownership
+are retained. The [owner guide](../operations/objectshard-workbench-playtest.md)
+covers nine authored starts and the twelve-step evaluation route. Saving is
+construction reconstruction, not a live rigid-body checkpoint.
+
+Native batching avoids repeated reconstruction, but the matched inactive-edit
+moving-tower medians are 4.60%/6.45% lower in this short Linux campaign; the
+[performance finding](../audits/objectshard-m4-live-edit-20261128/performance-results.md)
+remains unresolved. Physical acceptance of this archive is pending; the owner's
+positive `b7d889b9` predecessor evaluation is preserved separately.
+
+Existing RAMCACHE ancestry is retained. Strata/shared Workbench and mainline
+portable-package changes need focused reconciliation and combined-source
+qualification. Impact, repair, welding, stress/fatigue, M5 scheduling and live
+body saves remain outside this mission. No merge, Ready or default promotion
+is conferred by the candidate.
 
 ## ObjectShard M0–M3 research candidates — 2026-11-22
 

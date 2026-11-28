@@ -1,0 +1,183 @@
+{
+  "schema": "objectshard-live-edit-delivered-package-render-review-v1",
+  "status": "passed",
+  "reviewer": "Specialist C",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "workflow_run": 46125028803,
+  "evaluator_artifact_id": 15256411748,
+  "execution_evidence_artifact_id": 15256726038,
+  "qualification_sha256": "1ded7d312a4977f82efb7318dc57449d913fca3f851d68d93f49b747db7755c8",
+  "preview_receipt_log_sha256": "41114934c0f0c24f36378a285a255cff978c97495d819568fe116727666a17e9",
+  "verified_preview_captures": [
+    {
+      "path": "material-presentation-captures/structural-eraser.png",
+      "sha256": "1e05d5c6f2adfe6b519e2c6acdca53c5a8c22636550a4d63352a94de77d51a14",
+      "bytes": 123824,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "material-presentation-captures/precision-cell.png",
+      "sha256": "565397464be1811ccab7370215f1b32ea2ab8a5b1e4b48df0bfddd4c69aad907",
+      "bytes": 122189,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "material-presentation-captures/drill-opening.png",
+      "sha256": "c1aa3e555e019107110fd42e154935fcc83c2a6ce2c8a5ff367dab8e9d10ffeb",
+      "bytes": 123928,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "material-presentation-captures/weathering-extent.png",
+      "sha256": "19582ed5ccf443f60aa4dd851e48a5b6f6cd628a74eae5f752b8d4464e803d34",
+      "bytes": 124078,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "material-presentation-captures/area-ignition.png",
+      "sha256": "33be33ad8004af2c9703aa02b7dfd4dd5f2827b8356825adb95956f07afcd06f",
+      "bytes": 124196,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "material-presentation-captures/ordinary-unified-eraser.png",
+      "sha256": "ae57d028199ac0e4d7a3dc5992876da790e723822c4adeb98a843e9e0532f0a0",
+      "bytes": 123256,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "material-presentation-captures/slice-preview.png",
+      "sha256": "113fdd1548334e2bc70dc1f6edb831633a963a1f75e6e6105e8e86f28466f22d",
+      "bytes": 124820,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "material-presentation-captures/zoomed-eraser.png",
+      "sha256": "6fc8ac94bdecc835c12d3ccf7695bb2b51cf22db4217143c8617ca8dfbb97ddc",
+      "bytes": 119594,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "material-presentation-captures/panned-drill.png",
+      "sha256": "046e4d87e039933095fedcb46077525367e5f3a309698c689294954c8014515b",
+      "bytes": 118790,
+      "size": [
+        1920,
+        1080
+      ]
+    },
+    {
+      "path": "material-presentation-captures/resized-weathering.png",
+      "sha256": "6a049c1ccd4e5cc6cd57a0403789cc79c2ee40626ae7bf478964e8b0c5776fc2",
+      "bytes": 88917,
+      "size": [
+        1360,
+        765
+      ]
+    },
+    {
+      "path": "material-presentation-captures/structures-controls-top.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "bytes": 87704,
+      "size": [
+        740,
+        650
+      ]
+    },
+    {
+      "path": "material-presentation-captures/structures-weathering-controls.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "bytes": 87704,
+      "size": [
+        740,
+        650
+      ]
+    }
+  ],
+  "outline_controls": 10,
+  "navigation": [
+    {
+      "kind": "escape",
+      "native_action_serial": 0,
+      "paused_after": true,
+      "paused_before": true,
+      "pointer_tool": -1
+    },
+    {
+      "kind": "window_resize",
+      "new_framebuffer": "(1360, 765)",
+      "new_logical_view": "(1880.0, 853.0)",
+      "new_screen_transform": "[X: (0.708333, 0.0), Y: (0.0, 0.708333), O: (0.0, 48.0)]",
+      "new_window": "(1360, 860)",
+      "old_framebuffer": "(1920, 1080)",
+      "old_logical_view": "(1880.0, 853.0)",
+      "old_screen_transform": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (0.0, 0.0)]",
+      "old_window": "(1920, 1080)",
+      "pointer_tool": -1
+    }
+  ],
+  "final_owner": {
+    "held_reason": "",
+    "paused": true,
+    "phase": "Ready",
+    "pointer_tool": -1,
+    "slice_committing": false
+  },
+  "visually_inspected": [
+    {
+      "path": "test_object_shard_m4_live_tools-artifacts/drilled-panel.png",
+      "sha256": "50b83f20eb3716165e5c0b1d0a8e264a197d13e23bbb0dbeb6c418c2d411fbf7",
+      "visual_observation": "Visible round opening in the actual wood panel; actual-native receipt independently proves 49 removed cells and one rebuild."
+    },
+    {
+      "path": "test_object_shard_m4_live_tools-artifacts/weathered-panel.png",
+      "sha256": "7a33b88cc9b4fdcecbade2f1e42499a38d5791251098f77f2e84735e50dec18e",
+      "visual_observation": "Visible sparse irregular pitting at the brush location; seeded material census and replay equality are asserted in the same fixture."
+    },
+    {
+      "path": "test_object_shard_m4_live_tools-artifacts/sliced-panel.png",
+      "sha256": "77c4ce2f3d72caa5d42341547c258e1c4ad720f93ace6f10260f823114b9be56",
+      "visual_observation": "Actual panel after the committed cut, with two structural owners reported; connectivity and two real fragments are established by the native/physics assertions, not inferred solely from this distant view."
+    },
+    {
+      "path": "material-presentation-captures/structures-weathering-controls.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "visual_observation": "Nine construction buttons, adjustable weathering percentage and seed, material filter, diagnostics controls and authored-start explanation are visible and readable in the actual Structures window."
+    },
+    {
+      "path": "test_object_shard_m4_creative_constructions-artifacts/construction-weathered.png",
+      "sha256": "2392f25f9ce53e4140e9e1bc126189987f49d02bc0b5ed96e8d8da1d9fb72e17",
+      "visual_observation": "The real timber shed has readable floor/wall members and visible existing pitting; this capture is paused after an acknowledged owned-material edit."
+    },
+    {
+      "path": "test_object_shard_m4_creative_constructions-artifacts/construction-editing_yard.png",
+      "sha256": "413eaa8068538ac74ad57b7cc31c7edeb018252b240422fc37adc417be97b55b",
+      "visual_observation": "The detached perforated panel is visible beside the rooted timber/brick wing, matching the mixed ownership fixture. Ordinary terrain and owned material are both present."
+    }
+  ],
+  "scope": "Actual extracted evaluator on hosted Windows ANGLE; framebuffer and immutable package evidence. Not physical owner/TITAN RTX evaluation."
+}

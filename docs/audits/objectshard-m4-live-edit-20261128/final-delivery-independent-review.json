@@ -1,0 +1,357 @@
+{
+  "schema": "objectshard-live-edit-final-delivery-independent-review-v1",
+  "reviewer": "Specialist A \u2014 native engineering and independent provenance review",
+  "verified_utc": "2026-11-28T09:52:49.399966+00:00",
+  "status": "PASS",
+  "application_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "application_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "guarded_publication": "302f982943c0e03c30968368da8264cfb3c431ce",
+  "reviewed_files": {
+    "delivery-record.json": {
+      "sha256": "f00870931d1483a99ee19190cec8eaf8f3d97d788451aa5d775957722dd0d1d1",
+      "bytes": 22041
+    },
+    "README.md": {
+      "sha256": "f3b1cc81bef1f4e3ce46a4dd07d400331387356f24e4e44af1ff93b63f3d4e11",
+      "bytes": 22774
+    }
+  },
+  "reviewer_script_sha256": "62f2ae608ab65b0169b46568902723a8e1924e0085488c0a6f02aa23df537ac5",
+  "evidence_files_verified": 28,
+  "evidence_hashes_and_sizes": [
+    {
+      "file": "final-campaign-metadata.json",
+      "sha256": "74999d169ae528cc313f784dfcd3d9a38e99f4640b24cc12ee4d50e60ff71f2e",
+      "bytes": 37163
+    },
+    {
+      "file": "final-native-hosted-review.json",
+      "sha256": "5192f5e83984a70d9c153963d39ae619463abb5748b9d5de1fdd871166e25c06",
+      "bytes": 7927
+    },
+    {
+      "file": "final-linux-workbench-review.json",
+      "sha256": "17484a23297c569998276a2435af15c0581f07a6bcc66dc192a146ec511d9e6c",
+      "bytes": 51888
+    },
+    {
+      "file": "final-windows-regressions-review.json",
+      "sha256": "6285371687f42a3416d6bb77272ca42a1efa6558386dcecd8521322cbec191c0",
+      "bytes": 22645
+    },
+    {
+      "file": "final-windows-graphical-review.json",
+      "sha256": "2dc28b3f14afc64ef9fd4df69f291c9ebe23eabf469e39d181a51e76a3c6fae6",
+      "bytes": 22381
+    },
+    {
+      "file": "final-native-renderer-independent-review.json",
+      "sha256": "bc13fa5dad5c178ec57f46d4b88d2119954dbfa6b50fbaceb12e37ac13072503",
+      "bytes": 4396
+    },
+    {
+      "file": "final-evaluator-extraction-review.json",
+      "sha256": "54e9bc957313f85ee2e2a756014d953eac64ab8bc9a1665868d05542efc9beb3",
+      "bytes": 4488
+    },
+    {
+      "file": "final-producer-package-execution-review.json",
+      "sha256": "fcb3a0a6853f5c400431738ed53e1b6d8edd4ddfb577f7f017f51edf3b52dc71",
+      "bytes": 20775
+    },
+    {
+      "file": "final-independent-package-review.json",
+      "sha256": "ceb0da99e173c6d40cf5b073b390ef268f3e07c6c44e52ff49113ff6b829e560",
+      "bytes": 21334
+    },
+    {
+      "file": "final-guarded-publication-review.json",
+      "sha256": "ad6685d69b272baf946ca95e75d71a2f054d8523c9ca2466a31288fd91314e32",
+      "bytes": 4704
+    },
+    {
+      "file": "final-principal-publication-review.json",
+      "sha256": "19adf2b7697556297ba81b20280a224ed325b663f74e2023c4abafb762cbc44d",
+      "bytes": 2280
+    },
+    {
+      "file": "final-acceptance-coverage.json",
+      "sha256": "802d65fa1346460281693a067cde94f0b0e625fc2ca1a12ddcd041be16185f2b",
+      "bytes": 72155
+    },
+    {
+      "file": "final-edit-timing-summary.json",
+      "sha256": "5a13b7aad6ca29ed92a1401761ec5ff585a108a7a97cc3a4e1dd8bfc8a8a1a6f",
+      "bytes": 34391
+    },
+    {
+      "file": "final-fresh-package-timing-review.json",
+      "sha256": "5b3451ace5ea6eac399461e64b36c3d78cb0288bbfc93ac5ebd266f46fbdf9a0",
+      "bytes": 6568
+    },
+    {
+      "file": "final-fresh-package-publication-tail-review.json",
+      "sha256": "d5242a812460acf7da34782bb6cf2c43e8f1f3b5d2c137ee8a5ae1d77b878aa3",
+      "bytes": 4476
+    },
+    {
+      "file": "final-timing-metadata-rebind-review.json",
+      "sha256": "0d6f55e63a715b1a6fa73cfc5265511594ce089e6433e6f3bcb2e8484bb78a2e",
+      "bytes": 4746
+    },
+    {
+      "file": "matched-idle-throughput.json",
+      "sha256": "deaa3b0007f008c599c4a891908654aeb9dbd4e06910820a19500aced1eb2f8a",
+      "bytes": 76279
+    },
+    {
+      "file": "matched-idle-custody.json",
+      "sha256": "cba48bd14ed16c32fec2cb1efe447a83f914606b4277443fe8ceb16cf4a97190",
+      "bytes": 11255
+    },
+    {
+      "file": "final-throughput-independent-review.json",
+      "sha256": "c7fb8af7653203dc1c554b6fa520f62ed8851a59e59592193dcb7bbd30fce90d",
+      "bytes": 21616
+    },
+    {
+      "file": "performance-results.md",
+      "sha256": "b82e546732966045cdd019307661396f0d664ca759b9d52afd263f983506bd79",
+      "bytes": 8674
+    },
+    {
+      "file": "performance-results-independent-review.json",
+      "sha256": "65bd75010c3de687fe20865b8ed846eb578958f49218152d470d837a73e99b29",
+      "bytes": 2731
+    },
+    {
+      "file": "native-batch-performance-summary.json",
+      "sha256": "5e408efa6d9a2b73935a068687f2953e50b1e9028c102ece2d2f2e0297770d9a",
+      "bytes": 3378
+    },
+    {
+      "file": "native-benchmark-final-candidate-continuity.json",
+      "sha256": "66dfc20df843efd8d004f3bc2aecf7ab93a1e3d0d9bd93dd9b861f9beb63e224",
+      "bytes": 862
+    },
+    {
+      "file": "windows-package-manifest.canonical.json",
+      "sha256": "65fabcbce5c124805a3ab4c7bbf6241b5f25b4fa87a1fa013d79296a53d970e5",
+      "bytes": 197526
+    },
+    {
+      "file": "windows-package-manifest-copy.json",
+      "sha256": "fec8b3d632b06d09f84f71230b5f596cbd611897b3c97a56d4f1bd1aaca3235b",
+      "bytes": 751
+    },
+    {
+      "file": "windows-package-native-provenance.json",
+      "sha256": "b1e8ab56cedebbfb0021e7e7931bb9f184742ef6a054e2e544a9fc5c1aeb64fc",
+      "bytes": 15728
+    },
+    {
+      "file": "specialist-c-final-handoff.json",
+      "sha256": "ae772b3cac3b14bdec7c82f4a177541f0a95621ecc7bb62fa9f45f8a0e334470",
+      "bytes": 10315
+    },
+    {
+      "file": "specialist-c-evidence-copy-map.json",
+      "sha256": "135e2d2700af18ea2b9a0eb031a7f0ebe8ca4b6e1ffd17f8e09c0bdd8f6fa4e5",
+      "bytes": 9106
+    }
+  ],
+  "readme_local_links_verified": 40,
+  "readme_local_links": [
+    {
+      "target": "delivery-record.json",
+      "sha256": "f00870931d1483a99ee19190cec8eaf8f3d97d788451aa5d775957722dd0d1d1"
+    },
+    {
+      "target": "corrective-review.json",
+      "sha256": "55b1bb15261ab6d6d40b3d3031ba9f29df4152a4fb83a21915600671fc128f32"
+    },
+    {
+      "target": "native-batch-performance-final.json",
+      "sha256": "60be0222b7d684952c0acc08296dac24f4db84999da20a83c42569d5b24bec41"
+    },
+    {
+      "target": "local-throughput-preflight.json",
+      "sha256": "d4a0ad401593b66e74dd003caf7696a48fe818303c7bd549c01871aef75a3809"
+    },
+    {
+      "target": "second-windows-failed-independent-audit.json",
+      "sha256": "79839d1e1c24ec1cdf2b97062f8c55bb0b161565f3b5520a70a3d371263beebc"
+    },
+    {
+      "target": "observer-ci-independent-review.json",
+      "sha256": "da1ecf5c41e8c75d452ee5f5224676eb2969b17b8be0ebddc4677534d326dee4"
+    },
+    {
+      "target": "windows-ci-parallel-split-verification.json",
+      "sha256": "29737379d457fe442282597ce11d19920414c1fc343b3a8be4880580fdf112cd"
+    },
+    {
+      "target": "owner-recording.json",
+      "sha256": "4ebe8248430244dc1d13edcd8df654da9b79ae441256427c834b1f909c0cf459"
+    },
+    {
+      "target": "owner-evidence-summary.json",
+      "sha256": "5bea157d9b6ff13f811cf5094204d023d6183c95e6eedbc78a359cb2348b5702"
+    },
+    {
+      "target": "owner-weathered-fragments.png",
+      "sha256": "72ce4c82df46385fea2fca18c3a7020f397a46e6b8dbeba9a0bf24d4e13aca49"
+    },
+    {
+      "target": "../../../godot/data/objectshard_owner_tower2_authored_start.json",
+      "sha256": "ad00c753b10c0a1372f2a12ef0e81300ad335ca6d5cdb81290586e13f1dad19a"
+    },
+    {
+      "target": "../../research/objectshard-m4-workbench.md#bounded-native-structural-transactions",
+      "sha256": "a4adfc3c26ce1a2214617f7d1af71e64c32be83d840807c7cbde432ba7465e92"
+    },
+    {
+      "target": "../../operations/objectshard-workbench-playtest.md",
+      "sha256": "b8d32480ef24f3e12608e1102e8707361ade1c25c6db8eb17468a4c6da9c7c6f"
+    },
+    {
+      "target": "baseline-and-mainline.json",
+      "sha256": "7c62cb0dbd5030df2f209ae79fc26551c52449d28037c7280d584397d07ce106"
+    },
+    {
+      "target": "local-input-receipts.json",
+      "sha256": "fc77a1914ad9aab850fe543554485f262a8c424e90cfb536a025d7ff5a3de43e"
+    },
+    {
+      "target": "independent-review-and-local-input.json",
+      "sha256": "0801ddbae16cb30e9f88e9a6ffaa7fc014c22784c6540b3c9787629f2f123f96"
+    },
+    {
+      "target": "workbench-interaction-local-review.json",
+      "sha256": "4829142444cfaff561a2c9336250676e902054a4833b0fcb36c72b2214e2a04c"
+    },
+    {
+      "target": "principal-review.json",
+      "sha256": "06664f3a339dea3309ff8b6073f4cd861967308d5a259f4b83e4b6e7e7469f9a"
+    },
+    {
+      "target": "delivery-record.json",
+      "sha256": "f00870931d1483a99ee19190cec8eaf8f3d97d788451aa5d775957722dd0d1d1"
+    },
+    {
+      "target": "windows-package-manifest.canonical.json",
+      "sha256": "65fabcbce5c124805a3ab4c7bbf6241b5f25b4fa87a1fa013d79296a53d970e5"
+    },
+    {
+      "target": "windows-package-manifest-copy.json",
+      "sha256": "fec8b3d632b06d09f84f71230b5f596cbd611897b3c97a56d4f1bd1aaca3235b"
+    },
+    {
+      "target": "final-native-hosted-review.json",
+      "sha256": "5192f5e83984a70d9c153963d39ae619463abb5748b9d5de1fdd871166e25c06"
+    },
+    {
+      "target": "final-native-hosted-review.json",
+      "sha256": "5192f5e83984a70d9c153963d39ae619463abb5748b9d5de1fdd871166e25c06"
+    },
+    {
+      "target": "final-linux-workbench-review.json",
+      "sha256": "17484a23297c569998276a2435af15c0581f07a6bcc66dc192a146ec511d9e6c"
+    },
+    {
+      "target": "final-windows-regressions-review.json",
+      "sha256": "6285371687f42a3416d6bb77272ca42a1efa6558386dcecd8521322cbec191c0"
+    },
+    {
+      "target": "final-windows-graphical-review.json",
+      "sha256": "2dc28b3f14afc64ef9fd4df69f291c9ebe23eabf469e39d181a51e76a3c6fae6"
+    },
+    {
+      "target": "final-native-renderer-independent-review.json",
+      "sha256": "bc13fa5dad5c178ec57f46d4b88d2119954dbfa6b50fbaceb12e37ac13072503"
+    },
+    {
+      "target": "final-producer-package-execution-review.json",
+      "sha256": "fcb3a0a6853f5c400431738ed53e1b6d8edd4ddfb577f7f017f51edf3b52dc71"
+    },
+    {
+      "target": "final-independent-package-review.json",
+      "sha256": "ceb0da99e173c6d40cf5b073b390ef268f3e07c6c44e52ff49113ff6b829e560"
+    },
+    {
+      "target": "final-evaluator-extraction-review.json",
+      "sha256": "54e9bc957313f85ee2e2a756014d953eac64ab8bc9a1665868d05542efc9beb3"
+    },
+    {
+      "target": "final-guarded-publication-review.json",
+      "sha256": "ad6685d69b272baf946ca95e75d71a2f054d8523c9ca2466a31288fd91314e32"
+    },
+    {
+      "target": "final-acceptance-coverage.md",
+      "sha256": "780ec922f8d644d1ab47622bf9c26b83235a695ef32961cfe6930a8d93bbd3a0"
+    },
+    {
+      "target": "final-edit-timing-summary.md",
+      "sha256": "4a7cccfa8ce8ed0088673f08d7e687bb8b98264e0db29d6e22600bb8b6ed8562"
+    },
+    {
+      "target": "final-fresh-package-timing-review.json",
+      "sha256": "5b3451ace5ea6eac399461e64b36c3d78cb0288bbfc93ac5ebd266f46fbdf9a0"
+    },
+    {
+      "target": "performance-results.md",
+      "sha256": "b82e546732966045cdd019307661396f0d664ca759b9d52afd263f983506bd79"
+    },
+    {
+      "target": "performance-method.md",
+      "sha256": "4a101d4b04099a571062ce5344abe2155f34691e7163e55b680c3608ea85b516"
+    },
+    {
+      "target": "../../operations/objectshard-workbench-playtest.md",
+      "sha256": "b8d32480ef24f3e12608e1102e8707361ade1c25c6db8eb17468a4c6da9c7c6f"
+    },
+    {
+      "target": "final-principal-delivered-render-review.json",
+      "sha256": "5df8021b34ed54ae68ab738e76f825c87a762f5687991a26a65a6392617272f4"
+    },
+    {
+      "target": "final-producer-package-render-review.json",
+      "sha256": "5bdd97c3322858132263329d5007d47220bc5a3849a9b876f9758ef82a40883c"
+    },
+    {
+      "target": "integration-handover.md",
+      "sha256": "84d1537f21fc1dde77c36498fa05d2f3baf8f5f27c0fa153d8fe625bfad7adb9"
+    }
+  ],
+  "pr_status_observation": {
+    "schema": "objectshard-live-edit-pr-status-observation-v1",
+    "observed_utc": "2026-11-28 09:52:48 UTC",
+    "url": "https://api.github.com/repos/techrote/cybersand/pulls/754",
+    "number": 754,
+    "state": "open",
+    "draft": true,
+    "merged": false,
+    "head_sha": "302f982943c0e03c30968368da8264cfb3c431ce",
+    "updated_at": "2026-11-28T09:45:01Z"
+  },
+  "pr_status_observation_sha256": "22a25b2092c7b89d36ac9d0bf1b396667dd92154a23d0793e23e1e68e9173762",
+  "verified_claims": [
+    "Exact application tree, single-parent four-path guarded publication, runtime hashes/sizes and byte-identical production manifest identities.",
+    "All seven source-bound mandatory publication gates and exact run attempt, using the independently verified publication receipt.",
+    "Final native ASan/UBSan and ordinary World counts, budget limits, actual PowerShell/Python contracts, material catalogue tests and LeakSanitizer exclusion.",
+    "Actual Windows evaluator inner/outer/manifest/source/runtime identities agree with Specialist C extraction and fresh execution audits; no additional extraction claimed by this review.",
+    "Native benchmark original execution source remains ace52; final ba6 source equivalence is explicit and limited to all 96 hashed native inputs. The 797-cell timing and reconstruction comparison matches original evidence.",
+    "All ten 40-window idle medians agree exactly with the independently audited result; two six-second replicates per arm; moving-tower declines remain unresolved and physical-owner performance is not inferred.",
+    "Hosted timing report complete-case medians/tails and 11 complete versus one censored action are preserved; no twelfth presentation or universal latency bound inferred.",
+    "Cross-owner non-atomicity, post-write failure limits, authored-save limits, deferred impact/M5 and pending physical owner evaluation remain explicit."
+  ],
+  "resolved_review_findings": [
+    {
+      "issue": "README reconstruction sentence originally applied to every changed owner, including ignition.",
+      "resolution": "Final README explicitly restricts connectivity/mass/geometry reconstruction to material removal; no application change."
+    }
+  ],
+  "open_findings": [],
+  "scope": "Read-only evidence and documentation review. No application run, compilation, benchmark rerun or package re-execution. PR754 was independently observed open/Draft/unmerged at the stated observation time. The enclosing docs-only evidence commit and final repository/reference checks remain principal-owned; this receipt does not claim their later commit or future PR state.",
+  "physical_owner_acceptance": "pending"
+}

@@ -1,0 +1,525 @@
+{
+	"after": {
+		"attached": true,
+		"body_count": 0,
+		"control_timing": {
+			"complete": {
+				"delivery": {
+					"calls": 360,
+					"max_usec": 1997,
+					"usec": 61881
+				},
+				"owner_service": {
+					"calls": 360,
+					"max_usec": 391,
+					"usec": 72617
+				},
+				"publication_copy": {
+					"calls": 360,
+					"max_usec": 2278,
+					"usec": 108281
+				},
+				"queue": {
+					"calls": 360,
+					"max_usec": 568,
+					"usec": 74703
+				}
+			},
+			"motion": {
+				"delivery": {
+					"calls": 1436,
+					"max_usec": 2022,
+					"usec": 170591
+				},
+				"owner_service": {
+					"calls": 1436,
+					"max_usec": 3361,
+					"usec": 330676
+				},
+				"publication_copy": {
+					"calls": 1436,
+					"max_usec": 1524,
+					"usec": 149163
+				},
+				"queue": {
+					"calls": 1436,
+					"max_usec": 1975,
+					"usec": 192987
+				}
+			}
+		},
+		"control_timing_scope": "exact serial queue, owner native-call service, snapshot/receipt copy and Main delivery spans; distinct from ordinary snapshot receipt_delivery and not additive to Main/worker stage totals",
+		"controls_completed": 1796,
+		"deferred_world_uploads": 0,
+		"enabled": true,
+		"has_live_inventory": false,
+		"held_reason": "",
+		"last_motion_permit": {
+			"lease": 360,
+			"ok": true,
+			"outcome": "MotionReserved"
+		},
+		"main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+		"main_costs": {
+			"owner_control_admission": {
+				"calls": 1797,
+				"max_usec": 273,
+				"usec": 36392
+			},
+			"pose_packet_capture": {
+				"calls": 1437,
+				"max_usec": 1091,
+				"usec": 47757
+			},
+			"rapier_segment": {
+				"calls": 1437,
+				"max_usec": 952,
+				"usec": 134885
+			}
+		},
+		"material_preparation": {
+			"rendered": false,
+			"runs": 0,
+			"scope": "headless admission only; no shader draw or compilation qualification",
+			"state": "headless"
+		},
+		"motion_lease": 360,
+		"motion_permit_refusal_kinds": {
+			"OwnerBusy": 28
+		},
+		"motion_permit_waits_recovered": 10,
+		"motion_permits_refused": 1,
+		"native_instance_id": -9223371950619883978,
+		"native_pose_acknowledgements": 0,
+		"native_pose_echo_checks": 0,
+		"native_tick": 360,
+		"owner_replacements": 1,
+		"pending_kind": "motion",
+		"pending_serial": 1797,
+		"phase": "RealRapierInterval",
+		"physical_intervals": 359,
+		"physical_steps": 1437,
+		"physics": {
+			"awaiting_native": false,
+			"bodies": [],
+			"events": [],
+			"last_completed_semantic_tick": -1,
+			"last_error": "",
+			"last_physics_session": 1,
+			"last_sampled_pose_serial": 1437,
+			"motion": {},
+			"motion_phase": "Idle",
+			"motion_refused": false,
+			"operation_sequence": 0,
+			"physics_steps": 1437,
+			"segment_sequence": 0,
+			"session": 1
+		},
+		"physics_ready": false,
+		"publication_sequence": 360,
+		"pump_budget_exhaustions": 96,
+		"pump_calls": 735,
+		"pump_operation_exhaustions": 0,
+		"pump_usec_max": 9153,
+		"pump_usec_total": 2451832,
+		"pump_waits": 9788,
+		"reabsorption_receipt": {},
+		"receipt": {
+			"captured_effect_count": 0,
+			"captured_equipment_request_ids": [],
+			"completed_interval": true,
+			"native_tick_after_prepare": 359,
+			"native_tick_before_prepare": 359,
+			"ok": true,
+			"outcome": "NativeBarrierReleased",
+			"workbench_sample_serial": 1799
+		},
+		"redundant_readiness_receipts_suppressed": 359,
+		"save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+		"shared_main_space_id": 18624,
+		"worker_profile": {
+			"actor_work": {
+				"due_effects": 0,
+				"due_usables": 0,
+				"pending_effects": 0,
+				"pending_usables": 0
+			},
+			"compact_motion_receipts": 1077,
+			"counter_scope": "cumulative ordinary worker lifetime",
+			"frame_copy_calls": 360,
+			"frame_copy_max_usec": 2219,
+			"frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+			"frame_copy_usec": 58451,
+			"full_motion_publications": 359,
+			"motion_fence": {
+				"completed_sample": 1799,
+				"current_sample": 1799,
+				"due_sample": -1,
+				"lease": 360,
+				"ordinary_refusal": "",
+				"owner_busy": false,
+				"prepared_sample": 1799,
+				"reused_prepared_samples": 359,
+				"tick_due": false
+			},
+			"segment_idle_polls": 1774,
+			"segment_service_turns": 1436,
+			"snapshot_calls": 1079,
+			"snapshot_max_usec": 2160,
+			"snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+			"snapshot_usec": 245963
+		},
+		"world_generation": 3
+	},
+	"authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+	"before": {
+		"attached": true,
+		"body_count": 0,
+		"control_timing": {
+			"complete": {
+				"delivery": {
+					"calls": 1,
+					"max_usec": 148,
+					"usec": 148
+				},
+				"owner_service": {
+					"calls": 1,
+					"max_usec": 26,
+					"usec": 26
+				},
+				"publication_copy": {
+					"calls": 1,
+					"max_usec": 282,
+					"usec": 282
+				},
+				"queue": {
+					"calls": 1,
+					"max_usec": 418,
+					"usec": 418
+				}
+			}
+		},
+		"control_timing_scope": "exact serial queue, owner native-call service, snapshot/receipt copy and Main delivery spans; distinct from ordinary snapshot receipt_delivery and not additive to Main/worker stage totals",
+		"controls_completed": 1,
+		"deferred_world_uploads": 0,
+		"enabled": true,
+		"has_live_inventory": false,
+		"held_reason": "",
+		"last_motion_permit": {
+			"lease": 0,
+			"ok": false,
+			"outcome": "OwnerBusy"
+		},
+		"main_cost_scope": "cumulative lifetime stage counters; phases do not overlap; pump includes waits and these stages",
+		"main_costs": {
+			"owner_control_admission": {
+				"calls": 1,
+				"max_usec": 39,
+				"usec": 39
+			}
+		},
+		"material_preparation": {
+			"rendered": false,
+			"runs": 0,
+			"scope": "headless admission only; no shader draw or compilation qualification",
+			"state": "headless"
+		},
+		"motion_lease": 0,
+		"motion_permit_refusal_kinds": {
+			"OwnerBusy": 13
+		},
+		"motion_permit_waits_recovered": 0,
+		"motion_permits_refused": 1,
+		"native_instance_id": -9223371950619883978,
+		"native_pose_acknowledgements": 0,
+		"native_pose_echo_checks": 0,
+		"native_tick": 1,
+		"owner_replacements": 1,
+		"pending_kind": "",
+		"pending_serial": 0,
+		"phase": "Ready",
+		"physical_intervals": 0,
+		"physical_steps": 0,
+		"physics": {
+			"awaiting_native": false,
+			"bodies": [],
+			"events": [],
+			"last_completed_semantic_tick": -1,
+			"last_error": "",
+			"last_physics_session": 1,
+			"last_sampled_pose_serial": 0,
+			"motion": {},
+			"motion_phase": "Idle",
+			"motion_refused": false,
+			"operation_sequence": 0,
+			"physics_steps": 0,
+			"segment_sequence": 0,
+			"session": 1
+		},
+		"physics_ready": true,
+		"publication_sequence": 1,
+		"pump_budget_exhaustions": 0,
+		"pump_calls": 12,
+		"pump_operation_exhaustions": 0,
+		"pump_usec_max": 3297,
+		"pump_usec_total": 3545,
+		"pump_waits": 3,
+		"reabsorption_receipt": {},
+		"receipt": {
+			"captured_effect_count": 0,
+			"captured_equipment_request_ids": [],
+			"completed_interval": false,
+			"native_tick_after_prepare": 1,
+			"native_tick_before_prepare": 1,
+			"ok": true,
+			"outcome": "NativeBarrierReleased",
+			"workbench_sample_serial": -1
+		},
+		"redundant_readiness_receipts_suppressed": 0,
+		"save_scope": "authored-start-only; moving inventory is never serialized as World cells",
+		"shared_main_space_id": 18624,
+		"worker_profile": {
+			"actor_work": {
+				"due_effects": 0,
+				"due_usables": 0,
+				"pending_effects": 0,
+				"pending_usables": 0
+			},
+			"compact_motion_receipts": 0,
+			"counter_scope": "cumulative ordinary worker lifetime",
+			"frame_copy_calls": 1,
+			"frame_copy_max_usec": 263,
+			"frame_copy_scope": "Main copied publication including mutex wait; excludes control receipt copy",
+			"frame_copy_usec": 263,
+			"full_motion_publications": 0,
+			"motion_fence": {
+				"completed_sample": 2,
+				"current_sample": 3,
+				"due_sample": -1,
+				"lease": 0,
+				"ordinary_refusal": "",
+				"owner_busy": true,
+				"prepared_sample": 2,
+				"reused_prepared_samples": 0,
+				"tick_due": false
+			},
+			"segment_idle_polls": 0,
+			"segment_service_turns": 0,
+			"snapshot_calls": 2,
+			"snapshot_max_usec": 197,
+			"snapshot_scope": "native coordinator snapshot plus Godot dictionary and packed-array marshalling",
+			"snapshot_usec": 384
+		},
+		"world_generation": 3
+	},
+	"camera_origin": [
+		0.0,
+		0.0
+	],
+	"canvas_extent": [
+		512,
+		512
+	],
+	"checks": 41,
+	"cohorts": {
+		"0/0": {
+			"awake": 0,
+			"callbacks": 362,
+			"owned": 0,
+			"semantic_ticks": 359,
+			"wall_usec": 6003444
+		}
+	},
+	"control_timing_deltas": {
+		"complete": {
+			"delivery": {
+				"calls": 359,
+				"max_usec": 1849,
+				"usec": 61733
+			},
+			"owner_service": {
+				"calls": 359,
+				"max_usec": 365,
+				"usec": 72591
+			},
+			"publication_copy": {
+				"calls": 359,
+				"max_usec": 1996,
+				"usec": 107999
+			},
+			"queue": {
+				"calls": 359,
+				"max_usec": 150,
+				"usec": 74285
+			}
+		},
+		"motion": {
+			"delivery": {
+				"calls": 1436,
+				"max_usec": 2022,
+				"usec": 170591
+			},
+			"owner_service": {
+				"calls": 1436,
+				"max_usec": 3361,
+				"usec": 330676
+			},
+			"publication_copy": {
+				"calls": 1436,
+				"max_usec": 1524,
+				"usec": 149163
+			},
+			"queue": {
+				"calls": 1436,
+				"max_usec": 1975,
+				"usec": 192987
+			}
+		}
+	},
+	"display_driver": "headless",
+	"elapsed_usec": 6003472,
+	"engine_version": "4.7-stable (official)",
+	"failures": [],
+	"latency": {
+		"cadence": {
+			"body_count_scope": "owned material bodies including sleeping; no awake-body inference",
+			"capacity_dropped_intervals": 0,
+			"cohort_capacity": 64,
+			"display_backend": "headless",
+			"hardware_present_verified": false,
+			"native_progress_delivery": [
+				{
+					"elapsed_usec": 5968874,
+					"interval_count": 357,
+					"maximum_interval_usec": 35308,
+					"observed_units_per_second": 59.8102757739567,
+					"recent_interval_samples": 256,
+					"recent_p50_interval_usec": 16655,
+					"recent_p95_interval_usec": 17075,
+					"units": "native_semantic_ticks",
+					"units_observed": 357,
+					"workload": {
+						"camera": "free",
+						"owned_material_bodies": 0,
+						"paused": false
+					}
+				}
+			],
+			"percentile_scope": "most_recent_bounded_intervals_per_workload",
+			"post_draw_intervals": [],
+			"progress_scope": "main_observed_native_progress_may_coalesce_ticks_not_worker_execution_cadence",
+			"render_scope": "headless_callback_only"
+		},
+		"enabled": true,
+		"epoch": 2,
+		"events_retained": 512,
+		"frame_serial_coherence_proven": false,
+		"input_to_post_draw_causally_proven": false,
+		"no_additive_stage_total": true,
+		"post_draw_callbacks_after_upload": 0,
+		"proven_presented_uploads": 0,
+		"schema": "objectshard-m4-workbench-latency-v1",
+		"scope": "ordinary_Workbench_opt_in_main_thread_observation",
+		"stages": {
+			"physics_work": {
+				"count": 256,
+				"maximum_usec": 499,
+				"p50_usec": 80,
+				"p95_usec": 157
+			},
+			"publication_prepare": {
+				"count": 256,
+				"maximum_usec": 124,
+				"p50_usec": 29,
+				"p95_usec": 51
+			},
+			"queue_admission": {
+				"count": 256,
+				"maximum_usec": 188,
+				"p50_usec": 18,
+				"p95_usec": 30
+			},
+			"receipt_delivery": {
+				"count": 256,
+				"maximum_usec": 12576,
+				"p50_usec": 10959,
+				"p95_usec": 11836
+			},
+			"scene_callback": {
+				"count": 256,
+				"maximum_usec": 10667,
+				"p50_usec": 6449,
+				"p95_usec": 8764
+			}
+		},
+		"worker_metrics": {
+			"hard_surface_packet_time_ms": 0.0,
+			"render_exchange_time_ms": 0.0,
+			"scope": "worker_reported_potentially_nested_not_a_sum",
+			"snapshot_copy_time_ms": 0.005,
+			"snapshot_publication_time_ms": 0.366,
+			"snapshot_serial": 690,
+			"tick": 359,
+			"worker_step_time_ms": 2.384,
+			"world_generation": 3,
+			"world_revision": 3
+		}
+	},
+	"process_callbacks": 362,
+	"process_callbacks_per_second": 60.2984406356855,
+	"process_fps_cap": 60,
+	"rapier_segments": 1437,
+	"recording_enabled": true,
+	"renderer_callbacks": 0,
+	"renderer_callbacks_per_second": 0.0,
+	"rendering_method": "gl_compatibility",
+	"requested_seconds": 6.0,
+	"runtime_counter_deltas": {
+		"body_count": 0,
+		"controls_completed": 1795,
+		"deferred_world_uploads": 0,
+		"motion_lease": 360,
+		"motion_permit_waits_recovered": 10,
+		"motion_permits_refused": 0,
+		"native_instance_id": 0,
+		"native_pose_acknowledgements": 0,
+		"native_pose_echo_checks": 0,
+		"native_tick": 359,
+		"owner_replacements": 0,
+		"pending_serial": 1797,
+		"physical_intervals": 359,
+		"physical_steps": 1437,
+		"publication_sequence": 359,
+		"pump_budget_exhaustions": 96,
+		"pump_calls": 723,
+		"pump_operation_exhaustions": 0,
+		"pump_usec_max": 5856,
+		"pump_usec_total": 2448287,
+		"pump_waits": 9785,
+		"redundant_readiness_receipts_suppressed": 359,
+		"shared_main_space_id": 0,
+		"world_generation": 0
+	},
+	"schema": "objectshard-m4-throughput-v1",
+	"scope": "actual native semantic ticks and Main Rapier intervals; renderer callbacks are not physical monitor FPS; callback-end awake cohorts; no full per-callback diagnostic/coherence observers",
+	"semantic_ticks": 359,
+	"semantic_ticks_per_second": 59.7987298016881,
+	"source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+	"view_size": [
+		512,
+		512
+	],
+	"worker_counter_deltas": {
+		"compact_motion_receipts": 1077,
+		"frame_copy_calls": 359,
+		"frame_copy_max_usec": 1956,
+		"frame_copy_usec": 58188,
+		"full_motion_publications": 359,
+		"segment_idle_polls": 1774,
+		"segment_service_turns": 1436,
+		"snapshot_calls": 1077,
+		"snapshot_max_usec": 1963,
+		"snapshot_usec": 245579
+	},
+	"workload": "empty"
+}

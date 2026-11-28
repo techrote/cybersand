@@ -1,0 +1,111 @@
+{
+  "schema": "objectshard-m4-final-retained-presentation-review-v1",
+  "reviewer": "Specialist B",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "run_id": 46125028803,
+  "artifact_id": 15255600719,
+  "artifact_bytes": 55501,
+  "artifact_sha256": "8d1ccac76ed20502c9801008b1c5976c861bfa140a359f441bcbf3e94df99e58",
+  "status": "passed",
+  "engine": {
+    "sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "renderer": "opengl3",
+  "retained_native": {
+    "build_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+    "sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4"
+  },
+  "cases": [
+    {
+      "name": "presentation_import",
+      "sha256": "644c0b445bdeea0d0250d6906736eb12097d2f8193a69d180528a1741f9040ab",
+      "checks": null
+    },
+    {
+      "name": "test_palette_shader_compile_bounds",
+      "sha256": "e5f4108fd3f7fe852e73fb8c684d8128a74302ce14e300bae377266407d0dfe9",
+      "checks": null
+    },
+    {
+      "name": "test_object_shard_m4_overlay_identity",
+      "sha256": "0c0fcdd1332eba06002714735a83206168d49beb3efb176e7c063a1ca59e8033",
+      "checks": 11
+    },
+    {
+      "name": "test_object_shard_m4_material_preparation_render",
+      "sha256": "c0f3e839a420eb37286a354d0f84355af2ecf9d5e6748fc43bcb17c404edfbc6",
+      "checks": 13
+    },
+    {
+      "name": "test_object_shard_m4_material_presentation_render",
+      "sha256": "cff062410eab28677b7f731652f8d1a879aea95f4f35ea9e685e964ebaa0fa62",
+      "checks": 28
+    }
+  ],
+  "captures": [
+    {
+      "path": "presentation/captures/prepared-first-body.png",
+      "sha256": "6492a02882286a56f4f66c4b4d52d0545f628cfa564767c6c727d8d4be068036",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/prepared-replacement-body.png",
+      "sha256": "6492a02882286a56f4f66c4b4d52d0545f628cfa564767c6c727d8d4be068036",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/ordinary-materials.png",
+      "sha256": "a63b006006a056a6aaf961e98ad99b0f6eb35d8b18cae7bd2001f7bcc68212bd",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/detached-materials.png",
+      "sha256": "0dee83d1485b39ced4bb161579a7da6bf322a137013d4ce9a4398274bf0c06c5",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/rotated-materials.png",
+      "sha256": "f0af424ba286310e43efd919f44971f9ab72f6889a3072f53c1f3006a1bbdb3c",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/ordinary-edited.png",
+      "sha256": "60244db21ace032174c838216e6288e617cc4bdba46f53fd2294824a9fd063ae",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/detached-edited.png",
+      "sha256": "8d4acad3dd7dc688927cf62a4d94716b13a5754e2cf4eb4f61402f6509b28cdb",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/ordinary-fragment-cut.png",
+      "sha256": "ca32435364150004da5d225e4ef2f354c82b136be3f2e79a0861b7a04054f425",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/detached-fragment-cut.png",
+      "sha256": "726df77d7b142dc1175a345a57bf1cddc88afb17e7204afab1a98cf92e224750",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/rotated-fragment-cut.png",
+      "sha256": "998beefcc0d1c4ca3b1d6f0f8e64f6a7ca73736a8172e57d9dc981a222c0d109",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/retained-camera-letterbox.png",
+      "sha256": "4e5e1e4b5f650c93b49f91c33c774fdeb9e4009cfdcc3d37171ad4bbf69fcde9",
+      "identical_to_previously_visually_reviewed": true
+    },
+    {
+      "path": "presentation/captures/retired-clear.png",
+      "sha256": "ff30c0a7268849427c5b6085bc05b348e70289a37c3f23be10cec8b29a26ee6d",
+      "identical_to_previously_visually_reviewed": true
+    }
+  ],
+  "scope": "synthetic immutable publications and actual rendered shader/framebuffer tests only; no new native or physical qualification",
+  "visual_review": "All12 captures are byte-identical to the previously visually reviewed corrective Linux presentation captures; exact current receipt hashes and source identity independently verified. This retained-native synthetic-publication lane does not qualify new native edits, physical throughput, or the final extracted Windows package."
+}

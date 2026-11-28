@@ -1,0 +1,68 @@
+{
+  "schema": "objectshard-m4-windows-graphical-geometry-independent-review-v1",
+  "reviewer": "Specialist B, independent of C artifact/timing extraction",
+  "verified_at": "2026-11-28T09:46:24.501129+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "run_id": 46125028803,
+  "artifact_id": 15258426798,
+  "qualification_sha256": "56d9bae450ab3ed5a35fe0e394e0d0372c5ded1396806f92623d4ecaff855866",
+  "creative_log_sha256": "4f77c9d6e860196be647eb7a43747ea1047c4ffe828acd22fdfc677921eac9b3",
+  "extractor_output_sha256": "b056e9d6a28494cf327a5ca56637cb4cece86d0ec192f576131615801553d3a7",
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+    "platform": "win32",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "witness": {
+    "fixture_log_sha256": "4f77c9d6e860196be647eb7a43747ea1047c4ffe828acd22fdfc677921eac9b3",
+    "owner": 1,
+    "world_generation": 5,
+    "native_instance_id": -9223371949210597829,
+    "native_session": 3,
+    "world_incarnation": 3,
+    "physics_session": 3,
+    "body_generation": 1,
+    "geometry_revision": 2,
+    "requested_cells": 6,
+    "removed_cells": 6,
+    "native_geometry_rebuilds": 1,
+    "native_combined_geometry_ns": 265100,
+    "main_rapier_install_usec": 524,
+    "shape_count": 44,
+    "physics_step": 304,
+    "installed_mass": 6142.0,
+    "installed_inertia": 7264435.0,
+    "install_flags": {
+      "geometry_revision": 2,
+      "install_usec": 524,
+      "mass_changed": true,
+      "shape_replacement": true,
+      "wake_for_changed_physics": true,
+      "was_sleeping": false
+    },
+    "native_action_id": 15,
+    "native_transaction_id": 6,
+    "port_generation": 5,
+    "owner_epoch": 6,
+    "transport_generation": 6
+  },
+  "stress_complete_action_count": 12,
+  "stress_censored_action_count": 0,
+  "stress_log_sha256": "794ccf1fa0579efc3dad2abb6d0c74ddf440d1ff9ed717daf898bee13df51b86",
+  "independent_checks": [
+    "Exact native owner/body generation/geometry revision match one real installed body and GeometryInstalled event.",
+    "Original World generation/native instance and native session/incarnation agree with final runtime and physics.",
+    "Installed body last_geometry_step/time equal actual event physics_step/install_usec.",
+    "Six removed cells, one rebuild, 44 installed shapes and separate Main installation524us agree with original receipts.",
+    "C timing output and complete twelve-action stress census agree with original hashed qualification/logs."
+  ],
+  "scope": [
+    "One witnessed graphical source batch, not a geometry timing distribution.",
+    "Native geometry combines connectivity/reconstruction; Main installation is separate.",
+    "Actual hosted Windows source renderer run; extracted package and physical owner evaluation remain separately identified."
+  ],
+  "status": "passed"
+}

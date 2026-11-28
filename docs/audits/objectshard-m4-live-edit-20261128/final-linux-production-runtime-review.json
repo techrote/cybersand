@@ -1,0 +1,67 @@
+{
+  "schema_version": 1,
+  "reviewer": "native-transactions-specialist-A",
+  "verified_at": "2026-11-28T08:57:20.260544+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "platform": "linux",
+  "workflow_run": 46125028803,
+  "workflow_attempt": 1,
+  "artifact_id": 15256875803,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256875803",
+  "archive_sha256": "766be806ae8b3c67c8fa4bd035e110842382ec8ff20a8957f92c0038455afea8",
+  "archive_bytes": 2416689,
+  "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+  "native_bytes": 6149752,
+  "manifest_sha256": "48cf0257abc085ec868c9560aa4ff8245e293ce8b8a49beb7e7a018a5237e5bd",
+  "validation_sha256": "3b65dde863e89980640bfcec65e88afe6c516464be407b606849c71285854c5f",
+  "source_inputs_verified": 126,
+  "build_inputs_verified": 1392,
+  "unique_canonical_git_inputs_verified": 1518,
+  "source_ledgers_equal_verified_windows_producer": true,
+  "godot": {
+    "archive_sha256": "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c",
+    "runtime_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+  "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nGNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n101ae38034304346a46ea9ea84ae156d3e860496",
+  "target_execution_cases": {
+    "test_object_shard_m4_same_world_extension": {
+      "schema": "objectshard-m4-actual-godot-sameworld-v1",
+      "checks": 59,
+      "failures": []
+    },
+    "test_object_shard_m4_shared_main_rapier": {
+      "schema": "objectshard-m4-existing-main-rapier-v1",
+      "checks": 18,
+      "failures": []
+    },
+    "test_object_shard_m4_compact_motion_packets": {
+      "schema": "objectshard-m4-compact-motion-packet-v1",
+      "checks": 9,
+      "failures": []
+    }
+  },
+  "target_execution_checks": 86,
+  "logs": {
+    "import.log": {
+      "sha256": "d64b8bd889158289d89c05759cea5df8218e69d87797ed7cb0883be2fe4a3b51",
+      "bytes": 1165
+    },
+    "test_object_shard_m4_same_world_extension.log": {
+      "sha256": "d7c0adf8b92d5bf07b20e5466bfbf804814c7cc64a20c963ac3eb68f87b5b8d3",
+      "bytes": 411
+    },
+    "test_object_shard_m4_shared_main_rapier.log": {
+      "sha256": "01be1aed478760bb270ad4544ece33ed8d791f1e58b8ba36d1536660d8a62d7f",
+      "bytes": 439
+    },
+    "test_object_shard_m4_compact_motion_packets.log": {
+      "sha256": "9d06754f97a3be59199005e665d1a41d2f328c68d1c5298cbce807c61544d55e",
+      "bytes": 394
+    }
+  },
+  "status": "PASS",
+  "scope": "Independent immutable production-bundle source, binary, provenance and actual target-OS focused-execution verification. Full Workbench matrix, extracted Windows evaluator and physical owner acceptance remain separate scopes."
+}

@@ -1,0 +1,527 @@
+{
+  "schema": "objectshard-m4-live-edit-delivery-v1",
+  "mission": "OBJECTSHARD-M4-LIVE-EDIT-001",
+  "disposition": "Qualified Draft/HOLD implementation candidate for physical owner evaluation",
+  "application": {
+    "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+    "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+    "branch": "integration/objectshard-m4-mainline-20261122",
+    "pr": 754,
+    "pr_url": "https://github.com/techrote/cybersand/pull/754",
+    "draft_required": true,
+    "merged": false,
+    "publication_request": 7,
+    "guarded_publication_commit": "302f982943c0e03c30968368da8264cfb3c431ce",
+    "guarded_publication_tree": "7bdfa95b7f30770512a2a448d8cccb789e997885",
+    "evidence_revision": "The docs-only Git commit containing this record, descended from the guarded publication; it does not change qualified application inputs."
+  },
+  "campaign": {
+    "id": 46125028803,
+    "attempt": 1,
+    "url": "https://github.com/techrote/cybersand/actions/runs/46125028803"
+  },
+  "evaluator": {
+    "artifact_id": 15256411748,
+    "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748",
+    "outer_sha256": "b98fc26773f3054958debef4ce1a45c0eb3b05c8d3807f8ada371b97c539ac82",
+    "outer_bytes": 96410466,
+    "inner_sha256": "cf0f63259a2fd9be6e4835d8f741b21d0651bb47aec692c9a3a59bcd4238a31e",
+    "inner_bytes": 96795210,
+    "inner_uncompressed_bytes": 219363682,
+    "manifest_sha256": "4d2f983ef06b94427e5af0cb675cdae565b4a581c0dc017233bd73b6caa016a7",
+    "verified_manifest_files": 1499,
+    "exact_git_source_files": 1483,
+    "exact_git_lfs_payloads": [
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/tools/gentek_reciprocal.exe"
+    ],
+    "declared_crlf_source_materializations": [
+      {
+        "path": "tools/objectshard/verify_package.ps1",
+        "git_blob_sha256": "96cf420907aa43fd7e1bc2899518c43117e46a61969b8056c761d55ab6ce152b",
+        "shipped_sha256": "163a69b2872d47092707fa8b6cea204decfd5b2617ce1efdded639d963b5398d",
+        "transform": "exact LF-to-CRLF materialization required by committed .gitattributes"
+      },
+      {
+        "path": "tools/objectshard/verify_workbench_package.ps1",
+        "git_blob_sha256": "e3163cda2d0c26d50efd23c741183edae901f8d5b05b40f5145b114de6cabdd4",
+        "shipped_sha256": "938835e6f956a0a06cad66c2d0bae4b788c6ac958726bc8eb553d01710c758c4",
+        "transform": "exact LF-to-CRLF materialization required by committed .gitattributes"
+      }
+    ],
+    "candidate_ledger_sha256": "b1e8ab56cedebbfb0021e7e7931bb9f184742ef6a054e2e544a9fc5c1aeb64fc",
+    "entry": {
+      "host": "ordinary-workbench",
+      "launcher": "Open Workbench.cmd",
+      "opt_in": true,
+      "rendering_driver": "opengl3_angle",
+      "scenario_ids": [
+        "tower",
+        "viaduct",
+        "timber",
+        "mixed",
+        "stress",
+        "perforated",
+        "weathered",
+        "editing_yard",
+        "owner_tower"
+      ],
+      "scene": "godot/main.tscn",
+      "startup_scene": "godot/feature_launcher.tscn"
+    },
+    "godot": {
+      "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+      "archive_size": 83764371,
+      "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+      "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+      "version": "4.7.stable.official.5b4e0cb0f"
+    },
+    "rapier": {
+      "path": "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+    },
+    "inner_name": "objectshard-workbench-evaluator.zip",
+    "manifest_repository_copy": "windows-package-manifest.canonical.json",
+    "manifest_copy_transform": "Exact CRLF-to-LF canonical text copy; raw original is unmodified inside the inner archive; see windows-package-manifest-copy.json.",
+    "producer_execution_evidence_artifact_id": 15256726038,
+    "fresh_independent_evidence_artifact_id": 15257314868,
+    "fresh_independent_job_id": 140926599049,
+    "fresh_independent_evidence_sha256": "6988b349c03c17633e0fc9885cabc4ee5b53b23d1749a8c732329dacf770f58b",
+    "fresh_independent_evidence_bytes": 31220573
+  },
+  "native": {
+    "linux": {
+      "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+      "bytes": 6149752,
+      "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nGNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n101ae38034304346a46ea9ea84ae156d3e860496",
+      "validated_manifest_sha256": "48cf0257abc085ec868c9560aa4ff8245e293ce8b8a49beb7e7a018a5237e5bd",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/46125028803",
+      "workflow_attempt": "1",
+      "build_attempt": "1",
+      "source_inputs": 126,
+      "build_inputs": 1392,
+      "status": "validated-development-runtime"
+    },
+    "windows": {
+      "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+      "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+      "sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+      "bytes": 7346176,
+      "toolchain": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg\n101ae38034304346a46ea9ea84ae156d3e860496",
+      "validated_manifest_sha256": "00f3e750d8e1d7fd4bce2f00f168ffed41accb11c260571d34ca47d2b05e31b7",
+      "workflow_run": "https://github.com/techrote/cybersand/actions/runs/46125028803",
+      "workflow_attempt": "1",
+      "build_attempt": "1",
+      "source_inputs": 126,
+      "build_inputs": 1392,
+      "status": "validated-development-runtime"
+    }
+  },
+  "performance": {
+    "idle_summary": "matched-idle-throughput.json",
+    "idle_summary_sha256": "deaa3b0007f008c599c4a891908654aeb9dbd4e06910820a19500aced1eb2f8a",
+    "idle_windows": 40,
+    "idle_status": "all workload invariants passed; moving-tower median decline remains unresolved",
+    "idle_medians": [
+      {
+        "baseline_median": 59.646054962870195,
+        "baseline_rates": [
+          59.443875074617,
+          59.8482348511234
+        ],
+        "candidate_change_percent": 0.13479443736901242,
+        "candidate_median": 59.7264545270702,
+        "candidate_rates": [
+          59.5988233394319,
+          59.8540857147085
+        ],
+        "recording": "off",
+        "workload": "disabled"
+      },
+      {
+        "baseline_median": 59.61995891183205,
+        "baseline_rates": [
+          59.2204788408223,
+          60.0194389828418
+        ],
+        "candidate_change_percent": 0.5532286295515831,
+        "candidate_median": 59.9497935934592,
+        "candidate_rates": [
+          59.8424647116466,
+          60.0571224752718
+        ],
+        "recording": "off",
+        "workload": "empty"
+      },
+      {
+        "baseline_median": 52.02642128822935,
+        "baseline_rates": [
+          48.8083515920435,
+          55.2444909844152
+        ],
+        "candidate_change_percent": -4.59948640228064,
+        "candidate_median": 49.633473115484,
+        "candidate_rates": [
+          50.9362871941014,
+          48.3306590368666
+        ],
+        "recording": "off",
+        "workload": "tower"
+      },
+      {
+        "baseline_median": 29.2130425938917,
+        "baseline_rates": [
+          29.3149528578914,
+          29.111132329892
+        ],
+        "candidate_change_percent": -0.4390261986362387,
+        "candidate_median": 29.084789683485752,
+        "candidate_rates": [
+          29.7187329459715,
+          28.450846421
+        ],
+        "recording": "off",
+        "workload": "stress"
+      },
+      {
+        "baseline_median": 60.01027574315045,
+        "baseline_rates": [
+          60.0174333187197,
+          60.0031181675812
+        ],
+        "candidate_change_percent": -0.265175732786338,
+        "candidate_median": 59.85114305470145,
+        "candidate_rates": [
+          59.6856709833206,
+          60.0166151260823
+        ],
+        "recording": "off",
+        "workload": "sleeping"
+      },
+      {
+        "baseline_median": 59.5102070462926,
+        "baseline_rates": [
+          59.8448920140483,
+          59.1755220785369
+        ],
+        "candidate_change_percent": -0.2928661102909236,
+        "candidate_median": 59.33592181769005,
+        "candidate_rates": [
+          58.8419505209009,
+          59.8298931144792
+        ],
+        "recording": "on",
+        "workload": "disabled"
+      },
+      {
+        "baseline_median": 59.908854882495845,
+        "baseline_rates": [
+          59.7987298016881,
+          60.0189799633036
+        ],
+        "candidate_change_percent": -0.03533286750407871,
+        "candidate_median": 59.887687366177005,
+        "candidate_rates": [
+          60.0242092101413,
+          59.7511655222127
+        ],
+        "recording": "on",
+        "workload": "empty"
+      },
+      {
+        "baseline_median": 52.71189324431095,
+        "baseline_rates": [
+          54.6034631580612,
+          50.8203233305607
+        ],
+        "candidate_change_percent": -6.451125064957441,
+        "candidate_median": 49.311383087013596,
+        "candidate_rates": [
+          47.3288607559919,
+          51.2939054180353
+        ],
+        "recording": "on",
+        "workload": "tower"
+      },
+      {
+        "baseline_median": 29.04910993676745,
+        "baseline_rates": [
+          28.7811770436674,
+          29.3170428298675
+        ],
+        "candidate_change_percent": -0.04834970973354169,
+        "candidate_median": 29.035064776432847,
+        "candidate_rates": [
+          28.938808888605,
+          29.1313206642607
+        ],
+        "recording": "on",
+        "workload": "stress"
+      },
+      {
+        "baseline_median": 59.85006073053805,
+        "baseline_rates": [
+          60.010788643166,
+          59.6893328179101
+        ],
+        "candidate_change_percent": -0.7427618050747764,
+        "candidate_median": 59.40551733911755,
+        "candidate_rates": [
+          58.9733145751547,
+          59.8377201030804
+        ],
+        "recording": "on",
+        "workload": "sleeping"
+      }
+    ],
+    "native_batch_summary": "native-batch-performance-summary.json",
+    "source_equivalence": "native-benchmark-final-candidate-continuity.json",
+    "scope": "Native-only batch cost, headless pinned Linux idle progression, and hosted action-stage timings are separate experiments. No physical TITAN RTX performance claim.",
+    "stage_summary": "final-edit-timing-summary.json",
+    "stage_lanes": 6,
+    "fresh_package_timing": {
+      "complete_triples": 11,
+      "right_censored_actions": 1,
+      "native_applied": 12,
+      "main_presented": 11,
+      "input_to_admission_median_ms": 20.777,
+      "input_to_admission_max_ms": 165.283,
+      "admission_to_main_publication_median_ms": 118.035,
+      "admission_to_main_publication_max_ms": 1274.907,
+      "tail_review": "final-fresh-package-publication-tail-review.json",
+      "censor_review": "final-fresh-package-timing-review.json",
+      "scope": "Complete-case observations from hosted software rendering. One Applied action awaits publication at the snapshot before intentional scene replacement; no later completion inferred."
+    }
+  },
+  "owner_evaluation": {
+    "new_candidate": "pending",
+    "predecessor_source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+    "predecessor_evidence": "327afc58227b246390b19c275f58df77ae2dd734",
+    "predecessor_report": "positive physical Windows11 Ryzen5600X TITAN RTX evaluation",
+    "authored_recipe_sha256": "ad00c753b10c0a1372f2a12ef0e81300ad335ca6d5cdb81290586e13f1dad19a"
+  },
+  "limits": [
+    "Cross-owner gestures are sequential and non-atomic; Slice and Drill select one owner per placement.",
+    "Radius 0–24; maximum 4,096-cell native transaction, 65,536 footprint probes and 2,048 sweep steps; one outstanding edit. Continued strokes use an approximately 30/s service throttle; fresh presses and Slice commits may request immediate service.",
+    "Live Drill release before safe admission cancels the placement. Hold until admitted, or pause for a precise click.",
+    "Slice release commits one immutable bounded line with a two-second safe-admission deadline. Camera, tool, pause and scene cancellation stop unadmitted work; admitted work is not rolled back.",
+    "Scene replacement retires the old owner and receipt generation; a retired old-owner action is not promised a new-scene publication.",
+    "Capacity refusals preserve inventory; unexpected post-write failures report the accounted prefix or uncertain completion and hold. No general rollback guarantee.",
+    "Save start reconstructs authored material and acknowledged ordinary terrain cuts; no live body pose, damage or combustion checkpoint.",
+    "The inactive-edit tower medians are 4.60% and 6.45% lower in short matched windows; causal attribution and physical-owner performance remain unresolved.",
+    "Impact, repair, detached-body addition, welding, stress/fatigue and M5 scheduling are deferred.",
+    "Mainline reconciliation is pending; PR #754 remains Draft/HOLD.",
+    "A complete fresh hosted action took 1,274.907 ms from admission to Main publication; 1,259.730 ms was after its native receipt. The stage concentration is observed; its cause and physical-owner impact are not isolated."
+  ],
+  "documentation_scope": "Final repository guide clarifies existing Drill/receipt/seed behavior. The qualified evaluator archive and its bundled guide retain their original bytes.",
+  "recorded_utc": "2026-11-28T09:49:58.552791+00:00",
+  "mission_started_utc": "2026-11-28T06:00:37+00:00",
+  "guarded_publication": {
+    "commit": "302f982943c0e03c30968368da8264cfb3c431ce",
+    "tree": "7bdfa95b7f30770512a2a448d8cccb789e997885",
+    "parent": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+    "job_id": 140938628666,
+    "status": "success",
+    "changed_paths": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/cybersand_native/runtime-provenance.json",
+      "godot/addons/cybersand_native/runtime-provenance.linux.json"
+    ],
+    "principal_review": "final-principal-publication-review.json",
+    "independent_review": "final-guarded-publication-review.json"
+  },
+  "qualification": {
+    "implemented": true,
+    "locally_tested": true,
+    "exact_source_hosted_qualified": true,
+    "actual_uploaded_windows_package_independently_executed": true,
+    "physical_owner_evaluated": false,
+    "native": {
+      "asan_ubsan_checks": 138280,
+      "leak_sanitizer_enabled": false,
+      "ordinary_world_cases": 192,
+      "budget_checks": 4276351,
+      "budget_limits": 74,
+      "python_and_actual_powershell_contracts": 86,
+      "skipped_contracts": 0,
+      "material_tests": 231
+    },
+    "source_lanes": {
+      "linux_headless": 77,
+      "linux_graphical_lane": 65,
+      "linux_actual_display_cases": 35,
+      "windows_headless": 77,
+      "windows_graphical_lane": 65
+    },
+    "windows_native_renderer": {
+      "camera_checks": 230,
+      "brush_checks": 159,
+      "preview_checks": 102,
+      "outline_controls": 10,
+      "verified_captures": 12
+    },
+    "package_lanes": {
+      "producer_cases": 45,
+      "fresh_independent_cases": 45,
+      "rendered_cases_per_lane": 12,
+      "launcher_roots_per_lane": 4,
+      "payload_refusal_cases_per_lane": 2,
+      "provenance_refusal_cases_per_lane": 8
+    },
+    "required_workbench_behaviors": 14,
+    "scope": "Case counts describe named lanes; repeated cases are not unique-test totals. Source checkouts, actual package execution, synthetic coordinate contracts, rendered observations and physical owner evaluation are separate."
+  },
+  "acceptance_coverage": "final-acceptance-coverage.json",
+  "mainline": "final-mainline-review.json",
+  "owner_guide": "../../operations/objectshard-workbench-playtest.md",
+  "integration_handover": "integration-handover.md",
+  "final_documentation_checks": "final-repository-checks.json",
+  "independent_delivery_review": "final-delivery-independent-review.json",
+  "independent_documentation_review": "final-documentation-review.json",
+  "evidence": [
+    {
+      "file": "final-campaign-metadata.json",
+      "sha256": "74999d169ae528cc313f784dfcd3d9a38e99f4640b24cc12ee4d50e60ff71f2e",
+      "bytes": 37163
+    },
+    {
+      "file": "final-native-hosted-review.json",
+      "sha256": "5192f5e83984a70d9c153963d39ae619463abb5748b9d5de1fdd871166e25c06",
+      "bytes": 7927
+    },
+    {
+      "file": "final-linux-workbench-review.json",
+      "sha256": "17484a23297c569998276a2435af15c0581f07a6bcc66dc192a146ec511d9e6c",
+      "bytes": 51888
+    },
+    {
+      "file": "final-windows-regressions-review.json",
+      "sha256": "6285371687f42a3416d6bb77272ca42a1efa6558386dcecd8521322cbec191c0",
+      "bytes": 22645
+    },
+    {
+      "file": "final-windows-graphical-review.json",
+      "sha256": "2dc28b3f14afc64ef9fd4df69f291c9ebe23eabf469e39d181a51e76a3c6fae6",
+      "bytes": 22381
+    },
+    {
+      "file": "final-native-renderer-independent-review.json",
+      "sha256": "bc13fa5dad5c178ec57f46d4b88d2119954dbfa6b50fbaceb12e37ac13072503",
+      "bytes": 4396
+    },
+    {
+      "file": "final-evaluator-extraction-review.json",
+      "sha256": "54e9bc957313f85ee2e2a756014d953eac64ab8bc9a1665868d05542efc9beb3",
+      "bytes": 4488
+    },
+    {
+      "file": "final-producer-package-execution-review.json",
+      "sha256": "fcb3a0a6853f5c400431738ed53e1b6d8edd4ddfb577f7f017f51edf3b52dc71",
+      "bytes": 20775
+    },
+    {
+      "file": "final-independent-package-review.json",
+      "sha256": "ceb0da99e173c6d40cf5b073b390ef268f3e07c6c44e52ff49113ff6b829e560",
+      "bytes": 21334
+    },
+    {
+      "file": "final-guarded-publication-review.json",
+      "sha256": "ad6685d69b272baf946ca95e75d71a2f054d8523c9ca2466a31288fd91314e32",
+      "bytes": 4704
+    },
+    {
+      "file": "final-principal-publication-review.json",
+      "sha256": "19adf2b7697556297ba81b20280a224ed325b663f74e2023c4abafb762cbc44d",
+      "bytes": 2280
+    },
+    {
+      "file": "final-acceptance-coverage.json",
+      "sha256": "802d65fa1346460281693a067cde94f0b0e625fc2ca1a12ddcd041be16185f2b",
+      "bytes": 72155
+    },
+    {
+      "file": "final-edit-timing-summary.json",
+      "sha256": "5a13b7aad6ca29ed92a1401761ec5ff585a108a7a97cc3a4e1dd8bfc8a8a1a6f",
+      "bytes": 34391
+    },
+    {
+      "file": "final-fresh-package-timing-review.json",
+      "sha256": "5b3451ace5ea6eac399461e64b36c3d78cb0288bbfc93ac5ebd266f46fbdf9a0",
+      "bytes": 6568
+    },
+    {
+      "file": "final-fresh-package-publication-tail-review.json",
+      "sha256": "d5242a812460acf7da34782bb6cf2c43e8f1f3b5d2c137ee8a5ae1d77b878aa3",
+      "bytes": 4476
+    },
+    {
+      "file": "final-timing-metadata-rebind-review.json",
+      "sha256": "0d6f55e63a715b1a6fa73cfc5265511594ce089e6433e6f3bcb2e8484bb78a2e",
+      "bytes": 4746
+    },
+    {
+      "file": "matched-idle-throughput.json",
+      "sha256": "deaa3b0007f008c599c4a891908654aeb9dbd4e06910820a19500aced1eb2f8a",
+      "bytes": 76279
+    },
+    {
+      "file": "matched-idle-custody.json",
+      "sha256": "cba48bd14ed16c32fec2cb1efe447a83f914606b4277443fe8ceb16cf4a97190",
+      "bytes": 11255
+    },
+    {
+      "file": "final-throughput-independent-review.json",
+      "sha256": "c7fb8af7653203dc1c554b6fa520f62ed8851a59e59592193dcb7bbd30fce90d",
+      "bytes": 21616
+    },
+    {
+      "file": "performance-results.md",
+      "sha256": "b82e546732966045cdd019307661396f0d664ca759b9d52afd263f983506bd79",
+      "bytes": 8674
+    },
+    {
+      "file": "performance-results-independent-review.json",
+      "sha256": "65bd75010c3de687fe20865b8ed846eb578958f49218152d470d837a73e99b29",
+      "bytes": 2731
+    },
+    {
+      "file": "native-batch-performance-summary.json",
+      "sha256": "5e408efa6d9a2b73935a068687f2953e50b1e9028c102ece2d2f2e0297770d9a",
+      "bytes": 3378
+    },
+    {
+      "file": "native-benchmark-final-candidate-continuity.json",
+      "sha256": "66dfc20df843efd8d004f3bc2aecf7ab93a1e3d0d9bd93dd9b861f9beb63e224",
+      "bytes": 862
+    },
+    {
+      "file": "windows-package-manifest.canonical.json",
+      "sha256": "65fabcbce5c124805a3ab4c7bbf6241b5f25b4fa87a1fa013d79296a53d970e5",
+      "bytes": 197526
+    },
+    {
+      "file": "windows-package-manifest-copy.json",
+      "sha256": "fec8b3d632b06d09f84f71230b5f596cbd611897b3c97a56d4f1bd1aaca3235b",
+      "bytes": 751
+    },
+    {
+      "file": "windows-package-native-provenance.json",
+      "sha256": "b1e8ab56cedebbfb0021e7e7931bb9f184742ef6a054e2e544a9fc5c1aeb64fc",
+      "bytes": 15728
+    },
+    {
+      "file": "specialist-c-final-handoff.json",
+      "sha256": "ae772b3cac3b14bdec7c82f4a177541f0a95621ecc7bb62fa9f45f8a0e334470",
+      "bytes": 10315
+    },
+    {
+      "file": "specialist-c-evidence-copy-map.json",
+      "sha256": "135e2d2700af18ea2b9a0eb031a7f0ebe8ca4b6e1ffd17f8e09c0bdd8f6fa4e5",
+      "bytes": 9106
+    }
+  ],
+  "independent_package_delivery_review": "final-package-delivery-review.json"
+}

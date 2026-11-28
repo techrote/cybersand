@@ -1,0 +1,200 @@
+{
+  "schema": "objectshard-live-edit-fresh-package-render-review-v1",
+  "status": "passed",
+  "reviewer": "Specialist C",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "workflow_run": 46125028803,
+  "evaluator_artifact_id": 15256411748,
+  "execution_evidence_artifact_id": 15257314868,
+  "qualification_sha256": "fcd8352307d87d066c981823e7c6f6ebd48ed9f226859ea626c04e8617c958e8",
+  "preview_receipt_log_sha256": "41114934c0f0c24f36378a285a255cff978c97495d819568fe116727666a17e9",
+  "verified_preview_captures": [
+    {
+      "path": "material-presentation-captures/structural-eraser.png",
+      "sha256": "1e05d5c6f2adfe6b519e2c6acdca53c5a8c22636550a4d63352a94de77d51a14",
+      "bytes": 123824,
+      "size": [
+        1920,
+        1080
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/precision-cell.png",
+      "sha256": "565397464be1811ccab7370215f1b32ea2ab8a5b1e4b48df0bfddd4c69aad907",
+      "bytes": 122189,
+      "size": [
+        1920,
+        1080
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/drill-opening.png",
+      "sha256": "c1aa3e555e019107110fd42e154935fcc83c2a6ce2c8a5ff367dab8e9d10ffeb",
+      "bytes": 123928,
+      "size": [
+        1920,
+        1080
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/weathering-extent.png",
+      "sha256": "19582ed5ccf443f60aa4dd851e48a5b6f6cd628a74eae5f752b8d4464e803d34",
+      "bytes": 124078,
+      "size": [
+        1920,
+        1080
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/area-ignition.png",
+      "sha256": "33be33ad8004af2c9703aa02b7dfd4dd5f2827b8356825adb95956f07afcd06f",
+      "bytes": 124196,
+      "size": [
+        1920,
+        1080
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/ordinary-unified-eraser.png",
+      "sha256": "ae57d028199ac0e4d7a3dc5992876da790e723822c4adeb98a843e9e0532f0a0",
+      "bytes": 123256,
+      "size": [
+        1920,
+        1080
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/slice-preview.png",
+      "sha256": "113fdd1548334e2bc70dc1f6edb831633a963a1f75e6e6105e8e86f28466f22d",
+      "bytes": 124820,
+      "size": [
+        1920,
+        1080
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/zoomed-eraser.png",
+      "sha256": "6fc8ac94bdecc835c12d3ccf7695bb2b51cf22db4217143c8617ca8dfbb97ddc",
+      "bytes": 119594,
+      "size": [
+        1920,
+        1080
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/panned-drill.png",
+      "sha256": "046e4d87e039933095fedcb46077525367e5f3a309698c689294954c8014515b",
+      "bytes": 118790,
+      "size": [
+        1920,
+        1080
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/resized-weathering.png",
+      "sha256": "6a049c1ccd4e5cc6cd57a0403789cc79c2ee40626ae7bf478964e8b0c5776fc2",
+      "bytes": 88917,
+      "size": [
+        1360,
+        765
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/structures-controls-top.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "bytes": 87704,
+      "size": [
+        740,
+        650
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "material-presentation-captures/structures-weathering-controls.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "bytes": 87704,
+      "size": [
+        740,
+        650
+      ],
+      "byte_identical_to_reviewed_producer_capture": true
+    }
+  ],
+  "outline_controls": 10,
+  "navigation": [
+    {
+      "kind": "escape",
+      "native_action_serial": 0,
+      "paused_after": true,
+      "paused_before": true,
+      "pointer_tool": -1
+    },
+    {
+      "kind": "window_resize",
+      "new_framebuffer": "(1360, 765)",
+      "new_logical_view": "(1880.0, 853.0)",
+      "new_screen_transform": "[X: (0.708333, 0.0), Y: (0.0, 0.708333), O: (0.0, 48.0)]",
+      "new_window": "(1360, 860)",
+      "old_framebuffer": "(1920, 1080)",
+      "old_logical_view": "(1880.0, 853.0)",
+      "old_screen_transform": "[X: (1.0, 0.0), Y: (0.0, 1.0), O: (0.0, 0.0)]",
+      "old_window": "(1920, 1080)",
+      "pointer_tool": -1
+    }
+  ],
+  "final_owner": {
+    "held_reason": "",
+    "paused": true,
+    "phase": "Ready",
+    "pointer_tool": -1,
+    "slice_committing": false
+  },
+  "selected_material_frames": [
+    {
+      "path": "test_object_shard_m4_live_tools-artifacts/drilled-panel.png",
+      "sha256": "50b83f20eb3716165e5c0b1d0a8e264a197d13e23bbb0dbeb6c418c2d411fbf7",
+      "byte_identical_to_reviewed_producer_capture": true
+    },
+    {
+      "path": "test_object_shard_m4_live_tools-artifacts/weathered-panel.png",
+      "sha256": "790bb7ed38aa59dbcb926e217745d59e9c4b00f51fc68dd9e55a07bc9b870161",
+      "byte_identical_to_reviewed_producer_capture": false
+    },
+    {
+      "path": "test_object_shard_m4_live_tools-artifacts/sliced-panel.png",
+      "sha256": "1755630745889f238a920bb35cc2ab5cdf7b6efb9fa99673ea3603c543336475",
+      "byte_identical_to_reviewed_producer_capture": false
+    },
+    {
+      "path": "test_object_shard_m4_creative_constructions-artifacts/construction-weathered.png",
+      "sha256": "4d08c89ec24f02c972e63d604c82de50b0baba396d4e17c508a2bbed89c7fefb",
+      "byte_identical_to_reviewed_producer_capture": false
+    },
+    {
+      "path": "test_object_shard_m4_creative_constructions-artifacts/construction-editing_yard.png",
+      "sha256": "ed4493e8a08bf0452b2340354c99621af6f78e472b84454e5307cba1f75542b8",
+      "byte_identical_to_reviewed_producer_capture": false
+    }
+  ],
+  "scope": "Actual unchanged uploaded evaluator executed on a fresh hosted Windows VM. Each preview PNG is hash/dimension verified and compared with independently reviewed producer captures. Physical owner evaluation remains pending.",
+  "visual_review": {
+    "method": "Specialist C freshly inspected the four material/demonstration images that differ from the producer run; the drill image and all twelve preview images are byte-identical to previously reviewed captures.",
+    "inspected_different_images": [
+      "test_object_shard_m4_live_tools-artifacts/weathered-panel.png",
+      "test_object_shard_m4_live_tools-artifacts/sliced-panel.png",
+      "test_object_shard_m4_creative_constructions-artifacts/construction-weathered.png",
+      "test_object_shard_m4_creative_constructions-artifacts/construction-editing_yard.png"
+    ],
+    "observations": "Weathering pitting and the sliced/drilled panel remain visibly coherent. The editing yard shows the perforated detached panel beside the rooted wing; the timber shed has real open floor bays and existing eroded edges. Frame/status timing and physical positions may differ between executions; material/fragment correctness is established by their accompanying native/physics assertions."
+  }
+}

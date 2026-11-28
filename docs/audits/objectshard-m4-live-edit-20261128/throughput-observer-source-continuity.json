@@ -1,0 +1,20 @@
+{
+  "schema_version": 1,
+  "reviewer": "native-transactions-specialist-A",
+  "verified_at": "2026-11-28T08:27:33.718426+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "baseline_source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "prior_review_sha256": "741c2278406d78d8b326e86562d3ee7b0e18c0a67f4bc2bcde14ce7c3c2417c8",
+  "observer_scripts_unchanged": {
+    "/tmp/cybersand-live-edit/summarize_matched_throughput.py": "fbc1fc4635e2c15808ccc72f2af6a32ced0d13018e43df79534e84fa2304032a",
+    "/tmp/cybersand-live-edit/capture_throughput_inputs.py": "4a24aeaca5716b7ab1e7b0caf2f0cb3c4e124b79c17ad3736f6e3c3ddd18f331"
+  },
+  "common_observer_inputs_unchanged": {
+    "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+    "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+    "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110"
+  },
+  "runner_sha256": "acc01a1787ff3a5e80d8be42603165dd8b6004c304d66310c999793a30ab0a58",
+  "status": "PASS_FOR_PLANNED_DESCRIPTIVE_EXPERIMENT",
+  "scope": "Previously reviewed observers and all shared fixture/runner inputs remain byte-identical at the final candidate. This addendum changes the planned source binding only; execution of the forty pinned-runtime windows is still separate and pending."
+}

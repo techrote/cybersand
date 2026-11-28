@@ -1,0 +1,117 @@
+{
+  "schema": "objectshard-m4-independent-linux-geometry-install-joins-v1",
+  "reviewer": "Specialist B, independent of C stage timing extractor",
+  "verified_at": "2026-11-28T09:05:01.262811+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "run_id": 46125028803,
+  "artifact_id": 15257075058,
+  "reviews": [
+    {
+      "lane": "linux_source_headless",
+      "qualification_sha256": "e8fffc3da2dc73a444f43678fd157e9a69b77293cff22245490ccf87e2901434",
+      "creative_log_sha256": "b4a9a4e0841f6875f179155d29f786ee144fdabb3448fa60b2bbda37b3612c48",
+      "extractor_output_sha256": "8e2ac3d5a6b2fbfa36ee88aaad50b1ba2c9e102670d677f74c9b4cf9ca934055",
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "witness": {
+        "fixture_log_sha256": "b4a9a4e0841f6875f179155d29f786ee144fdabb3448fa60b2bbda37b3612c48",
+        "owner": 1,
+        "world_generation": 5,
+        "native_instance_id": -9223371950385002952,
+        "native_session": 3,
+        "world_incarnation": 3,
+        "physics_session": 3,
+        "body_generation": 1,
+        "geometry_revision": 2,
+        "requested_cells": 6,
+        "removed_cells": 6,
+        "native_geometry_rebuilds": 1,
+        "native_combined_geometry_ns": 216790,
+        "main_rapier_install_usec": 348,
+        "shape_count": 44,
+        "physics_step": 296,
+        "installed_mass": 6142.0,
+        "installed_inertia": 7264435.0,
+        "install_flags": {
+          "geometry_revision": 2,
+          "install_usec": 348,
+          "mass_changed": true,
+          "shape_replacement": true,
+          "wake_for_changed_physics": true,
+          "was_sleeping": false
+        },
+        "native_action_id": 15,
+        "native_transaction_id": 6,
+        "port_generation": 5,
+        "owner_epoch": 6,
+        "transport_generation": 6
+      }
+    },
+    {
+      "lane": "linux_source_graphical",
+      "qualification_sha256": "1ace89746d1d1e5e3e25a6eb3d5714e8d6ad8e6912fa19cf1f78c7b7ec56428c",
+      "creative_log_sha256": "70aaaefb70021a89e4533b664d24a87a637dec8bae91c8078bacece0c04ff587",
+      "extractor_output_sha256": "0cd2952d26ecefa0634d8280a1517e46af1f507681c2bad14eef74ff998a9331",
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "witness": {
+        "fixture_log_sha256": "70aaaefb70021a89e4533b664d24a87a637dec8bae91c8078bacece0c04ff587",
+        "owner": 1,
+        "world_generation": 5,
+        "native_instance_id": -9223371949797800390,
+        "native_session": 3,
+        "world_incarnation": 3,
+        "physics_session": 3,
+        "body_generation": 1,
+        "geometry_revision": 2,
+        "requested_cells": 6,
+        "removed_cells": 6,
+        "native_geometry_rebuilds": 1,
+        "native_combined_geometry_ns": 180559,
+        "main_rapier_install_usec": 373,
+        "shape_count": 44,
+        "physics_step": 320,
+        "installed_mass": 6142.0,
+        "installed_inertia": 7264435.0,
+        "install_flags": {
+          "geometry_revision": 2,
+          "install_usec": 373,
+          "mass_changed": true,
+          "shape_replacement": true,
+          "wake_for_changed_physics": true,
+          "was_sleeping": false
+        },
+        "native_action_id": 15,
+        "native_transaction_id": 6,
+        "port_generation": 5,
+        "owner_epoch": 6,
+        "transport_generation": 6
+      }
+    }
+  ],
+  "independent_checks": [
+    "Original successful qualification and original creative fixture log hashes verified.",
+    "Exact one-owner native batch receipt joined to exactly one actual installed body and GeometryInstalled event by owner, generation and geometry revision.",
+    "World/native instance identity and native session/incarnation agree with final runtime and physics session.",
+    "Event physics step and install time equal installed body last_geometry_step and last_geometry_usec.",
+    "Original native receipt confirms six requested/changed/removed cells, one rebuild; installed body confirms 44 real shapes.",
+    "Both C timing extractor outputs agree with independently parsed original events and installed bodies."
+  ],
+  "scope": [
+    "One witnessed batch per lane, not a timing distribution.",
+    "Native geometry_ns combines connectivity and exact geometry/preflight. Main Rapier install_usec separately measures actual physical installation.",
+    "Hosted final Linux source runs are separate from Windows extracted-package and owner hardware qualification."
+  ],
+  "status": "passed"
+}

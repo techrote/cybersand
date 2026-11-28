@@ -1,0 +1,1238 @@
+{
+  "schema": "objectshard-live-edit-final-timing-summary-v1",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "workflow_run": 46125028803,
+  "lanes": [
+    {
+      "label": "Linux source, headless",
+      "receipt": "timings-final-linux-source-headless.json",
+      "sha256": "47e3c75a392abba20a85246192f13f13a0926f4f1d4cb622972b876e78087a8a",
+      "case_headless": true,
+      "fixture_seconds": 14.788,
+      "action_count": 12,
+      "censored_action_count": 0,
+      "diagnostic_counts": {
+        "admitted": 12,
+        "attempt": 14,
+        "cancel": 12,
+        "presented": 12,
+        "receipt": 12,
+        "wait": 5
+      },
+      "native_totals": {
+        "changed_cells": 418,
+        "changed_owners": 12,
+        "eligible_cells": 418,
+        "geometry_rebuilds": 11,
+        "removed_cells": 418,
+        "requested_cells": 418,
+        "unique_cells": 418
+      },
+      "metrics": {
+        "input_to_admission_usec": {
+          "count": 12,
+          "min": 319,
+          "median": 360.5,
+          "max": 69724
+        },
+        "port_input_admission_usec": {
+          "count": 12,
+          "min": 194,
+          "median": 216.5,
+          "max": 67507
+        },
+        "worker_queue_usec": {
+          "count": 12,
+          "min": 203,
+          "median": 357.5,
+          "max": 4965
+        },
+        "native_owner_service_usec": {
+          "count": 12,
+          "min": 118,
+          "median": 226.5,
+          "max": 5603
+        },
+        "native_edit_ns": {
+          "count": 12,
+          "min": 31752,
+          "median": 63351.0,
+          "max": 90930
+        },
+        "native_target_ns": {
+          "count": 12,
+          "min": 1898,
+          "median": 3120.0,
+          "max": 12103
+        },
+        "native_mutation_ns": {
+          "count": 12,
+          "min": 593,
+          "median": 735.0,
+          "max": 19649
+        },
+        "native_combined_geometry_ns": {
+          "count": 12,
+          "min": 0,
+          "median": 59653.5,
+          "max": 86110
+        },
+        "main_receipt_delivery_usec": {
+          "count": 12,
+          "min": 2454,
+          "median": 9360.0,
+          "max": 17761
+        },
+        "admission_to_receipt_usec": {
+          "count": 12,
+          "min": 2973,
+          "median": 9871.5,
+          "max": 22939
+        },
+        "input_to_receipt_usec": {
+          "count": 12,
+          "min": 3171,
+          "median": 10325.0,
+          "max": 85057
+        },
+        "admission_to_publication_usec": {
+          "count": 12,
+          "min": 6150,
+          "median": 10105.0,
+          "max": 122482
+        },
+        "gap_since_previous_publication_before_input_capture_usec": {
+          "count": 11,
+          "min": -18719,
+          "median": 125018,
+          "max": 6415936
+        }
+      },
+      "creative_geometry_install": {
+        "fixture_log_sha256": "b4a9a4e0841f6875f179155d29f786ee144fdabb3448fa60b2bbda37b3612c48",
+        "owner": 1,
+        "world_generation": 5,
+        "native_instance_id": -9223371950385002952,
+        "native_session": 3,
+        "world_incarnation": 3,
+        "physics_session": 3,
+        "body_generation": 1,
+        "geometry_revision": 2,
+        "requested_cells": 6,
+        "removed_cells": 6,
+        "native_geometry_rebuilds": 1,
+        "native_combined_geometry_ns": 216790,
+        "main_rapier_install_usec": 348,
+        "shape_count": 44,
+        "physics_step": 296,
+        "installed_mass": 6142.0,
+        "installed_inertia": 7264435.0,
+        "install_flags": {
+          "geometry_revision": 2,
+          "install_usec": 348,
+          "mass_changed": true,
+          "shape_replacement": true,
+          "wake_for_changed_physics": true,
+          "was_sleeping": false
+        }
+      },
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "owned_awake_cohorts": {
+        "8/0": {
+          "awake": 0,
+          "callbacks": 543,
+          "native_ticks": 139,
+          "owned": 8,
+          "wall_usec": 4323960
+        },
+        "8/1": {
+          "awake": 1,
+          "callbacks": 26,
+          "native_ticks": 7,
+          "owned": 8,
+          "wall_usec": 218307
+        },
+        "8/2": {
+          "awake": 2,
+          "callbacks": 32,
+          "native_ticks": 9,
+          "owned": 8,
+          "wall_usec": 284980
+        },
+        "8/3": {
+          "awake": 3,
+          "callbacks": 34,
+          "native_ticks": 10,
+          "owned": 8,
+          "wall_usec": 318284
+        },
+        "8/4": {
+          "awake": 4,
+          "callbacks": 37,
+          "native_ticks": 9,
+          "owned": 8,
+          "wall_usec": 354221
+        },
+        "8/5": {
+          "awake": 5,
+          "callbacks": 26,
+          "native_ticks": 9,
+          "owned": 8,
+          "wall_usec": 276606
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 41,
+          "native_ticks": 13,
+          "owned": 8,
+          "wall_usec": 402701
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 37,
+          "native_ticks": 10,
+          "owned": 8,
+          "wall_usec": 381163
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 142,
+          "native_ticks": 36,
+          "owned": 8,
+          "wall_usec": 1184825
+        }
+      }
+    },
+    {
+      "label": "Linux source, rendered",
+      "receipt": "timings-final-linux-source-graphical.json",
+      "sha256": "b88e9d64ce80ad6f0687913c1b91deaa458e20ee4c7ce19d37a091d9e3f334df",
+      "case_headless": false,
+      "fixture_seconds": 45.697,
+      "action_count": 12,
+      "censored_action_count": 0,
+      "diagnostic_counts": {
+        "admitted": 12,
+        "attempt": 14,
+        "cancel": 12,
+        "presented": 12,
+        "receipt": 12,
+        "wait": 19
+      },
+      "native_totals": {
+        "changed_cells": 418,
+        "changed_owners": 12,
+        "eligible_cells": 418,
+        "geometry_rebuilds": 11,
+        "removed_cells": 418,
+        "requested_cells": 418,
+        "unique_cells": 418
+      },
+      "metrics": {
+        "input_to_admission_usec": {
+          "count": 12,
+          "min": 405,
+          "median": 4382.0,
+          "max": 28259
+        },
+        "port_input_admission_usec": {
+          "count": 12,
+          "min": 292,
+          "median": 4227.0,
+          "max": 26009
+        },
+        "worker_queue_usec": {
+          "count": 12,
+          "min": 186,
+          "median": 366.0,
+          "max": 4424
+        },
+        "native_owner_service_usec": {
+          "count": 12,
+          "min": 137,
+          "median": 223.0,
+          "max": 3085
+        },
+        "native_edit_ns": {
+          "count": 12,
+          "min": 39668,
+          "median": 74697.0,
+          "max": 87272
+        },
+        "native_target_ns": {
+          "count": 12,
+          "min": 3475,
+          "median": 4704.0,
+          "max": 16756
+        },
+        "native_mutation_ns": {
+          "count": 12,
+          "min": 769,
+          "median": 1098.5,
+          "max": 22912
+        },
+        "native_combined_geometry_ns": {
+          "count": 12,
+          "min": 0,
+          "median": 59859.0,
+          "max": 81431
+        },
+        "main_receipt_delivery_usec": {
+          "count": 12,
+          "min": 66211,
+          "median": 151465.5,
+          "max": 242498
+        },
+        "admission_to_receipt_usec": {
+          "count": 12,
+          "min": 66860,
+          "median": 152419.0,
+          "max": 242820
+        },
+        "input_to_receipt_usec": {
+          "count": 12,
+          "min": 67276,
+          "median": 156852.5,
+          "max": 243137
+        },
+        "admission_to_publication_usec": {
+          "count": 12,
+          "min": 146575,
+          "median": 154113.5,
+          "max": 670298
+        },
+        "gap_since_previous_publication_before_input_capture_usec": {
+          "count": 11,
+          "min": -3869,
+          "median": 594478,
+          "max": 20900387
+        }
+      },
+      "creative_geometry_install": {
+        "fixture_log_sha256": "70aaaefb70021a89e4533b664d24a87a637dec8bae91c8078bacece0c04ff587",
+        "owner": 1,
+        "world_generation": 5,
+        "native_instance_id": -9223371949797800390,
+        "native_session": 3,
+        "world_incarnation": 3,
+        "physics_session": 3,
+        "body_generation": 1,
+        "geometry_revision": 2,
+        "requested_cells": 6,
+        "removed_cells": 6,
+        "native_geometry_rebuilds": 1,
+        "native_combined_geometry_ns": 180559,
+        "main_rapier_install_usec": 373,
+        "shape_count": 44,
+        "physics_step": 320,
+        "installed_mass": 6142.0,
+        "installed_inertia": 7264435.0,
+        "install_flags": {
+          "geometry_revision": 2,
+          "install_usec": 373,
+          "mass_changed": true,
+          "shape_replacement": true,
+          "wake_for_changed_physics": true,
+          "was_sleeping": false
+        }
+      },
+      "runtime": {
+        "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "platform": "linux",
+        "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a"
+      },
+      "owned_awake_cohorts": {
+        "8/0": {
+          "awake": 0,
+          "callbacks": 82,
+          "native_ticks": 161,
+          "owned": 8,
+          "wall_usec": 16553625
+        },
+        "8/1": {
+          "awake": 1,
+          "callbacks": 16,
+          "native_ticks": 31,
+          "owned": 8,
+          "wall_usec": 3417854
+        },
+        "8/2": {
+          "awake": 2,
+          "callbacks": 7,
+          "native_ticks": 12,
+          "owned": 8,
+          "wall_usec": 1378812
+        },
+        "8/3": {
+          "awake": 3,
+          "callbacks": 8,
+          "native_ticks": 14,
+          "owned": 8,
+          "wall_usec": 1534901
+        },
+        "8/4": {
+          "awake": 4,
+          "callbacks": 9,
+          "native_ticks": 16,
+          "owned": 8,
+          "wall_usec": 1760530
+        },
+        "8/5": {
+          "awake": 5,
+          "callbacks": 16,
+          "native_ticks": 25,
+          "owned": 8,
+          "wall_usec": 3109533
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 4,
+          "native_ticks": 3,
+          "owned": 8,
+          "wall_usec": 700817
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 1,
+          "native_ticks": 2,
+          "owned": 8,
+          "wall_usec": 200007
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 16,
+          "native_ticks": 32,
+          "owned": 8,
+          "wall_usec": 3376197
+        }
+      }
+    },
+    {
+      "label": "Windows source, headless",
+      "receipt": "timings-final-windows-source-headless.json",
+      "sha256": "c49a32b51cb06ddeb098af66f421d936573a8f75d28efb26023d420ec7bfd95a",
+      "case_headless": true,
+      "fixture_seconds": 17.29,
+      "action_count": 12,
+      "censored_action_count": 0,
+      "diagnostic_counts": {
+        "admitted": 12,
+        "attempt": 14,
+        "cancel": 12,
+        "presented": 12,
+        "receipt": 12,
+        "wait": 17
+      },
+      "native_totals": {
+        "changed_cells": 418,
+        "changed_owners": 12,
+        "eligible_cells": 418,
+        "geometry_rebuilds": 11,
+        "removed_cells": 418,
+        "requested_cells": 418,
+        "unique_cells": 418
+      },
+      "metrics": {
+        "input_to_admission_usec": {
+          "count": 12,
+          "min": 447,
+          "median": 30996.5,
+          "max": 74218
+        },
+        "port_input_admission_usec": {
+          "count": 12,
+          "min": 318,
+          "median": 30837.0,
+          "max": 71332
+        },
+        "worker_queue_usec": {
+          "count": 12,
+          "min": 158,
+          "median": 1144.5,
+          "max": 4459
+        },
+        "native_owner_service_usec": {
+          "count": 12,
+          "min": 108,
+          "median": 172.5,
+          "max": 3188
+        },
+        "native_edit_ns": {
+          "count": 12,
+          "min": 28300,
+          "median": 40000.0,
+          "max": 50900
+        },
+        "native_target_ns": {
+          "count": 12,
+          "min": 2000,
+          "median": 2700.0,
+          "max": 11900
+        },
+        "native_mutation_ns": {
+          "count": 12,
+          "min": 800,
+          "median": 1100.0,
+          "max": 16700
+        },
+        "native_combined_geometry_ns": {
+          "count": 12,
+          "min": 0,
+          "median": 35100.0,
+          "max": 43600
+        },
+        "main_receipt_delivery_usec": {
+          "count": 12,
+          "min": 2157,
+          "median": 10758.0,
+          "max": 15507
+        },
+        "admission_to_receipt_usec": {
+          "count": 12,
+          "min": 2987,
+          "median": 11228.5,
+          "max": 19456
+        },
+        "input_to_receipt_usec": {
+          "count": 12,
+          "min": 4786,
+          "median": 40090.0,
+          "max": 91417
+        },
+        "admission_to_publication_usec": {
+          "count": 12,
+          "min": 4199,
+          "median": 11711.0,
+          "max": 60920
+        },
+        "gap_since_previous_publication_before_input_capture_usec": {
+          "count": 11,
+          "min": -16308,
+          "median": 133221,
+          "max": 7059745
+        }
+      },
+      "creative_geometry_install": {
+        "fixture_log_sha256": "f6a570e038b522baef0ed7fb687330d84ad31638cda371b25a324fc505c08e19",
+        "owner": 1,
+        "world_generation": 5,
+        "native_instance_id": -9223371950519220680,
+        "native_session": 3,
+        "world_incarnation": 3,
+        "physics_session": 3,
+        "body_generation": 1,
+        "geometry_revision": 2,
+        "requested_cells": 6,
+        "removed_cells": 6,
+        "native_geometry_rebuilds": 1,
+        "native_combined_geometry_ns": 116200,
+        "main_rapier_install_usec": 305,
+        "shape_count": 44,
+        "physics_step": 296,
+        "installed_mass": 6142.0,
+        "installed_inertia": 7264435.0,
+        "install_flags": {
+          "geometry_revision": 2,
+          "install_usec": 305,
+          "mass_changed": true,
+          "shape_replacement": true,
+          "wake_for_changed_physics": true,
+          "was_sleeping": false
+        }
+      },
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "owned_awake_cohorts": {
+        "8/0": {
+          "awake": 0,
+          "callbacks": 356,
+          "native_ticks": 139,
+          "owned": 8,
+          "wall_usec": 4593142
+        },
+        "8/1": {
+          "awake": 1,
+          "callbacks": 16,
+          "native_ticks": 7,
+          "owned": 8,
+          "wall_usec": 264479
+        },
+        "8/2": {
+          "awake": 2,
+          "callbacks": 29,
+          "native_ticks": 11,
+          "owned": 8,
+          "wall_usec": 363999
+        },
+        "8/3": {
+          "awake": 3,
+          "callbacks": 30,
+          "native_ticks": 11,
+          "owned": 8,
+          "wall_usec": 378798
+        },
+        "8/4": {
+          "awake": 4,
+          "callbacks": 39,
+          "native_ticks": 11,
+          "owned": 8,
+          "wall_usec": 455762
+        },
+        "8/5": {
+          "awake": 5,
+          "callbacks": 29,
+          "native_ticks": 12,
+          "owned": 8,
+          "wall_usec": 396832
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 52,
+          "native_ticks": 20,
+          "owned": 8,
+          "wall_usec": 781916
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 5,
+          "native_ticks": 1,
+          "owned": 8,
+          "wall_usec": 56130
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 82,
+          "native_ticks": 35,
+          "owned": 8,
+          "wall_usec": 1182950
+        }
+      }
+    },
+    {
+      "label": "Windows source, rendered",
+      "receipt": "timings-final-windows-source-graphical.json",
+      "sha256": "b056e9d6a28494cf327a5ca56637cb4cece86d0ec192f576131615801553d3a7",
+      "case_headless": false,
+      "fixture_seconds": 160.155,
+      "action_count": 12,
+      "censored_action_count": 0,
+      "diagnostic_counts": {
+        "admitted": 12,
+        "attempt": 14,
+        "cancel": 12,
+        "presented": 12,
+        "receipt": 12,
+        "wait": 21
+      },
+      "native_totals": {
+        "changed_cells": 418,
+        "changed_owners": 12,
+        "eligible_cells": 418,
+        "geometry_rebuilds": 11,
+        "removed_cells": 418,
+        "requested_cells": 418,
+        "unique_cells": 418
+      },
+      "metrics": {
+        "input_to_admission_usec": {
+          "count": 12,
+          "min": 967,
+          "median": 23313.0,
+          "max": 130634
+        },
+        "port_input_admission_usec": {
+          "count": 12,
+          "min": 653,
+          "median": 22441.0,
+          "max": 130428
+        },
+        "worker_queue_usec": {
+          "count": 12,
+          "min": 423,
+          "median": 1429.5,
+          "max": 6746
+        },
+        "native_owner_service_usec": {
+          "count": 12,
+          "min": 227,
+          "median": 322.0,
+          "max": 4729
+        },
+        "native_edit_ns": {
+          "count": 12,
+          "min": 60000,
+          "median": 69900.0,
+          "max": 112200
+        },
+        "native_target_ns": {
+          "count": 12,
+          "min": 4400,
+          "median": 5750.0,
+          "max": 29000
+        },
+        "native_mutation_ns": {
+          "count": 12,
+          "min": 900,
+          "median": 1300.0,
+          "max": 39800
+        },
+        "native_combined_geometry_ns": {
+          "count": 12,
+          "min": 0,
+          "median": 55100.0,
+          "max": 104200
+        },
+        "main_receipt_delivery_usec": {
+          "count": 12,
+          "min": 3098,
+          "median": 110102.0,
+          "max": 253312
+        },
+        "admission_to_receipt_usec": {
+          "count": 12,
+          "min": 4169,
+          "median": 110844.0,
+          "max": 255658
+        },
+        "input_to_receipt_usec": {
+          "count": 12,
+          "min": 5022,
+          "median": 130207.5,
+          "max": 258160
+        },
+        "admission_to_publication_usec": {
+          "count": 12,
+          "min": 106401,
+          "median": 120489.5,
+          "max": 341874
+        },
+        "gap_since_previous_publication_before_input_capture_usec": {
+          "count": 11,
+          "min": -6865,
+          "median": 606192,
+          "max": 22633724
+        }
+      },
+      "creative_geometry_install": {
+        "fixture_log_sha256": "4f77c9d6e860196be647eb7a43747ea1047c4ffe828acd22fdfc677921eac9b3",
+        "owner": 1,
+        "world_generation": 5,
+        "native_instance_id": -9223371949210597829,
+        "native_session": 3,
+        "world_incarnation": 3,
+        "physics_session": 3,
+        "body_generation": 1,
+        "geometry_revision": 2,
+        "requested_cells": 6,
+        "removed_cells": 6,
+        "native_geometry_rebuilds": 1,
+        "native_combined_geometry_ns": 265100,
+        "main_rapier_install_usec": 524,
+        "shape_count": 44,
+        "physics_step": 304,
+        "installed_mass": 6142.0,
+        "installed_inertia": 7264435.0,
+        "install_flags": {
+          "geometry_revision": 2,
+          "install_usec": 524,
+          "mass_changed": true,
+          "shape_replacement": true,
+          "wake_for_changed_physics": true,
+          "was_sleeping": false
+        }
+      },
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "owned_awake_cohorts": {
+        "8/0": {
+          "awake": 0,
+          "callbacks": 102,
+          "native_ticks": 150,
+          "owned": 8,
+          "wall_usec": 15400403
+        },
+        "8/1": {
+          "awake": 1,
+          "callbacks": 21,
+          "native_ticks": 27,
+          "owned": 8,
+          "wall_usec": 3228541
+        },
+        "8/2": {
+          "awake": 2,
+          "callbacks": 11,
+          "native_ticks": 16,
+          "owned": 8,
+          "wall_usec": 1711317
+        },
+        "8/3": {
+          "awake": 3,
+          "callbacks": 10,
+          "native_ticks": 14,
+          "owned": 8,
+          "wall_usec": 1489876
+        },
+        "8/4": {
+          "awake": 4,
+          "callbacks": 14,
+          "native_ticks": 19,
+          "owned": 8,
+          "wall_usec": 2081669
+        },
+        "8/5": {
+          "awake": 5,
+          "callbacks": 19,
+          "native_ticks": 22,
+          "owned": 8,
+          "wall_usec": 2811558
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 4,
+          "native_ticks": 4,
+          "owned": 8,
+          "wall_usec": 583434
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 24,
+          "native_ticks": 34,
+          "owned": 8,
+          "wall_usec": 3706211
+        }
+      }
+    },
+    {
+      "label": "Windows producer package, rendered",
+      "receipt": "timings-final-windows-producer-package.json",
+      "sha256": "8a599da23e223cd7617f987c12bcaad5154e9f14b1bc8f05864dc38a6261f991",
+      "case_headless": false,
+      "fixture_seconds": 126.065,
+      "action_count": 12,
+      "censored_action_count": 0,
+      "diagnostic_counts": {
+        "admitted": 12,
+        "attempt": 14,
+        "cancel": 12,
+        "presented": 12,
+        "receipt": 12,
+        "wait": 19
+      },
+      "native_totals": {
+        "changed_cells": 418,
+        "changed_owners": 12,
+        "eligible_cells": 418,
+        "geometry_rebuilds": 11,
+        "removed_cells": 418,
+        "requested_cells": 418,
+        "unique_cells": 418
+      },
+      "metrics": {
+        "input_to_admission_usec": {
+          "count": 12,
+          "min": 667,
+          "median": 39432.5,
+          "max": 129452
+        },
+        "port_input_admission_usec": {
+          "count": 12,
+          "min": 446,
+          "median": 38590.5,
+          "max": 129262
+        },
+        "worker_queue_usec": {
+          "count": 12,
+          "min": 338,
+          "median": 1019.5,
+          "max": 9309
+        },
+        "native_owner_service_usec": {
+          "count": 12,
+          "min": 173,
+          "median": 300.0,
+          "max": 7529
+        },
+        "native_edit_ns": {
+          "count": 12,
+          "min": 44800,
+          "median": 84600.0,
+          "max": 106300
+        },
+        "native_target_ns": {
+          "count": 12,
+          "min": 2500,
+          "median": 3350.0,
+          "max": 18600
+        },
+        "native_mutation_ns": {
+          "count": 12,
+          "min": 800,
+          "median": 1200.0,
+          "max": 26200
+        },
+        "native_combined_geometry_ns": {
+          "count": 12,
+          "min": 0,
+          "median": 78850.0,
+          "max": 83600
+        },
+        "main_receipt_delivery_usec": {
+          "count": 12,
+          "min": 11224,
+          "median": 87791.5,
+          "max": 225414
+        },
+        "admission_to_receipt_usec": {
+          "count": 12,
+          "min": 12117,
+          "median": 88787.5,
+          "max": 226850
+        },
+        "input_to_receipt_usec": {
+          "count": 12,
+          "min": 47779,
+          "median": 135101.0,
+          "max": 229214
+        },
+        "admission_to_publication_usec": {
+          "count": 12,
+          "min": 12163,
+          "median": 95728.0,
+          "max": 246707
+        },
+        "gap_since_previous_publication_before_input_capture_usec": {
+          "count": 11,
+          "min": -5440,
+          "median": 587899,
+          "max": 20224779
+        }
+      },
+      "creative_geometry_install": {
+        "fixture_log_sha256": "6100825fd925af3485bf1be021dcd50d9a1d6e001fbb17bf25c0ecb8bab3095a",
+        "owner": 1,
+        "world_generation": 5,
+        "native_instance_id": -9223371949210597829,
+        "native_session": 3,
+        "world_incarnation": 3,
+        "physics_session": 3,
+        "body_generation": 1,
+        "geometry_revision": 2,
+        "requested_cells": 6,
+        "removed_cells": 6,
+        "native_geometry_rebuilds": 1,
+        "native_combined_geometry_ns": 217500,
+        "main_rapier_install_usec": 641,
+        "shape_count": 44,
+        "physics_step": 300,
+        "installed_mass": 6142.0,
+        "installed_inertia": 7264435.0,
+        "install_flags": {
+          "geometry_revision": 2,
+          "install_usec": 641,
+          "mass_changed": true,
+          "shape_replacement": true,
+          "wake_for_changed_physics": true,
+          "was_sleeping": false
+        }
+      },
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "owned_awake_cohorts": {
+        "8/0": {
+          "awake": 0,
+          "callbacks": 97,
+          "native_ticks": 152,
+          "owned": 8,
+          "wall_usec": 14503237
+        },
+        "8/1": {
+          "awake": 1,
+          "callbacks": 19,
+          "native_ticks": 31,
+          "owned": 8,
+          "wall_usec": 3087005
+        },
+        "8/2": {
+          "awake": 2,
+          "callbacks": 9,
+          "native_ticks": 14,
+          "owned": 8,
+          "wall_usec": 1209801
+        },
+        "8/3": {
+          "awake": 3,
+          "callbacks": 11,
+          "native_ticks": 17,
+          "owned": 8,
+          "wall_usec": 1751199
+        },
+        "8/4": {
+          "awake": 4,
+          "callbacks": 20,
+          "native_ticks": 31,
+          "owned": 8,
+          "wall_usec": 2961884
+        },
+        "8/5": {
+          "awake": 5,
+          "callbacks": 11,
+          "native_ticks": 12,
+          "owned": 8,
+          "wall_usec": 1609043
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 1,
+          "native_ticks": 2,
+          "owned": 8,
+          "wall_usec": 154024
+        },
+        "8/7": {
+          "awake": 7,
+          "callbacks": 1,
+          "native_ticks": 1,
+          "owned": 8,
+          "wall_usec": 151086
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 20,
+          "native_ticks": 33,
+          "owned": 8,
+          "wall_usec": 3086716
+        }
+      }
+    },
+    {
+      "label": "Windows fresh independent package, rendered",
+      "receipt": "timings-final-windows-independent-package.json",
+      "sha256": "7ebc82b77641d4962af53de05a5c6ac2b38a313f690b301a177d82bbc1b5b2af",
+      "case_headless": false,
+      "fixture_seconds": 164.671,
+      "action_count": 11,
+      "censored_action_count": 1,
+      "diagnostic_counts": {
+        "admitted": 12,
+        "attempt": 14,
+        "cancel": 12,
+        "presented": 11,
+        "receipt": 12,
+        "wait": 19
+      },
+      "native_totals": {
+        "changed_cells": 418,
+        "changed_owners": 12,
+        "eligible_cells": 418,
+        "geometry_rebuilds": 11,
+        "removed_cells": 418,
+        "requested_cells": 418,
+        "unique_cells": 418
+      },
+      "metrics": {
+        "input_to_admission_usec": {
+          "count": 11,
+          "min": 706,
+          "median": 20777,
+          "max": 165283
+        },
+        "port_input_admission_usec": {
+          "count": 11,
+          "min": 417,
+          "median": 20455,
+          "max": 161795
+        },
+        "worker_queue_usec": {
+          "count": 11,
+          "min": 407,
+          "median": 710,
+          "max": 6043
+        },
+        "native_owner_service_usec": {
+          "count": 11,
+          "min": 197,
+          "median": 286,
+          "max": 5515
+        },
+        "native_edit_ns": {
+          "count": 11,
+          "min": 40200,
+          "median": 58700,
+          "max": 90800
+        },
+        "native_target_ns": {
+          "count": 11,
+          "min": 3100,
+          "median": 3800,
+          "max": 17700
+        },
+        "native_mutation_ns": {
+          "count": 11,
+          "min": 900,
+          "median": 1100,
+          "max": 22500
+        },
+        "native_combined_geometry_ns": {
+          "count": 11,
+          "min": 0,
+          "median": 53800,
+          "max": 84400
+        },
+        "main_receipt_delivery_usec": {
+          "count": 11,
+          "min": 2626,
+          "median": 107903,
+          "max": 246579
+        },
+        "admission_to_receipt_usec": {
+          "count": 11,
+          "min": 4651,
+          "median": 108668,
+          "max": 247269
+        },
+        "input_to_receipt_usec": {
+          "count": 11,
+          "min": 78463,
+          "median": 134805,
+          "max": 281984
+        },
+        "admission_to_publication_usec": {
+          "count": 11,
+          "min": 12793,
+          "median": 118035,
+          "max": 1274907
+        },
+        "gap_since_previous_publication_before_input_capture_usec": {
+          "count": 10,
+          "min": -122043,
+          "median": 601751.0,
+          "max": 21181154
+        }
+      },
+      "creative_geometry_install": {
+        "fixture_log_sha256": "bc965d78b9b75e9a70b1413649974d399df78520bc7a7398fd4e30f7553bcab7",
+        "owner": 1,
+        "world_generation": 5,
+        "native_instance_id": -9223371949210597829,
+        "native_session": 3,
+        "world_incarnation": 3,
+        "physics_session": 3,
+        "body_generation": 1,
+        "geometry_revision": 2,
+        "requested_cells": 6,
+        "removed_cells": 6,
+        "native_geometry_rebuilds": 1,
+        "native_combined_geometry_ns": 212700,
+        "main_rapier_install_usec": 689,
+        "shape_count": 44,
+        "physics_step": 300,
+        "installed_mass": 6142.0,
+        "installed_inertia": 7264435.0,
+        "install_flags": {
+          "geometry_revision": 2,
+          "install_usec": 689,
+          "mass_changed": true,
+          "shape_replacement": true,
+          "wake_for_changed_physics": true,
+          "was_sleeping": false
+        }
+      },
+      "runtime": {
+        "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+        "godot_version": "4.7.stable.official.5b4e0cb0f",
+        "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+        "platform": "win32",
+        "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+      },
+      "owned_awake_cohorts": {
+        "8/0": {
+          "awake": 0,
+          "callbacks": 100,
+          "native_ticks": 150,
+          "owned": 8,
+          "wall_usec": 14906746
+        },
+        "8/1": {
+          "awake": 1,
+          "callbacks": 22,
+          "native_ticks": 32,
+          "owned": 8,
+          "wall_usec": 3508527
+        },
+        "8/2": {
+          "awake": 2,
+          "callbacks": 25,
+          "native_ticks": 38,
+          "owned": 8,
+          "wall_usec": 3859027
+        },
+        "8/3": {
+          "awake": 3,
+          "callbacks": 27,
+          "native_ticks": 34,
+          "owned": 8,
+          "wall_usec": 3911007
+        },
+        "8/4": {
+          "awake": 4,
+          "callbacks": 11,
+          "native_ticks": 15,
+          "owned": 8,
+          "wall_usec": 1665422
+        },
+        "8/5": {
+          "awake": 5,
+          "callbacks": 4,
+          "native_ticks": 6,
+          "owned": 8,
+          "wall_usec": 637452
+        },
+        "8/6": {
+          "awake": 6,
+          "callbacks": 1,
+          "native_ticks": 1,
+          "owned": 8,
+          "wall_usec": 165537
+        },
+        "8/8": {
+          "awake": 8,
+          "callbacks": 23,
+          "native_ticks": 35,
+          "owned": 8,
+          "wall_usec": 4182710
+        }
+      }
+    }
+  ],
+  "scope": [
+    "Each run records 12 admissions in the eight-owned-body stress fixture. Latency summaries use only complete admitted/Applied/presented triples; explicitly censored snapshot actions are counted separately. This is a small qualification sample, not a production latency distribution.",
+    "Whole-fixture duration includes scene setup, settling and waits before pointer events; it is not edit latency.",
+    "Input-to-admission uses the captured gesture timestamp. Admission-to-publication ends at Main acknowledged installed/coherent publication, not physical monitor presentation.",
+    "Worker queue, native owner service, native core phase counters and Main delivery are nested or overlapping spans; do not add them. Native target/mutation/combined-geometry counters exclude facade normalization, projection, marshalling, fingerprints and some post-debit work.",
+    "Combined native geometry includes connectivity and shape reconstruction. Rapier installation is independently witnessed on Main in one creative-construction action per lane, not a distribution.",
+    "Continued strokes are throttled to about 30 admissions per second; fresh presses and Slice commits bypass that interval. All routes allow one outstanding transaction.",
+    "Hosted software-rendered Windows/Linux execution is not a benchmark of the owner Ryzen 5 5600X or TITAN RTX. Owned and awake cohorts remain separate."
+  ]
+}

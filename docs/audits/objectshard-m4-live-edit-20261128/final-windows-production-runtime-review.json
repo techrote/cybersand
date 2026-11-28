@@ -1,0 +1,69 @@
+{
+  "schema_version": 1,
+  "reviewer": "native-transactions-specialist-A",
+  "verified_at": "2026-11-28T08:54:21.400359+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "platform": "windows",
+  "workflow_run": 46125028803,
+  "workflow_attempt": 1,
+  "artifact_id": 15256476615,
+  "artifact_url": "https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256476615",
+  "archive_sha256": "0dba4087c6b9f8c25078b9dca55135e70888d3fe53d080ba6d93a2c6c41b1218",
+  "archive_bytes": 2750887,
+  "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+  "native_bytes": 7346176,
+  "manifest_sha256": "00f3e750d8e1d7fd4bce2f00f168ffed41accb11c260571d34ca47d2b05e31b7",
+  "validation_sha256": "5c36ca765eed72b96c2e48417a06b19a3f47d29d11d36a632017dc4e0d8ba146",
+  "source_inputs_verified": 126,
+  "build_inputs_verified": 1392,
+  "unique_canonical_git_inputs_verified": 1518,
+  "source_ledgers_equal_verified_windows_producer": true,
+  "godot": {
+    "archive_sha512": "41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9",
+    "archive_size": 83764371,
+    "console_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "runtime_sha256": "b2ca888d5115a6cedee564764a2ee494a625f2ec2edbabd010fe33c9a88a6bf8",
+    "version": "4.7.stable.official.5b4e0cb0f"
+  },
+  "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7",
+  "toolchain": "clang version 23.1.0 (https://github.com/llvm/llvm-project.git ea7d852a70e8bdfaf601d6626a760f9771b2c4b4)\nTarget: x86_64-w64-windows-gnu\nThread model: posix\nInstalledDir: /home/runner/work/_temp/llvm-mingw/bin\nConfiguration file: /home/runner/work/_temp/llvm-mingw/bin/x86_64-w64-windows-gnu.cfg\n101ae38034304346a46ea9ea84ae156d3e860496",
+  "target_execution_cases": {
+    "test_object_shard_m4_same_world_extension": {
+      "schema": "objectshard-m4-actual-godot-sameworld-v1",
+      "checks": 59,
+      "failures": []
+    },
+    "test_object_shard_m4_shared_main_rapier": {
+      "schema": "objectshard-m4-existing-main-rapier-v1",
+      "checks": 18,
+      "failures": []
+    },
+    "test_object_shard_m4_compact_motion_packets": {
+      "schema": "objectshard-m4-compact-motion-packet-v1",
+      "checks": 9,
+      "failures": []
+    }
+  },
+  "target_execution_checks": 86,
+  "logs": {
+    "import.log": {
+      "sha256": "bb43fc5cc38797cace0c801284fc410a49c582bcf61b80dc45d3c89dc2f366b1",
+      "bytes": 67318
+    },
+    "test_object_shard_m4_same_world_extension.log": {
+      "sha256": "e65f3c5a45e7084a776f7fb129294809e126cfdf7d1169d397622fe75e47dfd2",
+      "bytes": 415
+    },
+    "test_object_shard_m4_shared_main_rapier.log": {
+      "sha256": "10cf4dfe066095e89e757b68eeaba0cd561dfec7253e45bf8082bd9bd955e608",
+      "bytes": 445
+    },
+    "test_object_shard_m4_compact_motion_packets.log": {
+      "sha256": "c890403c31846afc11e76c5a4bc3adef1b8f4db62d76307f1efdcb47dda4d59a",
+      "bytes": 398
+    }
+  },
+  "status": "PASS",
+  "scope": "Independent immutable production-bundle source, binary, provenance and actual target-OS focused-execution verification. Full Workbench matrix, extracted Windows evaluator and physical owner acceptance remain separate scopes."
+}

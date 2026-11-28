@@ -98,7 +98,7 @@ ordinary drawing row supplies **Eraser**, material, **Radius** and **Save start*
 | 3 | Remove the two narrow support stems below the bottom floor. | The building detaches and falls. A narrow notch can leave real supporting stumps; remove more stem for a full drop. |
 | 4 | Continue the same erasing interaction on the falling structure. | The brush edits visible owned material with fresh native witnesses. Bounded segments avoid a native reconstruction for every cell. |
 | 5 | Let fragments settle, then cut their edges. | Sleeping material remains editable and changed geometry wakes the affected body as needed. No Settle conversion is required. |
-| 6 | Choose **Drill**, set Radius 4–12 and click a wall. | One deliberate circular placement removes real structural material. |
+| 6 | Choose **Drill**, set Radius 4–12 and press on a wall. During play, hold until admission; pause for precise single clicks. | One deliberate circular placement removes real structural material. Releasing before admission cancels that placement. |
 | 7 | Choose **Slice**, drag across a beam and release inside the canvas. | The preview becomes one committed bounded cut. Escape cancels before admission. |
 | 8 | Choose **Weathering**. In **Structures…**, set density and seed; hold briefly at an edge. | Sparse real material is removed. Continued application advances the recorded seed pass to create progressively worn material. |
 | 9 | Choose **Area ignition** and apply a bounded brush to Wood. | Several eligible cells ignite. Existing burning countdowns continue without being restarted by another application. |
@@ -139,7 +139,7 @@ front owner wins for each sampled cell; real holes reveal lower material.
 | **Structural eraser** | Hold and drag; Radius 0–24, or **[** and **]**. Ordinary Eraser and Paint right-drag use this path when Structures is enabled. | Circular or swept removal through ordinary terrain and structural owners. Long movements are serviced as bounded capsules while the pointer remains held. |
 | **Slice** | Drag a line and release inside the canvas. Radius sets its width; Escape cancels. | One deliberate bounded owner cut, admitted at a safe boundary. An oversized slice refuses with a request to shorten or narrow it. |
 | **Weathering** | Hold a circular brush. **Structures…** supplies removal percentage, seed and **Only selected material**. | Native deterministic selection removes a sparse subset. Effective seed/pass and counts appear in diagnostics. A fresh authored scene resets the pass. |
-| **Drill** | Click at the center of the intended opening. Radius sets the hole size. | One circular owner placement; unlike freehand erase, holding does not drag a trail of holes. |
+| **Drill** | Press at the center of the intended opening. During play, hold until admission; pause for precise single clicks. Radius sets the hole size. | One circular owner placement; holding does not drag a trail of holes. Release before safe admission cancels the placement. |
 | **Area ignition** | Hold or drag with adjustable Radius. | Eligible unburning Wood ignites through the native material law; existing countdowns are not reset. |
 
 Freehand brushes may intersect several owners. Each admitted native transaction
@@ -158,8 +158,10 @@ Release terminates every unadmitted freehand remainder. A Slice release is its
 explicit one-shot commit: it may wait briefly for the current physical interval
 to finish, but later pointer movement does not extend that committed line.
 Escape, a tool change, camera movement, pause/resume or scene replacement cancels
-future admission. Already admitted native work still completes its authoritative
-receipt and publication. A fresh scene never receives a previous scene's stroke.
+future admission. Release does not roll back admitted work. Its receipt remains
+tracked, and applied edits await publication; scene replacement retires the old
+owner and receipt generation. A refusal or held outcome is not an applied edit.
+A fresh scene never receives a previous scene's stroke.
 
 Ordinary painting remains available around the moving structures. Use Sand,
 Water and Fire to observe coupled behavior. Switching tools or camera modes

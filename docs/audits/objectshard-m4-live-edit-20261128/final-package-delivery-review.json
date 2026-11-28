@@ -1,0 +1,329 @@
+{
+  "schema": "objectshard-live-edit-independent-package-delivery-review-v1",
+  "status": "passed",
+  "reviewer": "Specialist C",
+  "reviewed_utc": "2026-11-28T09:53:33.152842+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "guarded_publication_commit": "302f982943c0e03c30968368da8264cfb3c431ce",
+  "delivery_record": {
+    "path": "delivery-record.json",
+    "sha256": "f00870931d1483a99ee19190cec8eaf8f3d97d788451aa5d775957722dd0d1d1",
+    "bytes": 22041
+  },
+  "readme": {
+    "path": "README.md",
+    "sha256": "f3b1cc81bef1f4e3ce46a4dd07d400331387356f24e4e44af1ff93b63f3d4e11",
+    "bytes": 22774,
+    "includes_final_ignition_noop_geometry_correction": true
+  },
+  "evidence_copy_map_sha256": "135e2d2700af18ea2b9a0eb031a7f0ebe8ca4b6e1ffd17f8e09c0bdd8f6fa4e5",
+  "audit_attributes_sha256": "ebdb34eee570e07f0fe1d7cfe2d6feda3049e62bf2d312cdc3f2b6bb42c85274",
+  "copied_reports_verified": [
+    {
+      "file": "final-evaluator-extraction-review.json",
+      "sha256": "54e9bc957313f85ee2e2a756014d953eac64ab8bc9a1665868d05542efc9beb3",
+      "bytes": 4488
+    },
+    {
+      "file": "final-producer-package-execution-review.json",
+      "sha256": "fcb3a0a6853f5c400431738ed53e1b6d8edd4ddfb577f7f017f51edf3b52dc71",
+      "bytes": 20775
+    },
+    {
+      "file": "final-independent-package-review.json",
+      "sha256": "ceb0da99e173c6d40cf5b073b390ef268f3e07c6c44e52ff49113ff6b829e560",
+      "bytes": 21334
+    },
+    {
+      "file": "final-producer-package-render-review.json",
+      "sha256": "5bdd97c3322858132263329d5007d47220bc5a3849a9b876f9758ef82a40883c",
+      "bytes": 6686
+    },
+    {
+      "file": "final-fresh-package-render-review.json",
+      "sha256": "ee5b5bb3548222daf190d5657c7335d8e697d6dad2dd6a56d09240cfcb1ce29d",
+      "bytes": 7454
+    },
+    {
+      "file": "final-fresh-package-timing-censor-note.json",
+      "sha256": "416a41f720eb06ac2482fc3f0fa00a637384e853367f3d6008e26247dd09a650",
+      "bytes": 4534
+    },
+    {
+      "file": "final-windows-regressions-review.json",
+      "sha256": "6285371687f42a3416d6bb77272ca42a1efa6558386dcecd8521322cbec191c0",
+      "bytes": 22645
+    },
+    {
+      "file": "final-windows-graphical-review.json",
+      "sha256": "2dc28b3f14afc64ef9fd4df69f291c9ebe23eabf469e39d181a51e76a3c6fae6",
+      "bytes": 22381
+    },
+    {
+      "file": "final-windows-graphical-preview-audit.json",
+      "sha256": "cccbdd21f2a1065a4d99ca04905597af60ac0b2e93ffe05cefe9ad03505c9db9",
+      "bytes": 4714
+    },
+    {
+      "file": "final-native-renderer-independent-review.json",
+      "sha256": "bc13fa5dad5c178ec57f46d4b88d2119954dbfa6b50fbaceb12e37ac13072503",
+      "bytes": 4396
+    },
+    {
+      "file": "final-windows-retained-presentation-review.json",
+      "sha256": "76f5f5fee1549e3fd5c74140858af5a698f8fc98560ff1df2b880e7cdc8b0ac5",
+      "bytes": 4465
+    },
+    {
+      "file": "final-acceptance-coverage.json",
+      "sha256": "802d65fa1346460281693a067cde94f0b0e625fc2ca1a12ddcd041be16185f2b",
+      "bytes": 72155
+    },
+    {
+      "file": "final-acceptance-coverage.md",
+      "sha256": "780ec922f8d644d1ab47622bf9c26b83235a695ef32961cfe6930a8d93bbd3a0",
+      "bytes": 10650
+    },
+    {
+      "file": "final-edit-timing-summary.json",
+      "sha256": "5a13b7aad6ca29ed92a1401761ec5ff585a108a7a97cc3a4e1dd8bfc8a8a1a6f",
+      "bytes": 34391
+    },
+    {
+      "file": "final-edit-timing-summary.md",
+      "sha256": "4a7cccfa8ce8ed0088673f08d7e687bb8b98264e0db29d6e22600bb8b6ed8562",
+      "bytes": 5127
+    },
+    {
+      "file": "timings-final-linux-source-graphical.json",
+      "sha256": "b88e9d64ce80ad6f0687913c1b91deaa458e20ee4c7ce19d37a091d9e3f334df",
+      "bytes": 18996
+    },
+    {
+      "file": "timings-final-linux-source-headless.json",
+      "sha256": "47e3c75a392abba20a85246192f13f13a0926f4f1d4cb622972b876e78087a8a",
+      "bytes": 18888
+    },
+    {
+      "file": "timings-final-windows-independent-package.json",
+      "sha256": "7ebc82b77641d4962af53de05a5c6ac2b38a313f690b301a177d82bbc1b5b2af",
+      "bytes": 20275
+    },
+    {
+      "file": "timings-final-windows-producer-package.json",
+      "sha256": "8a599da23e223cd7617f987c12bcaad5154e9f14b1bc8f05864dc38a6261f991",
+      "bytes": 19051
+    },
+    {
+      "file": "timings-final-windows-source-graphical.json",
+      "sha256": "b056e9d6a28494cf327a5ca56637cb4cece86d0ec192f576131615801553d3a7",
+      "bytes": 18947
+    },
+    {
+      "file": "timings-final-windows-source-headless.json",
+      "sha256": "c49a32b51cb06ddeb098af66f421d936573a8f75d28efb26023d420ec7bfd95a",
+      "bytes": 18950
+    },
+    {
+      "file": "timings-final-linux-source-graphical.csv",
+      "sha256": "e0b96b8e204ec54cbc771d973a55914c303b6576dd5d76870d5ef96424d46376",
+      "bytes": 2476
+    },
+    {
+      "file": "timings-final-linux-source-headless.csv",
+      "sha256": "f920f2f0882a802a46aafb0570c8dd90c1a206fa3ed2d1feefab13fc6df2aecb",
+      "bytes": 2389
+    },
+    {
+      "file": "timings-final-windows-independent-package.csv",
+      "sha256": "c99aa933f4862bf1f0a00557a7f18f614c0cbc6629a66bbcec1f15fbe553d5e3",
+      "bytes": 2381
+    },
+    {
+      "file": "timings-final-windows-producer-package.csv",
+      "sha256": "aed3fb211b2a97ffdb4c22dd1a80e13ad992b2f37ab34f827d55e8a725226519",
+      "bytes": 2524
+    },
+    {
+      "file": "timings-final-windows-source-graphical.csv",
+      "sha256": "1d05702f04ec0ecb2725a0e7c422a5fcdd6e94868c0eb61de2cbbc46b3cec1dd",
+      "bytes": 2545
+    },
+    {
+      "file": "timings-final-windows-source-headless.csv",
+      "sha256": "8eba79a42fe35230680e12296963e4cddaa89c90cb583cff47a21cb24825e294",
+      "bytes": 2443
+    }
+  ],
+  "delivery_record_evidence_hashes_verified": 28,
+  "coverage_lanes": {
+    "windows_headless": 77,
+    "windows_native_renderer": 4,
+    "linux_headless": 77,
+    "linux_graphical": 65,
+    "windows_graphical": 65,
+    "windows_package": 45,
+    "independent_windows_package": 45
+  },
+  "timing_lanes": 6,
+  "censored_actions": 1,
+  "complete_fresh_action_triples": 11,
+  "fresh_native_applied": 12,
+  "fresh_main_presented": 11,
+  "hosted_complete_publication_tail_ms": 1274.907,
+  "checks": [
+    "Qualified application source and tree equal independently extracted evaluator",
+    "Exact campaign and attempt are retained",
+    "Draft/HOLD, unmerged status and pending physical owner scope are explicit",
+    "Evaluator field matches independent custody: artifact_id",
+    "Evaluator field matches independent custody: artifact_url",
+    "Evaluator field matches independent custody: outer_sha256",
+    "Evaluator field matches independent custody: outer_bytes",
+    "Evaluator field matches independent custody: inner_sha256",
+    "Evaluator field matches independent custody: inner_bytes",
+    "Evaluator field matches independent custody: inner_uncompressed_bytes",
+    "Evaluator field matches independent custody: manifest_sha256",
+    "Evaluator field matches independent custody: verified_manifest_files",
+    "Evaluator field matches independent custody: exact_git_source_files",
+    "Evaluator field matches independent custody: exact_git_lfs_payloads",
+    "Evaluator field matches independent custody: declared_crlf_source_materializations",
+    "Evaluator field matches independent custody: candidate_ledger_sha256",
+    "Evaluator field matches independent custody: entry",
+    "Evaluator field matches independent custody: godot",
+    "Evaluator field matches independent custody: rapier",
+    "Windows native bytes match actual delivered DLL",
+    "Native source binding is final for windows",
+    "Native source binding is final for linux",
+    "Fresh independent evidence identity equals exact downloaded and audited artifact",
+    "Fresh Windows execution used the actual immutable owner evaluator",
+    "Actual fresh Windows job identity and successful completion match final campaign metadata",
+    "Guarded publication is separate from application source and has the exact qualified parent",
+    "Package case, renderer, launcher and refusal counts match independent audits",
+    "Original frozen specialist handoff is copied exactly",
+    "All 27 independently bound reports are represented",
+    "Copy map is complete and unambiguous",
+    "Exact copied report bytes: final-evaluator-extraction-review.json",
+    "Exact copied report bytes: final-producer-package-execution-review.json",
+    "Exact copied report bytes: final-independent-package-review.json",
+    "Exact copied report bytes: final-producer-package-render-review.json",
+    "Exact copied report bytes: final-fresh-package-render-review.json",
+    "Exact copied report bytes: final-fresh-package-timing-censor-note.json",
+    "Exact copied report bytes: final-windows-regressions-review.json",
+    "Exact copied report bytes: final-windows-graphical-review.json",
+    "Exact copied report bytes: final-windows-graphical-preview-audit.json",
+    "Exact copied report bytes: final-native-renderer-independent-review.json",
+    "Exact copied report bytes: final-windows-retained-presentation-review.json",
+    "Exact copied report bytes: final-acceptance-coverage.json",
+    "Exact copied report bytes: final-acceptance-coverage.md",
+    "Exact copied report bytes: final-edit-timing-summary.json",
+    "Exact copied report bytes: final-edit-timing-summary.md",
+    "Exact copied report bytes: timings-final-linux-source-graphical.json",
+    "Exact copied report bytes: timings-final-linux-source-headless.json",
+    "Exact copied report bytes: timings-final-windows-independent-package.json",
+    "Exact copied report bytes: timings-final-windows-producer-package.json",
+    "Exact copied report bytes: timings-final-windows-source-graphical.json",
+    "Exact copied report bytes: timings-final-windows-source-headless.json",
+    "Exact copied report bytes: timings-final-linux-source-graphical.csv",
+    "Exact copied report bytes: timings-final-linux-source-headless.csv",
+    "Exact copied report bytes: timings-final-windows-independent-package.csv",
+    "Exact copied report bytes: timings-final-windows-producer-package.csv",
+    "Exact copied report bytes: timings-final-windows-source-graphical.csv",
+    "Exact copied report bytes: timings-final-windows-source-headless.csv",
+    "All six retained timing CSVs have effective audit-local -text attributes",
+    "Delivery record evidence hash: final-campaign-metadata.json",
+    "Delivery record evidence hash: final-native-hosted-review.json",
+    "Delivery record evidence hash: final-linux-workbench-review.json",
+    "Delivery record evidence hash: final-windows-regressions-review.json",
+    "Delivery record evidence hash: final-windows-graphical-review.json",
+    "Delivery record evidence hash: final-native-renderer-independent-review.json",
+    "Delivery record evidence hash: final-evaluator-extraction-review.json",
+    "Delivery record evidence hash: final-producer-package-execution-review.json",
+    "Delivery record evidence hash: final-independent-package-review.json",
+    "Delivery record evidence hash: final-guarded-publication-review.json",
+    "Delivery record evidence hash: final-principal-publication-review.json",
+    "Delivery record evidence hash: final-acceptance-coverage.json",
+    "Delivery record evidence hash: final-edit-timing-summary.json",
+    "Delivery record evidence hash: final-fresh-package-timing-review.json",
+    "Delivery record evidence hash: final-fresh-package-publication-tail-review.json",
+    "Delivery record evidence hash: final-timing-metadata-rebind-review.json",
+    "Delivery record evidence hash: matched-idle-throughput.json",
+    "Delivery record evidence hash: matched-idle-custody.json",
+    "Delivery record evidence hash: final-throughput-independent-review.json",
+    "Delivery record evidence hash: performance-results.md",
+    "Delivery record evidence hash: performance-results-independent-review.json",
+    "Delivery record evidence hash: native-batch-performance-summary.json",
+    "Delivery record evidence hash: native-benchmark-final-candidate-continuity.json",
+    "Delivery record evidence hash: windows-package-manifest.canonical.json",
+    "Delivery record evidence hash: windows-package-manifest-copy.json",
+    "Delivery record evidence hash: windows-package-native-provenance.json",
+    "Delivery record evidence hash: specialist-c-final-handoff.json",
+    "Delivery record evidence hash: specialist-c-evidence-copy-map.json",
+    "Manifest record retains the actual raw delivered manifest identity",
+    "Repository manifest is exactly the declared CRLF-to-LF copy, without archive mutation",
+    "All seven exact-source passing coverage lanes and case counts are present",
+    "All fourteen Workbench requirements retain evidence and pending physical-owner qualification",
+    "Camera coverage distinguishes actual input, synthetic mathematics and actual rendered previews",
+    "All six exact-source timing lanes are retained",
+    "Complete/censored timing and native receipt census: Linux source, headless",
+    "Complete/censored timing and native receipt census: Linux source, rendered",
+    "Complete/censored timing and native receipt census: Windows source, headless",
+    "Complete/censored timing and native receipt census: Windows source, rendered",
+    "Complete/censored timing and native receipt census: Windows producer package, rendered",
+    "Complete/censored timing and native receipt census: Windows fresh independent package, rendered",
+    "Fresh package counts preserve eleven complete observations and one censored Applied action",
+    "Censored action 12 has no fabricated publication time",
+    "Fresh complete-case timing field matches exact ledger: input_to_admission_median_ms",
+    "Fresh complete-case timing field matches exact ledger: input_to_admission_max_ms",
+    "Fresh complete-case timing field matches exact ledger: admission_to_main_publication_median_ms",
+    "Fresh complete-case timing field matches exact ledger: admission_to_main_publication_max_ms",
+    "The separate 1,274.907 ms completed tail and 1,259.730 ms post-receipt span remain exact",
+    "Final README preserves identity/scope statement: ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+    "Final README preserves identity/scope statement: cf0f63259a2fd9be6e4835d8f741b21d0651bb47aec692c9a3a59bcd4238a31e",
+    "Final README preserves identity/scope statement: da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+    "Final README preserves identity/scope statement: https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748",
+    "Final README preserves identity/scope statement: 96,795,210",
+    "Final README preserves identity/scope statement: 1,274.907",
+    "Final README preserves identity/scope statement: eleven complete triples",
+    "Final README preserves identity/scope statement: one censored publication interval",
+    "Final README preserves identity/scope statement: does not drain that probe",
+    "Final README preserves identity/scope statement: nor invents a twelfth completion",
+    "Final README preserves identity/scope statement: Physical evaluation of this new archive remains **pending**",
+    "Final README preserves identity/scope statement: Ignition and no-ops do not rebuild collision geometry.",
+    "Updated repository guide is distinguished from immutable bundled guide",
+    "Delivery record and latest README stayed unchanged during this review",
+    "Every audit CSV, including the separately retained earlier headless ledger, has effective -text attributes"
+  ],
+  "scope": "Read-only final record, README and copied-evidence audit against the independently downloaded actual evaluator and hosted receipts. No archive/source mutation, application execution or qualification rerun. Physical owner acceptance remains pending.",
+  "all_audit_csv_effective_attributes": [
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/timings-final-linux-source-graphical.csv",
+      "text": "unset"
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/timings-final-linux-source-headless.csv",
+      "text": "unset"
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/timings-final-windows-independent-package.csv",
+      "text": "unset"
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/timings-final-windows-producer-package.csv",
+      "text": "unset"
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/timings-final-windows-source-graphical.csv",
+      "text": "unset"
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/timings-final-windows-source-headless.csv",
+      "text": "unset"
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/windows-headless-editing-stage-timings.csv",
+      "text": "unset"
+    }
+  ]
+}

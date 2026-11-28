@@ -1,0 +1,204 @@
+{
+  "schema": "objectshard-live-edit-specialist-c-final-handoff-v1",
+  "status": "qualified-draft-hold",
+  "application_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "guarded_publication_commit": "302f982943c0e03c30968368da8264cfb3c431ce",
+  "evaluator": {
+    "artifact_id": 15256411748,
+    "url": "https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15256411748",
+    "outer_sha256": "b98fc26773f3054958debef4ce1a45c0eb3b05c8d3807f8ada371b97c539ac82",
+    "outer_bytes": 96410466,
+    "inner_sha256": "cf0f63259a2fd9be6e4835d8f741b21d0651bb47aec692c9a3a59bcd4238a31e",
+    "inner_bytes": 96795210,
+    "manifest_raw_sha256": "4d2f983ef06b94427e5af0cb675cdae565b4a581c0dc017233bd73b6caa016a7",
+    "native_dll_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+    "native_dll_bytes": 7346176
+  },
+  "passing_scope": {
+    "windows_source_headless_cases": 77,
+    "windows_source_graphical_cases": 65,
+    "windows_early_native_renderer_cases": 4,
+    "linux_source_headless_cases": 77,
+    "linux_source_graphical_cases": 65,
+    "producer_extracted_package_cases": 45,
+    "fresh_independent_extracted_package_cases": 45,
+    "actual_rendered_cases_per_package_replay": 12,
+    "actual_launcher_paths_per_package_job": 4,
+    "native_provenance_negative_refusals_per_package_job": 8,
+    "tamper_and_unlisted_input_refusals_per_package_job": 2
+  },
+  "key_limits": [
+    "Fresh package stress snapshot has 12 Applied native receipts, 11 presented events and one explicitly right-censored final pause/resume probe before scene replacement. Its missing publication time is never substituted with zero.",
+    "11 complete fresh-package action triples have admission-to-publication median 118.035 ms / maximum 1,274.907 ms on hosted software Windows; no physical TITAN RTX claim.",
+    "Slice and Drill target one owner per placement; continuous strokes are deterministic per-owner sequences, not cross-owner atomic transactions.",
+    "During play, hold Drill until native admission or pause for a precise click. Pre-admission release cancels; admitted work remains tracked.",
+    "The shipped evaluator and original bundled guide remain immutable. Final repository delivery notes clarify existing Drill/admission/seed/throttling semantics.",
+    "Physical owner evaluation is pending; PR #754 remains Draft/HOLD."
+  ],
+  "reports": [
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-evaluator-independent-extraction-audit.json",
+      "file": "final-evaluator-independent-extraction-audit.json",
+      "sha256": "54e9bc957313f85ee2e2a756014d953eac64ab8bc9a1665868d05542efc9beb3",
+      "bytes": 4488
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-producer-package-execution-audit.json",
+      "file": "final-producer-package-execution-audit.json",
+      "sha256": "fcb3a0a6853f5c400431738ed53e1b6d8edd4ddfb577f7f017f51edf3b52dc71",
+      "bytes": 20775
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-fresh-package-execution-audit.json",
+      "file": "final-fresh-package-execution-audit.json",
+      "sha256": "ceb0da99e173c6d40cf5b073b390ef268f3e07c6c44e52ff49113ff6b829e560",
+      "bytes": 21334
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-producer-package-render-review.json",
+      "file": "final-producer-package-render-review.json",
+      "sha256": "5bdd97c3322858132263329d5007d47220bc5a3849a9b876f9758ef82a40883c",
+      "bytes": 6686
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-fresh-package-render-review.json",
+      "file": "final-fresh-package-render-review.json",
+      "sha256": "ee5b5bb3548222daf190d5657c7335d8e697d6dad2dd6a56d09240cfcb1ce29d",
+      "bytes": 7454
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-fresh-package-timing-censor-note.json",
+      "file": "final-fresh-package-timing-censor-note.json",
+      "sha256": "416a41f720eb06ac2482fc3f0fa00a637384e853367f3d6008e26247dd09a650",
+      "bytes": 4534
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-windows-regressions-independent-audit.json",
+      "file": "final-windows-regressions-independent-audit.json",
+      "sha256": "6285371687f42a3416d6bb77272ca42a1efa6558386dcecd8521322cbec191c0",
+      "bytes": 22645
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-windows-graphical-independent-audit.json",
+      "file": "final-windows-graphical-independent-audit.json",
+      "sha256": "2dc28b3f14afc64ef9fd4df69f291c9ebe23eabf469e39d181a51e76a3c6fae6",
+      "bytes": 22381
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-windows-graphical-preview-audit.json",
+      "file": "final-windows-graphical-preview-audit.json",
+      "sha256": "cccbdd21f2a1065a4d99ca04905597af60ac0b2e93ffe05cefe9ad03505c9db9",
+      "bytes": 4714
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-native-renderer-independent-audit.json",
+      "file": "final-native-renderer-independent-audit.json",
+      "sha256": "bc13fa5dad5c178ec57f46d4b88d2119954dbfa6b50fbaceb12e37ac13072503",
+      "bytes": 4396
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-windows-retained-presentation-independent-audit.json",
+      "file": "final-windows-retained-presentation-independent-audit.json",
+      "sha256": "76f5f5fee1549e3fd5c74140858af5a698f8fc98560ff1df2b880e7cdc8b0ac5",
+      "bytes": 4465
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-acceptance-coverage.json",
+      "file": "final-acceptance-coverage.json",
+      "sha256": "802d65fa1346460281693a067cde94f0b0e625fc2ca1a12ddcd041be16185f2b",
+      "bytes": 72155
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-acceptance-coverage.md",
+      "file": "final-acceptance-coverage.md",
+      "sha256": "780ec922f8d644d1ab47622bf9c26b83235a695ef32961cfe6930a8d93bbd3a0",
+      "bytes": 10650
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-edit-timing-summary.json",
+      "file": "final-edit-timing-summary.json",
+      "sha256": "5a13b7aad6ca29ed92a1401761ec5ff585a108a7a97cc3a4e1dd8bfc8a8a1a6f",
+      "bytes": 34391
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/final-edit-timing-summary.md",
+      "file": "final-edit-timing-summary.md",
+      "sha256": "4a7cccfa8ce8ed0088673f08d7e687bb8b98264e0db29d6e22600bb8b6ed8562",
+      "bytes": 5127
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-linux-source-graphical.json",
+      "file": "timings-final-linux-source-graphical.json",
+      "sha256": "b88e9d64ce80ad6f0687913c1b91deaa458e20ee4c7ce19d37a091d9e3f334df",
+      "bytes": 18996
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-linux-source-headless.json",
+      "file": "timings-final-linux-source-headless.json",
+      "sha256": "47e3c75a392abba20a85246192f13f13a0926f4f1d4cb622972b876e78087a8a",
+      "bytes": 18888
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-independent-package.json",
+      "file": "timings-final-windows-independent-package.json",
+      "sha256": "7ebc82b77641d4962af53de05a5c6ac2b38a313f690b301a177d82bbc1b5b2af",
+      "bytes": 20275
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-producer-package.json",
+      "file": "timings-final-windows-producer-package.json",
+      "sha256": "8a599da23e223cd7617f987c12bcaad5154e9f14b1bc8f05864dc38a6261f991",
+      "bytes": 19051
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-source-graphical.json",
+      "file": "timings-final-windows-source-graphical.json",
+      "sha256": "b056e9d6a28494cf327a5ca56637cb4cece86d0ec192f576131615801553d3a7",
+      "bytes": 18947
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-source-headless.json",
+      "file": "timings-final-windows-source-headless.json",
+      "sha256": "c49a32b51cb06ddeb098af66f421d936573a8f75d28efb26023d420ec7bfd95a",
+      "bytes": 18950
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-linux-source-graphical.csv",
+      "file": "timings-final-linux-source-graphical.csv",
+      "sha256": "e0b96b8e204ec54cbc771d973a55914c303b6576dd5d76870d5ef96424d46376",
+      "bytes": 2476
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-linux-source-headless.csv",
+      "file": "timings-final-linux-source-headless.csv",
+      "sha256": "f920f2f0882a802a46aafb0570c8dd90c1a206fa3ed2d1feefab13fc6df2aecb",
+      "bytes": 2389
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-independent-package.csv",
+      "file": "timings-final-windows-independent-package.csv",
+      "sha256": "c99aa933f4862bf1f0a00557a7f18f614c0cbc6629a66bbcec1f15fbe553d5e3",
+      "bytes": 2381
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-producer-package.csv",
+      "file": "timings-final-windows-producer-package.csv",
+      "sha256": "aed3fb211b2a97ffdb4c22dd1a80e13ad992b2f37ab34f827d55e8a725226519",
+      "bytes": 2524
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-source-graphical.csv",
+      "file": "timings-final-windows-source-graphical.csv",
+      "sha256": "1d05702f04ec0ecb2725a0e7c422a5fcdd6e94868c0eb61de2cbbc46b3cec1dd",
+      "bytes": 2545
+    },
+    {
+      "path": "/tmp/cybersand-live-edit/evidence/independent-package/timings-final-windows-source-headless.csv",
+      "file": "timings-final-windows-source-headless.csv",
+      "sha256": "8eba79a42fe35230680e12296963e4cddaa89c90cb583cff47a21cb24825e294",
+      "bytes": 2443
+    }
+  ]
+}

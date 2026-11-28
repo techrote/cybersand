@@ -1,0 +1,2230 @@
+{
+  "authored_material_equal_across_all_arms": true,
+  "authored_rectangles_by_workload": {
+    "disabled": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+    "empty": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+    "sleeping": "544ac69b76a677a68c14e18fe9a73c73460d175e74f4b2f8a6f6dbc837475177",
+    "stress": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+    "tower": "53c28c25944b4bf6b0a1c932be18450ce3519b24fc6d8df83f436b523dece649"
+  },
+  "baseline_source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+  "common_control_fields": {
+    "camera_origin": [
+      0.0,
+      0.0
+    ],
+    "canvas_extent": [
+      512,
+      512
+    ],
+    "engine_version": "4.7-stable (official)",
+    "view_size": [
+      512,
+      512
+    ]
+  },
+  "common_observer_inputs": {
+    "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+    "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+    "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204"
+  },
+  "comparisons": [
+    {
+      "baseline_median": 59.646054962870195,
+      "baseline_rates": [
+        59.443875074617,
+        59.8482348511234
+      ],
+      "candidate_change_percent": 0.13479443736901242,
+      "candidate_median": 59.7264545270702,
+      "candidate_rates": [
+        59.5988233394319,
+        59.8540857147085
+      ],
+      "recording": "off",
+      "workload": "disabled"
+    },
+    {
+      "baseline_median": 59.61995891183205,
+      "baseline_rates": [
+        59.2204788408223,
+        60.0194389828418
+      ],
+      "candidate_change_percent": 0.5532286295515831,
+      "candidate_median": 59.9497935934592,
+      "candidate_rates": [
+        59.8424647116466,
+        60.0571224752718
+      ],
+      "recording": "off",
+      "workload": "empty"
+    },
+    {
+      "baseline_median": 52.02642128822935,
+      "baseline_rates": [
+        48.8083515920435,
+        55.2444909844152
+      ],
+      "candidate_change_percent": -4.59948640228064,
+      "candidate_median": 49.633473115484,
+      "candidate_rates": [
+        50.9362871941014,
+        48.3306590368666
+      ],
+      "recording": "off",
+      "workload": "tower"
+    },
+    {
+      "baseline_median": 29.2130425938917,
+      "baseline_rates": [
+        29.3149528578914,
+        29.111132329892
+      ],
+      "candidate_change_percent": -0.4390261986362387,
+      "candidate_median": 29.084789683485752,
+      "candidate_rates": [
+        29.7187329459715,
+        28.450846421
+      ],
+      "recording": "off",
+      "workload": "stress"
+    },
+    {
+      "baseline_median": 60.01027574315045,
+      "baseline_rates": [
+        60.0174333187197,
+        60.0031181675812
+      ],
+      "candidate_change_percent": -0.265175732786338,
+      "candidate_median": 59.85114305470145,
+      "candidate_rates": [
+        59.6856709833206,
+        60.0166151260823
+      ],
+      "recording": "off",
+      "workload": "sleeping"
+    },
+    {
+      "baseline_median": 59.5102070462926,
+      "baseline_rates": [
+        59.8448920140483,
+        59.1755220785369
+      ],
+      "candidate_change_percent": -0.2928661102909236,
+      "candidate_median": 59.33592181769005,
+      "candidate_rates": [
+        58.8419505209009,
+        59.8298931144792
+      ],
+      "recording": "on",
+      "workload": "disabled"
+    },
+    {
+      "baseline_median": 59.908854882495845,
+      "baseline_rates": [
+        59.7987298016881,
+        60.0189799633036
+      ],
+      "candidate_change_percent": -0.03533286750407871,
+      "candidate_median": 59.887687366177005,
+      "candidate_rates": [
+        60.0242092101413,
+        59.7511655222127
+      ],
+      "recording": "on",
+      "workload": "empty"
+    },
+    {
+      "baseline_median": 52.71189324431095,
+      "baseline_rates": [
+        54.6034631580612,
+        50.8203233305607
+      ],
+      "candidate_change_percent": -6.451125064957441,
+      "candidate_median": 49.311383087013596,
+      "candidate_rates": [
+        47.3288607559919,
+        51.2939054180353
+      ],
+      "recording": "on",
+      "workload": "tower"
+    },
+    {
+      "baseline_median": 29.04910993676745,
+      "baseline_rates": [
+        28.7811770436674,
+        29.3170428298675
+      ],
+      "candidate_change_percent": -0.04834970973354169,
+      "candidate_median": 29.035064776432847,
+      "candidate_rates": [
+        28.938808888605,
+        29.1313206642607
+      ],
+      "recording": "on",
+      "workload": "stress"
+    },
+    {
+      "baseline_median": 59.85006073053805,
+      "baseline_rates": [
+        60.010788643166,
+        59.6893328179101
+      ],
+      "candidate_change_percent": -0.7427618050747764,
+      "candidate_median": 59.40551733911755,
+      "candidate_rates": [
+        58.9733145751547,
+        59.8377201030804
+      ],
+      "recording": "on",
+      "workload": "sleeping"
+    }
+  ],
+  "custody_sha256": "cba48bd14ed16c32fec2cb1efe447a83f914606b4277443fe8ceb16cf4a97190",
+  "design": "One process at a time; baseline/candidate order alternates by replicate; exact common observer, engine, Rapier and authored rectangles; explicit recording off/on arms.",
+  "display_driver": "headless",
+  "expected_unique_windows": 40,
+  "experiment_finished_utc": "2026-11-28T09:07:27.297033+00:00",
+  "experiment_started_utc": "2026-11-28T08:58:01.038465+00:00",
+  "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+  "identities": {
+    "baseline": {
+      "head": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+      "input_sha256": {
+        "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+        "godot/scripts/object_shard_m4_runtime.gd": "35971ec27c284ce718e563f631c5e22ea4c8357822cab14f303455f495207b40",
+        "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+        "godot/scripts/object_shard_workbench_scenes.gd": "7fe3bb28f859611d78087f097bc2748c996f613cb2ee254350f1dfefde140bb2",
+        "godot/scripts/simulation_worker.gd": "269363d9cb66f5e466cd2fc2a1f9c5135401a669266eb47046cf8edcfb71f5d6",
+        "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5"
+      },
+      "native_build_source": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+      "native_sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+      "project": "/tmp/cybersand-live-edit/baseline",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "tracked_changes": [
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+      ]
+    },
+    "candidate": {
+      "head": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+      "input_sha256": {
+        "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+        "godot/scripts/object_shard_m4_runtime.gd": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+        "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+        "godot/scripts/object_shard_workbench_scenes.gd": "e21a96b4b3e63ebf3475d2b804bfa6ce0eb159369eed10ca2bf61aaf1cb950e1",
+        "godot/scripts/simulation_worker.gd": "be486c802c149a1d1224f85a4ca8f36d624c97fa6c4470b0b7d2cd4172c1f618",
+        "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5"
+      },
+      "native_build_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+      "native_sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+      "project": "/workspace/scratch/f0d1839ea2a3/cybersand",
+      "rapier_sha256": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+      "tracked_changes": [
+        "godot/.godot/global_script_class_cache.cfg",
+        "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+        "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so"
+      ]
+    }
+  },
+  "limitations": [
+    "Short descriptive same-host windows are not statistical equivalence or a hardware performance guarantee.",
+    "Native semantic ticks are distinct from process callbacks and physical display frames; the headless renderer has no display FPS measurement.",
+    "Owned and awake bodies are reported separately. Full-window rates can include multiple awake cohorts as bodies settle.",
+    "Cohorts use callback-end observed state; a transition interval can include its preceding state.",
+    "The active-window workloads contain no edit gesture. Editing latency and native batch cost are separate experiments."
+  ],
+  "max_fps": 60,
+  "measured_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "pooled_cohorts": [
+    {
+      "awake": 0,
+      "callbacks": 722,
+      "label": "baseline",
+      "owned": 0,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 717,
+      "semantic_ticks_per_second": 59.64638428942522,
+      "wall_usec": 12020846,
+      "workload": "disabled"
+    },
+    {
+      "awake": 0,
+      "callbacks": 723,
+      "label": "candidate",
+      "owned": 0,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 718,
+      "semantic_ticks_per_second": 59.72670126267903,
+      "wall_usec": 12021424,
+      "workload": "disabled"
+    },
+    {
+      "awake": 0,
+      "callbacks": 722,
+      "label": "baseline",
+      "owned": 0,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 716,
+      "semantic_ticks_per_second": 59.51041216113558,
+      "wall_usec": 12031508,
+      "workload": "disabled"
+    },
+    {
+      "awake": 0,
+      "callbacks": 723,
+      "label": "candidate",
+      "owned": 0,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 713,
+      "semantic_ticks_per_second": 59.33543645416092,
+      "wall_usec": 12016428,
+      "workload": "disabled"
+    },
+    {
+      "awake": 0,
+      "callbacks": 721,
+      "label": "baseline",
+      "owned": 0,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 717,
+      "semantic_ticks_per_second": 59.62026630053005,
+      "wall_usec": 12026112,
+      "workload": "empty"
+    },
+    {
+      "awake": 0,
+      "callbacks": 724,
+      "label": "candidate",
+      "owned": 0,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 721,
+      "semantic_ticks_per_second": 59.950039416527304,
+      "wall_usec": 12026681,
+      "workload": "empty"
+    },
+    {
+      "awake": 0,
+      "callbacks": 724,
+      "label": "baseline",
+      "owned": 0,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 720,
+      "semantic_ticks_per_second": 59.909182671501895,
+      "wall_usec": 12018191,
+      "workload": "empty"
+    },
+    {
+      "awake": 0,
+      "callbacks": 724,
+      "label": "candidate",
+      "owned": 0,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 720,
+      "semantic_ticks_per_second": 59.88794466486997,
+      "wall_usec": 12022453,
+      "workload": "empty"
+    },
+    {
+      "awake": 0,
+      "callbacks": 724,
+      "label": "baseline",
+      "owned": 1,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 722,
+      "semantic_ticks_per_second": 60.01048438019352,
+      "wall_usec": 12031231,
+      "workload": "sleeping"
+    },
+    {
+      "awake": 0,
+      "callbacks": 724,
+      "label": "candidate",
+      "owned": 1,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 720,
+      "semantic_ticks_per_second": 59.85133924852986,
+      "wall_usec": 12029806,
+      "workload": "sleeping"
+    },
+    {
+      "awake": 0,
+      "callbacks": 721,
+      "label": "baseline",
+      "owned": 1,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 720,
+      "semantic_ticks_per_second": 59.85025963790759,
+      "wall_usec": 12030023,
+      "workload": "sleeping"
+    },
+    {
+      "awake": 0,
+      "callbacks": 717,
+      "label": "candidate",
+      "owned": 1,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 714,
+      "semantic_ticks_per_second": 59.406222327537456,
+      "wall_usec": 12018943,
+      "workload": "sleeping"
+    },
+    {
+      "awake": 6,
+      "callbacks": 163,
+      "label": "baseline",
+      "owned": 8,
+      "recording": "off",
+      "samples": 1,
+      "semantic_ticks": 81,
+      "semantic_ticks_per_second": 28.815849998203458,
+      "wall_usec": 2810953,
+      "workload": "stress"
+    },
+    {
+      "awake": 7,
+      "callbacks": 77,
+      "label": "baseline",
+      "owned": 8,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 36,
+      "semantic_ticks_per_second": 27.85590758028885,
+      "wall_usec": 1292365,
+      "workload": "stress"
+    },
+    {
+      "awake": 8,
+      "callbacks": 476,
+      "label": "baseline",
+      "owned": 8,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 234,
+      "semantic_ticks_per_second": 29.575982785261303,
+      "wall_usec": 7911825,
+      "workload": "stress"
+    },
+    {
+      "awake": 3,
+      "callbacks": 51,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "off",
+      "samples": 1,
+      "semantic_ticks": 26,
+      "semantic_ticks_per_second": 30.69617749946577,
+      "wall_usec": 847011,
+      "workload": "stress"
+    },
+    {
+      "awake": 4,
+      "callbacks": 183,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 89,
+      "semantic_ticks_per_second": 29.143549664701823,
+      "wall_usec": 3053849,
+      "workload": "stress"
+    },
+    {
+      "awake": 5,
+      "callbacks": 107,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 53,
+      "semantic_ticks_per_second": 29.385151738270334,
+      "wall_usec": 1803632,
+      "workload": "stress"
+    },
+    {
+      "awake": 6,
+      "callbacks": 6,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 2,
+      "semantic_ticks_per_second": 17.436791630340018,
+      "wall_usec": 114700,
+      "workload": "stress"
+    },
+    {
+      "awake": 7,
+      "callbacks": 3,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 2,
+      "semantic_ticks_per_second": 49.51230380749616,
+      "wall_usec": 40394,
+      "workload": "stress"
+    },
+    {
+      "awake": 8,
+      "callbacks": 372,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 178,
+      "semantic_ticks_per_second": 28.831429757080627,
+      "wall_usec": 6173818,
+      "workload": "stress"
+    },
+    {
+      "awake": 3,
+      "callbacks": 55,
+      "label": "baseline",
+      "owned": 8,
+      "recording": "on",
+      "samples": 1,
+      "semantic_ticks": 26,
+      "semantic_ticks_per_second": 28.3693824531005,
+      "wall_usec": 916481,
+      "workload": "stress"
+    },
+    {
+      "awake": 4,
+      "callbacks": 113,
+      "label": "baseline",
+      "owned": 8,
+      "recording": "on",
+      "samples": 1,
+      "semantic_ticks": 56,
+      "semantic_ticks_per_second": 29.737376483682677,
+      "wall_usec": 1883152,
+      "workload": "stress"
+    },
+    {
+      "awake": 5,
+      "callbacks": 3,
+      "label": "baseline",
+      "owned": 8,
+      "recording": "on",
+      "samples": 1,
+      "semantic_ticks": 1,
+      "semantic_ticks_per_second": 18.399941120188416,
+      "wall_usec": 54348,
+      "workload": "stress"
+    },
+    {
+      "awake": 6,
+      "callbacks": 59,
+      "label": "baseline",
+      "owned": 8,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 30,
+      "semantic_ticks_per_second": 30.656697108766895,
+      "wall_usec": 978579,
+      "workload": "stress"
+    },
+    {
+      "awake": 7,
+      "callbacks": 120,
+      "label": "baseline",
+      "owned": 8,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 57,
+      "semantic_ticks_per_second": 28.33896383799062,
+      "wall_usec": 2011365,
+      "workload": "stress"
+    },
+    {
+      "awake": 8,
+      "callbacks": 373,
+      "label": "baseline",
+      "owned": 8,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 179,
+      "semantic_ticks_per_second": 29.010310815497665,
+      "wall_usec": 6170220,
+      "workload": "stress"
+    },
+    {
+      "awake": 2,
+      "callbacks": 53,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "on",
+      "samples": 1,
+      "semantic_ticks": 26,
+      "semantic_ticks_per_second": 29.43347355742018,
+      "wall_usec": 883348,
+      "workload": "stress"
+    },
+    {
+      "awake": 3,
+      "callbacks": 117,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "on",
+      "samples": 1,
+      "semantic_ticks": 57,
+      "semantic_ticks_per_second": 29.252776319415684,
+      "wall_usec": 1948533,
+      "workload": "stress"
+    },
+    {
+      "awake": 4,
+      "callbacks": 68,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 32,
+      "semantic_ticks_per_second": 28.378731914101127,
+      "wall_usec": 1127605,
+      "workload": "stress"
+    },
+    {
+      "awake": 5,
+      "callbacks": 112,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 55,
+      "semantic_ticks_per_second": 29.356709102234472,
+      "wall_usec": 1873507,
+      "workload": "stress"
+    },
+    {
+      "awake": 6,
+      "callbacks": 4,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 2,
+      "semantic_ticks_per_second": 30.672964848782282,
+      "wall_usec": 65204,
+      "workload": "stress"
+    },
+    {
+      "awake": 7,
+      "callbacks": 4,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 2,
+      "semantic_ticks_per_second": 28.459622909996444,
+      "wall_usec": 70275,
+      "workload": "stress"
+    },
+    {
+      "awake": 8,
+      "callbacks": 357,
+      "label": "candidate",
+      "owned": 8,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 175,
+      "semantic_ticks_per_second": 28.9187701491531,
+      "wall_usec": 6051433,
+      "workload": "stress"
+    },
+    {
+      "awake": 1,
+      "callbacks": 712,
+      "label": "baseline",
+      "owned": 1,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 625,
+      "semantic_ticks_per_second": 52.028356703083745,
+      "wall_usec": 12012680,
+      "workload": "tower"
+    },
+    {
+      "awake": 1,
+      "callbacks": 716,
+      "label": "candidate",
+      "owned": 1,
+      "recording": "off",
+      "samples": 2,
+      "semantic_ticks": 596,
+      "semantic_ticks_per_second": 49.63440843738307,
+      "wall_usec": 12007799,
+      "workload": "tower"
+    },
+    {
+      "awake": 1,
+      "callbacks": 708,
+      "label": "baseline",
+      "owned": 1,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 633,
+      "semantic_ticks_per_second": 52.71296913917973,
+      "wall_usec": 12008430,
+      "workload": "tower"
+    },
+    {
+      "awake": 1,
+      "callbacks": 705,
+      "label": "candidate",
+      "owned": 1,
+      "recording": "on",
+      "samples": 2,
+      "semantic_ticks": 592,
+      "semantic_ticks_per_second": 49.312198946734746,
+      "wall_usec": 12005143,
+      "workload": "tower"
+    }
+  ],
+  "replicates": 2,
+  "reviewed_utc": "2026-11-28T09:08:35.674277+00:00",
+  "reviewer_script_sha256": "fbc1fc4635e2c15808ccc72f2af6a32ced0d13018e43df79534e84fa2304032a",
+  "runs": [
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 13,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 360,
+          "owned": 0,
+          "semantic_ticks": 357,
+          "semantic_ticks_per_second": 59.444073034619926,
+          "wall_usec": 6005645
+        }
+      ],
+      "elapsed_usec": 6005665,
+      "failures": [],
+      "label": "baseline",
+      "name": "disabled-off-1-baseline",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 59.9434034365886,
+      "rapier_segments": 358,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "ece4e5bb0d9acb604694600f5af5256770a56f65b0a0ae0178a7181eaee809a7",
+      "semantic_ticks": 357,
+      "semantic_ticks_per_second": 59.443875074617,
+      "workload": "disabled"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 13,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 361,
+          "owned": 0,
+          "semantic_ticks": 358,
+          "semantic_ticks_per_second": 59.598972167446476,
+          "wall_usec": 6006815
+        }
+      ],
+      "elapsed_usec": 6006830,
+      "failures": [],
+      "label": "candidate",
+      "name": "disabled-off-1-candidate",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.09825481993,
+      "rapier_segments": 359,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "f0eb712b3a5ebd4b51763bfd53ebeb55d7eb8335bcf2fb7ba7bf391ab7d0cb5d",
+      "semantic_ticks": 358,
+      "semantic_ticks_per_second": 59.5988233394319,
+      "workload": "disabled"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 13,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 360,
+          "semantic_ticks_per_second": 59.854264840823404,
+          "wall_usec": 6014609
+        }
+      ],
+      "elapsed_usec": 6014627,
+      "failures": [],
+      "label": "candidate",
+      "name": "disabled-off-2-candidate",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.1866084131235,
+      "rapier_segments": 361,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "4367a27e28404fdf97975e7c117f18557415629dbc4a27475e80af80da2aaa9c",
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.8540857147085,
+      "workload": "disabled"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 13,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 360,
+          "semantic_ticks_per_second": 59.84837414410591,
+          "wall_usec": 6015201
+        }
+      ],
+      "elapsed_usec": 6015215,
+      "failures": [],
+      "label": "baseline",
+      "name": "disabled-off-2-baseline",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.1807250447407,
+      "rapier_segments": 361,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "d37d9344c6c92aedbc180eee2d1f0c5dc2a16e33d428b62684e6abe3018ab967",
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.8482348511234,
+      "workload": "disabled"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 41,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 359,
+          "owned": 0,
+          "semantic_ticks": 356,
+          "semantic_ticks_per_second": 59.22067586760785,
+          "wall_usec": 6011414
+        }
+      ],
+      "elapsed_usec": 6011434,
+      "failures": [],
+      "label": "baseline",
+      "name": "empty-off-1-baseline",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 59.719527819818,
+      "rapier_segments": 1425,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "c56fe3027dca6d9e32008b6bb77a2ca1abc10f3d55fb837e967a72056c8dd498",
+      "semantic_ticks": 356,
+      "semantic_ticks_per_second": 59.2204788408223,
+      "workload": "empty"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 41,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 360,
+          "semantic_ticks_per_second": 59.842872564270415,
+          "wall_usec": 6015754
+        }
+      ],
+      "elapsed_usec": 6015795,
+      "failures": [],
+      "label": "candidate",
+      "name": "empty-off-1-candidate",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.1749228489335,
+      "rapier_segments": 1441,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "bb7da128bb681486d4cf5c9da3a345720b22a7aa31348c04a0c9981c4ae5b79c",
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.8424647116466,
+      "workload": "empty"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 41,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 361,
+          "semantic_ticks_per_second": 60.05729232778904,
+          "wall_usec": 6010927
+        }
+      ],
+      "elapsed_usec": 6010944,
+      "failures": [],
+      "label": "candidate",
+      "name": "empty-off-2-candidate",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.2234856954249,
+      "rapier_segments": 1445,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "94ad18c8d6c191ff4425a7dfa218010f5dd2b7c15536bfcc950350ba1e45b1fe",
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.0571224752718,
+      "workload": "empty"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 41,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 361,
+          "semantic_ticks_per_second": 60.01963855874393,
+          "wall_usec": 6014698
+        }
+      ],
+      "elapsed_usec": 6014718,
+      "failures": [],
+      "label": "baseline",
+      "name": "empty-off-2-baseline",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.1856978165892,
+      "rapier_segments": 1445,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "314f676fdb42ed1ec41e154c43d4d84ae8fce31dcec5067f774acb01f51bde95",
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.0194389828418,
+      "workload": "empty"
+    },
+    {
+      "authored_rectangles_sha256": "53c28c25944b4bf6b0a1c932be18450ce3519b24fc6d8df83f436b523dece649",
+      "checks": 107,
+      "cohorts": [
+        {
+          "awake": 1,
+          "callbacks": 359,
+          "owned": 1,
+          "semantic_ticks": 293,
+          "semantic_ticks_per_second": 48.80848981201902,
+          "wall_usec": 6003054
+        }
+      ],
+      "elapsed_usec": 6003071,
+      "failures": [],
+      "label": "baseline",
+      "name": "tower-off-1-baseline",
+      "native_pose_acknowledgements_delta": 1172,
+      "native_pose_echo_checks_delta": 1172,
+      "process_callbacks_per_second": 59.8027243056096,
+      "rapier_segments": 1173,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "36a6b46da2f53507e18dd9d1a6f9267576e536667222acd153851d6948dd3c87",
+      "semantic_ticks": 293,
+      "semantic_ticks_per_second": 48.8083515920435,
+      "workload": "tower"
+    },
+    {
+      "authored_rectangles_sha256": "53c28c25944b4bf6b0a1c932be18450ce3519b24fc6d8df83f436b523dece649",
+      "checks": 107,
+      "cohorts": [
+        {
+          "awake": 1,
+          "callbacks": 356,
+          "owned": 1,
+          "semantic_ticks": 306,
+          "semantic_ticks_per_second": 50.93642285487331,
+          "wall_usec": 6007489
+        }
+      ],
+      "elapsed_usec": 6007505,
+      "failures": [],
+      "label": "candidate",
+      "name": "tower-off-1-candidate",
+      "native_pose_acknowledgements_delta": 1224,
+      "native_pose_echo_checks_delta": 1224,
+      "process_callbacks_per_second": 59.2592099382356,
+      "rapier_segments": 1225,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "b6d2ee99195b0635f933bf31637876f3bd2facb422c365d3d518511d05c0da1f",
+      "semantic_ticks": 306,
+      "semantic_ticks_per_second": 50.9362871941014,
+      "workload": "tower"
+    },
+    {
+      "authored_rectangles_sha256": "53c28c25944b4bf6b0a1c932be18450ce3519b24fc6d8df83f436b523dece649",
+      "checks": 107,
+      "cohorts": [
+        {
+          "awake": 1,
+          "callbacks": 360,
+          "owned": 1,
+          "semantic_ticks": 290,
+          "semantic_ticks_per_second": 48.330836240127596,
+          "wall_usec": 6000310
+        }
+      ],
+      "elapsed_usec": 6000332,
+      "failures": [],
+      "label": "candidate",
+      "name": "tower-off-2-candidate",
+      "native_pose_acknowledgements_delta": 1160,
+      "native_pose_echo_checks_delta": 1160,
+      "process_callbacks_per_second": 59.9966801836965,
+      "rapier_segments": 1161,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "ffecfb715042dfb07545f38460903f055cbfbd3529fc8e183a6d93fddfa37187",
+      "semantic_ticks": 290,
+      "semantic_ticks_per_second": 48.3306590368666,
+      "workload": "tower"
+    },
+    {
+      "authored_rectangles_sha256": "53c28c25944b4bf6b0a1c932be18450ce3519b24fc6d8df83f436b523dece649",
+      "checks": 107,
+      "cohorts": [
+        {
+          "awake": 1,
+          "callbacks": 353,
+          "owned": 1,
+          "semantic_ticks": 332,
+          "semantic_ticks_per_second": 55.24470241575765,
+          "wall_usec": 6009626
+        }
+      ],
+      "elapsed_usec": 6009649,
+      "failures": [],
+      "label": "baseline",
+      "name": "tower-off-2-baseline",
+      "native_pose_acknowledgements_delta": 1328,
+      "native_pose_echo_checks_delta": 1328,
+      "process_callbacks_per_second": 58.7388714382487,
+      "rapier_segments": 1329,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "6004965ab53353e3496d59c2fa905821dedc0a29f6f5699b6d8b2a457162ae32",
+      "semantic_ticks": 332,
+      "semantic_ticks_per_second": 55.2444909844152,
+      "workload": "tower"
+    },
+    {
+      "authored_rectangles_sha256": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+      "checks": 333,
+      "cohorts": [
+        {
+          "awake": 7,
+          "callbacks": 65,
+          "owned": 8,
+          "semantic_ticks": 30,
+          "semantic_ticks_per_second": 27.61540939844433,
+          "wall_usec": 1086350
+        },
+        {
+          "awake": 8,
+          "callbacks": 296,
+          "owned": 8,
+          "semantic_ticks": 146,
+          "semantic_ticks_per_second": 29.690631751568315,
+          "wall_usec": 4917376
+        }
+      ],
+      "elapsed_usec": 6003762,
+      "failures": [],
+      "label": "baseline",
+      "name": "stress-off-1-baseline",
+      "native_pose_acknowledgements_delta": 5656,
+      "native_pose_echo_checks_delta": 5656,
+      "process_callbacks_per_second": 60.1289658051069,
+      "rapier_segments": 708,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "3021c4279f04d38d644f562c190727a4ae80e17e0b2c45a054097bb4609b2dc2",
+      "semantic_ticks": 176,
+      "semantic_ticks_per_second": 29.3149528578914,
+      "workload": "stress"
+    },
+    {
+      "authored_rectangles_sha256": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+      "checks": 333,
+      "cohorts": [
+        {
+          "awake": 3,
+          "callbacks": 51,
+          "owned": 8,
+          "semantic_ticks": 26,
+          "semantic_ticks_per_second": 30.69617749946577,
+          "wall_usec": 847011
+        },
+        {
+          "awake": 4,
+          "callbacks": 125,
+          "owned": 8,
+          "semantic_ticks": 62,
+          "semantic_ticks_per_second": 29.7049958532784,
+          "wall_usec": 2087191
+        },
+        {
+          "awake": 5,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 31.89487449366887,
+          "wall_usec": 31353
+        },
+        {
+          "awake": 6,
+          "callbacks": 3,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 17.443178844912698,
+          "wall_usec": 57329
+        },
+        {
+          "awake": 7,
+          "callbacks": 1,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 88.30801836806782,
+          "wall_usec": 11324
+        },
+        {
+          "awake": 8,
+          "callbacks": 180,
+          "owned": 8,
+          "semantic_ticks": 88,
+          "semantic_ticks_per_second": 29.442624354938868,
+          "wall_usec": 2988864
+        }
+      ],
+      "elapsed_usec": 6023137,
+      "failures": [],
+      "label": "candidate",
+      "name": "stress-off-1-candidate",
+      "native_pose_acknowledgements_delta": 5752,
+      "native_pose_echo_checks_delta": 5752,
+      "process_callbacks_per_second": 60.1015716560988,
+      "rapier_segments": 720,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "c11aea7476e06e468e6e7dd822e1ac8fe413da0db68ace1f21185ba494957066",
+      "semantic_ticks": 179,
+      "semantic_ticks_per_second": 29.7187329459715,
+      "workload": "stress"
+    },
+    {
+      "authored_rectangles_sha256": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+      "checks": 333,
+      "cohorts": [
+        {
+          "awake": 4,
+          "callbacks": 58,
+          "owned": 8,
+          "semantic_ticks": 27,
+          "semantic_ticks_per_second": 27.931284901174976,
+          "wall_usec": 966658
+        },
+        {
+          "awake": 5,
+          "callbacks": 105,
+          "owned": 8,
+          "semantic_ticks": 52,
+          "semantic_ticks_per_second": 29.340752782152247,
+          "wall_usec": 1772279
+        },
+        {
+          "awake": 6,
+          "callbacks": 3,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 17.43040909170138,
+          "wall_usec": 57371
+        },
+        {
+          "awake": 7,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 34.39972480220158,
+          "wall_usec": 29070
+        },
+        {
+          "awake": 8,
+          "callbacks": 192,
+          "owned": 8,
+          "semantic_ticks": 90,
+          "semantic_ticks_per_second": 28.25786494875593,
+          "wall_usec": 3184954
+        }
+      ],
+      "elapsed_usec": 6010366,
+      "failures": [],
+      "label": "candidate",
+      "name": "stress-off-2-candidate",
+      "native_pose_acknowledgements_delta": 5496,
+      "native_pose_echo_checks_delta": 5496,
+      "process_callbacks_per_second": 59.8965187810526,
+      "rapier_segments": 688,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "79faec6fa87cd39d5b0a9e1e1ee2268da83605533c8b11cc367b16e1f3b27101",
+      "semantic_ticks": 171,
+      "semantic_ticks_per_second": 28.450846421,
+      "workload": "stress"
+    },
+    {
+      "authored_rectangles_sha256": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+      "checks": 333,
+      "cohorts": [
+        {
+          "awake": 6,
+          "callbacks": 163,
+          "owned": 8,
+          "semantic_ticks": 81,
+          "semantic_ticks_per_second": 28.815849998203458,
+          "wall_usec": 2810953
+        },
+        {
+          "awake": 7,
+          "callbacks": 12,
+          "owned": 8,
+          "semantic_ticks": 6,
+          "semantic_ticks_per_second": 29.12409290585637,
+          "wall_usec": 206015
+        },
+        {
+          "awake": 8,
+          "callbacks": 180,
+          "owned": 8,
+          "semantic_ticks": 88,
+          "semantic_ticks_per_second": 29.387710393464708,
+          "wall_usec": 2994449
+        }
+      ],
+      "elapsed_usec": 6011446,
+      "failures": [],
+      "label": "baseline",
+      "name": "stress-off-2-baseline",
+      "native_pose_acknowledgements_delta": 5624,
+      "native_pose_echo_checks_delta": 5624,
+      "process_callbacks_per_second": 59.0540112977809,
+      "rapier_segments": 704,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "c2c0a996c25dd4eef848dc79014c31435c134a6d906b31126686dd860d671e9e",
+      "semantic_ticks": 175,
+      "semantic_ticks_per_second": 29.111132329892,
+      "workload": "stress"
+    },
+    {
+      "authored_rectangles_sha256": "544ac69b76a677a68c14e18fe9a73c73460d175e74f4b2f8a6f6dbc837475177",
+      "checks": 76,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 361,
+          "semantic_ticks_per_second": 60.017632881283625,
+          "wall_usec": 6014899
+        }
+      ],
+      "elapsed_usec": 6014919,
+      "failures": [],
+      "label": "baseline",
+      "name": "sleeping-off-1-baseline",
+      "native_pose_acknowledgements_delta": 1444,
+      "native_pose_echo_checks_delta": 1444,
+      "process_callbacks_per_second": 60.1836865966109,
+      "rapier_segments": 1445,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "3e9748dcb76c84f5fcdf7835f48344be8b24860da37039de99c89f847b421229",
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.0174333187197,
+      "workload": "sleeping"
+    },
+    {
+      "authored_rectangles_sha256": "544ac69b76a677a68c14e18fe9a73c73460d175e74f4b2f8a6f6dbc837475177",
+      "checks": 76,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 359,
+          "semantic_ticks_per_second": 59.68588929148693,
+          "wall_usec": 6014822
+        }
+      ],
+      "elapsed_usec": 6014844,
+      "failures": [],
+      "label": "candidate",
+      "name": "sleeping-off-1-candidate",
+      "native_pose_acknowledgements_delta": 1436,
+      "native_pose_echo_checks_delta": 1436,
+      "process_callbacks_per_second": 60.184437036106,
+      "rapier_segments": 1437,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "a630a24cb1aac2615437c5fb0f370492648e436794b5c55fbb1eeb864ed24009",
+      "semantic_ticks": 359,
+      "semantic_ticks_per_second": 59.6856709833206,
+      "workload": "sleeping"
+    },
+    {
+      "authored_rectangles_sha256": "544ac69b76a677a68c14e18fe9a73c73460d175e74f4b2f8a6f6dbc837475177",
+      "checks": 76,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 361,
+          "semantic_ticks_per_second": 60.016784749552116,
+          "wall_usec": 6014984
+        }
+      ],
+      "elapsed_usec": 6015001,
+      "failures": [],
+      "label": "candidate",
+      "name": "sleeping-off-2-candidate",
+      "native_pose_acknowledgements_delta": 1444,
+      "native_pose_echo_checks_delta": 1444,
+      "process_callbacks_per_second": 60.1828661375119,
+      "rapier_segments": 1445,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "9fcf091fe363237d8ea4e67dca27e393975aa834084fc02fc95afc254d0f6d00",
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.0166151260823,
+      "workload": "sleeping"
+    },
+    {
+      "authored_rectangles_sha256": "544ac69b76a677a68c14e18fe9a73c73460d175e74f4b2f8a6f6dbc837475177",
+      "checks": 76,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 361,
+          "semantic_ticks_per_second": 60.00333758176909,
+          "wall_usec": 6016332
+        }
+      ],
+      "elapsed_usec": 6016354,
+      "failures": [],
+      "label": "baseline",
+      "name": "sleeping-off-2-baseline",
+      "native_pose_acknowledgements_delta": 1444,
+      "native_pose_echo_checks_delta": 1444,
+      "process_callbacks_per_second": 60.1693317913141,
+      "rapier_segments": 1445,
+      "recording": "off",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "e9b9f9b87675744413d8f098e87c86d7d73b3042b241bd5a5bd0fd1ce59cad77",
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.0031181675812,
+      "workload": "sleeping"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 13,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 360,
+          "semantic_ticks_per_second": 59.84509098199311,
+          "wall_usec": 6015531
+        }
+      ],
+      "elapsed_usec": 6015551,
+      "failures": [],
+      "label": "baseline",
+      "name": "disabled-on-1-baseline",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.1773636363485,
+      "rapier_segments": 361,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "5b7fcbd7ebabb43cf89f9c5287c8422974c49cc66dd344d976f4371fdc473ac6",
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.8448920140483,
+      "workload": "disabled"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 13,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 354,
+          "semantic_ticks_per_second": 58.84210701284886,
+          "wall_usec": 6016100
+        }
+      ],
+      "elapsed_usec": 6016116,
+      "failures": [],
+      "label": "candidate",
+      "name": "disabled-on-1-candidate",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.1717121145935,
+      "rapier_segments": 355,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "874c8834ada15bf4486d72b1328e853c9ff1152f128f78d0f50d1527ce01638a",
+      "semantic_ticks": 354,
+      "semantic_ticks_per_second": 58.8419505209009,
+      "workload": "disabled"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 13,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 361,
+          "owned": 0,
+          "semantic_ticks": 359,
+          "semantic_ticks_per_second": 59.830062623243265,
+          "wall_usec": 6000328
+        }
+      ],
+      "elapsed_usec": 6000345,
+      "failures": [],
+      "label": "candidate",
+      "name": "disabled-on-2-candidate",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.1632072822479,
+      "rapier_segments": 360,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "beab247768cb33957a5f43602df1173fd3811d468a9d42d5f5216bc2ae5594a8",
+      "semantic_ticks": 359,
+      "semantic_ticks_per_second": 59.8298931144792,
+      "workload": "disabled"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 13,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 360,
+          "owned": 0,
+          "semantic_ticks": 356,
+          "semantic_ticks_per_second": 59.17575815200092,
+          "wall_usec": 6015977
+        }
+      ],
+      "elapsed_usec": 6016001,
+      "failures": [],
+      "label": "baseline",
+      "name": "disabled-on-2-baseline",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 59.8404155850373,
+      "rapier_segments": 357,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "2fb7e1b8bda6b7f245373421248ff47af820bd4584562c9dbc431137c9d35cf9",
+      "semantic_ticks": 356,
+      "semantic_ticks_per_second": 59.1755220785369,
+      "workload": "disabled"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 41,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 359,
+          "semantic_ticks_per_second": 59.79900870233819,
+          "wall_usec": 6003444
+        }
+      ],
+      "elapsed_usec": 6003472,
+      "failures": [],
+      "label": "baseline",
+      "name": "empty-on-1-baseline",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.2984406356855,
+      "rapier_segments": 1437,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "fcd87aaf431be428aa0d0f578c4eb676b428af43236d5d7d0b01ff1eb1875cae",
+      "semantic_ticks": 359,
+      "semantic_ticks_per_second": 59.7987298016881,
+      "workload": "empty"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 41,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 361,
+          "semantic_ticks_per_second": 60.02439883735566,
+          "wall_usec": 6014221
+        }
+      ],
+      "elapsed_usec": 6014240,
+      "failures": [],
+      "label": "candidate",
+      "name": "empty-on-1-candidate",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.1904812578148,
+      "rapier_segments": 1445,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "1f65eef742ed29485ae67905f9e7ebd6e66314686fda8b8424f3823f76354c90",
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.0242092101413,
+      "workload": "empty"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 41,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 359,
+          "semantic_ticks_per_second": 59.75135447499364,
+          "wall_usec": 6008232
+        }
+      ],
+      "elapsed_usec": 6008251,
+      "failures": [],
+      "label": "candidate",
+      "name": "empty-on-2-candidate",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.2504788831226,
+      "rapier_segments": 1437,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "859e7cf1e03a967263ef242ebbd760bda026193c28262ff727e78030dfe38440",
+      "semantic_ticks": 359,
+      "semantic_ticks_per_second": 59.7511655222127,
+      "workload": "empty"
+    },
+    {
+      "authored_rectangles_sha256": "5521cf71efd5c8f4088d2f8fcfc0cbb98f6a76fb593e9c983d3f1611860fa49d",
+      "checks": 41,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 0,
+          "semantic_ticks": 361,
+          "semantic_ticks_per_second": 60.01914960014112,
+          "wall_usec": 6014747
+        }
+      ],
+      "elapsed_usec": 6014764,
+      "failures": [],
+      "label": "baseline",
+      "name": "empty-on-2-baseline",
+      "native_pose_acknowledgements_delta": 0,
+      "native_pose_echo_checks_delta": 0,
+      "process_callbacks_per_second": 60.1852375255288,
+      "rapier_segments": 1445,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "dbf8a9c4c28034b7ece771ef4414919cc9a5d59e91b64ff7724d4bf2aec945ad",
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.0189799633036,
+      "workload": "empty"
+    },
+    {
+      "authored_rectangles_sha256": "53c28c25944b4bf6b0a1c932be18450ce3519b24fc6d8df83f436b523dece649",
+      "checks": 107,
+      "cohorts": [
+        {
+          "awake": 1,
+          "callbacks": 353,
+          "owned": 1,
+          "semantic_ticks": 328,
+          "semantic_ticks_per_second": 54.603726770942025,
+          "wall_usec": 6006916
+        }
+      ],
+      "elapsed_usec": 6006945,
+      "failures": [],
+      "label": "baseline",
+      "name": "tower-on-1-baseline",
+      "native_pose_acknowledgements_delta": 1316,
+      "native_pose_echo_checks_delta": 1316,
+      "process_callbacks_per_second": 58.7653124841329,
+      "rapier_segments": 1316,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "cd1dd03a893955afa7261d371bc506df68a8ee191961ec3413d9b8062bae74bb",
+      "semantic_ticks": 328,
+      "semantic_ticks_per_second": 54.6034631580612,
+      "workload": "tower"
+    },
+    {
+      "authored_rectangles_sha256": "53c28c25944b4bf6b0a1c932be18450ce3519b24fc6d8df83f436b523dece649",
+      "checks": 107,
+      "cohorts": [
+        {
+          "awake": 1,
+          "callbacks": 350,
+          "owned": 1,
+          "semantic_ticks": 284,
+          "semantic_ticks_per_second": 47.32899484213947,
+          "wall_usec": 6000550
+        }
+      ],
+      "elapsed_usec": 6000567,
+      "failures": [],
+      "label": "candidate",
+      "name": "tower-on-1-candidate",
+      "native_pose_acknowledgements_delta": 1136,
+      "native_pose_echo_checks_delta": 1136,
+      "process_callbacks_per_second": 58.3278213542154,
+      "rapier_segments": 1137,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "090b6dd4de373166922125686c1c89677f0d9f87f9593bb808dd5ce08dd09f24",
+      "semantic_ticks": 284,
+      "semantic_ticks_per_second": 47.3288607559919,
+      "workload": "tower"
+    },
+    {
+      "authored_rectangles_sha256": "53c28c25944b4bf6b0a1c932be18450ce3519b24fc6d8df83f436b523dece649",
+      "checks": 107,
+      "cohorts": [
+        {
+          "awake": 1,
+          "callbacks": 355,
+          "owned": 1,
+          "semantic_ticks": 308,
+          "semantic_ticks_per_second": 51.29406772449023,
+          "wall_usec": 6004593
+        }
+      ],
+      "elapsed_usec": 6004612,
+      "failures": [],
+      "label": "candidate",
+      "name": "tower-on-2-candidate",
+      "native_pose_acknowledgements_delta": 1232,
+      "native_pose_echo_checks_delta": 1232,
+      "process_callbacks_per_second": 59.1212221539044,
+      "rapier_segments": 1233,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "ecb04c6514a7368521872d5b238692f1feff667e9048123e3b848f2394065edf",
+      "semantic_ticks": 308,
+      "semantic_ticks_per_second": 51.2939054180353,
+      "workload": "tower"
+    },
+    {
+      "authored_rectangles_sha256": "53c28c25944b4bf6b0a1c932be18450ce3519b24fc6d8df83f436b523dece649",
+      "checks": 107,
+      "cohorts": [
+        {
+          "awake": 1,
+          "callbacks": 355,
+          "owned": 1,
+          "semantic_ticks": 305,
+          "semantic_ticks_per_second": 50.82050962473802,
+          "wall_usec": 6001514
+        }
+      ],
+      "elapsed_usec": 6001536,
+      "failures": [],
+      "label": "baseline",
+      "name": "tower-on-2-baseline",
+      "native_pose_acknowledgements_delta": 1224,
+      "native_pose_echo_checks_delta": 1224,
+      "process_callbacks_per_second": 59.1515238765543,
+      "rapier_segments": 1224,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "134c8aecfae2aec220fcf31476dfa408f294f798dda3ed9b67c54099a16f6480",
+      "semantic_ticks": 305,
+      "semantic_ticks_per_second": 50.8203233305607,
+      "workload": "tower"
+    },
+    {
+      "authored_rectangles_sha256": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+      "checks": 333,
+      "cohorts": [
+        {
+          "awake": 3,
+          "callbacks": 55,
+          "owned": 8,
+          "semantic_ticks": 26,
+          "semantic_ticks_per_second": 28.3693824531005,
+          "wall_usec": 916481
+        },
+        {
+          "awake": 4,
+          "callbacks": 113,
+          "owned": 8,
+          "semantic_ticks": 56,
+          "semantic_ticks_per_second": 29.737376483682677,
+          "wall_usec": 1883152
+        },
+        {
+          "awake": 5,
+          "callbacks": 3,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 18.399941120188416,
+          "wall_usec": 54348
+        },
+        {
+          "awake": 6,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 29.15706913141091,
+          "wall_usec": 34297
+        },
+        {
+          "awake": 7,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 30.52409877598364,
+          "wall_usec": 32761
+        },
+        {
+          "awake": 8,
+          "callbacks": 187,
+          "owned": 8,
+          "semantic_ticks": 88,
+          "semantic_ticks_per_second": 28.480724860339265,
+          "wall_usec": 3089809
+        }
+      ],
+      "elapsed_usec": 6010873,
+      "failures": [],
+      "label": "baseline",
+      "name": "stress-on-1-baseline",
+      "native_pose_acknowledgements_delta": 5560,
+      "native_pose_echo_checks_delta": 5560,
+      "process_callbacks_per_second": 60.2241970509109,
+      "rapier_segments": 696,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "2994890141d970530793665ac658fc403a52fea27ccc28162102354c8ab34f6d",
+      "semantic_ticks": 173,
+      "semantic_ticks_per_second": 28.7811770436674,
+      "workload": "stress"
+    },
+    {
+      "authored_rectangles_sha256": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+      "checks": 333,
+      "cohorts": [
+        {
+          "awake": 2,
+          "callbacks": 53,
+          "owned": 8,
+          "semantic_ticks": 26,
+          "semantic_ticks_per_second": 29.43347355742018,
+          "wall_usec": 883348
+        },
+        {
+          "awake": 3,
+          "callbacks": 117,
+          "owned": 8,
+          "semantic_ticks": 57,
+          "semantic_ticks_per_second": 29.252776319415684,
+          "wall_usec": 1948533
+        },
+        {
+          "awake": 4,
+          "callbacks": 3,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 22.611644997173546,
+          "wall_usec": 44225
+        },
+        {
+          "awake": 5,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 26.92732315480518,
+          "wall_usec": 37137
+        },
+        {
+          "awake": 6,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 31.638561078242162,
+          "wall_usec": 31607
+        },
+        {
+          "awake": 7,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 26.996382484747045,
+          "wall_usec": 37042
+        },
+        {
+          "awake": 8,
+          "callbacks": 175,
+          "owned": 8,
+          "semantic_ticks": 87,
+          "semantic_ticks_per_second": 28.70552911384052,
+          "wall_usec": 3030775
+        }
+      ],
+      "elapsed_usec": 6012687,
+      "failures": [],
+      "label": "candidate",
+      "name": "stress-on-1-candidate",
+      "native_pose_acknowledgements_delta": 5568,
+      "native_pose_echo_checks_delta": 5568,
+      "process_callbacks_per_second": 58.8755077388861,
+      "rapier_segments": 697,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "75266054bf0bf18ee24439386087888d0354961485ef77b58f49e8dee800ed58",
+      "semantic_ticks": 174,
+      "semantic_ticks_per_second": 28.938808888605,
+      "workload": "stress"
+    },
+    {
+      "authored_rectangles_sha256": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+      "checks": 333,
+      "cohorts": [
+        {
+          "awake": 4,
+          "callbacks": 65,
+          "owned": 8,
+          "semantic_ticks": 31,
+          "semantic_ticks_per_second": 28.614152005759752,
+          "wall_usec": 1083380
+        },
+        {
+          "awake": 5,
+          "callbacks": 110,
+          "owned": 8,
+          "semantic_ticks": 54,
+          "semantic_ticks_per_second": 29.405838692638195,
+          "wall_usec": 1836370
+        },
+        {
+          "awake": 6,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 29.7645623121112,
+          "wall_usec": 33597
+        },
+        {
+          "awake": 7,
+          "callbacks": 2,
+          "owned": 8,
+          "semantic_ticks": 1,
+          "semantic_ticks_per_second": 30.090572623597026,
+          "wall_usec": 33233
+        },
+        {
+          "awake": 8,
+          "callbacks": 182,
+          "owned": 8,
+          "semantic_ticks": 88,
+          "semantic_ticks_per_second": 29.132725386323113,
+          "wall_usec": 3020658
+        }
+      ],
+      "elapsed_usec": 6007280,
+      "failures": [],
+      "label": "candidate",
+      "name": "stress-on-2-candidate",
+      "native_pose_acknowledgements_delta": 5624,
+      "native_pose_echo_checks_delta": 5624,
+      "process_callbacks_per_second": 60.0937529131321,
+      "rapier_segments": 704,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "bb19658c9b9bf03c136dc8b81acc991d630974f14bb6a356d7a0e96aa5372a94",
+      "semantic_ticks": 175,
+      "semantic_ticks_per_second": 29.1313206642607,
+      "workload": "stress"
+    },
+    {
+      "authored_rectangles_sha256": "8e2e6e4f8eb731ced8b416692d4a9532677ea376e22c2fd2e3db600a4b9a84dc",
+      "checks": 333,
+      "cohorts": [
+        {
+          "awake": 6,
+          "callbacks": 57,
+          "owned": 8,
+          "semantic_ticks": 29,
+          "semantic_ticks_per_second": 30.711164673264978,
+          "wall_usec": 944282
+        },
+        {
+          "awake": 7,
+          "callbacks": 118,
+          "owned": 8,
+          "semantic_ticks": 56,
+          "semantic_ticks_per_second": 28.30278317439973,
+          "wall_usec": 1978604
+        },
+        {
+          "awake": 8,
+          "callbacks": 186,
+          "owned": 8,
+          "semantic_ticks": 91,
+          "semantic_ticks_per_second": 29.541512479990494,
+          "wall_usec": 3080411
+        }
+      ],
+      "elapsed_usec": 6003334,
+      "failures": [],
+      "label": "baseline",
+      "name": "stress-on-2-baseline",
+      "native_pose_acknowledgements_delta": 5656,
+      "native_pose_echo_checks_delta": 5656,
+      "process_callbacks_per_second": 60.133252622626,
+      "rapier_segments": 708,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "54dcefbc43413bed1334173d6dd18a64875beb92909a00d36366c0baa8679c83",
+      "semantic_ticks": 176,
+      "semantic_ticks_per_second": 29.3170428298675,
+      "workload": "stress"
+    },
+    {
+      "authored_rectangles_sha256": "544ac69b76a677a68c14e18fe9a73c73460d175e74f4b2f8a6f6dbc837475177",
+      "checks": 76,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 361,
+          "semantic_ticks_per_second": 60.01095823370295,
+          "wall_usec": 6015568
+        }
+      ],
+      "elapsed_usec": 6015585,
+      "failures": [],
+      "label": "baseline",
+      "name": "sleeping-on-1-baseline",
+      "native_pose_acknowledgements_delta": 1444,
+      "native_pose_echo_checks_delta": 1444,
+      "process_callbacks_per_second": 60.1770235147538,
+      "rapier_segments": 1445,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "140be435fc095fb1698678c4d888f3a60768e8b17ba1741fd943866e67b30eab",
+      "semantic_ticks": 361,
+      "semantic_ticks_per_second": 60.010788643166,
+      "workload": "sleeping"
+    },
+    {
+      "authored_rectangles_sha256": "544ac69b76a677a68c14e18fe9a73c73460d175e74f4b2f8a6f6dbc837475177",
+      "checks": 76,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 355,
+          "owned": 1,
+          "semantic_ticks": 354,
+          "semantic_ticks_per_second": 58.97356018718275,
+          "wall_usec": 6002690
+        }
+      ],
+      "elapsed_usec": 6002715,
+      "failures": [],
+      "label": "candidate",
+      "name": "sleeping-on-1-candidate",
+      "native_pose_acknowledgements_delta": 1416,
+      "native_pose_echo_checks_delta": 1416,
+      "process_callbacks_per_second": 59.1399058592653,
+      "rapier_segments": 1417,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 1,
+      "result_sha256": "f2d28b708875ba5f1a4288468147245ad2ab9db7f34d81406df320c6f351dcee",
+      "semantic_ticks": 354,
+      "semantic_ticks_per_second": 58.9733145751547,
+      "workload": "sleeping"
+    },
+    {
+      "authored_rectangles_sha256": "544ac69b76a677a68c14e18fe9a73c73460d175e74f4b2f8a6f6dbc837475177",
+      "checks": 76,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 362,
+          "owned": 1,
+          "semantic_ticks": 360,
+          "semantic_ticks_per_second": 59.837909077294455,
+          "wall_usec": 6016253
+        }
+      ],
+      "elapsed_usec": 6016272,
+      "failures": [],
+      "label": "candidate",
+      "name": "sleeping-on-2-candidate",
+      "native_pose_acknowledgements_delta": 1440,
+      "native_pose_echo_checks_delta": 1440,
+      "process_callbacks_per_second": 60.1701518814309,
+      "rapier_segments": 1441,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "0dd938e3bc473ff4d2c491bba74f3dd9bc7bcaff8cb2287f307159e8ab4034a5",
+      "semantic_ticks": 360,
+      "semantic_ticks_per_second": 59.8377201030804,
+      "workload": "sleeping"
+    },
+    {
+      "authored_rectangles_sha256": "544ac69b76a677a68c14e18fe9a73c73460d175e74f4b2f8a6f6dbc837475177",
+      "checks": 76,
+      "cohorts": [
+        {
+          "awake": 0,
+          "callbacks": 359,
+          "owned": 1,
+          "semantic_ticks": 359,
+          "semantic_ticks_per_second": 59.68953130416638,
+          "wall_usec": 6014455
+        }
+      ],
+      "elapsed_usec": 6014475,
+      "failures": [],
+      "label": "baseline",
+      "name": "sleeping-on-2-baseline",
+      "native_pose_acknowledgements_delta": 1436,
+      "native_pose_echo_checks_delta": 1436,
+      "process_callbacks_per_second": 59.6893328179101,
+      "rapier_segments": 1437,
+      "recording": "on",
+      "renderer_callbacks": 0,
+      "replicate": 2,
+      "result_sha256": "7f5c7455a1a58c45a472f71eabd21e90372cb88113c9e21745ff5818fbf22d6f",
+      "semantic_ticks": 359,
+      "semantic_ticks_per_second": 59.6893328179101,
+      "workload": "sleeping"
+    }
+  ],
+  "runtime_and_source_custody": {
+    "after": {
+      "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "projects": {
+        "baseline": {
+          "files": {
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+            "godot/scripts/object_shard_m4_runtime.gd": "35971ec27c284ce718e563f631c5e22ea4c8357822cab14f303455f495207b40",
+            "godot/scripts/object_shard_m4_workbench_port.gd": "35887a6285d262d494303da6ab5caf92e926869151c10487ff039b82ae895ea3",
+            "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+            "godot/scripts/object_shard_workbench_overlay.gd": "f3917d37ecbf3026a30f3ed35d6e06a503185b605358b094147a55a2c7f64bfa",
+            "godot/scripts/object_shard_workbench_scenes.gd": "7fe3bb28f859611d78087f097bc2748c996f613cb2ee254350f1dfefde140bb2",
+            "godot/scripts/shared_workbench.gd": "f596830d9b3a885af0527a74977a05e3b544f17d7c5339870c802b54273e76f7",
+            "godot/scripts/simulation_worker.gd": "269363d9cb66f5e466cd2fc2a1f9c5135401a669266eb47046cf8edcfb71f5d6",
+            "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+            "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+            "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+            "tools/objectshard/compare_throughput.py": "acc01a1787ff3a5e80d8be42603165dd8b6004c304d66310c999793a30ab0a58"
+          },
+          "head": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+          "native_bytes": 6081432,
+          "tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c"
+        },
+        "candidate": {
+          "files": {
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+            "godot/scripts/object_shard_m4_runtime.gd": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+            "godot/scripts/object_shard_m4_workbench_port.gd": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd",
+            "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+            "godot/scripts/object_shard_workbench_overlay.gd": "0dcc05fb0b6a24730f5ff9df2284f8003d588abddd5d7a6de9de709f8740f154",
+            "godot/scripts/object_shard_workbench_scenes.gd": "e21a96b4b3e63ebf3475d2b804bfa6ce0eb159369eed10ca2bf61aaf1cb950e1",
+            "godot/scripts/shared_workbench.gd": "4e9867c277621887db6d7553a4df3675571c91cc12191f85f20e9e70dc3e8595",
+            "godot/scripts/simulation_worker.gd": "be486c802c149a1d1224f85a4ca8f36d624c97fa6c4470b0b7d2cd4172c1f618",
+            "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+            "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+            "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+            "tools/objectshard/compare_throughput.py": "acc01a1787ff3a5e80d8be42603165dd8b6004c304d66310c999793a30ab0a58"
+          },
+          "head": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+          "native_bytes": 6149752,
+          "tree": "33fa2aab1433fc1fece80cb38a413816cc845603"
+        }
+      }
+    },
+    "before": {
+      "godot_sha256": "f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75",
+      "projects": {
+        "baseline": {
+          "files": {
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+            "godot/scripts/object_shard_m4_runtime.gd": "35971ec27c284ce718e563f631c5e22ea4c8357822cab14f303455f495207b40",
+            "godot/scripts/object_shard_m4_workbench_port.gd": "35887a6285d262d494303da6ab5caf92e926869151c10487ff039b82ae895ea3",
+            "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+            "godot/scripts/object_shard_workbench_overlay.gd": "f3917d37ecbf3026a30f3ed35d6e06a503185b605358b094147a55a2c7f64bfa",
+            "godot/scripts/object_shard_workbench_scenes.gd": "7fe3bb28f859611d78087f097bc2748c996f613cb2ee254350f1dfefde140bb2",
+            "godot/scripts/shared_workbench.gd": "f596830d9b3a885af0527a74977a05e3b544f17d7c5339870c802b54273e76f7",
+            "godot/scripts/simulation_worker.gd": "269363d9cb66f5e466cd2fc2a1f9c5135401a669266eb47046cf8edcfb71f5d6",
+            "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+            "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+            "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+            "tools/objectshard/compare_throughput.py": "acc01a1787ff3a5e80d8be42603165dd8b6004c304d66310c999793a30ab0a58"
+          },
+          "head": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+          "native_bytes": 6081432,
+          "tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c"
+        },
+        "candidate": {
+          "files": {
+            "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+            "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so": "566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a",
+            "godot/scripts/main.gd": "2af845b3fd008a685f14fde8f951f19fbea24c501ccf320242021843f988b96f",
+            "godot/scripts/object_shard_m4_runtime.gd": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8",
+            "godot/scripts/object_shard_m4_workbench_port.gd": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd",
+            "godot/scripts/object_shard_physics_bridge.gd": "e93815b4994dfca5fc6650f5c7d0ffd29f2582dc07ab4d65439ba8df79558526",
+            "godot/scripts/object_shard_workbench_overlay.gd": "0dcc05fb0b6a24730f5ff9df2284f8003d588abddd5d7a6de9de709f8740f154",
+            "godot/scripts/object_shard_workbench_scenes.gd": "e21a96b4b3e63ebf3475d2b804bfa6ce0eb159369eed10ca2bf61aaf1cb950e1",
+            "godot/scripts/shared_workbench.gd": "4e9867c277621887db6d7553a4df3675571c91cc12191f85f20e9e70dc3e8595",
+            "godot/scripts/simulation_worker.gd": "be486c802c149a1d1224f85a4ca8f36d624c97fa6c4470b0b7d2cd4172c1f618",
+            "godot/scripts/workbench_setup.gd": "56735e03261d5de88469b9b22e8ea92adf39f81a08f24788408618796cb31110",
+            "godot/tests/profile_object_shard_m4_throughput.gd": "1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5",
+            "godot/tests/support/object_shard_m4_workbench_fixture.gd": "57ab220ad135611c5b49208a71b40fdab08a3d1aaa27df8153ce997545036204",
+            "tools/objectshard/compare_throughput.py": "acc01a1787ff3a5e80d8be42603165dd8b6004c304d66310c999793a30ab0a58"
+          },
+          "head": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+          "native_bytes": 6149752,
+          "tree": "33fa2aab1433fc1fece80cb38a413816cc845603"
+        }
+      }
+    },
+    "verified_runtime_provenance": {
+      "baseline": {
+        "build_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+        "guarded_publication": "d5bb74cdc8b3350ea85ba7899e46d6d0038074b8",
+        "platform": "linux",
+        "provenance_git_blob_sha256": "14857902133f346b04f26832b91ab28798a904b8026fef8a0d76b0b99a5fa9e1",
+        "provenance_path": "godot/addons/cybersand_native/runtime-provenance.linux.json",
+        "provenance_verified_against_git": true,
+        "sha256": "059c5880234a4d5349e6e78527187b13e3b205b039b5f3baf3e033cdaff53fe4",
+        "size": 6081432,
+        "source_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+        "source_tree": "c7205a87bc9fda757dbcad511dcaacc618a6e73c",
+        "status": "validated-development-runtime",
+        "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nGNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n101ae38034304346a46ea9ea84ae156d3e860496",
+        "validated_platform": "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
+        "workflow_attempt": "1",
+        "workflow_run": "https://github.com/techrote/cybersand/actions/runs/46103413203"
+      },
+      "candidate": {
+        "artifact_id": 15256875803,
+        "build_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+        "independent_verification": "final-linux-production-runtime-review.json",
+        "platform": "linux",
+        "provenance_sha256": "48cf0257abc085ec868c9560aa4ff8245e293ce8b8a49beb7e7a018a5237e5bd",
+        "sha256": "ab72a2fa2fd973e784ab6adf962bad6a9a4ec4a92e6975c45ab4490b4331ee8e",
+        "size": 6149752,
+        "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+        "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+        "status": "validated-development-runtime",
+        "toolchain": "g++-13 (Ubuntu 13.3.0-6ubuntu2~24.04.1) 13.3.0\nCopyright (C) 2023 Free Software Foundation, Inc.\nThis is free software; see the source for copying conditions.  There is NO\nwarranty; not even for MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.\n\nGNU ld (GNU Binutils for Ubuntu) 2.42\nCopyright (C) 2024 Free Software Foundation, Inc.\nThis program is free software; you may redistribute it under the terms of\nthe GNU General Public License version 3 or (at your option) a later version.\nThis program has absolutely no warranty.\n101ae38034304346a46ea9ea84ae156d3e860496",
+        "validated_platform": "Linux x86_64 Godot 4.7 (actual GitHub-hosted headless execution)",
+        "workflow_attempt": "1",
+        "workflow_run": "https://github.com/techrote/cybersand/actions/runs/46125028803"
+      }
+    }
+  },
+  "schema": "objectshard-m4-independent-matched-throughput-v1",
+  "seconds_per_window": 6,
+  "status": "passed_all_workload_invariants",
+  "summary_sha256": "f487efaf20428c49aa9d2e67d0daca8b2a969d8600c724556cd81e23f971df7b"
+}

@@ -1,0 +1,97 @@
+{
+  "schema": "objectshard-m4-final-documentation-independent-review-v1",
+  "reviewer": "Specialist B / Workbench interaction and artifact review",
+  "verified_at": "2026-11-28T09:52:39.703522+00:00",
+  "qualified_application_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "guarded_publication": "302f982943c0e03c30968368da8264cfb3c431ce",
+  "documents": [
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/README.md",
+      "sha256": "f3b1cc81bef1f4e3ce46a4dd07d400331387356f24e4e44af1ff93b63f3d4e11",
+      "bytes": 22774
+    },
+    {
+      "path": "docs/operations/objectshard-workbench-playtest.md",
+      "sha256": "b8d32480ef24f3e12608e1102e8707361ade1c25c6db8eb17468a4c6da9c7c6f",
+      "bytes": 24477
+    },
+    {
+      "path": "docs/research/objectshard-m4-workbench.md",
+      "sha256": "a4adfc3c26ce1a2214617f7d1af71e64c32be83d840807c7cbde432ba7465e92",
+      "bytes": 46511
+    },
+    {
+      "path": "docs/operations/cybersand-codex-development-handover.md",
+      "sha256": "f538844233ed29d118240a0590ab6983bf946d4a8fc96474861a7dab105a214a",
+      "bytes": 143026
+    },
+    {
+      "path": "docs/reference/status-and-roadmap.md",
+      "sha256": "305d0500c54f2fab3fa5f321d3e3e14bdb87b6f7f41a1e479387a0ddf56fb577",
+      "bytes": 179959
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/final-edit-timing-summary.md",
+      "sha256": "4a7cccfa8ce8ed0088673f08d7e687bb8b98264e0db29d6e22600bb8b6ed8562",
+      "bytes": 5127
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/delivery-record.json",
+      "sha256": "f00870931d1483a99ee19190cec8eaf8f3d97d788451aa5d775957722dd0d1d1",
+      "bytes": 22041
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/final-acceptance-coverage.md",
+      "sha256": "780ec922f8d644d1ab47622bf9c26b83235a695ef32961cfe6930a8d93bbd3a0",
+      "bytes": 10650
+    },
+    {
+      "path": "docs/audits/objectshard-m4-live-edit-20261128/integration-handover.md",
+      "sha256": "84d1537f21fc1dde77c36498fa05d2f3baf8f5f27c0fa153d8fe625bfad7adb9",
+      "bytes": 6235
+    }
+  ],
+  "review_scope": "Final mission README and guide, new ObjectShard M4 top sections in the canonical research/handover/status documents, final timing/coverage/delivery identities and integration limits. Full files are hashed; unrelated historical programme sections are not newly requalified by this review.",
+  "behavior_checks": [
+    "One-owner Slice/Drill placements and sequential non-atomic cross-owner strokes are described accurately.",
+    "Only continued strokes use the approximately 30/s interval; press/Slice immediate requests retain the one-outstanding guard.",
+    "Live Drill is cancelable before admission; its guide now says hold until admitted or pause for a precise click.",
+    "Release cancels unadmitted intent, does not roll back admitted work, and old owner/receipt generations are retired on replacement.",
+    "Applied receipt and coherent Main publication remain separate; no refused/uncertain action is described as applied.",
+    "Save start remains authored recipe plus acknowledged terrain cuts, not a live body/damage/combustion checkpoint.",
+    "Actual seed value change or authored scene reset restarts the weathering pass.",
+    "Material-removal reconstruction scope explicitly excludes ignition and no-ops."
+  ],
+  "evidence_checks": [
+    "Exact application, tree, runtime, package/manifest and guarded-publication identities remain distinct from the final evidence commit.",
+    "77 headless/65 graphical-lane case totals preserve mixed lane scope;35 actual Linux display-required cases and 12 package rendered cases are explicit.",
+    "Fourteen-behavior acceptance coverage separates actual production input/native/Rapier/rendered observations from synthetic inverse-coordinate/foreground mathematics.",
+    "Fresh stress timing is labelled eleven complete triples plus one explicitly censored applied_awaiting_publication action; no twelfth completion or zero duration is invented.",
+    "Fresh completed-action input median 20.777 ms and Main-publication median 118.035 ms / maximum 1,274.907 ms match the independently checked timing ledger.",
+    "Native phase timings, broad service, Main receipt and Main publication are overlapping observations; actual Rapier installation is separately joined, not inferred or summed.",
+    "Forty matched idle windows, two per revision/configuration, retain unresolved moving-tower median declines of 4.60% / 6.45%; no equivalence or physical TITAN RTX claim.",
+    "Physical acceptance of the new evaluator remains pending, predecessor owner observations remain separately scoped, and PR #754 remains Draft/HOLD without merge or Ready promotion.",
+    "The immutable shipped guide and archive are unchanged; repository clarifications are explicitly a separate addendum."
+  ],
+  "unchanged_application_inputs_checked": [
+    {
+      "path": "godot/scripts/shared_workbench.gd",
+      "sha256": "4e9867c277621887db6d7553a4df3675571c91cc12191f85f20e9e70dc3e8595"
+    },
+    {
+      "path": "godot/scripts/object_shard_m4_runtime.gd",
+      "sha256": "7be803d36b784f71ffe7f122266b705e2a26aa63eeefc5aef1ea5b31a2083ae8"
+    },
+    {
+      "path": "godot/scripts/object_shard_m4_workbench_port.gd",
+      "sha256": "1adad73ee4ca664e267e423da7bce519bc89f3704ac3cee5438a7f9c517dadfd"
+    },
+    {
+      "path": "godot/tests/test_object_shard_m4_live_stress.gd",
+      "sha256": "90420d741bc4d2dcbfd0084d748c3c656d81a448063297fd78fb7fc42369f339"
+    }
+  ],
+  "reviewer_source_or_document_edits": false,
+  "findings": [],
+  "status": "passed"
+}

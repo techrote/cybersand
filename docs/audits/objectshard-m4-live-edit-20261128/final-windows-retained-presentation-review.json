@@ -1,0 +1,82 @@
+{
+  "schema": "objectshard-live-edit-final-retained-presentation-independent-v1",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "artifact_id": 15255630834,
+  "outer_bytes": 54359,
+  "outer_sha256": "da84b3edc68d2cfd2778192799a21b119b40bb4dd8c4a221ccc20c5d52a5cd0b",
+  "status": "passed",
+  "cases": [
+    {
+      "name": "presentation_import",
+      "checks": null,
+      "schema": null,
+      "log_sha256": "bb43fc5cc38797cace0c801284fc410a49c582bcf61b80dc45d3c89dc2f366b1",
+      "scope": null
+    },
+    {
+      "name": "test_palette_shader_compile_bounds",
+      "checks": null,
+      "schema": null,
+      "log_sha256": "f5494faa65bf509b3315acf690e52c0d7f56950e3c3eca62a53f1200f8d60844",
+      "scope": null
+    },
+    {
+      "name": "test_object_shard_m4_overlay_identity",
+      "checks": 11,
+      "schema": "objectshard-m4-overlay-identity-v1",
+      "log_sha256": "51b30e11a545a0888814317a5464328806ee2da170a1a2833115ff970a333718",
+      "scope": "actual graphical texture storage readback; synthetic native-style publications; no native or Rapier claims"
+    },
+    {
+      "name": "test_object_shard_m4_material_preparation_render",
+      "checks": 13,
+      "schema": "objectshard-m4-material-preparation-v1",
+      "log_sha256": "3f3e0db46de56e7bb306e33d764eb7bce4515bbe13e484367f9851b186fb2b52",
+      "scope": "actual renderer; explicit opt-in preparation and same shared shader reuse after overlay replacement; synthetic material inputs; no native World/body/time or physical display performance claim"
+    },
+    {
+      "name": "test_object_shard_m4_material_presentation_render",
+      "checks": 28,
+      "schema": "objectshard-m4-material-presentation-v1",
+      "log_sha256": "adfe90607fdff93aeebdcc2f0f570e408df98f97882e92a570f6c39e581cca9f",
+      "scope": "synthetic immutable RG8 publications; actual ordinary/shared-shader framebuffer parity, rotation, edit, child-origin recrop, view and retirement; not native or physical-motion qualification"
+    }
+  ],
+  "pngs": {
+    "captures/rotated-materials.png": "31f5a10a5adc7db8bd752683ae6e57bcbc87954bc29c57f144023f5a63d3d74f",
+    "captures/retired-clear.png": "ff30c0a7268849427c5b6085bc05b348e70289a37c3f23be10cec8b29a26ee6d",
+    "captures/rotated-fragment-cut.png": "cf860facd2e45856607c9b5c2e32507314a5117d679ec402b921c75fb12171a0",
+    "captures/retained-camera-letterbox.png": "3611b158bdf215a3ea36f41b4ead230e83336fdcea398e1f224cd163a996c1d3",
+    "captures/prepared-replacement-body.png": "6492a02882286a56f4f66c4b4d52d0545f628cfa564767c6c727d8d4be068036",
+    "captures/prepared-first-body.png": "6492a02882286a56f4f66c4b4d52d0545f628cfa564767c6c727d8d4be068036",
+    "captures/ordinary-materials.png": "9b85d16ecf8a2ef9d557597a1bb21f88efdcd3f83079d57976a98fc7fd17320d",
+    "captures/ordinary-fragment-cut.png": "31e96e15a25c95e721b16075504da0911ec9948d450c3e2a882f81d1dc8493ee",
+    "captures/detached-fragment-cut.png": "e679753b997d826e2ddc0b47ffeb0f0ebcd224fa7c33ad0fbcac813ce3a16dbf",
+    "captures/ordinary-edited.png": "1e171395cb44de12a38186955ef144e640ed29d3bfed05c2c6f9732c615e8b37",
+    "captures/detached-materials.png": "8ce92b90664f58dc3e0c05063cd3ad0b5255294d35ab47879edbd3e4b6b74285",
+    "captures/detached-edited.png": "70630cab8c43a015640fac34cafd65cd1be396743d4f8ec462a287c9133e7edc"
+  },
+  "scope": "synthetic immutable publications and actual rendered shader/framebuffer tests only; no new native or physical qualification",
+  "retained_native": {
+    "build_commit": "b7d889b925ab3244d10e6fe48f487fbe0dc1ce73",
+    "sha256": "a4b75f118a565fd965109b0b172e5050ae2f46346ef2a4863e8a1a9f363cc503"
+  },
+  "qualification_limit": "retained synthetic material presentation and texture/shader preparation only; new native candidate and final evaluator are separate gates",
+  "physical_owner_acceptance": "pending",
+  "png_hashes_verified_against_execution_receipts": [
+    "captures/prepared-first-body.png",
+    "captures/prepared-replacement-body.png",
+    "captures/ordinary-materials.png",
+    "captures/detached-materials.png",
+    "captures/rotated-materials.png",
+    "captures/ordinary-edited.png",
+    "captures/detached-edited.png",
+    "captures/ordinary-fragment-cut.png",
+    "captures/detached-fragment-cut.png",
+    "captures/rotated-fragment-cut.png",
+    "captures/retained-camera-letterbox.png",
+    "captures/retired-clear.png"
+  ]
+}

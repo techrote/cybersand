@@ -1,0 +1,83 @@
+{
+  "schema": "objectshard-live-edit-final-principal-render-review-v1",
+  "reviewed_utc": "2026-11-28T08:33:29.966993+00:00",
+  "source_commit": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "source_tree": "33fa2aab1433fc1fece80cb38a413816cc845603",
+  "workflow_run": 46125028803,
+  "job_id": 140918732643,
+  "runtime": {
+    "godot_sha256": "d8055fb8c7e7f5010d7439ec69be051554055dae55a265f8647bd7301c34161c",
+    "godot_version": "4.7.stable.official.5b4e0cb0f",
+    "native_sha256": "da4933d4e2f0c6caec54798e4a6963b83acfdb8415731c0e98eac53aa13e8cb9",
+    "rapier_sha256": "b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7"
+  },
+  "summary_sha256": "354f35d4eb938ab305bda66a145e3494d29f9ebf5543b387c3e420b07162dc22",
+  "cases": [
+    {
+      "name": "test_object_shard_m4_camera_lifecycle",
+      "checks": 230,
+      "failures": [],
+      "log_sha256": "185669c22be87e894c21d9de5885435a6396dc977dd9d2547336b2c532c38df0"
+    },
+    {
+      "name": "test_object_shard_m4_brush_revision",
+      "checks": 159,
+      "failures": [],
+      "log_sha256": "78ccb34a9247aa1c7685b485ea81f225af8d30b38aeeb2e664e843a51f4935a0"
+    },
+    {
+      "name": "test_object_shard_m4_edit_preview_render",
+      "checks": 102,
+      "failures": [],
+      "log_sha256": "1ee01a4fad967047d195ffe3263437540825e83ac352b0d3a3e492fdbc9750eb"
+    }
+  ],
+  "images": [
+    {
+      "file": "edit-preview-captures/slice-preview.png",
+      "sha256": "113fdd1548334e2bc70dc1f6edb831633a963a1f75e6e6105e8e86f28466f22d",
+      "bytes": 124820,
+      "pixels": [
+        1920,
+        1080
+      ],
+      "visual_review": "principal viewed actual tool image"
+    },
+    {
+      "file": "edit-preview-captures/structures-weathering-controls.png",
+      "sha256": "b7dfbca143f031ec705b7c371fe1f9e581aad9339319b82114ce1e2f076d942f",
+      "bytes": 87704,
+      "pixels": [
+        740,
+        650
+      ],
+      "visual_review": "principal viewed actual tool image"
+    },
+    {
+      "file": "edit-preview-captures/resized-weathering.png",
+      "sha256": "6a049c1ccd4e5cc6cd57a0403789cc79c2ee40626ae7bf478964e8b0c5776fc2",
+      "bytes": 88917,
+      "pixels": [
+        1360,
+        765
+      ],
+      "visual_review": "principal viewed actual tool image"
+    }
+  ],
+  "findings": [
+    "Thin slice capsule is visible across the intended member without an opaque fill hiding material.",
+    "Existing Structures popup exposes all nine starts, density, seed, material filtering and bounded diagnostic controls.",
+    "After physical Window resize, the weathering circle stays aligned with the current canvas and the controls remain visible."
+  ],
+  "limits": [
+    "These are actual final-source native Windows preview captures, before independent delivered-package qualification.",
+    "The holes visible in this preview fixture are authored geometry, not evidence of an actual Drill mutation. Actual drilling must be established by the live-tools material census and package replay.",
+    "Hosted renderer evidence does not establish TITAN RTX physical display performance."
+  ],
+  "artifact": {
+    "id": 15255911361,
+    "url": "https://github.com/techrote/cybersand/actions/runs/46125028803/artifacts/15255911361",
+    "sha256": "49f4e41f25c0c8a19032a827df608d2aa3b8a021b01a31cf308b8549c351f891",
+    "bytes": 7872940
+  }
+}

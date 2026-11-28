@@ -1,0 +1,31 @@
+{
+  "schema_version": 1,
+  "reviewer": "native-transactions-specialist-A",
+  "reviewed_at": "2026-11-28T09:19:31.421755+00:00",
+  "application_source": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "document": "performance-results.md",
+  "document_sha256": "b82e546732966045cdd019307661396f0d664ca759b9d52afd263f983506bd79",
+  "status": "PASS_NUMBERS_AND_SCOPE",
+  "evidence_sha256": {
+    "native-batch-performance-final.json": "60be0222b7d684952c0acc08296dac24f4db84999da20a83c42569d5b24bec41",
+    "native-batch-performance-summary.json": "5e408efa6d9a2b73935a068687f2953e50b1e9028c102ece2d2f2e0297770d9a",
+    "native-benchmark-final-candidate-continuity.json": "66dfc20df843efd8d004f3bc2aecf7ab93a1e3d0d9bd93dd9b861f9beb63e224",
+    "matched-idle-throughput.json": "deaa3b0007f008c599c4a891908654aeb9dbd4e06910820a19500aced1eb2f8a",
+    "matched-idle-custody.json": "cba48bd14ed16c32fec2cb1efe447a83f914606b4277443fe8ceb16cf4a97190",
+    "matched-idle-host.json": "a460260cbbbb2c5d4176e451aca0bed5180be4fc22e074072b4c97351e4adc9a",
+    "final-throughput-independent-review.json": "c7fb8af7653203dc1c554b6fa520f62ed8851a59e59592193dcb7bbd30fce90d"
+  },
+  "checks": [
+    "All five native median rows, removed-cell/rebuild counts, fifteen pairs and585 checks agree with the measured GCC14.2 optimized record. Earlier application execution identity and final96-input equivalence remain distinct.",
+    "All ten idle workload/recording medians and percentages agree with the independently verified forty raw windows and official runtime custody.",
+    "All four tower paired comparisons agree; transient OwnerBusy deferrals, successful final permits and the two in-flight physical/semantic boundary offsets are represented accurately.",
+    "Shared Linux EPYC9V74/nine-visible-CPU description matches the captured host record. Native semantic progression, process callbacks, renderer frames and owner hardware remain distinct.",
+    "Observed tower declines remain disclosed as unresolved. Added native/script bookkeeping is acknowledged without claiming its isolated cost or dismissing the result as noise.",
+    "Per-action timing and geometry-install scopes are correctly distinguished from fixture wall time and native-only benchmarking; remaining final package ledger custody is owned by the separate package reviewer.",
+    "The portable summary-reader invocation uses retained raw/custody inputs. The historical independent reader is explicitly described as containing original environment paths."
+  ],
+  "limits": [
+    "This is evidence synthesis review, not an additional application or benchmark execution.",
+    "Final fresh-package action ledgers and publication remain separate mandatory verification scopes."
+  ]
+}

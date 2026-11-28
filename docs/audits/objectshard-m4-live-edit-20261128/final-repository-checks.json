@@ -1,0 +1,297 @@
+{
+  "schema": "objectshard-live-edit-final-repository-checks-v1",
+  "status": "passed",
+  "checked_utc": "2026-11-28T09:53:37.485923+00:00",
+  "qualified_application": "ba6d8de45bd4d38717d92bdece7153bff115c0f0",
+  "publication_head": "302f982943c0e03c30968368da8264cfb3c431ce",
+  "scope": "Final evidence/documentation working tree after source-matched guarded publication. Runtime LFS identities are checked; execution is established by separate exact-source and actual-package gates.",
+  "repository": {
+    "status": "passed",
+    "scope": "current source/documentation and artifact identity",
+    "documentation": {
+      "status": "passed",
+      "documents": 192,
+      "navigation_link_documents": 8,
+      "canonical_claims": 344,
+      "local_links": 4576,
+      "heading_anchors": 831,
+      "questions": 33,
+      "errors": [],
+      "warnings": [],
+      "limitations": [
+        "Does not verify source semantics or runtime claims",
+        "Does not fetch external URLs",
+        "Does not rewrite or reattest historical audits",
+        "Retrieval quality requires the separate lexical evaluation and expected-fact review"
+      ]
+    },
+    "materialized_runtime_files": [],
+    "unmaterialized_runtime_files": [
+      "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+      "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+      "godot/addons/godot-rapier2d/bin/godot_rapier.wasm",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.aarch64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.armv7-linux-androideabi.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.i686-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.android.x86_64-linux-android.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.arm64.framework/libgodot_rapier.ios.arm64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.ios.x86_64.framework/libgodot_rapier.ios.x86_64",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.aarch64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.armv7-unknown-linux-gnueabihf.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.i686-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.macos.framework/libgodot_rapier.macos.dylib",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.aarch64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.i686-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll",
+      "godot/addons/godot-rapier2d/bin/wasm-nothreads/godot_rapier.wasm",
+      "godot/tools/gentek_reciprocal",
+      "godot/tools/gentek_reciprocal.exe"
+    ],
+    "errors": [],
+    "limitations": [
+      "Identity is not execution evidence; read the dated runtime acceptance report",
+      "Retained vendor binaries and platform execution have separate dated provenance",
+      "Historical M11 integrity is checked separately by check_m11_consistency.py"
+    ]
+  },
+  "m11": {
+    "status": "passed",
+    "scope": "historical M11 integrity; no current runtime acceptance",
+    "historical_source_commit": "05ea45fda7bdd7b0150eb86c4922c202e89e08f4",
+    "records_checked": 18,
+    "source_hashes_checked": 28,
+    "compare_working_tree": false,
+    "working_tree_differences": [],
+    "errors": []
+  },
+  "retrieval": [
+    {
+      "file": "final-retrieval-default.json",
+      "raw_sha256": "ee81eabe45c5d8591571d099d3c2c628a160846776e0100ae5c5ec69f8703d90",
+      "summary": {
+        "questions": 33,
+        "canonical_hit_at_1": 19,
+        "canonical_hit_at_k": 31,
+        "mrr_at_k": 0.7146,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "e056df8e611a01efa341835d5d958391fd64b0295e17bbd7b221b7a5f783dae7",
+      "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+      "corpus_manifest_sha256": "e24ae02443511c4684d920f043464a9fcdaa78f9c94f355ce43939473ea4ffe1",
+      "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+      "questions": [
+        {
+          "id": "Q01",
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q02",
+          "canonical_rank": 3
+        },
+        {
+          "id": "Q03",
+          "canonical_rank": 4
+        },
+        {
+          "id": "Q04",
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q05",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q06",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q07",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q08",
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q09",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q10",
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q11",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q12",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q13",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q14",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q15",
+          "canonical_rank": 4
+        },
+        {
+          "id": "Q16",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q17",
+          "canonical_rank": 3
+        },
+        {
+          "id": "Q18",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q19",
+          "canonical_rank": null
+        },
+        {
+          "id": "Q20",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q21",
+          "canonical_rank": 4
+        },
+        {
+          "id": "Q22",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q23",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q24",
+          "canonical_rank": 3
+        },
+        {
+          "id": "Q25",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q26",
+          "canonical_rank": 2
+        },
+        {
+          "id": "Q27",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q28",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q29",
+          "canonical_rank": 3
+        },
+        {
+          "id": "Q30",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q31",
+          "canonical_rank": 1
+        },
+        {
+          "id": "Q32",
+          "canonical_rank": null
+        },
+        {
+          "id": "CI-CLOSURE-001",
+          "canonical_rank": 1
+        }
+      ]
+    },
+    {
+      "file": "final-retrieval-objectshard-m4.json",
+      "raw_sha256": "f128282c4fa007b52a711975e872f57f616c5aa4ee2de7ef6e168327c9a3c4d6",
+      "summary": {
+        "questions": 13,
+        "canonical_hit_at_1": 8,
+        "canonical_hit_at_k": 13,
+        "mrr_at_k": 0.7654,
+        "answer_sufficiency": "Requires separate human/model source review. Canonical hits are not answer correctness."
+      },
+      "fixture_sha256": "efa1ca0da9065c4daf7e356d0f17e8c7b903752bc5fda18f49bcc57478acbbc4",
+      "evaluator_sha256": "140a52392e3aec787d29fa9a901c29f436621029be561bd87dc6a162fe3c9195",
+      "corpus_manifest_sha256": "e24ae02443511c4684d920f043464a9fcdaa78f9c94f355ce43939473ea4ffe1",
+      "authority_policy_sha256": "4ef09f096a61ba30f6c16b3465537e0baca27dc6d8637680dc4c877503848203",
+      "questions": [
+        {
+          "id": "OBJECTSHARDM4WORLD",
+          "canonical_rank": 1
+        },
+        {
+          "id": "OBJECTSHARDM4OCCUPANCY",
+          "canonical_rank": 1
+        },
+        {
+          "id": "OBJECTSHARDM4SUPPORT",
+          "canonical_rank": 1
+        },
+        {
+          "id": "OBJECTSHARDM4MOTION",
+          "canonical_rank": 1
+        },
+        {
+          "id": "OBJECTSHARDM4EDIT",
+          "canonical_rank": 1
+        },
+        {
+          "id": "OBJECTSHARDM4SAVE",
+          "canonical_rank": 2
+        },
+        {
+          "id": "OBJECTSHARDM4FPS",
+          "canonical_rank": 1
+        },
+        {
+          "id": "OBJECTSHARDM4SCOPE",
+          "canonical_rank": 1
+        },
+        {
+          "id": "OBJECTSHARDM4PLAY",
+          "canonical_rank": 1
+        },
+        {
+          "id": "OBJECTSHARDM4BATCH",
+          "canonical_rank": 5
+        },
+        {
+          "id": "OBJECTSHARDM4UNIFIED",
+          "canonical_rank": 2
+        },
+        {
+          "id": "OBJECTSHARDM4WEATHER",
+          "canonical_rank": 4
+        },
+        {
+          "id": "OBJECTSHARDM4DIAGNOSTICS",
+          "canonical_rank": 2
+        }
+      ]
+    }
+  ],
+  "retrieval_interpretation": "Default top-five31/33 is unchanged from the pinned b7 predecessor; expanded M4 top-five13/13. Lexical retrieval rank is not answer correctness.",
+  "document_sha256": {
+    "docs/operations/cybersand-codex-development-handover.md": "f538844233ed29d118240a0590ab6983bf946d4a8fc96474861a7dab105a214a",
+    "docs/operations/objectshard-workbench-playtest.md": "b8d32480ef24f3e12608e1102e8707361ade1c25c6db8eb17468a4c6da9c7c6f",
+    "docs/reference/status-and-roadmap.md": "305d0500c54f2fab3fa5f321d3e3e14bdb87b6f7f41a1e479387a0ddf56fb577",
+    "docs/research/objectshard-m4-workbench.md": "a4adfc3c26ce1a2214617f7d1af71e64c32be83d840807c7cbde432ba7465e92",
+    "docs/audits/objectshard-m4-live-edit-20261128/README.md": "f3b1cc81bef1f4e3ce46a4dd07d400331387356f24e4e44af1ff93b63f3d4e11"
+  },
+  "staged_integrity_check": "final-staged-integrity-review.json"
+}
