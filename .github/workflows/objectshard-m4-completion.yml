@@ -193,6 +193,100 @@ jobs:
           if-no-files-found: error
           retention-days: 60
 
+  focused-windows-art-display:
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, '[objectshard-m4-focused-windows]')
+    runs-on: windows-2022
+    timeout-minutes: 35
+    env:
+      DONOR_SOURCE: 8064c73270dee2ce1a0d53316aae334136335483
+      DONOR_RUN: "46139502627"
+      DONOR_ARTIFACT_ID: "15260698091"
+    steps:
+      - name: Preserve exact Windows checkout spelling
+        shell: bash
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065
+        with:
+          python-version: '3.12'
+      - name: Reuse only the successful immutable Windows native artifact
+        shell: pwsh
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          New-Item -ItemType Directory -Force evidence/focused-art,reused-native | Out-Null
+          if ((git rev-parse HEAD).Trim() -ne $env:GITHUB_SHA) { throw 'Unexpected focused source SHA' }
+          $zip = Join-Path $env:RUNNER_TEMP 'donor-native.zip'
+          curl.exe -fL -H "Authorization: Bearer $env:GITHUB_TOKEN" -H "X-GitHub-Api-Version: 2022-11-28" -o $zip "https://api.github.com/repos/techrote/cybersand/actions/artifacts/$env:DONOR_ARTIFACT_ID/zip"
+          if ($LASTEXITCODE -ne 0) { throw 'Immutable donor native artifact download failed' }
+          Expand-Archive $zip reused-native
+          @'
+          import hashlib, json, os
+          from pathlib import Path
+          from tools.ci import native_candidate_identity as identity
+          root=Path(".")
+          donor=json.loads(Path("reused-native/candidate-provenance.json").read_text(encoding="utf-8"))
+          commit, tree, inputs=identity.source(root)
+          dll=Path("reused-native/cybersand_native.windows.x86_64.dll")
+          actual=hashlib.sha256(dll.read_bytes()).hexdigest()
+          if donor.get("source_commit") != os.environ["DONOR_SOURCE"]:
+              raise SystemExit("donor source identity mismatch")
+          if donor.get("source_inputs") != inputs:
+              raise SystemExit("native source inputs changed; donor reuse forbidden")
+          if donor.get("sha256") != actual:
+              raise SystemExit("donor DLL hash mismatch")
+          evidence={"schema":"objectshard-focused-native-reuse-v1","current_source":commit,
+                    "current_tree":tree,"donor_source":donor["source_commit"],
+                    "donor_run":int(os.environ["DONOR_RUN"]),"donor_artifact_id":int(os.environ["DONOR_ARTIFACT_ID"]),
+                    "native_source_inputs_identical":True,"dll_sha256":actual,
+                    "scope":"focused Windows displayed Art regression only; no new native qualification claim"}
+          Path("evidence/focused-art/native-reuse.json").write_text(json.dumps(evidence,indent=2,sort_keys=True)+"\n",encoding="utf-8")
+          '@ | python -
+          if ($LASTEXITCODE -ne 0) { throw 'Native donor equivalence proof failed' }
+          Copy-Item reused-native/cybersand_native.windows.x86_64.dll godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll -Force
+      - name: Materialize Rapier and pinned Godot
+        shell: pwsh
+        run: |
+          git lfs install --local
+          python tools/ci/materialize_lfs.py --expected-source $env:GITHUB_SHA --include godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll --output evidence/focused-art/lfs-acquisition.json
+          if ($LASTEXITCODE -ne 0) { throw 'Focused Art dependency acquisition failed' }
+          if ((Get-FileHash 'godot/addons/godot-rapier2d/bin/libgodot_rapier.windows.x86_64-pc-windows-msvc.dll' -Algorithm SHA256).Hash.ToLowerInvariant() -ne 'b54e54bd1a03ae9094b788bf869212b5405b4a04793792d5a7cd81632cb10dd7') { throw 'Rapier SHA mismatch' }
+          $zip = Join-Path $env:RUNNER_TEMP 'godot.zip'
+          curl.exe -fL --retry 3 -o $zip 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_win64.exe.zip'
+          if ($LASTEXITCODE -ne 0) { throw 'Godot download failed' }
+          if ((Get-FileHash $zip -Algorithm SHA512).Hash.ToLowerInvariant() -ne '41645a908eb3181d6f2d1201ed7b6d6f095f6a23aaed8903d5d255277cc8d142814f3e6817f865b3cac142c39b8aff99280091d3bbdaa301517730b3ba0522b9') { throw 'Godot SHA mismatch' }
+          Expand-Archive $zip (Join-Path $env:RUNNER_TEMP 'godot')
+      - name: Focused Windows ANGLE conversation-apply preparation
+        shell: pwsh
+        env:
+          CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
+        run: |
+          $profile = Join-Path $env:RUNNER_TEMP 'focused-art-profile'
+          New-Item -ItemType Directory -Force $profile | Out-Null
+          $env:APPDATA=$profile
+          $env:LOCALAPPDATA=(Join-Path $profile 'local')
+          $env:XDG_DATA_HOME=$profile
+          $env:XDG_CONFIG_HOME=$profile
+          $env:CYBERSAND_TEST_ARTIFACT_DIR=(Resolve-Path evidence/focused-art).Path
+          $godot = Join-Path $env:RUNNER_TEMP 'godot/Godot_v4.7-stable_win64_console.exe'
+          & $godot --headless --path godot --editor --quit 2>&1 | Tee-Object evidence/focused-art/import.log
+          if ($LASTEXITCODE -ne 0) { throw 'Focused Art import failed' }
+          & $godot --rendering-method gl_compatibility --rendering-driver opengl3_angle --audio-driver Dummy --path godot --script res://tests/test_art_conversation_apply_preparation.gd 2>&1 | Tee-Object evidence/focused-art/conversation-apply.log
+          if ($LASTEXITCODE -ne 0) { throw 'Focused Windows displayed Art fixture failed' }
+          if (-not (Select-String -Quiet -Path evidence/focused-art/conversation-apply.log -Pattern 'ART_CONVERSATION_APPLY_RESULT')) { throw 'Focused Art result marker absent' }
+          if (-not (Select-String -Quiet -Path evidence/focused-art/conversation-apply.log -Pattern '"failures":\[\]')) { throw 'Focused Art result retains failures' }
+      - uses: actions/upload-artifact@ea165f8d65b5e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: objectshard-m4-focused-windows-art-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/focused-art/
+          if-no-files-found: error
+          retention-days: 60
+
   presentation-linux:
     # The explicit early lane is independent of native qualification and cannot
     # publish runtimes. Its copied RG8 fixtures never call the native World.
