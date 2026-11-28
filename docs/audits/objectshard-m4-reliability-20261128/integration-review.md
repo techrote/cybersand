@@ -36,6 +36,10 @@ The first combined campaign `46094371247` failed the existing protected-source c
 
 Root independently compared all 126 native build input hashes against the integrated source and rehashed the local COM qualification binary; every input matched. See `physics-com-inputs-root-match.json`. That GCC 14.2 local binary is qualification evidence only. Release requires the established guarded, pinned-toolchain Linux and Windows publication and verified package provenance.
 
+## Final ordinary-edit correction
+
+The full integrated application exposed a second presentation-coherence defect: a protected/empty brush changed no native cells but advanced the facade revision, leaving a paused display permanently behind despite empty queues and Ready state. The nine-line correction in `emit_disc` uses the native coordinator's actual material-mutation revision, as the direct edit path already does. It preserves protected occupancy, hard-surface transitions and all clock/ownership barriers. A and B independently passed the 154-check regression, including actual paint/erase and same-material state changes. The rebuilt local native has SHA-256 `656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18`; all 126 inputs independently match the integration source. Full pinned source/extracted qualification remains pending.
+
 ## Remaining qualification gates
 
 - Integrate and graphically verify bounded first-use material preparation, including ordinary-launch opt-in behavior and scene replacement reuse.

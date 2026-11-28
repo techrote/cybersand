@@ -12,16 +12,24 @@ related-documents: [objectshard-m3-preflight-playtest.md, ../research/objectshar
 
 This guide covers the **28 November reliability-convergence candidate**.
 PR #754 remains **Draft/HOLD** for physical Windows 11/NVIDIA evaluation. The
-[convergence evidence](../audits/objectshard-m4-reliability-20261128/presentation-delivery.md)
+[convergence evidence](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/objectshard-m4-reliability-20261128/presentation-delivery.md)
 separates completed qualification from work still pending; the older successful
 campaign below does not qualify later source changes. The candidate uses the ordinary
 Workbench canvas, painting, Water controls, actors and Rapier space. The
 independent ObjectShard Lab and M3 rehearsal remain available as historical
 test facilities. Their results do not qualify this integration.
+The [physics findings](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/objectshard-m4-reliability-20261128/physics.md)
+and [controlled timing comparisons](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/objectshard-m4-reliability-20261128/throughput.md)
+are available for technical review. The physical-machine checks below remain
+necessary, including the multi-body rate; the provisional eight-active-body
+performance objective has not been declared passed.
+Those technical links open the current mission evidence on GitHub. The
+packaged manifest identifies this evaluator's exact frozen source and runtime.
 
 ## Open the evaluator
 
-Extract the complete portable Windows package into its own directory and run
+The GitHub artifact download is an outer ZIP. Extract it, then extract the
+contained **objectshard-workbench-evaluator.zip** into its own directory. Run
 **Open Workbench.cmd**. Keep the packaged engine, project, manifest and verifier
 together. The launcher verifies the delivered files before starting the
 interactive Workbench. The package manifest identifies the exact source,
@@ -263,6 +271,13 @@ This guide itself grants no merge, Ready or default-promotion authority.
 
 ## Historical evaluator and evidence
 
+The owner evaluated the later [Windows artifact 15176676582](https://github.com/techrote/cybersand/actions/runs/45944204842/artifacts/15176676582),
+with application source `efe3bc19c68a9b9e292821ef28b735caec538915` and observed
+PR head `1ec3f214662f7d5a0a38ff727b684c15b41c067b`. The physical motion halt,
+barrel/camera observations and measured 17–24 semantic ticks/s from that
+evaluation motivated this convergence mission. The older completion below is
+retained as historical engineering evidence, not as qualification of this fix.
+
 The [frozen November 25 Windows evaluator](https://github.com/techrote/cybersand/actions/runs/45530425519/artifacts/14986488170)
 contains **objectshard-workbench-evaluator.zip**, **93,388,322 bytes**, SHA-256
 **1c5dd8ac305ab81996767841dfb0bbcf1db319c9a368c31f104df8e2579ec387**.
@@ -276,8 +291,8 @@ The full native/Linux/Windows campaign, actual shipped CMD, pristine replay and
 independent archive review passed. Additional unchanged-package Windows
 witnesses passed authored save/reopen, live moving-cell Cut and positive Sand
 cargo transfer. See the
-[final engineering decision](../audits/2026-11-25-objectshard-m4-final-decision.md)
-and [complete performance analysis](../audits/objectshard-m4-recovery-20261125/final-performance-5f.md).
+[final engineering decision](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/2026-11-25-objectshard-m4-final-decision.md)
+and [complete performance analysis](https://github.com/techrote/cybersand/blob/integration/objectshard-m4-mainline-20261122/docs/audits/objectshard-m4-recovery-20261125/final-performance-5f.md).
 These results do not establish physical NVIDIA presentation speed.
 The packaged guide remains its exact qualified source version; this repository
 page records that delivery. For a newer extracted candidate, the included

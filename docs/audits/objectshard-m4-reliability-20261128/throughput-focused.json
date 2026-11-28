@@ -1,0 +1,94 @@
+{
+  "bridge_scope": "The nine focused cases used the combined COM bridge before the final same-material-revision/domain-conflict rejection was added. The native input bytes are identical. The separate 151-check receipt case was repeated with final bridge 062670c1e. Final source/extracted qualification covers the fully integrated bridge independently.",
+  "cases": {
+    "test_object_shard_m4_actor_clock": {
+      "checks": 96,
+      "failures": [],
+      "fixture_sha256": "303ffb1b10966713084d22fa39645a10e39156a5b2abffbd9c13f28d04417681",
+      "raw_log": "focused-com-repaired/test_object_shard_m4_actor_clock.log",
+      "raw_log_sha256": "024db80f8f7be7faf50e10b57d0536cdca61885fc1b8efb21d373d6b2b0cc3c0",
+      "returncode": 0,
+      "schema": "objectshard-m4-actor-clock-v1"
+    },
+    "test_object_shard_m4_completed_sample": {
+      "checks": 104,
+      "failures": [],
+      "fixture_sha256": "43e88ce4002e98dbcfa1450b02ebce3073212bc26c1163aba225bf1de50d1272",
+      "raw_log": "focused-com/test_object_shard_m4_completed_sample.log",
+      "raw_log_sha256": "a7c6314c83b72877111dd28896dd6cad4e031b3bfca9ceb203c65cac8321fa7a",
+      "returncode": 0,
+      "schema": "objectshard-m4-completed-sample-v1"
+    },
+    "test_object_shard_m4_equipment_completion": {
+      "checks": 95,
+      "failures": [],
+      "fixture_sha256": "5e5b01158128b2e2802a853cdf5a59f7e6b587ed848279dfe8dcd9ad8aa0224a",
+      "raw_log": "focused-com-repaired/test_object_shard_m4_equipment_completion.log",
+      "raw_log_sha256": "b182bed779ea464f973c78c29477a3a4c6f9d3a8e57080815082cfaba0b3a931",
+      "returncode": 0,
+      "schema": "objectshard-m4-equipment-completion-v1"
+    },
+    "test_object_shard_m4_fragment_reabsorption": {
+      "checks": 134,
+      "failures": [],
+      "fixture_sha256": "ce2c1f677c31086092f1e686bf6b1636fb77c4ac9cf0cefe58eff124536692c8",
+      "raw_log": "focused-com-final/test_object_shard_m4_fragment_reabsorption.log",
+      "raw_log_sha256": "db0eb53669e29d89c6b0b25651899cb5091381f75cb4341e9813b1a1c1cd37c4",
+      "returncode": 0,
+      "schema": "objectshard-m4-fragment-reabsorption-v1"
+    },
+    "test_object_shard_m4_lifecycle_adverse": {
+      "checks": 119,
+      "failures": [],
+      "fixture_sha256": "d7d955a68edf71a9b931552ec3032df87795421e9ce976f2a9a81220aa109d03",
+      "raw_log": "focused-com-final/test_object_shard_m4_lifecycle_adverse.log",
+      "raw_log_sha256": "e5533622369391687446cca0b99cad3a257480d12a35d902316d26d261425fbc",
+      "returncode": 0,
+      "schema": "objectshard-m4-lifecycle-adverse-v1"
+    },
+    "test_object_shard_m4_lifecycle_fuzz": {
+      "checks": 1007,
+      "failures": [],
+      "fixture_sha256": "d65f9662da03270a617917ec47ba0e05ce5ef38ea6af08b95c16aac10ff2c9fa",
+      "raw_log": "focused-com-final/test_object_shard_m4_lifecycle_fuzz.log",
+      "raw_log_sha256": "48e7059592fe45fdb6028095a96e8c6730b678714205e20df54821479caec184",
+      "returncode": 0,
+      "schema": "objectshard-m4-lifecycle-fuzz-v1"
+    },
+    "test_object_shard_m4_optional_diagnostics": {
+      "checks": 36,
+      "failures": [],
+      "fixture_sha256": "8ed6a9571acf00fd2219dbb64009780fcbea29fed0a466775ebf10775acc29db",
+      "raw_log": "focused-com-final/test_object_shard_m4_optional_diagnostics.log",
+      "raw_log_sha256": "46311ac758734b9d787a85482795347eccd585d1f74cedcd1b497812e2c36599",
+      "returncode": 0,
+      "schema": "objectshard-m4-optional-diagnostics-v1"
+    },
+    "test_object_shard_m4_remote_barrel": {
+      "checks": 114,
+      "failures": [],
+      "fixture_sha256": "d73157ecae8c887e23bcb2e0c4755a3bc9b6f53c5ee3ff96fe3670f5c3208a24",
+      "raw_log": "focused-com-final/test_object_shard_m4_remote_barrel.log",
+      "raw_log_sha256": "012f4aa6cf527f5158cd774d54fe520f60b277d45142d6704ff59c97a40c171b",
+      "returncode": 0,
+      "schema": "objectshard-m4-remote-barrel-v1"
+    },
+    "test_object_shard_m4_workbench_completion": {
+      "checks": 185,
+      "failures": [],
+      "fixture_sha256": "23dcbca4cf1fc0ac9d083ba239513c8780614c2ad0129a8b25e8085a1a366c2a",
+      "raw_log": "focused-com-repaired/test_object_shard_m4_workbench_completion.log",
+      "raw_log_sha256": "39adb009f38f757fc9e17127eabd260630dfb7525f6d7c61f4b9ec5ddbcf395b",
+      "returncode": 0,
+      "schema": "objectshard-m4-workbench-completion-v1"
+    }
+  },
+  "native_input_commit": "062670c1e",
+  "native_sha256": "547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0",
+  "receipt_scheduling_checks": 151,
+  "schema": "objectshard-m4-throughput-focused-evidence-v1",
+  "scope": "Local actual-native focused regression witnesses; source/extracted hosted campaigns qualify the final integrated candidate independently. Earlier fixture-premise failures are recorded in throughput.md and retained raw logs.",
+  "source_commit": "b0b3d777c",
+  "total_existing_checks": 1890,
+  "total_with_receipt": 2041
+}

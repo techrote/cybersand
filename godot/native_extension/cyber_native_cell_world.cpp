@@ -774,6 +774,8 @@ void CyberNativeCellWorld::emit_disc(std::int64_t centre_x, std::int64_t centre_
     }
     const auto& definition = cybersand::MaterialRules::descriptor(material);
     const auto radius_squared = radius * radius;
+    const auto shard_before = shard_owner()
+        ? shard_lab_->coordinator_->world_material_revision() : 0;
     bool changed = false;
     bool hard_changed = false;
     for (auto offset_y = -radius; offset_y <= radius; ++offset_y) {
@@ -804,6 +806,13 @@ void CyberNativeCellWorld::emit_disc(std::int64_t centre_x, std::int64_t centre_
                                cybersand::MaterialRules::is_hard_surface(material);
         }
     }
+    // The coordinator accepts an unchanged World cell without writing it.
+    // A partly protected Erase can therefore contain successful acknowledgements
+    // but no mutation at all. Bind the application revision to the actual native
+    // mutation witness, including state changes, as the direct shard edit path
+    // already does; otherwise NoChanges render packets cannot publish that
+    // fictitious revision and a paused material publication waits forever.
+    if (shard_owner()) changed = shard_lab_->coordinator_->world_material_revision() != shard_before;
     if (changed) ++revision_;
     if (hard_changed) ++hard_surface_revision_;
 } catch (const std::exception& error) {

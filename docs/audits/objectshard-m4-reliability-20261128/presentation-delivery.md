@@ -24,6 +24,7 @@ combined campaign and clean extracted execution.
 | Structural pixels outside the World image | Original overlay clips the complete World control, although terrain uses an aspect-fitted content rectangle inside it. | A content clip with the identical terrain rectangle contains a camera transform and bounded per-body sprites. |
 | Flat detached brick/timber | Original overlay samples native base RGBA palette bytes, bypassing the ordinary material LUT/program, neighborhood relief and structured finishes. | Native supplies the existing ordinary RG8 `project_visual_state` projection; one shared shader variant reuses ordinary finish functions. Sampling remains anchored to captured material coordinates through body rotation. Empty carriers are transparent, and ordinary actor/background decoration stays with its original owner. |
 | Rapidly oscillating status | Principal status directly prints low-level `runtime.phase`. | Group normal phases as Running, distinguish Paused/Pausing, debounce rebuilding, expose sustained native waits, and put an actionable Held reason first in the two-line status. Raw phases remain in the tooltip and JSON diagnostics. |
+| Paused publication stalls after protected/no-op Erase | The native facade counted an accepted unchanged Empty edit as a mutation. Its revision advanced without changed World bytes or a new render serial, leaving valid display/owner fences unable to meet. | The final native facade repair uses the coordinator's actual World material revision to detect changes; protected ownership and presentation fences remain intact. The new flag-free brush-revision fixture verifies no-op/protected edits and genuine material/condition changes. |
 
 The native RG8 snapshot is immutable and cached by material revision alongside
 existing copied carrier channels. Shader parameters and texture allocations
@@ -175,6 +176,7 @@ campaign; the failed first campaign is not a native qualification pass.
 | Ordinary Tower collapse, independent reference barrel | Existing ordinary Workbench completion plus new `test_object_shard_m4_remote_barrel`; natural contact and remote support-cut scopes remain distinct from the unreconstructed owner sequence. |
 | Low-inertia angular fragment / bounded refusal | New actual Rapier `test_object_shard_fragment_motion`, actual native-ACK `test_object_shard_m4_small_fragment_chain`, native contact/coordinator coverage and A's source-matched integration witnesses. |
 | Moving cut, fragmentation, geometry/mass and explicit settle | Existing completion, fragment/reabsorption, lifecycle/adverse/fuzz tests and independent material accounting. |
+| Paused native brush no-op versus genuine mutation | New flag-free `test_object_shard_m4_brush_revision` executes headlessly and with the actual renderer in source/extracted replay, requiring truthful World/frame/upload identity without a forced-refresh repair. |
 | Combustion, Water extinguishing and Sand lodging | Existing long-burn and registered `test_object_shard_lab` exchange witness execute in source and extracted payload: actual Sand enters Cargo with exact World+Cargo quantity, and Water extinguishes the same surviving Wood incarnation. Mixed profiles separately prove relocation. |
 | Semantic throughput and body cohorts | Matched B controls plus existing disabled/zero-body, Tower, stress, paused, recorded/unrecorded profile routes; headless/render callback/physical acceptance scopes stay separate. |
 | Active/paused/Held pan, zoom, resize | New mounted `test_object_shard_m4_camera_lifecycle`, including an active lease, cropped initial view, far pan on a 1,024 World and actual Restore. Graphical in source render and pristine extracted Windows replay. Injected Held is an inspection fixture, not reproduction of the owner's original sequence. |
@@ -185,12 +187,20 @@ campaign; the failed first campaign is not a native qualification pass.
 | Actual shipped archive | Existing package verifier, four-path shipped CMD replay, provenance/payload refusal controls, pristine extracted source-matched replay, plus new actual material and camera cases. |
 | Accepted Strata baseline, if available before freeze | Reconcile only accepted main; preserve ordinary mode and explicitly refuse unsupported simultaneous ownership rather than adopting unfinished optical code. |
 
-The source and extracted campaign registrar includes the five new A physics
+The source and extracted campaign registrar includes the new A physics
 fixtures, B's admitted-receipt scheduling fixture, mounted camera lifecycle and
 real-rendered material presentation. Source profile lanes additionally run the
 six-second matched disabled/empty/tower/eight-body/sleeping cohorts and Tower
 recording pair, with source, clocks, body populations and exact-ACK validation.
 These add coverage; no original registered case or assertion is removed.
+The brush-revision fixture additionally establishes a real detached Tower's
+short fall, natural sleeping rest and a nonmutating collision query against
+remaining native stumps while semantic time continues. It is a representative
+supported-rest case, not a reconstruction of the owner's stationary facade.
+Its real-renderer registration uses the existing graphical path; the natural
+120-tick rest predicate uses the established shared operation watchdog rather
+than an exploratory 15-second local override. Tick/contact/rest assertions and
+all global watchdog values are unchanged.
 
 ## Portable delivery route and remaining gates
 
@@ -212,8 +222,9 @@ checks, including the active-lease Held crop/resize case and explicit headless
 preparation admission. Its local compiler drift and non-graphical scope remain
 recorded separately from hosted qualification.
 
-The existing shipped-launch process and per-operation watchdogs are 300
-seconds, and the shared graphical case watchdog is 1,200 seconds. The earlier
+The existing fixture operation watchdog is 300 seconds. The shipped-launch
+qualifier defaults to 300 seconds, but the established workflow explicitly
+supplies the shared 1,200-second graphical allowance to each CMD process. The earlier
 software Windows cold ordinary/body captures totalled about 84 seconds. No
 watchdog has been enlarged for this change: final clean extracted launches
 must complete under the established deadlines, including their actual cold
@@ -229,6 +240,41 @@ The fixture now supplies the same explicit view-sized overlay as the existing
 parity fixture and production layout, and records sampled output pixels. Its
 opaque/transparent assertions remain unchanged. This second failed fixture is
 not a completed warm-up qualification and requires another actual execution.
+
+The corrected [run 46096895793](https://github.com/techrote/cybersand/actions/runs/46096895793)
+**passed both actual renderer jobs** at application
+`e6fe40cacb57cb170057f46d9287b365a01495ee`, tree
+`c785c750bc141db8d117c90b2cd358f80b452efe`. Each platform passed 13 preparation
+and shared-shader reuse checks, 28 material parity/crop/rotation checks, 11
+texture identity checks and 27 shader guards. The independently downloaded
+[Linux receipt](presentation-smoke/warmup-passed-linux.json) and
+[Windows receipt](presentation-smoke/warmup-passed-windows.json) retain complete
+source, historical runtime and artifact identities.
+
+| Actual renderer | Preparation through positive draw and retirement | First visible body capture | Replacement body capture |
+| --- | ---: | ---: | ---: |
+| Linux OpenGL/Mesa | 1.721 s | 12.8 ms | 6.2 ms |
+| Windows ANGLE software adapter | 43.458 s | 820.9 ms | 15.5 ms |
+
+These measurements include frame waits and readback, and body captures include
+PNG output. They demonstrate moving the substantial additional cold shader
+work to explicit preparation; the remaining first visible capture cost is
+reported, not claimed eliminated. Both later bodies reuse the exact prepared
+Shader resource, and their positive opaque/transparent framebuffers are
+identical. The [Windows first body](presentation-smoke/windows-prepared-first-body.png)
+was visually inspected. Headless timing and physical display performance are
+not inferred from these synthetic visual fixtures. Actual Workbench UI,
+native material projection and clean extracted launch remain combined gates.
+
+The first combined [run 46094371247](https://github.com/techrote/cybersand/actions/runs/46094371247)
+finished with the material compatibility refusal recorded above and the same
+two failed historical timing assertions on Linux and Windows:
+`test_object_shard_m4_fragment_reabsorption` and
+`test_object_shard_m4_equipment_completion`, among 62 headless cases each.
+The subsequent B fixture repairs establish durable attachment/Pause and an
+actual delayed-receipt interval under both Main pumps; they retain the geometry
+and equipment contracts. Source graphical and package steps were skipped in
+that first failed campaign. A new combined run must qualify the final source.
 
 The established `[objectshard-m4-publish]` path source-leases the current
 principal branch, builds fresh Linux/Windows native extensions, verifies both

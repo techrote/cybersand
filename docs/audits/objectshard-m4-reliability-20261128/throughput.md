@@ -1,238 +1,286 @@
 # ObjectShard M4 semantic throughput — 28 November 2026
 
 This is historical mission evidence, not an independent acceptance or publication
-contract. Candidate remains Draft/HOLD for physical owner evaluation.
+contract. The candidate remains Draft/HOLD for physical owner evaluation.
 
-## Source and execution scope
+## Outcome and exact comparison scope
 
-The matched historical application is `1ec3f214662f7d5a0a38ff727b684c15b41c067b`.
-Its executable scripts/native source inputs match the owner-evaluated application
-`efe3bc19c68a9b9e292821ef28b735caec538915`; intervening changes concern runtime
-publication and qualification tooling. Baseline Linux native SHA-256 is
-`5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20`.
+Final measured application source is `19485bbb5e474f0d4d90c40617a36b3120552f5b`,
+tree `1b421ec0aa61ff4a8f034bd31424ebd9e9507599`, reconciled against accepted main
+`9920e7a7369f24e2818313c007cc33616c1a6a83`. All forty historical comparison runs
+passed (4,560 assertions), followed by twelve identical-native controls (1,924
+assertions). All ran sequentially between 02:10:01 and 02:22:23 UTC; the other
+specialists and root reserved that window without local Godot/build workloads.
+External shared-host activity is not controlled.
 
-Initial B implementation is `f25b1aaa2`. It depends on A's geometry-sensitive
-bridge helper from `047c89f19`. Local combined A+B+C native is privately anchored
-at `3479c621c`, SHA-256
-`aa015a895c091f67d6d07a7f6dab6b18d6e1e55247ff880c10fcef7425a2149b`.
-That build uses GCC 14.2/binutils 2.44 under the established explicit local
-compiler-drift option, so it is test evidence, not the guarded release runtime.
-Root owns accepted-main reconciliation and guarded Windows/Linux publication.
+The identical-native control is the strongest evidence that the script-side
+pacing improvement persists without a compiler or binary change:
 
-All local comparisons use the same Godot 4.7 stable executable, SHA-256
-`f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75`, and Rapier
-0.35.2 binary, SHA-256
-`566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a`.
-The local shared host reports AMD EPYC 9V74 and nine visible logical processors.
-Results use headless execution with a 60 callback cap. They measure actual native
-semantic ticks and Main Rapier time. They do not measure physical monitor FPS or
-establish performance acceptance on the owner's Ryzen 5600X/TITAN RTX.
+| Recording off workload | Old scripts, same COM native | Candidate, same COM native | Ratio |
+|---|---:|---:|---:|
+| Enabled, zero bodies | 37.49 ticks/s | 59.94 ticks/s | 1.60× |
+| One awake tower | 21.22 ticks/s | 56.37 ticks/s | 2.66× |
+| Eight awake bodies | 15.80 ticks/s | 29.74 ticks/s | 1.88× |
 
-## Confirmed orchestration costs
+These are medians of two observed rates, not confidence intervals. The one-body
+45–60 objective is reached locally. The eight-active objective of at least 30
+remains narrowly unmet; no acceptance waiver or rounded-up pass is implied.
+Enabled-zero and sleeping bodies approach the ordinary reference's callback cap,
+although their native/physical work still has an incremental CPU cost.
 
-The starting implementation already had an 8 ms bounded receipt pump in Main's
-idle callback. It was therefore incorrect to attribute all lost progression to a
-simple worker sleep or to absence of any fast pump. Investigation separated:
+All results use the same Godot 4.7 executable, Rapier and 60 callback cap on a
+shared AMD EPYC 9V74 host with nine visible logical processors. They measure real
+native semantic ticks and Main-owned Rapier work in **headless** execution. They
+do not measure monitor FPS or establish performance on the owner's Ryzen
+5600X/TITAN RTX. The release runtime and graphical/source/extracted campaigns
+are qualified independently by the integration/release workstream.
 
-- Physics callbacks decided readiness before consuming an already completed
-  worker receipt. Waiting until the later idle callback could miss the next
-  complete physical frame.
-- Every intermediate physical segment entered the full ordinary worker turn and
-  rebuilt a native material presentation plus Godot dictionaries. For one tower,
-  180 semantic ticks required 721 actual segments and 1,080 snapshots, taking
-  about 676 ms in native snapshot plus Godot marshalling calls.
-- Native pose/contact work still has a material cost. The first tower recording
-  attributed about 1.026 s to occupancy over 180 ticks; relocation was a nested
-  approximately 0.744 s with zero relocated cells. Those nested costs must not be
-  added to occupancy. Rapier was approximately 111 ms over the whole run.
-- Ordinary diagnostic `receipt_delivery` measures snapshot publication to Main
-  observation. It is not an M4 command service measurement. New serial-bound
-  counters divide each exact control into admission queue, native owner call,
-  presentation/receipt copying, and Main delivery spans. These spans partition
-  that control but overlap other Main/worker instrumentation and are not an
-  additive frame-cost model.
+## Source and runtime provenance
 
-An instrumented 48-operation pump exhausted its operation limit 154 times in
-1,085 calls, as well as its time budget 230 times. A 128-operation variant had
-zero operation-limit exits in 775 calls and 351 time-budget exits. The wall budget
-remains 8 ms. This removes a second, shorter platform-sensitive polling ceiling;
-it does not allow unbounded Main rendezvous. Exploratory sequential rates varied
-with scheduling and were not used as the final matched comparison.
+Historical application is `1ec3f214662f7d5a0a38ff727b684c15b41c067b`. Its executable
+scripts/native inputs match the owner-evaluated `efe3bc19c68a9b9e292821ef28b735caec538915`;
+intervening changes concern publication and qualification tooling.
 
-## Bounded implementation and preserved contracts
+| Input | SHA-256 / source |
+|---|---|
+| Godot 4.7 stable, `5b4e0cb0f` | `f85bbc6b15e22416c7d797cd60b63286dd67b9cb13498847056c18520ae55a75` |
+| Rapier 0.35.2 Linux | `566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a` |
+| Historical published native | `5fdf1e8f60f7fd93090ce4d924544c5f7aa9393e565af6b85a4e15e73d63ba20`, source `efe3bc19` |
+| Combined COM/native proof runtime | `547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0`, exact native inputs committed at `062670c1e` and identical in the measured application |
+| Common throughput fixture | `1a50da49057b8f1b82621e727df2e2acac7177fc34672ecb6968d1337be4aeb5` |
 
-Main's physical callback now consumes already admitted receipts before deciding
-whether to start its one new fixed 1/60 interval. Only an `OwnerBusy` permit may
-rendezvous for up to 2 ms; every retry validates the same exact installed frame,
-and no actor work, forces or physical time occur before a grant. All other
-refusals retain their existing behavior.
+The historical native used pinned GCC 13.3/binutils 2.42. The local candidate
+used GCC 14.2/binutils 2.44 through the established explicit toolchain-drift
+option; this binary is test evidence, not the guarded release publication.
+Consequently the historical table compares complete candidates and carries that
+compiler/runtime change. The separate identical-native control holds the COM measurement
+native bytes, Godot and Rapier fixed for both old and new scripts.
 
-The exclusive native worker can service `accept_motion` during an active lease
-without rebuilding unrelated ordinary publications. A completion, replacement,
-failure or lifecycle transition returns to the ordinary owner path. Its final
-actor sample, equipment/effects and semantic tick retain their existing one-shot
-consumption. No native World or Rapier authority moves between threads.
+That control is a test-only hybrid, not a qualified historical evaluator. Old
+scripts still obtain a full material snapshot after every accepted motion and
+ignore additive pose-proof, COM-domain and render-carrier fields. All three
+ordinary workloads passed actual geometry, clocks, ownership and quantity
+checks. This establishes compatibility for those workloads; it does not claim
+that the old bridge implements the new sparse-fragment COM contract. The control
+covers script-side changes together, rather than attributing every gain to one
+individual code line.
 
-Only a successful explicitly non-final segment may omit its full presentation
-snapshot. Native copies the actual bounded `OwnerReadback` pose roster after
-application; it does not echo caller coordinates as proof. The compact proof
-requires the complete active roster, no truncation, no quarantine and no geometry
-or promotion pause. Main retains every original native acknowledgement and exact
-identity/coordinate/velocity/sleeping comparison. Failed, incomplete, legacy and
-final segment receipts retain the full diagnostic/material frame. Final interval
-completion and the semantic tick also publish full frames. Existing pending and
-physical-interval barriers prevent a retained prior frame from being presented
-with newer terrain.
+## Final historical matrix and cohort support
 
-A's helper is also used by the runtime's predictive angular subdivision; B does
-not change its native occupancy or physical motion contract.
+| Observed workload | Baseline, recording off | Candidate, off | Baseline, recording on | Candidate, on |
+|---|---:|---:|---:|---:|
+| Structures disabled, 0/0 | 59.52 | 59.39 | 59.30 | 59.83 |
+| Enabled, zero bodies, 0/0 | 39.01 | 59.80 | 43.57 | 59.94 |
+| One awake tower, 1/1 | 19.70 | 53.97 | 19.80 | 51.23 |
+| Eight awake bodies, 8/8 | 13.47 | 29.62 | 14.13 | 29.92 |
+| Naturally sleeping plank, 1/0 | 21.37 | 59.67 | 31.37 | 59.86 |
 
-## Repeatable apparatus
+Units are native semantic ticks/s; cohort notation is owned/awake. Disabled,
+zero, one-tower and sleeping cohorts occupy each complete approximately six-second
+window. The sleeping fixture additionally queries actual Rapier sleep and proves
+a preceding gravity/contact fall. Baseline scheduling varies appreciably between
+short repeated runs; all individual rates remain in the machine-readable files.
+The small off/on differences do not establish a precise recording overhead.
 
-`godot/tests/profile_object_shard_m4_throughput.gd` provides the same light
-observer for ordinary disabled Workbench, enabled zero detached bodies, one
-mixed-material tower, eight actual structural bodies, and a naturally sleeping
-plank. The sleeping fixture removes a real authored support, proves a fall before
-natural Rapier sleep and requires the entire measured cohort to remain asleep.
-Recording off/on is selected through the ordinary Structures diagnostic control.
+Eight-body windows contain later natural sleeping. The active-body claims use
+only the observed 8/8 cohort, with the following support:
 
-The fixture disconnects deep per-callback coherence observers only for the timed
-window, then checks full native/physical/publication/quantity coherence after
-Pause. It reports callback-end actual native awake/owned cohorts, not an inferred
-active count. A 6-second window compares a common initial authored scene;
-semantic progression differs and therefore later physical states can differ.
-Rates are descriptive, not fixture acceptance thresholds.
+| Comparison | Baseline 8/8 ticks / seconds, two runs | Candidate 8/8 ticks / seconds, two runs |
+|---|---|---|
+| Historical, off | 77 / 6.013914; 85 / 6.014223 | 90 / 3.014273; 91 / 3.096858 |
+| Historical, on | 89 / 5.881813; 79 / 6.015187 | 91 / 3.033325; 91 / 3.049306 |
+| Identical native, off | 88 / 6.013524; 89 / 5.248373 | 91 / 3.055597; 88 / 2.962441 |
 
-`tools/objectshard/compare_throughput.py` runs one process at a time, interleaving
-baseline/candidate and candidate/baseline on repeated pairs. It records executable,
-Rapier, native and relevant source hashes, every return code, actual cohorts,
-checks and rates. The two projects must contain the identical copied harness.
-Historical native versus current combined native compares the complete candidates;
-a same-native control is required to isolate compiler/native-facade differences.
+These are actual acknowledged callback-end snapshots, not continuous sensors.
+The remaining portions retain eight owned bodies with fewer awake bodies; their
+global rate is not substituted for an eight-active rate. Common authored scenes,
+real ordinary support cuts and the existing eight-body capacity are used; this
+is not a reconstruction of the owner's original pointer trace.
 
-## Qualification and current disposition
+`profile_object_shard_m4_throughput.gd` disconnects the fixture's deep per-callback
+coherence observer only during the uniformly light timed window. Exact Pause,
+physical/publication coherence and native quantity assertions run afterward.
+`tools/objectshard/compare_throughput.py` executes one process at a time in AB/BA
+order, requires identical harness hashes and retains source/runtime hashes,
+actual clocks, cohorts, control counters, checks and per-run receipt hashes.
 
-Initial actual-native receipt scheduling regression passed 124 checks. It delays
-one genuine receipt, challenges copied stale/foreign serials and native pose
-proofs, retains every ACK, completes exactly one paused native/actor interval,
-and refuses duplicate physical/semantic time. The final segment remains full.
-Focused follow-ups add queued Pause/brush, actual native refusal, whole-World
-replacement and shutdown while a physical lease is idle.
+## Measured critical path and bounded implementation
 
-The original stale-admission lifecycle fixture now calls the real permit API
-while both pumps are disabled. Calling the ordinary physical callback would
-correctly synchronize the newer publication first, invalidating the old test's
-premise. All stale-source/no-clock assertions remain intact.
+The baseline already had an 8 ms Main idle receipt pump and a worker wake path.
+It was incorrect to attribute all lost progression to a simple worker sleep or
+to absence of any pump. Physics callbacks could decide readiness before consuming
+an already completed receipt, missing another complete callback. Each segment
+also entered an ordinary worker turn and constructed a complete material frame.
 
-Matched matrix, same-native control and focused integration results are being
-collected. No provisional rate or incomplete campaign is an acceptance waiver.
+An instrumented 48-operation pump exhausted that iteration cap 154 times in
+1,085 calls, in addition to 230 wall-budget exits. With 128 operations it had no
+iteration-cap exits in 775 calls and 351 wall-budget exits. The **8 ms wall budget
+is unchanged**; increasing the operation ceiling removes premature polling exits.
+Only `OwnerBusy` permits have a bounded 2 ms rendezvous; every retry revalidates
+the exact frame, and no actor work, forces or physical time occur before a grant.
 
-## Initial matched evidence and residual constraint
+Final recording-off measurements retain all native work and show the presentation
+construction reduction. Costs below cover whole windows; eight-owned windows
+include their later sleeping cohorts.
 
-The first forty interleaved six-second profiles all passed their native, physical,
-cohort and quantity assertions. `throughput-initial-matrix.json` preserves their
-identities and small receipts. The clean recording-off pairs are:
+| Workload | Historical snapshots / tick | Candidate snapshots / tick | Historical snapshot + marshalling ms/tick | Candidate ms/tick | Candidate Rapier ms/tick |
+|---|---:|---:|---:|---:|---:|
+| Zero bodies | 6.00 | 3.00 | 1.154 | 0.610 | — |
+| One tower | 6.01 | 3.00 | 3.619 | 1.979 | 0.465 |
+| Eight owned bodies | 6.02 | 3.01 | 7.738 | 3.825 | 1.059 |
+| Sleeping plank | 6.00 | 3.00 | 1.403 | 0.860 | 0.337 |
 
-| Workload | Baseline semantic ticks/s | Candidate semantic ticks/s | Support |
-|---|---:|---:|---|
-| Structures disabled | 59.33 | 59.33 | Full windows, zero detached bodies |
-| Structures enabled, zero bodies | 34.94 | 60.01 | Full windows, zero detached bodies |
-| One awake mixed-material tower | 18.71 | 54.22 | All callbacks report one owned/one awake across both full windows |
-| Eight awake bodies | 15.36 | 29.56 | Baseline 89 ticks in each 5.65/5.95 s cohort; candidate 90/89 ticks in 3.07/2.99 s cohorts |
+For the eight-owned windows, an actual motion command averages 0.155 ms in the
+admission queue, 3.127 ms in the native owner call, 0.422 ms in publication/copy
+and 1.201 ms before Main consumption. Four serial motion acknowledgements per
+base interval, full completion/publication work and callback admission remain
+material constraints. The native owner call dominates Rapier computation.
 
-Values are medians of the two observed rates. Eight-body global windows also
-contain fewer awake bodies after natural settling: their 15.38 versus 29.08
-overall rates are not substituted for the actual eight-awake cohort rate.
-Cohorts are actual acknowledged callback-end snapshots, not continuous sensor
-traces. The sleeping fixture independently queries actual Rapier sleep.
+Those four spans partition one exact command. They overlap pump, worker and
+snapshot counters and must **not** be added to those totals as independent frame
+costs. Ordinary diagnostic `receipt_delivery` is publication-to-Main snapshot
+age, not an M4 command service measurement. This distinction prevents the owner's
+approximately 15 ms snapshot-age observation from being mislabelled as native
+computation or a fully isolated receipt bottleneck.
 
-The one-body 45–60 engineering objective is reached in this local headless
-experiment. The eight-awake objective of at least 30 is narrowly missed and
-remains open. No physical-machine acceptance follows from these results.
-The measured candidate eight-body case still spends approximately 3.10 ms per
-actual motion acknowledgement in its native owner call (four base segments per
-semantic interval), approximately 3.77 ms per semantic interval constructing
-three full snapshots, and 1.04 ms per interval in actual shared Rapier stepping.
-Those serial/native spans explain a remaining callback-scale limit; they cannot
-be summed with overlapping pump/worker totals as an exact causal decomposition.
+Main now consumes admitted receipts at the beginning of its physics callback,
+then admits at most one new fixed interval. While a physical lease is active,
+the exclusive worker may service ordered `accept_motion` requests without
+rebuilding unrelated ordinary presentation. Completion, refusal, replacement,
+reset or shutdown returns to the ordinary owner path. Captured actor/equipment
+work and the native tick remain exactly-once operations on final completion.
 
-Sleeping/off and recording-on samples overlapped C's required Held-camera tests
-or A's required sparse-fragment failure reproduction. They remain functional
-passes and descriptive observations, with concurrency explicitly recorded; clean
-final-source confirmation will replace them for comparative performance claims.
+Only a successful, explicitly non-final motion can omit its full material
+snapshot. Native copies the actual bounded `OwnerReadback` poses after application,
+not the caller's coordinates. Proof requires a complete active roster, no
+truncation/quarantine and no geometry or promotion pause. Every original ACK and
+exact identity/pose/velocity/sleeping comparison remains. Final, refused,
+incomplete and legacy receipts retain complete diagnostic/material frames; the
+semantic completion also publishes a full frame. Existing publication barriers
+prevent newer terrain from appearing with an older structural overlay.
 
-## M5 handover from this workstream
+Across the final off pairs, the tower retains **2,592 ACKs and 2,592 actual-native
+pose echo checks**; the eight-owned cases retain **11,448 of each**. Successful
+intermediate presentation omissions are separately counted (1,944 tower; 1,074
+eight-owned), rather than presented as skipped physics/native operations.
 
-Keep the exclusive native owner, Main-only physical space, immutable full visual
-publication, exact geometry revision and one-shot actor/equipment completion
-boundaries. Compact intermediate proofs are a useful extension seam: receipt
-size can scale with active pose identities while presentation is constructed at
-semantic/display boundaries. They do not make independently advancing bodies
-safe or remove occupancy/contact work.
+## Correctness, COM integration and independent review
 
-The next measured investigation should separate native occupancy traversal and
-its nested relocation scans, especially sleeping or unchanged footprints. Test
-cache/reuse proposals against moving cuts, contact, liquid/granular transfer and
-full material accounting before batching more native work. At hundreds of
-fragments, nested pose matching, single-flight receipts and per-segment complete
-active rosters will become explicit scaling constraints. A later batched or
-hierarchical transaction design needs a declared physical-time/ACK boundary,
-not a larger queue/body limit. Hybrid debris and interpolation can then build on
-those measured contracts. No hybrid/M5 representation was added here.
+Runtime COM follow-up `a3b596e0a` consumes A's material/geometry-bound native domain.
+Full synchronization calls the read-only `refresh_motion_domain` before Ready;
+angular admission uses active-span `rotation_radius` and corner admission uses
+`motion_radius` about physical COM. Stable cell/storage indices and native pose
+coordinates remain unchanged. Intermediate motion captures contact witnesses but
+transfers no owned carriers, so this domain remains fixed throughout a lease.
+Semantic ingress precedes chemistry and geometry rebuilding; changed carriers
+are refreshed before another lease. A independently reviewed the final pacing,
+proof, completion and fixture changes and found no physical correctness blocker.
 
-## COM-domain integration and adversarial completion follow-up
+| Focused actual-native case | Checks | Result |
+|---|---:|---|
+| Receipt scheduling, interrupted lease, refusal, Restore, shutdown | 151 | PASS |
+| Delayed completed actor sample | 104 | PASS |
+| Equipment completion and one-shot effects | 95 | PASS |
+| Actor clock/Pause/Step | 96 | PASS |
+| Stale-owner lifecycle | 119 | PASS |
+| Ordinary Workbench cutting/combustion/quantity completion | 185 | PASS |
+| Fragmented cut and explicit reabsorption | 134 | PASS |
+| Lifecycle fuzz | 1,007 | PASS |
+| Optional diagnostic recording | 36 | PASS |
+| Independent reference barrel | 114 | PASS |
 
-A's subsequent natural sparse-parent collision established a second independent
-source of conservative false refusal: erased empty storage still moved around a
-remote origin. B runtime follow-up `a3b596e0a` consumes A's native material/COM
-domain. Full synchronization refreshes its exact material/geometry-bound extent
-before Ready; predictive angular admission uses the active extent diagonal and
-corner admission uses radius about physical COM. Intermediate motion records
-contact witnesses but transfers no owned carriers, so the domain remains fixed
-through one physical lease. Native semantic ingress precedes chemistry and rigid
-geometry rebuilding; changed carriers are refreshed before the next lease.
+The 151-check case includes real delayed intermediate receipts; stale/foreign
+serial, World and session proofs; altered/missing native poses; exactly one
+paused Step; ordinary Pause plus queued Sand brush during an admitted interval;
+a real invalid-geometry native refusal returning a full frame; Restore while the
+refused lease is idle; and joining the worker during an active lease. It repeats
+with A's final same-material-revision/domain-conflict guard. The other nine cases
+used the COM bridge before that final guard, with identical native bytes; the
+final integrated source/extracted campaign remains independently required.
 
-Local combined COM native SHA-256 is
-`547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0`.
-The extended receipt scheduling fixture passes 151 checks on that native. It
-includes actual ordinary Pause and Sand brush during a delayed segment, a real
-invalid-geometry native protocol refusal returning a complete diagnostic frame,
-Restore while its refused lease is idle, ordinary shutdown/worker join during
-an admitted lease, and coherent terrain/structural observations throughout.
+Fixture-premise repairs are explicit. A delayed-publication test must disable
+both idle and physics receipt pumps. Setup now waits for durable attachment/body
+reservation and then the existing exact Pause/coherence barrier, instead of
+trying to observe a transient Ready during Play. Equipment tests use the actual
+queued immutable request and pending queue while the leased worker intentionally
+retains one ordinary publication. All cut-source, ownership, equipment cutoff,
+projectile age/effect and cancellation assertions remain. No timeout was inflated.
 
-The first new interrupted-Pause assertion incorrectly expected actor time to
-advance when the material interval drained. Existing `test_object_shard_m4_actor_clock`
-and `physical_actor_session.complete_step` deliberately suspend controller time
-immediately on Pause. The new fixture was corrected to require exactly one
-already-admitted native/physical interval, no actor tick after interruption, and
-the separately checked paused Step's exactly one actor tick. Production semantics
-and existing actor-clock assertions remain unchanged; the original failed local
-receipt is retained in mission evidence.
+One newly written interrupted-Pause assertion initially expected actor time to
+advance when the admitted material interval drained. The established actor-clock
+contract suspends controller time immediately on Pause. The new assertion was
+corrected to require one admitted native/physical interval and no interrupted
+actor tick; the separate paused Step still requires exactly one actor tick.
+Production semantics and existing actor-clock assertions were unchanged. Original
+failed experiment logs are retained separately with the corrected witnesses.
 
-The existing equipment completion fixture required repeated ordinary snapshots
-while a complete physical interval was deliberately withheld. Leased service
-now intentionally retains the last coherent snapshot. Its replacement witness
-requires that single retained publication plus actual asynchronous worker idle
-progress, and authenticates the exact queued equipment request from the real
-immutable transport admission and mutex-owned pending queue. All no-premature-use,
-source-bound cutoff, delayed second request, cancellation, Rocketjumper effect,
-projectile count/age and one-shot tick assertions remain. Updated fixture passes
-95 checks; actual actor-clock 96, delayed final-sample 104, stale-owner lifecycle
-133, and ordinary cutting/combustion/quantity completion 185 also pass locally.
+## M5 handover and retained evidence
 
-The fragmented-pointer regression also deliberately withheld Main publication.
-It now disables both idle and physical receipt callbacks for that exact test
-window; disabling only idle callbacks correctly allows the new physical pump to
-install a fresh publication and therefore no longer reproduces the intended
-delay. Its one-cut-before-display and source-cell receipt assertions remain.
-Fragment/fuzz/replacement setup waits now observe durable attachment or body
-reservation, then the existing exact paused geometry/publication barrier. They
-do not depend on observing a transient Ready phase during active play. The
-returning plank explicitly resumes after that barrier before its ninety real
-physical intervals; no settlement or material assertion was relaxed.
+Keep exclusive native ownership, Main-only physics, immutable full publication,
+exact geometry/pose ACKs and one-shot actor/equipment completion. Compact pose
+proofs are an extension seam for separating material presentation from physical
+segments; they do not remove occupancy/contact work or make independent body
+advancement safe. Stable cell identity is now distinct from physical COM, so a
+future sparse representation can change storage without changing cell witnesses.
 
-Final focused results on the combined COM native: completed-sample 104, equipment
-95, actor clock 96, stale-owner lifecycle 119, ordinary Workbench completion 185,
-fragment/reabsorption 134, lifecycle fuzz 1,007, optional diagnostics 36, and
-remote barrel 114 checks; all pass. Extended receipt/lifecycle case adds 151.
-The final source/extracted campaign remains independently required.
+Next measure native occupancy traversal and its nested relocation scans, especially
+unchanged or sleeping footprints. Early tower instrumentation found approximately
+1.026 s occupancy over 180 ticks, including a nested 0.744 s relocation scan with
+zero relocated cells; those nested figures cannot be summed. Investigate reuse
+only against moving-cut, contact, fluid/granular and full accounting regressions.
+At hundreds of fragments, full active rosters, nested pose matching, retained
+empty storage and single-flight receipts need explicit budgets and a declared
+batch time/ACK boundary. Hybrid debris and presentation interpolation should
+follow those experiments. No M5 representation or body-count increase was added.
+
+Repository evidence is `throughput-final-matrix.json`,
+`throughput-identical-native.json`, `throughput-final-analysis.json`,
+`receipt-scheduling.json` and `throughput-focused.json`. The first exploratory
+forty-run matrix remains in `throughput-initial-matrix.json`; it predates the COM
+fix and some sleeping/recorded pairs overlapped necessary camera/physics work.
+It is superseded for final comparison claims, not erased. Detailed raw receipts
+and logs are retained under the mission's `throughput-evidence` workspace, with
+hashes in the compact committed summaries. Root owns final source reconciliation,
+guarded runtime publication, Windows package identity and physical-owner HOLD.
+
+## Subsequent no-op brush correction and bounded confirmation
+
+The fifty-two paired measurements above use the **COM measurement native**
+`547c8f6f...`, before the narrowly scoped `emit_disc` correction. They are not
+measurements of the later guarded delivery binary. A subsequent actual supported
+Tower experiment showed that an Erase covering protected contact cells and
+unchanged Empty neighbours could return Accepted without changing World bytes,
+yet the facade advanced revision 55→56. Native render serial 20 remained unchanged;
+Main stayed at revision 55/publication 656 while the owner frame reached
+revision 56/publication 657. All clocks/leases were settled, but exact Pause could
+not satisfy its presentation fence. This was outside leased fast-path servicing.
+
+A's `c3d6580e48b19fe5e2184397eba19531afbfbcfa` binds the attached brush revision to
+the coordinator's actual `world_material_revision` delta, matching the existing
+direct edit API. The independent B review checked that real state/temperature
+writes still dirty both native render and mutation witnesses, protected/refused
+cells remain fenced, and ordinary non-M4, hard-surface, ACK, clock and lease
+behavior is unchanged. No coherence assertion was relaxed.
+
+A bounded confirmation uses local integrated source
+`44db8378f9cb6b7be587fbd7b4905baae75baf8b`, tree
+`6d6b5e698b484ac669fef994f101a437950f0e5b`, and rebuilt test-native SHA-256
+`656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18` (5,963,312 bytes,
+same explicit local compiler scope). One recording-off six-second run each
+passed: zero bodies 41 checks/59.84 ticks/s; tower 107/55.81; eight-owned 333/29.58
+globally, with the actual 8/8 cohort 89 ticks in 3.017341 s (29.50 ticks/s). These
+single runs confirm the final correction did not disrupt the workloads; they do
+not replace the interleaved comparisons or establish a new performance claim.
+`throughput-post-noop-confirmation.json` preserves exact hashes, clocks, cohorts
+and acknowledgements. Final delivered native provenance remains the guarded
+publication recorded by the integration/release workstream.
+
+B independently replayed A's committed `05777c2336a050398b85bf50746cd8a7a234d313`
+brush-revision fixture on that complete application/native pair: **154 PASS**.
+The protected/unchanged brush kept revision 54→54 and all native, displayed and
+uploaded identities matched. All 471 observed callbacks were coherent. The
+positive condition-only Wood control changed state 173/91→0/0 while preserving
+temperature 371 and revision 3→4; identical repaint remained at 4 and advanced no
+native time. Actual distant Wood creation and erasure also retained their
+publication/quantity assertions. The compact independent receipt is included in
+`throughput-post-noop-confirmation.json`; no forced render refresh was used.

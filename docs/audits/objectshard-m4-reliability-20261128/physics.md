@@ -197,10 +197,60 @@ are in `physics-fresh-barrel-four-cases.json`. Run this test without the
 enable the feature.
 
 The original owner jump remains **unreproduced**, not dismissed or claimed fixed.
-The first partial support cut leaves other load-bearing material; a stationary
-facade there can be a valid contact outcome. Full-support removal demonstrates
-continued detachment and collapse. Later Windows/owner evaluation must retain
+The barrel fixture's first partial support cut leaves another connected support.
+A later representative ordinary-Tower fixture makes two narrow cuts, witnesses
+an actual owned facade fall approximately five cells, and identifies its real
+native-stump contact through a nonmutating physics query. The same body then
+sleeps while native simulation continues for another 60 ticks. This establishes
+that a detached, stationary facade can be a valid supported physical outcome;
+it does not establish the cause of the owner's original stationary observation.
+Some contact-row Wall cells remain protected by the existing transient-occupancy
+edit refusal after lower-stump removal. The fixture preserves that boundary and
+does not claim complete support erasure followed by renewed fall. Ordinary full
+support removal before collapse and a separate box support-replacement fixture
+cover the respective free-fall paths. Later Windows/owner evaluation must retain
 the barrel check and preserve a diagnostic trace if the jump recurs.
+
+## Paused contact-brush publication correction
+
+The supported-Tower follow-up exposed a separate reproducible ordinary-edit
+defect on the complete integrated application, not just the private physics
+composition. A fine Erase stamp included protected contact Wall and already
+empty neighbours. The coordinator correctly refused the Wall and accepted the
+unchanged empty cells. The native facade incorrectly treated every accepted
+cell as a mutation and advanced the application World revision even though no
+native material or state changed. The renderer correctly produced no new
+payload, leaving the exact paused publication fence unable to publish the
+fictitious revision. The simulation remained Ready, with no Held condition,
+pending brush or physical lease, but displayed inventory became unusable.
+
+Before correction, the decisive receipt records World revision 55 to 56,
+publication 656 to 657, unchanged render serial 20 and byte-identical World
+materials. The displayed/uploaded revision remained 55 after ten seconds at
+native tick 327. A diagnostic-only full-render request demonstrated the missing
+publication at the same native/physical time; that workaround is not shipped.
+
+`c3d6580e4` binds attached `emit_disc` revision changes to the coordinator's
+authoritative `world_material_revision`, matching the established direct
+ObjectShard edit facade. Actual material, condition and temperature mutations
+still count. The non-ObjectShard branch, transient occupancy protection, hard
+surface transitions, physics clocks and all publication fences are unchanged.
+
+`test_object_shard_m4_brush_revision.gd` passes **154 checks** on the complete
+integrated application plus this correction and exact local native
+`656077181d398d33a74ecfe7c2a5bcdfb6addb20b7b2ba478e7ea019745f4d18`.
+It covers supported rest, explicit protected-cell refusal, partly protected
+no-op brushes, fully empty brushes, actual distant Wood painting and erasure,
+exact paused publication coherence and zero edit-induced native/physical/actor
+time. A separate actual same-World native control repaints Wood with unchanged
+material identity but real condition values: state `(173,91)` resets to `(0,0)`,
+temperature 371 is preserved, and revision advances 3 to 4. Repeating that exact
+payload leaves revision 4. The initial extra-control setup requested an invalid
+128-cell extent; its nonpassing receipt remains preserved alongside the valid
+256-cell replay. `physics-brush-revision.json` retains both failures and the
+corrected result; `physics-brush-revision-inputs.json` records all 126 native
+inputs and the local build identity. Hosted Windows/source/extracted execution
+is a separate final qualification gate.
 
 ## Physical cross-review and qualification boundary
 

@@ -33,6 +33,7 @@ FOCUSED = (
     ("test_object_shard_m4_small_fragment_chain", "objectshard-m4-small-fragment-native-chain-v1"),
     ("test_object_shard_m4_sparse_parent_motion", "objectshard-m4-sparse-parent-motion-v1"),
     ("test_object_shard_m4_fresh_barrel", "objectshard-m4-fresh-barrel-v1"),
+    ("test_object_shard_m4_brush_revision", "objectshard-m4-brush-revision-v1"),
     ("test_object_shard_m4_camera_lifecycle", "objectshard-m4-camera-lifecycle-v1"),
     ("test_object_shard_m4_receipt_scheduling", "objectshard-m4-receipt-scheduling-v1"),
     ("test_object_shard_m4_latency_probe", "objectshard-m4-workbench-probe-test-v1"),
@@ -307,7 +308,7 @@ def qualify(args: argparse.Namespace) -> dict:
             if args.render and name.endswith("long_burn"):
                 continue # Natural lifetime/retirement is qualified in the headless lane.
             flags = runner.script_case_flags(name)
-            graphical_diagnostics = (args.render and name.endswith("optional_diagnostics")) or ((args.render or args.package) and name.endswith("camera_lifecycle"))
+            graphical_diagnostics = (args.render and name.endswith("optional_diagnostics")) or ((args.render or args.package) and name.endswith(("camera_lifecycle", "brush_revision")))
             if name.endswith("camera_lifecycle"):
                 flags += ("--output=" + str(output / "camera-lifecycle-captures"),)
             if graphical_diagnostics:

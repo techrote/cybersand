@@ -19,6 +19,9 @@ physical Windows/NVIDIA acceptance. Use the
 [ordinary Workbench playtest guide](../operations/objectshard-workbench-playtest.md)
 for the user-facing controls and evaluator. The separate Lab and M3 rehearsal
 remain independent facilities with their original evidence and limits.
+The current [physics investigation](../audits/objectshard-m4-reliability-20261128/physics.md)
+and [matched throughput evidence](../audits/objectshard-m4-reliability-20261128/throughput.md)
+record their exact source, native runtime and measurement limitations.
 
 ## Historical completion decision — 25 November 2026
 
@@ -478,6 +481,12 @@ eight active and naturally sleeping cohorts with the same light observer and
 60-process-callback cap. Its recording-on/off pair remains separate from the
 older exhaustive profile, and neither headless nor renderer callback cadence
 establishes physical display FPS.
+The [28 November matched comparison](../audits/objectshard-m4-reliability-20261128/throughput.md)
+also holds the native binary constant to isolate the combined script pacing
+changes. It records a local one-awake-body rate within the provisional 45–60
+objective, while the eight-awake-body result remains just below 30 ticks/s.
+That objective stays open; physical owner performance is not established by
+the headless comparison or by a later renderer callback count.
 
 The moving-material texture cache includes World generation, World incarnation,
 session, shard identity and generation, body generation, material revision and

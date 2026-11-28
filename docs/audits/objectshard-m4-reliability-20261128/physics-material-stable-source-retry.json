@@ -1,0 +1,31 @@
+{
+  "command": "PYTHONPATH=tools/material_catalogue python3 -m unittest test_reaction_effects.NativeReactionEffectsTests.test_keep_existing_retains_native_state_temperature_and_partial_quantity -v",
+  "integrated_stable_retry": {
+    "log": "test_keep_existing_retains_native_state_temperature_and_partial_quantity (test_reaction_effects.NativeReactionEffectsTests.test_keep_existing_retains_native_state_temperature_and_partial_quantity) ... ok\n\n----------------------------------------------------------------------\nRan 1 test in 45.699s\n\nOK\n",
+    "log_sha256": "7d9c1c4d5644c4e0e7b76c4caaaa6085e0882fd005a67fac374f30d069b8336d",
+    "outcome": "passed",
+    "tests": 1
+  },
+  "ledger_capture_source_commit": "bd97c2599eb86958ee8e8d9c8e6ee5c6935edb9b",
+  "ledger_capture_source_tree": "6c523c991e80fc92246db6f44de841adf5f6f354",
+  "native_input_ledger": "physics-com-inputs.json",
+  "original_full_discovery": {
+    "elapsed_seconds": 535.023,
+    "log_sha256": "efa407c6e64abe32920f475a7c6f320ddc8a1f5cdca2c99d3652450bdb0921d4",
+    "outcome": "nonpass: one source-stability error",
+    "reason": "COM integration changed native/include/cybersand/object_shard_contact.hpp and native/src/object_shard_coordinator.cpp during compilation; source-stability guard correctly refused tested status",
+    "tests": 231
+  },
+  "private_worktree_retry": {
+    "log": "test_keep_existing_retains_native_state_temperature_and_partial_quantity (test_reaction_effects.NativeReactionEffectsTests.test_keep_existing_retains_native_state_temperature_and_partial_quantity) ... ERROR\n\n======================================================================\nERROR: test_keep_existing_retains_native_state_temperature_and_partial_quantity (test_reaction_effects.NativeReactionEffectsTests.test_keep_existing_retains_native_state_temperature_and_partial_quantity)\n----------------------------------------------------------------------\nTraceback (most recent call last):\n  File \"/workspace/scratch/9b78ce6eff8d/physics/tools/material_catalogue/test_reaction_effects.py\", line 167, in test_keep_existing_retains_native_state_temperature_and_partial_quantity\n    receipt, cases = self.assert_native(world_candidate.compile_world_test(candidate))\n                                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/9b78ce6eff8d/physics/tools/material_catalogue/world_candidate.py\", line 340, in compile_world_test\n    result = lab.validate_candidate(normalized)\n             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/9b78ce6eff8d/physics/tools/material_catalogue/lab.py\", line 355, in validate_candidate\n    protected = compatibility.check()\n                ^^^^^^^^^^^^^^^^^^^^^\n  File \"/workspace/scratch/9b78ce6eff8d/physics/tools/material_catalogue/compatibility.py\", line 932, in check\n    raise CompatibilityError(f\"{name}: LF source-byte drift ({source['role']}); \"\ncompatibility.CompatibilityError: godot/shaders/material_palette.gdshader: LF source-byte drift (hand-coded appearance programme); expected f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1, got e278e05c1434ead33600081e542bff36fcfd58e011ef5aa6e9c90f1b04341e3c. #353-A preserves this consumer; cutover/identity transition needs separate review (a behaviour-preserving edit may use a reviewed REVIEWED_TRANSITIONS entry)\n\n----------------------------------------------------------------------\nRan 1 test in 1.239s\n\nFAILED (errors=1)\n",
+    "log_sha256": "7ad75a0da3770c48e0f0321973aaff26ff7321dcb985661761e38f9f6b3a9d25",
+    "outcome": "precondition refusal before native execution",
+    "reason": "private physics worktree lacked already reviewed shader transition606b33f90; protected appearance-source guard refused the changed shader"
+  },
+  "schema": "objectshard-material-stable-source-retry-v1",
+  "scope": "Only the invalidated named case repeated; untouched native reference and isolated candidate Worlds compile/execute inside the existing test. No assertion, compatibility gate or source-stability guard changed.",
+  "source_commit_at_launch": "371d4f3b59a4d4c2dc587fc2b7c20143c4fe19af",
+  "source_note": "Root subsequently advanced documentation/test registration only. git diff 371d4f3b5..bd97c2599 -- native tools/material_catalogue godot/shaders is empty; the executed material/native/protected shader inputs remain identical. The test itself independently checks input stability during compilation and before tested receipt.",
+  "source_tree_at_launch": "6a9a2d5bffff3b0494d1aa57f67abab74ff76a39",
+  "test": "test_reaction_effects.NativeReactionEffectsTests.test_keep_existing_retains_native_state_temperature_and_partial_quantity"
+}
