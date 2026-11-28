@@ -12,6 +12,8 @@
   "native_input_change": false,
   "application_change": false,
   "qualification_status": "pending actual independent extracted execution",
+  "first_recovery_driver_run": "https://github.com/techrote/cybersand/actions/runs/46180578961",
+  "first_recovery_driver_result": "Five archive admission tests passed; one of eight new linker audit controls refused an existing compiler because Windows TEMP used short and long names for the same file. Archive admission/download and extraction were not reached. The existing-file identity comparison now resolves canonical paths; foreign compiler and conflicting-linker controls remain mandatory.",
   "physical_owner_evaluated": false,
   "merge_authorized": false,
   "unaffected_contracts": "Native World and publication ownership, material history, actor presentation/picking, runtime inputs, package bytes and original per-witness deadlines are unchanged. General performance remains held. No new native build is required."

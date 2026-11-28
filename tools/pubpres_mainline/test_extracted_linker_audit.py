@@ -165,6 +165,31 @@ class Fixture:
 
 
 class ExtractedLinkerAuditTests(unittest.TestCase):
+    @unittest.skipUnless(sys.platform == "win32", "Windows filename alias control")
+    def test_existing_short_path_alias_is_same_file(self):
+        import ctypes
+        compiler = self.fixture.installation / "dependencies/cxx/bin/g++.exe"
+        buffer = ctypes.create_unicode_buffer(32768)
+        api = ctypes.WinDLL("kernel32", use_last_error=True).GetShortPathNameW
+        api.argtypes = (ctypes.c_wchar_p, ctypes.c_wchar_p, ctypes.c_uint32)
+        api.restype = ctypes.c_uint32
+        length = api(str(compiler.resolve()), buffer, len(buffer))
+        self.assertGreater(length, 0)
+        self.assertLess(length, len(buffer))
+        self.assertEqual(audit._windows_path(buffer.value), audit._windows_path(str(compiler)))
+
+    def test_existing_foreign_compiler_with_same_bytes_is_refused(self):
+        compiler = self.fixture.installation / "dependencies/cxx/bin/g++.exe"
+        foreign = self.fixture.root / "foreign-g++.exe"
+        foreign.write_bytes(compiler.read_bytes())
+        world = json.loads(json.dumps(self.fixture.world))
+        world["candidate_build"]["argv"][0] = str(foreign.resolve())
+        with self.assertRaises(audit.AuditError):
+            audit.validate_world_receipt(
+                {"complete": True, "errors": [], "candidate_world_receipt": world},
+                self.fixture.installation, self.fixture.manifest,
+                self.fixture.output / "portable-lab-source-snapshot.json")
+
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)

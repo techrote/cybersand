@@ -1,5 +1,6 @@
 {
   "schema": "pubpres-independent-extraction-request-v1",
+  "purpose": "Independent complete archive execution with canonical existing-file compiler identity",
   "application_commit": "a621611baeb6ff442954e402300c6e576b8a010c",
   "application_tree": "b138e9361826ec6f7e0f73196c08021ed2540f9b",
   "run_id": 46175797719,

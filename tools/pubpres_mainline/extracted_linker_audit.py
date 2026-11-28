@@ -107,7 +107,10 @@ def _source_snapshot(installation: Path, manifest: dict, identity: dict,
 
 
 def _windows_path(value: str) -> str:
-    return os.path.normcase(os.path.normpath(os.path.abspath(value)))
+    # Windows TEMP may expose the same existing file through an 8.3 alias.
+    # Resolve the real file before comparing; a different executable still
+    # resolves to a different path and a missing target remains a refusal.
+    return os.path.normcase(str(Path(value).resolve(strict=True)))
 
 
 def validate_world_receipt(outer: dict, installation: Path, manifest: dict,
