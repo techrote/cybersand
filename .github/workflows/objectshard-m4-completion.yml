@@ -16,6 +16,76 @@ env:
   LLVM_MINGW_URL: https://github.com/mstorsjo/llvm-mingw/releases/download/20260826/llvm-mingw-20260826-ucrt-ubuntu-22.04-x86_64.tar.xz
   LLVM_MINGW_SHA256: cee8d2ce3da5145ce4dc882e70d0b0719a783d53a99752c60948fc0659975a65
 jobs:
+  focused-capacity-recovery:
+    if: github.event_name == 'push' && contains(github.event.head_commit.message, '[objectshard-m4-focused-capacity]')
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+        with:
+          persist-credentials: false
+      - name: Exact source and admitted Rapier
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p evidence/focused-capacity
+          test "$(git rev-parse HEAD)" = "$GITHUB_SHA"
+          git lfs install --local
+          python3 tools/ci/materialize_lfs.py --expected-source "$GITHUB_SHA" --include godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so --output evidence/focused-capacity/rapier-acquisition.json
+          echo '566e68ae53bfb2eb7018c8e7d0dd3727121bf696462039b780a33d6b8369c66a  godot/addons/godot-rapier2d/bin/libgodot_rapier.linux.x86_64-unknown-linux-gnu.so' | sha256sum -c --strict
+      - name: Build source-bound Linux native extension
+        shell: bash
+        env:
+          GODOT_CPP_ROOT: ${{ runner.temp }}/godot-cpp
+          SCONS_PYTHON: ${{ runner.temp }}/scons/bin/python
+          SCONS_JOBS: '2'
+          CYBERSAND_REAL_CXX: /usr/bin/g++-13
+          CYBERSAND_NATIVE_OUTPUT: ${{ runner.temp }}/libcybersand_native.linux.x86_64.so
+        run: |
+          set -euo pipefail
+          python3 -m venv "$RUNNER_TEMP/scons"
+          "$RUNNER_TEMP/scons/bin/python" -m pip install --require-hashes -r tools/requirements-build.txt > evidence/focused-capacity/scons.log 2>&1
+          git init "$RUNNER_TEMP/godot-cpp"
+          git -C "$RUNNER_TEMP/godot-cpp" remote add origin https://github.com/godotengine/godot-cpp.git
+          git -C "$RUNNER_TEMP/godot-cpp" fetch --depth=1 origin "$GODOT_CPP_COMMIT"
+          git -C "$RUNNER_TEMP/godot-cpp" checkout --detach FETCH_HEAD
+          test "$(git -C "$RUNNER_TEMP/godot-cpp" rev-parse HEAD)" = "$GODOT_CPP_COMMIT"
+          python3 tools/objectshard/native_receipt.py snapshot --receipt evidence/focused-capacity/native-source.json --expected-source-sha "$GITHUB_SHA"
+          tools/build_pinned_godot_cpp.sh linux > evidence/focused-capacity/godot-cpp.log 2>&1
+          tools/build_native_extension.sh > evidence/focused-capacity/native-extension.log 2>&1
+          cp "$CYBERSAND_NATIVE_OUTPUT" godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so
+          python3 tools/objectshard/native_receipt.py seal --receipt evidence/focused-capacity/native-source.json --runtime "$CYBERSAND_NATIVE_OUTPUT" --expected-source-sha "$GITHUB_SHA"
+      - name: Pinned Godot 4.7
+        shell: bash
+        run: |
+          set -euo pipefail
+          curl --fail --location --retry 3 --retry-all-errors --connect-timeout 60 --max-time 600 -o "$RUNNER_TEMP/godot.zip" 'https://github.com/godotengine/godot-builds/releases/download/4.7-stable/Godot_v4.7-stable_linux.x86_64.zip'
+          echo "0b1a6c54c2c619c12e169fe9241edda4b81080b519451cec2984bf0d2c6cb73c  $RUNNER_TEMP/godot.zip" | sha256sum -c --strict
+          mkdir -p "$RUNNER_TEMP/godot"
+          unzip -q "$RUNNER_TEMP/godot.zip" -d "$RUNNER_TEMP/godot"
+          chmod +x "$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          test "$("$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64" --version)" = '4.7.stable.official.5b4e0cb0f'
+      - name: Focused capacity recovery fixture
+        shell: bash
+        env:
+          CYBERSAND_SOURCE_REVISION: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          userdata="$RUNNER_TEMP/objectshard-focused-capacity-userdata"
+          mkdir -p "$userdata"
+          export HOME="$userdata"
+          export XDG_DATA_HOME="$userdata"
+          export XDG_CONFIG_HOME="$userdata"
+          godot="$RUNNER_TEMP/godot/Godot_v4.7-stable_linux.x86_64"
+          timeout 300 "$godot" --headless --path godot --editor --quit > evidence/focused-capacity/import.log 2>&1
+          timeout 600 "$godot" --headless --path godot --script res://tests/test_object_shard_m4_capacity_recovery.gd -- --objectshard-m4-workbench 2>&1 | tee evidence/focused-capacity/capacity-recovery.log
+      - uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        if: always()
+        with:
+          name: objectshard-m4-focused-capacity-${{ github.sha }}-${{ github.run_id }}-${{ github.run_attempt }}
+          path: evidence/focused-capacity/
+          if-no-files-found: error
+          retention-days: 60
   presentation-linux:
     # The explicit early lane is independent of native qualification and cannot
     # publish runtimes. Its copied RG8 fixtures never call the native World.
