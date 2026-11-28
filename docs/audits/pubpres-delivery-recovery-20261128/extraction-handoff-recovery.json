@@ -1,0 +1,18 @@
+{
+  "schema": "pubpres-extraction-handoff-recovery-v1",
+  "date_utc": "2026-11-28",
+  "application_commit": "a621611baeb6ff442954e402300c6e576b8a010c",
+  "application_tree": "b138e9361826ec6f7e0f73196c08021ed2540f9b",
+  "original_run": "https://github.com/techrote/cybersand/actions/runs/46175797719",
+  "original_extracted_job": 141083428100,
+  "original_result": "Archive metadata and download passed; argparse refused absent --archive argument before extraction or application execution",
+  "cause": "The principal workflow appended INDEPENDENT_INNER_ARCHIVE to GITHUB_ENV and read it in the same PowerShell step; updates are available only to subsequent steps",
+  "established_correction": "7378ce8abe1f5cfa59a750b944970ddca70e6a42 already separated admission and execution, but that separation was not yet reconciled into the principal workflow",
+  "repair": "Separate production admission and execution steps. Independently run the unchanged A621 extracted.py against the exact already uploaded archive through a separately identified driver with a strict application-delta allowlist and live admission of all 26 application gates plus package gate",
+  "native_input_change": false,
+  "application_change": false,
+  "qualification_status": "pending actual independent extracted execution",
+  "physical_owner_evaluated": false,
+  "merge_authorized": false,
+  "unaffected_contracts": "Native World and publication ownership, material history, actor presentation/picking, runtime inputs, package bytes and original per-witness deadlines are unchanged. General performance remains held. No new native build is required."
+}

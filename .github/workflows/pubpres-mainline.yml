@@ -620,7 +620,7 @@ jobs:
         with:
           name: pubpres-mainline-windows-evaluator-${{ github.run_id }}-${{ github.run_attempt }}
           path: ${{ runner.temp }}/mainline-independent-archive
-      - name: Verify independent inner archive identity and execute the shipped package
+      - name: Verify independent inner archive identity
         run: |
           @'
           import hashlib, json, os, pathlib, zipfile
@@ -639,6 +639,8 @@ jobs:
               output.write('INDEPENDENT_INNER_ARCHIVE=' + str(archive) + '\n')
           '@ | python -
           if ($LASTEXITCODE -ne 0) { throw 'Independent exact delivered archive integrity failed' }
+      - name: Execute the independently admitted shipped package
+        run: |
           python tools/pubpres_mainline/extracted.py --archive $env:INDEPENDENT_INNER_ARCHIVE --sha256 $env:EXPECTED_INNER_SHA256 --installation "$env:RUNNER_TEMP/Owner (PUBPRES) Ω/nested/CyberSand Workbench" --output "$env:RUNNER_TEMP/mainline-extracted"
           if ($LASTEXITCODE -ne 0) { throw 'Actual shipped CMD, portable source/tools, authored persistence or extracted feature qualification failed' }
       - name: Preserve independent extracted original evidence, including refusals
