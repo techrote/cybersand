@@ -68,6 +68,7 @@ func enable(host: Control) -> Dictionary:
 	enabled = true
 	phase = "WaitingForWorkbench"
 	_mount_overlay()
+	Overlay.request_material_preparation(host.get_tree() if host.is_inside_tree() else null)
 	return {"ok":true,"outcome":phase}
 
 func _mount_overlay() -> void:
@@ -80,6 +81,9 @@ func _mount_overlay() -> void:
 
 func owns_terrain() -> bool:
 	return enabled and _terrain_owned
+
+func materials_ready() -> bool:
+	return not enabled or Overlay.material_preparation_ready()
 
 func has_live_inventory() -> bool:
 	for shard: Dictionary in frame.get("shards",[]):
@@ -100,6 +104,12 @@ func poll(host: Control) -> void:
 	if not enabled: return
 	_host = host
 	_mount_overlay()
+	if not materials_ready():
+		if Overlay.material_preparation_observation().state == "failed":
+			_hold("MaterialPreparationFailed")
+		else:
+			phase = "PreparingMaterials"
+		return
 	if host.shared_workbench == null or host.latest_snapshot == null or host.simulation_worker == null: return
 	# Do not attach or step while the existing owner is preparing a replacement.
 	if not host.pending_microscenario_apply.is_empty() or host._pending_physical_candidate != null: return
@@ -340,6 +350,16 @@ func _synchronize() -> bool:
 	for shard: Dictionary in frame.get("shards",[]):
 		var id: int = int(shard.id)
 		if shard.get("owns_inventory",false): retained[id] = true
+		if shard.get("has_body",false) and bridge.bodies.has(id):
+			# Semantic ingress/chemistry may change occupied carriers without
+			# rebuilding a rigid shape. Refresh the exact published motion
+			# domain before granting another physical interval; no RID or time
+			# changes occur here. Intermediate leased contact cannot transfer
+			# owned carriers, so the domain remains fixed throughout a lease.
+			var domain: Dictionary = bridge.refresh_motion_domain(shard)
+			if not domain.get("ok",false):
+				_hold("MotionDomainRefreshFailed",domain)
+				return false
 	for id: Variant in bridge.bodies.keys():
 		if not retained.has(id):
 			var removed: Dictionary = bridge.remove_body(int(id))
@@ -478,8 +498,8 @@ func _advance_segment() -> bool:
 			_hold("InvalidPhysicalVelocity")
 			return false
 		if speed > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_TRANSLATION*0.5/speed)
-		if angular > 0.0: delta = minf(delta,Bridge.segment_rotation_limit(float(body.bounds_diagonal))*0.5/angular)
-		var corner_speed: float = speed+float(body.bounds_diagonal)*angular
+		if angular > 0.0: delta = minf(delta,Bridge.segment_rotation_limit(float(body.rotation_radius))*0.5/angular)
+		var corner_speed: float = speed+float(body.motion_radius)*angular
 		if corner_speed > 0.0: delta = minf(delta,Bridge.MAX_SEGMENT_CORNER_MOTION*0.5/corner_speed)
 	var available: int = Bridge.MAX_MOTION_SUBSTEPS-_interval_segments
 	if delta <= 0.0 or remaining/delta > float(available)+0.0000001:
@@ -707,6 +727,7 @@ func shutdown() -> void:
 
 func diagnostics() -> Dictionary:
 	return {"enabled":enabled,"phase":phase,"held_reason":held_reason,"attached":_bound_generation>0,
+		"material_preparation":Overlay.material_preparation_observation(),
 		"world_generation":_bound_generation,"native_instance_id":capabilities.get("native_instance_id",0),
 		"shared_main_space_id":bridge.space.get_id() if bridge.space.is_valid() else 0,
 		"physics_ready":physics_ready(),"pending_serial":_pending_serial,"pending_kind":_pending_kind,

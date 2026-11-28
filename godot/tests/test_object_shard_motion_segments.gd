@@ -46,7 +46,9 @@ func _run() -> void:
 	_expect(result.get("ok", false) and observed_max_rotation <= 0.20,
 		"legitimate half-radian motion is admitted as bounded actual rotations")
 	_expect(absf(moved.get_rotation() - 0.5) < 0.001, "angular motion is not clamped or discarded")
-	_setup(804, 50, 50)
+	# A hundred-cell compound makes the physical COM-to-corner budget stricter
+	# than the nominal angular budget even with the corrected reference frame.
+	_setup(804, 100, 100)
 	rid = bridge.bodies[1].rid
 	PhysicsServer2D.body_set_state(rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY, 30.0)
 	result = bridge.step_motion(_accept, 42)
@@ -120,9 +122,13 @@ func _accept(poses: Array) -> Dictionary:
 	var accepted: Array[Dictionary] = []
 	for pose: Dictionary in poses:
 		var before: Dictionary = previous[int(pose.id)]
-		var distance: float = Vector2(float(pose.x), float(pose.y)).distance_to(Vector2(float(before.x), float(before.y)))
+		var body: Dictionary = bridge.bodies[int(pose.id)]
+		var com: Vector2 = PhysicsServer2D.body_get_param(body.rid,PhysicsServer2D.BODY_PARAM_CENTER_OF_MASS)
+		var current := Transform2D(float(pose.rotation),Vector2(float(pose.x),float(pose.y)))
+		var prior := Transform2D(float(before.rotation),Vector2(float(before.x),float(before.y)))
+		var distance: float = (current*com).distance_to(prior*com)
 		var rotation: float = absf(float(pose.rotation) - float(before.rotation))
-		var corner: float = distance + float(bridge.bodies[int(pose.id)].bounds_diagonal) * rotation
+		var corner: float = distance + float(body.motion_radius) * rotation
 		observed_max_translation = maxf(observed_max_translation, distance)
 		observed_max_rotation = maxf(observed_max_rotation, rotation)
 		observed_max_corner = maxf(observed_max_corner, corner)

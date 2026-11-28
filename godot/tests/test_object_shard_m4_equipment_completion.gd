@@ -169,6 +169,8 @@ func _run() -> void:
 		await _finish(); return
 	var held: Dictionary = _clocks()
 	var lease: int = int(f.runtime()._motion_lease)
+	var final_packet: Dictionary = f.host.transport_records.back().duplicate(true)
+	var idle_before: int = int(f.host.simulation_worker.object_shard_owner_profile().segment_idle_polls)
 	var publications: Dictionary = {}
 	var deadline: int = Time.get_ticks_msec()+500
 	while Time.get_ticks_msec()<deadline:
@@ -177,15 +179,24 @@ func _run() -> void:
 		await process_frame
 	var premature: Dictionary = _receipt(request_id)
 	var delayed_state: Dictionary = _copied_equipment()
-	f.expect(publications.size()>1,"real asynchronous worker publishes more than once while completion is withheld")
+	var idle_after: int = int(f.host.simulation_worker.object_shard_owner_profile().segment_idle_polls)
+	# Leased service deliberately retains the last coherent ordinary snapshot.
+	# Prove actual asynchronous owner activity directly, rather than requiring
+	# the redundant publications this path removes. The immutable transport
+	# admission is the current queue witness; the retained display predates it.
+	f.expect(publications.size()==1 and idle_after>idle_before,
+		"the real asynchronous worker remains live without redundant ordinary publications while completion is withheld")
 	f.expect(not f.host.paused and _clocks()==held and held.native==before.native \
 		and held.actor==before.actor+1 and held.rapier==before.rapier+4 and held.material==before.material+4,
 		"internal M4 wait advances no native or additional physical time while ordinary Play remains active")
-	f.expect(delayed_state.get("admission",{}).get("status")=="queued",
+	f.expect(final_packet.admission.get("accepted",false) and final_packet.admission.get("status")=="queued" \
+		and final_packet.delivered_request_ids==[request_id] \
+		and int(f.host.simulation_worker.object_shard_owner_profile().actor_work.pending_usables)==1,
 		"real final Main packet admitted the ordinary equipment request")
 	f.expect(premature.is_empty(),"internal motion lease retains the queued use without a premature suspended receipt")
 	evidence.delayed = {"command":command,"request_id":request_id,"equipment":equipment,
 		"before":before,"held":held,"lease":lease,"worker_publications":publications.size(),
+		"worker_idle_polls":idle_after-idle_before,"final_packet":final_packet,
 		"premature_receipt":premature,"worker_equipment":delayed_state}
 	var later_id: String = str(f.bench.actor_observation(2).equipment.get("request_id",""))
 	if not f.expect(f.host.delayed_requests.size()==1 and not later_id.is_empty() \

@@ -89,7 +89,7 @@ func _run() -> void:
 	_natural_fall(1.3)
 	_refusal("large_rotation",20,1,Vector2.ZERO,60.0,"SegmentMotionEnvelopeExceeded")
 	_refusal("translation",1,1,Vector2(1200,0),0.0,"SegmentMotionEnvelopeExceeded")
-	_refusal("corner_motion",100,1,Vector2(0,1500),30.0,"SegmentMotionEnvelopeExceeded")
+	_refusal("corner_motion",100,1,Vector2.ZERO,40.0,"SegmentMotionEnvelopeExceeded")
 	_refusal("corrupt_angular_readback",1,1,Vector2.ZERO,1000.0,"UnresolvedCompleteRotation")
 	_terrain_replacement_preserves_independent_actor()
 	_finish()
@@ -195,6 +195,13 @@ func _refusal(label: String,width: int,height: int,velocity: Vector2,angular: fl
 		PhysicsServer2D.body_set_state(bridge.bodies[1].rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY,angular)
 	var refused: Dictionary = bridge.capture_completed_main_step(1,DELTA)
 	_expect(not refused.get("ok",false) and refused.get("outcome","")==expected and bridge.motion_refused,"unsafe actual segment retains protective refusal: "+label)
+	var detail: Dictionary = refused.get("motion",{}).get("detail",{})
+	if label=="corner_motion":
+		_expect(float(detail.get("translation",INF))<4.0 and absf(float(detail.get("rotation",INF)))<.20 \
+			and float(detail.get("corner_motion",0))>8.0,"corner negative independently violates only occupied-corner travel")
+	elif label=="large_rotation":
+		_expect(float(detail.get("translation",INF))<4.0 and float(detail.get("corner_motion",INF))<8.0 \
+			and absf(float(detail.get("rotation",0)))>.20,"large-body negative independently retains original angular ceiling")
 	_expect(bridge.pose_serial==0 and bridge.steps==0,"refusal cannot mint a native pose or claim applied time: "+label)
 	cases.append({"negative_control":label,"receipt":refused})
 	bridge.shutdown()

@@ -179,3 +179,60 @@ active rosters will become explicit scaling constraints. A later batched or
 hierarchical transaction design needs a declared physical-time/ACK boundary,
 not a larger queue/body limit. Hybrid debris and interpolation can then build on
 those measured contracts. No hybrid/M5 representation was added here.
+
+## COM-domain integration and adversarial completion follow-up
+
+A's subsequent natural sparse-parent collision established a second independent
+source of conservative false refusal: erased empty storage still moved around a
+remote origin. B runtime follow-up `a3b596e0a` consumes A's native material/COM
+domain. Full synchronization refreshes its exact material/geometry-bound extent
+before Ready; predictive angular admission uses the active extent diagonal and
+corner admission uses radius about physical COM. Intermediate motion records
+contact witnesses but transfers no owned carriers, so the domain remains fixed
+through one physical lease. Native semantic ingress precedes chemistry and rigid
+geometry rebuilding; changed carriers are refreshed before the next lease.
+
+Local combined COM native SHA-256 is
+`547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0`.
+The extended receipt scheduling fixture passes 151 checks on that native. It
+includes actual ordinary Pause and Sand brush during a delayed segment, a real
+invalid-geometry native protocol refusal returning a complete diagnostic frame,
+Restore while its refused lease is idle, ordinary shutdown/worker join during
+an admitted lease, and coherent terrain/structural observations throughout.
+
+The first new interrupted-Pause assertion incorrectly expected actor time to
+advance when the material interval drained. Existing `test_object_shard_m4_actor_clock`
+and `physical_actor_session.complete_step` deliberately suspend controller time
+immediately on Pause. The new fixture was corrected to require exactly one
+already-admitted native/physical interval, no actor tick after interruption, and
+the separately checked paused Step's exactly one actor tick. Production semantics
+and existing actor-clock assertions remain unchanged; the original failed local
+receipt is retained in mission evidence.
+
+The existing equipment completion fixture required repeated ordinary snapshots
+while a complete physical interval was deliberately withheld. Leased service
+now intentionally retains the last coherent snapshot. Its replacement witness
+requires that single retained publication plus actual asynchronous worker idle
+progress, and authenticates the exact queued equipment request from the real
+immutable transport admission and mutex-owned pending queue. All no-premature-use,
+source-bound cutoff, delayed second request, cancellation, Rocketjumper effect,
+projectile count/age and one-shot tick assertions remain. Updated fixture passes
+95 checks; actual actor-clock 96, delayed final-sample 104, stale-owner lifecycle
+133, and ordinary cutting/combustion/quantity completion 185 also pass locally.
+
+The fragmented-pointer regression also deliberately withheld Main publication.
+It now disables both idle and physical receipt callbacks for that exact test
+window; disabling only idle callbacks correctly allows the new physical pump to
+install a fresh publication and therefore no longer reproduces the intended
+delay. Its one-cut-before-display and source-cell receipt assertions remain.
+Fragment/fuzz/replacement setup waits now observe durable attachment or body
+reservation, then the existing exact paused geometry/publication barrier. They
+do not depend on observing a transient Ready phase during active play. The
+returning plank explicitly resumes after that barrier before its ninety real
+physical intervals; no settlement or material assertion was relaxed.
+
+Final focused results on the combined COM native: completed-sample 104, equipment
+95, actor clock 96, stale-owner lifecycle 119, ordinary Workbench completion 185,
+fragment/reabsorption 134, lifecycle fuzz 1,007, optional diagnostics 36, and
+remote barrel 114 checks; all pass. Extended receipt/lifecycle case adds 151.
+The final source/extracted campaign remains independently required.

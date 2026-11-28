@@ -124,6 +124,50 @@ representation. This is local headless source/code integration evidence; the
 receipt records its development binary/toolchain scope and does not replace
 the registered graphical source and extracted-package executions.
 
+## Expanded renderer result and protected-source gate
+
+The two renderer jobs in first combined
+[run 46094371247](https://github.com/techrote/cybersand/actions/runs/46094371247)
+at `0acc8a8b82b0fbaf14631277c309943988410062` pass **28 material/view checks**,
+11 texture-incarnation checks and the existing 27 shader guards on both Linux
+and Windows. The added paired framebuffers cover cropped fragment storage
+origins and rotation ([detached](presentation-smoke/detached-fragment-cut.png),
+[rotated](presentation-smoke/rotated-fragment-cut.png)).
+
+| Independently downloaded renderer artifact | Bytes | SHA-256 |
+| --- | ---: | --- |
+| [Linux 15243360492](https://github.com/techrote/cybersand/actions/runs/46094371247/artifacts/15243360492) | 51,469 | `967f9fd0f3c580694f78b26be9fde3035447024381b2885b62e14cec195c0d8c` |
+| [Windows 15243225792](https://github.com/techrote/cybersand/actions/runs/46094371247/artifacts/15243225792) | 50,458 | `86fae706f2f7698b7e7b4b134183035c1aeed9e38b990df9e477afef1c544d44` |
+
+The complete [Linux](presentation-smoke/expanded-linux-summary.json) and
+[Windows](presentation-smoke/expanded-windows-summary.json) summaries separate
+initial ordinary drawing from subsequent detached-variant creation. First
+capture elapsed time is respectively 3.495/1.596 seconds on Linux and
+44.710/38.808 seconds on hosted Windows software ANGLE. Setup is separately
+recorded; capture latency includes any compilation, frame wait, readback and
+PNG I/O. The Windows result establishes an additional cold first-use risk,
+not a TITAN RTX or steady-state performance claim.
+
+The bounded response is opt-in admission-time preparation: show **Preparing
+structure materials…** in a normal UI frame, then draw a two-pixel offscreen Wood/Empty
+Sprite with the exact shared body shader in a temporary SubViewport. The
+temporary viewport retires before readiness. The shader resource is retained
+once per application process across scene replacement. No native owner, body,
+material or clock is created or mutated by this preparation; existing Pause
+state remains unchanged and no new physical interval or cutting is admitted
+before readiness. Ordinary Structures-disabled launches remain lazy. Headless
+execution explicitly records that no graphical preparation occurred. The new
+actual-renderer preparation fixture and mounted camera observation require
+fresh hosted source-bound evidence; their presence alone is not a pass.
+
+That campaign's sanitizer job **failed before native tests** at the protected
+material-shader byte guard. The [reviewed source transition](../2026-11-28-objectshard-material-shader-transition.md)
+preserves the immutable lock and authenticates the exact public source.
+Independent preprocessing establishes byte-identical complete ordinary shader
+programmes in both default and bounded-crossfade modes. Only the explicit
+ObjectShard macro adds behaviour. This repair requires the next source-bound
+campaign; the failed first campaign is not a native qualification pass.
+
 ## Risk-driven combined coverage
 
 | Risk | Qualification route |
@@ -141,7 +185,7 @@ the registered graphical source and extracted-package executions.
 | Actual shipped archive | Existing package verifier, four-path shipped CMD replay, provenance/payload refusal controls, pristine extracted source-matched replay, plus new actual material and camera cases. |
 | Accepted Strata baseline, if available before freeze | Reconcile only accepted main; preserve ordinary mode and explicitly refuse unsupported simultaneous ownership rather than adopting unfinished optical code. |
 
-The source and extracted campaign registrar includes the four new A physics
+The source and extracted campaign registrar includes the five new A physics
 fixtures, B's admitted-receipt scheduling fixture, mounted camera lifecycle and
 real-rendered material presentation. Source profile lanes additionally run the
 six-second matched disabled/empty/tower/eight-body/sleeping cohorts and Tower

@@ -32,7 +32,7 @@
     },
     {
       "area": "performance",
-      "finding": "Current head already includes bounded 8 ms/48-operation rendezvous. Investigate actual callback/worker critical path."
+      "finding": "Pre-physics receipt pump removes unnecessary callback gate; ordered intermediate segments reuse lease and compact actual pose echoes, while every ACK and full final/failure publication remains. Exact serial transport timing separates queue, service, copy and delivery."
     },
     {
       "area": "delivery",
@@ -52,8 +52,10 @@
     },
     {
       "area": "sparse-parent motion",
-      "status": "CONFIRMED OPEN",
-      "finding": "26-cell Wood strip eroded through25 exact moving-cell cuts leaves mass1/inertia1/6 at COM(26.5,1.5) in28x3storage. Natural impact angular55.8113, rotation.232286;COMtranslation.287659cells but storage-origin translation6.29239/corner12.8336 triggersHeld. Bounded COM-reference/sweep correction in progress; carrier coordinates remain unchanged."
+      "status": "CORRECTED; LOCAL ACTUAL-NATIVE REPLAY PASS; COMBINED CI PENDING",
+      "finding": "26-cell Wood strip eroded through25 exact moving-cell cuts leaves mass1/inertia1/6 at COM(26.5,1.5) in28x3storage. Natural impact angular55.8113, rotation.232286;COMtranslation.287659cells but storage-origin translation6.29239/corner12.8336 triggersHeld. Bounded COM-reference/sweep correction in progress; carrier coordinates remain unchanged.",
+      "correction": "Measure translation at the physical COM, active occupied-carrier extent plus contact ring, and matching COM interpolation for native occupancy/Water/Sand sweeps. Storage and cell identities unchanged.",
+      "evidence": "Three equivalent tight/eroded-near/eroded-far fragments: 6,223 checks, 1,440 segments and ACKs, 360 semantic intervals; peak natural impact 55.8113 rad/s and 0.232286 rad; occupied trajectory difference <=0.0000612 cell. Native contact suite 87,235 checks."
     }
   ],
   "qualification": [
@@ -65,17 +67,29 @@
       "linux": "PASS:27 shader guards,11 texture identity,19 material/camera/clip checks",
       "windows": "PASS:27 shader guards,11 texture identity,19 material/camera/clip checks; actual ANGLE Microsoft Basic Render Driver",
       "native_qualification": false
+    },
+    {
+      "kind": "first combined intermediate campaign",
+      "source": "0acc8a8b82b0fbaf14631277c309943988410062",
+      "tree": "d6bc2b20975f94780e5f99bae3a0adc44ea36c5e",
+      "run": 46094371247,
+      "status": "IN PROGRESS",
+      "known_failure": "native-sanitizers stopped at protected shader source compatibility gate before native tests. Append-only reviewed transition added and guard now PASS; ordinary shader variants independently byte-identical. Original failed outcome preserved.",
+      "known_passes": [
+        "Windows native build",
+        "Linux renderer 28 material/crop/rotation, 11 identity, 27 shader checks",
+        "Windows ANGLE renderer same checks"
+      ],
+      "runtime_publication": "not requested for intermediate source"
     }
   ],
   "delivery": null,
   "remaining": [
-    "reproduce/fix fragment halt",
-    "investigate barrel impulse",
-    "measure/improve semantics",
-    "camera/material coherence",
-    "main reconciliation",
-    "combined qualification",
-    "extracted Windows evaluator"
+    "final shader warm-up integration and graphical qualification",
+    "isolated final matched semantic throughput comparison",
+    "final source-matched native publication and combined qualification",
+    "clean extracted Windows evaluator verification",
+    "physical owner acceptance (mandatory Draft/HOLD)"
   ],
   "main_reconciliation": {
     "baseline": "9920e7a7369f24e2818313c007cc33616c1a6a83",
@@ -110,13 +124,16 @@
     "strata_pr": 785,
     "merged": false,
     "candidate_not_adopted": "6641ac0edc4341013026d5ab900dd64fcc9fd42e",
-    "accepted_main_retained": "9920e7a7369f24e2818313c007cc33616c1a6a83"
+    "accepted_main_retained": "9920e7a7369f24e2818313c007cc33616c1a6a83",
+    "last_main_observed_utc": "2026-11-28T01:54:00Z",
+    "last_main_observed": "9920e7a7369f24e2818313c007cc33616c1a6a83"
   },
-  "phase": "First combined qualification preparation; sparse-parent correction in progress",
-  "current_source_note": "First combined campaign is an intermediate candidate, not final convergence. A confirmed ordinary sparse-parent false motion refusal is being corrected.",
+  "phase": "Final corrective integration and cross-review; source-matched publication preparation",
+  "current_source_note": "COM correction and performance domain refresh integrated. Warm-up presentation correction and final isolated performance matrix pending; final publish campaign not yet started.",
   "throughput_exploratory": {
     "tower_clean_pairs": "17.96/19.47 ->53.30/55.15 semantic ticks/s; full6s1/1awake cohort",
     "eight_clean_pairs": "15.76/14.96 ->29.36/29.75 semantic ticks/s in actual8/8awake cohorts; candidate active portions~3s, not fullwindow",
     "limitation": "Local shared execution host/headless60callbackcap; physical Windows not measured; fullmatrix and finalcorrectedsource pending"
-  }
+  },
+  "last_updated_utc": "2026-11-28T01:58:00Z"
 }

@@ -180,16 +180,16 @@ void sat_matches_polygon_oracle() {
     CHECK(!cell_overlap(frame({std::numeric_limits<double>::quiet_NaN(), 0, 0}), 0, 0, 0, 0));
 }
 
-Handle pocket(Registry& registry, unsigned opening_width = 1) {
+Handle pocket(Registry& registry, unsigned opening_width = 1, unsigned left_padding = 0) {
     Handle handle;
-    const auto width = static_cast<std::uint16_t>(opening_width + 6);
+    const auto width = static_cast<std::uint16_t>(opening_width + 6 + left_padding);
     CHECK(registry.prepare({-3, -4, width, 7}, 10, handle) == Outcome::Accepted);
     auto* shard = registry.find(handle);
     for (const auto x : {2U, 3U + opening_width})
-        CHECK(shard->set_cell(static_cast<std::size_t>(3 * width + x), {Material::Wood, 0, 0, 200},
+        CHECK(shard->set_cell(static_cast<std::size_t>(3 * width + x + left_padding), {Material::Wood, 0, 0, 200},
             Role::Structural, 10) == Outcome::Accepted);
     for (unsigned x = 2; x <= 3 + opening_width; ++x)
-        CHECK(shard->set_cell(static_cast<std::size_t>(4 * width + x), {Material::Wood, 0, 0, 200},
+        CHECK(shard->set_cell(static_cast<std::size_t>(4 * width + x + left_padding), {Material::Wood, 0, 0, 200},
             Role::Structural, 10) == Outcome::Accepted);
     CHECK(registry.finish_preparation(handle) == Outcome::Accepted);
     CHECK(registry.reserve_physics(handle) == Outcome::Accepted);
@@ -201,6 +201,81 @@ Handle pocket(Registry& registry, unsigned opening_width = 1) {
     CHECK(shard->acknowledge_geometry(geometry.revision, geometry.mask_digest, geometry.shape_digest) == Outcome::Accepted);
     CHECK(registry.advance(handle, Phase::ReadyToActivate, Phase::Active) == Outcome::Accepted);
     return handle;
+}
+
+void com_sweep_is_invariant_under_empty_storage_padding() {
+    Registry registry;
+    const auto tight=pocket(registry),padded=pocket(registry,1,25);
+    const auto* a=registry.find(tight);const auto* b=registry.find(padded);
+    const auto da=motion_domain(*a),db=motion_domain(*b);
+    CHECK(da.valid && db.valid && da.radius==db.radius && da.rotation_radius==db.rotation_radius);
+    CHECK(db.reference.x==da.reference.x+25 && db.reference.y==da.reference.y);
+    const auto pose_at=[](Vec centre,double angle,Vec reference) {
+        return Pose{centre.x-std::cos(angle)*reference.x+std::sin(angle)*reference.y,
+            centre.y-std::sin(angle)*reference.x-std::cos(angle)*reference.y,angle};
+    };
+    const Vec initial{30.137,40.137},finished{30.437,40.337};
+    const auto before_a=pose_at(initial,0,da.reference),after_a=pose_at(finished,.3,da.reference);
+    const auto before_b=pose_at(initial,0,db.reference),after_b=pose_at(finished,.3,db.reference);
+    const auto sa=plan_sweep(before_a,after_a,da,motion_envelope(da));
+    const auto sb=plan_sweep(before_b,after_b,db,motion_envelope(db));
+    CHECK(sa.outcome==Outcome::Accepted && sb.outcome==Outcome::Accepted && sa.samples==sb.samples);
+    CHECK(std::abs(sa.translation-std::hypot(.3,.2))<1e-12);
+    CHECK(std::abs(sa.corner_motion-sb.corner_motion)<1e-12 && sa.samples<=17);
+    CHECK(plan_sweep(before_b,after_b,b->bounds().width,b->bounds().height,
+        motion_envelope(b->bounds().width,b->bounds().height)).outcome==Outcome::Unsupported);
+    // An independent physical oracle: COM follows its line; each material
+    // point rotates around it. Empty padding must not bow or lengthen that path.
+    for (unsigned sample=0;sample<=100;++sample) {
+        const auto t=sample/100.0,angle=.3*t;
+        const auto fa=frame(interpolated_pose(before_a,after_a,t,da.reference));
+        const auto fb=frame(interpolated_pose(before_b,after_b,t,db.reference));
+        for (const Vec point : {Vec{1,2},Vec{6,2},Vec{1,6},Vec{6,6}}) {
+            const auto dx=point.x-da.reference.x,dy=point.y-da.reference.y;
+            const Vec oracle{initial.x+.3*t+std::cos(angle)*dx-std::sin(angle)*dy,
+                initial.y+.2*t+std::sin(angle)*dx+std::cos(angle)*dy};
+            const auto x=to_world(fa,point),y=to_world(fb,{point.x+25,point.y});
+            CHECK(std::hypot(x.x-oracle.x,x.y-oracle.y)<1e-11);
+            CHECK(std::hypot(y.x-oracle.x,y.y-oracle.y)<1e-11);
+        }
+    }
+    unsigned admitted=0,refused=0;
+    for (int n=0;n<64;++n) {
+        const auto angle=(n-32)*.012;
+        const Pose after{10.137,20.137,angle};
+        const auto grain=to_world(frame(after),{3.5,3.5});
+        const Vec old_local{3.5+(n%8-3.5)*.35,2.5+(n%3)*.3};
+        const Pose before{grain.x-old_local.x,grain.y-old_local.y,0};
+        const Pose padded_before{before.x-25,before.y,0};
+        const Pose padded_after{after.x-25*std::cos(angle),after.y-25*std::sin(angle),angle};
+        const auto wa=sand_pocket_witness(*a,before,after,grain,motion_envelope(da),da);
+        const auto wb=sand_pocket_witness(*b,padded_before,padded_after,grain,motion_envelope(db),db);
+        CHECK(wa.outcome==wb.outcome);
+        if (wa.outcome!=Outcome::Accepted) {++refused;continue;}
+        ++admitted;
+        CHECK(wb.slot/b->bounds().width==wa.slot/a->bounds().width);
+        CHECK(wb.slot%b->bounds().width==wa.slot%a->bounds().width+25);
+        CHECK(wa.incarnation==wb.incarnation && wa.sweep_samples==wb.sweep_samples);
+        CHECK(std::hypot(wa.aperture_world.x-wb.aperture_world.x,
+            wa.aperture_world.y-wb.aperture_world.y)<1e-11);
+        // The revised chord bound must still forbid a curved path through a
+        // real wall; dense independent samples inspect actual structural cells.
+        for (unsigned sample=0;sample<=1000;++sample) {
+            const auto point=to_local(frame(interpolated_pose(before,after,sample/1000.0,da.reference)),grain);
+            if (point.x<0 || point.y<0 || point.x>=a->bounds().width || point.y>=a->bounds().height) continue;
+            const auto slot=static_cast<std::size_t>(std::floor(point.y))*a->bounds().width+
+                static_cast<std::size_t>(std::floor(point.x));
+            CHECK(!a->structural(slot));
+        }
+    }
+    CHECK(admitted>=8 && refused>=8);
+    CHECK(plan_sweep(before_a,pose_at({initial.x+4.001,initial.y},0,da.reference),da,
+        motion_envelope(da)).outcome==Outcome::Unsupported);
+    CHECK(plan_sweep(before_a,pose_at(initial,1.6,da.reference),da,motion_envelope(da)).outcome==Outcome::Unsupported);
+    // A retained Product outside the rigid cover participates in the bound.
+    const auto radius=db.radius;
+    CHECK(registry.find(padded)->set_cell(1,{Material::Fire,32,0,200},Role::Product,11)==Outcome::Accepted);
+    CHECK(motion_domain(*b).radius>radius && motion_domain(*b).rotation_radius>db.rotation_radius);
 }
 
 void bounded_wide_aperture_and_rotated_world_carriers() {
@@ -362,6 +437,7 @@ int main() {
     portable_magnitude_matches_independent_reference();
     portable_magnitude_preserves_admitted_envelope_boundaries();
     small_fragment_motion_preserves_geometric_and_work_limits();
+    com_sweep_is_invariant_under_empty_storage_padding();
     sat_matches_polygon_oracle();
     aperture_and_motion_contract();
     bounded_wide_aperture_and_rotated_world_carriers();

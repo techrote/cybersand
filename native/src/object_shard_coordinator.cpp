@@ -1392,10 +1392,11 @@ Outcome Coordinator::apply_poses(std::span<const PoseSample> poses) {
             p.geometry_revision!=shard->applied_physics_revision() || p.pose_serial<=b->pose.pose_serial ||
             !std::isfinite(p.x) || !std::isfinite(p.y) || !std::isfinite(p.rotation) ||
             !std::isfinite(p.vx) || !std::isfinite(p.vy) || !std::isfinite(p.angular_velocity)) return Outcome::Stale;
-        const auto envelope=contact::motion_envelope(shard->bounds().width,shard->bounds().height,
+        const auto domain=contact::motion_domain(*shard);
+        const auto envelope=contact::motion_envelope(domain,
             config_.max_translation_per_step,config_.max_rotation_per_step);
-        if (contact::plan_sweep(contact_pose(b->pose),contact_pose(p),shard->bounds().width,
-            shard->bounds().height,envelope).outcome!=Outcome::Accepted) return Outcome::Unsupported;
+        if (contact::plan_sweep(contact_pose(b->pose),contact_pose(p),domain,envelope).outcome!=Outcome::Accepted)
+            return Outcome::Unsupported;
         for (const auto& other:poses) if (&other!=&p && other.shard==p.shard) return Outcome::Invalid;
     }
     std::copy(bodies_.begin(),bodies_.end(),body_backup_.begin());
@@ -1612,10 +1613,11 @@ Outcome Coordinator::capture_water(Shard& shard,const BodyView& body) {
         return Outcome::Accepted;
     const auto started=now_ns();
     const auto bounds=shard.bounds();
-    const auto envelope=contact::motion_envelope(bounds.width,bounds.height,
+    const auto domain=contact::motion_domain(shard);
+    const auto envelope=contact::motion_envelope(domain,
         config_.max_translation_per_step,config_.max_rotation_per_step);
     const auto before=contact_pose(body.previous_pose),after=contact_pose(body.pose);
-    const auto sweep=contact::plan_sweep(before,after,bounds.width,bounds.height,envelope);
+    const auto sweep=contact::plan_sweep(before,after,domain,envelope);
     if (sweep.outcome!=Outcome::Accepted) return sweep.outcome;
     for (std::size_t at=0;at<shard.area();++at) {
         const auto payload=shard.payload(at);
@@ -1631,7 +1633,7 @@ Outcome Coordinator::capture_water(Shard& shard,const BodyView& body) {
             e.expiry_tick>=world_->completed_tick_index()+1;})) continue;
         bool touched=false;
         for (std::uint16_t sample=0;sample<sweep.samples && !touched;++sample) {
-            const auto pose=contact::interpolated_pose(before,after,static_cast<double>(sample)/(sweep.samples-1));
+            const auto pose=contact::interpolated_pose(before,after,static_cast<double>(sample)/(sweep.samples-1),domain.reference);
             const auto frame=contact::frame(pose);++metrics_.sweep_samples;
             // Existing combustible Moore-neighbour semantics, with exact
             // transformed unit ports. Occupied structural neighbours cannot
@@ -1846,6 +1848,7 @@ void Coordinator::automatic_ingress(bool transfer) {
         auto* shard=registry_.find(b.shard);b.pocket_open=false;b.ingress_fenced=false;
         if (!shard || !b.has_body || shard->phase()!=Phase::Active) continue;
         const auto bounds=shard->bounds();const auto frame=contact::frame(contact_pose(b.pose));
+        const auto domain=contact::motion_domain(*shard);
         for (std::size_t at=0;at<shard->area();++at) {
             if (shard->occupied(at)) continue;
             const auto x=static_cast<std::uint16_t>(at%bounds.width),y=static_cast<std::uint16_t>(at/bounds.width);
@@ -1860,8 +1863,7 @@ void Coordinator::automatic_ingress(bool transfer) {
                     if (!resident(wx,wy) || world_->stored_material(wx,wy)!=Material::Sand) continue;
                     const auto witness=contact::sand_pocket_witness(*shard,contact_pose(b.previous_pose),contact_pose(b.pose),
                         {static_cast<double>(wx)+.5,static_cast<double>(wy)+.5},
-                        contact::motion_envelope(bounds.width,bounds.height,
-                            config_.max_translation_per_step,config_.max_rotation_per_step));
+                        contact::motion_envelope(domain,config_.max_translation_per_step,config_.max_rotation_per_step),domain);
                     if (witness.outcome!=Outcome::Accepted || witness.slot!=at) {
                         const auto local=contact::to_local(frame,{static_cast<double>(wx)+.5,static_cast<double>(wy)+.5});
                         if (witness.outcome==Outcome::DestinationUnavailable &&
@@ -1957,10 +1959,10 @@ Result Coordinator::ingest(const TransferRequest& r) {
         return done(Outcome::Stale);
     if (shard->occupied(r.cell) || world_->transient_obstacle_at(r.world_x,r.world_y)) return done(Outcome::DestinationUnavailable);
     if (pocket_fenced(r.shard,r.cell)) return done(Outcome::Fenced,"previous side entry awaits a genuinely empty aperture");
+    const auto domain=contact::motion_domain(*shard);
     const auto witness=contact::sand_pocket_witness(*shard,contact_pose(b->previous_pose),contact_pose(b->pose),
         {static_cast<double>(r.world_x)+.5,static_cast<double>(r.world_y)+.5},
-        contact::motion_envelope(shard->bounds().width,shard->bounds().height,
-            config_.max_translation_per_step,config_.max_rotation_per_step));
+        contact::motion_envelope(domain,config_.max_translation_per_step,config_.max_rotation_per_step),domain);
     if (witness.outcome!=Outcome::Accepted || witness.slot!=r.cell || witness.incarnation!=r.incarnation) {
         const auto local=contact::to_local(contact::frame(contact_pose(b->pose)),
             {static_cast<double>(r.world_x)+.5,static_cast<double>(r.world_y)+.5});

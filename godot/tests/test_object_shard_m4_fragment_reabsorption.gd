@@ -23,7 +23,7 @@ func _install(shape: String) -> bool:
 	if not await f.until(f.installed,"fresh "+shape+" World installed"): return false
 	f.bench.set_camera(2)
 	f.play()
-	if not await f.until(func(): return f.runtime().physics_ready(),"ordinary material owner rebound"): return false
+	if not await f.until(func(): return f.runtime().owns_terrain(),"ordinary material owner rebound"): return false
 	await f.pause()
 	f.bench._brush.value = 3
 	var points: Array[Vector2i] = [Vector2i(146,437),Vector2i(164,437)]
@@ -39,7 +39,10 @@ func _install(shape: String) -> bool:
 		if not f.expect(f.bench.paint(point,0),"ordinary support cut "+str(point)): return false
 		await process_frame
 	f.play()
-	return await f.until(func(): return f.body_count()==1 and f.runtime().physics_ready(),"one actual coherent material body detached")
+	if not await f.until(func(): return f.body_count()==1,"one actual material body detached"): return false
+	# Ready can be shorter than a callback while playing. The explicit Pause
+	# still requires exactly the same installed geometry/coherence barrier.
+	return await f.pause()
 
 func _target_for_source(position: Vector2i) -> Dictionary:
 	for shard: Dictionary in f.runtime().publication.get("shards",[]):
@@ -117,12 +120,14 @@ func _cut_neck_with_pointer() -> bool:
 			"selected_tool":f.bench._tool.selected,"signal_connections":f.host.world_view.gui_input.get_connections().size()}))
 		_pointer_button(first.position,false)
 		return false
-	# Delay only Main's publication callback. The real child Workbench input
+	# Delay Main's idle and physical receipt callbacks. The real child Workbench input
 	# process and exclusive native worker continue. A native mutation receipt
 	# can therefore arrive before Main sees or installs its new geometry.
 	# This is an actual delivery interleaving, not a substituted owner/frame.
 	var main_was_processing: bool = f.host.is_processing()
+	var main_was_physics_processing: bool = f.host.is_physics_processing()
 	f.host.set_process(false)
+	f.host.set_physics_process(false)
 	_pointer_move(second.position)
 	f.expect(f.bench.object_shard_m4_port.pending_count()==1,"pointer motion cannot queue an unwitnessed stroke behind pending geometry")
 	var first_received: bool = await f.until(func(): return f.bench.object_shard_m4_port.results.size()>before,
@@ -132,6 +137,7 @@ func _cut_neck_with_pointer() -> bool:
 		and f.bench.object_shard_m4_port.pending_count()==0 \
 		and f.bench._object_shard_pointer_tool == f.bench.CUT_MOVING_TOOL and f.bench._drag_button==MOUSE_BUTTON_LEFT
 	evidence.pointer_receipt_fence = {"main_callback_delayed":not f.host.is_processing(),
+		"main_physics_callback_delayed":not f.host.is_physics_processing(),
 		"results":f.bench.object_shard_m4_port.results.slice(before).duplicate(true),
 		"pending_count":f.bench.object_shard_m4_port.pending_count(),
 		"frame_next_transaction":f.runtime().frame.get("next_transaction",-1),
@@ -141,6 +147,7 @@ func _cut_neck_with_pointer() -> bool:
 		"held_pointer_tool":f.bench._object_shard_pointer_tool}
 	# Restore the real callback on every outcome before closing or continuing.
 	f.host.set_process(main_was_processing)
+	f.host.set_physics_process(main_was_physics_processing)
 	if not first_received or not f.expect(fenced,
 		"held Cut waits for the applied native transaction to reach its actual displayed geometry"):
 		_pointer_button(second.position,false)
@@ -201,7 +208,7 @@ func _run() -> void:
 	if not await _cut_neck_with_pointer():
 		await _finish(); return
 	f.play()
-	if not await f.until(func(): return f.body_count()==2 and f.runtime().physics_ready(),"two actual physical islands activate after native transfer"):
+	if not await f.until(func(): return f.body_count()==2,"two actual physical islands are reserved after native transfer"):
 		await _finish(); return
 	await f.pause()
 	await f.until(f.coherent,"fragmented inventory shares one visual World revision")
@@ -215,6 +222,7 @@ func _run() -> void:
 	if not await _install("return"):
 		await _finish(); return
 	var before_fall_y: float = float(f.frame().shards[0].position_y)
+	f.play()
 	if not await f.advance(90,"returned body receives ninety real physical intervals before settlement"):
 		await _finish(); return
 	if not await f.until(_settled,"actual Rapier body settles nearly on the material grid"):

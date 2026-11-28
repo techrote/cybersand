@@ -1,0 +1,8 @@
+{
+  "schema": "root-native-input-match-v1",
+  "source": "dee9cda347a410b80b6b654bab357a82d2f79a6e",
+  "input_count": 126,
+  "mismatches": [],
+  "binary_sha256": "547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0",
+  "scope": "Independent source-input identity check of local qualification binary. Release requires guarded pinned CI builds."
+}

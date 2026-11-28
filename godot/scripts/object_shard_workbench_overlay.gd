@@ -9,6 +9,8 @@ const BODY_DEFINE: String = "#define CYBER_OBJECT_SHARD\n"
 static var _body_shader: Shader
 static var _fallback_lut: ImageTexture
 static var _fallback_program: ImageTexture
+static var _material_preparation: Dictionary = {"state":"unrequested","rendered":false,"runs":0,
+	"scope":"opt-in process-local shared shader preparation; no native owner, body or simulation clock"}
 var host: Control
 var frame: Dictionary = {}
 var textures: Dictionary = {}
@@ -47,6 +49,81 @@ static func body_shader() -> Shader:
 		_body_shader = Shader.new()
 		_body_shader.code = code
 	return _body_shader
+
+static func material_preparation_ready() -> bool:
+	return _material_preparation.state in ["ready","headless"]
+
+static func material_preparation_observation() -> Dictionary:
+	return _material_preparation.duplicate(true)
+
+static func request_material_preparation(tree: SceneTree) -> void:
+	if _material_preparation.state != "unrequested": return
+	if DisplayServer.get_name() == "headless":
+		_material_preparation.state = "headless"
+		_material_preparation.scope = "headless admission only; no shader draw or compilation qualification"
+		return
+	if tree == null:
+		_material_preparation.state = "failed"
+		_material_preparation.reason = "Rendered material preparation requires an active SceneTree"
+		return
+	_material_preparation.state = "preparing"
+	_material_preparation.runs = 1
+	_material_preparation.started_usec = Time.get_ticks_usec()
+	_prepare_materials.call_deferred(tree)
+
+static func _prepare_materials(tree: SceneTree) -> void:
+	# Publish a normal UI frame containing the preparation status before asking
+	# the renderer to compile the additional material programme. The temporary
+	# viewport belongs to SceneTree, so an authored scene replacement cannot
+	# cancel the process-shared preparation or leave a stale owner reference.
+	await tree.process_frame
+	await RenderingServer.frame_post_draw
+	_material_preparation.status_frame_completed = true
+	_material_preparation.before_draw_usec = Time.get_ticks_usec()-int(_material_preparation.started_usec)
+	var view := SubViewport.new()
+	view.name = "ObjectShardMaterialPreparation"
+	view.size = Vector2i(2,1)
+	view.transparent_bg = true
+	view.render_target_update_mode = SubViewport.UPDATE_ONCE
+	tree.root.add_child(view)
+	# Wood positively proves shader execution; Empty proves transparency. An
+	# untouched transparent render target cannot satisfy the occupied pixel.
+	# This viewport is never presented on the main canvas.
+	var texture: ImageTexture = ImageTexture.create_from_image(Image.create_from_data(2,1,false,Image.FORMAT_RG8,PackedByteArray([7,0,0,0])))
+	var sprite := Sprite2D.new()
+	sprite.centered = false
+	sprite.texture = texture
+	sprite.texture_filter = CanvasItem.TEXTURE_FILTER_NEAREST
+	var material := ShaderMaterial.new()
+	material.shader = body_shader()
+	material.set_shader_parameter("world_size_px",Vector2(2,1))
+	material.set_shader_parameter("view_size_px",Vector2(2,1))
+	material.set_shader_parameter("current_world_texture",texture)
+	material.set_shader_parameter("previous_world_texture",texture)
+	material.set_shader_parameter("condition_projection_enabled",1.0)
+	material.set_shader_parameter("growth_decor",0.0)
+	if _fallback_lut == null: _fallback_lut = Appearance.create_texture()
+	if _fallback_program == null: _fallback_program = Appearance.create_program_texture()
+	_apply_appearance(material,[_fallback_lut,_fallback_program,1.0,-1.0])
+	sprite.material = material
+	view.add_child(sprite)
+	var draw_started: int = Time.get_ticks_usec()
+	await tree.process_frame
+	await RenderingServer.frame_post_draw
+	var image: Image = view.get_texture().get_image()
+	_material_preparation.first_draw_usec = Time.get_ticks_usec()-draw_started
+	_material_preparation.shader_instance_id = material.shader.get_instance_id()
+	_material_preparation.rendered = image != null and image.get_size()==Vector2i(2,1) \
+		and image.get_pixel(0,0).a>.99 and image.get_pixel(0,0).g>1.0/255.0 and image.get_pixel(1,0).a<=1.0/255.0
+	if image != null and image.get_size()==Vector2i(2,1):
+		var occupied: Color = image.get_pixel(0,0)
+		_material_preparation.occupied_rgba = [occupied.r,occupied.g,occupied.b,occupied.a]
+		_material_preparation.empty_alpha = image.get_pixel(1,0).a
+	view.queue_free()
+	await tree.process_frame
+	_material_preparation.temporary_viewport_retired = not is_instance_valid(view)
+	_material_preparation.elapsed_usec = Time.get_ticks_usec()-int(_material_preparation.started_usec)
+	_material_preparation.state = "ready" if _material_preparation.rendered and _material_preparation.temporary_viewport_retired else "failed"
 
 func _process(_delta: float) -> void:
 	_sync_view()

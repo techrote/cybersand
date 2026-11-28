@@ -155,8 +155,8 @@ func _run() -> void:
 		await _finish(); return
 	await f.until(f.installed,"Restore replaces the actual ordinary native World")
 	f.play()
-	if not await f.until(func(): return int(f.diagnostics().get("world_generation",0))>old_generation and f.runtime().physics_ready(),
-		"replacement publishes a fresh owner generation and actual geometry acknowledgements"):
+	if not await f.until(func(): return int(f.diagnostics().get("world_generation",0))>old_generation and f.runtime().owns_terrain(),
+		"replacement publishes a fresh owner generation and attaches actual terrain"):
 		await _finish(); return
 	await f.pause()
 	await f.until(f.whole_canvas_coherent,"fresh World and live material inventory are jointly displayed")

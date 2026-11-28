@@ -37,6 +37,12 @@ The launcher exposes the experimental **Structures…** panel in ordinary
 Workbench and selects the **Multi-storey tower** start. Select another
 demonstration in that panel or choose **Enable on current canvas** for your own
 authored scene. Ordinary launches keep their existing defaults.
+On the first admission, wait for **Preparing structure materials…** at the start
+of the status line below the controls to finish before cutting or pressing Play.
+This prepares the additional shared material shader once for this application
+process. Later scene changes reuse it. The scene keeps its Pause state. A cold
+software renderer can spend tens of seconds here; this preparation time is
+separate from the subsequent simulation rate.
 The candidate is bounded; an unsupported canvas, roster or exhausted geometry
 budget must show a refusal while preserving existing ownership.
 

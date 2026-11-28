@@ -625,6 +625,13 @@ Dictionary CyberObjectShardLab::snapshot(bool include_world) {
             row["mask_digest"] = number(geometry.mask_digest); row["shape_digest"] = number(geometry.shape_digest);
             row["mass"] = geometry.mass.mass; row["com_x"] = geometry.mass.com_x; row["com_y"] = geometry.mass.com_y;
             row["inertia"] = geometry.mass.inertia; row["split_pending"] = geometry.split_pending;
+            const auto motion=os::contact::motion_domain(shard);
+            row["motion_contract"]="material-com-reference-v1";
+            row["motion_reference_x"]=motion.reference.x;row["motion_reference_y"]=motion.reference.y;
+            row["motion_radius"]=motion.valid ? motion.radius : 0.0;
+            row["motion_rotation_radius"]=motion.valid ? motion.rotation_radius : 0.0;
+            row["motion_material_revision"]=static_cast<std::int64_t>(shard.material_revision());
+            row["motion_geometry_revision"]=static_cast<std::int64_t>(geometry.revision);
             row["islands"] = geometry.islands;
             const auto counts = shard.counts();
             row["structural"] = counts.structural; row["products"] = counts.products; row["cargo"] = counts.cargo;

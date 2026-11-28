@@ -52,6 +52,7 @@ def main() -> int:
              (runner.Case("test_palette_shader_compile_bounds", ("--script", "res://tests/test_palette_shader_compile_bounds.gd"),
               int(execution_policy.watchdog_seconds("ordinary_case_seconds")), 0), None)]
     for name, schema in (("test_object_shard_m4_overlay_identity", "objectshard-m4-overlay-identity-v1"),
+                         ("test_object_shard_m4_material_preparation_render", "objectshard-m4-material-preparation-v1"),
                          ("test_object_shard_m4_material_presentation_render", "objectshard-m4-material-presentation-v1")):
         flags = ("--rendering-driver", renderer, "--script", "res://tests/" + name + ".gd",
                  "--", "--output=" + str(args.output.resolve() / "captures"))

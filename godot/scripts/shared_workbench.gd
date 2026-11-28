@@ -857,6 +857,8 @@ func busy() -> bool:
 	return (host.has_method(&"persistent_operation_allowed") and not str(host.call(&"persistent_operation_allowed","authoring",{})).is_empty()) \
 		or not host.pending_microscenario_apply.is_empty() or step_pending or host.simulation_worker.has_failed() \
 		or is_flatten_pending() or (paint_editor != null and paint_editor.busy()) \
+		or (object_shard_m4_port.enabled and host.has_method("object_shard_m4_latency_report") \
+			and not host.object_shard_m4_runtime.materials_ready()) \
 		or (reciprocal_panel != null and reciprocal_panel.busy())
 
 func persistent_stage_authoring(authoring: Dictionary) -> void:
@@ -2063,8 +2065,11 @@ func object_shard_user_status(now_ms: int = -1) -> String:
 	var runtime: RefCounted = host.object_shard_m4_runtime
 	var failure: String = str(runtime.held_reason)
 	if failure.is_empty(): failure = object_shard_m4_port.held_reason()
+	if failure == "MaterialPreparationFailed":
+		return "Held: Material preparation failed · Structures → Save diagnostics; restart application to retry"
 	if not failure.is_empty():
 		return "Held: %s · Structures → Save diagnostics; Restore start to recover" % failure
+	if not runtime.materials_ready(): return "Preparing structure materials…"
 	if not runtime.owns_terrain():
 		return "Paused · Play to start structures" if host.paused and runtime.phase == "AwaitingFirstNativeTick" else "Starting"
 	var now: int = Time.get_ticks_msec() if now_ms < 0 else now_ms
@@ -2196,6 +2201,21 @@ func _pump_object_shard_pointer(pressed: bool = false) -> void:
 	object_shard_m4_action(pos,action,runtime.visible_observation(),target)
 
 func _world_input(event: InputEvent) -> void:
+	if object_shard_m4_port.enabled and not host.object_shard_m4_runtime.materials_ready():
+		# Preparation admits no paint/cut through an earlier actor or PAINT
+		# interceptor, but the retained canvas remains navigable.
+		if event is InputEventMouseButton:
+			if event.button_index == MOUSE_BUTTON_MIDDLE:
+				_pan = event.pressed
+				if _pan: _camera.select(0)
+			elif event.pressed and event.button_index in [MOUSE_BUTTON_WHEEL_UP,MOUSE_BUTTON_WHEEL_DOWN]:
+				zoom_by(-1 if event.button_index == MOUSE_BUTTON_WHEEL_UP else 1)
+			elif event.pressed and event.button_index in [MOUSE_BUTTON_LEFT,MOUSE_BUTTON_RIGHT]:
+				refuse(object_shard_user_status())
+		elif event is InputEventMouseMotion and _pan:
+			var area: Rect2 = host.view_content_rect()
+			if area.has_area(): _set_view(Vector2(host.camera_origin)-event.relative*Vector2(host.current_view_size)/area.size,host.current_view_size)
+		return
 	# An external reciprocal job owns this source until it settles, including
 	# when its dock is hidden or territory painting is switched off. PAINT's
 	# own gesture routing remains unchanged when that separate job is idle.
@@ -2327,7 +2347,8 @@ func _process(_delta: float) -> void:
 		Fleet.restore_registry(_reload_rollback)
 		_reload_rollback.clear()
 	if not applied.is_empty() and _camera.selected == 1: focus_selected()
-	if Time.get_ticks_msec()-_last_status_ms < 150: return
+	var preparing_materials: bool = object_shard_m4_port.enabled and not host.object_shard_m4_runtime.materials_ready()
+	if not preparing_materials and Time.get_ticks_msec()-_last_status_ms < 150: return
 	_last_status_ms = Time.get_ticks_msec()
 	var cursor: Vector2i = host.view_pixel_from_local_point(host.world_view.get_local_mouse_position())
 	if cursor.x >= 0: cursor += Vector2i(host.camera_origin.floor())
@@ -2381,6 +2402,8 @@ func _process(_delta: float) -> void:
 			# The status label is capped at two lines. Put a protective refusal
 			# before routine cell/source counters so it cannot be clipped away.
 			_status.text = "Structures " + object_shard_user_status() + "\n" + _status.text
+		elif preparing_materials:
+			_status.text = "Preparing structure materials…\n" + _status.text
 	_status.tooltip_text = _status.text
 	if object_shard_m4_port.enabled:
 		var bounds: Dictionary = host.object_shard_m4_runtime.capabilities

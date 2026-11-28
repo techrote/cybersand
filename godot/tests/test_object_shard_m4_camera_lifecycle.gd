@@ -3,13 +3,27 @@ extends SceneTree
 # Ordinary native Workbench plus retained material publications. The injected
 # Held state tests inspectability only; it does not claim the owner's cut order.
 const Fixture = preload("res://tests/support/object_shard_m4_workbench_fixture.gd")
+const Overlay = preload("res://scripts/object_shard_workbench_overlay.gd")
 const Watchdogs = preload("res://tests/support/ci_execution_policy.gd")
 var f: RefCounted
 var observations: Array[Dictionary] = []
 var output: String = ""
+var preparation_frames: int = 0
+var preparing_status_seen: bool = false
+var preparation_advanced_physics: bool = false
+var preparation_changed_pause: bool = false
+var initial_preparation: Dictionary = {}
 
 func _initialize() -> void:
 	_run.call_deferred()
+
+func _observe_material_preparation() -> void:
+	if f==null or f.host==null or f.host.shared_workbench==null: return
+	if Overlay.material_preparation_observation().state != "preparing": return
+	preparation_frames += 1
+	preparing_status_seen = preparing_status_seen or f.host.shared_workbench._status.text.begins_with("Preparing structure materials")
+	preparation_advanced_physics = preparation_advanced_physics or f.runtime().physical_steps!=0
+	preparation_changed_pause = preparation_changed_pause or not f.host.paused
 
 func _view(label: String,origin: Vector2,extent: Vector2i) -> void:
 	f.bench._camera.select(0)
@@ -102,7 +116,17 @@ func _run() -> void:
 		if argument.begins_with("--output="): output = argument.trim_prefix("--output=")
 	if not output.is_empty(): DirAccess.make_dir_recursive_absolute(output)
 	f = Fixture.new(self)
+	if DisplayServer.get_name() != "headless": RenderingServer.frame_post_draw.connect(_observe_material_preparation)
 	if not await f.open("tower"): await _finish(); return
+	initial_preparation = Overlay.material_preparation_observation()
+	if DisplayServer.get_name() == "headless":
+		f.expect(initial_preparation.state=="headless" and not initial_preparation.rendered and initial_preparation.runs==0,
+			"headless admission explicitly records that no graphical preparation was performed")
+	else:
+		f.expect(initial_preparation.state=="ready" and initial_preparation.rendered and initial_preparation.runs==1,
+			"ordinary Structures admission waits for its one real shader preparation draw")
+		f.expect(preparation_frames>0 and preparing_status_seen and not preparation_advanced_physics and not preparation_changed_pause,
+			"Preparing structure materials is visible before readiness without changing Pause or structural physical time")
 	if not await f.cut_supports("tower"): await _finish(); return
 	f.play()
 	if not await f.until(func(): return f.body_count()>0,"ordinary cut creates owned material body"):
@@ -122,6 +146,9 @@ func _run() -> void:
 			materials_match = materials_match and int(bytes[cell*2])==int(shard.materials[cell])
 		f.expect(materials_match,"every RG8 material byte preserves authoritative carrier identity")
 		f.expect(f.runtime().overlay.textures[int(shard.id)].projected,"actual detached body selects shared material finish")
+		if DisplayServer.get_name() != "headless":
+			f.expect(f.runtime().overlay.textures[int(shard.id)].sprite.material.shader.get_instance_id()==int(initial_preparation.shader_instance_id),
+				"first native detached body reuses the exact admitted shared shader")
 	await _view("paused-pan-zoom",Vector2(160,240),Vector2i(320,180))
 	root.size = Vector2i(1024,768)
 	await _view("paused-resize",Vector2(110,160),Vector2i(256,144))
@@ -175,14 +202,18 @@ func _run() -> void:
 	await f.until(func(): return f.tick()>0,"replacement scene completes its first native tick")
 	await f.pause()
 	await _view("scene-replacement",Vector2.ZERO,Vector2i(512,512))
+	f.expect(Overlay.material_preparation_observation()==initial_preparation,
+		"Restore and scene replacement retain the process-shared material preparation without another cold admission")
 	await _finish()
 
 func _finish() -> void:
 	f.validate_display()
 	var display: Dictionary = f.display_witness()
+	if RenderingServer.frame_post_draw.is_connected(_observe_material_preparation): RenderingServer.frame_post_draw.disconnect(_observe_material_preparation)
 	await f.close()
 	print(JSON.stringify({"schema":"objectshard-m4-camera-lifecycle-v1","checks":f.checks,"failures":f.failures,
 		"source_commit":OS.get_environment("CYBERSAND_SOURCE_REVISION"),"display_driver":DisplayServer.get_name(),
-		"observations":observations,"display":display,
+		"observations":observations,"display":display,"material_preparation":Overlay.material_preparation_observation(),
+		"preparation_status_frames":preparation_frames,"preparing_status_seen":preparing_status_seen,
 		"scope":"actual ordinary native/Rapier Workbench; camera/zoom/resize in active, paused and deliberately injected Held state; Restore and scene replacement; no claim to reproduce original owner cut order"}))
 	quit(0 if f.failures.is_empty() else 1)

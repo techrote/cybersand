@@ -46,12 +46,12 @@ func _setup_seed(seed: int) -> bool:
 	if not await f.until(f.installed,"seed authored World installed"): return false
 	f.bench.set_camera(2)
 	f.play()
-	if not await f.until(func(): return f.runtime().physics_ready(),"seed owner and actual Main physics bound"): return false
+	if not await f.until(func(): return f.runtime().owns_terrain(),"seed owner and actual Main physics bound"): return false
 	await f.pause()
 	f.bench._brush.value = 3
 	if not f.expect(f.bench.paint(Vector2i(147,424),0),"seed ordinary Erase cuts the genuine support"): return false
 	f.play()
-	if not await f.until(func(): return f.body_count()>0 and f.runtime().physics_ready(),"seed construction becomes a native-owned Rapier body"): return false
+	if not await f.until(func(): return f.body_count()>0,"seed construction becomes a native-owned Rapier body"): return false
 	await f.pause()
 	if not await f.until(_stable,"seed copied World and moving publication settle together"): return false
 	expected_wood = BASE_WOOD
@@ -166,7 +166,7 @@ func _action(kind: String, random: RandomNumberGenerator, row: Dictionary) -> bo
 			f.bench.set_camera(2)
 			f.play()
 			if not await f.until(func(): return int(f.runtime().capabilities.get("world_generation",0))>generation \
-				and f.body_count()>0 and f.runtime().physics_ready(),"fuzz fresh owner re-detaches the authored construction"): return false
+				and f.body_count()>0,"fuzz fresh owner re-detaches the authored construction"): return false
 			await f.pause()
 			expected_wood = BASE_WOOD
 			expected_brick = BASE_BRICK

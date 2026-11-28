@@ -73,7 +73,9 @@ func _prepare_sleeping() -> bool:
 	if not await f.until(f.installed,"sleep workload installed"): return false
 	f.bench.set_camera(2)
 	f.play()
-	if not await f.until(func(): return f.runtime().physics_ready(),"sleep workload attaches ordinary owners"): return false
+	# Ready may exist only between Main's idle and physical callbacks while
+	# playing. Wait for durable attachment, then use the exact Pause barrier.
+	if not await f.until(func(): return f.runtime().owns_terrain(),"sleep workload attaches ordinary owners"): return false
 	if not await f.pause(): return false
 	f.bench._brush.value = 2
 	for y: int in [450,454,458,461]:

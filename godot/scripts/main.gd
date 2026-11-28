@@ -2302,8 +2302,8 @@ func _physics_process(_delta: float) -> void:
 	# fixed callback can start its one new interval. Waiting only in _process
 	# makes a completed worker receipt miss another complete physics frame.
 	if object_shard_m4_runtime.enabled: object_shard_m4_runtime.poll(self)
-	if object_shard_m4_runtime.enabled and object_shard_m4_runtime.owns_terrain() \
-		and not object_shard_m4_runtime.physics_ready(): return
+	if object_shard_m4_runtime.enabled and (not object_shard_m4_runtime.materials_ready() \
+		or (object_shard_m4_runtime.owns_terrain() and not object_shard_m4_runtime.physics_ready())): return
 	if shared_workbench != null and not _workbench_frame_error.is_empty(): return
 	if _pending_physical_candidate != null:
 		# The retained manually stepped space stays at its actual prior pose.

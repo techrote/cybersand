@@ -21,9 +21,9 @@ const MAX_OBSERVED_ROTATION: float = PI / 2.0
 # Mirror native contact::motion_envelope. Extra angular displacement on a small
 # offcut costs at most four cells of conservative corner arc. The original
 # translation/corner/sampling budgets and the large-body .20 ceiling remain.
-static func segment_rotation_limit(bounds_diagonal: float) -> float:
-	if not is_finite(bounds_diagonal) or bounds_diagonal <= 0.0: return 0.0
-	return minf(MAX_OBSERVED_ROTATION,maxf(MAX_SEGMENT_ROTATION,SMALL_BODY_ROTATION_ARC/bounds_diagonal))
+static func segment_rotation_limit(rotation_radius: float) -> float:
+	if not is_finite(rotation_radius) or rotation_radius <= 0.0: return 0.0
+	return minf(MAX_OBSERVED_ROTATION,maxf(MAX_SEGMENT_ROTATION,SMALL_BODY_ROTATION_ARC/rotation_radius))
 
 var session: int = 0
 var body_capacity: int = MAX_BODIES
@@ -159,6 +159,8 @@ func reserve_body(shard: Dictionary) -> Dictionary:
 		return _refuse("RetiredBodyIdentity")
 	if bodies.size() >= body_capacity or not _valid_rectangles(shard.rectangles, MAX_SHAPES_PER_BODY):
 		return _refuse("ShapeCapacity")
+	var domain: Dictionary = _motion_domain(shard)
+	if domain.is_empty(): return _refuse("InvalidMotionDomain")
 	var pose := Transform2D(float(shard.get("rotation", 0.0)), Vector2(
 		float(shard.get("position_x", shard.origin_x)), float(shard.get("position_y", shard.origin_y))))
 	var reserved: Dictionary = _new_compound(shard.rectangles, pose, true)
@@ -176,6 +178,10 @@ func reserve_body(shard: Dictionary) -> Dictionary:
 	reserved["com"] = Vector2(float(shard.com_x), float(shard.com_y))
 	reserved["rectangles"] = PackedInt32Array(shard.rectangles)
 	reserved["bounds_diagonal"] = _bounds_diagonal(shard)
+	reserved["motion_reference"] = domain.reference
+	reserved["motion_radius"] = domain.radius
+	reserved["rotation_radius"] = domain.rotation_radius
+	reserved["motion_material_revision"] = int(shard.get("material_revision",0))
 	reserved["last_geometry_step"] = steps
 	reserved["last_geometry_usec"] = 0
 	reserved["last_sleeping"] = false
@@ -253,6 +259,8 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 	if revision == int(body.geometry_revision):
 		if not _same_installed_geometry(shard, body):
 			return _refuse("GeometryDigestConflict")
+		var refreshed: Dictionary = refresh_motion_domain(shard)
+		if not refreshed.get("ok",false): return refreshed
 		return _body_receipt(shard, body)
 	if not _valid_rectangles(shard.rectangles, MAX_SHAPES_PER_BODY):
 		return _refuse("ShapeCapacity")
@@ -263,6 +271,8 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 		bodies.erase(int(shard.id))
 		return {"ok": true, "retired_body": true, "session": session,
 			"id": int(shard.id), "generation": int(shard.generation), "geometry_revision": revision}
+	var domain: Dictionary = _motion_domain(shard)
+	if domain.is_empty(): return _refuse("InvalidMotionDomain")
 	# Cargo can change mass without changing rigid occupancy. Keep existing shape
 	# handles/contact manifolds when the exact rectangle publication is unchanged.
 	var shapes_changed: bool = PackedInt32Array(shard.rectangles) != body.rectangles
@@ -310,6 +320,10 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 	body["com"] = new_com
 	body["rectangles"] = PackedInt32Array(shard.rectangles)
 	body["bounds_diagonal"] = _bounds_diagonal(shard)
+	body["motion_reference"] = domain.reference
+	body["motion_radius"] = domain.radius
+	body["rotation_radius"] = domain.rotation_radius
+	body["motion_material_revision"] = int(shard.get("material_revision",0))
 	body["last_geometry_step"] = steps
 	body["last_geometry_usec"] = Time.get_ticks_usec() - started
 	_event("GeometryInstalled", int(shard.id), {"geometry_revision": revision,
@@ -318,6 +332,33 @@ func install_geometry(shard: Dictionary) -> Dictionary:
 		"install_usec": body.last_geometry_usec})
 	_record("geometry_install", int(body.last_geometry_usec))
 	return _body_receipt(shard, body)
+
+
+func refresh_motion_domain(shard: Dictionary) -> Dictionary:
+	# Products can move within retained native storage without changing rigid
+	# geometry. Refresh the published occupied-carrier domain at the exact
+	# between-interval owner barrier; never alter a RID or pending physical step.
+	if not _main_owner() or _motion_in_progress() or motion_refused:
+		return {"ok":false,"outcome":"MotionBarrierPending"}
+	var body: Dictionary = _matching(shard)
+	if body.is_empty() or int(shard.geometry_revision)!=int(body.geometry_revision) \
+		or str(shard.geometry_digest)!=str(body.geometry_digest) \
+		or PackedInt32Array(shard.rectangles)!=body.rectangles:
+		return {"ok":false,"outcome":"StaleMotionGeometry"}
+	var revision: int = int(shard.get("material_revision",0))
+	if revision<int(body.get("motion_material_revision",0)):
+		return {"ok":false,"outcome":"StaleMotionMaterial"}
+	var domain: Dictionary = _motion_domain(shard)
+	if domain.is_empty() or not Vector2(domain.reference).is_equal_approx(body.com):
+		return {"ok":false,"outcome":"InvalidMotionDomain"}
+	if revision==int(body.get("motion_material_revision",0)) and \
+		(float(domain.radius)!=float(body.motion_radius) or float(domain.rotation_radius)!=float(body.rotation_radius)):
+		return {"ok":false,"outcome":"MotionDomainIdentityConflict"}
+	body.motion_reference = domain.reference
+	body.motion_radius = domain.radius
+	body.rotation_radius = domain.rotation_radius
+	body.motion_material_revision = revision
+	return {"ok":true,"outcome":"ExactMaterialMotionDomain","material_revision":revision}
 
 func freeze_for_reabsorption(shard: Dictionary, transaction: int) -> Dictionary:
 	if not _main_owner() or _motion_in_progress() or motion_refused:
@@ -364,12 +405,13 @@ func capture_completed_main_step(main_step_serial: int, completed_delta: float =
 		var previous: Transform2D = body.sampled_pose
 		var angular: float = float(PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
 		var angle: float = wrapf(pose.get_rotation()-float(body.wrapped_rotation),-PI,PI)
-		var distance: float = pose.origin.distance_to(previous.origin)
-		var corner_motion: float = distance+float(body.bounds_diagonal)*absf(angle)
-		var evidence := {"id":id,"delta":completed_delta,"translation":distance,"rotation":angle,"corner_motion":corner_motion}
+		var distance: float = (pose*body.motion_reference).distance_to(previous*body.motion_reference)
+		var corner_motion: float = distance+float(body.motion_radius)*absf(angle)
+		var evidence := {"id":id,"delta":completed_delta,"translation":distance,"rotation":angle,"corner_motion":corner_motion,
+			"storage_origin_translation":pose.origin.distance_to(previous.origin),"motion_reference":body.motion_reference}
 		if not pose.is_finite() or not is_finite(angular) or absf(angular)*completed_delta>=PI:
 			return _motion_hold("UnresolvedCompleteRotation",evidence)
-		if distance>MAX_SEGMENT_TRANSLATION or absf(angle)>segment_rotation_limit(float(body.bounds_diagonal)) or corner_motion>MAX_SEGMENT_CORNER_MOTION:
+		if distance>MAX_SEGMENT_TRANSLATION or absf(angle)>segment_rotation_limit(float(body.rotation_radius)) or corner_motion>MAX_SEGMENT_CORNER_MOTION:
 			return _motion_hold("SegmentMotionEnvelopeExceeded",evidence)
 		observed[id] = {"pose":pose,"rotation":float(body.rotation)+angle,
 			"sleeping":bool(PhysicsServer2D.body_get_state(body.rid,PhysicsServer2D.BODY_STATE_SLEEPING))}
@@ -458,7 +500,7 @@ func step() -> Dictionary:
 			motion_refused = true
 			return _refuse("UnresolvedCompleteRotation")
 		var delta: float = wrapf(wrapped - float(body.wrapped_rotation), -PI, PI)
-		if absf(delta) > segment_rotation_limit(float(body.bounds_diagonal)) + 0.00001:
+		if absf(delta) > segment_rotation_limit(float(body.rotation_radius)) + 0.00001:
 			motion_refused = true
 			return _refuse("RotationEnvelopeExceeded")
 		body["rotation"] = float(body.rotation) + delta
@@ -559,8 +601,8 @@ func advance_motion_segment() -> Dictionary:
 		if speed > 0.0:
 			delta = minf(delta, 0.5 * MAX_SEGMENT_TRANSLATION / speed)
 		if angular > 0.0:
-			delta = minf(delta, 0.5 * segment_rotation_limit(float(body.bounds_diagonal)) / angular)
-		var corner_speed: float = speed + float(body.bounds_diagonal) * angular
+			delta = minf(delta, 0.5 * segment_rotation_limit(float(body.rotation_radius)) / angular)
+		var corner_speed: float = speed + float(body.motion_radius) * angular
 		if corner_speed > 0.0:
 			delta = minf(delta, 0.5 * MAX_SEGMENT_CORNER_MOTION / corner_speed)
 	var available: int = MAX_MOTION_SUBSTEPS - int(last_motion.substeps)
@@ -586,15 +628,16 @@ func advance_motion_segment() -> Dictionary:
 		var pose: Transform2D = PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_TRANSFORM)
 		var angular: float = float(PhysicsServer2D.body_get_state(body.rid, PhysicsServer2D.BODY_STATE_ANGULAR_VELOCITY))
 		var angle: float = wrapf(pose.get_rotation() - float(body.wrapped_rotation), -PI, PI)
-		var distance: float = pose.origin.distance_to(previous[id].origin)
-		var corner_motion: float = distance + float(body.bounds_diagonal) * absf(angle)
+		var distance: float = (pose*body.motion_reference).distance_to(previous[id]*body.motion_reference)
+		var corner_motion: float = distance + float(body.motion_radius) * absf(angle)
 		var evidence: Dictionary = {"id": id, "delta": delta, "translation": distance,
 			"rotation": angle, "corner_motion": corner_motion, "angular_velocity": angular,
+			"storage_origin_translation":pose.origin.distance_to(previous[id].origin),"motion_reference":body.motion_reference,
 			"before_x": previous[id].origin.x, "before_y": previous[id].origin.y,
 			"after_x": pose.origin.x, "after_y": pose.origin.y}
 		if not pose.origin.is_finite() or not is_finite(angle) or not is_finite(angular) or absf(angular) * delta >= PI:
 			return _motion_hold("UnresolvedCompleteRotation", evidence)
-		if distance > MAX_SEGMENT_TRANSLATION or absf(angle) > segment_rotation_limit(float(body.bounds_diagonal)) or corner_motion > MAX_SEGMENT_CORNER_MOTION:
+		if distance > MAX_SEGMENT_TRANSLATION or absf(angle) > segment_rotation_limit(float(body.rotation_radius)) or corner_motion > MAX_SEGMENT_CORNER_MOTION:
 			return _motion_hold("SegmentMotionEnvelopeExceeded", evidence)
 		next_angles[id] = {"rotation": float(body.rotation) + angle, "wrapped": pose.get_rotation()}
 	# All body segments passed before any new angle is published.
@@ -702,6 +745,39 @@ func _motion_hold(reason: String, detail: Dictionary) -> Dictionary:
 	return {"ok": false, "outcome": reason, "session": session, "motion": last_motion.duplicate(true)}
 
 
+func _motion_domain(shard: Dictionary) -> Dictionary:
+	var reference := Vector2(float(shard.get("com_x",NAN)),float(shard.get("com_y",NAN)))
+	if not reference.is_finite() or shard.rectangles.is_empty(): return {}
+	var low := Vector2(INF,INF)
+	var high := Vector2(-INF,-INF)
+	for offset: int in range(0,shard.rectangles.size(),4):
+		var point := Vector2(float(shard.rectangles[offset]),float(shard.rectangles[offset+1]))
+		low = low.min(point)
+		high = high.max(point+Vector2(float(shard.rectangles[offset+2]),float(shard.rectangles[offset+3])))
+	if int(shard.get("width",0))>0 and int(shard.get("height",0))>0:
+		low = (low-Vector2.ONE).max(Vector2.ZERO)
+		high = (high+Vector2.ONE).min(Vector2(float(shard.width),float(shard.height)))
+	var extent: Vector2 = (low-reference).abs().max((high-reference).abs())
+	var radius: float = extent.length()
+	var rotation_radius: float = (high-low).length()
+	if shard.has("motion_contract"):
+		if shard.motion_contract!="material-com-reference-v1" \
+			or shard.get("motion_material_revision")!=shard.get("material_revision") \
+			or shard.get("motion_geometry_revision")!=shard.get("geometry_revision"): return {}
+		for key: String in ["motion_reference_x","motion_reference_y","motion_radius","motion_rotation_radius"]:
+			if not (shard.get(key) is float or shard.get(key) is int) or not is_finite(float(shard[key])): return {}
+		if not Vector2(float(shard.motion_reference_x),float(shard.motion_reference_y)).is_equal_approx(reference) \
+			or float(shard.motion_radius)+.0001<radius or float(shard.motion_rotation_radius)+.0001<rotation_radius: return {}
+		radius = float(shard.motion_radius)
+		rotation_radius = float(shard.motion_rotation_radius)
+	elif shard.has("materials"):
+		# A real material publication must carry the occupied Product/Cargo bound;
+		# rectangle-only fixtures have no native material inventory to omit.
+		return {}
+	if not is_finite(radius) or radius<=0.0 or not is_finite(rotation_radius) or rotation_radius<=0.0: return {}
+	return {"reference":reference,"radius":radius,"rotation_radius":rotation_radius}
+
+
 func _bounds_diagonal(shard: Dictionary) -> float:
 	if int(shard.get("width", 0)) > 0 and int(shard.get("height", 0)) > 0:
 		return Vector2(float(shard.width), float(shard.height)).length()
@@ -779,11 +855,12 @@ func diagnostics() -> Dictionary:
 			"mass": PhysicsServer2D.body_get_param(body.rid, PhysicsServer2D.BODY_PARAM_MASS),
 			"com_x": center.x, "com_y": center.y,
 			"inertia": PhysicsServer2D.body_get_param(body.rid, PhysicsServer2D.BODY_PARAM_INERTIA),
+			"motion_reference":body.motion_reference,"motion_radius":body.motion_radius,"rotation_radius":body.rotation_radius,
 			"reported_contacts": state.get_contact_count() if state != null else -1,
 			"shape_count": PhysicsServer2D.body_get_shape_count(body.rid),
 			"last_geometry_step": body.last_geometry_step, "last_geometry_usec": body.last_geometry_usec,
-			"segment_rotation_limit": segment_rotation_limit(float(body.bounds_diagonal)),
-			"nominal_rotation_headroom": segment_rotation_limit(float(body.bounds_diagonal)) - absf(angular) * FIXED_DELTA,
+			"segment_rotation_limit": segment_rotation_limit(float(body.rotation_radius)),
+			"nominal_rotation_headroom": segment_rotation_limit(float(body.rotation_radius)) - absf(angular) * FIXED_DELTA,
 			"nominal_translation_headroom": 4.0 - velocity.length() * FIXED_DELTA})
 	return {"session": session, "physics_steps": steps, "last_sampled_pose_serial": pose_serial,
 		"motion_refused": motion_refused, "last_error": last_error,

@@ -125,13 +125,20 @@ sleep state or manufacture angular energy.
 
 ## Geometry-sensitive segment admission — 28 November candidate
 
-The native coordinator, contact sweeps and Main bridge use one geometry-sensitive
-angular bound, `min(pi/2, max(0.20, 4/r))`, where `r` is the stable storage-bound
-corner radius used by the existing motion proof. A corner radius of at least
-20 cells retains the historical 0.20-radian bound. Smaller bodies can rotate
-further only while their added rotational arc remains at most four cells. The four-cell rotational allowance is the existing eight-cell
-corner budget less the four-cell translation budget.
-Translation remains at most four cells, combined corner travel at most eight,
+The native coordinator, contact sweeps and Main bridge use one occupied-material
+motion domain. Its reference point is the actual physical centre of mass; its
+extent includes occupied Structural, Cargo and Product carriers plus their
+one-cell contact ring, clipped to existing storage. Empty storage abandoned by
+erosion is not physical material. Native local indices, captured bounds and
+body lattice poses remain unchanged.
+
+The angular bound is `min(pi/2, max(0.20, 4/span))`, where `span` is the diagonal
+of that active carrier/contact enclosure. A span of at least 20 cells retains
+the historical 0.20-radian bound. Smaller domains can rotate further within the
+existing four-cell rotational allowance (eight-cell corner budget minus
+four-cell translation budget). Combined corner travel uses the actual maximum
+radius from the centre of mass to the occupied contact enclosure.
+Centre-of-mass translation remains at most four cells, combined corner travel at most eight,
 sweep spacing at most half a cell, and the existing 32-segment capacity remains.
 The [physics witness](../audits/objectshard-m4-reliability-20261128/physics.md)
 records actual off-centre Rapier impacts, independent barrel scenarios and
@@ -351,6 +358,13 @@ and scene replacement. The [presentation evidence](../audits/objectshard-m4-reli
 keeps these scopes separate.
 
 The principal status readout groups short control/ACK phases as **Running**.
+On the first opt-in admission, **Preparing structure materials…** precedes one
+actual two-pixel offscreen material/Empty shader draw. The shared shader remains available
+for subsequent bodies and scene replacements; the temporary viewport is retired.
+Until completion, ordinary editing/Play admission is unavailable and Main starts
+no new physical interval. The user's Pause state is retained. The preparation
+has no native World, body or material mutation. Headless execution records an
+explicit no-render admission path and cannot qualify shader preparation.
 It shows **Paused/Pausing**, debounced **Editing / rebuilding**, sustained
 **Waiting for native transaction**, and a leading actionable **Held** refusal.
 Detailed internal phases remain in the tooltip and diagnostics. A status label

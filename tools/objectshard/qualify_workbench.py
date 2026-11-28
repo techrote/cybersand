@@ -27,9 +27,11 @@ from qualify_lab import RAPIER_HASHES, VERSION, require_custody
 from process_resources import run_observed_case
 
 FOCUSED = (
+    ("test_object_shard_lab", "objectshard-lab-integration-test-v1"),
     ("test_object_shard_fragment_motion", "objectshard-fragment-motion-v1"),
     ("test_object_shard_m4_remote_barrel", "objectshard-m4-remote-barrel-v1"),
     ("test_object_shard_m4_small_fragment_chain", "objectshard-m4-small-fragment-native-chain-v1"),
+    ("test_object_shard_m4_sparse_parent_motion", "objectshard-m4-sparse-parent-motion-v1"),
     ("test_object_shard_m4_fresh_barrel", "objectshard-m4-fresh-barrel-v1"),
     ("test_object_shard_m4_camera_lifecycle", "objectshard-m4-camera-lifecycle-v1"),
     ("test_object_shard_m4_receipt_scheduling", "objectshard-m4-receipt-scheduling-v1"),
@@ -335,6 +337,7 @@ def qualify(args: argparse.Namespace) -> dict:
             # DummyRenderer cannot supply texture updates/framebuffers. Both
             # source and clean extracted application execute these real draws.
             for name, schema in (("test_object_shard_m4_overlay_identity", "objectshard-m4-overlay-identity-v1"),
+                                 ("test_object_shard_m4_material_preparation_render", "objectshard-m4-material-preparation-v1"),
                                  ("test_object_shard_m4_material_presentation_render", "objectshard-m4-material-presentation-v1")):
                 flags = ("--rendering-driver", "opengl3_angle" if sys.platform == "win32" else "opengl3",
                          "--script", "res://tests/" + name + ".gd", "--",

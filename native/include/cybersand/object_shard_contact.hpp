@@ -2,6 +2,7 @@
 
 #include "cybersand/object_shard.hpp"
 #include <algorithm>
+#include <bit>
 #include <cmath>
 #include <cstdint>
 #include <limits>
@@ -34,6 +35,12 @@ struct Frame {
     bool valid{};
 };
 struct Aabb { double min_x{}, min_y{}, max_x{}, max_y{}; };
+struct MotionDomain {
+    Vec reference{}; // Stable material-local centre of mass for this geometry.
+    double radius{}; // All occupied carriers and their bounded contact ring.
+    double rotation_radius{}; // Active span diagonal preserves the large-body angular ceiling.
+    bool valid{};
+};
 struct GridRange {
     std::int64_t min_x{}, min_y{}, max_x{}, max_y{}; // Inclusive candidate cells.
     bool valid{};
@@ -48,7 +55,7 @@ struct Envelope {
 
 // The fixed large-body angular ceiling is not a useful displacement bound for
 // a low-inertia offcut. Permit additional rotation only while the conservative
-// origin-to-farthest-corner arc remains <= 4 cells, and never beyond a quarter
+// reference-to-farthest-corner arc remains <= 4 cells, and never beyond a quarter
 // turn. Translation, total corner travel, sample spacing and work capacity are
 // unchanged. Four cells is the existing total corner allowance minus the
 // existing translation allowance (8 - 4), not a larger total motion budget.
@@ -71,6 +78,49 @@ inline constexpr double kMaximumObservedRotation = 1.57079632679489661923;
     result.max_rotation = segment_rotation_limit(magnitude(static_cast<double>(width),
         static_cast<double>(height)), nominal_rotation);
     return result;
+}
+[[nodiscard]] inline Envelope motion_envelope(MotionDomain domain,
+        double max_translation = 4.0, double nominal_rotation = 0.20) noexcept {
+    Envelope result;
+    result.max_translation = max_translation;
+    result.max_rotation = domain.valid ? segment_rotation_limit(domain.rotation_radius, nominal_rotation) : 0.0;
+    return result;
+}
+
+[[nodiscard]] inline MotionDomain motion_domain(const Shard& shard) noexcept {
+    const auto bounds=shard.bounds();
+    const auto& mass=shard.geometry().mass;
+    if (!bounds.width || !bounds.height || !std::isfinite(mass.mass) || mass.mass<=0 ||
+        !std::isfinite(mass.com_x) || !std::isfinite(mass.com_y) ||
+        mass.com_x<0 || mass.com_y<0 || mass.com_x>bounds.width || mass.com_y>bounds.height) return {};
+    std::size_t min_x=bounds.width,min_y=bounds.height,max_x=0,max_y=0;
+    bool occupied=false;
+    const auto mask=shard.occupied_mask();
+    for (std::size_t word=0;word<mask.size();++word) {
+        auto bits=mask[word];
+        while (bits) {
+            const auto index=word*64+static_cast<std::size_t>(std::countr_zero(bits));
+            bits&=bits-1;
+            if (index>=shard.area()) return {};
+            const auto x=index%bounds.width,y=index/bounds.width;
+            min_x=std::min(min_x,x);min_y=std::min(min_y,y);
+            max_x=std::max(max_x,x);max_y=std::max(max_y,y);occupied=true;
+        }
+    }
+    if (!occupied) return {};
+    // Water ports include the one-cell Moore ring; Sand apertures are inside
+    // this same enclosure. Include Product and Cargo carriers, not only the
+    // current rigid rectangle cover, without treating abandoned Empty storage
+    // as physical material. Native local indices and capture origin stay fixed.
+    const auto low_x=static_cast<double>(min_x ? min_x-1 : 0);
+    const auto low_y=static_cast<double>(min_y ? min_y-1 : 0);
+    const auto high_x=static_cast<double>(std::min<std::size_t>(bounds.width,max_x+2));
+    const auto high_y=static_cast<double>(std::min<std::size_t>(bounds.height,max_y+2));
+    const auto dx=std::max(std::abs(low_x-mass.com_x),std::abs(high_x-mass.com_x));
+    const auto dy=std::max(std::abs(low_y-mass.com_y),std::abs(high_y-mass.com_y));
+    const auto radius=magnitude(dx,dy);
+    return {{mass.com_x,mass.com_y},radius,magnitude(high_x-low_x,high_y-low_y),
+        std::isfinite(radius) && radius>0};
 }
 struct Sweep {
     Outcome outcome{Outcome::Invalid};
@@ -109,10 +159,18 @@ struct PocketWitness {
     const auto dx = world.x - value.pose.x, dy = world.y - value.pose.y;
     return {value.cosine * dx + value.sine * dy, -value.sine * dx + value.cosine * dy};
 }
-[[nodiscard]] inline Pose interpolated_pose(Pose before, Pose after, double fraction) noexcept {
-    return {before.x + (after.x - before.x) * fraction,
-        before.y + (after.y - before.y) * fraction,
-        before.angle + (after.angle - before.angle) * fraction};
+[[nodiscard]] inline Pose interpolated_pose(Pose before, Pose after, double fraction,
+        Vec reference = {}) noexcept {
+    if (fraction<=0) return before;
+    if (fraction>=1) return after;
+    const auto first=to_world(frame(before),reference),last=to_world(frame(after),reference);
+    const auto angle=before.angle+(after.angle-before.angle)*fraction;
+    const auto cosine=std::cos(angle),sine=std::sin(angle);
+    // Interpolate one physical reference, then recover the unchanged lattice
+    // pose. Interpolating a remote storage origin would make erased Empty
+    // columns create a fictitious bowed material trajectory during rotation.
+    return {first.x+(last.x-first.x)*fraction-cosine*reference.x+sine*reference.y,
+        first.y+(last.y-first.y)*fraction-sine*reference.x-cosine*reference.y,angle};
 }
 [[nodiscard]] inline Aabb transformed_cell_aabb(const Frame& value,
         std::uint16_t x, std::uint16_t y) noexcept {
@@ -154,20 +212,22 @@ struct PocketWitness {
         std::abs(-dx * value.sine + dy * value.cosine) < limit;
 }
 
-[[nodiscard]] inline Sweep plan_sweep(Pose before, Pose after, std::uint16_t width,
-        std::uint16_t height, Envelope envelope = {}) noexcept {
-    if (!frame(before).valid || !frame(after).valid || width == 0 || height == 0 ||
+[[nodiscard]] inline Sweep plan_sweep(Pose before, Pose after, MotionDomain domain,
+        Envelope envelope = {}) noexcept {
+    if (!frame(before).valid || !frame(after).valid || !domain.valid || !finite(domain.reference) ||
+        !std::isfinite(domain.radius) || domain.radius<=0 ||
         !std::isfinite(envelope.max_translation) || !std::isfinite(envelope.max_rotation) ||
         !std::isfinite(envelope.max_corner_motion) || !std::isfinite(envelope.sample_spacing) ||
         envelope.max_translation < 0.0 || envelope.max_rotation < 0.0 ||
         envelope.max_corner_motion < 0.0 || envelope.sample_spacing <= 0.0 ||
         envelope.max_samples < 2 || envelope.max_samples > 128) return {};
-    const auto translation = magnitude(after.x - before.x, after.y - before.y);
+    const auto first=to_world(frame(before),domain.reference),last=to_world(frame(after),domain.reference);
+    if (!finite(first) || !finite(last)) return {};
+    const auto translation = magnitude(last.x-first.x,last.y-first.y);
     // Use the actual supplied angular interval. Do not alias an unobserved
     // complete revolution into zero motion by taking angle modulo 2*pi.
     const auto rotation = std::abs(after.angle - before.angle);
-    const auto corner_motion = translation + magnitude(static_cast<double>(width),
-        static_cast<double>(height)) * rotation;
+    const auto corner_motion = translation + domain.radius * rotation;
     if (translation > envelope.max_translation || rotation > envelope.max_rotation ||
         corner_motion > envelope.max_corner_motion)
         return {Outcome::Unsupported, 0, corner_motion, translation, rotation};
@@ -176,6 +236,11 @@ struct PocketWitness {
         return {Outcome::Capacity, 0, corner_motion, translation, rotation};
     return {Outcome::Accepted, static_cast<std::uint16_t>(steps + 1.0),
         corner_motion, translation, rotation};
+}
+[[nodiscard]] inline Sweep plan_sweep(Pose before, Pose after, std::uint16_t width,
+        std::uint16_t height, Envelope envelope = {}) noexcept {
+    const auto radius=magnitude(static_cast<double>(width),static_cast<double>(height));
+    return plan_sweep(before,after,MotionDomain{{},radius,radius,width!=0 && height!=0},envelope);
 }
 
 namespace detail {
@@ -257,7 +322,8 @@ namespace detail {
 // sole destination carrier. A wider aperture tolerates ordinary rotated raster
 // clearance without accepting trajectories through a side or retaining floor.
 [[nodiscard]] inline PocketWitness sand_pocket_witness(const Shard& shard,
-        Pose before, Pose after, Vec world_sand_center, Envelope envelope = {}) noexcept {
+        Pose before, Pose after, Vec world_sand_center, Envelope envelope = {},
+        MotionDomain domain = {}) noexcept {
     PocketWitness result;
     if (!finite(world_sand_center)) { result.outcome = Outcome::Invalid; return result; }
     if (shard.phase() != Phase::Active || shard.geometry_dirty() ||
@@ -265,7 +331,13 @@ namespace detail {
         result.outcome = Outcome::Stale; return result;
     }
     const auto bounds = shard.bounds();
-    const auto sweep = plan_sweep(before, after, bounds.width, bounds.height, envelope);
+    // Legacy explicit geometry callers keep their exact origin-based model;
+    // the coordinator supplies its material/COM domain consistently.
+    if (!domain.valid) {
+        const auto radius=magnitude(bounds.width,bounds.height);
+        domain={{},radius,radius,true};
+    }
+    const auto sweep = plan_sweep(before, after, domain, envelope);
     if (sweep.outcome != Outcome::Accepted) { result.outcome = sweep.outcome; return result; }
     const auto current = frame(after);
     const auto center = to_local(current, world_sand_center);
@@ -284,9 +356,11 @@ namespace detail {
 
     const auto angle_delta = after.angle - before.angle;
     const auto steps = static_cast<double>(sweep.samples - 1);
-    const auto radius = std::max(magnitude(world_sand_center.x - before.x, world_sand_center.y - before.y),
-        magnitude(world_sand_center.x - after.x, world_sand_center.y - after.y));
-    // For q(t)=R(-angle(t))*(grain-origin(t)), the second derivative norm is
+    const auto first_reference=to_world(frame(before),domain.reference);
+    const auto last_reference=to_world(frame(after),domain.reference);
+    const auto radius = std::max(magnitude(world_sand_center.x-first_reference.x,world_sand_center.y-first_reference.y),
+        magnitude(world_sand_center.x-last_reference.x,world_sand_center.y-last_reference.y));
+    // For q(t)=R(-angle(t))*(grain-reference_world(t))+reference_local, the second derivative norm is
     // bounded by a²*radius+2*|a|*translation. The /8*steps² interpolation bound
     // expands each tested chord, covering the curved local trajectory between
     // samples rather than merely checking a few unobstructed sample points.
@@ -295,7 +369,7 @@ namespace detail {
     bool crossed_aperture = already_inside;
     auto previous = old_local;
     for (std::uint16_t sample = 1; sample < sweep.samples; ++sample) {
-        const auto pose = interpolated_pose(before, after, static_cast<double>(sample) / steps);
+        const auto pose = interpolated_pose(before, after, static_cast<double>(sample) / steps,domain.reference);
         const auto next = to_local(frame(pose), world_sand_center);
         if (!detail::clear_segment(shard, previous, next, chord_error + kEpsilon)) return result;
         if (!crossed_aperture && previous.y <= static_cast<double>(y) && next.y > static_cast<double>(y)) {

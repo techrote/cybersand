@@ -80,6 +80,109 @@ func _inspect_delayed_segment(before: Dictionary) -> void:
 	evidence.delayed_segment = {"serial":row.serial,"native_receipt":receipt,
 		"actual_rapier_poses":poses,"clocks":delayed,"callbacks_without_consumption":16}
 
+func _begin_delayed_interval(single_step: bool) -> bool:
+	f.host.set_process(false)
+	f.host.set_physics_process(false)
+	if single_step:
+		if not f.expect(f.bench.step_once(),"an ordinary Step starts the idle-lease challenge"): return false
+	else:
+		if not f.play(): return false
+	var deadline: int = Time.get_ticks_msec()+15000
+	while int(f.runtime()._pending_serial)==0 and Time.get_ticks_msec()<deadline:
+		f.host._physics_process(1.0/60.0)
+		if int(f.runtime()._pending_serial)==0: await process_frame
+	while _peek_receipts().is_empty() and Time.get_ticks_msec()<deadline: await process_frame
+	return f.expect(int(f.runtime()._motion_lease)>0 and _peek_receipts().size()==1,
+		"the real worker is idle inside one admitted physical lease")
+
+func _pause_and_brush_during_lease() -> bool:
+	var before: Dictionary = _clocks()
+	var sand_before: int = f.material_count(2)
+	if not await _begin_delayed_interval(false): return false
+	if not f.expect(f.bench.paint(Vector2i(430,190),2),"ordinary Sand brush queues while a segment receipt is delayed"): return false
+	if not f.expect(f.bench.toggle_pause(),"ordinary Pause queues while the physical lease is still active"): return false
+	var delayed: Dictionary = _clocks()
+	var idle_before: int = int(f.host.simulation_worker.object_shard_owner_profile().segment_idle_polls)
+	for callback: int in range(16): await process_frame
+	f.expect(_clocks()==delayed and delayed.native_tick==before.native_tick,
+		"queued Pause and brush cannot advance chemistry or replay physical work during a delayed receipt")
+	f.expect(int(f.host.simulation_worker.object_shard_owner_profile().segment_idle_polls)>idle_before,
+		"the adversarial pause actually exercises the worker's idle leased path")
+	f.host.set_process(true)
+	f.host.set_physics_process(true)
+	if not await f.pause(): return false
+	var after: Dictionary = _clocks()
+	f.expect(after.native_tick==before.native_tick+1 and after.physical_intervals==before.physical_intervals+1,
+		"Pause completes its one already admitted native and physical interval exactly once")
+	# Existing actor-clock semantics suspend controller/equipment time
+	# immediately on Pause, even when an admitted material interval drains.
+	# The separately tested paused Step deliberately advances the actor once.
+	f.expect(after.actor_tick==before.actor_tick,"intervening Pause retains the existing immediate actor-clock suspension")
+	f.expect(f.material_count(2)>sand_before,"the queued ordinary brush drains after the lease into the coherent native World")
+	evidence.pause_and_brush = {"before":before,"delayed":delayed,"after":after,
+		"sand_before":sand_before,"sand_after":f.material_count(2)}
+	return true
+
+func _failed_motion_and_replacement() -> bool:
+	# A deliberately invalid protocol request must produce a full diagnostic
+	# publication. This separate negative changes only copied request fields;
+	# it supplies no replacement physics/material state and never steps Rapier.
+	f.host.set_process(false)
+	f.host.set_physics_process(false)
+	var before: Dictionary = _clocks()
+	var old_generation: int = int(f.frame().world_generation)
+	var deadline: int = Time.get_ticks_msec()+15000
+	while not f.runtime().acquire_interval() and Time.get_ticks_msec()<deadline: await process_frame
+	if not f.expect(int(f.runtime()._motion_lease)>0,"negative protocol case obtains an actual exact-source lease"): return false
+	var native_pose: Dictionary = f.frame().shards[0]
+	var bad_pose: Dictionary = {}
+	for key: String in ["session","id","generation","body_generation","geometry_revision","pose_serial",
+		"rotation","vx","vy","angular_velocity","sleeping"]: bad_pose[key] = native_pose[key]
+	bad_pose.x = native_pose.position_x
+	bad_pose.y = native_pose.position_y
+	bad_pose.geometry_revision = int(bad_pose.geometry_revision)+1
+	bad_pose.pose_serial = int(bad_pose.pose_serial)+1
+	var values: Dictionary = {"poses":[bad_pose],"final_segment":false,
+		"motion_lease":f.runtime()._motion_lease,
+		"workbench_sample":f.host.rapier_bridge.pack_material_motion_sample()}
+	for key: String in ["world_generation","shard_session","world_incarnation"]:
+		values[key] = f.runtime().capabilities[key]
+	var ticket: Dictionary = f.host.simulation_worker.object_shard_submit_owner_control("accept_motion",values)
+	if not f.expect(ticket.get("ok",false),"actual owner transport admits the bounded negative request for native validation"): return false
+	while _peek_receipts().is_empty() and Time.get_ticks_msec()<deadline: await process_frame
+	var rows: Array = f.host.simulation_worker.object_shard_take_owner_results(8)
+	if not f.expect(rows.size()==1,"the actual failed command returns one receipt"): return false
+	var row: Dictionary = rows[0]
+	f.expect(int(row.serial)==int(ticket.serial) and not row.result.get("ok",false) \
+		and not row.get("compact_motion",true) and row.frame.get("ok",false) \
+		and not row.frame.get("shards",[]).is_empty(),
+		"a real native motion refusal retains the complete diagnostic frame")
+	f.expect(_clocks()==before,"native rejection advances no semantic, actor or physical time")
+	evidence.failed_motion = {"outcome":row.result,"frame_sequence":row.frame.get("publication_sequence"),
+		"frame_shards":row.frame.get("shards",[]).size(),"before":before,"after":_clocks()}
+	if not f.expect(f.bench.restore_start(),"ordinary Restore start is admitted while the refused lease is idle"): return false
+	f.host.set_process(true)
+	f.host.set_physics_process(true)
+	if not await f.until(f.installed,"the replacement completes through the ordinary owner lifecycle"): return false
+	f.play()
+	if not await f.until(func(): return int(f.diagnostics().world_generation)>old_generation,
+		"Restore installs a different actual World generation after the idle lease"): return false
+	if not await f.pause(): return false
+	f.expect(f.runtime().held_reason.is_empty() and int(f.runtime()._motion_lease)==0 \
+		and f.host.simulation_worker.object_shard_owner_profile().motion_fence.lease==0,
+		"the retired lease cannot survive or replay into the restored World")
+	evidence.restored_generation = f.diagnostics().world_generation
+	return true
+
+func _shutdown_during_lease() -> void:
+	if not await _begin_delayed_interval(true): return
+	var worker: CyberSimulationWorker = f.host.simulation_worker
+	var before: Dictionary = _clocks()
+	await f.close()
+	f.expect(not worker._running and not worker._thread.is_started(),
+		"ordinary scene shutdown joins the real worker while its physical lease is idle")
+	evidence.shutdown = {"before":before,"worker_running":worker._running,"thread_started":worker._thread.is_started()}
+
 func _run() -> void:
 	f = Fixture.new(self)
 	if not await f.open("tower") or not await f.cut_supports("tower"):
@@ -134,12 +237,16 @@ func _run() -> void:
 		"normal idle publication resumes on the completed owner state")
 	f.validate_physics()
 	await f.validate_quantity_ledger()
+	if await _pause_and_brush_during_lease() and await _failed_motion_and_replacement():
+		await _shutdown_during_lease()
 	await _finish()
 
 func _finish() -> void:
 	if f.host!=null:
 		f.host.set_process(true)
 		f.host.set_physics_process(true)
+	f.validate_display()
+	evidence.display_coherence = f.display_witness()
 	await f.close()
 	print(JSON.stringify({"schema":"objectshard-m4-receipt-scheduling-v1",
 		"checks":f.checks,"failures":f.failures,"evidence":evidence,

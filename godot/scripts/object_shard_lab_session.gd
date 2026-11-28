@@ -470,7 +470,13 @@ func _synchronize() -> bool:
 		_failure("Terrain synchronization failed: " + str(installed))
 		return false
 	for shard: Dictionary in frame.get("shards", []):
-		if not bridge.bodies.has(int(shard.id)) or not shard.get("geometry_pending", false):
+		if not bridge.bodies.has(int(shard.id)):
+			continue
+		if not shard.get("geometry_pending",false):
+			var refreshed: Dictionary = bridge.refresh_motion_domain(shard)
+			if not refreshed.get("ok",false):
+				_failure("Motion domain held: "+str(refreshed))
+				return false
 			continue
 		var updated: Dictionary = bridge.install_geometry(shard)
 		if not updated.get("ok", false):

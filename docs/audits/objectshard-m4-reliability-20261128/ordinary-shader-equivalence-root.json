@@ -1,0 +1,39 @@
+{
+  "schema": "independent-root-ordinary-shader-equivalence-v1",
+  "old_source": "1ec3f214662f7d5a0a38ff727b684c15b41c067b",
+  "new_source": "60a71358de549877d65d0bcac08ef6e8bb1573c0",
+  "path": "godot/shaders/material_palette.gdshader",
+  "old_lf_sha256": "f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1",
+  "new_lf_sha256": "e278e05c1434ead33600081e542bff36fcfd58e011ef5aa6e9c90f1b04341e3c",
+  "variants": [
+    {
+      "command": [
+        "cpp",
+        "-P",
+        "-undef",
+        "-nostdinc",
+        "-x",
+        "c",
+        "-"
+      ],
+      "bytes": 108785,
+      "sha256": "b9e1cddade070486305946e961e1c9b116af505904633f682d43928492ff4d45",
+      "identical": true
+    },
+    {
+      "command": [
+        "cpp",
+        "-P",
+        "-undef",
+        "-nostdinc",
+        "-x",
+        "c",
+        "-DCYBER_BOUNDED_CROSSFADE",
+        "-"
+      ],
+      "bytes": 108826,
+      "sha256": "6c761f1be356c3aceeede2db219d8c46e8ece05a0c6e62d4a129a7ed2309146d",
+      "identical": true
+    }
+  ]
+}

@@ -569,6 +569,16 @@ REVIEWED_TRANSITIONS += ({'path': 'native/src/world.cpp',
   'issue': 281,
   'pr': 754},)
 
+# Ordinary shader output is byte-identical in both renderer variants. The
+# explicit ObjectShard define reuses those finishes for its separate carrier.
+REVIEWED_TRANSITIONS += ({'path': 'godot/shaders/material_palette.gdshader',
+  'from_lf_sha256': 'f686ca416b5b011751ddd5d38a24824742d01cb8d489b46710ee1f1fbb2a09c1',
+  'to_lf_sha256': 'e278e05c1434ead33600081e542bff36fcfd58e011ef5aa6e9c90f1b04341e3c',
+  'source_commit': '60a71358de549877d65d0bcac08ef6e8bb1573c0',
+  'record': 'docs/audits/2026-11-28-objectshard-material-shader-transition.md',
+  'issue': 281,
+  'pr': 754},)
+
 
 def lf(data: bytes) -> bytes:
     return data.replace(b"\r\n", b"\n")

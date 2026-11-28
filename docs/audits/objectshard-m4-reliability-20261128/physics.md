@@ -12,13 +12,17 @@ and a completed segment rotated 0.296370 radians with 0.236561 cells of lattice
 translation and 1.49395 cells of conservative corner movement. This is a
 representative collision reproduction, not the owner's original pointer trace.
 
-The native coordinator and actual Rapier bridge now use
-`min(pi/2, max(0.20, 4/r))`, where `r` is the conservative diagonal of the stable
-material storage bounds. The empty product ring remains inside that bound. A
-body with radius at least twenty cells retains 0.20 radians. Any additional allowed
-rotation moves the conservative farthest corner along an arc of at most four
-cells. This is the retained eight-cell total corner allowance minus the retained
-four-cell translation allowance; it introduces no larger total motion budget.
+The native coordinator and actual Rapier bridge now use a physical material
+reference: the current installed centre of mass. The motion domain encloses
+every occupied Structural, Cargo and Product carrier and its bounded one-cell
+contact ring. Empty columns retained after erosion do not count as material.
+`min(pi/2, max(0.20, 4/d))` bounds rotation, where `d` is that active domain's
+diagonal. Active spans of at least twenty cells retain 0.20 radians. The actual
+corner-motion bound uses the farthest domain corner's radius about COM, which
+is no larger than `d`. Additional allowed rotation therefore costs at most four
+cells of corner arc. This is the retained eight-cell total corner allowance
+minus the retained four-cell COM translation allowance; it introduces no larger
+total material-motion budget.
 
 The exact supplied continuous angular interval still enters native
 `contact::plan_sweep`. Its half-cell spacing and 32-sample capacity are unchanged;
@@ -30,7 +34,23 @@ physical step or material accounting is omitted or duplicated. Velocity and
 momentum are unchanged. Unresolvable turns, nonfinite state, excessive
 translation/corner motion and exhausted work still refuse safely.
 
-Actual geometry replacement now refreshes the bridge's conservative radius.
+Native interpolation follows a straight physical COM path and the continuous
+angle, then reconstructs the unchanged storage-origin pose. Water samples and
+the Sand pocket curve proof use that same reference. In the pocket proof,
+`q(t) = R(-angle(t)) * (grain - COM_world(t)) + COM_local`; its chord-error bound
+retains the second-derivative terms for angular curvature and COM translation.
+This prevents empty storage columns from creating fictitious bowed material
+trajectories. No carrier index, storage origin, pose identity or collision shape
+is rewritten to make a completed segment fit.
+
+Actual geometry replacement refreshes the bridge's domain. Product changes
+without rigid geometry changes refresh at the exact between-interval material
+barrier. Native publications bind the domain to material and geometry revisions;
+missing, undersized, stale and same-revision conflicting domains refuse. Native
+motion acceptance does not transfer material into owned carriers: its Sand
+pass only records contact fences. Real lodging, chemistry and product motion
+occur at semantic completion, before the next domain refresh and physics lease.
+The domain therefore remains conservative throughout a compact-receipt interval.
 The ordinary erosion fixture verifies that shrinking colliders preserve the
 lattice pose, update mass/COM/inertia, wake for the changed contact graph, fall
 through the removed supporting volume, and eventually sleep naturally.
@@ -44,14 +64,53 @@ four-cell complement derives directly from the existing geometric budgets and
 addresses this additional case. The original failed two-cell trial is retained
 in `physics-natural-fall-comparison.json`; it is not relabeled as a pass.
 
+## Ordinary erosion and storage-reference invariance
+
+A second defect was demonstrated after the initial small-fragment correction.
+Twenty-five ordinary endpoint erases reduced a connected 26-cell Wood strip
+to one cell, preserving the existing RID, carrier indices and 28-by-3 storage.
+Its mass and inertia were correctly one and 1/6, but its COM was now at local
+`(26.5,1.5)`. A natural 175-cell gravity fall with only 0.5 cells/s initial
+horizontal drift generated 55.8113 rad/s and 0.232286 radians of rotation.
+The actual COM moved only 0.287659 cells. The abandoned storage origin moved
+6.292388 cells, yielding a fictitious 12.833608-cell corner bound and protective
+refusal after 360 acknowledged segments and 90 completed native intervals.
+This ordinary repeated-cut defect was corrected within M4, not deferred to M5.
+
+The final actual-native/Rapier regression compares the same occupied world cell
+in tight 3-by-3 storage, a 28-by-3 parent eroded at the near end, and a 28-by-3
+parent eroded at the far end. All three retain the exact material owner through
+ordinary native edit/geometry acknowledgement, complete 480 physical segments
+and 120 native intervals, and produce the same natural high-spin impact. The
+largest world-COM trajectory difference is 0.0000612 cells. The far storage
+origin travels up to 6.497911 cells per segment while actual COM travel stays
+below 0.971255 cells. Every one of the 1,440 segments has an actual native ACK
+and independent full native pose echo. Duplicate final poses refuse without
+advancing time or changing the one-cell inventory. Seven domain-corruption
+controls per storage case preserve the usable owner after refusal.
+
+Native tests independently compare every occupied/contact corner against an
+algebraic physical trajectory, then test 64 curved Sand trajectories in tight
+and 25-cell-padded storage. Accepted and refused pocket outcomes, destinations,
+apertures and sample counts agree. Dense independent samples verify accepted
+grain paths do not cross solid material. Product carriers outside the rigid
+cover expand the domain; large/slender shapes, excessive COM translation,
+excessive corner travel, unresolved turns and work capacities retain refusal.
+The original failing executable and precise negative/positive results are
+preserved beside this report.
+
 ## Focused evidence
 
 | Scope | Result |
 |---|---|
 | Matched actual-Rapier ledge-impact probe | Prior bridge: 5/20 protective refusals; corrected bridge: 0/20; same initial conditions and solver outputs |
-| Native contact and coordinator suites | 53,159 checks, zero failures; new owner-value and independent collision controls included |
-| Actual Rapier fragment and negative controls | 384 checks, zero failures; 20 initial collision cases, two complete gravity falls and separate large-angle, translation, corner, corrupt-readback controls |
-| Rest/contact/erosion | 35 checks, zero failures; real wake, fall, contact, settling and shrinking-radius readback |
+| Final native contact and coordinator suites | 87,235 checks, zero failures; independent COM/storage/Sand invariance plus previous motion/ownership coverage |
+| Final actual Rapier fragment and negative controls | 386 checks, zero failures; 20 initial collision cases, two complete gravity falls and independent large-angle, translation, corner and corrupt-readback controls |
+| Final rest/contact/erosion | 37 checks, zero failures; real wake, fall, contact, settling and material-domain refresh |
+| Final three-case sparse-parent regression | 6,223 checks, zero failures; 1,440 actual segments and native ACKs, 360 semantic intervals; storage-reference invariance and copied-domain fault controls |
+| Final physical bridge / identity / incremental segments | 28 / 70 / 137 checks, zero failures; actual mass/COM/inertia and owner/barrier contracts |
+| Final bounded segment planner | 47 checks, zero failures; actual COM readback and independent motion limits |
+| Final standalone worker rehearsal / laboratory | 41 / 379 checks, zero failures; both legacy hosts consume the new native domain correctly |
 | Ordinary Tower and independent barrel | 114 checks, zero failures; live ordinary worker/native/Rapier path, quantity and installed-pose validation |
 | Same-World natural small-fragment chain | 8,471 checks, zero failures; five native Wood promotions, 2,400 actual Rapier segments, every native ACK plus independent full native pose readback, 600 semantic ticks |
 | Fresh Tower barrel controls | Four-case follow-up: 212 checks, zero failures; Structures-disabled ordinary reference, pristine enabled owner, cut before Resume and cut after four native ticks; all fall freely to the same floor contact |
@@ -69,6 +128,18 @@ built from private composition `3479c621c`: the final four-cell physics contract
 accepted-main/presentation integration and the throughput specialist's native
 applied-pose echo. `physics-combined-inputs.json` records the exact source hashes
 and explicit local compiler drift; this is not the guarded production runtime.
+
+The final COM-domain replay and focused results instead use native binary
+`547c8f6f3474bc6f6406176239cefe3ae42d63326423f219d68a26d6a75032a0`,
+with native source committed at `062670c1e75c43a0e72fc3727fbe0f62bb3736f6`.
+The 126-file native input ledger has canonical SHA-256
+`4356c2472f0572bc853712d478ec7f681bae189b655307a4e36268d56cfa7927`.
+`physics-com-inputs.json` records the build source, dependency/library identities,
+binary size, raw build hash and explicit GCC 14.2/binutils 2.44 local drift.
+The source build started before committing these edits; native bytes remained
+unchanged through the recorded source commit. This remains a focused local test
+runtime, not the guarded production publication. The unchanged five-case small
+fragment chain also passed all 8,471 checks against this final native binary.
 
 The same-World fixture authors one Wood cell, performs real reservation/debit,
 terrain installation and activation, then lets gravity drop it approximately
@@ -131,10 +202,10 @@ facade there can be a valid contact outcome. Full-support removal demonstrates
 continued detachment and collapse. Later Windows/owner evaluation must retain
 the barrel check and preserve a diagnostic trace if the jump recurs.
 
-## Remaining integration work
+## Physical cross-review and qualification boundary
 
-The throughput specialist's `f25b1aaa2` consumes the same bridge helper in the
-Main interval predictor. Independent physical review found no loss of native
+The throughput specialist's `f25b1aaa2` and domain consumer `a3b596e0a` use
+the same contract in the Main interval predictor. Independent physical review found no loss of native
 ACKs, exact pose checks, actor-force cadence or final semantic ownership: compact
 receipts carry authoritative native readback and the final interval completion
 remains on the full ordinary owner path. The mid-lease Held presentation seam
@@ -142,7 +213,8 @@ has been referred to the presentation and throughput specialists for explicit
 camera/resize qualification; the presentation specialist has now demonstrated
 208 checks with a real pending motion lease, retained full-canvas pan/resize
 and Restore clearing the lease. No fast-path repair was needed. Final source-matched native/Godot/Windows qualification,
-portable archive verification and independent cross-review remain separate
-gates. Large storage bounds around sparse offcuts remain conservative; changing
-their origin/representation is a later scaling experiment, not part of this
-bounded correction.
+portable archive verification and final combined cross-review remain separate
+gates. Large empty storage still costs native scans and retained memory, but
+does not by itself constrain physical motion. Later M5 experiments may compact
+or hierarchically represent that storage only while preserving carrier identity,
+curved contact proofs, geometry barriers and the single semantic clock.

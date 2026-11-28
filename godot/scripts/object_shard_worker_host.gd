@@ -712,6 +712,11 @@ func _sync(continuation: String) -> void:
 			var kind: String = "BodyRetired" if changed.get("retired_body", false) else "GeometryInstalled"
 			_send("acknowledge", _ack(shard, kind), "geometry")
 			return
+		if bridge.bodies.has(int(shard.id)):
+			var refreshed: Dictionary = bridge.refresh_motion_domain(shard)
+			if not refreshed.get("ok",false):
+				_hold("MotionDomainRefreshFailed",refreshed)
+				return
 	match continuation:
 		"idle":
 			_publish()
