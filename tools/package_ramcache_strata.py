@@ -484,6 +484,13 @@ Write-Host ('Verified ' + $count + ' original payload files. Application ' + $ma
 VERIFY_CMD = '@echo off\r\npowershell.exe -NoProfile -ExecutionPolicy Bypass -File "%~dp0Verify Package.ps1"\r\npause\r\n'
 
 
+def windows_powershell_environment(environment: dict[str, str]) -> dict[str, str]:
+    # A Python child of pwsh inherits PS7 module paths. Windows PowerShell must
+    # reconstruct its own defaults so the unchanged module observer can load
+    # its built-in commands; preserve the actual portable application PATH.
+    return {key: value for key, value in environment.items() if key.upper() != "PSMODULEPATH"}
+
+
 def verify(folder: Path, *, pristine=False) -> dict:
     folder = folder.resolve(strict=True)
     record = q.read(folder / MANIFEST)
@@ -938,7 +945,7 @@ def installed(args):
             "-Evidence", str(output / "runtime-modules.json"), "-Manifest", MANIFEST,
             "-ProjectRelative", "source/godot"]
         with (output / "runtime-modules-observer.log").open("w", encoding="utf-8") as log:
-            subprocess.run(command, env=environment, stdout=log, stderr=subprocess.STDOUT,
+            subprocess.run(command, env=windows_powershell_environment(environment), stdout=log, stderr=subprocess.STDOUT,
                            check=True, timeout=180)
         modules = q.read(output / "runtime-modules.json")
         require(modules.get("status") == "passed" and modules.get("source_commit") == manifest["source_commit"],

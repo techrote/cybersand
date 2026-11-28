@@ -517,6 +517,56 @@ class IntegrationControls(unittest.TestCase):
 
 
 class WindowsVerifierControls(unittest.TestCase):
+    def test_windows_powershell_environment_removes_only_module_path(self):
+        original = {"PSModulePath": "ps7 first", "PSMODULEPATH": "uppercase", "psmodulepath": "lowercase",
+                    "PATH": "actual portable tools", "JAVA_HOME": "", "PSModulePathExtra": "retain this",
+                    "SystemRoot": r"C:\Windows"}
+        before = dict(original)
+        actual = package.windows_powershell_environment(original)
+        self.assertEqual(actual, {"PATH": "actual portable tools", "JAVA_HOME": "", "PSModulePathExtra": "retain this",
+                                  "SystemRoot": r"C:\Windows"})
+        self.assertEqual(original, before)
+        self.assertIsNot(actual, original)
+        self.assertEqual(package.windows_powershell_environment(actual), actual)
+
+    @unittest.skipUnless(sys.platform == "win32", "Requires actual Windows PowerShell module discovery")
+    def test_actual_windows_powershell_child_hashes_and_resolves_observer_commands(self):
+        with tempfile.TemporaryDirectory(prefix="ramcache-strata-module-env ") as directory:
+            root = Path(directory)
+            contents = {"empty.bin": b"", "abc.bin": b"abc", "multiblock.bin": bytes(range(256)) * 8192}
+            for name, value in contents.items():
+                (root / name).write_bytes(value)
+            script = root / "observer command probe.ps1"
+            script.write_text(r'''param([string]$Root)
+$ErrorActionPreference = 'Stop'
+$commands = [ordered]@{}
+foreach ($name in @('Get-FileHash', 'Get-Process', 'Start-Process', 'Get-Content', 'ConvertFrom-Json')) {
+    $resolved = Get-Command -Name $name -ErrorAction Stop
+    $commands[$name] = [string]$resolved.Name
+}
+$hashes = [ordered]@{}
+foreach ($name in @('empty.bin', 'abc.bin', 'multiblock.bin')) {
+    $hashes[$name] = (Get-FileHash -LiteralPath (Join-Path $Root $name) -Algorithm SHA256).Hash.ToLowerInvariant()
+}
+[ordered]@{ version = $PSVersionTable.PSVersion.ToString(); commands = $commands; hashes = $hashes } | ConvertTo-Json -Depth 6
+''', encoding="utf-8", newline="\n")
+            powershell = Path(os.environ.get("SystemRoot", r"C:\Windows")) / "System32/WindowsPowerShell/v1.0/powershell.exe"
+            original = package.lab.dependency_environment(root)
+            environment = package.windows_powershell_environment(original)
+            self.assertEqual(environment["PATH"], original["PATH"])
+            self.assertFalse(any(key.upper() == "PSMODULEPATH" for key in environment))
+            result = subprocess.run([str(powershell), "-NoProfile", "-ExecutionPolicy", "Bypass", "-File", str(script),
+                                     "-Root", str(root)], cwd=root, env=environment, stdout=subprocess.PIPE,
+                                    stderr=subprocess.STDOUT, text=True, encoding="utf-8", errors="replace", timeout=30)
+            self.assertEqual(result.returncode, 0, result.stdout)
+            observed = json.loads(result.stdout)
+            self.assertTrue(observed["version"].startswith("5.1."))
+            self.assertEqual(observed["hashes"], {name: digest(value) for name, value in contents.items()})
+            self.assertEqual(observed["hashes"]["empty.bin"], "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855")
+            self.assertEqual(observed["hashes"]["abc.bin"], "ba7816bf8f01cfea414140de5dae2223b00361a396177a9cb410ff61f20015ad")
+            self.assertEqual(observed["commands"], {name: name for name in
+                ("Get-FileHash", "Get-Process", "Start-Process", "Get-Content", "ConvertFrom-Json")})
+
     @unittest.skipUnless(sys.platform == "win32", "Requires actual Windows PowerShell and portable environment")
     def test_actual_shipped_verifier_accepts_pristine_and_refuses_changed_or_missing_files(self):
         with tempfile.TemporaryDirectory(prefix="ramcache-strata-verifier ") as directory:

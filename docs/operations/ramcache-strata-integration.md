@@ -189,7 +189,7 @@ hashes remain pinned, and their unchanged original readers execute in an
 isolated checkout of that exact source. The complete Git delta to the shipped
 application must contain only the seven explicitly registered packaging,
 packaging-test, workflow, request and runbook files. All application, native,
-dependency, fixture and functional qualification-driver files remain unchanged.
+dependency and fixture files, plus the source-campaign driver and reader, remain unchanged.
 Any other modification refuses reuse.
 
 The evaluator manifest records its current application identity separately from
@@ -221,6 +221,16 @@ and [absent-keytool return](https://github.com/godotengine/godot/blob/5b4e0cb0fd
 The final cold desktop check
 clears that variable to establish operation without the hosted Java SDK; the
 owner's CMD and the application remain unchanged.
+
+The later module-observation subprocess also starts Windows PowerShell 5.1
+through Python. Its child environment now removes only the case-insensitive
+`PSModulePath` variable, following [Microsoft's documented startup contract](https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_psmodulepath?view=powershell-7.6#starting-windows-powershell-from-powershell-7).
+This lets that interpreter construct its own compatible module lookup. The
+original module-observer script, commands, hash/path/PID assertions and deadlines
+are unchanged; the portable Python/Git/compiler PATH is preserved. Actual
+Windows known-answer controls establish command availability under that exact
+child environment, and the final installed campaign still must execute the
+complete original module observation.
 
 Hosted Linux software rendering and Windows ANGLE/Microsoft Basic execution
 qualify those environments. Only the original evaluators received the owner's
