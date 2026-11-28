@@ -190,13 +190,24 @@ not establish an end-to-end turnaround percentage.
 
 ## Shared capacity and concurrency
 
-The GDExtension matrices each use `max-parallel: 8`. Together with Native's six
-families, the routine regression phase can use 22 slots before small auxiliary
-jobs. This leaves capacity within the owner's stated 40 standard hosted slots,
-but is not an account-wide cap: multiple PRs and other repositories add demand.
-Physical stress has its own smaller matrix budgets. Launch exceptional campaigns
-deliberately and use the [workflow audit](../audits/2026-11-01-ci-workflow-audit.md)
-and machine inventory when changing independent fan-out.
+The CI-OPT-004 comparison candidate allocates `max-parallel: 14` to
+GDExtension Linux regression shards and `max-parallel: 18` to Windows.
+The narrowly scoped scheduling-policy exception permits at most 16 Linux and
+18 Windows jobs for these two named matrices, preserving the previously tested
+16/16 alternative. Every other matrix remains capped at eight, and original
+`fail-fast: false` evidence requirements remain enforced.
+The asymmetric candidate still permits 32 simultaneous GDExtension shard jobs,
+or 38 with Native's six families, before auxiliary workflow jobs. The owner's
+40-runner account limit is shared across PRs, other workflows and repositories;
+it is not reserved by this per-matrix setting, and contention can delay job start.
+All 24 Linux and 23 Windows shard obligations remain mandatory. Hosted results
+must distinguish shard execution, queueing, build times, and platform finish skew:
+a lower cap on Linux is not proof of available physical CPU cores, and
+across-run wall-clock comparisons remain sensitive to host and network variation.
+Physical stress retains its own smaller matrix budgets. Launch exceptional
+campaigns deliberately and use the
+[workflow audit](../audits/2026-11-01-ci-workflow-audit.md) and machine
+inventory when changing independent fan-out.
 
 Automatic GDExtension, Native and Documentation PR runs group by PR identity and
 cancel superseded checks. Main pushes and manual qualification use run identity,
