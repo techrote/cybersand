@@ -1,0 +1,171 @@
+name: PUBPRES original guarded publication inspection
+
+on:
+  push:
+    branches: [codex/pubpres-mainline-evidence-001-20261128]
+    paths: ['.github/workflows/pubpres-mainline-published-inspect.yml']
+
+permissions:
+  contents: read
+  actions: read
+
+concurrency:
+  group: pubpres-published-original-inspection-${{ github.run_id }}
+  cancel-in-progress: false
+
+jobs:
+  inspect:
+    if: github.repository == 'techrote/cybersand' && github.ref == 'refs/heads/codex/pubpres-mainline-evidence-001-20261128'
+    runs-on: ubuntu-24.04
+    timeout-minutes: 10
+    steps:
+      - name: Read the original successful guarded publication receipt only
+        env:
+          GITHUB_TOKEN: ${{ github.token }}
+        run: |
+          python3 - <<'PY'
+          import hashlib
+          import json
+          import os
+          from pathlib import Path, PurePosixPath
+          import stat
+          import urllib.error
+          import urllib.parse
+          import urllib.request
+          import zipfile
+
+          SOURCE = "a9905b850f775603e0ac7af7c886947926b9b531"
+          TREE = "5d40af6a4bccf5b8ec11f5dfdd0ffbf8dff4c2f2"
+          CHILD = "427c0ea3b6326f3ebda71fbbff7e40564757de2b"
+          CHILD_TREE = "7bb3a0eabf3b2a7ad74b3dd15d1539eca410fe77"
+          RUN, ATTEMPT, JOB = 46143827387, 1, 140975678369
+          ARTIFACT, SIZE = 15262439719, 12521
+          DIGEST = "3add55b2a5bc26af56ed80ea5a82d1aab16883bfdd41e83820b9cb55431566de"
+          NAME = "pubpres-mainline-guarded-publication-46143827387-1"
+          BASE = "https://api.github.com/repos/techrote/cybersand"
+          HEADERS = {"Authorization": "Bearer " + os.environ["GITHUB_TOKEN"],
+                     "Accept": "application/vnd.github+json", "X-GitHub-Api-Version": "2022-11-28"}
+          output = Path(os.environ["RUNNER_TEMP"]) / "pubpres-original-guarded-publication"
+          output.mkdir(exist_ok=False)
+
+          def need(value, message):
+              if not value:
+                  raise ValueError(message)
+
+          def api(path):
+              with urllib.request.urlopen(urllib.request.Request(BASE + path, headers=HEADERS), timeout=60) as reply:
+                  raw = reply.read(2 * 1024**2 + 1)
+              need(len(raw) <= 2 * 1024**2, "Metadata exceeds bound")
+              return json.loads(raw)
+
+          class NoRedirect(urllib.request.HTTPRedirectHandler):
+              def redirect_request(self, request, fp, code, message, headers, newurl):
+                  return None
+
+          run = api("/actions/runs/" + str(RUN))
+          need(run["id"] == RUN and run["run_attempt"] == ATTEMPT and run["head_sha"] == SOURCE
+               and run["head_branch"] == "codex/pubpres-playability-final-001-20261124"
+               and run["path"] == ".github/workflows/pubpres-mainline.yml" and run["event"] == "push"
+               and run["status"] == "completed" and run["conclusion"] == "success", "Original successful run identity differs")
+          commit = api("/git/commits/" + SOURCE)
+          need(commit["sha"] == SOURCE and commit["tree"]["sha"] == TREE, "Original source tree differs")
+          job = api("/actions/jobs/" + str(JOB))
+          need(job["id"] == JOB and job["run_id"] == RUN and job["head_sha"] == SOURCE
+               and job["name"] == "publish-qualified-runtime" and job["status"] == "completed"
+               and job["conclusion"] == "success", "Original successful publisher job differs")
+          artifact = api("/actions/artifacts/" + str(ARTIFACT))
+          need(artifact["id"] == ARTIFACT and artifact["name"] == NAME and artifact["size_in_bytes"] == SIZE
+               and artifact["digest"] == "sha256:" + DIGEST and not artifact["expired"]
+               and artifact["workflow_run"]["id"] == RUN and artifact["workflow_run"]["head_sha"] == SOURCE,
+               "Original successful publication archive metadata differs")
+          request = urllib.request.Request(BASE + "/actions/artifacts/" + str(ARTIFACT) + "/zip", headers=HEADERS)
+          try:
+              urllib.request.build_opener(NoRedirect).open(request, timeout=60)
+          except urllib.error.HTTPError as reply:
+              need(reply.code in (301, 302, 303, 307, 308), "Expected signed artifact redirect")
+              location = reply.headers["Location"]
+          else:
+              raise ValueError("Original archive did not use separate signed storage")
+          parsed = urllib.parse.urlsplit(location)
+          need(parsed.scheme == "https" and not parsed.username and not parsed.password, "Unsafe storage URL")
+          # No GitHub authorization header is sent to the signed storage URL.
+          with urllib.request.urlopen(urllib.request.Request(location), timeout=60) as reply:
+              raw = reply.read(SIZE + 1)
+          need(len(raw) == SIZE and hashlib.sha256(raw).hexdigest() == DIGEST, "Original archive bytes differ")
+          archive = output / "original-guarded-publication.zip"
+          archive.write_bytes(raw)
+          with zipfile.ZipFile(archive) as bundle:
+              members = bundle.infolist()
+              need(len(members) == 1 and members[0].filename == "PUBLICATION.json"
+                   and members[0].file_size <= 2 * 1024**2 and not members[0].flag_bits & 1
+                   and ((members[0].external_attr >> 16) & 0o170000) in (0, stat.S_IFREG)
+                   and bundle.testzip() is None, "Unexpected original archive population, mode or CRC")
+              receipt_bytes = bundle.read(members[0])
+          receipt = json.loads(receipt_bytes)
+          need(receipt["schema"] == "pubpres-mainline-guarded-publication-v1" and receipt["parent"] == SOURCE
+               and receipt["published"] is True and receipt["merge_authorized"] is False
+               and receipt["physical_acceptance"] == "HOLD", "Original publication state differs")
+          need(receipt["qualification"]["source"] == "ff7a9e87b5d37fde66d4d932c9fa84cc0b3a4dae"
+               and receipt["qualification"]["run"] == 46140937427 and receipt["qualification"]["attempt"] == 1
+               and receipt["build"]["source"] == "b7c79f072d8d389fb3cc0e3ae0e933e9bc5a9d34"
+               and receipt["build"]["run"] == 46132881112 and receipt["build"]["attempt"] == 1,
+               "Original qualified source or native build binding differs")
+          expected_paths = {
+              "godot/addons/cybersand_native/bin/cybersand_native.windows.x86_64.dll",
+              "godot/addons/cybersand_native/bin/libcybersand_native.linux.x86_64.so",
+              "godot/addons/cybersand_native/runtime-provenance.json",
+              "godot/addons/cybersand_native/runtime-provenance.linux.json",
+          }
+          child = api("/commits/" + CHILD)
+          need(child["sha"] == CHILD and child["commit"]["tree"]["sha"] == CHILD_TREE
+               and [parent["sha"] for parent in child["parents"]] == [SOURCE]
+               and len(child["files"]) == 4 and {row["filename"] for row in child["files"]} == expected_paths
+               and all(row["status"] == "modified" for row in child["files"]),
+               "Published child ancestry or exact four-path population differs")
+          need(receipt["commit"] == CHILD and receipt["tree"] == CHILD_TREE
+               and receipt["changed_paths"] == sorted(expected_paths), "Original publication child receipt differs")
+          expected_remote = {
+              "linux": {"sha256": "c35f1b936b1bb68a3a386cf7b2f2bb1be71e00e5402908935805a54fdbc62c4d",
+                        "bytes": 5633848, "fresh_store_retrieval_verified": True},
+              "windows": {"sha256": "0fa95cd8b99501b8f428e659d9ec679fce33e969531b50a74b3d4a58df6ba4e8",
+                          "bytes": 6901760, "fresh_store_retrieval_verified": True},
+          }
+          need(receipt["remote_lfs_retrieval"] == expected_remote,
+               "Original independent fresh-store remote runtime receipt differs")
+          focuses = {"frozen", "water", "members", "held-placement", "mainline", "native-owner",
+                     "selected-water", "selected-members", "selected-held-placement"}
+          need(set(receipt["platforms"]) == {"linux", "windows"}
+               and set(receipt["native_gates"]) == {"normal", "sanitizers", "ownership"},
+               "Original two-platform or native-gate population is incomplete")
+          for platform, row in receipt["platforms"].items():
+              need(set(row["outcomes"]) == focuses and row["runtime"]["binary_sha256"] == expected_remote[platform]["sha256"]
+                   and row["runtime"]["checked_source_files"] == 115
+                   and len(row["runtime"]["application_binding"]["build_inputs_sha256"]) == 123,
+                   "Original platform replay or complete native/build identity differs")
+          (output / "PUBLICATION.json").write_bytes(receipt_bytes)
+          inspection = {"schema": "pubpres-guarded-publication-original-inspection-v1",
+                        "source": SOURCE, "tree": TREE, "run": RUN, "attempt": ATTEMPT, "job": JOB,
+                        "artifact": ARTIFACT, "zip_bytes": SIZE, "zip_sha256": DIGEST,
+                        "receipt_sha256": hashlib.sha256(receipt_bytes).hexdigest(),
+                        "receipt_bytes": len(receipt_bytes), "published": receipt["published"],
+                        "published_child": CHILD, "published_tree": CHILD_TREE,
+                        "changed_paths": sorted(expected_paths), "remote_lfs_retrieval": receipt["remote_lfs_retrieval"],
+                        "native_gates": sorted(receipt["native_gates"]),
+                        "completed_platforms_retained": sorted(receipt["platforms"]),
+                        "retained_platform_focuses": {key: sorted(value["outcomes"])
+                                                      for key, value in receipt["platforms"].items()},
+                        "original_job_steps": [{key: row[key] for key in ("name", "status", "conclusion")}
+                                               for row in job["steps"]],
+                        "scope": "Original successful guarded-publication data only. This inspector executes no application, writes no repository or runtime, and grants no physical acceptance or merge authorization."}
+          (output / "INSPECTION.json").write_text(json.dumps(inspection, indent=2) + "\n", encoding="utf-8")
+          print("ORIGINAL_GUARDED_PUBLICATION_INSPECTION " + json.dumps(inspection, separators=(",", ":")), flush=True)
+          print("ORIGINAL_GUARDED_PUBLICATION_RECEIPT " + json.dumps(receipt, separators=(",", ":")), flush=True)
+          PY
+      - name: Preserve the unchanged original publication receipt and its inspection
+        if: always()
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02
+        with:
+          name: pubpres-original-guarded-publication-inspection-${{ github.run_id }}-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pubpres-original-guarded-publication
+          retention-days: 90
+          if-no-files-found: error
